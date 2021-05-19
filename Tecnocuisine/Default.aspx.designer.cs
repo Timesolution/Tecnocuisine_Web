@@ -10,7 +10,7 @@
 
 namespace Tecnocuisine
 {
-    public partial class _Default
+    public partial class Default
     {
     }
 }
