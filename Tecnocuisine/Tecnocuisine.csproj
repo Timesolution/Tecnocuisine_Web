@@ -90,8 +90,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Tecnocuisine_API">
-      <HintPath>..\..\Tecnocuisine_API\Tecnocuisine_API\bin\Debug\Tecnocuisine_API.dll</HintPath>
+    <Reference Include="Tecnocuisine_API, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Tecnocuisine_Api\Tecnocuisine_API\bin\Debug\Tecnocuisine_API.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>

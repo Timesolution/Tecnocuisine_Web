@@ -17,12 +17,14 @@ namespace Tecnocuisine
         ControladorInsumo controladorInsumo = new ControladorInsumo();
         int accion;
         int idInsumo;
+        int Mensaje;
 
         protected void Page_Load(object sender, EventArgs e)
         {
 
             this.accion = Convert.ToInt32(Request.QueryString["a"]);
             this.idInsumo = Convert.ToInt32(Request.QueryString["i"]);
+            this.Mensaje = Convert.ToInt32(Request.QueryString["m"]);
 
             if (!IsPostBack)
             {
@@ -30,9 +32,24 @@ namespace Tecnocuisine
                 {
                     CargarInsumo();
                 }
+
+                if(Mensaje == 1)
+                {
+                    this.m.ShowToastr(this.Page, "Insumo guardado con Exito!", "Exito");
+                }
+                else if (Mensaje == 2)
+                {
+                    this.m.ShowToastr(this.Page, "Insumo editado con Exito!", "Exito");
+                }
+                else if (Mensaje == 3)
+                {
+                    this.m.ShowToastr(this.Page, "Insumo Eliminado con Exito!", "Exito");
+                }
+
             }
 
             ObtenerInsumos();
+
         }
 
 
@@ -115,8 +132,6 @@ namespace Tecnocuisine
                 Literal l2 = new Literal();
                 l2.Text = "&nbsp";
                 celAccion.Controls.Add(l2);
-                tr.Cells.Add(celAccion);
-
 
                 LinkButton btnEliminar = new LinkButton();
                 btnEliminar.ID = "btnEliminar_" + insumo.id_insumo;
@@ -125,8 +140,8 @@ namespace Tecnocuisine
                 btnEliminar.Attributes.Add("href", "#modalConfirmacion");
                 btnEliminar.Text = "<span><i class='fa fa-trash - o'></i></span>";
                 btnEliminar.OnClientClick = "abrirdialog(" + insumo.id_insumo + ");";
-
                 celAccion.Controls.Add(btnEliminar);
+
                 celAccion.Width = Unit.Percentage(25);
                 tr.Cells.Add(celAccion);
 
@@ -175,6 +190,18 @@ namespace Tecnocuisine
             }
         }
 
+        public void LimpiarCampos()
+        {
+            try
+            {
+                txtDescripcionInsumo.Text = "";
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
         #region ABM
         public void GuardarInsumo()
         {
@@ -189,8 +216,7 @@ namespace Tecnocuisine
 
                 if (resultado > 0)
                 {
-                    this.m.ShowToastr(this.Page, "Insumo guardado con Exito!", "Exito");
-                    ObtenerInsumos();
+                    Response.Redirect("InsumosF.aspx?m=1");
                 }
                 else
                 {
@@ -217,15 +243,13 @@ namespace Tecnocuisine
 
                 if (resultado > 0)
                 {
-                    this.m.ShowToastr(this.Page, "Insumo editado con Exito!", "Exito");
-                    Response.Redirect("InsumosF.aspx");
+                    Response.Redirect("InsumosF.aspx?m=2");
 
                 }
                 else
                 {
                     this.m.ShowToastr(this.Page, "No se pudo editar el insumo", "warning");
                 }
-
 
             }
             catch (Exception ex)
@@ -243,8 +267,7 @@ namespace Tecnocuisine
 
                 if (resultado > 0)
                 {
-                    this.m.ShowToastr(this.Page, "Insumo Eliminado con Exito!", "Exito");
-                    ObtenerInsumos();
+                    Response.Redirect("InsumosF.aspx?m=3");
                 }
                 else
                 {
@@ -257,6 +280,5 @@ namespace Tecnocuisine
             }
         }
         #endregion
-
     }
 }
