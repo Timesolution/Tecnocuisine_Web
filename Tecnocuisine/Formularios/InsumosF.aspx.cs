@@ -121,7 +121,7 @@ namespace Tecnocuisine
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
                 LinkButton btnDetalles = new LinkButton();
-                btnDetalles.CssClass = "btn btn-primary";
+                btnDetalles.CssClass = "btn btn-primary btn-xs";
                 //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                 //btnDetalles.Attributes.Add("title data-original-title", "Editar");
                 btnDetalles.ID = "btnSelec_" + insumo.id_insumo + "_";
@@ -135,7 +135,7 @@ namespace Tecnocuisine
 
                 LinkButton btnEliminar = new LinkButton();
                 btnEliminar.ID = "btnEliminar_" + insumo.id_insumo;
-                btnEliminar.CssClass = "btn btn-danger";
+                btnEliminar.CssClass = "btn btn-danger btn-xs";
                 btnEliminar.Attributes.Add("data-toggle", "modal");
                 btnEliminar.Attributes.Add("href", "#modalConfirmacion");
                 btnEliminar.Text = "<span><i class='fa fa-trash - o'></i></span>";

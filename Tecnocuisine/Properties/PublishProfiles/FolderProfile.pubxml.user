@@ -5,6 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PublishTargetUrl>C:\Users\Desarrollador\Documents\Repositorios\Publicacion_Tecnocuisine</_PublishTargetUrl>
+    <History>True|2021-05-20T13:08:51.3436064Z;True|2021-05-20T10:03:12.6344181-03:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="About.aspx">
@@ -200,10 +201,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/19/2021 10:53:11</publishTime>
     </File>
     <File Include="bin/Tecnocuisine.dll">
-      <publishTime>05/19/2021 14:52:01</publishTime>
+      <publishTime>05/20/2021 10:03:10</publishTime>
     </File>
     <File Include="bin/Tecnocuisine.pdb">
-      <publishTime>05/19/2021 14:52:01</publishTime>
+      <publishTime>05/20/2021 10:03:10</publishTime>
     </File>
     <File Include="bin/Tecnocuisine_API.dll">
       <publishTime>05/19/2021 10:56:51</publishTime>
@@ -473,7 +474,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/19/2021 10:53:10</publishTime>
     </File>
     <File Include="Default.aspx">
-      <publishTime>05/19/2021 10:53:10</publishTime>
+      <publishTime>05/20/2021 09:43:19</publishTime>
     </File>
     <File Include="favicon.ico">
       <publishTime>05/19/2021 10:53:10</publishTime>
@@ -593,10 +594,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/19/2021 10:53:10</publishTime>
     </File>
     <File Include="Formularios/InsumosF.aspx">
-      <publishTime>05/19/2021 12:44:41</publishTime>
+      <publishTime>05/20/2021 10:02:31</publishTime>
     </File>
     <File Include="Global.asax">
       <publishTime>05/19/2021 10:53:10</publishTime>
+    </File>
+    <File Include="Img/Logo.jpg">
+      <publishTime>05/20/2021 09:45:47</publishTime>
     </File>
     <File Include="js/bootstrap.js">
       <publishTime>05/19/2021 10:53:10</publishTime>
@@ -1955,7 +1959,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/19/2021 10:53:10</publishTime>
     </File>
     <File Include="Site.Master">
-      <publishTime>05/19/2021 14:47:34</publishTime>
+      <publishTime>05/20/2021 10:08:24</publishTime>
     </File>
     <File Include="Site.Mobile.Master">
       <publishTime>05/19/2021 10:53:10</publishTime>

@@ -243,6 +243,7 @@
     <Content Include="font-awesome\scss\_spinning.scss" />
     <Content Include="font-awesome\scss\_stacked.scss" />
     <Content Include="font-awesome\scss\_variables.scss" />
+    <Content Include="Img\Logo.jpg" />
     <Content Include="js\plugins\justified-gallery\README.md" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="js\bootstrap.js" />
