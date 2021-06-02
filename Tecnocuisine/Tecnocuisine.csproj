@@ -90,8 +90,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Tecnocuisine_API">
-      <HintPath>..\..\Tecnocuisine_API\Tecnocuisine_API\bin\Debug\Tecnocuisine_API.dll</HintPath>
+    <Reference Include="Tecnocuisine_API, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TecnoCuisine Api\Tecnocuisine_API\bin\Debug\Tecnocuisine_API.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -202,6 +203,7 @@
     <Content Include="font-awesome\css\font-awesome.min.css" />
     <Content Include="font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Formularios\Categorias.aspx" />
     <Content Include="Formularios\InsumosF.aspx" />
     <Content Include="Global.asax" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -722,6 +724,13 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Categorias.aspx.cs">
+      <DependentUpon>Categorias.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Categorias.aspx.designer.cs">
+      <DependentUpon>Categorias.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\InsumosF.aspx.cs">
       <DependentUpon>InsumosF.aspx</DependentUpon>

@@ -11,26 +11,35 @@ namespace Tecnocuisine
 {
 
 
-    public partial class InsumosF
+    public partial class Categorias
     {
 
         /// <summary>
-        /// txtDescripcionInsumo control.
+        /// txtDescripcionCategoria control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDescripcionInsumo;
+        protected global::System.Web.UI.WebControls.TextBox txtDescripcionCategoria;
 
         /// <summary>
-        /// Button1 control.
+        /// ListCategorias control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button1;
+        protected global::System.Web.UI.WebControls.DropDownList ListCategorias;
+
+        /// <summary>
+        /// btnGuardar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnGuardar;
 
         /// <summary>
         /// UpdatePanel2 control.
@@ -42,15 +51,6 @@ namespace Tecnocuisine
         protected global::System.Web.UI.UpdatePanel UpdatePanel2;
 
         /// <summary>
-        /// phInsumos control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phInsumos;
-
-        /// <summary>
         /// txtMovimiento control.
         /// </summary>
         /// <remarks>
@@ -58,14 +58,5 @@ namespace Tecnocuisine
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtMovimiento;
-
-        /// <summary>
-        /// btnSi control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSi;
     }
 }

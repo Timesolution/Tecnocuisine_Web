@@ -20,17 +20,16 @@
                             <div class="form-horizontal">
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Descripción</label>
-                                    <div class="col-sm-10">
+                                    <div class="col-sm-6">
                                         <asp:TextBox ID="txtDescripcionInsumo" class="form-control" runat="server"></asp:TextBox>
 
                                     </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="col-sm-4 col-sm-offset-2">
-                                        <asp:Button ID="btnGuardar" runat="server" Text="Guardar" class="btn btn-primary" OnClick="btnGuardar_Click" />
+                                    <div class="col-sm-4 ">
+                                        <asp:Button ID="Button1" runat="server" Text="Guardar" class="btn btn-primary" OnClick="btnGuardar_Click" />
                                     </div>
                                 </div>
+
+
 
                             </div>
                         </div>

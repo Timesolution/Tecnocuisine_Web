@@ -13,7 +13,7 @@ namespace Tecnocuisine.Modelos
             try
             {
                 string options = "toastr.options = { ";
-                options += " positionClass: 'toast-top-center', ";
+                options += " positionClass: 'toast-bottom-right', ";
                 options += "}; ";
 
                 page.ClientScript.RegisterStartupScript(page.GetType(), "toastr_message",

@@ -189,12 +189,12 @@ namespace Tecnocuisine
 
                 if (resultado > 0)
                 {
-                    this.m.ShowToastr(this.Page, "Insumo guardado con Exito!", "Exito");
+                    this.m.ShowToastr(this.Page, "Proceso concluido con éxito", "Exito");
                     ObtenerInsumos();
                 }
                 else
                 {
-                    this.m.ShowToastr(this.Page, "No se pudo agregar el insumo", "warning");
+                    this.m.ShowToastr(this.Page, "Proceso no se pudo concluir", "warning");
                 }
             }
             catch (Exception ex)
