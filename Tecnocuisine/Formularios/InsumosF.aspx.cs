@@ -35,15 +35,15 @@ namespace Tecnocuisine
 
                 if(Mensaje == 1)
                 {
-                    this.m.ShowToastr(this.Page, "Insumo guardado con Exito!", "Exito");
+                    this.m.ShowToastr(this.Page, "Proceso concluido con Exito!", "Exito");
                 }
                 else if (Mensaje == 2)
                 {
-                    this.m.ShowToastr(this.Page, "Insumo editado con Exito!", "Exito");
+                    this.m.ShowToastr(this.Page, "Proceso concluido con Exito!", "Exito");
                 }
                 else if (Mensaje == 3)
                 {
-                    this.m.ShowToastr(this.Page, "Insumo Eliminado con Exito!", "Exito");
+                    this.m.ShowToastr(this.Page, "Proceso concluido con Exito!", "Exito");
                 }
 
             }
