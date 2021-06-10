@@ -1,0 +1,430 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+using Tecnocuisine.Modelos;
+using Tecnocuisine_API.Controladores;
+using Tecnocuisine_API.Entitys;
+
+
+namespace Tecnocuisine
+{
+    public partial class Categorias : Page
+    {
+        Mensaje m = new Mensaje();
+        ControladorCategoria controlador = new ControladorCategoria();
+        int accion;
+        int idCategoria;
+        int Mensaje;
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+            this.Mensaje = Convert.ToInt32(Request.QueryString["m"]);
+            this.idCategoria = Convert.ToInt32(Request.QueryString["id"]);
+            this.accion = Convert.ToInt32(Request.QueryString["a"]);
+            if (!IsPostBack)
+            {
+                if (accion == 2)
+                {
+                    cargarCategoria();
+                }
+                cargarNestedListCategorias();
+                //cargarCategorias();
+
+                if (Mensaje != 0)
+                {
+                    this.m.ShowToastr(this.Page, "Proceso concluido con Exito!", "Exito");
+                }
+
+            }
+
+        }
+
+
+
+
+        //public void ObtenerInsumos()
+        //{
+        //    try
+        //    {
+        //        var insumos = controladorInsumo.ObtenerTodosInsumos();
+
+        //        if (insumos.Count > 0)
+        //        {
+
+        //            foreach (var item in insumos)
+        //            {
+        //                CargarInsumosPH(item);
+
+        //            }
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    }
+        //}
+
+        //private void cargarCategorias()
+        //{
+        //    try
+        //    {
+        //        this.ListCategorias.DataSource = controlador.ObtenerCategorias();
+        //        this.ListCategorias.DataValueField = "id";
+        //        this.ListCategorias.DataTextField = "descripcion";
+        //        this.ListCategorias.DataBind();
+        //        this.ListCategorias.Items.Insert(0, new ListItem("Sin Padre", "-1"));
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    }
+        //}
+
+
+
+
+        protected void GuardarCategoria()
+        {
+            Tecnocuisine_API.Entitys.Categorias categoria = new Tecnocuisine_API.Entitys.Categorias();
+            categoria.descripcion = txtDescripcionCategoria.Text;
+            categoria.activo = 1;
+            categoria.id = controlador.AgregarCategoria(categoria);
+
+           
+            if (categoria.id > 0)
+            {
+                Response.Redirect("Categorias.aspx?m=1");
+            }
+
+        }
+
+
+        private void cargarNestedListCategorias()
+        {
+            List<Tecnocuisine_API.Entitys.Categorias> categorias = controlador.obtenerCategoriasPrimerNivel();
+            foreach (Tecnocuisine_API.Entitys.Categorias item in categorias)
+            {
+
+
+                HtmlGenericControl li = new HtmlGenericControl("li");
+                li.Attributes.Add("class", "dd-item");
+                li.Attributes.Add("data-id", item.id.ToString());
+                li.Attributes.Add("runat", "server");
+
+                main.Controls.Add(li);
+
+                HtmlGenericControl div = new HtmlGenericControl("div");
+                div.Attributes.Add("class", "dd-handle editable");
+                div.InnerText = item.id + " - " + item.descripcion;
+
+                li.Controls.Add(div);
+
+                HtmlGenericControl btnDetalles = new HtmlGenericControl("button");
+                btnDetalles.Attributes.Add("class", "btn btn-primary btn-xs pull-right");
+                //btnDetalles.Attributes.Add("data-toggle", "tooltip");
+                //btnDetalles.Attributes.Add("title data-original-title", "Editar");
+                btnDetalles.ID = "btnSelec_" + item.id + "_";
+                btnDetalles.InnerHtml = "<span><i class='fa fa-pencil'></i></span>";
+                btnDetalles.Attributes.Add("data-action", "edit");
+                div.Controls.Add(btnDetalles);
+
+                Literal l2 = new Literal();
+                l2.Text = "&nbsp";
+                div.Controls.Add(l2);
+
+                HtmlGenericControl btnEliminar = new HtmlGenericControl("button");
+                btnEliminar.ID = "btnEliminar_" + item.id;
+                btnEliminar.Attributes.Add("class", "btn btn-danger btn-xs pull-right");
+                btnEliminar.Attributes.Add("data-toggle", "modal");
+                btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
+                btnEliminar.InnerHtml = "<span><i class='fa fa-trash - o'></i></span>";
+                btnEliminar.Attributes.Add("data-action", "delete");
+                div.Controls.Add(btnEliminar);
+
+                cargarNestedListCategoriasHijas(item.id, li);
+            }
+        }
+
+        private void cargarNestedListCategoriasHijas(int id, HtmlGenericControl li)
+        {
+            try
+            {
+                List<Tecnocuisine_API.Entitys.Categorias> categorias = controlador.obtenerCategoriasHijas(id);
+                if (categorias.Count > 0)
+                {
+                    HtmlGenericControl ol = new HtmlGenericControl("ol");
+                    ol.Attributes.Add("class", "dd-list");
+
+                    li.Controls.Add(ol);
+                    foreach (Tecnocuisine_API.Entitys.Categorias item in categorias)
+                    {
+                        HtmlGenericControl liHijo = new HtmlGenericControl("li");
+
+                        liHijo.Attributes.Add("class", "dd-item");
+                        liHijo.Attributes.Add("data-id", item.id.ToString());
+                        liHijo.Attributes.Add("runat", "server");
+
+                        ol.Controls.Add(liHijo);
+
+                        HtmlGenericControl div = new HtmlGenericControl("div");
+                        div.Attributes.Add("class", "dd-handle editable");
+                        div.InnerText = item.id + " - " + item.descripcion;
+
+
+
+                        liHijo.Controls.Add(div);
+                        HtmlGenericControl btnDetalles = new HtmlGenericControl("button");
+                        btnDetalles.Attributes.Add("class", "btn btn-primary btn-xs pull-right");
+                        //btnDetalles.Attributes.Add("data-toggle", "tooltip");
+                        //btnDetalles.Attributes.Add("title data-original-title", "Editar");
+                        btnDetalles.ID = "btnSelec_" + item.id + "_";
+                        btnDetalles.InnerHtml = "<span><i class='fa fa-pencil'></i></span>";
+                        btnDetalles.Attributes.Add("data-action", "edit");
+                        div.Controls.Add(btnDetalles);
+
+                        Literal l2 = new Literal();
+                        l2.Text = "&nbsp";
+                        div.Controls.Add(l2);
+
+                        HtmlGenericControl btnEliminar = new HtmlGenericControl("button");
+                        btnEliminar.ID = "btnEliminar_" + item.id;
+                        btnEliminar.Attributes.Add("class", "btn btn-danger btn-xs pull-right");
+                        btnEliminar.Attributes.Add("data-toggle", "modal");
+                        btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
+                        btnEliminar.InnerHtml = "<span><i class='fa fa-trash - o'></i></span>";
+                        btnEliminar.Attributes.Add("data-action", "delete");
+                        div.Controls.Add(btnEliminar);
+
+                        cargarNestedListCategoriasHijas(item.id, liHijo);
+                    }
+                }
+            }
+
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        private void editarCategoria(object sender, EventArgs e)
+        {
+            try
+            {
+                LinkButton lb = sender as LinkButton;
+                string[] id = lb.ID.Split('_');
+
+                Response.Redirect("Categorias.aspx?a=2&i=" + id[1]);
+            }
+            catch (Exception Ex)
+            {
+
+            }
+        }
+
+        public void cargarCategoria()
+        {
+            try
+            {
+                var categoria = controlador.ObtenerCategoriaById(this.idCategoria);
+                var categoriaPadre = controlador.ObtenerCategoriaPadreById(this.idCategoria);
+
+                if (categoria != null)
+                    txtDescripcionCategoria.Text = categoria.descripcion;
+                //if (categoriaPadre != null)
+                //ListCategorias.SelectedValue = categoriaPadre.idPadre.ToString();
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        protected void btnSi_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int idCategoria = Convert.ToInt32(this.hiddenID.Value);
+                int resultado = controlador.EliminarCategoria(idCategoria);
+
+                if (resultado > 0)
+                {
+                    resultado = controlador.EliminarFamiliaCategoria(idCategoria);
+                        if(resultado>0)
+                    Response.Redirect("Categorias.aspx?m=3");
+                }
+                else
+                {
+                    this.m.ShowToastr(this.Page, "No se pudo eliminar la categoria", "warning");
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        public void EditarCategoria()
+        {
+            try
+            {
+                Tecnocuisine_API.Entitys.Categorias categoria = new Tecnocuisine_API.Entitys.Categorias();
+                categoria.id = this.idCategoria;
+                //categoria.descripcion = txtDescripcionCategoria.Text;
+                categoria.activo = 1;
+
+                int resultado = controlador.EditarCategoria(categoria);
+
+                if (resultado > 0)
+                {
+                    //int? categoriaPadre = Convert.ToInt32(ListCategorias.SelectedValue);
+                    //if(categoriaPadre == -1)
+                    //{
+                    //    categoriaPadre = null;
+                    //}
+                    //resultado = controlador.EditarPadreCategoria(categoria.id,categoriaPadre);
+                    //if(resultado > 0)
+                    Response.Redirect("Categorias.aspx?m=2");
+
+                }
+                else
+                {
+                    this.m.ShowToastr(this.Page, "No se pudo editar la categoria", "warning");
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        protected void btnGuardar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.accion == 2)
+                {
+                    EditarCategoria();
+                }
+                else
+                {
+                    GuardarCategoria();
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        protected void btnAgregar_Click(object sender, EventArgs e)
+        {
+            Tecnocuisine_API.Entitys.Categorias categoria = new Tecnocuisine_API.Entitys.Categorias();
+            categoria.descripcion = txtSubCategoria.Text;
+            categoria.activo = 1;
+            categoria.id = controlador.AgregarCategoria(categoria);
+
+            Categorias_Familia categoriaFamilia = new Categorias_Familia { idCategoria = categoria.id, idPadre = Convert.ToInt32(hiddenID2.Value) };
+            
+            if (categoria.id > 0)
+            {
+                int i = controlador.AgregarCategoriaFamilia(categoriaFamilia);
+
+                Response.Redirect("Categorias.aspx?m=1");
+            }
+        }
+
+        //#region ABM
+        //public void GuardarInsumo()
+        //{
+        //    try
+        //    {
+        //        Insumos insumo = new Insumos();
+
+        //        insumo.Descripcion = txtDescripcionInsumo.Text;
+        //        insumo.Estado = 1;
+
+        //        int resultado = controladorInsumo.AgregarInsumo(insumo);
+
+        //        if (resultado > 0)
+        //        {
+        //            this.m.ShowToastr(this.Page, "Proceso concluido con éxito", "Exito");
+        //            ObtenerInsumos();
+        //        }
+        //        else
+        //        {
+        //            this.m.ShowToastr(this.Page, "Proceso no se pudo concluir", "warning");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    }
+
+        //}
+
+        //public void EditarInsumo()
+        //{
+        //    try
+        //    {
+        //        Insumos insumo = new Insumos();
+        //        insumo.id_insumo = this.idInsumo;
+        //        insumo.Descripcion = txtDescripcionInsumo.Text;
+        //        insumo.Estado = 1;
+
+        //        int resultado = controladorInsumo.EditarInsumo(insumo);
+
+        //        if (resultado > 0)
+        //        {
+        //            this.m.ShowToastr(this.Page, "Insumo editado con Exito!", "Exito");
+        //            Response.Redirect("InsumosF.aspx");
+
+        //        }
+        //        else
+        //        {
+        //            this.m.ShowToastr(this.Page, "No se pudo editar el insumo", "warning");
+        //        }
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    }
+        //}
+
+        //protected void btnSi_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        int idInsumo = Convert.ToInt32(this.txtMovimiento.Text);
+        //        int resultado = controladorInsumo.EliminarInsumo(idInsumo);
+
+        //        if (resultado > 0)
+        //        {
+        //            this.m.ShowToastr(this.Page, "Insumo Eliminado con Exito!", "Exito");
+        //            ObtenerInsumos();
+        //        }
+        //        else
+        //        {
+        //            this.m.ShowToastr(this.Page, "No se pudo eliminar el insumo", "warning");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    }
+        //}
+        //#endregion
+
+    }
+}
