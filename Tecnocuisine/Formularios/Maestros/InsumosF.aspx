@@ -18,14 +18,14 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div id="nestable-menu">
-                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" class="btn btn-white btn-sm">Nuevo</linkbutton>
+                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" class="btn btn-success">Nuevo&nbsp;<i style="color:white" class="fa fa-upload"></i></linkbutton>
                             </div>
                         </div>
                     </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <table class="table table-striped table-bordered table-hover " id="editable" >
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -55,6 +55,9 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
+                            <div class="col-sm-1">
+                            <label style="color: red;" class="danger">*</label>
+                        </div>
                             <label class="col-sm-2 control-label editable">Descripción</label>
                             <div class="col-sm-8">
                                 <asp:TextBox ID="txtDescripcionInsumo" class="form-control" runat="server" />
@@ -63,8 +66,10 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
-                        <asp:Button runat="server" ID="btnGuardar" Text="Agregar" class="btn btn-danger" OnClick="btnGuardar_Click" />
+                        <asp:LinkButton runat="server" ID="btnGuardar" class="btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+
+
                     </div>
                 </div>
             </div>
@@ -98,6 +103,12 @@
         function abrirdialog(valor) {
             document.getElementById('<%= hiddenID.ClientID %>').value = valor;
             $('#modalconfirmacion2').modal('show');
+        }
+    </script>
+
+    <script type="text/javascript">
+        function openModal() {
+            $('#modalAgregar').modal('show');
         }
     </script>
 

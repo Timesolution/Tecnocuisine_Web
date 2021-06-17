@@ -2,8 +2,12 @@
  * Nestable jQuery Plugin - Copyright (c) 2012 David Bushell - http://dbushell.com/
  * Dual-licensed under the BSD or MIT licenses
  */
+
 ;
-(function($, window, document, undefined) {
+(function ($, window, document, undefined) {
+
+
+
     var hasTouch = 'ontouchstart' in document;
 
 
@@ -43,6 +47,8 @@
         addBtnHTML: '<button data-action="add" type="button">Add</button>',
         editBtnHTML: '<button data-action="edit" type="button">Edit</button>',
         deleteBtnHTML: '<button data-action="delete" type="button">delete</button>',
+        addAttribute: '<button data-action="addAttribute" type="button">Add Attribute</button>',
+        addCategory: '<button data-action="addCategory" type="button">Add Category</button>',
         group: 0,
         maxDepth: 5,
         threshold: 20
@@ -92,6 +98,12 @@
                 if (action === 'add') {
                     list.addItem(item);
                 }
+                if (action === 'addAttribute') {
+                    list.addAttribute(item);
+                }
+                if (action === 'addCategory') {
+                    list.addCategory(item);
+                }
 
             });
 
@@ -115,9 +127,12 @@
                 }
 
                 e.preventDefault();
-                if (handle.context.className == "fa fa-plus" || handle.context.className == "btn btn-success btn-xs pull-right" || handle.context.className == "fa fa-trash - o" || handle.context.className == "btn btn-danger btn-xs pull-right" || handle.context.className == "fa fa-pencil" || handle.context.className == "btn btn-primary btn-xs pull-right") {
-                    return;
+                if (handle.context !== undefined) {
+                    if (handle.context.className == "fa fa-plus" || handle.context.className == "btn btn-success btn-xs pull-right" || handle.context.className == "fa fa-trash - o" || handle.context.className == "btn btn-danger btn-xs pull-right" || handle.context.className == "fa fa-pencil" || handle.context.className == "fa fa-check" || handle.context.className == "btn btn-primary btn-xs pull-right") {
+                        return;
+                    }
                 }
+                
 
                 list.dragStart(e.touches ? e.touches[0] : e);
             };
@@ -225,6 +240,18 @@
         editItem: function(e) {
             valor = e.context.id.split('_')[2];
             window.location.replace(window.location.origin + window.location.pathname + "?a=2&id=" + valor);
+        },
+        addAttribute: function(e) {
+            var txtAtributo = document.getElementById('ContentPlaceHolder1_txtDescripcionAtributo');
+            txtAtributo.value = e.prevObject[0].id.replace('ContentPlaceHolder1_btnSelec_', '');
+            var hiddenAtributo = document.getElementById('ContentPlaceHolder1_idAtributo');
+            hiddenAtributo.value = txtAtributo.value.split('-')[0];
+        },
+        addCategory: function(e) {
+            var txtCategoria = document.getElementById('ContentPlaceHolder1_txtDescripcionCategoria');
+            txtCategoria.value = e.prevObject[0].id.replace('ContentPlaceHolder1_btnSelec_', '');
+            var hiddenCategoria = document.getElementById('ContentPlaceHolder1_idCategoria');
+            hiddenCategoria.value = txtCategoria.value.split('-')[0];
         },
 
         collapseItem: function(li) {

@@ -81,11 +81,11 @@ namespace Tecnocuisine
             try
             {
                 var unidad = controladorUnidad.ObtenerUnidadId(this.idUnidad);
-                this.phUnidades.Controls.Clear();
-
                 if (unidad != null)
                 {
                     txtDescripcionUnidad.Text = unidad.descripcion;
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+
                 }
 
             }
@@ -267,7 +267,7 @@ namespace Tecnocuisine
         {
             try
             {
-                int idUnidad = Convert.ToInt32(this.hiddenID.ClientID);
+                int idUnidad = Convert.ToInt32(this.hiddenID.Value);
                 int resultado = controladorUnidad.EliminarUnidad(idUnidad);
 
                 if (resultado > 0)

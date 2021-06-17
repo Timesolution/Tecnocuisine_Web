@@ -37,7 +37,7 @@
                                             <div id="nestable-menu">
                                                 <button type="button" data-action="expand-all" class="btn btn-white btn-sm">Expandir todos</button>
                                                 <button type="button" data-action="collapse-all" class="btn btn-white btn-sm">Collapsar todos</button>
-                                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" class="btn btn-white btn-sm">Nuevo</linkbutton>                                            
+
                                             </div>
                                         </div>
                                     </div>
@@ -175,17 +175,20 @@
                     <h4 class="modal-title">Agregar</h4>
                 </div>
                 <div class="modal-body">
-                        <div class="row">
-                        <label class="col-sm-2 control-label editable">Descripción</label>
-                            <div class="col-sm-8">
-                        <asp:TextBox ID="txtSubAtributo" class="form-control" runat="server" />
-
-                            </div>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <label style="color: red;" class="danger">*</label>
                         </div>
+                        <label class="col-sm-2 control-label editable">Descripción</label>
+                        <div class="col-sm-8">
+                            <asp:TextBox ID="txtSubAtributo" class="form-control" runat="server" />
+
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
-                    <asp:Button runat="server" ID="btnAgregar" Text="Agregar" class="btn btn-danger" OnClick="btnAgregar_Click" />
+                    <asp:Button runat="server" ID="btnAgregar" Text="Agregar" class="btn btn-primary" OnClick="btnAgregar_Click" />
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
                     <asp:HiddenField ID="hiddenID2" runat="server" />
                 </div>
             </div>
@@ -200,22 +203,29 @@
                     <h4 class="modal-title">Agregar</h4>
                 </div>
                 <div class="modal-body">
-                        <div class="row">
-                        <label class="col-sm-2 control-label editable">Descripción</label>
-                            <div class="col-sm-8">
-                        <asp:TextBox ID="txtDescripcionAtributoModal" class="form-control" runat="server" />
-
-                            </div>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <label style="color: red;" class="danger">*</label>
                         </div>
+                        <label class="col-sm-2 control-label editable">Descripción</label>
+                        <div class="col-sm-8">
+                            <asp:TextBox ID="txtDescripcionAtributoModal" class="form-control" runat="server" />
+
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
-                    <asp:Button runat="server" ID="btnAgregarAtributoFromTipoAtributo" Text="Agregar" class="btn btn-danger" OnClick="btnAgregarAtributoFromTipoAtributo_Click" />
+                    <asp:Button runat="server" ID="Button1" Text="Agregar" class="btn btn-primary" OnClick="btnAgregarAtributoFromTipoAtributo_Click" />
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+
+
                 </div>
             </div>
         </div>
     </div>
-    
+
+
+
     <div id="modalAgregar" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
@@ -224,14 +234,25 @@
                     <h4 class="modal-title">Agregar</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-1">
+                            <label style="color: red;" class="danger">*</label>
+                        </div>
                         <label class="col-sm-2 control-label editable">Descripción</label>
-                        <div class="col-sm-8">
+                        <div class="col-sm-9">
                             <asp:TextBox ID="txtDescripcionAtributos" class="form-control" runat="server" />
 
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Tipo de atributo</label>
+                        <div class="col-sm-10">
+                            <asp:DropDownList ID="ListTipoAtributo" class="form-control m-b" runat="server">
+                            </asp:DropDownList>
+                        </div>
+                    </div>
                 </div>
+                <br />
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
                     <asp:Button runat="server" ID="btnGuardar" Text="Agregar" class="btn btn-danger" OnClick="btnGuardar_Click" />
@@ -286,6 +307,12 @@
                 }
             });
         });
+    </script>
+
+    <script type="text/javascript">
+        function openModal() {
+            $('#modalAgregar').modal('show');
+        }
     </script>
 </asp:Content>
 

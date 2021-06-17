@@ -64,7 +64,7 @@ namespace Tecnocuisine
 
                     foreach (var item in presentaciones)
                     {
-                        CargarPresentacionsPH(item);
+                        CargarPresentacionesPH(item);
 
                     }
                 }
@@ -81,12 +81,15 @@ namespace Tecnocuisine
             try
             {
                 var presentacion = controladorPresentacion.ObtenerPresentacionId(this.idPresentacion);
-                this.phPresentaciones.Controls.Clear();
-
                 if (presentacion != null)
                 {
                     txtDescripcionPresentacion.Text = presentacion.descripcion;
+                    txtCantidadPresentacion.Text = presentacion.cantidad.ToString();
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+
+
                 }
+
 
             }
             catch (Exception ex)
@@ -95,7 +98,7 @@ namespace Tecnocuisine
             }
         }
 
-        public void CargarPresentacionsPH(Tecnocuisine_API.Entitys.Presentaciones presentacion)
+        public void CargarPresentacionesPH(Tecnocuisine_API.Entitys.Presentaciones presentacion)
         {
 
             try
@@ -120,6 +123,13 @@ namespace Tecnocuisine
                 celNombre.HorizontalAlign = HorizontalAlign.Left;
                 celNombre.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celNombre);
+
+                TableCell celCantidad = new TableCell();
+                celCantidad.Text = presentacion.cantidad.ToString(); 
+                celCantidad.VerticalAlign = VerticalAlign.Middle;
+                celCantidad.HorizontalAlign = HorizontalAlign.Right;
+                celCantidad.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celCantidad);
 
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
@@ -243,7 +253,9 @@ namespace Tecnocuisine
 
                 presentacion.id = this.idPresentacion;
                 presentacion.descripcion = txtDescripcionPresentacion.Text;
+                presentacion.cantidad = Convert.ToDecimal(txtCantidadPresentacion.Text);
                 presentacion.estado = 1;
+
 
                 int resultado = controladorPresentacion.EditarPresentacion(presentacion);
 
@@ -268,7 +280,7 @@ namespace Tecnocuisine
         {
             try
             {
-                int idPresentacion = Convert.ToInt32(this.hiddenID.ClientID);
+                int idPresentacion = Convert.ToInt32(this.hiddenID.Value);
                 int resultado = controladorPresentacion.EliminarPresentacion(idPresentacion);
 
                 if (resultado > 0)

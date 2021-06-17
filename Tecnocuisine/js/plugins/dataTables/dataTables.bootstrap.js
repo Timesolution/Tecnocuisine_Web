@@ -2,7 +2,7 @@
 $.extend(true, $.fn.dataTable.defaults, {
     "sDom": "<'row'<'col-sm-6'l><'col-sm-6'f>r>" + "t" + "<'row'<'col-sm-6'i><'col-sm-6'p>>",
     "oLanguage": {
-        "sLengthMenu": "_MENU_ records per page"
+        "sLengthMenu": "_MENU_ "
     }
 });
 
@@ -81,16 +81,16 @@ if ($.fn.dataTable.Api) {
 
                     if (btnDisplay) {
                         node = $('<li>', {
-                            'class': classes.sPageButton + ' ' + btnClass,
-                            'aria-controls': settings.sTableId,
-                            'tabindex': settings.iTabIndex,
-                            'id': idx === 0 && typeof button === 'string' ? settings.sTableId + '_' + button : null
-                        })
+                                'class': classes.sPageButton + ' ' + btnClass,
+                                'aria-controls': settings.sTableId,
+                                'tabindex': settings.iTabIndex,
+                                'id': idx === 0 && typeof button === 'string' ? settings.sTableId + '_' + button : null
+                            })
                             .append($('<a>', {
                                     'href': '#'
                                 })
                                 .html(btnDisplay)
-                        )
+                            )
                             .appendTo(container);
 
                         settings.oApi._fnBindAction(

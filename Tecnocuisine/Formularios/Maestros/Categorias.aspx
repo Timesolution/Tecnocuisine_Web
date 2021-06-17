@@ -37,7 +37,7 @@
                                             <div id="nestable-menu">
                                                 <button type="button" data-action="expand-all" class="btn btn-white btn-sm">Expandir todos</button>
                                                 <button type="button" data-action="collapse-all" class="btn btn-white btn-sm">Collapsar todos</button>
-                                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" class="btn btn-white btn-sm">Nuevo</linkbutton>
+                                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" class="btn btn-success">Nuevo&nbsp;<i style="color:white" class="fa fa-upload"></i></linkbutton>
                                             </div>
                                         </div>
                                     </div>
@@ -154,6 +154,9 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
+                       <div class="col-sm-1">
+                            <label style="color: red;" class="danger">*</label>
+                        </div>
                         <label class="col-sm-2 control-label editable">Descripción</label>
                         <div class="col-sm-8">
                             <asp:TextBox ID="txtDescripcionCategoria" class="form-control" runat="server" />
@@ -162,8 +165,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
-                    <asp:Button runat="server" ID="btnGuardar" Text="Agregar" class="btn btn-danger" OnClick="btnGuardar_Click" />
+                    <asp:LinkButton runat="server" ID="btnGuardar" class="btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+
                 </div>
             </div>
         </div>
@@ -180,6 +184,9 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
+                      <div class="col-sm-1">
+                            <label style="color: red;" class="danger">*</label>
+                        </div>
                         <label class="col-sm-2 control-label editable">Descripción</label>
                         <div class="col-sm-8">
                             <asp:TextBox ID="txtSubCategoria" class="form-control" runat="server" />
@@ -188,8 +195,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
-                    <asp:Button runat="server" ID="btnAgregar" Text="Agregar" class="btn btn-danger" OnClick="btnAgregar_Click" />
+                    <asp:Button runat="server" ID="btnAgregar" Text="Agregar" class="btn btn-primary" OnClick="btnAgregar_Click" />
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
                     <asp:HiddenField ID="hiddenID2" runat="server" />
                 </div>
             </div>
@@ -209,7 +216,7 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
                     <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="btn btn-danger" OnClick="btnSi_Click" />
                     <asp:HiddenField ID="hiddenID" runat="server" />
                 </div>
@@ -265,6 +272,11 @@
 
             });
         });
+    </script>
+    <script type="text/javascript">
+        function openModal() {
+            $('#modalAgregar').modal('show');
+        }
     </script>
 </asp:Content>
 

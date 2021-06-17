@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Unidades" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Unidades.aspx.cs" Inherits="Tecnocuisine.Unidades" %>
+﻿<%@ Page Title="Alicuotas" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Alicuotas.aspx.cs" Inherits="Tecnocuisine.Alicuotas" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
@@ -7,7 +7,7 @@
 
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Unidades</h5>
+                    <h5>Alicuotas</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -25,16 +25,16 @@
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
                             <div class="table-responsive">
-                                <table class= "table table-striped table-bordered table-hover dataTables-example">
+                                <table class="table table-striped table-bordered table-hover " id="editable" >
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Descripcion</th>
-                                            <th></th>
+                                            <th>Porcentaje</th>
+                                            <th style="width:1%"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <asp:PlaceHolder ID="phUnidades" runat="server"></asp:PlaceHolder>
+                                        <asp:PlaceHolder ID="phAlicuotas" runat="server"></asp:PlaceHolder>
                                     </tbody>
                                 </table>
                             </div>
@@ -82,16 +82,16 @@
                         <div class="col-sm-1">
                             <label style="color: red;" class="danger">*</label>
                         </div>
-                        <label class="col-sm-2 control-label editable">Descripción</label>
+                        <label class="col-sm-2 control-label editable">Porcentaje</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtDescripcionUnidad" class="form-control" runat="server" />
-
+                            <div class="input-group m-b"><asp:TextBox ID="txtPorcentajeAlicuota" class="form-control" runat="server" ></asp:TextBox> <span class="input-group-addon">%</span></div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <asp:LinkButton runat="server" ID="btnGuardar" class="btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+
 
                 </div>
             </div>
@@ -109,38 +109,37 @@
             $('#modalAgregar').modal('show');
         }
     </script>
-     <script>
-         $(document).ready(function () {
-             $('.dataTables-example').dataTable({
-                 responsive: true,
-                 "dom": 'T<"clear">lfrtip',
-                 "tableTools": {
-                     "sSwfPath": "js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
-                 }
-             });
+    <script>
+    $(document).ready(function() {
+            $('.dataTables-example').dataTable({
+                responsive: true,
+                "dom": 'T<"clear">lfrtip',
+                "tableTools": {
+                    "sSwfPath": "js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
+                }
+            });
 
-             /* Init DataTables */
-             var oTable = $('#editable').dataTable();
+            /* Init DataTables */
+            var oTable = $('#editable').dataTable();
 
-             /* Apply the jEditable handlers to the table */
-             oTable.$('td').editable('../example_ajax.php', {
-                 "callback": function (sValue, y) {
-                     var aPos = oTable.fnGetPosition(this);
-                     oTable.fnUpdate(sValue, aPos[0], aPos[1]);
-                 },
-                 "submitdata": function (value, settings) {
-                     return {
-                         "row_id": this.parentNode.getAttribute('id'),
-                         "column": oTable.fnGetPosition(this)[2]
-                     };
-                 },
+            /* Apply the jEditable handlers to the table */
+            oTable.$('td').editable( '../example_ajax.php', {
+                "callback": function( sValue, y ) {
+                    var aPos = oTable.fnGetPosition( this );
+                    oTable.fnUpdate( sValue, aPos[0], aPos[1] );
+                },
+                "submitdata": function ( value, settings ) {
+                    return {
+                        "row_id": this.parentNode.getAttribute('id'),
+                        "column": oTable.fnGetPosition( this )[2]
+                    };
+                },
 
-                 "width": "90%",
-                 "height": "100%"
-             });
+                "width": "90%",
+                "height": "100%"
+            } );
 
 
-         });
-     </script>
-
-</asp:Content>
+        });
+    </script>
+    </asp:Content>

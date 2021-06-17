@@ -3,89 +3,95 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <div class="wrapper wrapper-content">
-        <div class="row animated fadeInRight">
+        <div class="container-fluid">
 
-            <div class="container-fluid">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>Datos</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                        </div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Tipos de atributos</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
                     </div>
-                    <div class="ibox-content">
-                        <div class="form-horizontal">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Insumos</label>
-                                <div class="col-sm-6">
-                                    <asp:TextBox ID="txtDescripcionInsumo" class="form-control" runat="server"></asp:TextBox>
-                                </div>
-                                <div class="col-sm-4 ">
-                                    <asp:LinkButton ID="btnSave" runat="server" Text="Guardar" OnClick="btnGuardar_Click" CssClass="btn btn-primary"><i class="fa fa-check"></i>&nbsp;Guardar</asp:LinkButton>
-                                </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div id="nestable-menu">
+                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" class="btn btn-success">Nuevo&nbsp;<i style="color:white" class="fa fa-upload"></i></linkbutton>
                             </div>
                         </div>
-
                     </div>
-                </div>
-                </div>
-                <div class="container-fluid">
+                    <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                        <ContentTemplate>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover " id="editable" >
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Descripcion</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <asp:PlaceHolder ID="phInsumos" runat="server"></asp:PlaceHolder>
+                                    </tbody>
+                                </table>
+                            </div>
 
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
+                        </ContentTemplate>
 
-                            <div class="ibox-tools">
-                                <a class="collapse-link">
-                                    <i class="fa fa-chevron-up"></i>
-                                </a>
+                    </asp:UpdatePanel>
+                </div>
+            </div>
+        </div>
+
+        <div id="modalAgregar" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Agregar</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-1">
+                            <label style="color: red;" class="danger">*</label>
+                        </div>
+                            <label class="col-sm-2 control-label editable">Descripción</label>
+                            <div class="col-sm-8">
+                                <asp:TextBox ID="txtDescripcionInsumo" class="form-control" runat="server" />
+
                             </div>
                         </div>
-                        <div class="ibox-content">
-                            <asp:UpdatePanel ID="UpdatePanel2" runat="server">
-                                <ContentTemplate>
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Descripcion</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <asp:PlaceHolder ID="phInsumos" runat="server"></asp:PlaceHolder>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                    </div>
+                    <div class="modal-footer">
+                        <asp:LinkButton runat="server" ID="btnGuardar" class="btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
 
-                                </ContentTemplate>
 
-                            </asp:UpdatePanel>
-                        </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
 
-
-            <div id="modalConfirmacion2" class="modal" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            <h4 class="modal-title">Confirmar eliminacion</h4>
-                        </div>
-                        <div class="modal-body">
-                            <p>
-                                Esta seguro que lo desea eliminar?
-                            </p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
-                            <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="btn btn-danger" OnClick="btnSi_Click" />
-                            <asp:HiddenField ID="hiddenID" runat="server" />
-                        </div>
+        <div id="modalConfirmacion2" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Confirmar eliminacion</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            Esta seguro que lo desea eliminar?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                        <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="btn btn-danger" OnClick="btnSi_Click" />
+                        <asp:HiddenField ID="hiddenID" runat="server" />
                     </div>
                 </div>
             </div>
@@ -97,6 +103,12 @@
         function abrirdialog(valor) {
             document.getElementById('<%= hiddenID.ClientID %>').value = valor;
             $('#modalconfirmacion2').modal('show');
+        }
+    </script>
+
+    <script type="text/javascript">
+        function openModal() {
+            $('#modalAgregar').modal('show');
         }
     </script>
 

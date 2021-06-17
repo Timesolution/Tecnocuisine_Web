@@ -29,7 +29,7 @@ namespace Tecnocuisine
 
                 cargarNestedListTipoAtributos();
                 //cargarAtributos();
-                //cargarTiposAtributos();
+                cargarTiposAtributos();
 
                 if (accion == 2)
                 {
@@ -44,7 +44,21 @@ namespace Tecnocuisine
 
         }
 
-   
+        private void cargarTiposAtributos()
+        {
+            try
+            {
+                ControladorInsumo controladorTipoAtributo = new ControladorInsumo();
+                this.ListTipoAtributo.DataSource = controladorTipoAtributo.ObtenerTodosInsumos();
+                this.ListTipoAtributo.DataValueField = "id_insumo";
+                this.ListTipoAtributo.DataTextField = "descripcion";
+                this.ListTipoAtributo.DataBind();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
 
         private void cargarAtributo()
         {
@@ -52,7 +66,9 @@ namespace Tecnocuisine
             {
                 var atributo = controlador.ObtenerAtributoById(this.idAtributo);
                 var atributoPadre = controlador.ObtenerAtributoPadreById(this.idAtributo);
-
+                txtDescripcionAtributos.Text = atributo.descripcion;
+                ListTipoAtributo.SelectedValue = atributo.Insumos.id_insumo.ToString();
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
 
 
             }
@@ -70,24 +86,14 @@ namespace Tecnocuisine
         protected void guardarAtributo()
         {
             Tecnocuisine_API.Entitys.Atributos atributo = new Tecnocuisine_API.Entitys.Atributos();
-            atributo.descripcion = txtDescripcionAtributoModal.Text;
+            atributo.descripcion = txtDescripcionAtributos.Text;
             atributo.activo = 1;
             atributo.id = controlador.AgregarAtributo(atributo);
 
-            //Atributos_Familia categoriaFamilia = new Atributos_Familia { idAtributo = atributo.id, idPadre = Convert.ToInt32(ListAtributos.SelectedValue) };
 
-            //if(ListAtributos.SelectedValue == "-1")
-            {
-                //categoriaFamilia.idPadre = null;
-            }
             if (atributo.id > 0)
             {
-                //controlador.AgregarAtributoFamilia(/*categoriaFamilia*/);
-
-            }
-            if (atributo.id > 0)
-            {
-                //controlador.AgregarTipoAtributo(atributo.id,Convert.ToInt32(ListInsumos.SelectedValue));
+                controlador.AgregarTipoAtributo(atributo.id, Convert.ToInt32(ListTipoAtributo.SelectedValue));
                 Response.Redirect("Atributos.aspx?m=1");
             }
 
@@ -125,7 +131,7 @@ namespace Tecnocuisine
 
                 li.Controls.Add(div);
 
-                
+
 
                 cargarNestedListAtributos(item.id_insumo, li);
             }
@@ -197,7 +203,7 @@ namespace Tecnocuisine
                     btnAgregar.Attributes.Add("href", "#modalAgregarSubAtributo");
                     btnAgregar.Attributes.Add("data-action", "add");
                     div.Controls.Add(btnAgregar);
-                   
+
                     cargarNestedListAtributosHijos(item.id, liHijo);
                 }
             }
@@ -232,7 +238,7 @@ namespace Tecnocuisine
 
                         liHijo.Controls.Add(div);
 
-                       
+
 
                         HtmlGenericControl btnEliminar = new HtmlGenericControl("button");
                         btnEliminar.ID = "btnEliminar_" + item.id;
@@ -351,7 +357,7 @@ namespace Tecnocuisine
             {
                 Tecnocuisine_API.Entitys.Atributos atributo = new Tecnocuisine_API.Entitys.Atributos();
                 atributo.id = this.idAtributo;
-                atributo.descripcion = txtDescripcionAtributoModal.Text;
+                atributo.descripcion = txtDescripcionAtributos.Text;
                 atributo.activo = 1;
 
                 int resultado = controlador.EditarAtributo(atributo);
@@ -363,10 +369,10 @@ namespace Tecnocuisine
                     //{
                     //    atributoPadre = null;
                     //}
-                    //int i = controlador.EditarTipoAtributo(atributo.id, Convert.ToInt32(ListInsumos.SelectedValue));
+                    int i = controlador.EditarTipoAtributo(atributo.id, Convert.ToInt32(ListTipoAtributo.SelectedValue));
                     //resultado = controlador.EditarPadreAtributo(atributo.id, atributoPadre);
-                    //if (i > 0)
-                    Response.Redirect("Atributos.aspx?m=2");
+                    if (i > 0)
+                        Response.Redirect("Atributos.aspx?m=2");
 
                 }
                 else
@@ -391,7 +397,7 @@ namespace Tecnocuisine
 
             Atributos_Familia categoriaFamilia = new Atributos_Familia { idAtributo = atributo.id, idPadre = Convert.ToInt32(hiddenID2.Value) };
 
-           
+
             if (atributo.id > 0)
             {
                 controlador.AgregarAtributoFamilia(categoriaFamilia);

@@ -11,7 +11,7 @@ namespace Tecnocuisine
 {
 
 
-    public partial class InsumosF
+    public partial class Alicuotas
     {
 
         /// <summary>
@@ -24,31 +24,13 @@ namespace Tecnocuisine
         protected global::System.Web.UI.UpdatePanel UpdatePanel2;
 
         /// <summary>
-        /// phInsumos control.
+        /// phAlicuotas control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phInsumos;
-
-        /// <summary>
-        /// txtDescripcionInsumo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDescripcionInsumo;
-
-        /// <summary>
-        /// btnGuardar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnGuardar;
+        protected global::System.Web.UI.WebControls.PlaceHolder phAlicuotas;
 
         /// <summary>
         /// btnEliminar control.
@@ -67,5 +49,23 @@ namespace Tecnocuisine
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hiddenID;
+
+        /// <summary>
+        /// txtPorcentajeAlicuota control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPorcentajeAlicuota;
+
+        /// <summary>
+        /// btnGuardar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnGuardar;
     }
 }
