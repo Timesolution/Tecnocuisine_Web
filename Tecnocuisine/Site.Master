@@ -9,6 +9,7 @@
 
     <title>Tecnocuisine</title>
 
+    <script src="/../js/jquery-2.1.1.js"></script>
 
 
     <link href="/../css/bootstrap.min.css" rel="stylesheet" />
@@ -61,15 +62,32 @@
     <!-- Custom and plugin javascript -->
     <!-- Mainly scripts -->
 
-<!-- Mainly scripts -->
-    <script src="/../js/jquery-2.1.1.js"></script>
+
+        <!-- Mainly scripts -->
+
     <script src="/../js/bootstrap.min.js"></script>
     <script src="/../js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="/../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="/../js/plugins/jeditable/jquery.jeditable.js"></script>
 
-    
 
+    <!-- Custom and plugin javascript -->
+    <script src="/../js/inspinia.js"></script>
+    <script src="/../js/plugins/pace/pace.min.js"></script>
+
+    <script src="/../js/plugins/nestable/jquery.nestable.js"></script>
+
+    <!-- Nestable List -->
+    <script src="/../js/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <script src="/../js/plugins/toastr/toastr.min.js"></script>
+    <script src="/../js/plugins/iCheck/icheck.min.js"></script>
+    <!-- SUMMERNOTE -->
+    <%--<script src="/..js/plugins/summernote/summernote.min.js"></script>--%>
+    <!-- Data Tables -->
+    <script src="/../js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="/../js/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="/../js/plugins/dataTables/dataTables.responsive.js"></script>
+    <script src="/../js/plugins/dataTables/dataTables.tableTools.min.js"></script>
 
 </head>
 <body>
@@ -180,18 +198,6 @@
         </div>
 </body>
 
-    
-    <!-- Custom and plugin javascript -->
-    <script src="/../js/inspinia.js"></script>
-    <script src="/../js/plugins/pace/pace.min.js"></script>
 
-       <!-- Nestable List -->
-    <script src="/../js/plugins/nestable/jquery.nestable.js"></script>
-
-    <!-- Data Tables -->
-    <script src="/../js/plugins/dataTables/jquery.dataTables.js"></script>
-    <script src="/../js/plugins/dataTables/dataTables.bootstrap.js"></script>
-    <script src="/../js/plugins/dataTables/dataTables.responsive.js"></script>
-    <script src="/../js/plugins/dataTables/dataTables.tableTools.min.js"></script>
 
 </html>

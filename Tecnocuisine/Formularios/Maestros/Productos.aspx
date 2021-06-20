@@ -89,9 +89,6 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-1">
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ErrorMessage="<h3 style='color:red'>*</h3>"  ControlToValidate="txtDescripcionProducto" ValidationGroup="ProductosGroup"></asp:RequiredFieldValidator>
-                        </div>
                         <label class="col-sm-2 control-label editable">Descripción</label>
                         <div class="col-md-7">
                             <asp:TextBox ID="txtDescripcionProducto" class="form-control" runat="server" />
@@ -100,9 +97,6 @@
 
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <div class="col-md-1">
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="<h3 style='color:red'>*</h3>"  ControlToValidate="txtDescripcionCategoria" ValidationGroup="ProductosGroup"></asp:RequiredFieldValidator>
-                        </div>
                         <label class="col-sm-2 control-label editable">Categoria</label>
                         <div class="col-sm-7">
 
@@ -111,14 +105,11 @@
                         </div>
 
                         <div class="col-sm-2">
-                            <asp:LinkButton runat="server" ID="btnCategorias" class="btn btn-primary dim" data-toggle="modal" href="#modalCategoria"><i style="color:white" runat="server" class="fa fa-plus"></i></asp:LinkButton>
+                            <asp:LinkButton runat="server" ID="btnCategorias" class="btn btn-primary dim" data-toggle="modal" href="#modalCategoria"><i style="color: white" runat="server" class="fa fa-plus"></i></asp:LinkButton>
                         </div>
 
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <div class="col-md-1">
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" ControlToValidate="txtDescripcionAtributo" runat="server" ErrorMessage="<h3 style='color:red'>*</h3>"   ValidationGroup="ProductosGroup"></asp:RequiredFieldValidator>
-                        </div>
                         <label class="col-sm-2 control-label editable">Atributo</label>
                         <div class="col-sm-7">
                             <asp:TextBox ID="txtDescripcionAtributo" class="form-control" runat="server" />
@@ -126,14 +117,11 @@
 
                         </div>
                         <div class="col-sm-2">
-                            <asp:LinkButton runat="server" ID="btnAtributos" class="btn btn-primary dim" data-toggle="modal" href="#modalAtributo"><i style="color:white" runat="server" class="fa fa-plus"></i></asp:LinkButton>
+                            <asp:LinkButton runat="server" disabled="disabled" ID="btnAtributos" class="btn btn-primary dim" data-toggle="modal" href="#modalAtributo" ><i style="color: white"  class="fa fa-plus"></i></asp:LinkButton>
                         </div>
 
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <div class="col-md-1">
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator3" ControlToValidate="txtCosto" runat="server" ErrorMessage="<h3 style='color:red'>*</h3>"   ValidationGroup="ProductosGroup"></asp:RequiredFieldValidator>
-                        </div>
                         <label class="col-sm-2 control-label editable">Costo</label>
                         <div class="col-sm-7">
                             <div class="input-group m-b">
@@ -143,9 +131,6 @@
 
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <div class="col-md-1">
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator4" ControlToValidate="ListUnidadMedida" InitialValue="-1" runat="server" ErrorMessage="<h3 style='color:red'>*</h3>"   ValidationGroup="ProductosGroup"></asp:RequiredFieldValidator>
-                        </div>
                         <label class="col-sm-2 control-label editable">Unidad de medida</label>
                         <div class="col-sm-7">
                             <asp:DropDownList ID="ListUnidadMedida" class="form-control m-b" runat="server">
@@ -154,9 +139,6 @@
 
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <div class="col-md-1">
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator5" ControlToValidate="ListPresentaciones" InitialValue="-1" runat="server" ErrorMessage="<h3 style='color:red'>*</h3>"   ValidationGroup="ProductosGroup"></asp:RequiredFieldValidator>
-                        </div>
                         <label class="col-sm-2 control-label editable">Presentacion</label>
                         <div class="col-sm-7">
                             <asp:DropDownList ID="ListPresentaciones" class="form-control m-b" runat="server">
@@ -165,9 +147,6 @@
 
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <div class="col-md-1">
-                            <asp:RequiredFieldValidator ID="RequiredFieldValidator6" ControlToValidate="ListAlicuota" InitialValue="-1" runat="server" ErrorMessage="<h3 style='color:red'>*</h3>"   ValidationGroup="ProductosGroup"></asp:RequiredFieldValidator>
-                        </div>
                         <label class="col-sm-2 control-label editable">Alicuota IVA</label>
                         <div class="col-sm-7">
                             <div class="input-group m-b">
@@ -181,7 +160,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <asp:LinkButton runat="server" ID="btnGuardar" ValidationGroup="ProductosGroup" class="btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <asp:LinkButton runat="server" ID="btnGuardar" class="btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
 
                 </div>
@@ -222,9 +201,6 @@
 
                                     </div>
                                 </div>
-
-
-
                                 </div>
 
                             </ContentTemplate>
@@ -242,7 +218,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">Elegir atributo</h4>
+                    <h4 class="modal-title">Elegir Categoria</h4>
                 </div>
                 <div class="modal-body">
                     <div class="ibox-content">
@@ -269,9 +245,6 @@
 
                                     </div>
                                 </div>
-
-
-
                                 </div>
 
                             </ContentTemplate>
@@ -296,6 +269,9 @@
             $('#modalconfirmacion2').modal('show');
         }
     </script>
+
+
+
     <script type="text/javascript">
         function openModal() {
             $('#modalAgregar').modal('show');
@@ -313,6 +289,9 @@
             $('#modalAtributos').modal('show');
         }
     </script>
+
+
+
 
     <script>
         $(document).ready(function () {
@@ -391,29 +370,6 @@
         });
     </script>
 
-    <script>
-        $(document).ready(function () {
-            toggleValidators('.js-validator-set-a', true);
-
-            function toggleValidators(selector, enable) {
-                // get the page validators into a jQuery object
-                var vals = getJqueryObjectFromArrayOfEls(Page_Validators)
-
-                vals.filter(selector).each(function (i, o) {
-                    ValidatorEnable(o, enable);
-                    $(o).hide();
-                });
-            };
-
-            function getJqueryObjectFromArrayOfEls(elsArray) {
-                var x = $();
-                $.each(Page_Validators, function (i, o) {
-                    x = x.add($(o));
-                });
-                return x;
-            }
-        });
-    </script>
 
 
 

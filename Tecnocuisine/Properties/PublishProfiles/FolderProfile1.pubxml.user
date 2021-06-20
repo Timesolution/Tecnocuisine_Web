@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PublishTargetUrl>C:\Repos\Publicacion TecnoCuisine</_PublishTargetUrl>
-    <History>True|2021-06-15T18:29:34.2783469Z;True|2021-06-11T17:56:55.3613554-03:00;True|2021-06-11T10:00:34.6298426-03:00;True|2021-06-10T09:54:37.5416416-03:00;True|2021-06-09T17:01:47.2900738-03:00;True|2021-06-09T14:28:28.2787210-03:00;True|2021-06-08T11:23:18.2673939-03:00;True|2021-06-08T10:58:33.9741152-03:00;True|2021-06-07T13:30:01.6269929-03:00;True|2021-06-07T12:55:17.4749219-03:00;</History>
+    <History>True|2021-06-18T13:36:04.5904076Z;True|2021-06-18T09:30:01.5060634-03:00;True|2021-06-15T15:29:34.2783469-03:00;True|2021-06-11T17:56:55.3613554-03:00;True|2021-06-11T10:00:34.6298426-03:00;True|2021-06-10T09:54:37.5416416-03:00;True|2021-06-09T17:01:47.2900738-03:00;True|2021-06-09T14:28:28.2787210-03:00;True|2021-06-08T11:23:18.2673939-03:00;True|2021-06-08T10:58:33.9741152-03:00;True|2021-06-07T13:30:01.6269929-03:00;True|2021-06-07T12:55:17.4749219-03:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="About.aspx">
@@ -246,19 +246,19 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/28/2018 13:04:24</publishTime>
     </File>
     <File Include="bin/Tecnocuisine.dll">
-      <publishTime>06/16/2021 17:37:36</publishTime>
+      <publishTime>06/19/2021 16:50:10</publishTime>
     </File>
     <File Include="bin/Tecnocuisine.pdb">
-      <publishTime>06/16/2021 17:37:36</publishTime>
+      <publishTime>06/19/2021 16:50:10</publishTime>
     </File>
     <File Include="bin/Tecnocuisine_API.dll">
-      <publishTime>06/11/2021 16:20:41</publishTime>
+      <publishTime>06/19/2021 03:22:48</publishTime>
     </File>
     <File Include="bin/Tecnocuisine_API.dll.config">
       <publishTime>06/07/2021 15:59:14</publishTime>
     </File>
     <File Include="bin/Tecnocuisine_API.pdb">
-      <publishTime>06/11/2021 16:20:41</publishTime>
+      <publishTime>06/19/2021 03:22:48</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>06/02/2021 17:49:33</publishTime>
@@ -651,10 +651,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/16/2021 17:29:30</publishTime>
     </File>
     <File Include="Formularios/Maestros/Atributos.aspx">
-      <publishTime>06/16/2021 17:26:19</publishTime>
+      <publishTime>06/18/2021 11:47:31</publishTime>
     </File>
     <File Include="Formularios/Maestros/Categorias.aspx">
-      <publishTime>06/16/2021 17:27:52</publishTime>
+      <publishTime>06/18/2021 16:23:46</publishTime>
     </File>
     <File Include="Formularios/Maestros/InsumosF.aspx">
       <publishTime>06/16/2021 17:35:33</publishTime>
@@ -663,7 +663,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/16/2021 17:33:44</publishTime>
     </File>
     <File Include="Formularios/Maestros/Productos.aspx">
-      <publishTime>06/16/2021 17:20:47</publishTime>
+      <publishTime>06/19/2021 15:38:36</publishTime>
     </File>
     <File Include="Formularios/Maestros/Unidades.aspx">
       <publishTime>06/16/2021 17:36:33</publishTime>
@@ -1899,7 +1899,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/02/2021 17:49:32</publishTime>
     </File>
     <File Include="js/plugins/nestable/jquery.nestable.js">
-      <publishTime>06/15/2021 12:40:39</publishTime>
+      <publishTime>06/19/2021 16:11:39</publishTime>
     </File>
     <File Include="js/plugins/nouslider/jquery.nouislider.min.js">
       <publishTime>06/02/2021 17:49:32</publishTime>
@@ -2034,7 +2034,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/02/2021 17:49:30</publishTime>
     </File>
     <File Include="Site.Master">
-      <publishTime>06/16/2021 15:45:01</publishTime>
+      <publishTime>06/18/2021 10:38:13</publishTime>
     </File>
     <File Include="Site.Mobile.Master">
       <publishTime>06/02/2021 17:49:30</publishTime>

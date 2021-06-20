@@ -177,7 +177,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-sm-1">
-                            <label style="color: red;" class="danger">*</label>
+                            <label style="color: red; display:none" " class="danger">*</label>
                         </div>
                         <label class="col-sm-2 control-label editable">Descripción</label>
                         <div class="col-sm-8">
@@ -205,7 +205,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-sm-1">
-                            <label style="color: red;" class="danger">*</label>
+                            <label style="color: red;display:none" class="danger">*</label>
                         </div>
                         <label class="col-sm-2 control-label editable">Descripción</label>
                         <div class="col-sm-8">
@@ -271,7 +271,9 @@
 
 
 
+    <script>
 
+    </script>
 
     <script>
         $(document).ready(function () {

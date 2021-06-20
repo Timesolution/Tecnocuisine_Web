@@ -49,6 +49,7 @@
         deleteBtnHTML: '<button data-action="delete" type="button">delete</button>',
         addAttribute: '<button data-action="addAttribute" type="button">Add Attribute</button>',
         addCategory: '<button data-action="addCategory" type="button">Add Category</button>',
+        addSubAttribute:'<button data-action="subAttribute" type="button">Add SubAttribute</button>',
         group: 0,
         maxDepth: 5,
         threshold: 20
@@ -104,6 +105,9 @@
                 if (action === 'addCategory') {
                     list.addCategory(item);
                 }
+                if (action === 'subAttribute') {
+                    list.addSubAttribute(item);
+                }
 
             });
 
@@ -128,7 +132,7 @@
 
                 e.preventDefault();
                 if (handle.context !== undefined) {
-                    if (handle.context.className == "fa fa-plus" || handle.context.className == "btn btn-success btn-xs pull-right" || handle.context.className == "fa fa-trash - o" || handle.context.className == "btn btn-danger btn-xs pull-right" || handle.context.className == "fa fa-pencil" || handle.context.className == "fa fa-check" || handle.context.className == "btn btn-primary btn-xs pull-right") {
+                    if (handle.context.className == "fa fa-plus" ||  handle.context.className == "btn btn-light btn-xs pull-right" || handle.context.className == "fa fa-wrench - o" || handle.context.className == "btn btn-success btn-xs pull-right" ||  handle.context.className == "fa fa-trash - o" || handle.context.className == "btn btn-danger btn-xs pull-right" || handle.context.className == "fa fa-pencil" || handle.context.className == "fa fa-check" || handle.context.className == "btn btn-primary btn-xs pull-right") {
                         return;
                     }
                 }
@@ -246,13 +250,96 @@
             txtAtributo.value = e.prevObject[0].id.replace('ContentPlaceHolder1_btnSelec_', '');
             var hiddenAtributo = document.getElementById('ContentPlaceHolder1_idAtributo');
             hiddenAtributo.value = txtAtributo.value.split('-')[0];
+            $('#modalAtributo').modal('hide');
         },
         addCategory: function(e) {
             var txtCategoria = document.getElementById('ContentPlaceHolder1_txtDescripcionCategoria');
             txtCategoria.value = e.prevObject[0].id.replace('ContentPlaceHolder1_btnSelec_', '');
             var hiddenCategoria = document.getElementById('ContentPlaceHolder1_idCategoria');
             hiddenCategoria.value = txtCategoria.value.split('-')[0];
+            var btnAtributos = document.getElementById('ContentPlaceHolder1_btnAtributos');
+            btnAtributos.removeAttribute('disabled');
+            var elem = document.getElementById('ContentPlaceHolder1_main');
+            for(var i=0;i<elem.children.length;i++){
+                elem.children[i].style.display = "none"
+            }
+            $.ajax({
+                method: "POST",
+                url: "Categorias.aspx/GetSubAtributos",
+                data: '{id: "' + hiddenCategoria.value + '" }',
+                contentType: "application/json",
+                dataType: 'json',
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                    //$.msgbox("No se pudo cargar la tabla", { type: "error" });
+                },
+                 success: successCambiarDisplayDivs
+            });
+            function successCambiarDisplayDivs(response) {
+                var obj = JSON.parse(response.d);
+                var tiposAtributos = obj.split(',');
+                var elem = document.getElementById('ContentPlaceHolder1_main');
+
+                for (var i = 0; i < elem.children.length; i++) {
+                    for(var j = 0 ; j<tiposAtributos.length ; j++)
+                    {
+                        if(elem.children[i].dataset.id == tiposAtributos[j])
+                        {
+                            elem.children[i].style.display = "block"
+                        }
+                    }
+            }
+                
+            }
+            for(var i=0;i<elem.children.length;i++){
+                elem.children[i].style.display = "none"
+            }
+            $('#modalCategoria').modal('hide');
         },
+        addSubAttribute: function(e) {
+
+            var hiddenCategoria = document.getElementById('ContentPlaceHolder1_hiddenSubAtributo');
+            hiddenCategoria.value = e.context.id.split('_')[2];
+
+            $.ajax({
+                method: "POST",
+                url: "Categorias.aspx/GetSubAtributos",
+                data: '{id: "' + hiddenCategoria.value + '" }',
+                contentType: "application/json",
+                dataType: 'json',
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                    //$.msgbox("No se pudo cargar la tabla", { type: "error" });
+                },
+                 success: successAgregarTipoAtributo
+            });
+            function successAgregarTipoAtributo(response) {
+                var obj = JSON.parse(response.d);
+                var inputs = document.querySelectorAll('input[type=checkbox]') 
+                for(var j = 0 ; j<inputs.length ; j++)
+                {
+                        inputs[j].checked = false;  
+                }
+                if(obj == null)
+                {
+                    return;
+                }
+               
+                var tiposAtributos = obj.split(',');
+                var inputs = document.querySelectorAll('input[type=checkbox]') 
+                for (var i = 0; i < inputs.length; i++) {
+                    for(var j = 0 ; j<tiposAtributos.length ; j++)
+                    {
+                        if(inputs[i].id.split('_')[2] == tiposAtributos[j])
+                        {
+                            inputs[i].checked = true;  
+                        }
+                    }
+            }
+                
+            }
+        },
+        
 
         collapseItem: function(li) {
             var lists = li.children(this.options.listNodeName);

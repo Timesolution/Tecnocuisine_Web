@@ -4,7 +4,6 @@
 
     <div class="wrapper wrapper-content">
         <div class="container-fluid">
-
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Productos</h5>
@@ -90,9 +89,6 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-sm-1">
-                            <label style="color: red;" class="danger">*</label>
-                        </div>
                         <label class="col-sm-2 control-label editable">Descripción</label>
                         <div class="col-md-7">
                             <asp:TextBox ID="txtDescripcionProducto" class="form-control" runat="server" />
@@ -101,36 +97,31 @@
 
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <div class="col-sm-1">
-                            <label style="color: red;" class="danger">*</label>
-                        </div>
                         <label class="col-sm-2 control-label editable">Categoria</label>
                         <div class="col-sm-7">
+
                             <asp:TextBox ID="txtDescripcionCategoria" class="form-control" runat="server" />
+                            <asp:HiddenField ID="idCategoria" runat="server" />
                         </div>
 
                         <div class="col-sm-2">
-                            <asp:LinkButton runat="server" ID="btnCategorias" class="btn btn-primary dim" data-toggle="modal" href="#modalCategoria"><i style="color:white" runat="server" class="fa fa-plus"></i></asp:LinkButton>
+                            <asp:LinkButton runat="server" ID="btnCategorias" class="btn btn-primary dim" data-toggle="modal" href="#modalCategoria"><i style="color: white" runat="server" class="fa fa-plus"></i></asp:LinkButton>
                         </div>
 
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <div class="col-sm-1">
-                            <label style="color: red;" class="danger">*</label>
-                        </div>
                         <label class="col-sm-2 control-label editable">Atributo</label>
                         <div class="col-sm-7">
                             <asp:TextBox ID="txtDescripcionAtributo" class="form-control" runat="server" />
+                            <asp:HiddenField ID="idAtributo" runat="server" />
+
                         </div>
                         <div class="col-sm-2">
-                            <asp:LinkButton runat="server" ID="btnAtributos" class="btn btn-primary dim" data-toggle="modal" href="#modalAtributo"><i style="color:white" runat="server" class="fa fa-plus"></i></asp:LinkButton>
+                            <asp:LinkButton runat="server" disabled="disabled" ID="btnAtributos" class="btn btn-primary dim" data-toggle="modal" href="#modalAtributo" ><i style="color: white"  class="fa fa-plus"></i></asp:LinkButton>
                         </div>
 
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <div class="col-sm-1">
-                            <label style="color: red;" class="danger">*</label>
-                        </div>
                         <label class="col-sm-2 control-label editable">Costo</label>
                         <div class="col-sm-7">
                             <div class="input-group m-b">
@@ -140,9 +131,6 @@
 
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <div class="col-sm-1">
-                            <label style="color: red;" class="danger">*</label>
-                        </div>
                         <label class="col-sm-2 control-label editable">Unidad de medida</label>
                         <div class="col-sm-7">
                             <asp:DropDownList ID="ListUnidadMedida" class="form-control m-b" runat="server">
@@ -151,9 +139,6 @@
 
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <div class="col-sm-1">
-                            <label style="color: red;" class="danger">*</label>
-                        </div>
                         <label class="col-sm-2 control-label editable">Presentacion</label>
                         <div class="col-sm-7">
                             <asp:DropDownList ID="ListPresentaciones" class="form-control m-b" runat="server">
@@ -162,9 +147,6 @@
 
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <div class="col-sm-1">
-                            <label style="color: red;" class="danger">*</label>
-                        </div>
                         <label class="col-sm-2 control-label editable">Alicuota IVA</label>
                         <div class="col-sm-7">
                             <div class="input-group m-b">
@@ -185,6 +167,7 @@
             </div>
         </div>
     </div>
+
 
     <div id="modalAtributo" class="modal" tabindex="-2" role="dialog">
         <div class="modal-dialog modal-sm">
@@ -218,9 +201,6 @@
 
                                     </div>
                                 </div>
-
-
-
                                 </div>
 
                             </ContentTemplate>
@@ -238,7 +218,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">Elegir atributo</h4>
+                    <h4 class="modal-title">Elegir Categoria</h4>
                 </div>
                 <div class="modal-body">
                     <div class="ibox-content">
@@ -265,9 +245,6 @@
 
                                     </div>
                                 </div>
-
-
-
                                 </div>
 
                             </ContentTemplate>
@@ -279,79 +256,12 @@
         </div>
     </div>
 
-    <%--<div id="modalCategoria" class="modal" tabindex="-2" role="dialog">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">Elegir categoria</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="ibox-content">
-                        <asp:UpdatePanel ID="UpdatePanel3" runat="server">
-                            <ContentTemplate>
-                                <div class="wrapper wrapper-content  animated fadeInRight">
-
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="ibox ">
-                                                <div class="ibox-content">
-
-
-
-                                                    <div class="dd" id="nestable2">
-                                                        <ol id="olCategorias" runat="server" class="dd-list">
-                                                        </ol>
-                                                    </div>
-
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-
-
-                                </div>
-
-                            </ContentTemplate>
-
-                        </asp:UpdatePanel>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>--%>
 
 
 
 
 
-    <%--<div id="modalAgregar" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">Agregar</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <label class="col-sm-2 control-label editable">Descripción</label>
-                        <div class="col-sm-8">
-                            <asp:TextBox ID="txtDescripcionProducto" class="form-control" runat="server" />
 
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <asp:LinkButton runat="server" ID="btnGuardar" class="btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
-                </div>
-            </div>
-        </div>
-    </div>--%>
 
     <script>           
         function abrirdialog(valor) {
@@ -359,6 +269,9 @@
             $('#modalconfirmacion2').modal('show');
         }
     </script>
+
+
+
     <script type="text/javascript">
         function openModal() {
             $('#modalAgregar').modal('show');
@@ -376,6 +289,9 @@
             $('#modalAtributos').modal('show');
         }
     </script>
+
+
+
 
     <script>
         $(document).ready(function () {
@@ -453,6 +369,7 @@
             });
         });
     </script>
+
 
 
 

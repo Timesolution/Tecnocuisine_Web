@@ -43,8 +43,8 @@ namespace Tecnocuisine
                 CargarUnidadesMedida();
                 CargarAlicuotasIVA();
                 CargarPresentaciones();
-                cargarNestedListTipoAtributos();
                 cargarNestedListCategorias();
+                cargarNestedListAtributos();
                 if (accion == 2)
                 {
                     CargarProducto();
@@ -67,6 +67,36 @@ namespace Tecnocuisine
 
             ObtenerProductos();
 
+        }
+
+        private void cargarNestedListAtributos()
+        {
+            ControladorInsumo controladorInsumo = new ControladorInsumo();
+            //List<Insumos> insumos = c.Obtener(controladorCategoria.ObtenerTopPadre(Convert.ToInt32(idCategoria.Value)));
+            List<Insumos> insumos = controladorInsumo.ObtenerTodosInsumos();
+            foreach (Tecnocuisine_API.Entitys.Insumos item in insumos)
+            {
+
+
+                HtmlGenericControl li = new HtmlGenericControl("li");
+                li.Attributes.Add("class", "dd-item");
+                li.Attributes.Add("data-id", item.id_insumo.ToString());
+                li.Attributes.Add("runat", "server");
+
+                main.Controls.Add(li);
+
+                HtmlGenericControl div = new HtmlGenericControl("div");
+                div.Attributes.Add("class", "dd-handle editable");
+                div.InnerText = item.id_insumo + " - " + item.Descripcion;
+
+
+
+                li.Controls.Add(div);
+
+
+
+                cargarNestedListAtributos(item.id_insumo, li);
+            }
         }
 
         private void CargarAlicuotasIVA()
@@ -153,7 +183,7 @@ namespace Tecnocuisine
                 var producto = controladorProducto.ObtenerProductoId(this.idProducto);
                 if (producto != null)
                 {
-                    txtDescripcionProducto.Text = producto.descripcion;
+                   txtDescripcionProducto.Text = producto.descripcion;
                     txtCosto.Text = producto.costo.ToString();
                     idCategoria.Value = producto.Categorias.id.ToString();
                     idAtributo.Value = producto.Atributos.id.ToString();
@@ -323,7 +353,7 @@ namespace Tecnocuisine
         {
             try
             {
-                txtDescripcionProducto.Text = "";
+               txtDescripcionProducto.Text = "";
             }
             catch (Exception ex)
             {
@@ -338,7 +368,7 @@ namespace Tecnocuisine
             {
                 Tecnocuisine_API.Entitys.Productos producto = new Tecnocuisine_API.Entitys.Productos();
 
-                producto.descripcion = txtDescripcionProducto.Text;
+                producto.descripcion =txtDescripcionProducto.Text;
                 producto.atributo = Convert.ToInt32(idAtributo.Value.Trim());
                 producto.categoria = Convert.ToInt32( idCategoria.Value.Trim());
                 producto.costo = Convert.ToDecimal(txtCosto.Text);
@@ -372,7 +402,7 @@ namespace Tecnocuisine
                 Tecnocuisine_API.Entitys.Productos producto = new Tecnocuisine_API.Entitys.Productos();
 
                 producto.id = idProducto;
-                producto.descripcion = txtDescripcionProducto.Text;
+                producto.descripcion =txtDescripcionProducto.Text;
                 producto.atributo = Convert.ToInt32(idAtributo.Value.Trim());
                 producto.categoria = Convert.ToInt32(idCategoria.Value.Trim());
                 producto.costo = Convert.ToDecimal(txtCosto.Text);
@@ -425,35 +455,6 @@ namespace Tecnocuisine
 
 
 
-        private void cargarNestedListTipoAtributos()
-        {
-            ControladorInsumo controladorInsumo = new ControladorInsumo();
-            List<Insumos> insumos = controladorInsumo.ObtenerTodosInsumos();
-            foreach (Tecnocuisine_API.Entitys.Insumos item in insumos)
-            {
-
-
-                HtmlGenericControl li = new HtmlGenericControl("li");
-                li.Attributes.Add("class", "dd-item");
-                li.Attributes.Add("data-id", item.id_insumo.ToString());
-                li.Attributes.Add("runat", "server");
-
-                main.Controls.Add(li);
-
-                HtmlGenericControl div = new HtmlGenericControl("div");
-                div.Attributes.Add("class", "dd-handle editable");
-                div.InnerText = item.id_insumo + " - " + item.Descripcion;
-
-               
-
-                li.Controls.Add(div);
-
-
-
-                cargarNestedListAtributos(item.id_insumo, li);
-            }
-
-        }
 
         private void cargarNestedListAtributos(int idTipoAtributo, HtmlGenericControl liPadre)
         {
@@ -545,6 +546,7 @@ namespace Tecnocuisine
                         cargarNestedListAtributosHijos(item.id, liHijo);
                     }
                 }
+
             }
 
             catch (Exception)
@@ -639,6 +641,12 @@ namespace Tecnocuisine
 
                 throw;
             }
+        }
+
+        protected void btnAtributos_Click(object sender, EventArgs e)
+        {
+           
+
         }
     }
 }

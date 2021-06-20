@@ -154,7 +154,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                       <div class="col-sm-1">
+                        <div class="col-sm-1">
                             <label style="color: red;" class="danger">*</label>
                         </div>
                         <label class="col-sm-2 control-label editable">Descripción</label>
@@ -184,7 +184,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                      <div class="col-sm-1">
+                        <div class="col-sm-1">
                             <label style="color: red;" class="danger">*</label>
                         </div>
                         <label class="col-sm-2 control-label editable">Descripción</label>
@@ -223,6 +223,47 @@
             </div>
         </div>
     </div>
+
+    <div id="modalSubAtributo" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Seleccionar Tipos de Atributos</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="ibox-content">
+                        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                            <ContentTemplate>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover " id="editable">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Descripcion</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <asp:PlaceHolder ID="phInsumos" runat="server"></asp:PlaceHolder>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </ContentTemplate>
+
+                        </asp:UpdatePanel>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+                    <asp:Button runat="server" ID="btnSubAtributos" Text="Guardar" class="btn btn-success" OnClick="btnSubAtributos_Click" />
+                    <asp:HiddenField ID="hiddenSubAtributo" runat="server" />
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
     <script>           

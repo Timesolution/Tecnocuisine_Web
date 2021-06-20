@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web.Script.Serialization;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -39,6 +41,8 @@ namespace Tecnocuisine
                 }
 
             }
+            ObtenerInsumos();
+
 
         }
 
@@ -95,7 +99,7 @@ namespace Tecnocuisine
             categoria.activo = 1;
             categoria.id = controlador.AgregarCategoria(categoria);
 
-           
+
             if (categoria.id > 0)
             {
                 Response.Redirect("Categorias.aspx?m=1");
@@ -124,6 +128,9 @@ namespace Tecnocuisine
 
                 li.Controls.Add(div);
 
+
+
+
                 HtmlGenericControl btnEliminar = new HtmlGenericControl("button");
                 btnEliminar.ID = "btnEliminar_" + item.id;
                 btnEliminar.Attributes.Add("class", "btn btn-danger btn-xs pull-right");
@@ -136,6 +143,20 @@ namespace Tecnocuisine
                 Literal l2 = new Literal();
                 l2.Text = "&nbsp";
                 div.Controls.Add(l2);
+
+                HtmlGenericControl btnSubAtributos = new HtmlGenericControl("button");
+                btnSubAtributos.ID = "btnSubAtributo_" + item.id;
+                btnSubAtributos.Attributes.Add("class", "btn btn-light btn-xs pull-right");
+                btnSubAtributos.Attributes.Add("data-toggle", "modal");
+                btnSubAtributos.Attributes.Add("href", "#modalSubAtributo");
+                btnSubAtributos.Attributes.Add("OnClientClick", "abrirdialog()");
+                btnSubAtributos.InnerHtml = "<span><i class='fa fa-wrench - o'></i></span>";
+                btnSubAtributos.Attributes.Add("data-action", "subAttribute");
+                div.Controls.Add(btnSubAtributos);
+
+                Literal l4 = new Literal();
+                l4.Text = "&nbsp";
+                div.Controls.Add(l4);
 
                 HtmlGenericControl btnDetalles = new HtmlGenericControl("button");
                 btnDetalles.Attributes.Add("class", "btn btn-success btn-xs pull-right");
@@ -292,8 +313,8 @@ namespace Tecnocuisine
                 if (resultado > 0)
                 {
                     resultado = controlador.EliminarFamiliaCategoria(idCategoria);
-                        if(resultado>0)
-                    Response.Redirect("Categorias.aspx?m=3");
+                    if (resultado > 0)
+                        Response.Redirect("Categorias.aspx?m=3");
                 }
                 else
                 {
@@ -369,13 +390,123 @@ namespace Tecnocuisine
             categoria.id = controlador.AgregarCategoria(categoria);
 
             Categorias_Familia categoriaFamilia = new Categorias_Familia { idCategoria = categoria.id, idPadre = Convert.ToInt32(hiddenID2.Value) };
-            
+
             if (categoria.id > 0)
             {
                 int i = controlador.AgregarCategoriaFamilia(categoriaFamilia);
 
                 Response.Redirect("Categorias.aspx?m=1");
             }
+        }
+
+        protected void btnSubAtributos_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string idTildado = "";
+
+                foreach (Control C in phInsumos.Controls)
+                {
+                    TableRow tr = C as TableRow;
+                    CheckBox ch = tr.Cells[tr.Cells.Count - 1].Controls[0] as CheckBox;
+                    if (ch.Checked == true)
+                    {
+                        //idtildado += ch.ID.Substring(12, ch.ID.Length - 12) + ";";
+                        idTildado += ch.ID.Split('_')[1] + ";";
+                    }
+                }
+
+                int i = controlador.AgregarSubAtributo(idTildado, Convert.ToInt32(hiddenSubAtributo.Value));
+                if (i > 0)
+                {
+                    Response.Redirect("Categorias.aspx?m=1");
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        public void ObtenerInsumos()
+        {
+            try
+            {
+                ControladorInsumo controladorInsumo = new ControladorInsumo();
+                var insumos = controladorInsumo.ObtenerTodosInsumos();
+
+                if (insumos.Count > 0)
+                {
+
+                    foreach (var item in insumos)
+                    {
+                        CargarInsumosPH(item);
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        public void CargarInsumosPH(Insumos insumo)
+        {
+
+            try
+            {
+
+                //fila
+                TableRow tr = new TableRow();
+                tr.ID = insumo.id_insumo.ToString();
+
+                //Celdas
+                TableCell celNumero = new TableCell();
+                celNumero.Text = insumo.id_insumo.ToString();
+                celNumero.VerticalAlign = VerticalAlign.Middle;
+                celNumero.HorizontalAlign = HorizontalAlign.Right;
+                celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
+
+                tr.Cells.Add(celNumero);
+
+                TableCell celNombre = new TableCell();
+                celNombre.Text = insumo.Descripcion;
+                celNombre.VerticalAlign = VerticalAlign.Middle;
+                celNombre.HorizontalAlign = HorizontalAlign.Left;
+                celNombre.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celNombre);
+
+                //agrego fila a tabla
+                TableCell celAccion = new TableCell();
+                CheckBox checkbox = new CheckBox();
+                checkbox.ID = "cbx_" + insumo.id_insumo;
+                celAccion.Controls.Add(checkbox);
+                celAccion.Width = Unit.Percentage(10);
+                celAccion.Attributes.Add("style", "padding-bottom: 1px !important;text-align:center; vertical - align:middle;");
+
+                tr.Cells.Add(celAccion);
+
+                phInsumos.Controls.Add(tr);
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+        }
+        [WebMethod]
+        public static string GetSubAtributos(int id)
+        {
+            ControladorCategoria controlador = new ControladorCategoria();
+            string tiposAtributos = controlador.obtenerTipoAtributos(id);
+
+            JavaScriptSerializer javaScript = new JavaScriptSerializer();
+            javaScript.MaxJsonLength = 5000000;
+            string resultadoJSON = javaScript.Serialize(tiposAtributos);
+            return resultadoJSON;
         }
 
         //#region ABM
