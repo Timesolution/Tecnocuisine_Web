@@ -18,14 +18,14 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div id="nestable-menu">
-                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" class="btn btn-success">Nuevo&nbsp;<i style="color:white" class="fa fa-upload"></i></linkbutton>
+                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" onclick="vaciarFormulario();" class="btn btn-success">Nuevo&nbsp;<i style="color:white" class="fa fa-plus"></i></linkbutton>
                             </div>
                         </div>
                     </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
                             <div class="table-responsive">
-                                <table class= "table table-striped table-bordered table-hover dataTables-example">
+                                <table class="table table-striped table-bordered table-hover " id="editable">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -61,7 +61,7 @@
                         </p>
                     </div>
                     <div class="modal-footer">
-                        <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="btn btn-danger" OnClick="btnSi_Click" />
+                        <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="buttonLoading btn btn-danger" OnClick="btnSi_Click" />
                         <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
                         <asp:HiddenField ID="hiddenID" runat="server" />
                     </div>
@@ -90,7 +90,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <asp:LinkButton runat="server" ID="btnGuardar" class="btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <asp:LinkButton runat="server" ID="btnGuardar" class="buttonLoading btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <asp:HiddenField ID="hiddenEditar" runat="server" />
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
 
                 </div>
@@ -108,39 +109,45 @@
         function openModal() {
             $('#modalAgregar').modal('show');
         }
+        function vaciarFormulario() {
+            ContentPlaceHolder1_txtDescripcionUnidad.value = "";
+            ContentPlaceHolder1_hiddenEditar.value = "";
+            window.history.pushState('', 'Unidades', location.protocol + '//' + location.host + location.pathname);
+
+        }
     </script>
-     <script>
-         $(document).ready(function () {
-             $('.dataTables-example').dataTable({
-                 responsive: true,
-                 "dom": 'T<"clear">lfrtip',
-                 "tableTools": {
-                     "sSwfPath": "js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
-                 }
-             });
+    <script>
+        $(document).ready(function () {
+            $('.dataTables-example').dataTable({
+                responsive: true,
+                "dom": 'T<"clear">lfrtip',
+                "tableTools": {
+                    "sSwfPath": "js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
+                }
+            });
 
-             /* Init DataTables */
-             var oTable = $('#editable').dataTable();
+            /* Init DataTables */
+            var oTable = $('#editable').dataTable();
 
-             /* Apply the jEditable handlers to the table */
-             oTable.$('td').editable('../example_ajax.php', {
-                 "callback": function (sValue, y) {
-                     var aPos = oTable.fnGetPosition(this);
-                     oTable.fnUpdate(sValue, aPos[0], aPos[1]);
-                 },
-                 "submitdata": function (value, settings) {
-                     return {
-                         "row_id": this.parentNode.getAttribute('id'),
-                         "column": oTable.fnGetPosition(this)[2]
-                     };
-                 },
+            /* Apply the jEditable handlers to the table */
+            oTable.$('td').editable('../example_ajax.php', {
+                "callback": function (sValue, y) {
+                    var aPos = oTable.fnGetPosition(this);
+                    oTable.fnUpdate(sValue, aPos[0], aPos[1]);
+                },
+                "submitdata": function (value, settings) {
+                    return {
+                        "row_id": this.parentNode.getAttribute('id'),
+                        "column": oTable.fnGetPosition(this)[2]
+                    };
+                },
 
-                 "width": "90%",
-                 "height": "100%"
-             });
+                "width": "90%",
+                "height": "100%"
+            });
 
 
-         });
-     </script>
+        });
+    </script>
 
 </asp:Content>

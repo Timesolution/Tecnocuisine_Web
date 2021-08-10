@@ -17,7 +17,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div id="nestable-menu">
-                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" class="btn btn-success">Nuevo&nbsp;<i style="color:white" class="fa fa-upload"></i></linkbutton>
+                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" onclick="vaciarFormulario();" class="btn btn-success">Nuevo&nbsp;<i style="color:white" class="fa fa-plus"></i></linkbutton>
                             </div>
                         </div>
                     </div>
@@ -117,7 +117,7 @@
 
                         </div>
                         <div class="col-sm-2">
-                            <asp:LinkButton runat="server" disabled="disabled" ID="btnAtributos" class="btn btn-primary dim" data-toggle="modal" href="#modalAtributo" ><i style="color: white"  class="fa fa-plus"></i></asp:LinkButton>
+                            <asp:LinkButton runat="server" disabled="disabled" ID="btnAtributos" class="btn btn-primary dim" data-toggle="modal" href="#modalAtributo"><i style="color: white"  class="fa fa-plus"></i></asp:LinkButton>
                         </div>
 
                     </div>
@@ -141,8 +141,11 @@
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Presentacion</label>
                         <div class="col-sm-7">
-                            <asp:DropDownList ID="ListPresentaciones" class="form-control m-b" runat="server">
-                            </asp:DropDownList>
+                            <asp:TextBox ID="txtDescripcionPresentacion" class="form-control" runat="server" />
+                            <asp:HiddenField ID="idPresentacion" runat="server" />
+                        </div>
+                        <div class="col-sm-2">
+                            <asp:LinkButton runat="server" ID="btnPresentacion" OnClientClick="editarPresentaciones()" class="btn btn-primary dim" data-toggle="modal" href="#modalPresentacion"><i style="color: white"  class="fa fa-plus"></i></asp:LinkButton>
                         </div>
 
                     </div>
@@ -160,13 +163,15 @@
 
                 </div>
                 <div class="modal-footer">
-                    <asp:LinkButton runat="server" ID="btnGuardar" class="btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <asp:LinkButton runat="server" ID="btnGuardar" class="buttonLoading btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <asp:HiddenField ID="hiddenEditar" runat="server" />
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
 
                 </div>
             </div>
         </div>
     </div>
+
 
 
     <div id="modalAtributo" class="modal" tabindex="-2" role="dialog">
@@ -206,6 +211,11 @@
                             </ContentTemplate>
 
                         </asp:UpdatePanel>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnAgregarAtributo" onclick="agregarAtributos();return false;" class="buttonLoading btn btn-primary"><i class="fa fa-check"></i>&nbsp;Agregar </button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+
                     </div>
                 </div>
             </div>
@@ -257,7 +267,66 @@
     </div>
 
 
+    <div id="modalPresentacion" class="modal" tabindex="-2" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Elegir Presentacion</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="ibox-content">
+                        <asp:UpdatePanel ID="UpdatePanel4" runat="server">
+                            <ContentTemplate>
+                                <div class="wrapper wrapper-content  animated fadeInRight">
 
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="ibox ">
+                                                <div class="ibox-content">
+                                                    <asp:UpdatePanel ID="UpdatePanel5" runat="server">
+                                                        <ContentTemplate>
+                                                            <div class="table-responsive">
+                                                                <table class="table table-striped table-bordered table-hover " id="editable2">
+
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>#</th>
+                                                                            <th>Descripcion</th>
+                                                                            <th>Cantidad</th>
+                                                                            <th></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <asp:PlaceHolder ID="phPresentaciones" runat="server"></asp:PlaceHolder>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+
+                                                        </ContentTemplate>
+
+                                                    </asp:UpdatePanel>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                </div>
+
+                            </ContentTemplate>
+
+                        </asp:UpdatePanel>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnAgregarPresentacion" onclick="agregarPresentaciones();return false;" class="buttonLoading btn btn-primary"><i class="fa fa-check"></i>&nbsp;Agregar </button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -290,7 +359,117 @@
         }
     </script>
 
+    <script type="text/javascript">
+        function cargarCbx() {
+            var hiddenCategoria = document.getElementById('ContentPlaceHolder1_idCategoria');
+            $.ajax({
+                method: "POST",
+                url: "Categorias.aspx/GetSubAtributos",
+                data: '{id: "' + hiddenCategoria.value + '" }',
+                contentType: "application/json",
+                dataType: 'json',
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                    //$.msgbox("No se pudo cargar la tabla", { type: "error" });
+                },
+                success: successCambiarDisplayDivs
+            });
+            var hiddenAtributo = document.getElementById('ContentPlaceHolder1_idAtributo');
+            var atributos = hiddenAtributo.value.split(',');
+            var inputs = document.querySelectorAll('input[type=checkbox]')
+            for (var i = 0; i < inputs.length; i++) {
+                for (var j = 0; j < atributos.length; j++) {
+                    if (inputs[i].id.split('_')[2].split('-')[0].trim() == atributos[j]) {
+                        inputs[i].checked = true;
+                    }
+                }
+            }
 
+            var elem = document.getElementById('ContentPlaceHolder1_main');
+            for (var i = 0; i < elem.children.length; i++) {
+                elem.children[i].style.display = "none"
+            }
+        }
+        function successCambiarDisplayDivs(response) {
+            var obj = JSON.parse(response.d);
+            var tiposAtributos = obj.split(',');
+            var elem = document.getElementById('ContentPlaceHolder1_main');
+
+            for (var i = 0; i < elem.children.length; i++) {
+                for (var j = 0; j < tiposAtributos.length; j++) {
+                    if (elem.children[i].dataset.id == tiposAtributos[j]) {
+                        elem.children[i].style.display = "block"
+                    }
+                }
+            }
+
+        }
+
+    </script>
+
+    <script type="text/javascript">
+        function agregarAtributos() {
+            var checkboxes = $('#ContentPlaceHolder1_main').find(':checkbox');
+            var selectedcheckboxes = '';
+            for (var i = 0; i < checkboxes.length; i++) { if (checkboxes[i].checked) { selectedcheckboxes += ',' + checkboxes[i].id.split('_')[2] } }
+            var hiddenAtributo = document.getElementById('ContentPlaceHolder1_idAtributo');
+            hiddenAtributo.value = selectedcheckboxes;
+
+            var txrDescripcion = document.getElementById('ContentPlaceHolder1_txtDescripcionAtributo');
+            txrDescripcion.value = selectedcheckboxes.replace(/^,/, "");;
+            $('#modalAtributo').modal('hide');
+            return false;
+        }
+    </script>
+
+    <script type="text/javascript">
+        function editarPresentaciones() {
+            var hiddenPresentation = document.getElementById('ContentPlaceHolder1_idPresentacion');
+            var inputs = $('#ContentPlaceHolder1_UpdatePanel5').find(':checkbox');
+            for (var j = 0; j < inputs.length; j++) {
+                inputs[j].checked = false;
+            }
+
+
+            var presentaciones = hiddenPresentation.value.split(',');
+            var inputs = $('#ContentPlaceHolder1_UpdatePanel5').find(':checkbox');
+            for (var i = 0; i < inputs.length; i++) {
+                for (var j = 0; j < presentaciones.length; j++) {
+                    if (inputs[i].id.split('_')[2].split('-')[0].trim() == presentaciones[j]) {
+                        inputs[i].checked = true;
+                    }
+                }
+            }
+
+        }
+    </script>
+
+    <script type="text/javascript">
+        function vaciarFormulario() {
+            ContentPlaceHolder1_hiddenEditar.value = "";
+            ContentPlaceHolder1_txtDescripcionProducto.value = "";
+            ContentPlaceHolder1_txtDescripcionCategoria.value = "";
+            ContentPlaceHolder1_txtDescripcionAtributo.value = "";
+            ContentPlaceHolder1_txtCosto.value = "";
+            ContentPlaceHolder1_txtDescripcionPresentacion.value = "";
+            ContentPlaceHolder1_ListUnidadMedida.value = "-1";
+            ContentPlaceHolder1_ListAlicuota.value = "-1";
+            window.history.pushState('', 'Productos', location.protocol + '//' + location.host + location.pathname);
+
+        }
+        function agregarPresentaciones() {
+            var checkboxes = $('#ContentPlaceHolder1_UpdatePanel5').find(':checkbox');
+            var selectedcheckboxes = '';
+            for (var i = 0; i < checkboxes.length; i++) { if (checkboxes[i].checked) { selectedcheckboxes += ',' + checkboxes[i].id.split('_')[2] } }
+            var hiddenAtributo = document.getElementById('ContentPlaceHolder1_idPresentacion');
+            hiddenAtributo.value = selectedcheckboxes;
+
+            var txtDescripcion = document.getElementById('ContentPlaceHolder1_txtDescripcionPresentacion');
+            txtDescripcion.value = selectedcheckboxes.replace(/^,/, "");;
+            $('#modalPresentacion').modal('hide');
+            return false;
+        }
+    </script>
 
 
     <script>
@@ -305,6 +484,7 @@
 
             /* Init DataTables */
             var oTable = $('#editable').dataTable();
+            var oTable2 = $('#editable2').dataTable();
 
             /* Apply the jEditable handlers to the table */
             oTable.$('td').editable('../example_ajax.php', {
@@ -316,6 +496,23 @@
                     return {
                         "row_id": this.parentNode.getAttribute('id'),
                         "column": oTable.fnGetPosition(this)[2]
+                    };
+                },
+
+                "width": "90%",
+                "height": "100%"
+            });
+
+            /* Apply the jEditable handlers to the table */
+            oTable2.$('td').editable('../example_ajax.php', {
+                "callback": function (sValue, y) {
+                    var aPos = oTable2.fnGetPosition(this);
+                    oTable2.fnUpdate(sValue, aPos[0], aPos[1]);
+                },
+                "submitdata": function (value, settings) {
+                    return {
+                        "row_id": this.parentNode.getAttribute('id'),
+                        "column": oTable2.fnGetPosition(this)[2]
                     };
                 },
 

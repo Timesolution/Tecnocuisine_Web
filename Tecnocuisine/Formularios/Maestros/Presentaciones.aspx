@@ -19,7 +19,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div id="nestable-menu">
-                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" class="btn btn-success">Nuevo&nbsp;<i style="color:white" class="fa fa-upload"></i></linkbutton>
+                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" onclick="vaciarFormulario();" class="btn btn-success">Nuevo&nbsp;<i style="color:white" class="fa fa-plus"></i></linkbutton>
                             </div>
                         </div>
                     </div>
@@ -64,7 +64,7 @@
                         </p>
                     </div>
                     <div class="modal-footer">
-                        <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="btn btn-danger" OnClick="btnSi_Click" />
+                        <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="buttonLoading btn btn-danger" OnClick="btnSi_Click" />
                         <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
                         <asp:HiddenField ID="hiddenID" runat="server" />
                     </div>
@@ -105,7 +105,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <asp:LinkButton runat="server" ID="btnGuardar" class="btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <asp:LinkButton runat="server" ID="btnGuardar" class="buttonLoading btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <asp:HiddenField ID="hiddenEditar" runat="server" />
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
                 </div>
             </div>
@@ -122,6 +123,13 @@
     <script type="text/javascript">
         function openModal() {
             $('#modalAgregar').modal('show');
+        }
+        function vaciarFormulario() {
+            ContentPlaceHolder1_txtDescripcionPresentacion.value = "";
+            ContentPlaceHolder1_txtCantidadPresentacion.value = "";
+            ContentPlaceHolder1_hiddenEditar.value = "";
+            window.history.pushState('', 'Presentaciones', location.protocol + '//' + location.host + location.pathname);
+
         }
     </script>
     <script>

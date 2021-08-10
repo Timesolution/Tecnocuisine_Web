@@ -22,12 +22,14 @@ namespace Tecnocuisine
         protected void Page_Load(object sender, EventArgs e)
         {
 
+            this.Mensaje = Convert.ToInt32(Request.QueryString["m"]);
             this.accion = Convert.ToInt32(Request.QueryString["a"]);
             this.idInsumo = Convert.ToInt32(Request.QueryString["i"]);
-            this.Mensaje = Convert.ToInt32(Request.QueryString["m"]);
 
             if (!IsPostBack)
             {
+
+              
                 if (accion == 2)
                 {
                     CargarInsumo();
@@ -84,6 +86,7 @@ namespace Tecnocuisine
 
                 if (insumo != null)
                 {
+                    hiddenEditar.Value = insumo.id_insumo.ToString();
                     txtDescripcionInsumo.Text = insumo.Descripcion;
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
 
@@ -179,7 +182,7 @@ namespace Tecnocuisine
         {
             try
             {
-                if (this.accion == 2)
+                if (this.hiddenEditar.Value != "")
                 {
                     EditarInsumo();
                 }

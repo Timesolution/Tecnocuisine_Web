@@ -242,10 +242,18 @@
     <Content Include="font-awesome\css\font-awesome.min.css" />
     <Content Include="font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Formularios\Maestros\Clientes - Copy.aspx" />
+    <Content Include="Formularios\Maestros\EstadoClientes.aspx" />
+    <Content Include="Formularios\Maestros\Grupos.aspx" />
+    <Content Include="Formularios\Maestros\Marcas.aspx" />
+    <Content Include="Formularios\Maestros\Vendedores.aspx" />
+    <Content Include="Formularios\Maestros\Articulos.aspx" />
     <Content Include="Formularios\Maestros\Atributos.aspx" />
+    <Content Include="Formularios\Maestros\RecetasDetalle.aspx" />
     <Content Include="Formularios\Maestros\Categorias.aspx" />
     <Content Include="Formularios\Maestros\Presentaciones.aspx" />
     <Content Include="Formularios\Maestros\Alicuotas.aspx" />
+    <Content Include="Formularios\Maestros\Recetas.aspx" />
     <Content Include="Formularios\Maestros\Productos.aspx" />
     <Content Include="Formularios\Maestros\Unidades.aspx" />
     <Content Include="Formularios\Maestros\InsumosF.aspx" />
@@ -771,12 +779,61 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Formularios\Maestros\Clientes - Copy.aspx.cs">
+      <DependentUpon>Clientes - Copy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Clientes - Copy.aspx.designer.cs">
+      <DependentUpon>Clientes - Copy.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\EstadoClientes.aspx.cs">
+      <DependentUpon>EstadoClientes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\EstadoClientes.aspx.designer.cs">
+      <DependentUpon>EstadoClientes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Grupos.aspx.cs">
+      <DependentUpon>Grupos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Grupos.aspx.designer.cs">
+      <DependentUpon>Grupos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Marcas.aspx.cs">
+      <DependentUpon>Marcas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Marcas.aspx.designer.cs">
+      <DependentUpon>Marcas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Vendedores.aspx.cs">
+      <DependentUpon>Vendedores.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Vendedores.aspx.designer.cs">
+      <DependentUpon>Vendedores.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Articulos.aspx.cs">
+      <DependentUpon>Articulos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Articulos.aspx.designer.cs">
+      <DependentUpon>Articulos.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Formularios\Maestros\Atributos.aspx.cs">
       <DependentUpon>Atributos.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Formularios\Maestros\Atributos.aspx.designer.cs">
       <DependentUpon>Atributos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\RecetasDetalle.aspx.cs">
+      <DependentUpon>RecetasDetalle.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\RecetasDetalle.aspx.designer.cs">
+      <DependentUpon>RecetasDetalle.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Maestros\Categorias.aspx.cs">
       <DependentUpon>Categorias.aspx</DependentUpon>
@@ -798,6 +855,13 @@
     </Compile>
     <Compile Include="Formularios\Maestros\Alicuotas.aspx.designer.cs">
       <DependentUpon>Alicuotas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Recetas.aspx.cs">
+      <DependentUpon>Recetas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Recetas.aspx.designer.cs">
+      <DependentUpon>Recetas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Maestros\Productos.aspx.cs">
       <DependentUpon>Productos.aspx</DependentUpon>

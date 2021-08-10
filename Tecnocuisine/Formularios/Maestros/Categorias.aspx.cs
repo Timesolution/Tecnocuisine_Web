@@ -28,6 +28,8 @@ namespace Tecnocuisine
             this.accion = Convert.ToInt32(Request.QueryString["a"]);
             if (!IsPostBack)
             {
+             
+
                 if (accion == 2)
                 {
                     cargarCategoria();
@@ -124,7 +126,7 @@ namespace Tecnocuisine
 
                 HtmlGenericControl div = new HtmlGenericControl("div");
                 div.Attributes.Add("class", "dd-handle editable");
-                div.InnerText = item.id + " - " + item.descripcion;
+                div.InnerText = item.descripcion;
 
                 li.Controls.Add(div);
 
@@ -135,24 +137,11 @@ namespace Tecnocuisine
                 btnEliminar.ID = "btnEliminar_" + item.id;
                 btnEliminar.Attributes.Add("class", "btn btn-danger btn-xs pull-right");
                 btnEliminar.Attributes.Add("data-toggle", "modal");
+                btnEliminar.Attributes.Add("style", "margin-right: 0.3%;");
                 btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
                 btnEliminar.InnerHtml = "<span><i class='fa fa-trash - o'></i></span>";
                 btnEliminar.Attributes.Add("data-action", "delete");
                 div.Controls.Add(btnEliminar);
-
-                Literal l2 = new Literal();
-                l2.Text = "&nbsp";
-                div.Controls.Add(l2);
-
-                HtmlGenericControl btnSubAtributos = new HtmlGenericControl("button");
-                btnSubAtributos.ID = "btnSubAtributo_" + item.id;
-                btnSubAtributos.Attributes.Add("class", "btn btn-light btn-xs pull-right");
-                btnSubAtributos.Attributes.Add("data-toggle", "modal");
-                btnSubAtributos.Attributes.Add("href", "#modalSubAtributo");
-                btnSubAtributos.Attributes.Add("OnClientClick", "abrirdialog()");
-                btnSubAtributos.InnerHtml = "<span><i class='fa fa-wrench - o'></i></span>";
-                btnSubAtributos.Attributes.Add("data-action", "subAttribute");
-                div.Controls.Add(btnSubAtributos);
 
                 Literal l4 = new Literal();
                 l4.Text = "&nbsp";
@@ -160,6 +149,7 @@ namespace Tecnocuisine
 
                 HtmlGenericControl btnDetalles = new HtmlGenericControl("button");
                 btnDetalles.Attributes.Add("class", "btn btn-success btn-xs pull-right");
+                btnDetalles.Attributes.Add("style", "margin-right: 0.3%;");
                 //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                 //btnDetalles.Attributes.Add("title data-original-title", "Editar");
                 btnDetalles.ID = "btnSelec_" + item.id + "_";
@@ -175,6 +165,7 @@ namespace Tecnocuisine
 
                 HtmlGenericControl btnAgregar = new HtmlGenericControl("button");
                 btnAgregar.Attributes.Add("class", "btn btn-primary btn-xs pull-right");
+                btnAgregar.Attributes.Add("style", "margin-right: 0.3%;");
                 //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                 //btnDetalles.Attributes.Add("title data-original-title", "Editar");
                 btnAgregar.ID = "btnAgregar_" + item.id + "_";
@@ -183,6 +174,21 @@ namespace Tecnocuisine
                 btnAgregar.Attributes.Add("href", "#modalAgregarSubCategoria");
                 btnAgregar.Attributes.Add("data-action", "add");
                 div.Controls.Add(btnAgregar);
+
+                Literal l2 = new Literal();
+                l2.Text = "&nbsp";
+                div.Controls.Add(l2);
+
+                HtmlGenericControl btnSubAtributos = new HtmlGenericControl("button");
+                btnSubAtributos.ID = "btnSubAtributo_" + item.id;
+                btnSubAtributos.Attributes.Add("class", "btn btn-info btn-xs pull-right");
+                btnSubAtributos.Attributes.Add("style", "margin-right: 0.3%;");
+                btnSubAtributos.Attributes.Add("data-toggle", "modal");
+                btnSubAtributos.Attributes.Add("href", "#modalSubAtributo");
+                btnSubAtributos.Attributes.Add("OnClientClick", "abrirdialog()");
+                btnSubAtributos.InnerHtml = "<span><i class='fa fa-wrench - o'></i></span>";
+                btnSubAtributos.Attributes.Add("data-action", "subAttribute");
+                div.Controls.Add(btnSubAtributos);
 
 
                 cargarNestedListCategoriasHijas(item.id, li);
@@ -212,7 +218,7 @@ namespace Tecnocuisine
 
                         HtmlGenericControl div = new HtmlGenericControl("div");
                         div.Attributes.Add("class", "dd-handle editable");
-                        div.InnerText = item.id + " - " + item.descripcion;
+                        div.InnerText = item.descripcion;
 
 
                         liHijo.Controls.Add(div);
@@ -221,6 +227,7 @@ namespace Tecnocuisine
                         HtmlGenericControl btnEliminar = new HtmlGenericControl("button");
                         btnEliminar.ID = "btnEliminar_" + item.id;
                         btnEliminar.Attributes.Add("class", "btn btn-danger btn-xs pull-right");
+                        btnEliminar.Attributes.Add("style", "margin-right: 0.3%;");
                         btnEliminar.Attributes.Add("data-toggle", "modal");
                         btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
                         btnEliminar.InnerHtml = "<span><i class='fa fa-trash - o'></i></span>";
@@ -233,6 +240,7 @@ namespace Tecnocuisine
 
                         HtmlGenericControl btnDetalles = new HtmlGenericControl("button");
                         btnDetalles.Attributes.Add("class", "btn btn-success btn-xs pull-right");
+                        btnDetalles.Attributes.Add("style", "margin-right: 0.3%;");
                         //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                         //btnDetalles.Attributes.Add("title data-original-title", "Editar");
                         btnDetalles.ID = "btnSelec_" + item.id + "_";
@@ -248,6 +256,7 @@ namespace Tecnocuisine
 
                         HtmlGenericControl btnAgregar = new HtmlGenericControl("button");
                         btnAgregar.Attributes.Add("class", "btn btn-primary btn-xs pull-right");
+                        btnAgregar.Attributes.Add("style", "margin-right: 0.3%;");
                         //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                         //btnDetalles.Attributes.Add("title data-original-title", "Editar");
                         btnAgregar.ID = "btnAgregar_" + item.id + "_";
@@ -291,9 +300,11 @@ namespace Tecnocuisine
             {
                 var categoria = controlador.ObtenerCategoriaById(this.idCategoria);
                 if (categoria != null)
+                {
+                    hiddenEditar.Value = categoria.id.ToString();
                     txtDescripcionCategoria.Text = categoria.descripcion;
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
-
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+                }
 
 
             }
@@ -366,7 +377,7 @@ namespace Tecnocuisine
         {
             try
             {
-                if (this.accion == 2)
+                if (this.hiddenEditar.Value != "")
                 {
                     EditarCategoria();
                 }

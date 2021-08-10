@@ -313,7 +313,6 @@ C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\System.Web.Razor.dll
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\System.Web.WebPages.Deployment.dll
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\System.Web.WebPages.dll
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\System.Web.WebPages.Razor.dll
-C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Tecnocuisine_API.dll
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\WebGrease.dll
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Microsoft.AspNet.Identity.EntityFramework.dll
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Microsoft.AspNet.Identity.Core.dll
@@ -351,3 +350,4 @@ C:\Repos\TecnoCuisineWeb\Tecnocuisine\obj\Debug\Tecnocuisine.csprojAssemblyRefer
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\obj\Debug\Tecnocuisine.csproj.CopyComplete
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\obj\Debug\Tecnocuisine.dll
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\obj\Debug\Tecnocuisine.pdb
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Tecnocuisine_API.dll

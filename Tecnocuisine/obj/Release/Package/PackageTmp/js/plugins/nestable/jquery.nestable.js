@@ -108,6 +108,23 @@
                 if (action === 'subAttribute') {
                     list.addSubAttribute(item);
                 }
+                if (action === 'editPresentation') {
+                    list.editPresentation(item);
+                }
+
+            });
+
+            list.el.on('click', 'input:checkbox', function(e) {
+                if (list.dragEl) {
+                    return;
+                }
+                var target = $(e.currentTarget),
+                    action = target.data('action'),
+                    item = target.parent(list.options.itemNodeName);
+               
+                if(action === 'selectcbxAttribute'){
+                    list.selectcbxAttribute(item); 
+                }
 
             });
 
@@ -132,7 +149,13 @@
 
                 e.preventDefault();
                 if (handle.context !== undefined) {
-                    if (handle.context.className == "fa fa-plus" ||  handle.context.className == "btn btn-light btn-xs pull-right" || handle.context.className == "fa fa-wrench - o" || handle.context.className == "btn btn-success btn-xs pull-right" ||  handle.context.className == "fa fa-trash - o" || handle.context.className == "btn btn-danger btn-xs pull-right" || handle.context.className == "fa fa-pencil" || handle.context.className == "fa fa-check" || handle.context.className == "btn btn-primary btn-xs pull-right") {
+                    if (handle.context.className == "fa fa-plus" ||  handle.context.className == "btn btn-light btn-xs pull-right" 
+                    || handle.context.className == "fa fa-wrench - o" || handle.context.className == "btn btn-success btn-xs pull-right" 
+                    ||  handle.context.className == "fa fa-trash - o" || handle.context.className == "btn btn-danger btn-xs pull-right" 
+                    || handle.context.className == "fa fa-pencil" || handle.context.className == "fa fa-check" 
+                    || handle.context.className == "btn btn-primary btn-xs pull-right"
+                    || handle.context.className == "radio") {
+                        e.preventDefault();
                         return;
                     }
                 }
@@ -250,7 +273,6 @@
             txtAtributo.value = e.prevObject[0].id.replace('ContentPlaceHolder1_btnSelec_', '');
             var hiddenAtributo = document.getElementById('ContentPlaceHolder1_idAtributo');
             hiddenAtributo.value = txtAtributo.value.split('-')[0];
-            $('#modalAtributo').modal('hide');
         },
         addCategory: function(e) {
             var txtCategoria = document.getElementById('ContentPlaceHolder1_txtDescripcionCategoria');
@@ -315,15 +337,16 @@
             });
             function successAgregarTipoAtributo(response) {
                 var obj = JSON.parse(response.d);
+                var inputs = document.querySelectorAll('input[type=checkbox]') 
+                for(var j = 0 ; j<inputs.length ; j++)
+                {
+                        inputs[j].checked = false;  
+                }
                 if(obj == null)
                 {
-                    var inputs = document.querySelectorAll('input[type=checkbox]') 
-                    for(var j = 0 ; j<inputs.length ; j++)
-                    {
-                            inputs[j].checked = false;  
-                    }
                     return;
                 }
+               
                 var tiposAtributos = obj.split(',');
                 var inputs = document.querySelectorAll('input[type=checkbox]') 
                 for (var i = 0; i < inputs.length; i++) {
@@ -338,7 +361,54 @@
                 
             }
         },
-        
+        editPresentation: function(e) {
+
+            var hiddenPresentation = document.getElementById('ContentPlaceHolder1_idPresentacion');
+            hiddenPresentation.value = e.context.id.split('_')[2];
+
+            $.ajax({
+                method: "POST",
+                url: "Productos.aspx/GetPresentationes",
+                data: '{id: "' + hiddenPresentation.value + '" }',
+                contentType: "application/json",
+                dataType: 'json',
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                    //$.msgbox("No se pudo cargar la tabla", { type: "error" });
+                },
+                 success: successAgregarPresentacion
+            });
+            function successAgregarPresentacion(response) {
+                var obj = JSON.parse(response.d);
+                var inputs = $('#ContentPlaceHolder1_UpdatePanel5').find(':checkbox');
+                for(var j = 0 ; j<inputs.length ; j++)
+                {
+                        inputs[j].checked = false;  
+                }
+                if(obj == null)
+                {
+                    return;
+                }
+               
+                var presentaciones = obj.split(',');
+                var inputs = $('#ContentPlaceHolder1_UpdatePanel5').find(':checkbox');
+                for (var i = 0; i < inputs.length; i++) {
+                    for(var j = 0 ; j<tiposAtributos.length ; j++)
+                    {
+                        if(inputs[i].id.split('_')[2] == presentaciones[j])
+                        {
+                            inputs[i].checked = true;  
+                        }
+                    }
+            }
+                
+            }
+        },
+        selectcbxAttribute: function(e) {
+            e.preventDefault();
+            return;
+        },
+     
 
         collapseItem: function(li) {
             var lists = li.children(this.options.listNodeName);

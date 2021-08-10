@@ -116,7 +116,7 @@ namespace Tecnocuisine
 
                 HtmlGenericControl div = new HtmlGenericControl("div");
                 div.Attributes.Add("class", "dd-handle editable");
-                div.InnerText = item.id_insumo + " - " + item.Descripcion;
+                div.InnerText = item.Descripcion;
 
                 HtmlGenericControl btnAgregar = new HtmlGenericControl("button");
                 btnAgregar.Attributes.Add("class", "btn btn-primary btn-xs pull-right");
@@ -159,7 +159,7 @@ namespace Tecnocuisine
 
                     HtmlGenericControl div = new HtmlGenericControl("div");
                     div.Attributes.Add("class", "dd-handle editable");
-                    div.InnerText = item.id + " - " + item.descripcion;
+                    div.InnerText = item.descripcion;
 
 
 
@@ -232,7 +232,7 @@ namespace Tecnocuisine
 
                         HtmlGenericControl div = new HtmlGenericControl("div");
                         div.Attributes.Add("class", "dd-handle editable");
-                        div.InnerText = item.id + " - " + item.descripcion;
+                        div.InnerText = item.descripcion;
 
 
 

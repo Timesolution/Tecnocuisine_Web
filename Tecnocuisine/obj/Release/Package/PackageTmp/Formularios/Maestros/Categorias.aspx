@@ -37,7 +37,7 @@
                                             <div id="nestable-menu">
                                                 <button type="button" data-action="expand-all" class="btn btn-white btn-sm">Expandir todos</button>
                                                 <button type="button" data-action="collapse-all" class="btn btn-white btn-sm">Collapsar todos</button>
-                                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" class="btn btn-success">Nuevo&nbsp;<i style="color:white" class="fa fa-upload"></i></linkbutton>
+                                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" onclick="vaciarFormulario();" class="btn btn-success">Nuevo&nbsp;<i style="color:white" class="fa fa-plus"></i></linkbutton>
                                             </div>
                                         </div>
                                     </div>
@@ -165,7 +165,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <asp:LinkButton runat="server" ID="btnGuardar" class="btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <asp:LinkButton runat="server" ID="btnGuardar" class="buttonLoading btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <asp:HiddenField ID="hiddenEditar" runat="server" />
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
 
                 </div>
@@ -195,7 +196,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <asp:Button runat="server" ID="btnAgregar" Text="Agregar" class="btn btn-primary" OnClick="btnAgregar_Click" />
+                    <asp:LinkButton runat="server" ID="btnAgregar" Text="Agregar" class="buttonLoading btn btn-primary" OnClick="btnAgregar_Click" ><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
                     <asp:HiddenField ID="hiddenID2" runat="server" />
                 </div>
@@ -216,8 +217,8 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
-                    <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="btn btn-danger" OnClick="btnSi_Click" />
+                    <button type="button" class="btn btn-white" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+                    <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="buttonLoading btn btn-danger" OnClick="btnSi_Click" />
                     <asp:HiddenField ID="hiddenID" runat="server" />
                 </div>
             </div>
@@ -256,8 +257,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <asp:LinkButton runat="server" ID="btnSubAtributos" Text="Guardar" class="buttonLoading btn btn-primary" OnClick="btnSubAtributos_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
-                    <asp:Button runat="server" ID="btnSubAtributos" Text="Guardar" class="btn btn-success" OnClick="btnSubAtributos_Click" />
                     <asp:HiddenField ID="hiddenSubAtributo" runat="server" />
                 </div>
             </div>
@@ -317,6 +318,11 @@
     <script type="text/javascript">
         function openModal() {
             $('#modalAgregar').modal('show');
+        }
+        function vaciarFormulario() {
+            ContentPlaceHolder1_txtDescripcionCategoria.value = "";
+            ContentPlaceHolder1_hiddenEditar.value = "";
+            window.history.pushState('', 'Categorias', location.protocol + '//' + location.host + location.pathname);
         }
     </script>
 </asp:Content>

@@ -18,14 +18,14 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div id="nestable-menu">
-                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" class="btn btn-success">Nuevo&nbsp;<i style="color:white" class="fa fa-upload"></i></linkbutton>
+                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" class="btn btn-success animation_select" data-animation="slideInDown">Nuevo&nbsp;<i style="color:white" class="fa fa-plus"></i></linkbutton>
                             </div>
                         </div>
                     </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover " id="editable" >
+                                <table class="table table-striped table-bordered table-hover " id="editable">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -46,7 +46,7 @@
             </div>
         </div>
 
-        <div id="modalAgregar" class="modal" tabindex="-1" role="dialog">
+        <div id="modalAgregar" class="modal animation_box" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -56,8 +56,8 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-sm-1">
-                            <label style="color: red;" class="danger">*</label>
-                        </div>
+                                <label style="color: red;" class="danger">*</label>
+                            </div>
                             <label class="col-sm-2 control-label editable">Descripción</label>
                             <div class="col-sm-8">
                                 <asp:TextBox ID="txtDescripcionInsumo" class="form-control" runat="server" />
@@ -66,7 +66,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <asp:LinkButton runat="server" ID="btnGuardar" class="btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                        <asp:LinkButton runat="server" ID="btnGuardar" class="buttonLoading btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                        <asp:HiddenField ID="hiddenEditar" runat="server" />
                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
 
 
@@ -90,7 +91,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
-                        <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="btn btn-danger" OnClick="btnSi_Click" />
+                        <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="buttonLoading btn btn-danger" OnClick="btnSi_Click" />
                         <asp:HiddenField ID="hiddenID" runat="server" />
                     </div>
                 </div>
@@ -110,7 +111,14 @@
         function openModal() {
             $('#modalAgregar').modal('show');
         }
+        function vaciarFormulario() {
+            ContentPlaceHolder1_txtDescripcionInsumo.value = "";
+            ContentPlaceHolder1_hiddenEditar.value = "";
+            window.history.pushState('', 'InsumosF', location.protocol + '//' + location.host + location.pathname);
+
+        }
     </script>
+
 
 
 </asp:Content>

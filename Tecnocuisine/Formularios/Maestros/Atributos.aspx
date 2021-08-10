@@ -160,7 +160,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
-                    <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="btn btn-danger" OnClick="btnSi_Click" />
+                    <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="buttonLoading btn btn-danger" OnClick="btnSi_Click" />
                     <asp:HiddenField ID="hiddenID" runat="server" />
                 </div>
             </div>
@@ -187,7 +187,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <asp:Button runat="server" ID="btnAgregar" Text="Agregar" class="btn btn-primary" OnClick="btnAgregar_Click" />
+                    <asp:Button runat="server" ID="btnAgregar" Text="Agregar" class="buttonLoading btn btn-primary" OnClick="btnAgregar_Click" />
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
                     <asp:HiddenField ID="hiddenID2" runat="server" />
                 </div>
@@ -215,7 +215,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <asp:Button runat="server" ID="Button1" Text="Agregar" class="btn btn-primary" OnClick="btnAgregarAtributoFromTipoAtributo_Click" />
+                    <asp:LinkButton runat="server" ID="LinkButton1" class="buttonLoading btn btn-primary" OnClick="btnAgregarAtributoFromTipoAtributo_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
 
 
@@ -235,18 +235,15 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <div class="col-sm-1">
-                            <label style="color: red;" class="danger">*</label>
-                        </div>
                         <label class="col-sm-2 control-label editable">Descripción</label>
                         <div class="col-sm-9">
                             <asp:TextBox ID="txtDescripcionAtributos" class="form-control" runat="server" />
 
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="padding-top: 7%">
                         <label class="col-sm-2 control-label">Tipo de atributo</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-9">
                             <asp:DropDownList ID="ListTipoAtributo" class="form-control m-b" runat="server">
                             </asp:DropDownList>
                         </div>
@@ -255,7 +252,7 @@
                 <br />
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
-                    <asp:Button runat="server" ID="btnGuardar" Text="Agregar" class="btn btn-danger" OnClick="btnGuardar_Click" />
+                    <asp:Button runat="server" ID="btnGuardar" Text="Agregar" class="buttonLoading btn btn-danger" OnClick="btnGuardar_Click" />
                 </div>
             </div>
         </div>

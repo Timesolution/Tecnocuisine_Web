@@ -70,6 +70,9 @@
     <script src="/../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="/../js/plugins/jeditable/jquery.jeditable.js"></script>
 
+      <!-- Peity -->
+    <script src="js/plugins/peity/jquery.peity.min.js"></script>
+
 
     <!-- Custom and plugin javascript -->
     <script src="/../js/inspinia.js"></script>
@@ -118,13 +121,17 @@
                     <li>
                         <a href="#"><i class="fa fa-user"></i><span class="nav-label">Maestro</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
+                            <li><a href="../../Formularios/Maestros/Alicuotas.aspx">Alicuotas IVA</a></li>
                             <li><a href="../../Formularios/Maestros/Atributos.aspx">Atributos</a></li>
                             <li><a href="../../Formularios/Maestros/Categorias.aspx">Categorias</a></li>
-                            <li><a href="../../Formularios/Maestros/Alicuotas.aspx">Alicuotas IVA</a></li>
+                            <li><a href="../../Formularios/Maestros/Clientes.aspx">Clientes</a></li>
+                            <li><a href="../../Formularios/Maestros/EstadoClientes.aspx">Estados de clientes</a></li>
                             <li><a href="../../Formularios/Maestros/Presentaciones.aspx">Presentaciones</a></li>
-                            <li><a href="../../Formularios/Maestros/Productos.aspx">Productos/Recetas</a></li>
+                            <li><a href="../../Formularios/Maestros/Productos.aspx">Productos</a></li>
+                            <li><a href="../../Formularios/Maestros/Recetas.aspx">Recetas</a></li>
                             <li><a href="../../Formularios/Maestros/InsumosF.aspx">Tipos de Atributos</a></li>
                             <li><a href="../../Formularios/Maestros/Unidades.aspx">Unidades de medida</a></li>
+                            <li><a href="../../Formularios/Maestros/Vendedores.aspx">Vendedores</a></li>
                             <%--<li><a href="../Contactos/MediadoresABM.aspx?a=1">Mediador</a></li>--%>
                             <%--<li><a href="../Contactos/Contactos.aspx?t=6">Asistentes</a></li>--%>
                             <%--t=6 refiere al tipo de contacto = Asistente--%>

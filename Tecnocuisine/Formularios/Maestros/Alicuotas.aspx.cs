@@ -22,12 +22,14 @@ namespace Tecnocuisine
         protected void Page_Load(object sender, EventArgs e)
         {
 
+    
+            this.Mensaje = Convert.ToInt32(Request.QueryString["m"]);
             this.accion = Convert.ToInt32(Request.QueryString["a"]);
             this.idAlicuota = Convert.ToInt32(Request.QueryString["i"]);
-            this.Mensaje = Convert.ToInt32(Request.QueryString["m"]);
 
             if (!IsPostBack)
             {
+               
                 if (accion == 2)
                 {
                     CargarAlicuota();
@@ -80,10 +82,11 @@ namespace Tecnocuisine
         {
             try
             {
-                var unidad = controladorIVA.ObtenerAlicuotaId(this.idAlicuota);
-                if (unidad != null)
+                var alicuota = controladorIVA.ObtenerAlicuotaId(this.idAlicuota);
+                if (alicuota != null)
                 {
-                    txtPorcentajeAlicuota.Text = unidad.porcentaje.ToString();
+                    hiddenEditar.Value = alicuota.id.ToString();
+                    txtPorcentajeAlicuota.Text = alicuota.porcentaje.ToString();
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
 
                 }
@@ -110,6 +113,7 @@ namespace Tecnocuisine
                 celNumero.Text = unidad.id.ToString();
                 celNumero.VerticalAlign = VerticalAlign.Middle;
                 celNumero.HorizontalAlign = HorizontalAlign.Right;
+                celNumero.Width = Unit.Percentage(5);
                 celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
 
                 tr.Cells.Add(celNumero);
@@ -118,6 +122,7 @@ namespace Tecnocuisine
                 celPorcentaje.Text = unidad.porcentaje + "%";
                 celPorcentaje.VerticalAlign = VerticalAlign.Middle;
                 celPorcentaje.HorizontalAlign = HorizontalAlign.Right;
+                celPorcentaje.Width = Unit.Percentage(5);
                 celPorcentaje.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celPorcentaje);
 
@@ -146,7 +151,7 @@ namespace Tecnocuisine
                 btnEliminar.OnClientClick = "abrirdialog(" + unidad.id + ");";
                 celAccion.Controls.Add(btnEliminar);
 
-                celAccion.Width = Unit.Percentage(25);
+                celAccion.Width = Unit.Percentage(5);
                 celAccion.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celAccion);
 
@@ -179,7 +184,7 @@ namespace Tecnocuisine
         {
             try
             {
-                if (this.accion == 2)
+                if (this.hiddenEditar.Value != "")
                 {
                     EditarAlicuota();
                 }

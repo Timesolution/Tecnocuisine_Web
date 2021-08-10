@@ -51,6 +51,15 @@ namespace Tecnocuisine
         protected global::System.Web.UI.WebControls.LinkButton btnGuardar;
 
         /// <summary>
+        /// hiddenEditar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hiddenEditar;
+
+        /// <summary>
         /// txtSubCategoria control.
         /// </summary>
         /// <remarks>
@@ -66,7 +75,7 @@ namespace Tecnocuisine
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAgregar;
+        protected global::System.Web.UI.WebControls.LinkButton btnAgregar;
 
         /// <summary>
         /// hiddenID2 control.
@@ -120,7 +129,7 @@ namespace Tecnocuisine
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubAtributos;
+        protected global::System.Web.UI.WebControls.LinkButton btnSubAtributos;
 
         /// <summary>
         /// hiddenSubAtributo control.

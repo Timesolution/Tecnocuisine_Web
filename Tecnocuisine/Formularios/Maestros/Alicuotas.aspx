@@ -18,7 +18,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div id="nestable-menu">
-                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" class="btn btn-success">Nuevo&nbsp;<i style="color:white" class="fa fa-upload"></i></linkbutton>
+                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" onclick="vaciarFormulario();" class="btn btn-success">Nuevo&nbsp;<i style="color:white" class="fa fa-plus"></i></linkbutton>
                             </div>
                         </div>
                     </div>
@@ -28,9 +28,9 @@
                                 <table class="table table-striped table-bordered table-hover " id="editable" >
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th>Porcentaje</th>
-                                            <th style="width:1%"></th>
+                                            <th style="width: 5%">#</th>
+                                            <th style="width:5%">Porcentaje</th>
+                                            <th style="width:5%"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -61,7 +61,7 @@
                         </p>
                     </div>
                     <div class="modal-footer">
-                        <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="btn btn-danger" OnClick="btnSi_Click" />
+                        <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="buttonLoading btn btn-danger" OnClick="btnSi_Click" />
                         <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
                         <asp:HiddenField ID="hiddenID" runat="server" />
                     </div>
@@ -89,7 +89,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <asp:LinkButton runat="server" ID="btnGuardar" class="btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <asp:LinkButton runat="server" ID="btnGuardar" class="buttonLoading btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <asp:HiddenField ID="hiddenEditar" runat="server" />
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
 
 
@@ -107,6 +108,11 @@
     <script type="text/javascript">
         function openModal() {
             $('#modalAgregar').modal('show');
+        }
+        function vaciarFormulario() {
+            ContentPlaceHolder1_txtPorcentajeAlicuota.value = "";
+            ContentPlaceHolder1_hiddenEditar.value = "";
+            window.history.pushState('', 'Alicuotas', location.protocol + '//' + location.host + location.pathname);
         }
     </script>
     <script>
