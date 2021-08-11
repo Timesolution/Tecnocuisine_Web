@@ -63,14 +63,14 @@
     <!-- Mainly scripts -->
 
 
-        <!-- Mainly scripts -->
+    <!-- Mainly scripts -->
 
     <script src="/../js/bootstrap.min.js"></script>
     <script src="/../js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="/../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="/../js/plugins/jeditable/jquery.jeditable.js"></script>
 
-      <!-- Peity -->
+    <!-- Peity -->
     <script src="js/plugins/peity/jquery.peity.min.js"></script>
 
 
@@ -121,6 +121,12 @@
                     <li>
                         <a href="#"><i class="fa fa-user"></i><span class="nav-label">Maestro</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
+                            <li>
+                                <a href="#"><span class="nav-label">Tipos</span><span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level">
+                                    <li><a href="#">subMenu</a></li>
+                                </ul>
+                            </li>
                             <li><a href="../../Formularios/Maestros/Alicuotas.aspx">Alicuotas IVA</a></li>
                             <li><a href="../../Formularios/Maestros/Atributos.aspx">Atributos</a></li>
                             <li><a href="../../Formularios/Maestros/Categorias.aspx">Categorias</a></li>
@@ -202,7 +208,7 @@
 
             </form>
         </div>
-        </div>
+    </div>
 </body>
 
 
