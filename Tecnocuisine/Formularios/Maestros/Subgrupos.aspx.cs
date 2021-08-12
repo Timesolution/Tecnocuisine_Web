@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Web.Script.Serialization;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Tecnocuisine.Modelos;
@@ -25,7 +28,7 @@ namespace Tecnocuisine
 
             if (!IsPostBack)
             {
-       
+                CargarGrupos();
                 if (accion == 2)
                 {
                     CargarSubgrupo();
@@ -50,6 +53,25 @@ namespace Tecnocuisine
 
         }
 
+        private void CargarGrupos()
+        {
+            try
+            {
+                this.ListGrupo.DataSource = controladorGrupo.ObtenerTodosArticulos_Grupos();
+                this.ListGrupo.DataValueField = "id";
+                this.ListGrupo.DataTextField = "descripcion";
+                this.ListGrupo.DataBind();
+                ListGrupo.Items.Insert(0, new ListItem("Seleccione", "-1"));
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+  
 
         public void ObtenerSubgrupos()
         {
@@ -82,6 +104,7 @@ namespace Tecnocuisine
                 if (grupo != null)
                 {
                     hiddenEditar.Value = grupo.id.ToString();
+                    ListGrupo.SelectedValue = grupo.Articulos_Grupos.id.ToString();
                     txtDescripcionSubGrupo.Text = grupo.descripcion;
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
 
@@ -119,6 +142,14 @@ namespace Tecnocuisine
                 celNombre.HorizontalAlign = HorizontalAlign.Left;
                 celNombre.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celNombre);
+
+
+                TableCell celGrupo = new TableCell();
+                celGrupo.Text = grupo.Articulos_Grupos.descripcion;
+                celGrupo.VerticalAlign = VerticalAlign.Middle;
+                celGrupo.HorizontalAlign = HorizontalAlign.Left;
+                celGrupo.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celGrupo);
 
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
@@ -213,6 +244,7 @@ namespace Tecnocuisine
                 Tecnocuisine_API.Entitys.Articulos_SubGrupos grupo = new Tecnocuisine_API.Entitys.Articulos_SubGrupos();
 
                 grupo.descripcion = txtDescripcionSubGrupo.Text;
+                grupo.grupo = Convert.ToInt32(ListGrupo.SelectedValue);
                 grupo.estado = 1;
 
                 int resultado = controladorGrupo.AgregarSubgrupo(grupo);
@@ -241,6 +273,7 @@ namespace Tecnocuisine
 
                 grupo.id = this.idSubgrupo;
                 grupo.descripcion = txtDescripcionSubGrupo.Text;
+                grupo.grupo = Convert.ToInt32(ListGrupo.SelectedValue);
                 grupo.estado = 1;
 
                 int resultado = controladorGrupo.EditarSubgrupo(grupo);
@@ -284,5 +317,17 @@ namespace Tecnocuisine
             }
         }
         #endregion
+        [WebMethod]
+        public static string GetSubgrupos(int id)
+        {
+            ControladorGrupo controlador = new ControladorGrupo();
+            string tiposAtributos = controlador.obtenerSubgrupos(id);
+
+            JavaScriptSerializer javaScript = new JavaScriptSerializer();
+            javaScript.MaxJsonLength = 5000000;
+            string resultadoJSON = javaScript.Serialize(tiposAtributos);
+            return resultadoJSON;
+        }
     }
+
 }

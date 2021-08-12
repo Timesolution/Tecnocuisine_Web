@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Articulos" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" EnableEventValidation="false" CodeBehind="Articulos.aspx.cs" Inherits="Tecnocuisine.Articulos" %>
+﻿<%@ Page Title="Clientes" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Clientes.aspx.cs" Inherits="Tecnocuisine.Clientes" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
@@ -7,7 +7,7 @@
 
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Articulos</h5>
+                    <h5>Clientes</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -29,15 +29,15 @@
                                     <thead>
                                         <tr>
                                             <th style="width: 10%">Codigo</th>
-                                            <th style="width:20%">Descripcion</th>
-                                            <th style="width:15%">Grupo</th>
-                                            <th style="width:10%">Ultima Actualizacion</th>
-                                            <th style="width:15%">Precio Venta</th>
+                                            <th style="width:20%">Razon Social</th>
+                                            <th style="width:20%">Alias</th>
+                                            <th style="width:10%">IVA</th>
+                                            <th style="width:10%">Forma Pago</th>
                                             <th style="width:5%"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <asp:PlaceHolder ID="phArticulos" runat="server"></asp:PlaceHolder>
+                                        <asp:PlaceHolder ID="phClientes" runat="server"></asp:PlaceHolder>
                                     </tbody>
                                 </table>
                             </div>
@@ -88,90 +88,66 @@
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <label class="col-sm-2 control-label editable">Codigo Barra</label>
+                        <label class="col-sm-2 control-label editable">Razon Social</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtCodigoBarra" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtRazonSocial" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <label class="col-sm-2 control-label editable">Descripcion</label>
+                        <label class="col-sm-2 control-label editable">CUIT</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtDescripcion" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtCuit" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
                         </div>
-                    </div>
-                   
-                    <div class="row" style="margin-top: 2%">
-                        <label class="col-sm-2 control-label editable">Marca</label>
-                        <div class="col-sm-8">
-                            <asp:DropDownList ID="ListMarca" style="margin-left: 3%;" class="form-control m-b" runat="server">
-                            </asp:DropDownList>
-                        </div>
-
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <label class="col-sm-2 control-label editable">Grupo</label>
+                        <label class="col-sm-2 control-label editable">Alias</label>
                         <div class="col-sm-8">
-                            <asp:DropDownList ID="ListGrupo" style="margin-left: 3%;"  class="form-control m-b" runat="server">
-                            </asp:DropDownList>
+                            <asp:TextBox ID="txtAlias" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
                         </div>
-
                     </div>
-                 <%--    <div class="row" style="margin-top: 2%">
-                        <label class="col-sm-2 control-label editable">SubGrupo</label>
-                        <div class="col-sm-8">
-                            <asp:DropDownList ID="ListSubgrupo" style="margin-left: 3%;" class="form-control m-b" runat="server">
-                            </asp:DropDownList>
-                            <asp:HiddenField ID="hiddenSubgrupo" runat="server" />
-                        </div>
-
-                    </div>--%>
-                     <div class="row" style="margin-top: 2%">
-                        <label class="col-sm-2 control-label editable">Categoria</label>
-                        <div class="col-sm-8">
-                            <asp:DropDownList ID="ListCategoria" style="margin-left: 3%;" class="form-control m-b" runat="server">
-                            </asp:DropDownList>
-                        </div>
-
-                    </div>
-                     <div class="row" style="margin-top: 2%">
+                    <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">IVA</label>
                         <div class="col-sm-8">
-                            <asp:DropDownList ID="ListAlicuotas" style="margin-left: 3%;" class="form-control m-b" runat="server">
+                            <asp:DropDownList ID="ListRegimen" style="margin-left: 3%;" class="form-control m-b" runat="server">
                             </asp:DropDownList>
                         </div>
 
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <label class="col-sm-2 control-label editable">Costo FC</label>
+                        <label class="col-sm-2 control-label editable">Forma de Pago</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtCosto" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:DropDownList ID="ListFormaPago" style="margin-left: 3%;" class="form-control m-b" runat="server">
+                            </asp:DropDownList>
+                        </div>
+
+                    </div>
+                     <div class="row" style="margin-top: 2%">
+                        <label class="col-sm-2 control-label editable">Vendedor</label>
+                        <div class="col-sm-8">
+                            <asp:DropDownList ID="ListVendedor" style="margin-left: 3%;" class="form-control m-b" runat="server">
+                            </asp:DropDownList>
+                        </div>
+
+                    </div>
+                    <div class="row" style="margin-top: 2%">
+                        <label class="col-sm-2 control-label editable">Vencimiento FC</label>
+                        <div class="col-sm-8">
+                            <asp:TextBox ID="txtVencimientoFC" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <label class="col-sm-2 control-label editable">Precio de venta</label>
+                        <label class="col-sm-2 control-label editable">Saldo Maximo</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtPrecioVenta" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtSaldoMax" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <label class="col-sm-2 control-label editable">Fecha alta</label>
+                        <label class="col-sm-2 control-label editable">Estado</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtFechaAlta" style="margin-left: 3%;" disabled="disabled" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:DropDownList ID="ListEstado" style="margin-left: 3%;" class="form-control m-b" runat="server">
+                            </asp:DropDownList>
                         </div>
                     </div>
-                    <div class="row" style="margin-top: 2%">
-                        <label class="col-sm-2 control-label editable">Fecha actualizacion</label>
-                        <div class="col-sm-8">
-                            <asp:TextBox ID="txtFechaActualizacion" disabled="disabled" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top: 2%">
-                        <label class="col-sm-2 control-label editable">Fecha modificacion</label>
-                        <div class="col-sm-8">
-                            <asp:TextBox ID="txtFechaModificacion" style="margin-left: 3%;" disabled="disabled" class="form-control" runat="server" ></asp:TextBox>
-                        </div>
-                    </div>
-                    
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Observaciones</label>
                         <div class="col-sm-8">
@@ -189,39 +165,7 @@
             </div>
         </div>
     </div>
-<%--    <script>
-        $(document).ready(function () {  
-            $(document).on('change', "#ContentPlaceHolder1_ListGrupo", function () {
-                var idGrupo = document.getElementById('ContentPlaceHolder1_ListGrupo');
-                $.ajax({
-                    type: "POST",
-                    url: "Subgrupos.aspx/GetSubgrupos",
-                    data: '{id: "' + idGrupo.value + '" }',
-                    contentType: "application/json",
-                    dataType: 'json',
-                    error: (error) => {
-                        console.log(JSON.stringify(error));
-                        //$.msgbox("No se pudo cargar la tabla", { type: "error" });
-                    },
-                    success: function (data) {
-                        var obj = JSON.parse(data.d);
-                        var subgrupos = obj.split(',');
-                        var s = '<option value="-1">Seleccione</option>';
-                        for (var i = 0; i < subgrupos.length; i++) {
-                            var subgrupo = subgrupos[i];
-                            s += '<option value="' + subgrupo.split(';')[0] + '">' + subgrupo.split(';')[1] + '</option>';
-                        }
-                        $("#ContentPlaceHolder1_ListSubgrupo").html(s);
-                    }
-                });
-            });  
-        });
-        $(document).on('change', "#ContentPlaceHolder1_ListSubgrupo", function () {
-            
-        });
 
-            
-    </script>--%>
     <script>           
         function abrirdialog(valor) {
             document.getElementById('<%= hiddenID.ClientID %>').value = valor;
@@ -233,31 +177,22 @@
             $('#modalAgregar').modal('show');
         }
         function vaciarFormulario() {
-            let date = new Date();
-
-            let day = date.getDate();
-            let month = date.getMonth() + 1;
-            let year = date.getFullYear();
-            var dia = `${day}/${month}/${year}`;
             ContentPlaceHolder1_hiddenEditar.value = "";
+            ContentPlaceHolder1_txtRazonSocial.value = "";
             ContentPlaceHolder1_txtCodigo.value = "";
-            ContentPlaceHolder1_txtCodigoBarra.value = "";
-            ContentPlaceHolder1_txtDescripcion.value = "";
-            ContentPlaceHolder1_txtCosto.value = "";
-            ContentPlaceHolder1_txtPrecioVenta.value = "";
+            ContentPlaceHolder1_txtCuit.value = "";
+            ContentPlaceHolder1_txtAlias.value = "";
+            ContentPlaceHolder1_txtVencimientoFC.value = "";
+            ContentPlaceHolder1_txtSaldoMax.value = "";
             ContentPlaceHolder1_txtObservaciones.value = "";
-            ContentPlaceHolder1_txtFechaActualizacion.value = dia;
-            ContentPlaceHolder1_txtFechaAlta.value = dia;
-            ContentPlaceHolder1_txtFechaModificacion.value = dia;
-            ContentPlaceHolder1_ListGrupo.value = "-1";
-            ContentPlaceHolder1_ListCategoria.value = "-1";
-            ContentPlaceHolder1_ListAlicuotas.value = "-1";
-            ContentPlaceHolder1_ListMarca.value = "-1";
-            //ContentPlaceHolder1_ListSubgrupo.value = "-1";
+            ContentPlaceHolder1_ListRegimen.value = "-1";
+            ContentPlaceHolder1_ListFormaPago.value = "-1";
+            ContentPlaceHolder1_ListVendedor.value = "-1";
+            ContentPlaceHolder1_ListEstado.value = "-1";
 
           
 
-            window.history.pushState('', 'Articulos', location.protocol + '//' + location.host + location.pathname);
+            window.history.pushState('', 'Alicuotas', location.protocol + '//' + location.host + location.pathname);
         }
     </script>
     <script>

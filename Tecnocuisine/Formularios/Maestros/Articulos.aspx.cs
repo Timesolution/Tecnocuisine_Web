@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Script.Serialization;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Tecnocuisine.Modelos;
@@ -29,6 +31,9 @@ namespace Tecnocuisine
 
             if (!IsPostBack)
             {
+                txtFechaActualizacion.Text = DateTime.Now.ToString("dd/MM/yyyy");
+                txtFechaAlta.Text = DateTime.Now.ToString("dd/MM/yyyy");
+                txtFechaModificacion.Text = DateTime.Now.ToString("dd/MM/yyyy");
                 CargarAlicuotas();
                 CargarCategorias();
                 CargarMarcas();
@@ -79,26 +84,26 @@ namespace Tecnocuisine
 
             }
         }
-        private void CargarSubGruposArticulos()
-        {
+        ////private void CargarSubGruposArticulos()
+        //{
 
-            try
-            {
-                ControladorGrupo controladorGrupo = new ControladorGrupo();
-                this.ListSubgrupo.DataSource = controladorGrupo.ObtenerTodosArticulos_SubGrupos(Convert.ToInt32(ListGrupo.SelectedValue));
-                this.ListSubgrupo.DataValueField = "id";
-                this.ListSubgrupo.DataTextField = "descripcion";
-                this.ListSubgrupo.DataBind();
-                ListSubgrupo.Items.Insert(0, new ListItem("Seleccione", "-1"));
+        //    try
+        //    {
+        //        ControladorGrupo controladorGrupo = new ControladorGrupo();
+        //        this.ListSubgrupo.DataSource = controladorGrupo.ObtenerTodosArticulos_SubGrupos(Convert.ToInt32(ListGrupo.SelectedValue));
+        //        this.ListSubgrupo.DataValueField = "id";
+        //        this.ListSubgrupo.DataTextField = "descripcion";
+        //        this.ListSubgrupo.DataBind();
+        //        ListSubgrupo.Items.Insert(0, new ListItem("Seleccione", "-1"));
 
 
 
-            }
-            catch (Exception ex)
-            {
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-            }
-        }
+        //    }
+        //}
         private void CargarMarcas()
         {
 
@@ -147,7 +152,7 @@ namespace Tecnocuisine
                 ControladorIVA controladorIVA = new ControladorIVA();
                 this.ListAlicuotas.DataSource = controladorIVA.ObtenerTodosAlicuotas_IVA();
                 this.ListAlicuotas.DataValueField = "id";
-                this.ListAlicuotas.DataTextField = "descripcion";
+                this.ListAlicuotas.DataTextField = "porcentaje";
                 this.ListAlicuotas.DataBind();
                 ListAlicuotas.Items.Insert(0, new ListItem("Seleccione", "-1"));
 
@@ -192,7 +197,21 @@ namespace Tecnocuisine
                 if (articulo != null)
                 {
                     hiddenEditar.Value = articulo.id.ToString() ?? "";
+                    txtDescripcion.Text = articulo.descripcion;
                     txtCodigo.Text = articulo.codigo.ToString() ?? "";
+                    txtCodigoBarra.Text = articulo.codigoBarra.ToString() ?? "";
+                    txtCosto.Text = articulo.costo.ToString() ?? "";
+                    txtPrecioVenta.Text = articulo.precioVenta.ToString() ?? "";
+                    txtObservaciones.Text = articulo.observaciones.ToString() ?? "";
+                    txtFechaActualizacion.Text = articulo.fechaActualizacionPrecio.ToString() ?? "";
+                    txtFechaAlta.Text = articulo.fechaAlta.ToString() ?? "";
+                    txtFechaModificacion.Text = articulo.fechaModificacion.ToString() ?? "";
+                    ListAlicuotas.SelectedValue = articulo.alicuotaIVA.ToString();
+                    ListCategoria.SelectedValue = articulo.categoria.ToString();
+                    ListGrupo.SelectedValue = articulo.grupo.ToString();
+                    //CargarSubGruposArticulos();
+                    ListMarca.SelectedValue = articulo.marca.ToString();
+                    //ListSubgrupo.SelectedValue = articulo.subgrupo.ToString();
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
 
                 }
@@ -353,16 +372,18 @@ namespace Tecnocuisine
                 articulo.codigo = txtCodigo.Text;
                 articulo.descripcion = txtDescripcion.Text;
                 articulo.codigoBarra = txtCodigoBarra.Text;
-                articulo.fechaAlta = Convert.ToDateTime(txtFechaAlta.Text);
-                articulo.fechaModificacion = Convert.ToDateTime(txtFechaModificacion.Text);
-                articulo.fechaActualizacionPrecio = Convert.ToDateTime(txtFechaActualizacion.Text);
+                articulo.fechaAlta = DateTime.Now;
+                articulo.fechaModificacion = DateTime.Now;
+                articulo.fechaActualizacionPrecio = DateTime.Now;
                 articulo.costo = Convert.ToDecimal(txtCosto.Text);
                 articulo.precioVenta = Convert.ToDecimal(txtPrecioVenta.Text);
                 articulo.grupo = Convert.ToInt32(ListGrupo.SelectedValue);
-                articulo.subgrupo = Convert.ToInt32(ListSubgrupo.SelectedValue);
+                articulo.subgrupo = 1;
+                //articulo.subgrupo = Convert.ToInt32(ListSubgrupo.SelectedValue);
                 articulo.marca = Convert.ToInt32(ListMarca.SelectedValue);
-                articulo.categoria = Convert.ToInt32(ListMarca.SelectedValue);
+                articulo.categoria = Convert.ToInt32(ListCategoria.SelectedValue);
                 articulo.alicuotaIVA = Convert.ToInt32(ListAlicuotas.SelectedValue);
+                articulo.observaciones = txtObservaciones.Text;
                 articulo.estado = 1;
 
 
@@ -394,16 +415,18 @@ namespace Tecnocuisine
                 articulo.codigo = txtCodigo.Text;
                 articulo.descripcion = txtDescripcion.Text;
                 articulo.codigoBarra = txtCodigoBarra.Text;
-                articulo.fechaAlta = Convert.ToDateTime(txtFechaAlta.Text);
-                articulo.fechaModificacion = Convert.ToDateTime(txtFechaModificacion.Text);
-                articulo.fechaActualizacionPrecio = Convert.ToDateTime(txtFechaActualizacion.Text);
+                articulo.fechaModificacion = DateTime.Now;
+                articulo.fechaActualizacionPrecio = DateTime.Now;
+                articulo.fechaAlta = DateTime.Now;
                 articulo.costo = Convert.ToDecimal(txtCosto.Text);
                 articulo.precioVenta = Convert.ToDecimal(txtPrecioVenta.Text);
                 articulo.grupo = Convert.ToInt32(ListGrupo.SelectedValue);
-                articulo.subgrupo = Convert.ToInt32(ListSubgrupo.SelectedValue);
+                //articulo.subgrupo = Convert.ToInt32(ListSubgrupo.SelectedValue);
+                articulo.subgrupo = 1;
                 articulo.marca = Convert.ToInt32(ListMarca.SelectedValue);
-                articulo.categoria = Convert.ToInt32(ListMarca.SelectedValue);
+                articulo.categoria = Convert.ToInt32(ListCategoria.SelectedValue);
                 articulo.alicuotaIVA = Convert.ToInt32(ListAlicuotas.SelectedValue);
+                articulo.observaciones = txtObservaciones.Text;
                 articulo.estado = 1;
 
 
@@ -447,6 +470,8 @@ namespace Tecnocuisine
 
             }
         }
-        #endregion
+       
+
     }
 }
+#endregion

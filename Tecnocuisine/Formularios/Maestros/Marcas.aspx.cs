@@ -86,7 +86,7 @@ namespace Tecnocuisine
                 if (marca != null)
                 {
                     hiddenEditar.Value = marca.id.ToString();
-                    txtDescripcionUnidad.Text = marca.descripcion;
+                    txtDescripcionMarca.Text = marca.descripcion;
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
 
                 }
@@ -201,7 +201,7 @@ namespace Tecnocuisine
         {
             try
             {
-                txtDescripcionUnidad.Text = "";
+                txtDescripcionMarca.Text = "";
             }
             catch (Exception ex)
             {
@@ -216,7 +216,7 @@ namespace Tecnocuisine
             {
                 Tecnocuisine_API.Entitys.Articulos_Marcas marca = new Tecnocuisine_API.Entitys.Articulos_Marcas();
 
-                marca.descripcion = txtDescripcionUnidad.Text;
+                marca.descripcion = txtDescripcionMarca.Text;
                 marca.estado = 1;
 
                 int resultado = controladorMarca.AgregarMarca(marca);
@@ -244,7 +244,7 @@ namespace Tecnocuisine
                 Tecnocuisine_API.Entitys.Articulos_Marcas marca = new Tecnocuisine_API.Entitys.Articulos_Marcas();
 
                 marca.id = this.idMarca;
-                marca.descripcion = txtDescripcionUnidad.Text;
+                marca.descripcion = txtDescripcionMarca.Text;
                 marca.estado = 1;
 
                 int resultado = controladorMarca.EditarMarca(marca);

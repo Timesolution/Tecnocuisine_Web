@@ -242,8 +242,9 @@
     <Content Include="font-awesome\css\font-awesome.min.css" />
     <Content Include="font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Formularios\Maestros\Clientes - Copy.aspx" />
+    <Content Include="Formularios\Maestros\Clientes.aspx" />
     <Content Include="Formularios\Maestros\EstadoClientes.aspx" />
+    <Content Include="Formularios\Maestros\Subgrupos.aspx" />
     <Content Include="Formularios\Maestros\Grupos.aspx" />
     <Content Include="Formularios\Maestros\Marcas.aspx" />
     <Content Include="Formularios\Maestros\Vendedores.aspx" />
@@ -779,12 +780,12 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Formularios\Maestros\Clientes - Copy.aspx.cs">
-      <DependentUpon>Clientes - Copy.aspx</DependentUpon>
+    <Compile Include="Formularios\Maestros\Clientes.aspx.cs">
+      <DependentUpon>Clientes.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Formularios\Maestros\Clientes - Copy.aspx.designer.cs">
-      <DependentUpon>Clientes - Copy.aspx</DependentUpon>
+    <Compile Include="Formularios\Maestros\Clientes.aspx.designer.cs">
+      <DependentUpon>Clientes.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Maestros\EstadoClientes.aspx.cs">
       <DependentUpon>EstadoClientes.aspx</DependentUpon>
@@ -792,6 +793,13 @@
     </Compile>
     <Compile Include="Formularios\Maestros\EstadoClientes.aspx.designer.cs">
       <DependentUpon>EstadoClientes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Subgrupos.aspx.cs">
+      <DependentUpon>Subgrupos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Subgrupos.aspx.designer.cs">
+      <DependentUpon>Subgrupos.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Maestros\Grupos.aspx.cs">
       <DependentUpon>Grupos.aspx</DependentUpon>

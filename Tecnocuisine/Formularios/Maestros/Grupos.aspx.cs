@@ -46,12 +46,12 @@ namespace Tecnocuisine
 
             }
 
-            ObtenerGrupoes();
+            ObtenerGrupos();
 
         }
 
 
-        public void ObtenerGrupoes()
+        public void ObtenerGrupos()
         {
             try
             {
@@ -62,7 +62,7 @@ namespace Tecnocuisine
 
                     foreach (var item in grupoes)
                     {
-                        CargarGrupoesPH(item);
+                        CargarGruposPH(item);
 
                     }
                 }
@@ -94,7 +94,7 @@ namespace Tecnocuisine
             }
         }
 
-        public void CargarGrupoesPH(Tecnocuisine_API.Entitys.Articulos_Grupos grupo)
+        public void CargarGruposPH(Tecnocuisine_API.Entitys.Articulos_Grupos grupo)
         {
 
             try
@@ -165,7 +165,7 @@ namespace Tecnocuisine
                 LinkButton lb = sender as LinkButton;
                 string[] id = lb.ID.Split('_');
 
-                Response.Redirect("Grupoes.aspx?a=2&i=" + id[1]);
+                Response.Redirect("Grupos.aspx?a=2&i=" + id[1]);
             }
             catch (Exception Ex)
             {
@@ -219,7 +219,7 @@ namespace Tecnocuisine
 
                 if (resultado > 0)
                 {
-                    Response.Redirect("Grupoes.aspx?m=1");
+                    Response.Redirect("Grupos.aspx?m=1");
                 }
                 else
                 {
@@ -247,7 +247,7 @@ namespace Tecnocuisine
 
                 if (resultado > 0)
                 {
-                    Response.Redirect("Grupoes.aspx?m=2");
+                    Response.Redirect("Grupos.aspx?m=2");
 
                 }
                 else
@@ -271,7 +271,7 @@ namespace Tecnocuisine
 
                 if (resultado > 0)
                 {
-                    Response.Redirect("Grupoes.aspx?m=3");
+                    Response.Redirect("Grupos.aspx?m=3");
                 }
                 else
                 {

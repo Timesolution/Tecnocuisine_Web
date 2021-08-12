@@ -11,7 +11,7 @@ namespace Tecnocuisine
 {
 
 
-    public partial class Articulos
+    public partial class Clientes
     {
 
         /// <summary>
@@ -24,13 +24,13 @@ namespace Tecnocuisine
         protected global::System.Web.UI.UpdatePanel UpdatePanel2;
 
         /// <summary>
-        /// phArticulos control.
+        /// phSubgrupos control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phArticulos;
+        protected global::System.Web.UI.WebControls.PlaceHolder phClientes;
 
         /// <summary>
         /// btnEliminar control.
@@ -60,103 +60,85 @@ namespace Tecnocuisine
         protected global::System.Web.UI.WebControls.TextBox txtCodigo;
 
         /// <summary>
-        /// txtCodigoBarra control.
+        /// txtRazonSocial control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCodigoBarra;
+        protected global::System.Web.UI.WebControls.TextBox txtRazonSocial;
 
         /// <summary>
-        /// txtDescripcion control.
+        /// txtCuit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDescripcion;
+        protected global::System.Web.UI.WebControls.TextBox txtCuit;
 
         /// <summary>
-        /// ListMarca control.
+        /// txtAlias control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ListMarca;
+        protected global::System.Web.UI.WebControls.TextBox txtAlias;
 
         /// <summary>
-        /// ListGrupo control.
+        /// ListRegimen control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ListGrupo;
+        protected global::System.Web.UI.WebControls.DropDownList ListRegimen;
 
         /// <summary>
-        /// ListCategoria control.
+        /// ListFormaPago control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ListCategoria;
+        protected global::System.Web.UI.WebControls.DropDownList ListFormaPago;
 
         /// <summary>
-        /// ListAlicuotas control.
+        /// ListVendedor control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ListAlicuotas;
+        protected global::System.Web.UI.WebControls.DropDownList ListVendedor;
 
         /// <summary>
-        /// txtCosto control.
+        /// txtVencimientoFC control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCosto;
+        protected global::System.Web.UI.WebControls.TextBox txtVencimientoFC;
 
         /// <summary>
-        /// txtPrecioVenta control.
+        /// txtSaldoMax control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPrecioVenta;
+        protected global::System.Web.UI.WebControls.TextBox txtSaldoMax;
 
         /// <summary>
-        /// txtFechaAlta control.
+        /// ListEstado control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFechaAlta;
-
-        /// <summary>
-        /// txtFechaActualizacion control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFechaActualizacion;
-
-        /// <summary>
-        /// txtFechaModificacion control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFechaModificacion;
+        protected global::System.Web.UI.WebControls.DropDownList ListEstado;
 
         /// <summary>
         /// txtObservaciones control.
