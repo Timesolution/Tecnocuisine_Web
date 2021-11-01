@@ -15,22 +15,15 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div id="nestable-menu">
-                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" onclick="vaciarFormulario();" class="btn btn-success">Nuevo&nbsp;<i style="color:white" class="fa fa-plus"></i></linkbutton>
-                            </div>
-                        </div>
-                    </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
-                            <div class="table-responsive">
+                            <div class="table-responsive"  >
                                 <table class="table table-striped table-bordered table-hover " id="editable" >
                                     <thead>
                                         <tr>
-                                            <th style="width: 5%">#</th>
-                                            <th style="width:5%">Porcentaje</th>
-                                            <th style="width:5%"></th>
+                                            <th style="width: 20%">#</th>
+                                            <th style="width: 40%">Porcentaje</th>
+                                            <th style="width: 30%"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -84,7 +77,9 @@
                         </div>
                         <label class="col-sm-2 control-label editable">Porcentaje</label>
                         <div class="col-sm-8">
-                            <div class="input-group m-b"><asp:TextBox ID="txtPorcentajeAlicuota" class="form-control" runat="server" ></asp:TextBox> <span class="input-group-addon">%</span></div>
+                            <div class="input-group m-b">
+                                <asp:TextBox ID="txtPorcentajeAlicuota" class="form-control" runat="server"></asp:TextBox>
+                                <span class="input-group-addon">%</span></div>
                         </div>
                     </div>
                 </div>
@@ -116,7 +111,7 @@
         }
     </script>
     <script>
-    $(document).ready(function() {
+        $(document).ready(function () {
             $('.dataTables-example').dataTable({
                 responsive: true,
                 "dom": 'T<"clear">lfrtip',
@@ -129,23 +124,35 @@
             var oTable = $('#editable').dataTable();
 
             /* Apply the jEditable handlers to the table */
-            oTable.$('td').editable( '../example_ajax.php', {
-                "callback": function( sValue, y ) {
-                    var aPos = oTable.fnGetPosition( this );
-                    oTable.fnUpdate( sValue, aPos[0], aPos[1] );
+            oTable.$('td').editable('../example_ajax.php', {
+                "callback": function (sValue, y) {
+                    var aPos = oTable.fnGetPosition(this);
+                    oTable.fnUpdate(sValue, aPos[0], aPos[1]);
                 },
-                "submitdata": function ( value, settings ) {
+                "submitdata": function (value, settings) {
                     return {
                         "row_id": this.parentNode.getAttribute('id'),
-                        "column": oTable.fnGetPosition( this )[2]
+                        "column": oTable.fnGetPosition(this)[2]
                     };
                 },
 
                 "width": "90%",
                 "height": "100%"
-            } );
-
+            });
+            var div = document.getElementById('editable_filter');
+            var button = document.createElement('linkbutton');
+            button.id = "btnAgregar";
+            button.style.float = "right";
+            button.style.marginRight = "1%";
+            button.setAttribute("type", "button");
+            button.setAttribute("href", "#modalAgregar");
+            button.setAttribute("onclick", "vaciarFormulario()");
+            button.setAttribute("data-toggle", "modal");
+            button.setAttribute("class", "btn");
+            button.setAttribute("style", " outline: 2px solid black; outline - offset: 2px;");
+            button.innerHTML = "<i style='color: black' class='fa fa-plus'></i>";
+            div.prepend(button);
 
         });
     </script>
-    </asp:Content>
+</asp:Content>

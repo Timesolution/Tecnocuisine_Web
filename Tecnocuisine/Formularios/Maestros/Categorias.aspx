@@ -3,9 +3,9 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="wrapper wrapper-content">
         <div class="row animated fadeInRight">
-            <div class="container-fluid">
+            <div class="container-fluid-nestable">
 
-                <div class="ibox float-e-margins">
+                <div class="ibox nestable float-e-margins" style="padding: 1.5%">
                     <div class="ibox-title">
                         <h5>Categorias</h5>
                         <div class="ibox-tools">
@@ -17,7 +17,7 @@
                     <div class="ibox-content">
                         <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                             <ContentTemplate>
-                                <%--<div class="table-responsive">
+                                <%--<div class="table-responsive"  >
                                     <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                         <thead>
                                             <tr>
@@ -43,7 +43,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <div class="ibox ">
+                                            <div class="ibox  float-e-margins">
                                                 <div class="ibox-content">
 
 
@@ -87,6 +87,8 @@
 
                                                 </div>
                                             </div>
+                                                <linkbutton type="button"  onclick="guardarNestedList();" style="float:right" class="btn btn-primary">Guardar&nbsp;<i style="color:white" class="fa fa-check"></i></linkbutton>
+
                                         </div>
 
                                     </div>
@@ -236,7 +238,7 @@
                     <div class="ibox-content">
                         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                             <ContentTemplate>
-                                <div class="table-responsive">
+                                <div class="table-responsive"  >
                                     <table class="table table-striped table-bordered table-hover " id="editable">
                                         <thead>
                                             <tr>
@@ -270,6 +272,39 @@
     <script>           
         function abrirdialog() {
             $('#modalconfirmacion2').modal('show');
+        }
+        function guardarNestedList() {
+            var lista = $("#ContentPlaceHolder1_main > li");
+            var ids = '';
+            for (var x = 0; x < lista.length;x++) {
+                ids += lista[x].attributes["data-id"].value + "," + "null" + ";";
+                ids += obtenerHijosNestedList(lista[x]); 
+            }
+            $.ajax({
+                method: "POST",
+                url: "Categorias.aspx/ModificarRelaciones",
+                data: '{id: "' + ids + '" }',
+                contentType: "application/json",
+                dataType: 'json',
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                    //$.msgbox("No se pudo cargar la tabla", { type: "error" });
+                },
+                success: recargarPagina
+            });
+        }
+        function obtenerHijosNestedList(arr) {
+            var lista = $("#" + arr.attributes["id"].value + " > ol > li");
+            var ids = '';
+            for (var x = 0; x < lista.length; x++) {
+                ids += lista[x].attributes["data-id"].value + "," + arr.attributes["id"].value + ";";
+                ids += obtenerHijosNestedList(lista[x]); 
+            }
+            return ids;
+        }
+        function recargarPagina() {
+            alert('Guardado con exito');
+            location.reload();
         }
     </script>
 

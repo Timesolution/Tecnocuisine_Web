@@ -24,7 +24,7 @@ namespace Tecnocuisine
         protected global::System.Web.UI.UpdatePanel UpdatePanel2;
 
         /// <summary>
-        /// phSubgrupos control.
+        /// phClientes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.

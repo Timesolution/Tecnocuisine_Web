@@ -7,7 +7,7 @@
 (function ($, window, document, undefined) {
 
 
-
+    
     var hasTouch = 'ontouchstart' in document;
 
 
@@ -130,7 +130,10 @@
 
             var onStartEvent = function(e) {
                 var handle = $(e.target);
-                if (!handle.hasClass(list.options.handleClass)) {
+                if (!handle.hasClass(list.options.handleClass) || handle.hasClass('not-draggable')) {
+                    if(handle.hasClass('not-draggable')){
+                        return;
+                    }
                     if (handle.closest('.' + list.options.noDragClass).length) {
                         return;
                     }

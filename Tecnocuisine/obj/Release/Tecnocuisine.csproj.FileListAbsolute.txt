@@ -189,3 +189,37 @@ C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Microsoft.AspNet.Identity.Owin.xml
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Microsoft.Owin.Host.SystemWeb.xml
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Microsoft.Owin.Security.OAuth.xml
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Microsoft.Owin.Security.Cookies.xml
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Gestion Api.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\WSAFIPFE.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\LinqToExcel.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\DocumentFormat.OpenXml.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Planario_Api.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Ionic.Zip.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\itextsharp.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Estetica Api.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Modula_Api.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\SMS_Notification.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Report_Api.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\WSAFIPFEC.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Google.GData.Spreadsheets.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Google.GData.Client.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\MySql.Data.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\QRCoder.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Google.Apis.Calendar.v3.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Remotion.Data.Linq.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Task_Api.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Microsoft.ReportViewer.WinForms.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Google.GData.Extensions.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Google.Apis.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Google.Apis.Core.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Microsoft.ReportViewer.Common.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Microsoft.ReportViewer.ProcessingObjectModel.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Microsoft.ReportViewer.DataVisualization.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Microsoft.SqlServer.Types.dll
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Gestion Api.pdb
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Gestion Api.dll.config
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\LinqToExcel.xml
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\DocumentFormat.OpenXml.xml
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\itextsharp.xml
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Estetica Api.pdb
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Estetica Api.dll.config

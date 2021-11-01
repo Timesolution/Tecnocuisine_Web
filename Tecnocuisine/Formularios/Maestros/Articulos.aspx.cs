@@ -20,14 +20,15 @@ namespace Tecnocuisine
         int accion;
         int idArticulo;
         int Mensaje;
-
+        int idReceta;
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            VerificarLogin();
     
             this.Mensaje = Convert.ToInt32(Request.QueryString["m"]);
             this.accion = Convert.ToInt32(Request.QueryString["a"]);
             this.idArticulo = Convert.ToInt32(Request.QueryString["i"]);
+            this.idReceta = Convert.ToInt32(Request.QueryString["r"]);
 
             if (!IsPostBack)
             {
@@ -42,8 +43,12 @@ namespace Tecnocuisine
                 {
                     CargarArticulo();
                 }
+                if (accion == 3)
+                {
+                    CargarReceta();
+                }
 
-                if(Mensaje == 1)
+                if (Mensaje == 1)
                 {
                     this.m.ShowToastr(this.Page, "Proceso concluido con Exito!", "Exito");
                 }
@@ -63,6 +68,56 @@ namespace Tecnocuisine
 
         }
 
+        private void VerificarLogin()
+        {
+            try
+            {
+                if (Session["User"] == null)
+                {
+                    Response.Redirect("../../Usuario/Login.aspx");
+                }
+                else
+                {
+                    if (this.verificarAcceso() != 1)
+                    {
+                        Response.Redirect("/Default.aspx?m=1", false);
+                    }
+                }
+            }
+            catch
+            {
+                Response.Redirect("../../Account/Login.aspx");
+            }
+        }
+        private int verificarAcceso()
+        {
+            try
+            {
+                int valor = 0;
+                string permisos = Session["Login_Permisos"] as string;
+                string[] listPermisos = permisos.Split(';');
+
+                string permiso = listPermisos.Where(x => x == "215").FirstOrDefault();
+
+                if (!string.IsNullOrEmpty(permiso))
+                    valor = 1;
+
+                return valor;
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+
+        private void CargarReceta()
+        {
+            ControladorReceta controladorReceta = new ControladorReceta();
+            var receta = controladorReceta.ObtenerRecetaId(this.idReceta);
+            txtDescripcion.Text = receta.descripcion;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
+
+        }
 
         private void CargarGruposArticulos()
         {
@@ -237,7 +292,7 @@ namespace Tecnocuisine
                 TableCell celCodigo = new TableCell();
                 celCodigo.Text = articulo.codigo.ToString();
                 celCodigo.VerticalAlign = VerticalAlign.Middle;
-                celCodigo.HorizontalAlign = HorizontalAlign.Right;
+                celCodigo.HorizontalAlign = HorizontalAlign.Left;
                 celCodigo.Width = Unit.Percentage(5);
                 celCodigo.Attributes.Add("style", "padding-bottom: 1px !important;");
 
@@ -246,7 +301,7 @@ namespace Tecnocuisine
                 TableCell celDescripcion = new TableCell();
                 celDescripcion.Text = articulo.descripcion;
                 celDescripcion.VerticalAlign = VerticalAlign.Middle;
-                celDescripcion.HorizontalAlign = HorizontalAlign.Right;
+                celDescripcion.HorizontalAlign = HorizontalAlign.Left;
                 celDescripcion.Width = Unit.Percentage(5);
                 celDescripcion.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celDescripcion);
@@ -255,7 +310,7 @@ namespace Tecnocuisine
                 TableCell celGrupo = new TableCell();
                 celGrupo.Text = articulo.Articulos_Grupos.descripcion;
                 celGrupo.VerticalAlign = VerticalAlign.Middle;
-                celGrupo.HorizontalAlign = HorizontalAlign.Right;
+                celGrupo.HorizontalAlign = HorizontalAlign.Left;
                 celGrupo.Width = Unit.Percentage(5);
                 celGrupo.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celGrupo);
@@ -263,7 +318,7 @@ namespace Tecnocuisine
                 TableCell celUltimaActualizacion = new TableCell();
                 celUltimaActualizacion.Text = articulo.fechaActualizacionPrecio.ToString();
                 celUltimaActualizacion.VerticalAlign = VerticalAlign.Middle;
-                celUltimaActualizacion.HorizontalAlign = HorizontalAlign.Right;
+                celUltimaActualizacion.HorizontalAlign = HorizontalAlign.Left;
                 celUltimaActualizacion.Width = Unit.Percentage(5);
                 celUltimaActualizacion.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celUltimaActualizacion);
@@ -280,11 +335,12 @@ namespace Tecnocuisine
                 TableCell celAccion = new TableCell();
                 celAccion.Width = Unit.Percentage(3);
                 LinkButton btnDetalles = new LinkButton();
-                btnDetalles.CssClass = "btn btn-primary btn-xs";
+                btnDetalles.CssClass = "btn btn-xs";
+                btnDetalles.Style.Add("background-color", "transparent");
                 //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                 //btnDetalles.Attributes.Add("title data-original-title", "Editar");
                 btnDetalles.ID = "btnSelec_" + articulo.id + "_";
-                btnDetalles.Text = "<span><i class='fa fa-pencil'></i></span>";
+                btnDetalles.Text = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
                 btnDetalles.Click += new EventHandler(this.editarArticulo);
                 celAccion.Controls.Add(btnDetalles);
 
@@ -294,10 +350,11 @@ namespace Tecnocuisine
 
                 LinkButton btnEliminar = new LinkButton();
                 btnEliminar.ID = "btnEliminar_" + articulo.id;
-                btnEliminar.CssClass = "btn btn-danger btn-xs";
+                btnEliminar.CssClass = "btn btn-xs";
+                btnEliminar.Style.Add("background-color", "transparent");
                 btnEliminar.Attributes.Add("data-toggle", "modal");
                 btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                btnEliminar.Text = "<span><i class='fa fa-trash - o'></i></span>";
+                btnEliminar.Text = "<span><i style='color:black' class='fa fa-trash - o'></i></span>";
                 btnEliminar.OnClientClick = "abrirdialog(" + articulo.id + ");";
                 celAccion.Controls.Add(btnEliminar);
 

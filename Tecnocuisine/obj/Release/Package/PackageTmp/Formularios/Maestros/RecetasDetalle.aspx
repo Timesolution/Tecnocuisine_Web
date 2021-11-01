@@ -17,7 +17,7 @@
                     <div class="ibox-content">
                         <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                             <ContentTemplate>
-                                <%--<div class="table-responsive">
+                                <%--<div class="table-responsive"  >
                                     <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                         <thead>
                                             <tr>

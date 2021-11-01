@@ -22,7 +22,7 @@ namespace Tecnocuisine
         protected void Page_Load(object sender, EventArgs e)
         {
 
-    
+            VerificarLogin();
             this.Mensaje = Convert.ToInt32(Request.QueryString["m"]);
             this.accion = Convert.ToInt32(Request.QueryString["a"]);
             this.idCliente = Convert.ToInt32(Request.QueryString["i"]);
@@ -57,6 +57,48 @@ namespace Tecnocuisine
             ObtenerClientes();
           
 
+        }
+
+        private void VerificarLogin()
+        {
+            try
+            {
+                if (Session["User"] == null)
+                {
+                    Response.Redirect("../../Usuario/Login.aspx");
+                }
+                else
+                {
+                    if (this.verificarAcceso() != 1)
+                    {
+                        Response.Redirect("/Default.aspx?m=1", false);
+                    }
+                }
+            }
+            catch
+            {
+                Response.Redirect("../../Account/Login.aspx");
+            }
+        }
+        private int verificarAcceso()
+        {
+            try
+            {
+                int valor = 0;
+                string permisos = Session["Login_Permisos"] as string;
+                string[] listPermisos = permisos.Split(';');
+
+                string permiso = listPermisos.Where(x => x == "215").FirstOrDefault();
+
+                if (!string.IsNullOrEmpty(permiso))
+                    valor = 1;
+
+                return valor;
+            }
+            catch
+            {
+                return -1;
+            }
         }
 
         private void CargarRegimenesIVA()
@@ -217,7 +259,7 @@ namespace Tecnocuisine
                 TableCell celCodigo = new TableCell();
                 celCodigo.Text = cliente.codigo.ToString();
                 celCodigo.VerticalAlign = VerticalAlign.Middle;
-                celCodigo.HorizontalAlign = HorizontalAlign.Right;
+                celCodigo.HorizontalAlign = HorizontalAlign.Left;
                 celCodigo.Width = Unit.Percentage(5);
                 celCodigo.Attributes.Add("style", "padding-bottom: 1px !important;");
 
@@ -226,7 +268,7 @@ namespace Tecnocuisine
                 TableCell celRazonSocial = new TableCell();
                 celRazonSocial.Text = cliente.razonSocial;
                 celRazonSocial.VerticalAlign = VerticalAlign.Middle;
-                celRazonSocial.HorizontalAlign = HorizontalAlign.Right;
+                celRazonSocial.HorizontalAlign = HorizontalAlign.Left;
                 celRazonSocial.Width = Unit.Percentage(5);
                 celRazonSocial.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celRazonSocial);
@@ -235,7 +277,7 @@ namespace Tecnocuisine
                 TableCell celAlias = new TableCell();
                 celAlias.Text = cliente.alias;
                 celAlias.VerticalAlign = VerticalAlign.Middle;
-                celAlias.HorizontalAlign = HorizontalAlign.Right;
+                celAlias.HorizontalAlign = HorizontalAlign.Left;
                 celAlias.Width = Unit.Percentage(5);
                 celAlias.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celAlias);
@@ -243,7 +285,7 @@ namespace Tecnocuisine
                 TableCell celIVA = new TableCell();
                 celIVA.Text = cliente.RegimenesIVA.descripcion;
                 celIVA.VerticalAlign = VerticalAlign.Middle;
-                celIVA.HorizontalAlign = HorizontalAlign.Right;
+                celIVA.HorizontalAlign = HorizontalAlign.Left;
                 celIVA.Width = Unit.Percentage(5);
                 celIVA.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celIVA);
@@ -251,7 +293,7 @@ namespace Tecnocuisine
                 TableCell celFormaPago = new TableCell();
                 celFormaPago.Text = cliente.FormasPago.descripcion;
                 celFormaPago.VerticalAlign = VerticalAlign.Middle;
-                celFormaPago.HorizontalAlign = HorizontalAlign.Right;
+                celFormaPago.HorizontalAlign = HorizontalAlign.Left;
                 celFormaPago.Width = Unit.Percentage(5);
                 celFormaPago.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celFormaPago);
@@ -260,11 +302,12 @@ namespace Tecnocuisine
                 TableCell celAccion = new TableCell();
                 celAccion.Width = Unit.Percentage(3);
                 LinkButton btnDetalles = new LinkButton();
-                btnDetalles.CssClass = "btn btn-primary btn-xs";
+                btnDetalles.CssClass = "btn btn-xs";
+                btnDetalles.Style.Add("background-color", "transparent");
                 //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                 //btnDetalles.Attributes.Add("title data-original-title", "Editar");
                 btnDetalles.ID = "btnSelec_" + cliente.id + "_";
-                btnDetalles.Text = "<span><i class='fa fa-pencil'></i></span>";
+                btnDetalles.Text = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
                 btnDetalles.Click += new EventHandler(this.editarCliente);
                 celAccion.Controls.Add(btnDetalles);
 
@@ -274,10 +317,10 @@ namespace Tecnocuisine
 
                 LinkButton btnEliminar = new LinkButton();
                 btnEliminar.ID = "btnEliminar_" + cliente.id;
-                btnEliminar.CssClass = "btn btn-danger btn-xs";
-                btnEliminar.Attributes.Add("data-toggle", "modal");
+                btnEliminar.CssClass = "btn btn-xs";
+                btnEliminar.Style.Add("background-color", "transparent");
                 btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                btnEliminar.Text = "<span><i class='fa fa-trash - o'></i></span>";
+                btnEliminar.Text = "<span><i style='color:black' class='fa fa-trash - o'></i></span>";
                 btnEliminar.OnClientClick = "abrirdialog(" + cliente.id + ");";
                 celAccion.Controls.Add(btnEliminar);
 

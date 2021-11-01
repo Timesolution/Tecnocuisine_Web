@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Script.Serialization;
 using System.Web.Services;
 using System.Web.UI;
@@ -22,13 +23,14 @@ namespace Tecnocuisine
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            VerificarLogin();
 
             this.Mensaje = Convert.ToInt32(Request.QueryString["m"]);
             this.idCategoria = Convert.ToInt32(Request.QueryString["id"]);
             this.accion = Convert.ToInt32(Request.QueryString["a"]);
             if (!IsPostBack)
             {
-             
+
 
                 if (accion == 2)
                 {
@@ -46,6 +48,48 @@ namespace Tecnocuisine
             ObtenerInsumos();
 
 
+        }
+
+        private void VerificarLogin()
+        {
+            try
+            {
+                if (Session["User"] == null)
+                {
+                    Response.Redirect("../../Usuario/Login.aspx");
+                }
+                else
+                {
+                    if (this.verificarAcceso() != 1)
+                    {
+                        Response.Redirect("/Default.aspx?m=1", false);
+                    }
+                }
+            }
+            catch
+            {
+                Response.Redirect("../../Account/Login.aspx");
+            }
+        }
+        private int verificarAcceso()
+        {
+            try
+            {
+                int valor = 0;
+                string permisos = Session["Login_Permisos"] as string;
+                string[] listPermisos = permisos.Split(';');
+
+                string permiso = listPermisos.Where(x => x == "215").FirstOrDefault();
+
+                if (!string.IsNullOrEmpty(permiso))
+                    valor = 1;
+
+                return valor;
+            }
+            catch
+            {
+                return -1;
+            }
         }
 
 
@@ -120,6 +164,7 @@ namespace Tecnocuisine
                 HtmlGenericControl li = new HtmlGenericControl("li");
                 li.Attributes.Add("class", "dd-item");
                 li.Attributes.Add("data-id", item.id.ToString());
+                li.Attributes.Add("id", item.id.ToString());
                 li.Attributes.Add("runat", "server");
 
                 main.Controls.Add(li);
@@ -212,6 +257,7 @@ namespace Tecnocuisine
 
                         liHijo.Attributes.Add("class", "dd-item");
                         liHijo.Attributes.Add("data-id", item.id.ToString());
+                        liHijo.Attributes.Add("id", item.id.ToString());
                         liHijo.Attributes.Add("runat", "server");
 
                         ol.Controls.Add(liHijo);
@@ -518,6 +564,37 @@ namespace Tecnocuisine
             javaScript.MaxJsonLength = 5000000;
             string resultadoJSON = javaScript.Serialize(tiposAtributos);
             return resultadoJSON;
+        }
+
+        [WebMethod]
+        public static string ModificarRelaciones(string id)
+        {
+            ControladorCategoria controladorCategoria = new ControladorCategoria();
+            string[] ids = id.Split(';');
+            int i = controladorCategoria.EliminarTodasFamiliaCategorias();
+            if (i > 0)
+            {
+                foreach (var item in ids)
+                {
+                    if (item != "")
+                    {
+                        int? idPadre = null;
+
+                        try
+                        {
+                            idPadre = Convert.ToInt32(item.Split(',')[1]);
+
+                        }
+                        catch (Exception)
+                        {
+                        }
+                        int idCategoria = Convert.ToInt32(item.Split(',')[0]);
+                        Categorias_Familia familia = new Categorias_Familia { idCategoria = idCategoria, idPadre = idPadre };
+                        controladorCategoria.AgregarCategoriaFamilia(familia);
+                    }
+                }
+            }
+            return "1";
         }
 
         //#region ABM

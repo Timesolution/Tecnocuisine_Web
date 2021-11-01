@@ -5,7 +5,7 @@
         <div class="row animated fadeInRight">
             <div class="container-fluid">
 
-                <div class="ibox float-e-margins">
+                <div class="ibox nestable float-e-margins " style="padding: 1.5%">
                     <div class="ibox-title">
                         <h5>Atributos</h5>
                         <div class="ibox-tools">
@@ -17,7 +17,7 @@
                     <div class="ibox-content">
                         <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                             <ContentTemplate>
-                                <%--<div class="table-responsive">
+                                <%--<div class="table-responsive"  >
                                     <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                         <thead>
                                             <tr>
@@ -42,8 +42,8 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="ibox ">
+                                        <div class="col-lg-12 ">
+                                            <div class="ibox  float-e-margins ">
                                                 <div class="ibox-content">
 
 
