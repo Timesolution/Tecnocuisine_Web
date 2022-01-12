@@ -11,26 +11,27 @@
                         <div class="col-md-6">
                             <div class="widget lazur-bg p-lg text-center">
                                 <div class="m-b-md">
-                                    <i class="fa fa-list-alt fa-4x"></i>
-                                    <h1 class="m-xs">
-                                        <asp:Label Text="" ID="lblSucursal" runat="server" />
-                                    </h1>
                                     <h3 class="font-bold no-margins">
-                                        <asp:Label Text="" ID="lblCantidadSucursal" runat="server" />
-
+                                        <asp:Label Text="" ID="lblSucursal" runat="server" />
                                     </h3>
+                                    <h1 class="m-xs">
+                                        <asp:Label Text="" ID="lblCantidadSucursal" runat="server" />
+                                    </h1>
+
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="widget lazur-bg p-lg text-center">
                                 <div class="m-b-md">
-                                    <i class="fa fa-list-alt fa-4x"></i>
-                                    <h1 class="m-xs">Todas las sucursales</h1>
                                     <h3 class="font-bold no-margins">
-                                        <asp:Label Text="" ID="lblStockTotal" runat="server" />
+                                        Todas las sucursales
 
                                     </h3>
+                                    <h1 class="m-xs">
+                                        <asp:Label Text="" ID="lblStockTotal" runat="server" />
+                                    </h1>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -58,8 +59,7 @@
 
                             <ul id="myTab" class="nav nav-tabs">
                                 <li class="active"><a href="#home" data-toggle="tab">Stock</a></li>
-                                <li class=""><a href="#profile" data-toggle="tab">Stock Agrupado</a></li>
-                                <li class=""><a href="#profile2" data-toggle="tab">Movimiento Stock</a></li>
+                                <li class=""><a href="#profile2" data-toggle="tab">Auditoria Stock</a></li>
 
                             </ul>
                             <div class="tab-content">
@@ -72,7 +72,7 @@
 
                                                         <tr>
                                                             <th>Sucursal</th>
-                                                            <th>Stock</th>
+                                                            <th style="text-align: right">Stock</th>
 
                                                             <asp:PlaceHolder runat="server" ID="phImportacionesPendientes" Visible="false">
                                                                 <th>Importaciones Pendientes</th>
@@ -104,32 +104,7 @@
                                     </div>
                                 </div>
 
-                                <div class="tab-pane fade" id="profile">
-                                    <div class="col-md-12 col-xs-12">
-                                        <asp:UpdatePanel ID="UpdatePanel2" UpdateMode="Always" runat="server">
-                                            <ContentTemplate>
-                                                <table class="table table-striped table-bordered" style="margin-top: 3% !important">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Sucursal</th>
-                                                            <th>Stock</th>
 
-                                                        </tr>
-
-                                                    </thead>
-                                                    <tbody>
-                                                        <asp:PlaceHolder ID="phStockAgrupado" runat="server"></asp:PlaceHolder>
-                                                    </tbody>
-                                                </table>
-
-                                            </ContentTemplate>
-                                            <Triggers>
-                                            </Triggers>
-                                        </asp:UpdatePanel>
-
-
-                                    </div>
-                                </div>
 
                                 <div class="tab-pane fade" id="profile2">
 
@@ -172,13 +147,13 @@
                                         </div>
                                         <asp:UpdatePanel ID="UpdatePanel3" UpdateMode="Always" runat="server">
                                             <ContentTemplate>
-                                                <table class="table table-striped table-bordered table-hover "  style="margin-top: 3% !important">
+                                                <table class="table table-striped table-bordered table-hover " style="margin-top: 3% !important">
                                                     <thead>
                                                         <tr>
                                                             <th>Fecha</th>
                                                             <th>Tipo</th>
                                                             <th>Descripcion</th>
-                                                            <th>Cantidad</th>
+                                                            <th style="text-align: right">Cantidad</th>
                                                             <th>Cliente</th>
                                                         </tr>
 
@@ -221,45 +196,45 @@
                     <h4 class="modal-title">Filtrar</h4>
                 </div>
                 <div class="modal-body">
-                        <asp:UpdatePanel ID="UpdatePanel4" UpdateMode="Always" runat="server">
-                            <ContentTemplate>
+                    <asp:UpdatePanel ID="UpdatePanel4" UpdateMode="Always" runat="server">
+                        <ContentTemplate>
 
-                                <div class="row" style="margin-top: 2%">
-                                    <label class="col-sm-2 control-label editable">Fecha Desde</label>
-                                    <div class="col-sm-8">
-                                        <asp:TextBox ID="txtFechaDesdeMov" class="form-control"  runat="server"></asp:TextBox>
-                                    </div>
+                            <div class="row" style="margin-top: 2%">
+                                <label class="col-sm-2 control-label editable">Fecha Desde</label>
+                                <div class="col-sm-8">
+                                    <asp:TextBox ID="txtFechaDesdeMov" class="form-control" runat="server"></asp:TextBox>
                                 </div>
-                                <div class="row" style="margin-top: 2%">
-                                    <label class="col-sm-2 control-label editable">Fecha Hasta</label>
-                                    <div class="col-sm-8">
-                                        <asp:TextBox ID="txtFechaHastaMov" class="form-control"  runat="server"></asp:TextBox>
-                                    </div>
+                            </div>
+                            <div class="row" style="margin-top: 2%">
+                                <label class="col-sm-2 control-label editable">Fecha Hasta</label>
+                                <div class="col-sm-8">
+                                    <asp:TextBox ID="txtFechaHastaMov" class="form-control" runat="server"></asp:TextBox>
                                 </div>
-                                <div class="row" style="margin-top: 2%">
-                                    <label class="col-sm-2 control-label editable">Sucursal</label>
-                                    <div class="col-sm-8">
-                                        <asp:DropDownList ID="lstSucursal" runat="server"  class="form-control"></asp:DropDownList>
+                            </div>
+                            <div class="row" style="margin-top: 2%">
+                                <label class="col-sm-2 control-label editable">Sucursal</label>
+                                <div class="col-sm-8">
+                                    <asp:DropDownList ID="lstSucursal" runat="server" class="form-control"></asp:DropDownList>
 
-                                    </div>
                                 </div>
-                            </ContentTemplate>
-                            <Triggers>
-                            </Triggers>
-                        </asp:UpdatePanel>
+                            </div>
+                        </ContentTemplate>
+                        <Triggers>
+                        </Triggers>
+                    </asp:UpdatePanel>
 
-                    </div>
-
-
-                    <div class="modal-footer">
-                    <asp:LinkButton runat="server" ID="btnFiltrar" class="buttonLoading btn btn-primary" OnClick="btnFiltrar_Click"><i class="fa fa-check"></i>&nbsp;Filtrar </asp:LinkButton>
-
-                        <%--<asp:LinkButton ID="btnFiltrar" runat="server" Text="<span class='shortcut-icon icon-ok'></span>" class="btn btn-success" OnClick="btnFiltrar_Click" />--%>
-                    </div>
                 </div>
 
+
+                <div class="modal-footer">
+                    <asp:LinkButton runat="server" ID="btnFiltrar" class="buttonLoading btn btn-primary" OnClick="btnFiltrar_Click"><i class="fa fa-check"></i>&nbsp;Filtrar </asp:LinkButton>
+
+                    <%--<asp:LinkButton ID="btnFiltrar" runat="server" Text="<span class='shortcut-icon icon-ok'></span>" class="btn btn-success" OnClick="btnFiltrar_Click" />--%>
+                </div>
             </div>
+
         </div>
+    </div>
 
 
 
@@ -401,6 +376,12 @@
                 "width": "90%",
                 "height": "100%"
             });
+            $("#editable_filter").appendTo("#editable_length");
+
+            $("#editable_filter").css('display', 'inline');
+            $("#editable_filter").css('padding-left', '5%');
+            var parent = $("#editable_length")[0].parentNode;
+            parent.className = 'col-sm-12';
             var div = document.getElementById('editable_filter');
             var button = document.createElement('linkbutton');
             button.id = "btnAgregar";
@@ -411,8 +392,13 @@
             button.setAttribute("onclick", "vaciarFormulario()");
             button.setAttribute("data-toggle", "modal");
             button.setAttribute("class", "btn");
+            
             button.innerHTML = "<i style='color: black' class='fa fa-plus'></i>";
             div.prepend(button);
+            var filter = $("#editable_filter");
+            filter[0].id = 'editable_filter2';
+            var filter = $("#editable_length");
+            filter[0].id = 'editable_length2';
 
         });
     </script>

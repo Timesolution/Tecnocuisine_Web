@@ -200,11 +200,9 @@ C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Estetica Api.dll
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Modula_Api.dll
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\SMS_Notification.dll
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Report_Api.dll
-C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\WSAFIPFEC.dll
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Google.GData.Spreadsheets.dll
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Google.GData.Client.dll
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\MySql.Data.dll
-C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\QRCoder.dll
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Google.Apis.Calendar.v3.dll
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Remotion.Data.Linq.dll
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Task_Api.dll
@@ -223,3 +221,4 @@ C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\DocumentFormat.OpenXml.xml
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\itextsharp.xml
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Estetica Api.pdb
 C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\Estetica Api.dll.config
+C:\Repos\TecnoCuisineWeb\Tecnocuisine\bin\WSAFIPFE.dll.config

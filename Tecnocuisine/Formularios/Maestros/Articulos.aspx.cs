@@ -302,7 +302,7 @@ namespace Tecnocuisine
                 celDescripcion.Text = articulo.descripcion;
                 celDescripcion.VerticalAlign = VerticalAlign.Middle;
                 celDescripcion.HorizontalAlign = HorizontalAlign.Left;
-                celDescripcion.Width = Unit.Percentage(5);
+                celDescripcion.Width = Unit.Percentage(10);
                 celDescripcion.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celDescripcion);
 
@@ -327,7 +327,7 @@ namespace Tecnocuisine
                 celPrecioVenta.Text = articulo.precioVenta.ToString(); 
                 celPrecioVenta.VerticalAlign = VerticalAlign.Middle;
                 celPrecioVenta.HorizontalAlign = HorizontalAlign.Right;
-                celPrecioVenta.Width = Unit.Percentage(5);
+                celPrecioVenta.Width = Unit.Percentage(3);
                 celPrecioVenta.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celPrecioVenta);
 

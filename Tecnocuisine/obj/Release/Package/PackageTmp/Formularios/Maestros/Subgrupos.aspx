@@ -145,6 +145,12 @@
                 "width": "90%",
                 "height": "100%"
             });
+            $("#editable_filter").appendTo("#editable_length");
+
+            $("#editable_filter").css('display', 'inline');
+            $("#editable_filter").css('padding-left', '5%');
+            var parent = $("#editable_length")[0].parentNode;
+            parent.className = 'col-sm-12';
             var div = document.getElementById('editable_filter');
             var button = document.createElement('linkbutton');
             button.id = "btnAgregar";
@@ -155,9 +161,13 @@
             button.setAttribute("onclick", "vaciarFormulario()");
             button.setAttribute("data-toggle", "modal");
             button.setAttribute("class", "btn");
+            
             button.innerHTML = "<i style='color: black' class='fa fa-plus'></i>";
             div.prepend(button);
-
+            var filter = $("#editable_filter");
+            filter[0].id = 'editable_filter2';
+            var filter = $("#editable_length");
+            filter[0].id = 'editable_length2';
         });
     </script>
 

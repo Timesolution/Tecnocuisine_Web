@@ -22,10 +22,10 @@
                                     <thead>
                                         <tr>
                                             <th style="width: 10%">Codigo</th>
-                                            <th style="width:20%">Descripcion</th>
+                                            <th style="width:30%">Descripcion</th>
                                             <th style="width:15%">Grupo</th>
                                             <th style="width:10%">Ultima Actualizacion</th>
-                                            <th style="width:15%">Precio Venta</th>
+                                            <th style="width:8%">Precio Venta</th>
                                             <th style="width:5%"></th>
                                         </tr>
                                     </thead>
@@ -281,7 +281,13 @@
 
                 "width": "90%",
                 "height": "100%"
-            } );
+            });
+        $("#editable_filter").appendTo("#editable_length");
+       
+        $("#editable_filter").css('display', 'inline');
+        $("#editable_filter").css('padding-left', '5%');
+        var parent = $("#editable_length")[0].parentNode;
+        parent.className = 'col-sm-12';
         var div = document.getElementById('editable_filter');
         var button = document.createElement('linkbutton');
         button.id = "btnAgregar";
@@ -294,7 +300,11 @@
         button.setAttribute("class", "btn");
         button.innerHTML = "<i style='color: black' class='fa fa-plus'></i>";
         div.prepend(button);
+        var filter = $("#editable_filter")
+        filter[0].id = 'editable_filter2'
 
+        var filter = $("#editable_length");
+        filter[0].id = 'editable_length2';
         });
     </script>
     </asp:Content>

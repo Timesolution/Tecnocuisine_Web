@@ -386,11 +386,11 @@ namespace Tecnocuisine
 
                 //agrego fila a tabla
                 LinkButton btnInfo = new LinkButton();
-                btnInfo.CssClass = "btn btn-success btn-xs";
+                btnInfo.CssClass = "btn btn-xs";
                 //btnInfo.Attributes.Add("data-toggle", "tooltip");
                 //btnInfo.Attributes.Add("title data-original-title", "Editar");
                 btnInfo.ID = "btnInfoReceta_" + Receta.id + "_";
-                btnInfo.Text = "<span><i class='fa fa-search'></i></span>";
+                btnInfo.Text = "<span><i style='color:black' class='fa fa-search'></i></span>";
                 btnInfo.Click += new EventHandler(this.infoReceta);
                 celAccion.Controls.Add(btnInfo);
 
@@ -429,20 +429,20 @@ namespace Tecnocuisine
 
                 LinkButton btnSubAtributos = new LinkButton();
                 btnSubAtributos.ID = "btnSubAtributosReceta_" + Receta.id;
-                btnSubAtributos.CssClass = "btn btn-info btn-xs";
+                btnSubAtributos.CssClass = "btn btn-xs";
                 btnSubAtributos.Attributes.Add("data-toggle", "modal");
                 btnSubAtributos.Attributes.Add("onclick", "actualizarBotonAtributo("+Receta.id+")");
-                btnSubAtributos.Text = "<span><i class='fa fa-wrench - o'></i></span>";
+                btnSubAtributos.Text = "<span><i style='color:black' class='fa fa-wrench - o'></i></span>";
                 btnSubAtributos.OnClientClick = "abrirdialog(" + Receta.id + ");";
                 celAccion.Controls.Add(btnSubAtributos);
 
-                LinkButton btnArticulos = new LinkButton();
-                btnArticulos.ID = "btnArticulos" + Receta.id;
-                btnArticulos.CssClass = "btn btn-info btn-xs";
-                btnArticulos.Attributes.Add("data-toggle", "modal");
-                btnArticulos.Text = "<span><i class='fa fa-wrench - o'></i></span>";
-                btnArticulos.Click += new EventHandler(this.agregarArticulo);
-                celAccion.Controls.Add(btnArticulos);
+                //LinkButton btnArticulos = new LinkButton();
+                //btnArticulos.ID = "btnArticulos" + Receta.id;
+                //btnArticulos.CssClass = "btn btn-xs";
+                //btnArticulos.Attributes.Add("data-toggle", "modal");
+                //btnArticulos.Text = "<span><i class='fa fa-wrench - o'></i></span>";
+                //btnArticulos.Click += new EventHandler(this.agregarArticulo);
+                //celAccion.Controls.Add(btnArticulos);
 
 
 

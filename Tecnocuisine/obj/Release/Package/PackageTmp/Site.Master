@@ -97,8 +97,8 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div id="wrapper">
-            <nav class="navbar-default navbar-static-side" role="navigation">
+        <div style="background-color:gray" id="wrapper">
+            <nav class="navbar-default navbar-static-side" style="height:100%;background-color:gray" role="navigation">
                 <div class="sidebar-collapse">
                     <ul class="nav" id="side-menu">
                         <li class="nav-header">
@@ -123,7 +123,7 @@
                         <li>
 
                             <a  href="#"><i class="fa fa-user"></i><span class="nav-label ">Maestro</span><span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
+                            <ul class="nav nav-second-level" style="background-color:gray">
                                 <li>
                                     <ul>
                                         <li>
@@ -135,6 +135,7 @@
                                 <li><a href="../../Formularios/Maestros/Articulos.aspx">Articulos</a></li>
                                 <li><a href="../../Formularios/Maestros/Atributos.aspx">Atributos</a></li>
                                 <li><a href="../../Formularios/Maestros/Categorias.aspx">Categorias</a></li>
+                                <li><a href="../../Formularios/Maestros/Clasificaciones.aspx">Clasificaciones</a></li>
                                 <li><a href="../../Formularios/Maestros/Clientes.aspx">Clientes</a></li>
                                 <li><a href="../../Formularios/Maestros/EstadoClientes.aspx">Estados de clientes</a></li>
                                 <li><a href="../../Formularios/Maestros/Grupos.aspx">Grupos</a></li>
@@ -142,6 +143,7 @@
                                 <li><a href="../../Formularios/Maestros/Presentaciones.aspx">Presentaciones</a></li>
                                 <li><a href="../../Formularios/Maestros/Productos.aspx">Productos</a></li>
                                 <li><a href="../../Formularios/Maestros/Recetas.aspx">Recetas</a></li>
+                                <li><a href="../../Formularios/Maestros/SectorProductivo.aspx">Sector Productivo</a></li>
                                 <li><a href="../../Formularios/Maestros/Subgrupos.aspx">Subgrupos</a></li>
                                 <li><a href="../../Formularios/Maestros/InsumosF.aspx">Tipos de Atributos</a></li>
                                 <li><a href="../../Formularios/Maestros/Unidades.aspx">Unidades de medida</a></li>

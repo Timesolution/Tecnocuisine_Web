@@ -246,6 +246,8 @@
     <Content Include="font-awesome\css\font-awesome.min.css" />
     <Content Include="font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Formularios\Maestros\SectorProductivo.aspx" />
+    <Content Include="Formularios\Maestros\Clasificaciones.aspx" />
     <Content Include="Formularios\Maestros\StockPopUp.aspx" />
     <Content Include="Formularios\Maestros\Stock.aspx" />
     <Content Include="Formularios\Maestros\Clientes.aspx" />
@@ -785,6 +787,20 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\SectorProductivo.aspx.cs">
+      <DependentUpon>SectorProductivo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\SectorProductivo.aspx.designer.cs">
+      <DependentUpon>SectorProductivo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Clasificaciones.aspx.cs">
+      <DependentUpon>Clasificaciones.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Clasificaciones.aspx.designer.cs">
+      <DependentUpon>Clasificaciones.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Maestros\StockPopUp.aspx.cs">
       <DependentUpon>StockPopUp.aspx</DependentUpon>
