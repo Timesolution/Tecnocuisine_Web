@@ -21,7 +21,7 @@ namespace Tecnocuisine
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            VerificarLogin();
     
             this.Mensaje = Convert.ToInt32(Request.QueryString["m"]);
             this.accion = Convert.ToInt32(Request.QueryString["a"]);
@@ -52,6 +52,48 @@ namespace Tecnocuisine
 
             ObtenerPresentaciones();
 
+        }
+
+        private void VerificarLogin()
+        {
+            try
+            {
+                if (Session["User"] == null)
+                {
+                    Response.Redirect("../../Usuario/Login.aspx");
+                }
+                else
+                {
+                    if (this.verificarAcceso() != 1)
+                    {
+                        Response.Redirect("/Default.aspx?m=1", false);
+                    }
+                }
+            }
+            catch
+            {
+                Response.Redirect("../../Account/Login.aspx");
+            }
+        }
+        private int verificarAcceso()
+        {
+            try
+            {
+                int valor = 0;
+                string permisos = Session["Login_Permisos"] as string;
+                string[] listPermisos = permisos.Split(';');
+
+                string permiso = listPermisos.Where(x => x == "215").FirstOrDefault();
+
+                if (!string.IsNullOrEmpty(permiso))
+                    valor = 1;
+
+                return valor;
+            }
+            catch
+            {
+                return -1;
+            }
         }
 
 
@@ -137,11 +179,12 @@ namespace Tecnocuisine
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
                 LinkButton btnDetalles = new LinkButton();
-                btnDetalles.CssClass = "btn btn-primary btn-xs";
+                btnDetalles.CssClass = "btn btn-xs";
+                btnDetalles.Style.Add("background-color", "transparent");
                 //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                 //btnDetalles.Attributes.Add("title data-original-title", "Editar");
                 btnDetalles.ID = "btnSelec_" + presentacion.id + "_";
-                btnDetalles.Text = "<span><i class='fa fa-pencil'></i></span>";
+                btnDetalles.Text = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
                 btnDetalles.Click += new EventHandler(this.editarPresentacion);
                 celAccion.Controls.Add(btnDetalles);
 
@@ -151,10 +194,11 @@ namespace Tecnocuisine
 
                 LinkButton btnEliminar = new LinkButton();
                 btnEliminar.ID = "btnEliminar_" + presentacion.id;
-                btnEliminar.CssClass = "btn btn-danger btn-xs";
+                btnEliminar.CssClass = "btn btn-xs";
+                btnEliminar.Style.Add("background-color", "transparent");
                 btnEliminar.Attributes.Add("data-toggle", "modal");
                 btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                btnEliminar.Text = "<span><i class='fa fa-trash - o'></i></span>";
+                btnEliminar.Text = "<span><i style='color:black' class='fa fa-trash - o'></i></span>";
                 btnEliminar.OnClientClick = "abrirdialog(" + presentacion.id + ");";
                 celAccion.Controls.Add(btnEliminar);
 

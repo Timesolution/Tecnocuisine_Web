@@ -51,6 +51,10 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Gestion Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GestionAPI\Gestion Api\bin\Debug\Gestion Api.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
@@ -242,8 +246,13 @@
     <Content Include="font-awesome\css\font-awesome.min.css" />
     <Content Include="font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Formularios\Maestros\Clientes - Copy.aspx" />
+    <Content Include="Formularios\Maestros\SectorProductivo.aspx" />
+    <Content Include="Formularios\Maestros\Clasificaciones.aspx" />
+    <Content Include="Formularios\Maestros\StockPopUp.aspx" />
+    <Content Include="Formularios\Maestros\Stock.aspx" />
+    <Content Include="Formularios\Maestros\Clientes.aspx" />
     <Content Include="Formularios\Maestros\EstadoClientes.aspx" />
+    <Content Include="Formularios\Maestros\Subgrupos.aspx" />
     <Content Include="Formularios\Maestros\Grupos.aspx" />
     <Content Include="Formularios\Maestros\Marcas.aspx" />
     <Content Include="Formularios\Maestros\Vendedores.aspx" />
@@ -257,7 +266,6 @@
     <Content Include="Formularios\Maestros\Productos.aspx" />
     <Content Include="Formularios\Maestros\Unidades.aspx" />
     <Content Include="Formularios\Maestros\InsumosF.aspx" />
-    <Content Include="Formularios\Usuario\login.aspx" />
     <Content Include="Global.asax" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -750,6 +758,7 @@
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Site.Master" />
+    <Content Include="Account\login.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
@@ -779,12 +788,40 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Formularios\Maestros\Clientes - Copy.aspx.cs">
-      <DependentUpon>Clientes - Copy.aspx</DependentUpon>
+    <Compile Include="Formularios\Maestros\SectorProductivo.aspx.cs">
+      <DependentUpon>SectorProductivo.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Formularios\Maestros\Clientes - Copy.aspx.designer.cs">
-      <DependentUpon>Clientes - Copy.aspx</DependentUpon>
+    <Compile Include="Formularios\Maestros\SectorProductivo.aspx.designer.cs">
+      <DependentUpon>SectorProductivo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Clasificaciones.aspx.cs">
+      <DependentUpon>Clasificaciones.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Clasificaciones.aspx.designer.cs">
+      <DependentUpon>Clasificaciones.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\StockPopUp.aspx.cs">
+      <DependentUpon>StockPopUp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\StockPopUp.aspx.designer.cs">
+      <DependentUpon>StockPopUp.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Stock.aspx.cs">
+      <DependentUpon>Stock.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Stock.aspx.designer.cs">
+      <DependentUpon>Stock.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Clientes.aspx.cs">
+      <DependentUpon>Clientes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Clientes.aspx.designer.cs">
+      <DependentUpon>Clientes.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Maestros\EstadoClientes.aspx.cs">
       <DependentUpon>EstadoClientes.aspx</DependentUpon>
@@ -792,6 +829,13 @@
     </Compile>
     <Compile Include="Formularios\Maestros\EstadoClientes.aspx.designer.cs">
       <DependentUpon>EstadoClientes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Subgrupos.aspx.cs">
+      <DependentUpon>Subgrupos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Subgrupos.aspx.designer.cs">
+      <DependentUpon>Subgrupos.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Maestros\Grupos.aspx.cs">
       <DependentUpon>Grupos.aspx</DependentUpon>
@@ -884,17 +928,13 @@
     <Compile Include="Formularios\Maestros\InsumosF.aspx.designer.cs">
       <DependentUpon>InsumosF.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Formularios\Usuario\login.aspx.cs">
-      <DependentUpon>login.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Formularios\Usuario\login.aspx.designer.cs">
-      <DependentUpon>login.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Modelos\Mensaje.cs" />
+    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Mensajes.cs" />
+    <Compile Include="Models\Modal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
@@ -909,6 +949,13 @@
     </Compile>
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Account\login.aspx.cs">
+      <DependentUpon>login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Account\login.aspx.designer.cs">
+      <DependentUpon>login.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>

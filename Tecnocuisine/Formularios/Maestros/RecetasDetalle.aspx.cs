@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Script.Serialization;
 using System.Web.Services;
 using System.Web.UI;
@@ -22,7 +23,7 @@ namespace Tecnocuisine
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            VerificarLogin();
             this.Mensaje = Convert.ToInt32(Request.QueryString["m"]);
             this.idReceta = Convert.ToInt32(Request.QueryString["id"]);
             this.accion = Convert.ToInt32(Request.QueryString["a"]);
@@ -43,7 +44,47 @@ namespace Tecnocuisine
         }
 
 
+        private void VerificarLogin()
+        {
+            try
+            {
+                if (Session["User"] == null)
+                {
+                    Response.Redirect("../../Usuario/Login.aspx");
+                }
+                else
+                {
+                    if (this.verificarAcceso() != 1)
+                    {
+                        Response.Redirect("/Default.aspx?m=1", false);
+                    }
+                }
+            }
+            catch
+            {
+                Response.Redirect("../../Account/Login.aspx");
+            }
+        }
+        private int verificarAcceso()
+        {
+            try
+            {
+                int valor = 0;
+                string permisos = Session["Login_Permisos"] as string;
+                string[] listPermisos = permisos.Split(';');
 
+                string permiso = listPermisos.Where(x => x == "215").FirstOrDefault();
+
+                if (!string.IsNullOrEmpty(permiso))
+                    valor = 1;
+
+                return valor;
+            }
+            catch
+            {
+                return -1;
+            }
+        }
 
         //public void ObtenerInsumos()
         //{

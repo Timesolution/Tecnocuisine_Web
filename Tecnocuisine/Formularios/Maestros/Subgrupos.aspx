@@ -15,16 +15,9 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div id="nestable-menu">
-                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" onclick="vaciarFormulario();" class="btn btn-success">Nuevo&nbsp;<i style="color:white" class="fa fa-plus"></i></linkbutton>
-                            </div>
-                        </div>
-                    </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
-                            <div class="table-responsive">
+                            <div class="table-responsive"  >
                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                     <thead>
                                         <tr>
@@ -80,14 +73,19 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-sm-1">
-                            <label style="color: red;" class="danger">*</label>
-                        </div>
                         <label class="col-sm-2 control-label editable">Descripción</label>
                         <div class="col-sm-8">
                             <asp:TextBox ID="txtDescripcionSubGrupo" class="form-control" runat="server" />
 
                         </div>
+                    </div>
+                     <div class="row" style="margin-top: 2%">
+                        <label class="col-sm-2 control-label editable">Grupo</label>
+                        <div class="col-sm-8">
+                            <asp:DropDownList ID="ListGrupo"  class="form-control m-b" runat="server">
+                            </asp:DropDownList>
+                        </div>
+
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -111,7 +109,8 @@
             $('#modalAgregar').modal('show');
         }
         function vaciarFormulario() {
-            ContentPlaceHolder1_txtDescripcionUnidad.value = "";
+            ContentPlaceHolder1_txtDescripcionSubGrupo.value = "";
+            ContentPlaceHolder1_ListGrupo.value = "-1";
             ContentPlaceHolder1_hiddenEditar.value = "";
             window.history.pushState('', 'Subgrupos', location.protocol + '//' + location.host + location.pathname);
 
@@ -146,8 +145,29 @@
                 "width": "90%",
                 "height": "100%"
             });
+            $("#editable_filter").appendTo("#editable_length");
 
-
+            $("#editable_filter").css('display', 'inline');
+            $("#editable_filter").css('padding-left', '5%');
+            var parent = $("#editable_length")[0].parentNode;
+            parent.className = 'col-sm-12';
+            var div = document.getElementById('editable_filter');
+            var button = document.createElement('linkbutton');
+            button.id = "btnAgregar";
+            button.style.float = "right";
+            button.style.marginRight = "1%";
+            button.setAttribute("type", "button");
+            button.setAttribute("href", "#modalAgregar");
+            button.setAttribute("onclick", "vaciarFormulario()");
+            button.setAttribute("data-toggle", "modal");
+            button.setAttribute("class", "btn");
+            
+            button.innerHTML = "<i style='color: black' class='fa fa-plus'></i>";
+            div.prepend(button);
+            var filter = $("#editable_filter");
+            filter[0].id = 'editable_filter2';
+            var filter = $("#editable_length");
+            filter[0].id = 'editable_length2';
         });
     </script>
 

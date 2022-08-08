@@ -1,5 +1,11 @@
-﻿using System;
+﻿using Gestion_Api.Entitys;
+using Gestion_Api.Modelo;
+using Gestor_Solution.Modelo;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
+using System.Linq;
 using System.Web.Script.Serialization;
 using System.Web.Services;
 using System.Web.UI;
@@ -16,7 +22,9 @@ namespace Tecnocuisine
     {
         Mensaje m = new Mensaje();
         ControladorProducto controladorProducto = new ControladorProducto();
-
+        ControladorStock controladorStock = new ControladorStock();
+        Gestion_Api.Controladores.controladorArticulo controladorArticulo = new Gestion_Api.Controladores.controladorArticulo();
+        Gestion_Api.Controladores.ControladorArticulosEntity contArtEnt = new Gestion_Api.Controladores.ControladorArticulosEntity();
         int accion;
         int idProducto;
         int Mensaje;
@@ -26,6 +34,7 @@ namespace Tecnocuisine
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            VerificarLogin();
 
             this.Mensaje = Convert.ToInt32(Request.QueryString["m"]);
             this.accion = Convert.ToInt32(Request.QueryString["a"]);
@@ -63,9 +72,52 @@ namespace Tecnocuisine
                 }
 
             }
-
+            ObtenerGruposArticulos();
+            ObtenerSubGruposArticulos(Convert.ToInt32(ListGrupo.SelectedValue));
             ObtenerProductos();
             ObtenerPresentaciones();
+        }
+
+        private void VerificarLogin()
+        {
+            try
+            {
+                if (Session["User"] == null)
+                {
+                    Response.Redirect("../../Account/Login.aspx");
+                }
+                else
+                {
+                    if (this.verificarAcceso() != 1)
+                    {
+                        Response.Redirect("/Default.aspx?m=1", false);
+                    }
+                }
+            }
+            catch
+            {
+                Response.Redirect("../../Account/Login.aspx");
+            }
+        }
+        private int verificarAcceso()
+        {
+            try
+            {
+                int valor = 0;
+                string permisos = Session["Login_Permisos"] as string;
+                string[] listPermisos = permisos.Split(';');
+
+                string permiso = listPermisos.Where(x => x == "215").FirstOrDefault();
+
+                if (!string.IsNullOrEmpty(permiso))
+                    valor = 1;
+
+                return valor;
+            }
+            catch
+            {
+                return -1;
+            }
         }
 
         [WebMethod]
@@ -77,6 +129,24 @@ namespace Tecnocuisine
             JavaScriptSerializer javaScript = new JavaScriptSerializer();
             javaScript.MaxJsonLength = 5000000;
             string resultadoJSON = javaScript.Serialize(presentaciones);
+            return resultadoJSON;
+        }
+
+
+        [WebMethod]
+        public static string GetSubgrupos(int id)
+        {
+            Gestion_Api.Controladores.controladorArticulo controladorProducto = new Gestion_Api.Controladores.controladorArticulo();
+            var gruposList = controladorProducto.obtenerSubGrupoByGrupo(id);
+            string grupos = "";
+            foreach(var item in gruposList)
+            {
+                grupos += item.id + "," + item.descripcion + ";";
+            }
+
+            JavaScriptSerializer javaScript = new JavaScriptSerializer();
+            javaScript.MaxJsonLength = 5000000;
+            string resultadoJSON = javaScript.Serialize(grupos);
             return resultadoJSON;
         }
 
@@ -116,6 +186,55 @@ namespace Tecnocuisine
             }
         }
 
+
+        private void ObtenerGruposArticulos()
+        {
+            try
+            {
+
+                DataTable dt = controladorArticulo.obtenerGruposArticulos();
+
+                //agrego todos
+                DataRow dr = dt.NewRow();
+                dr["descripcion"] = "Seleccione...";
+                dr["id"] = -1;
+                dt.Rows.InsertAt(dr, 0);
+
+                this.ListGrupo.DataSource = dt;
+                this.ListGrupo.DataValueField = "id";
+                this.ListGrupo.DataTextField = "descripcion";
+
+                this.ListGrupo.DataBind();
+
+
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        private void ObtenerSubGruposArticulos(int grupo)
+        {
+            try
+            {
+                DataTable dt = controladorArticulo.obtenerSubGruposArticulos(grupo);
+
+                //agrego todos
+                DataRow dr = dt.NewRow();
+                dr["descripcion"] = "Seleccione...";
+                dr["id"] = -1;
+                dt.Rows.InsertAt(dr, 0);
+
+                this.ListSubgrupo.DataSource = dt;
+                this.ListSubgrupo.DataValueField = "id";
+                this.ListSubgrupo.DataTextField = "descripcion";
+
+                this.ListSubgrupo.DataBind();
+            }
+            catch (Exception ex)
+            {
+            }
+        }
 
         public void CargarPresentacionesPH(Tecnocuisine_API.Entitys.Presentaciones presentacion)
         {
@@ -192,6 +311,8 @@ namespace Tecnocuisine
 
             }
         }
+
+
 
         private void CargarUnidadesMedida()
         {
@@ -413,11 +534,12 @@ namespace Tecnocuisine
                 TableCell celAccion = new TableCell();
                 celAccion.Width = Unit.Percentage(9);
                 LinkButton btnDetalles = new LinkButton();
-                btnDetalles.CssClass = "btn btn-primary btn-xs";
+                btnDetalles.CssClass = "btn btn-xs";
+                btnDetalles.Style.Add("background-color","transparent");
                 //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                 //btnDetalles.Attributes.Add("title data-original-title", "Editar");
                 btnDetalles.ID = "btnSelec_" + producto.id + "_";
-                btnDetalles.Text = "<span><i class='fa fa-pencil'></i></span>";
+                btnDetalles.Text = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
                 btnDetalles.Click += new EventHandler(this.editarProducto);
                 celAccion.Controls.Add(btnDetalles);
 
@@ -425,12 +547,29 @@ namespace Tecnocuisine
                 l2.Text = "&nbsp";
                 celAccion.Controls.Add(l2);
 
+                LinkButton btnStock = new LinkButton();
+                btnStock.ID = "btnStock_" + producto.id;
+                btnStock.CssClass = "btn btn-xs";
+                btnStock.Style.Add("background-color", "transparent");
+                btnStock.Attributes.Add("data-toggle", "tooltip");
+                btnStock.Attributes.Add("title data-original-title", "Stock");
+                btnStock.Text = "<span><i style='color:black' class='fa fa-list-alt'></i></span>";
+
+                btnStock.PostBackUrl = "Stock.aspx?articulo=" + producto.id + "&fd=" + DateTime.Today.AddDays(-7).ToString("dd/MM/yyyy") + "&fh=" + DateTime.Today.ToString("dd/MM/yyyy");
+                celAccion.Controls.Add(btnStock);
+
+                Literal l3 = new Literal();
+                l2.Text = "&nbsp";
+                celAccion.Controls.Add(l3);
+
                 LinkButton btnEliminar = new LinkButton();
                 btnEliminar.ID = "btnEliminar_" + producto.id;
-                btnEliminar.CssClass = "btn btn-danger btn-xs";
+                btnEliminar.CssClass = "btn  btn-xs";
                 btnEliminar.Attributes.Add("data-toggle", "modal");
                 btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                btnEliminar.Text = "<span><i class='fa fa-trash - o'></i></span>";
+                btnEliminar.Text = "<span><i style='color:black' class='fa fa-trash - o'></i></span>";
+                btnEliminar.Style.Add("background-color", "transparent");
+
                 btnEliminar.OnClientClick = "abrirdialog(" + producto.id + ");";
                 celAccion.Controls.Add(btnEliminar);
 
@@ -513,6 +652,16 @@ namespace Tecnocuisine
 
                 if (resultado > 0)
                 {
+                    if (cbxGestion.Checked)
+                    {
+                        GuardarArticuloGestion(producto);
+                    }
+                    else
+                    {
+                        controladorStock.AgregarProductoStock(resultado);
+
+                    }
+
                     string[] atributos = idAtributo.Value.Split(',');
 
 
@@ -555,6 +704,68 @@ namespace Tecnocuisine
 
             }
 
+        }
+
+        private void GuardarArticuloGestion(Tecnocuisine_API.Entitys.Productos producto)
+        {
+            Articulo art = new Articulo();
+            art.codigo = producto.id.ToString();
+            art.descripcion = producto.descripcion;
+            art.proveedor.id = Convert.ToInt32(2);
+            art.grupo.id = Convert.ToInt32(hiddenGrupo.Value);
+            art.subGrupo.id = Convert.ToInt32(hiddenSubGrupo.Value);
+            art.costo = producto.costo;
+            art.margen = 0;
+            art.impInternos = 0;
+            art.ingBrutos = 0;
+            art.precioVenta = Convert.ToDecimal(producto.costo);
+            art.monedaVenta.id = 1;
+            art.stockMinimo = 0;
+            art.apareceLista = 1;
+            art.ubicacion = "";
+            art.fechaAlta = DateTime.Now;
+            art.ultActualizacion = DateTime.Now;
+            art.modificado = DateTime.Now;
+            art.procedencia.id = 1;
+            art.porcentajeIva = 21;
+            art.codigoBarra = art.codigo;
+            art.incidencia = 0;
+            art.costoImponible = 0;
+            art.costoReal = producto.costo;
+            art.precioSinIva = Convert.ToDecimal(producto.costo, CultureInfo.InvariantCulture);
+            art.listaCategoria.id = Convert.ToInt32(1);
+            art.observacion = "";
+
+            art.alerta = new AlertaArticulo();
+            art.alerta.descripcion = "";
+
+            int i = controladorArticulo.agregarArticulo(art);
+            if (i > 0)
+            {
+                //si logre dar de alta el articulo intento guardar los datos de despacho y los datos de presentaciones 
+                // i = idArticulo nuevo
+
+                Articulos_Catalogo artCat = new Articulos_Catalogo();
+                artCat.Articulo = i;
+                artCat.ApareceLista = 1;
+
+               int a = contArtEnt.agregarApareceLista(artCat);
+            }
+            //traspaso temporal para el siguiente
+            //int idart=0;
+           
+                if (i > 0)
+                {
+                    //agrego la marca
+                    Articulos_Marca am = new Articulos_Marca();
+                    am.idArticulo = i;
+                    am.idMarca = Convert.ToInt64(1);
+                    am.TipoDistribucion = Convert.ToInt32(1);
+                    //this.controlador.agregarArticuloMarca(i, Convert.ToInt32(this.DropListMarca.SelectedValue));
+                    i = this.contArtEnt.agregarMarca(am);
+                    i = 1;
+                }
+            
         }
 
         public void EditarProducto()
@@ -671,7 +882,7 @@ namespace Tecnocuisine
                 main.Controls.Add(li);
 
                 HtmlGenericControl div = new HtmlGenericControl("div");
-                div.Attributes.Add("class", "dd-handle editable");
+                div.Attributes.Add("class", "dd-handle not-draggable editable");
                 div.InnerText = item.Descripcion;
 
 
@@ -706,7 +917,7 @@ namespace Tecnocuisine
                     ol.Controls.Add(liHijo);
 
                     HtmlGenericControl div = new HtmlGenericControl("div");
-                    div.Attributes.Add("class", "dd-handle editable");
+                    div.Attributes.Add("class", "dd-handle not-draggable editable");
                     div.InnerText = item.descripcion;
 
                     HtmlGenericControl cbxAgregar = new HtmlGenericControl("input");
@@ -762,7 +973,7 @@ namespace Tecnocuisine
                         ol.Controls.Add(liHijo);
 
                         HtmlGenericControl div = new HtmlGenericControl("div");
-                        div.Attributes.Add("class", "dd-handle editable");
+                        div.Attributes.Add("class", "dd-handle not-draggable editable");
                         div.InnerText = item.descripcion;
 
                         HtmlGenericControl cbxAgregar = new HtmlGenericControl("input");
@@ -818,7 +1029,7 @@ namespace Tecnocuisine
                 olCategorias.Controls.Add(li);
 
                 HtmlGenericControl div = new HtmlGenericControl("div");
-                div.Attributes.Add("class", "dd-handle editable");
+                div.Attributes.Add("class", "dd-handle not-draggable editable");
                 div.InnerText = item.descripcion;
 
                 li.Controls.Add(div);
@@ -865,7 +1076,7 @@ namespace Tecnocuisine
                         ol.Controls.Add(liHijo);
 
                         HtmlGenericControl div = new HtmlGenericControl("div");
-                        div.Attributes.Add("class", "dd-handle editable");
+                        div.Attributes.Add("class", "dd-handle not-draggable editable");
                         div.InnerText = item.descripcion;
 
 
@@ -902,5 +1113,8 @@ namespace Tecnocuisine
 
 
         }
+
+     
+
     }
 }

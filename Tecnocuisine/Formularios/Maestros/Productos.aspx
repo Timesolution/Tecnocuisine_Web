@@ -1,26 +1,11 @@
-﻿<%@ Page Title="Productos" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Productos.aspx.cs" Inherits="Tecnocuisine.Productos" %>
+﻿<%@ Page Title="Productos" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" EnableEventValidation="false" CodeBehind="Productos.aspx.cs" Inherits="Tecnocuisine.Productos" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <div class="wrapper wrapper-content">
         <div class="container-fluid">
             <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Productos</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                    </div>
-                </div>
                 <div class="ibox-content">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div id="nestable-menu">
-                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" onclick="vaciarFormulario();" class="btn btn-success">Nuevo&nbsp;<i style="color:white" class="fa fa-plus"></i></linkbutton>
-                            </div>
-                        </div>
-                    </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
 
@@ -37,7 +22,7 @@
                                                             <th>Descripcion</th>
                                                             <th>Categoria</th>
                                                             <th>Atributo</th>
-                                                            <th>Unidades de medida</th>
+                                                            <th>Unidades</th>
                                                             <th>Costo</th>
                                                             <th>Presentaciones</th>
                                                             <th>Alicuota</th>
@@ -81,6 +66,7 @@
     </div>
 
     <div id="modalAgregar" class="modal" tabindex="-1" role="dialog">
+    
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
@@ -159,17 +145,44 @@
                         </div>
 
                     </div>
+                     <div class="row" style="margin-top: 2%">
+                        <label class="col-sm-2 control-label editable">Sistema Gestion</label>
+                        <div class="col-sm-7">
+                            <div class="input-group m-b">
+                                <asp:CheckBox  ID="cbxGestion" onclick="mostrarGestion()"  runat="server" />
+                            </div>
+                        </div>
 
+                    </div>
+                    <div class="row" runat="server" id="divGrupo" style="margin-top: 2%;display: none;">
+                        <label class="col-sm-2 control-label editable">Grupo</label>
+                        <div class="col-sm-7">
+                                <asp:DropDownList ID="ListGrupo" onchange="actualizarSubGrupo()"  class="form-control m-b" runat="server">
+                                </asp:DropDownList>
+                            <asp:HiddenField  runat="server" ID="hiddenGrupo"/>
+                        </div>
+
+                    </div>
+                    <div class="row" runat="server" id="divSubgrupo" style="margin-top: 2%;display:none">
+                        <label class="col-sm-2 control-label editable">Subgrupo</label>
+                        <div class="col-sm-7">
+                                <asp:DropDownList ID="ListSubgrupo" onchange="actualizarHiddenSubGrupo()" class="form-control m-b" runat="server">
+                                </asp:DropDownList>
+                        </div>
+                            <asp:HiddenField  runat="server" ID="hiddenSubGrupo"/>
+
+                    </div>
 
                 </div>
                 <div class="modal-footer">
-                    <asp:LinkButton runat="server" ID="btnGuardar" class="buttonLoading btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <asp:LinkButton runat="server" ID="btnGuardar" class="buttonLoading btn btn-primary"  OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
                     <asp:HiddenField ID="hiddenEditar" runat="server" />
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
 
                 </div>
             </div>
         </div>
+              
     </div>
 
 
@@ -278,15 +291,13 @@
                     <div class="ibox-content">
                         <asp:UpdatePanel ID="UpdatePanel4" runat="server">
                             <ContentTemplate>
-                                <div class="wrapper wrapper-content  animated fadeInRight">
 
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="ibox ">
-                                                <div class="ibox-content">
                                                     <asp:UpdatePanel ID="UpdatePanel5" runat="server">
                                                         <ContentTemplate>
-                                                            <div class="table-responsive">
+                                                            <div class="table-responsive" >
                                                                 <table class="table table-striped table-bordered table-hover " id="editable2">
 
                                                                     <thead>
@@ -311,9 +322,6 @@
                                         </div>
 
                                     </div>
-                                </div>
-                                </div>
-
                             </ContentTemplate>
 
                         </asp:UpdatePanel>
@@ -332,15 +340,72 @@
 
 
 
-    <script>           
+    <script>         
+        function mostrarGestion() {
+            var checkBox = document.getElementById("ContentPlaceHolder1_cbxGestion");
+            // Get the output text
+            var div1 = document.getElementById("ContentPlaceHolder1_divGrupo");
+            var div2 = document.getElementById("ContentPlaceHolder1_divSubgrupo");
+
+            // If the checkbox is checked, display the output text
+            if (checkBox.checked == true) {
+                div1.style.display = "block";
+                div2.style.display = "block";
+            } else {
+                div1.style.display = "none";
+                div2.style.display = "none";
+            }
+        }
+
+        
         function abrirdialog(valor) {
             document.getElementById('<%= hiddenID.ClientID %>').value = valor;
             $('#modalconfirmacion2').modal('show');
         }
     </script>
 
+    
 
 
+    <script type="text/javascript">
+        function actualizarSubGrupo() {
+            var hiddenGrupo = document.getElementById('ContentPlaceHolder1_hiddenGrupo');
+            hiddenGrupo.value = ContentPlaceHolder1_ListGrupo.value;
+            
+            $.ajax({
+                method: "POST",
+                url: "Productos.aspx/GetSubgrupos",
+                data: '{id: "' + ContentPlaceHolder1_ListGrupo.value + '" }',
+                contentType: "application/json",
+                dataType: 'json',
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                    //$.msgbox("No se pudo cargar la tabla", { type: "error" });
+                },
+                success: successCambiarListSubgrupos
+            });
+
+
+        }
+
+        function successCambiarListSubgrupos(response) {
+            var obj = JSON.parse(response.d);
+            var data = obj.split(';');
+
+            for (var i = 0; i < data.length; i++) {
+                if (data[i] != "") {
+                    $('#ContentPlaceHolder1_ListSubgrupo').append($('<option>', {
+                        value: data[i].split(',')[0],
+                        text: data[i].split(',')[1]
+                    }));
+                }
+            }
+        }
+        function actualizarHiddenSubGrupo() {
+            var hiddenSubGrupo = document.getElementById('ContentPlaceHolder1_hiddenSubGrupo');
+            hiddenSubGrupo.value = ContentPlaceHolder1_ListSubgrupo.value;
+        }
+    </script> 
     <script type="text/javascript">
         function openModal() {
             $('#modalAgregar').modal('show');
@@ -474,6 +539,9 @@
 
     <script>
         $(document).ready(function () {
+
+
+
             $('.dataTables-example').dataTable({
                 responsive: true,
                 "dom": 'T<"clear">lfrtip',
@@ -519,9 +587,37 @@
                 "width": "90%",
                 "height": "100%"
             });
+            $("#editable_filter").appendTo("#editable_length");
 
+            $("#editable_filter").css('display', 'inline');
+            $("#editable_filter").css('padding-left', '5%');
+            var parent = $("#editable_length")[0].parentNode;
+            parent.className = 'col-sm-12';
+            var div = document.getElementById('editable_filter');
+            var button = document.createElement('linkbutton');
+            button.id = "btnAgregar";
+            button.style.float = "right";
+            button.style.marginRight = "1%";
+            button.setAttribute("type", "button");
+            button.setAttribute("href", "#modalAgregar");
+            button.setAttribute("onclick", "vaciarFormulario()");
+            button.setAttribute("data-toggle", "modal");
+            button.setAttribute("class", "btn");
+            
+            button.innerHTML = "<i style='color: black' class='fa fa-plus'></i>";
+            div.prepend(button);
+            var filter = $("#editable_filter");
+            filter[0].id = 'editable_filter2';
 
+            var filter = $("#editable_length");
+            filter[0].id = 'editable_length2';
+            var filter = $("#editable_length");
+            filter[0].id = 'editable_length2';
         });
+
+ 
+
+ 
     </script>
     <script>
         $(document).ready(function () {

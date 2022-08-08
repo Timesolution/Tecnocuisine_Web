@@ -24,13 +24,13 @@
                     </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
-                            <div class="table-responsive">
+                            <div class="table-responsive"  >
                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th>Descripcion</th>
-                                            <th></th>
+                                            <th style="width:20%">#</th>
+                                            <th style="width:40%">Descripcion</th>
+                                            <th style="width:30%"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
