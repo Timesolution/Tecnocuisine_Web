@@ -1,6 +1,15 @@
 ﻿<%@ Page Title="Categorias" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Categorias.aspx.cs" Inherits="Tecnocuisine.Categorias" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <style>
+        .drag_disabled{
+            pointer-events:none;
+        }
+        .drag_enabled{
+            pointer-events:all;
+        }
+    </style>
+
     <div class="wrapper wrapper-content">
         <div class="row animated fadeInRight">
             <div class="container-fluid-nestable">
@@ -147,6 +156,7 @@
 
         </div>
     </div>
+
     <div id="modalAgregar" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
@@ -308,11 +318,6 @@
         }
     </script>
 
-
-
-
-
-
     <script>
         $(document).ready(function () {
 
@@ -332,7 +337,9 @@
                 group: 1
             }).on('change', updateOutput);
 
-
+            $('.dd').each(function () {
+                console.log(this)
+            });
 
             // output initial serialised data
             updateOutput($('#nestable').data('output', $('#nestable-output')));
@@ -350,6 +357,7 @@
             });
         });
     </script>
+
     <script type="text/javascript">
         function openModal() {
             $('#modalAgregar').modal('show');

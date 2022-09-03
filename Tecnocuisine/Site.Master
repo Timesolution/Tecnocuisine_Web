@@ -92,13 +92,21 @@
     <script src="/../js/plugins/dataTables/dataTables.responsive.js"></script>
     <script src="/../js/plugins/dataTables/dataTables.tableTools.min.js"></script>
     <script src="/../js/daypilot-modal-2.0.js"></script>
+    <style>
+        .text-white {
+            color: white !important;
+        }
 
+        .nav > li > a:hover, .nav > li > a:focus {
+            background-color: rgba(238,238,238,0.5);
+        }
+    </style>
 
 </head>
 <body>
     <form id="form1" runat="server">
-        <div style="background-color:gray" id="wrapper">
-            <nav class="navbar-default navbar-static-side" style="height:100%;background-color:gray" role="navigation">
+        <div id="wrapper">
+            <nav class="navbar-default navbar-static-side" style="height: 100%;" role="navigation">
                 <div class="sidebar-collapse">
                     <ul class="nav" id="side-menu">
                         <li class="nav-header">
@@ -122,51 +130,62 @@
                         </li>
                         <li>
 
-                            <a  href="#"><i class="fa fa-user"></i><span class="nav-label ">Maestro</span><span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level" style="background-color:gray">
+                            <a href="#"><i class="fa fa-user text-white"></i><span class="nav-label " style="color: white;">Maestro</span><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
                                 <li>
                                     <ul>
                                         <li>
-                                            <a class="tooltip" href="#"><i class="fa fa-user"></i><span class="nav-label tooltiptext">Maestro</span><span class="fa arrow"></span></a>
+                                            <a class="tooltip text-white" href="#"><i class="fa fa-user"></i><span class="nav-label tooltiptext">Maestro</span><span class="fa arrow"></span></a>
                                         </li>
                                     </ul>
                                 </li>
-                                <li><a href="../../Formularios/Maestros/Alicuotas.aspx">Alicuotas IVA</a></li>
-                                <li><a href="../../Formularios/Maestros/Articulos.aspx">Articulos</a></li>
-                                <li><a href="../../Formularios/Maestros/Atributos.aspx">Atributos</a></li>
-                                <li><a href="../../Formularios/Maestros/Categorias.aspx">Categorias</a></li>
-                                <li><a href="../../Formularios/Maestros/Clasificaciones.aspx">Clasificaciones</a></li>
-                                <li><a href="../../Formularios/Maestros/Clientes.aspx">Clientes</a></li>
-                                <li><a href="../../Formularios/Maestros/EstadoClientes.aspx">Estados de clientes</a></li>
-                                <li><a href="../../Formularios/Maestros/Grupos.aspx">Grupos</a></li>
-                                <li><a href="../../Formularios/Maestros/Marcas.aspx">Marcas</a></li>
-                                <li><a href="../../Formularios/Maestros/Presentaciones.aspx">Presentaciones</a></li>
-                                <li><a href="../../Formularios/Maestros/Productos.aspx">Productos</a></li>
-                                <li><a href="../../Formularios/Maestros/Recetas.aspx">Recetas</a></li>
-                                <li><a href="../../Formularios/Maestros/SectorProductivo.aspx">Sector Productivo</a></li>
-                                <li><a href="../../Formularios/Maestros/Subgrupos.aspx">Subgrupos</a></li>
-                                <li><a href="../../Formularios/Maestros/InsumosF.aspx">Tipos de Atributos</a></li>
-                                <li><a href="../../Formularios/Maestros/Unidades.aspx">Unidades de medida</a></li>
-                                <li><a href="../../Formularios/Maestros/Vendedores.aspx">Vendedores</a></li>
-                                <%--<li><a href="../Contactos/MediadoresABM.aspx?a=1">Mediador</a></li>--%>
-                                <%--<li><a href="../Contactos/Contactos.aspx?t=6">Asistentes</a></li>--%>
-                                <%--t=6 refiere al tipo de contacto = Asistente--%>
-                                <%--<li><a href="../Contactos/Contactos.aspx?t=2">Compañías</a></li>--%>
-                                <%--t=2 refiere al tipo de contacto = compañia--%>
-                                <%--<li><a href="../Contactos/Contactos.aspx?t=4">Requeridos</a></li>--%>
-                                <%--t=4 refiere al tipo de contacto = requeridos--%>
-                                <%--<li><a href="../Contactos/Contactos.aspx?t=3">Requirentes</a></li>--%>
-                                <%--t=3 refiere al tipo de contacto = requirentes--%>
-                                <%--<li><a href="../Contactos/Contactos.aspx?t=5">Letrados</a></li>--%>
-                                <%--t=5 refiere al tipo de contacto = Letrado--%>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Alicuotas.aspx">Alicuotas IVA</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Articulos.aspx">Articulos</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Atributos.aspx">Atributos</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Categorias.aspx">Categorias</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Clasificaciones.aspx">Clasificaciones</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Clientes.aspx">Clientes</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/EstadoClientes.aspx">Estados de clientes</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Grupos.aspx">Grupos</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Marcas.aspx">Marcas</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Presentaciones.aspx">Presentaciones</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Productos.aspx">Productos</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Recetas.aspx">Recetas</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/SectorProductivo.aspx">Sector Productivo</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Subgrupos.aspx">Subgrupos</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/InsumosF.aspx">Tipos de Atributos</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Unidades.aspx">Unidades de medida</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Vendedores.aspx">Vendedores</a></li>
+                            </ul>
+                        </li>
+                        <li >
+                            <a href="#">
+                                <i class="fa fa-calculator text-white"></i>
+                                <span class="nav-label " style="color: white;">Contabilidad</span>
+                                <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Contabilidad/PlanDeCuentas.aspx">Plan de cuentas</a></li>
+                            </ul>
+                        </li>
+                        <li >
+                            <a href="#">
+                                <i class="fa fa-gears text-white"></i>
+                                <span class="nav-label " style="color: white;">Administrador</span>
+                                <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Administrador/Empresas.aspx">Empresa</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Administrador/Sucursales.aspx">Sucursales</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Administrador/Sectores.aspx">Sectores</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Administrador/PuntosDeVenta.aspx">Puntos de Venta</a></li>
                             </ul>
                         </li>
                         <li>
                             <asp:LinkButton Text="text" runat="server" ID="btnGestion" OnClick="btnGestion_Click">
-                                        <i class="fa fa-desktop"></i>
-                                        <span class="nav-label">Gestion</span> </asp:LinkButton>
-
-
+                                <i class="fa fa-desktop text-white"></i>
+                                <span class="nav-label" style="color:white;">Gestion</span>
+                            </asp:LinkButton>
                         </li>
                     </ul>
 

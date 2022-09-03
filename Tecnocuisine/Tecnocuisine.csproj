@@ -51,9 +51,8 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Gestion Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\GestionAPI\Gestion Api\bin\Debug\Gestion Api.dll</HintPath>
+    <Reference Include="Gestion Api">
+      <HintPath>..\..\Gestion\Gestion_Api\Gestion Api\bin\Debug\Gestion Api.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -135,7 +134,7 @@
     </Reference>
     <Reference Include="Tecnocuisine_API, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TecnoCuisineApi\Tecnocuisine_API\bin\Debug\Tecnocuisine_API.dll</HintPath>
+      <HintPath>..\..\Tecnocuisine_Api\Tecnocuisine_API\bin\Debug\Tecnocuisine_API.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -246,6 +245,11 @@
     <Content Include="font-awesome\css\font-awesome.min.css" />
     <Content Include="font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Formularios\Administrador\Empresas.aspx" />
+    <Content Include="Formularios\Administrador\Sectores.aspx" />
+    <Content Include="Formularios\Administrador\PuntosDeVenta.aspx" />
+    <Content Include="Formularios\Administrador\Sucursales.aspx" />
+    <Content Include="Formularios\Contabilidad\PlanDeCuentas.aspx" />
     <Content Include="Formularios\Maestros\SectorProductivo.aspx" />
     <Content Include="Formularios\Maestros\Clasificaciones.aspx" />
     <Content Include="Formularios\Maestros\StockPopUp.aspx" />
@@ -787,6 +791,41 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Administrador\Empresas.aspx.cs">
+      <DependentUpon>Empresas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Administrador\Empresas.aspx.designer.cs">
+      <DependentUpon>Empresas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Administrador\Sectores.aspx.cs">
+      <DependentUpon>Sectores.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Administrador\Sectores.aspx.designer.cs">
+      <DependentUpon>Sectores.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Administrador\PuntosDeVenta.aspx.cs">
+      <DependentUpon>PuntosDeVenta.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Administrador\PuntosDeVenta.aspx.designer.cs">
+      <DependentUpon>PuntosDeVenta.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Administrador\Sucursales.aspx.cs">
+      <DependentUpon>Sucursales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Administrador\Sucursales.aspx.designer.cs">
+      <DependentUpon>Sucursales.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Contabilidad\PlanDeCuentas.aspx.cs">
+      <DependentUpon>PlanDeCuentas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Contabilidad\PlanDeCuentas.aspx.designer.cs">
+      <DependentUpon>PlanDeCuentas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Maestros\SectorProductivo.aspx.cs">
       <DependentUpon>SectorProductivo.aspx</DependentUpon>

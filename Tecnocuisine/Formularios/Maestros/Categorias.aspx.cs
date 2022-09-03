@@ -93,51 +93,6 @@ namespace Tecnocuisine
         }
 
 
-
-
-        //public void ObtenerInsumos()
-        //{
-        //    try
-        //    {
-        //        var insumos = controladorInsumo.ObtenerTodosInsumos();
-
-        //        if (insumos.Count > 0)
-        //        {
-
-        //            foreach (var item in insumos)
-        //            {
-        //                CargarInsumosPH(item);
-
-        //            }
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //    }
-        //}
-
-        //private void cargarCategorias()
-        //{
-        //    try
-        //    {
-        //        this.ListCategorias.DataSource = controlador.ObtenerCategorias();
-        //        this.ListCategorias.DataValueField = "id";
-        //        this.ListCategorias.DataTextField = "descripcion";
-        //        this.ListCategorias.DataBind();
-        //        this.ListCategorias.Items.Insert(0, new ListItem("Sin Padre", "-1"));
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //    }
-        //}
-
-
-
-
         protected void GuardarCategoria()
         {
             Tecnocuisine_API.Entitys.Categorias categoria = new Tecnocuisine_API.Entitys.Categorias();
@@ -170,7 +125,7 @@ namespace Tecnocuisine
                 main.Controls.Add(li);
 
                 HtmlGenericControl div = new HtmlGenericControl("div");
-                div.Attributes.Add("class", "dd-handle editable");
+                div.Attributes.Add("class", "dd-handle drag_disabled editable");
                 div.InnerText = item.descripcion;
 
                 li.Controls.Add(div);
@@ -180,7 +135,7 @@ namespace Tecnocuisine
 
                 HtmlGenericControl btnEliminar = new HtmlGenericControl("button");
                 btnEliminar.ID = "btnEliminar_" + item.id;
-                btnEliminar.Attributes.Add("class", "btn btn-danger btn-xs pull-right");
+                btnEliminar.Attributes.Add("class", "btn btn-danger btn-xs pull-right drag_enabled");
                 btnEliminar.Attributes.Add("data-toggle", "modal");
                 btnEliminar.Attributes.Add("style", "margin-right: 0.3%;");
                 btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
@@ -193,7 +148,7 @@ namespace Tecnocuisine
                 div.Controls.Add(l4);
 
                 HtmlGenericControl btnDetalles = new HtmlGenericControl("button");
-                btnDetalles.Attributes.Add("class", "btn btn-success btn-xs pull-right");
+                btnDetalles.Attributes.Add("class", "btn btn-success btn-xs pull-right drag_enabled");
                 btnDetalles.Attributes.Add("style", "margin-right: 0.3%;");
                 //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                 //btnDetalles.Attributes.Add("title data-original-title", "Editar");
@@ -209,7 +164,7 @@ namespace Tecnocuisine
 
 
                 HtmlGenericControl btnAgregar = new HtmlGenericControl("button");
-                btnAgregar.Attributes.Add("class", "btn btn-primary btn-xs pull-right");
+                btnAgregar.Attributes.Add("class", "btn btn-primary btn-xs pull-right drag_enabled");
                 btnAgregar.Attributes.Add("style", "margin-right: 0.3%;");
                 //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                 //btnDetalles.Attributes.Add("title data-original-title", "Editar");
@@ -226,7 +181,7 @@ namespace Tecnocuisine
 
                 HtmlGenericControl btnSubAtributos = new HtmlGenericControl("button");
                 btnSubAtributos.ID = "btnSubAtributo_" + item.id;
-                btnSubAtributos.Attributes.Add("class", "btn btn-info btn-xs pull-right");
+                btnSubAtributos.Attributes.Add("class", "btn btn-info btn-xs pull-right drag_enabled");
                 btnSubAtributos.Attributes.Add("style", "margin-right: 0.3%;");
                 btnSubAtributos.Attributes.Add("data-toggle", "modal");
                 btnSubAtributos.Attributes.Add("href", "#modalSubAtributo");
@@ -263,7 +218,7 @@ namespace Tecnocuisine
                         ol.Controls.Add(liHijo);
 
                         HtmlGenericControl div = new HtmlGenericControl("div");
-                        div.Attributes.Add("class", "dd-handle editable");
+                        div.Attributes.Add("class", "dd-handle drag_disabled editable");
                         div.InnerText = item.descripcion;
 
 
@@ -272,7 +227,7 @@ namespace Tecnocuisine
 
                         HtmlGenericControl btnEliminar = new HtmlGenericControl("button");
                         btnEliminar.ID = "btnEliminar_" + item.id;
-                        btnEliminar.Attributes.Add("class", "btn btn-danger btn-xs pull-right");
+                        btnEliminar.Attributes.Add("class", "btn btn-danger btn-xs pull-right drag_enabled");
                         btnEliminar.Attributes.Add("style", "margin-right: 0.3%;");
                         btnEliminar.Attributes.Add("data-toggle", "modal");
                         btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
@@ -285,7 +240,7 @@ namespace Tecnocuisine
                         div.Controls.Add(l2);
 
                         HtmlGenericControl btnDetalles = new HtmlGenericControl("button");
-                        btnDetalles.Attributes.Add("class", "btn btn-success btn-xs pull-right");
+                        btnDetalles.Attributes.Add("class", "btn btn-success btn-xs pull-right drag_enabled");
                         btnDetalles.Attributes.Add("style", "margin-right: 0.3%;");
                         //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                         //btnDetalles.Attributes.Add("title data-original-title", "Editar");
@@ -301,7 +256,7 @@ namespace Tecnocuisine
 
 
                         HtmlGenericControl btnAgregar = new HtmlGenericControl("button");
-                        btnAgregar.Attributes.Add("class", "btn btn-primary btn-xs pull-right");
+                        btnAgregar.Attributes.Add("class", "btn btn-primary btn-xs pull-right drag_enabled");
                         btnAgregar.Attributes.Add("style", "margin-right: 0.3%;");
                         //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                         //btnDetalles.Attributes.Add("title data-original-title", "Editar");
