@@ -71,7 +71,7 @@
     <script src="/../js/plugins/jeditable/jquery.jeditable.js"></script>
 
     <!-- Peity -->
-    <script src="js/plugins/peity/jquery.peity.min.js"></script>
+    <%--<script src="js/plugins/peity/jquery.peity.min.js"></script>--%>
 
 
     <!-- Custom and plugin javascript -->
@@ -158,7 +158,7 @@
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Vendedores.aspx">Vendedores</a></li>
                             </ul>
                         </li>
-                        <li >
+                        <li>
                             <a href="#">
                                 <i class="fa fa-calculator text-white"></i>
                                 <span class="nav-label " style="color: white;">Contabilidad</span>
@@ -168,7 +168,7 @@
                                 <li><a style="color: white !important;" href="../../Formularios/Contabilidad/PlanDeCuentas.aspx">Plan de cuentas</a></li>
                             </ul>
                         </li>
-                        <li >
+                        <li>
                             <a href="#">
                                 <i class="fa fa-gears text-white"></i>
                                 <span class="nav-label " style="color: white;">Administrador</span>
@@ -215,11 +215,8 @@
                     </nav>
                     <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                         <div class="navbar-header">
-                            <%--                        <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
-                            <div class="form-group">
-                                <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
-                            </div>
-                        </form>--%>
+                            <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
+                            </form>
                         </div>
                     </nav>
 

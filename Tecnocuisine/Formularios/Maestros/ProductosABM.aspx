@@ -77,13 +77,13 @@
                                             <label id="valDocFrente">Imagen del producto</label><br/>
                                             <div class="image-crop btn-group">
                                                 <%--<label for="ContentPlaceHolder1_inputImage2" style="display:contents" class="lblImgDocF">--%>
-                                                <label for="inputImage2" class="lblImgDocF">
+                                                <label for="ContentPlaceHolder1_inputImage2" class="lblImgDocF">
                                                     <img src="../../Img/photo.png" id="imgDocF" width="35%"
                                                         height="35%"/>
                                                 </label>
                                                 <%--<input type="file" accept="image/*" name="file2" id="inputImage2" class="hide">--%>
-                                                <input type="file" id="inputImage2" name="file2" class="hide" accept="image/*" onchange="cargarImagen()"/>
-                                                <%--<asp:FileUpload ID="inputImage2" runat="server" CssClass="hide" />--%>
+                                                <%--<input type="file" id="inputImage2" name="file2" class="hide" accept="image/*" onchange="cargarImagen()"/>--%>
+                                                <asp:FileUpload ID="inputImage2" runat="server" CssClass="hide" />
                                             </div>
 
                                         </div>
@@ -443,7 +443,7 @@
 
 
         <%--<script src="../../Scripts/plugins/iCheck/icheck.min.js"></script>--%>
-        <script src="/../Scripts/plugins/summernote/summernote.min.js"></script>
+        <%--<script src="/../Scripts/plugins/summernote/summernote.min.js"></script>--%>
 
         <%--<script src="../../Scripts/plugins/toastr/toastr.min.js"></script>--%>
 
@@ -451,31 +451,21 @@
         <link href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.css" rel="stylesheet" />
     </div>
         <script type="text/javascript">
-
-            function cargarImagen() {
-                console.log("cargarImagen()")
-            }
-
             "use strict";
             var $image = $("#imgDocF")
 
-            var $inputImageF = $("#inputImage2");
-
-            
+            var $inputImageF = $("#<%=inputImage2.ClientID%>");
 
             if (window.FileReader) {
                 //inputImageF.addEventListener("change",
-                $inputImageF.change(function () {
+                $("#form").on('change', '#ContentPlaceHolder1_inputImage2', function () {
                     var fileReader = new FileReader(),
                         files = this.files,
                         file;
-
                     if (!files.length) {
                         return;
                     }
-
                     file = files[0];
-
                     if (/^image\/\w+$/.test(file.type)) {
                         fileReader.readAsDataURL(file);
                         fileReader.onload = function () {
@@ -485,8 +475,6 @@
                         showMessage("Please choose an image file.");
                     }
                 });
-
-
             }
         </script>
     <script>
@@ -571,7 +559,8 @@
                     // Submit form input
                     form.submit();
                 }
-            }).validate({
+            })
+                .validate({
                 errorPlacement: function (error, element) {
                     element.before(error);
                 },
