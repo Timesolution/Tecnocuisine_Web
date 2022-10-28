@@ -111,7 +111,7 @@
                         <label class="col-sm-2 control-label editable">Costo</label>
                         <div class="col-sm-7">
                             <div class="input-group m-b">
-                                <span class="input-group-addon">$</span><asp:TextBox ID="txtCosto" class="form-control" runat="server" />
+                                <span class="input-group-addon">$</span><asp:TextBox ID="txtCosto" onkeypress="javascript:return validarNro(event)" class="form-control" runat="server" />
                             </div>
                         </div>
 
@@ -146,7 +146,7 @@
 
                     </div>
                      <div class="row" style="margin-top: 2%">
-                        <label class="col-sm-2 control-label editable">Sistema Gestion</label>
+                        <label class="col-sm-2 control-label editable">Producto Final </label>
                         <div class="col-sm-7">
                             <div class="input-group m-b">
                                 <asp:CheckBox  ID="cbxGestion" onclick="mostrarGestion()"  runat="server" />
@@ -510,6 +510,24 @@
     </script>
 
     <script type="text/javascript">
+        function validarNro(e) {
+            var key;
+            if (window.event) // IE
+            {
+                key = e.keyCode;
+            }
+            else if (e.which) // Netscape/Firefox/Opera
+            {
+                key = e.which;
+            }
+
+            if (key < 48 || key > 57) {
+                if (key == 46 || key == 8)// || key == 44) // Detectar . (punto) , backspace (retroceso) y , (coma)
+                { return true; }
+                else { return false; }
+            }
+            return true;
+        }
         function vaciarFormulario() {
             ContentPlaceHolder1_hiddenEditar.value = "";
             ContentPlaceHolder1_txtDescripcionProducto.value = "";
@@ -594,14 +612,15 @@
             var parent = $("#editable_length")[0].parentNode;
             parent.className = 'col-sm-12';
             var div = document.getElementById('editable_filter');
-            var button = document.createElement('linkbutton');
-            button.id = "btnAgregar";
+            var button = document.createElement('a');
+           /* button.id = "btnAgregar";*/
             button.style.float = "right";
             button.style.marginRight = "1%";
-            button.setAttribute("type", "button");
-            button.setAttribute("href", "#modalAgregar");
-            button.setAttribute("onclick", "vaciarFormulario()");
-            button.setAttribute("data-toggle", "modal");
+            //button.setAttribute("type", "button");
+            button.setAttribute("href", "ProductosABM.aspx");
+            //button.setAttribute("href", "#modalAgregar");
+            //button.setAttribute("onclick", "vaciarFormulario()");
+            //button.setAttribute("data-toggle", "modal");
             button.setAttribute("class", "btn");
             
             button.innerHTML = "<i style='color: black' class='fa fa-plus'></i>";

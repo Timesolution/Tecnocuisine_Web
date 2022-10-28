@@ -199,13 +199,13 @@ namespace Tecnocuisine
                 int suc = (int)Session["Login_SucUser"];
                 phStock.Controls.Clear();
                 List<Tecnocuisine_API.Entitys.Stock> stocks = this.controladorStock.obtenerStockArticulo(this.idArticulo, this.sucursal);
-                stocks = stocks.OrderBy(x => x.sucursal.nombre).ToList();
+                stocks = stocks.OrderBy(x => x.local).ToList();
                 foreach (Tecnocuisine_API.Entitys.Stock s in stocks)
                 {
-                    if (suc == s.sucursal.id)
+                    if (suc == s.local)
                     {
                         this.lblCantidadSucursal.Text = s.stock1.ToString();
-                        this.lblSucursal.Text = s.sucursal.nombre;
+                        this.lblSucursal.Text = contSucu.obtenerSucursalID(s.local).nombre;
                     }
 
                     this.cargarStockTable(s);
@@ -253,7 +253,7 @@ namespace Tecnocuisine
                 TableRow tr = new TableRow();
 
                 TableCell celSucursal = new TableCell();
-                celSucursal.Text = s.sucursal.nombre;
+                celSucursal.Text = contSucu.obtenerSucursalID(s.local).nombre;
                 celSucursal.VerticalAlign = VerticalAlign.Middle;
                 tr.Cells.Add(celSucursal);
 
@@ -584,9 +584,10 @@ namespace Tecnocuisine
         public static string ObtenerStock(int id)
         {
             ControladorStock controlador = new ControladorStock();
+            Gestion_Api.Controladores.controladorSucursal contSucu = new Gestion_Api.Controladores.controladorSucursal();
             var stock = controlador.obtenerStockID(id);
-
-            string JsonStock = stock.id + "|" + stock.sucursal.nombre + "|" + stock.Productos.descripcion + "|" + stock.stock1;
+            
+            string JsonStock = stock.id + "|" + contSucu.obtenerSucursalID(stock.local).nombre + "|" + stock.Productos.descripcion + "|" + stock.stock1;
 
             JavaScriptSerializer javaScript = new JavaScriptSerializer();
             javaScript.MaxJsonLength = 5000000;
@@ -606,7 +607,7 @@ namespace Tecnocuisine
                 s.IdUsuario = (int)Session["Login_IdUser"];
                 s.Cantidad = Convert.ToDecimal(this.txtAgregarStock.Text);
                 s.Articulo = st.Productos.id;
-                s.IdSucursal = st.sucursal.id;
+                s.IdSucursal = st.local;
                 s.Fecha = Convert.ToDateTime(DateTime.Now, new CultureInfo("es-AR"));
                 s.TipoMovimiento = "Inventario";
                 s.Comentarios = this.txtComentarios.Text;

@@ -11,11 +11,11 @@
 
     <script src="/../js/jquery-2.1.1.js"></script>
 
-
+     
     <link href="/../css/bootstrap.min.css" rel="stylesheet" />
     <link href="/../font-awesome/css/font-awesome.css" rel="stylesheet" />
 
-
+        <link href="/../css/plugins/jsTree/style.min.css" rel="stylesheet"/>
     <!-- Morris -->
     <link href="/../css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
 
@@ -24,6 +24,7 @@
 
     <link href="/../css/animate.css" rel="stylesheet" />
     <link href="/../css/style.css" rel="stylesheet" />
+        <%--<link rel="Stylesheet" href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/themes/redmond/jquery-ui.css" />--%>
 
 
     <link href="/../css/plugins/iCheck/custom.css" rel="stylesheet" />
@@ -197,7 +198,7 @@
                         <div class="navbar-header">
                             <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i></a>
                             <div class="navbar-form-custom">
-                                <asp:Label ID="lblSiteMap" Style="font-size: 13px; color: white" Text="text" class="form-control" runat="server" />
+                                <asp:Label ID="lblSiteMap" Style="font-size: 20px; color: white" Text="text" class="form-control" runat="server" />
                             </div>
                         </div>
                         <ul class="nav navbar-top-links navbar-right">

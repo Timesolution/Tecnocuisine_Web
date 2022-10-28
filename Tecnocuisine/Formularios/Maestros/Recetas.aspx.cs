@@ -42,8 +42,8 @@ namespace Tecnocuisine
             {
 
 
-                cargarNestedListCategorias();
-                cargarNestedListAtributos();
+                //cargarNestedListCategorias();
+                //cargarNestedListAtributos();
                 if (accion == 2)
                 {
                     CargarReceta();
@@ -728,7 +728,7 @@ namespace Tecnocuisine
 
 
 
-                cargarNestedListCategoriasHijas(item.id, li);
+                //cargarNestedListCategoriasHijas(item.id, li);
             }
         }
 
@@ -795,7 +795,7 @@ namespace Tecnocuisine
                 LinkButton lb = sender as LinkButton;
                 string[] id = lb.ID.Split('_');
 
-                Response.Redirect("Recetas.aspx?a=2&i=" + id[1]);
+                Response.Redirect("RecetasABM.aspx?a=2&i=" + id[1]);
             }
             catch (Exception Ex)
             {

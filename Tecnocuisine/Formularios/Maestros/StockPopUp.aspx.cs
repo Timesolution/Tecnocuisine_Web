@@ -18,6 +18,7 @@ namespace Tecnocuisine
     {
         private int idStock;
         private Tecnocuisine_API.Controladores.ControladorStock controladorStock = new ControladorStock();
+        Gestion_Api.Controladores.controladorSucursal contSucu = new Gestion_Api.Controladores.controladorSucursal();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -41,8 +42,11 @@ namespace Tecnocuisine
             try
             {
                 Tecnocuisine_API.Entitys.Stock st = controladorStock.obtenerStockID(idStock);
+
+
+               
                 txtCodigo.Text = st.id.ToString();
-                txtSucursal.Text = st.sucursal.nombre;
+                txtSucursal.Text = contSucu.obtenerSucursalID(st.local).nombre;
                 txtArticulo.Text = st.Productos.descripcion;
                 txtStockActual.Text = st.stock1.ToString();
             }
@@ -66,7 +70,7 @@ namespace Tecnocuisine
                     s.IdUsuario = (int)Session["Login_IdUser"];
                     s.Cantidad = Convert.ToDecimal(this.txtAgregarStock.Text);
                     s.Articulo = st.Productos.id;
-                    s.IdSucursal = st.sucursal.id;
+                    s.IdSucursal = st.local;
                     s.Fecha = Convert.ToDateTime(DateTime.Now, new CultureInfo("es-AR"));
                     s.TipoMovimiento = "Inventario";
                     s.Comentarios = this.txtComentarios.Text;

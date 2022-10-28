@@ -1,5 +1,8 @@
 ﻿using Gestion_Api.Modelo;
 using System;
+using System.IO;
+using System.Reflection;
+using System.Web;
 using System.Web.Security;
 using Tecnocuisine_API.Controladores;
 using Tecnocuisine_API.Controladores.Inspinia_MVC5_SeedProject.Controllers;
@@ -13,7 +16,8 @@ namespace Tecnocuisine.Account
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            InitializeCulture();
+            HttpCookie cookie = Request.Cookies["CurrentLanguage"];
         }
 
         protected  void btnLogin_Click(object sender, EventArgs e)

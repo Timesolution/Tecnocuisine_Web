@@ -1,0 +1,2113 @@
+﻿<%@ Page Title="Recetas" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="RecetasABM.aspx.cs" Inherits="Tecnocuisine.Formularios.Maestros.RecetasABM" %>
+
+<asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+
+    <style>
+        #step-content {
+            position: inherit;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .lblImgDocF:hover {
+            cursor: pointer;
+        }
+
+        .col-md-1 {
+            padding-left: 2px;
+            padding-right: 2px;
+        }
+
+        label {
+            margin-bottom: auto;
+
+        }
+        .well{
+            background-color: lightgray;
+            border: 1px solid #E3E3D5;
+        }
+      .jstree-open > .jstree-anchor > .fa-folder:before {
+        content: "\f07c";
+    }
+
+    .jstree-default .jstree-icon.none {
+        width: 0;
+    }
+    </style>
+   
+
+    <div class="row wrapper border-bottom white-bg page-heading" style="padding-bottom: 0px;">
+
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="ibox">
+                        <%--<div class="ibox-title">
+                        
+                            <div class="ibox-tools">
+                           
+                            </div>
+                        </div>--%>
+                        <div class="ibox-content">
+
+                            <form id="form" action="#" class="wizard-big">
+                                <h1>RECETAS</h1>
+                                <fieldset style="position: relative;">
+                                    <h1>Datos de la receta</h1>
+                                    <div class="column">
+
+                                        <div class="row">
+                                            <div class="col-lg-7">
+                                                <div class="form-group">
+                                                    <label>Codigo *</label>
+                                                    <%--<input id="ProdDescripcion" onchange="ActualizarLabels()" name="ProdDescripcion" type="text" class="form-control required" />--%>
+                                                    <asp:TextBox ID="txtCodigo" class="form-control required" Style="width: 30%" runat="server" />
+
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Recetas *</label>
+                                                    <%--<input id="ProdDescripcion" onchange="ActualizarLabels()" name="ProdDescripcion" type="text" class="form-control required" />--%>
+                                                    <asp:TextBox ID="txtDescripcionReceta" Style="max-width: 500px;"
+                                                        onchange="ActualizarLabels()" class="form-control required" runat="server" />
+                                                    <asp:HiddenField ID="Hiddentipo" runat="server" />
+                                                    <asp:HiddenField ID="HiddenUnidad" runat="server" />
+                                                    <asp:HiddenField ID="HiddenCosto" runat="server" />
+                                                    <%--<p id="valUser" class="hide">Ingresar usuario</p>--%>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label id="valDocFrente">Imagen de la receta</label><br />
+                                                    <div class="image-crop btn-group">
+                                                        <%--<label for="ContentPlaceHolder1_inputImage2" style="display:contents" class="lblImgDocF">--%>
+                                                        <label for="ContentPlaceHolder1_inputImage2" style="display: contents" class="lblImgDocF">
+                                                            <img src="../../Img/photo.png" id="imgDocF" width="20%"
+                                                                height="20%" />
+                                                        </label>
+                                                        <%--<input type="file" accept="image/*" name="file2" id="inputImage2" class="hide">--%>
+                                                        <%--<input type="file" id="inputImage2" name="file2" class="hide" accept="image/*" onchange="cargarImagen()"/>--%>
+                                                        <asp:FileUpload ID="inputImage2" runat="server" CssClass="hide" />
+                                                    </div>
+
+                                                </div>
+                                            </div>
+<%--                                            <div class="col-lg-2"></div>--%>
+                                            <div class="col-lg-5">
+                                              <%--  <div class="text-center">
+                                                    <div style="margin-top: 20px">
+                                                        <i class="fa fa-sign-in" style="font-size: 180px; color: #e5e5e5"></i>
+                                                    </div>
+
+                                                </div>--%>
+                                                <div class="row" style="margin-top:5.09%">
+                                                    <label class="col-md-3 control-label editable" style="margin-top: 5px">Categorias</label>
+                                                    <div class="col-md-9">
+
+                                                        <div class="input-group">
+                                                            <datalist id="listaCategoria" runat="server"></datalist>
+                                                            <asp:TextBox ID="txtDescripcionCategoria" list="ContentPlaceHolder1_listaCategoria" onfocusout="agregarDesdetxtCategoria(); return false;"  class="form-control" runat="server" />
+                                                            <span class="input-group-btn">
+                                                                <linkbutton id="btnCategorias" class="btn btn-primary dim" onclick="FocusSearch()" data-toggle="modal" data-backdrop="static" data-target="#modalCategoria"><i style="color: white" class="fa fa-plus"></i></linkbutton>
+
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row" style="margin-top:10% ">
+
+                                                    <label class="col-md-3 control-label editable" style="margin-top: 5px">Atributos</label>
+                                                    <div class="col-md-9">
+
+                                                        <div class="input-group" style="text-align: right">
+                                                            <asp:TextBox ID="txtDescripcionAtributo" disabled="disabled" class="form-control" runat="server" />
+                                                            <span class="input-group-btn">
+                                                                <linkbutton id="btnAtributos" class="btn btn-primary dim" onclick="FocusSearch()" data-toggle="modal" disabled="disabled" data-backdrop="static" data-target="#modalAtributo"><i style="color: white" class="fa fa-plus"></i></linkbutton>
+
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      
+                                    </div>
+                                </fieldset>
+                                <h1>INGREDIENTES</h1>
+                                <fieldset style="position: relative;padding-top: 10px;display: block;padding-bottom: 0px;"">
+                                    <h1>
+                                        <label id="lblDescripcion1"></label>
+                                    </h1>
+                                    <div class="row">
+
+                                        <label class="col-md-1 control-label editable" style="margin-top: 2%">Propiedades</label>
+                                        <div class="col-md-2" style="margin-top: 1.5%">
+                                            <asp:DropDownList ID="ddlTipoReceta" runat="server" class="form-control">
+                                                <asp:ListItem Value="-1" Text="Tipo receta"> </asp:ListItem>
+                                                <asp:ListItem Value="1" Text="Baño"></asp:ListItem>
+                                                <asp:ListItem Value="2" Text="Cartoon"></asp:ListItem>
+                                                <asp:ListItem Value="3" Text="Glaseada"></asp:ListItem>
+                                                <asp:ListItem Value="4" Text="Masa"></asp:ListItem>
+                                                <asp:ListItem Value="5" Text="Relleno"></asp:ListItem>
+                                            </asp:DropDownList>
+                                        </div>
+                                        <div class="col-md-2" style="margin-top: 1.5%">
+                                            <asp:DropDownList ID="ddlUnidadMedida" onchange="ActualizarUnidades()" runat="server" class="form-control">
+                                            </asp:DropDownList>
+                                        </div>
+                                        <div class="col-md-2" style="margin-top: 1.5%">
+                                           
+
+                                                    
+
+                                                        <div class="input-group">
+                                                            <asp:TextBox ID="txtSector" disabled="disabled" placeholder="Sector" class="form-control" runat="server" />
+                                                            <span class="input-group-btn">
+                                                                <linkbutton id="btnSectores" class="btn btn-primary dim" onclick="FocusSearch()" data-toggle="modal" data-backdrop="static" data-target="#modalSectores"><i style="color: white" class="fa fa-plus"></i></linkbutton>
+
+                                                            </span>
+                                                        </div>
+                                                    
+                                                
+                                            <%--<asp:DropDownList ID="ddlCalculos" runat="server" class="form-control">
+                                                <asp:ListItem Value="-1" Text="Tipo Calculo"> </asp:ListItem>
+                                                <asp:ListItem Value="1" Text="PPP"></asp:ListItem>
+                                                <asp:ListItem Value="2" Text="Ultima Compra"></asp:ListItem>
+                                            </asp:DropDownList>--%>
+                                        </div>
+                                        <div class="col-md-1" style="text-align: center;">
+                                            <label id="lblBrutoTotal" style="margin-bottom: auto;">Kg Br. Total</label>
+                                            <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtKgBrutTotal" class="form-control" runat="server" />
+                                        </div>
+                                        <div class="col-md-1" style="text-align: center;">
+                                            <label style="margin-bottom: auto;">Costo total</label>
+                                            <asp:TextBox Text="0.00" disabled="disabled" Style="text-align: right;" ID="txtCostoTotal" class="form-control" runat="server" />
+                                        </div>
+                                        <div class="col-md-1" style="text-align: center;">
+                                            <label id="lblTotalUnidad" style="margin-bottom: auto;margin-top: -25%;"> Rinde </label>
+                                            <asp:TextBox Style="text-align: right;" Text="0" ID="txtRinde" onkeyUp="ActualizarxPorcion()" class="form-control" runat="server" />
+                                        </div>
+                                        <div class="col-md-1" style="text-align: center;">
+                                            <label id="lblBrutoUnidad" style="margin-bottom: auto;margin-top: -25%;">Kg Br.</label>
+                                            <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtKgxPorcion" class="form-control" runat="server" />
+                                        </div>
+                                        <div class="col-md-1" style="text-align: center;">
+                                            <label id="lblCosto" style="margin-bottom: auto;margin-top: -25%;">Costo</label>
+                                            <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtCostoxPorcion" class="form-control" runat="server" />
+                                        </div>
+                                    </div>
+                                       <div class="row" >
+                                   
+                                        <label class="col-sm-9 control-label editable" ></label>
+                                           
+                                        <div class="col-md-1" style="text-align: center;">
+                                            <label id="rxrt" style="margin-bottom:0px">Pr.Venta</label>
+                                            <asp:TextBox Text="0" Style="text-align: right;" ID="txtPrVenta"  onkeyUp="ActualizarxPrVenta()" class="form-control" runat="server" />
+                                        </div>
+                                        <div class="col-md-1" style="text-align: center;">
+                                            <label style="margin-bottom: auto;">% Food Cost</label>
+                                            <asp:TextBox Text="0.00" disabled="disabled" Style="text-align: right;" ID="txtPFoodCost" class="form-control" runat="server" />
+                                        </div>
+                                        <div class="col-md-1" style="text-align: center;">
+                                            <label id="erwt" style="margin-bottom: auto;margin-top: -25%;"> cont. marg </label>
+                                            <asp:TextBox Style="text-align: right;" disabled="disabled" Text="0.00" ID="txtContMarg" class="form-control" runat="server" />
+                                        </div>
+                                        
+                                    </div>
+                                    <%--                                    <div class="row" style="margin-top: 1%; margin-left: 2%">
+
+                                        <label class="col-sm-2 control-label editable">Costo total</label>
+
+                                        <div class="col-md-3" style="text-align: right;">
+                                            <label style="text-align: right; font-size: large; margin-bottom: 00px; padding-bottom: 0px;">$</label>
+                                            &nbsp;
+                                            <label id="lblCostoFinalTotal" class="control-label editable" style="text-align: right; font-size: large; margin-bottom: 00px; padding-bottom: 0px;">0,00</label>
+
+                                        </div>
+                                    </div>--%>
+                                    <%--  <div class="row" style="margin-top: 1%; margin-left: 2%">
+                                        <label class="col-sm-2 control-label editable">Merma</label>
+                                        <div class="col-md-3">
+                                            <asp:TextBox ID="txtMerma" Style="margin-left: 6.5%; text-align: right" class="form-control" runat="server" />
+                                        </div>
+
+                                    </div>
+                                    <div class="row" style="margin-top: 1%; margin-left: 2%">
+                                        <label class="col-sm-2 control-label editable">Desperdicio</label>
+                                        <div class="col-md-3">
+                                            <asp:TextBox ID="txtDesperdicio" Style="margin-left: 6.5%; text-align: right" class="form-control" runat="server" />
+                                        </div>
+
+                                    </div>--%>
+                                    <div class="well"style="margin-top:1%;margin-right: -15px;margin-left: -15px;">
+                                    <div class="row" style="margin-top: 0.5%; margin-bottom: 2%">
+                                        <%--<label class="col-md-1 control-label editable" style="margin-top: 2%">Ingredientes</label>--%>
+                                        <div class="col-md-6">
+                                            <%--  <div class="input-group">
+
+                                                
+                                                <linkbutton id="btnProductos" class="btn btn-primary dim" data-toggle="modal" data-backdrop="static" data-target="#modalTabsProductos"><i style="color: white" class="fa fa-plus"></i></linkbutton>
+                                            </div>--%>
+                                            <label  style="margin-left:5px;margin-bottom: 0px;"> Ingredientes </label>
+                                             
+                                            <div class="input-group" style="text-align: right;">
+                                                <%--<input id="txtDescripcionProductos" class="form-control" type="text" list="ContentPlaceHolder1_ListaNombreProd" />--%>
+                                                <datalist id="ListaNombreProd" runat="server">
+
+                                                </datalist>
+                                               
+                                                <asp:TextBox ID="txtDescripcionProductos" onfocusout="handle(event)" list="ContentPlaceHolder1_ListaNombreProd" class="form-control" runat="server" />
+                                                <span class="input-group-btn">
+                                                    <linkbutton id="btnProductos" class="btn btn-primary dim" onclick="FocusSearch('1')" data-toggle="modal" data-backdrop="static" data-target="#modalTabsProductos"><i style="color: white" class="fa fa-plus"></i></linkbutton>
+
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <asp:HiddenField ID="idProducto" runat="server" />
+
+                                        <%-- <div  class="col-sm-1" style="width: 70px;">
+                                        </div>--%>
+
+
+                                        <%--<label class="col-sm-1 control-label editable">Unidad de Medida</label>--%>
+                                        <%--  <div class="col-sm-3">
+                                            <asp:DropDownList runat="server" class="form-control" ID="ListUnidadMedida"></asp:DropDownList>
+                                        </div>--%>
+                                        <%--<label class="col-sm-1 control-label editable">Cantidad</label>--%>
+                                        <div class="col-md-1" style="text-align: center;">
+                                            <label style="margin-bottom: auto;">Cantidad</label>
+
+                                            <asp:TextBox ID="txtCantidad" Text="0" onkeydown="PasarAFactor(event)" onchange="CalcularCantBruta()" onkeypress="javascript:return validarNro(event)" Style="text-align: right" class="form-control money" runat="server" />
+                                        </div>
+                                        <div class="col-md-1" style="text-align: center;">
+                                            <label style="margin-bottom: auto;">Unidad Med.</label>
+
+                                            <asp:TextBox ID="txtUnidadMed" disabled="disabled" Style="text-align: right" class="form-control" runat="server" />
+                                        </div>
+                                        <div class="col-md-1" style="text-align: center;">
+                                            <label style="margin-bottom: auto;">Factor</label>
+
+                                            <asp:TextBox ID="txtFactor" Text="1" onkeyUp="CalcularCantBruta()" onkeypress="validarNro(event)" Style="text-align: right" class="form-control" runat="server" />
+                                        </div>
+                                        <div class="col-md-1" style="text-align: center;">
+                                            <label style="margin-bottom: auto;">Cant. Bruta</label>
+
+                                            <asp:TextBox disabled="disabled" ID="txtCantBruta" Style="text-align: right" class="form-control" runat="server" />
+                                        </div>
+                                        <div class="col-md-1" style="text-align: center;">
+                                            <label style="margin-bottom: auto; vertical-align: middle">$ Kg limpio</label>
+
+                                            <asp:TextBox ID="txtCostoLimpio" disabled="disabled" onkeypress="javascript:return validarNro(event)" Style="text-align: right" class="form-control" runat="server" />
+                                        </div>
+                                        <div class="col-md-1" style="width: 70px;margin-top: 1.7%;text-align: right;">
+                                            <linkbutton id="btnAgregarProducto" onclick="agregarProductoPH();" class="btn btn-primary dim required"><i style="color: white" class="fa fa-check"></i></linkbutton>
+                                        </div>
+
+                                    </div>
+                                    <asp:HiddenField runat="server" ID="idProductosRecetas" />
+                                    <asp:HiddenField runat="server" ID="hiddenReceta" />
+                                    <table class="table table-bordered table-hover" id="tableProductos">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 10%">Cod. Producto</th>
+                                                <%--<th style="width: 10%">Tipo</th>--%>
+                                                <th style="width: 20%">Descripcion</th>
+                                                <th style="width: 10%; text-align:right">Cantidad</th>
+                                                <th style="width: 10%">Unidad Medida</th>
+                                                <th style="width: 10%;text-align:right">Costo $</th>
+                                                <th style="width: 10%;text-align:right">Costo Total $</th>
+                                                <th style="width: 10%"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <asp:PlaceHolder ID="phProductos" runat="server" />
+                                        </tbody>
+                                    </table>
+
+                                    </div>
+                                </fieldset>
+
+                                <%--                                <h1>RINDE</h1>
+                                <fieldset  style="position: relative;">
+                                    <h1>
+                                        <label id="lblDescripcion2"></label>
+                                    </h1>
+
+                                </fieldset>--%>
+
+                                <h1>BUENAS PRACTICAS</h1>
+                                <fieldset>
+                                    <h1>
+                                        <label id="lblDescripcion3"></label>
+                                    </h1>
+
+                                    <div class="row" style="margin-top: 2%">
+                                        <label class="col-sm-2 control-label editable">Buenas prácticas</label>
+                                        <div class="col-sm-10">
+                                            <asp:TextBox ID="txtObservaciones" TextMode="MultiLine" Rows="4" class="form-control" runat="server" />
+                                            <asp:HiddenField ID="idPresentacion" runat="server" />
+                                        </div>
+
+
+                                    </div>
+                                    
+
+                                </fieldset>
+                                <h1>INFORMACION NUTRICIONAL</h1>
+                                <fieldset style="position: relative;">
+                                    <h1>
+                                        <label id="lblDescripcion4"></label>
+                                    </h1>
+                                    <%-- <input id="acceptTerms" name="acceptTerms" type="checkbox" class="required"/>
+                                    <label for="acceptTerms">I agree with the Terms and Conditions.</label>--%>
+
+                                    <div class="row" style="margin-top: 2%">
+                                        <label class="col-sm-2 control-label editable">Informacion nutricional</label>
+                                        <div class="col-md-10">
+                                            <asp:TextBox ID="txtInfoNutr" TextMode="MultiLine" Rows="4" class="form-control" runat="server" />
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+                                <h1>PROCEDIMIENTO</h1>
+                                <fieldset style="position: relative;">
+                                    <h1>
+                                        <label id="lblDescripcion5"></label>
+                                    </h1>
+                                    <div class="row" style="margin-top: 2%; margin-left: 2%">
+                                        <label class="col-sm-2 control-label editable">Paso:</label>
+                                        <div class="col-md-1">
+                                            <asp:TextBox ID="txtPasoNum" Text="1" class="form-control" runat="server" />
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="input-group" style="text-align: right">
+                                                <asp:TextBox ID="txtPasoDesc" placeholder="Detalle el paso" onkeypress="pulsar(event)" class="form-control" runat="server" />
+                                                <span class="input-group-btn">
+                                                    <%--<linkbutton id="btnProductos" class="btn btn-primary dim" onclick="FocusSearch()" data-toggle="modal" data-backdrop="static" data-target="#modalTabsProductos"><i style="color: white" class="fa fa-plus"></i></linkbutton>--%>
+                                                    <linkbutton id="btnAgregarPaso" onclick="AgregarPaso()" class="btn btn-primary dim"><i style="color: white" class="fa fa-plus"></i></linkbutton>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top: 2%; margin-left: 2%">
+                                        <label class="col-sm-2 control-label editable">Paso a paso</label>
+                                        <div class="col-md-10">
+                                            <%--<asp:TextBox ID="txtPasoAPaso" placeholder="Reemplazar por grilla"  TextMode="MultiLine" Rows="4" class="form-control" runat="server" />--%>
+                                            <table class="table table-bordered table-hover" id="tablePasos">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 10%">Paso</th>
+                                                        <%--<th style="width: 10%">Tipo</th>--%>
+                                                        <th style="width: 80%">Descripcion</th>
+                                                        <th style="width: 10%"></th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <asp:PlaceHolder ID="PasosPH" runat="server" />
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                    <asp:HiddenField ID="hfPasos" runat="server" />
+                                    <div class="row" style="margin-top: 2%; margin-left: 2%; text-align: right">
+                                                            <asp:LinkButton runat="server" ID="btnGuardar" style=" display:none" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                                        <linkbutton onclick="OrdenarTablaPasos()" class="btn btn-warning" ><i style="color: white" class="fa fa-refresh"></i>&nbsp; Ordenar</linkbutton>
+                                        <linkbutton class="btn btn-primary" disabled><i style="color: white" class="fa fa-file-pdf-o"></i> &nbsp;Generar PDF</linkbutton>
+                                    </div>
+                                </fieldset>
+                                <%--<h1>FICHA TECNICA</h1>
+                                <fieldset>
+                                     
+                                    <div class="row" style="margin-top: 2%">
+                                        <label class="col-sm-2 control-label editable">Ficha tecnica</label>
+                                        <div class="col-sm-10">
+                                            <h2><label class="col-sm-2 control-label editable">Procedimiento</label></h2>
+                                            <asp:TextBox ID="txtProcedimiento" placeholder="Campo a llenar" TextMode="MultiLine" Rows="4" class="form-control" runat="server" />
+                                            
+                                        </div>
+                                       
+
+                                    </div>
+                                </fieldset>--%>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <asp:HiddenField ID="hiddenID" runat="server" />
+
+                <asp:HiddenField ID="hiddenidReceta" runat="server" />
+            </div>
+        </div>
+
+
+        <div id="modalTabsProductos" class="modal" style="z-index: 2000;" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                     <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h2 class="modal-title">identifiquemos tu Ingrediente
+                        <span>
+                            <%--<i style='color:black;' class='fa fa-search'></i>--%>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" style="width: 50px; vertical-align: middle; margin-left: 25px;">
+                                <path d="M240 144c0-53-43-96-96-96s-96 43-96 96s43 96 96 96s96-43 96-96zm44.4 32C269.9 240.1 212.5 288 144 288C64.5 288 0 223.5 0 144S64.5 0 144 0c68.5 0 125.9 47.9 140.4 112h71.8c8.8-9.8 21.6-16 35.8-16H496c26.5 0 48 21.5 48 48s-21.5 48-48 48H392c-14.2 0-27-6.2-35.8-16H284.4zM144 208c-35.3 0-64-28.7-64-64s28.7-64 64-64s64 28.7 64 64s-28.7 64-64 64zm256 32c13.3 0 24 10.7 24 24v8h96c13.3 0 24 10.7 24 24s-10.7 24-24 24H280c-13.3 0-24-10.7-24-24s10.7-24 24-24h96v-8c0-13.3 10.7-24 24-24zM288 464V352H512V464c0 26.5-21.5 48-48 48H336c-26.5 0-48-21.5-48-48zM48 320h80 16 32c26.5 0 48 21.5 48 48s-21.5 48-48 48H160c0 17.7-14.3 32-32 32H64c-17.7 0-32-14.3-32-32V336c0-8.8 7.2-16 16-16zm128 64c8.8 0 16-7.2 16-16s-7.2-16-16-16H160v32h16zM24 464H200c13.3 0 24 10.7 24 24s-10.7 24-24 24H24c-13.3 0-24-10.7-24-24s10.7-24 24-24z" />
+                            </svg>
+
+                        </span>
+                        </h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel blank-panel">
+
+                                <div class="panel-heading">
+                                    <div class="panel-title m-b-md"></div>
+                                    <div class="panel-options">
+
+                                        <ul class="nav nav-tabs">
+                                            <li class="active"><a data-toggle="tab" href="#tab-1">Productos</a></li>
+                                            <li class=""><a data-toggle="tab" href="#tab-2">Recetas</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="panel-body">
+                                      <div class="input-group m-b">
+                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+
+
+                            <input type="text" id="txtBusquedaIngredientes" placeholder="Busqueda..." class="form-control" />
+                        </div>
+                                    <div class="tab-content">
+                                        <div id="tab-1" class="tab-pane active">
+                                            <table class="table table-bordered table-hover" id="editable2">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 10%">Cod.</th>
+                                                        <th style="width: 20%">Descripcion</th>
+                                                        <th style="width: 20%">Costo $</th>
+                                                        <%--<th style="width: 20%">Unidad Medida</th>--%>
+                                                        <th style="width: 10%"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <asp:PlaceHolder ID="phProductosAgregar" runat="server" />
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div id="tab-2" class="tab-pane">
+                                            <table class="table table-bordered table-hover" id="editable3">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 10%">Cod. Receta</th>
+                                                        <th style="width: 20%">Descripcion</th>
+                                                        <th style="width: 10%"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <asp:PlaceHolder ID="phRecetasModal" runat="server" />
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <!-- Mainly scripts -->
+            <script src="/../js/jquery-2.1.1.js"></script>
+            <!-- Mainly scripts -->
+            <%--<script src="/../Scripts/jquery-3.4.1.js"></script>--%>
+            <script src="../../Scripts/bootstrap.min.js"></script>
+            <script src="../../Scripts/plugins/metisMenu/jquery.metisMenu.js"></script>
+           <%-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>--%>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.2.6/jquery.inputmask.bundle.min.js"></script>
+
+          <%--  <script src="../../Scripts/jquery.mask.js"></script>
+            <script src="../../Scripts/jquery.mask.min.js"></script>--%>
+            <%--<script src="../../Scripts/plugins/slimscroll/jquery.slimscroll.min.js"></script>--%>
+
+            <!-- Custom and plugin javascript -->
+
+            <%--<script src="../Scripts/plugins/pace/pace.min.js"></script>--%>
+<%--            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.8.0.js"></script>
+            <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.22/jquery-ui.js"></script>--%>
+            <!-- Steps -->
+            <script src="/../Scripts/plugins/staps/jquery.steps.min.js"></script>
+
+            <!-- Jquery Validate -->
+            <script src="/../Scripts/plugins/validate/jquery.validate.min.js"></script>
+
+
+            <%--<script src="../../Scripts/plugins/iCheck/icheck.min.js"></script>--%>
+            <%--<script src="/../Scripts/plugins/summernote/summernote.min.js"></script>--%>
+
+            <%--<script src="../../Scripts/plugins/toastr/toastr.min.js"></script>--%>
+
+            <script src="//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+            <link href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.css" rel="stylesheet" />
+        </div>
+         <div id="modalSectores" class="modal" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h2 class="modal-title">Indicanos tu Sector
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" style="width: 50px; vertical-align: middle; margin-left: 25px;">
+                                <path d="M240 144c0-53-43-96-96-96s-96 43-96 96s43 96 96 96s96-43 96-96zm44.4 32C269.9 240.1 212.5 288 144 288C64.5 288 0 223.5 0 144S64.5 0 144 0c68.5 0 125.9 47.9 140.4 112h71.8c8.8-9.8 21.6-16 35.8-16H496c26.5 0 48 21.5 48 48s-21.5 48-48 48H392c-14.2 0-27-6.2-35.8-16H284.4zM144 208c-35.3 0-64-28.7-64-64s28.7-64 64-64s64 28.7 64 64s-28.7 64-64 64zm256 32c13.3 0 24 10.7 24 24v8h96c13.3 0 24 10.7 24 24s-10.7 24-24 24H280c-13.3 0-24-10.7-24-24s10.7-24 24-24h96v-8c0-13.3 10.7-24 24-24zM288 464V352H512V464c0 26.5-21.5 48-48 48H336c-26.5 0-48-21.5-48-48zM48 320h80 16 32c26.5 0 48 21.5 48 48s-21.5 48-48 48H160c0 17.7-14.3 32-32 32H64c-17.7 0-32-14.3-32-32V336c0-8.8 7.2-16 16-16zm128 64c8.8 0 16-7.2 16-16s-7.2-16-16-16H160v32h16zM24 464H200c13.3 0 24 10.7 24 24s-10.7 24-24 24H24c-13.3 0-24-10.7-24-24s10.7-24 24-24z" />
+                            </svg>
+
+                        </span>
+                        </h2>
+                    </div>
+                    <div class="modal-body">
+                       <%-- <div class="input-group m-b">
+                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+
+
+                            <input type="text" id="txtBusquedaSector" placeholder="Busqueda..." class="form-control" />
+                        </div>--%>
+
+                        <div class="ibox-content">
+                            <asp:UpdatePanel ID="UpdatePanel66" runat="server">
+                                <ContentTemplate>
+                                    <table class="table table-bordered table-hover" id="editable7">
+                                        <thead>
+                                            <tr>
+
+                                                <th>Num</th>
+                                                <th>Codigo</th>
+                                                <th>Sector</th>
+                                                <%--<th style="width: 20%">Unidad Medida</th>--%>
+                                                <th style="width: 20%"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <asp:PlaceHolder ID="phSectores" runat="server" />
+                                        </tbody>
+                                    </table>
+
+                                </ContentTemplate>
+
+                            </asp:UpdatePanel>
+                        </div>
+                     <div class="modal-footer">
+                         <linkbutton id="btnSectores2" class="btn btn-primary" onclick="agregarSector()"><i class="fa fa-check"></i>&nbsp;Agregar</linkbutton>
+
+                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modalRecetaDetalle" class="modal" role="dialog">
+            <div class="modal-dialog modal-sm" style="width: 75%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                       <h2 class="modal-title">Componentes de la receta
+                        <span>
+                            <%--<i style='color:black;' class='fa fa-search'></i>--%>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" style="width: 50px; vertical-align: middle; margin-left: 25px;">
+                                <path d="M240 144c0-53-43-96-96-96s-96 43-96 96s43 96 96 96s96-43 96-96zm44.4 32C269.9 240.1 212.5 288 144 288C64.5 288 0 223.5 0 144S64.5 0 144 0c68.5 0 125.9 47.9 140.4 112h71.8c8.8-9.8 21.6-16 35.8-16H496c26.5 0 48 21.5 48 48s-21.5 48-48 48H392c-14.2 0-27-6.2-35.8-16H284.4zM144 208c-35.3 0-64-28.7-64-64s28.7-64 64-64s64 28.7 64 64s-28.7 64-64 64zm256 32c13.3 0 24 10.7 24 24v8h96c13.3 0 24 10.7 24 24s-10.7 24-24 24H280c-13.3 0-24-10.7-24-24s10.7-24 24-24h96v-8c0-13.3 10.7-24 24-24zM288 464V352H512V464c0 26.5-21.5 48-48 48H336c-26.5 0-48-21.5-48-48zM48 320h80 16 32c26.5 0 48 21.5 48 48s-21.5 48-48 48H160c0 17.7-14.3 32-32 32H64c-17.7 0-32-14.3-32-32V336c0-8.8 7.2-16 16-16zm128 64c8.8 0 16-7.2 16-16s-7.2-16-16-16H160v32h16zM24 464H200c13.3 0 24 10.7 24 24s-10.7 24-24 24H24c-13.3 0-24-10.7-24-24s10.7-24 24-24z" />
+                            </svg>
+
+                        </span>
+                        </h2>
+                    </div>
+                    <div class="modal-body">
+                       <%-- <div class="input-group m-b">
+                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+
+
+                            <input type="text" id="txtBusquedaSector" placeholder="Busqueda..." class="form-control" />
+                        </div>--%>
+
+                        <div class="ibox-content">
+                            <asp:UpdatePanel ID="UpdatePanel4" runat="server">
+                                <ContentTemplate>
+                                    <table class="table table-bordered table-hover" id="editable27">
+                                        <thead>
+                                            
+                                              <th style="width: 10%">Cod. Producto</th>
+                                                <%--<th style="width: 10%">Tipo</th>--%>
+                                                <th style="width: 20%">Descripcion</th>
+                                                <th style="width: 10%; text-align:right">Cantidad</th>
+                                                <th style="width: 10%">Unidad Medida</th>
+                                                <th style="width: 10%;text-align:right">Costo $</th>
+                                                <th style="width: 10%;text-align:right">Costo Total $</th>
+                                                <th style="width: 10%"></th>
+                                        </thead>
+                                        <tbody>
+                                            <asp:PlaceHolder ID="PlaceHolder1" runat="server" />
+                                        </tbody>
+                                    </table>
+
+                                </ContentTemplate>
+
+                            </asp:UpdatePanel>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
+            </div>
+          <div id="modalAtributo" class="modal" tabindex="-2" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Elegir atributo</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="ibox-content">
+                            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                <ContentTemplate>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered table-hover " id="editable22">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Descripcion</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <asp:PlaceHolder ID="phInsumos" runat="server"></asp:PlaceHolder>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </ContentTemplate>
+
+                            </asp:UpdatePanel>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btnAgregarAtributo" onclick="agregarAtributos();return false;" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;Agregar </button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modalFamilia" class="modal" style="z-index: 2000; padding-left: 80px; padding-top: 80px" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Familia</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="ibox-content">
+                            <h2>
+                                <label id="lblFamilia"></label>
+                            </h2>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cerrar</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modalCategoria" class="modal" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h2 class="modal-title">Empecemos identificando tu Categoria
+                        <span>
+                            <%--<i style='color:black;' class='fa fa-search'></i>--%>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" style="width: 50px; vertical-align: middle; margin-left: 25px;">
+                                <path d="M240 144c0-53-43-96-96-96s-96 43-96 96s43 96 96 96s96-43 96-96zm44.4 32C269.9 240.1 212.5 288 144 288C64.5 288 0 223.5 0 144S64.5 0 144 0c68.5 0 125.9 47.9 140.4 112h71.8c8.8-9.8 21.6-16 35.8-16H496c26.5 0 48 21.5 48 48s-21.5 48-48 48H392c-14.2 0-27-6.2-35.8-16H284.4zM144 208c-35.3 0-64-28.7-64-64s28.7-64 64-64s64 28.7 64 64s-28.7 64-64 64zm256 32c13.3 0 24 10.7 24 24v8h96c13.3 0 24 10.7 24 24s-10.7 24-24 24H280c-13.3 0-24-10.7-24-24s10.7-24 24-24h96v-8c0-13.3 10.7-24 24-24zM288 464V352H512V464c0 26.5-21.5 48-48 48H336c-26.5 0-48-21.5-48-48zM48 320h80 16 32c26.5 0 48 21.5 48 48s-21.5 48-48 48H160c0 17.7-14.3 32-32 32H64c-17.7 0-32-14.3-32-32V336c0-8.8 7.2-16 16-16zm128 64c8.8 0 16-7.2 16-16s-7.2-16-16-16H160v32h16zM24 464H200c13.3 0 24 10.7 24 24s-10.7 24-24 24H24c-13.3 0-24-10.7-24-24s10.7-24 24-24z" />
+                            </svg>
+
+                        </span>
+                        </h2>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group m-b">
+                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+
+
+                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" />
+                        </div>
+
+                        <div class="ibox-content">
+                            <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+                                <ContentTemplate>
+                                    <table class="table table-bordered table-hover" id="editable6">
+                                        <thead>
+                                            <tr>
+
+                                                <th>Descripcion</th>
+                                                <th>Categoria</th>
+                                                <%--<th style="width: 20%">Unidad Medida</th>--%>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <asp:PlaceHolder ID="PHCategorias" runat="server" />
+                                        </tbody>
+                                    </table>
+
+                                </ContentTemplate>
+
+                            </asp:UpdatePanel>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       
+
+        <div id="modalAtributos" class="modal" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h2 class="modal-title">Indicanos tu Sector
+                        <span>
+                            <%--<i style='color:black;' class='fa fa-search'></i>--%>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" style="width: 50px; vertical-align: middle; margin-left: 25px;">
+                                <path d="M240 144c0-53-43-96-96-96s-96 43-96 96s43 96 96 96s96-43 96-96zm44.4 32C269.9 240.1 212.5 288 144 288C64.5 288 0 223.5 0 144S64.5 0 144 0c68.5 0 125.9 47.9 140.4 112h71.8c8.8-9.8 21.6-16 35.8-16H496c26.5 0 48 21.5 48 48s-21.5 48-48 48H392c-14.2 0-27-6.2-35.8-16H284.4zM144 208c-35.3 0-64-28.7-64-64s28.7-64 64-64s64 28.7 64 64s-28.7 64-64 64zm256 32c13.3 0 24 10.7 24 24v8h96c13.3 0 24 10.7 24 24s-10.7 24-24 24H280c-13.3 0-24-10.7-24-24s10.7-24 24-24h96v-8c0-13.3 10.7-24 24-24zM288 464V352H512V464c0 26.5-21.5 48-48 48H336c-26.5 0-48-21.5-48-48zM48 320h80 16 32c26.5 0 48 21.5 48 48s-21.5 48-48 48H160c0 17.7-14.3 32-32 32H64c-17.7 0-32-14.3-32-32V336c0-8.8 7.2-16 16-16zm128 64c8.8 0 16-7.2 16-16s-7.2-16-16-16H160v32h16zM24 464H200c13.3 0 24 10.7 24 24s-10.7 24-24 24H24c-13.3 0-24-10.7-24-24s10.7-24 24-24z" />
+                            </svg>
+
+                        </span>
+                        </h2>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group m-b">
+                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+
+
+                            <input type="text" id="txtBusquedaAtributo" placeholder="Busqueda..." class="form-control" />
+                        </div>
+
+                        <div class="ibox-content">
+                            <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                                <ContentTemplate>
+                                    <table class="table table-bordered table-hover" id="editable8">
+                                        <thead>
+                                            <tr>
+
+                                                <th>Num</th>
+                                                <th>Codigo</th>
+                                                <th>Sector</th>
+                                                <%--<th style="width: 20%">Unidad Medida</th>--%>
+                                                <th style="width: 20%"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <asp:PlaceHolder ID="PHAtributos" runat="server" />
+                                        </tbody>
+                                    </table>
+
+                                </ContentTemplate>
+
+                            </asp:UpdatePanel>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="/../js/plugins/pace/pace.min.js"></script>
+
+<script src="/../js/plugins/jsTree/jstree.min.js"></script>
+
+
+    <script>
+        function BuscarlistaProd() {
+            let numLetras = document.getElementById('txtDescripcionProductos').value.length;
+            let descripcion = document.getElementById('txtDescripcionProductos').value;
+            if (numLetras > 3) {
+                let param;
+                $.ajax({
+                    method: "POST",
+                    url: "RecetasABM.aspx/GetProd",
+                    data: '{d:"' + descripcion + '" }"',
+                    contentType: "application/json",
+                    dataType: 'json',
+
+                    error: (error) => {
+                        console.log(JSON.stringify(error));
+                        //$.msgbox("No se pudo cargar la tabla", { type: "error" });
+                    },
+                    success: agregarDescripcionProd
+                });
+            }
+          
+        }
+        function agregarDescripcionProd(response) {
+            let lista = document.getElementById
+            let option = document.createElement('option');
+            for (var i in Arraylist.response) {
+                $('ListaNombreProd').append(
+                    " <option label=" + i + " value=" + i + " />"
+                );
+            }
+        }
+    </script>
+    <script>
+        function handle(e) {
+            
+               
+                //let x = ContentPlaceHolder1_txtDescripcionProductos.value = clickedId.split('_')[1];
+            let txtProd = document.getElementById('ContentPlaceHolder1_txtDescripcionProductos').value
+            if (txtProd.includes(' - ')) {
+
+                const idOption = document.querySelector('option[value="' + txtProd + '"]').id;
+                let costo = idOption.split("_")[5];
+                //let prod = document.getElementById('ContentPlaceHolder1_Productos_' + idOption.split("_")[1] + "_" + idOption.split("_")[2]).children[0].innerHTML;
+            //let costo = document.getElementById('ContentPlaceHolder1_Productos_' + idOption.split("_")[1] + "_" + idOption.split("_")[2]).children[1].innerHTML;
+            if (idOption.includes("c_p_"))
+            agregarProducto(idOption, costo);
+            else if (idOption.includes("c_r_"))
+                agregarReceta(idOption,costo)
+            }
+        }
+    </script>
+    <script>
+        function AgregarPaso() {
+            let descripcion = document.getElementById('<%=txtPasoDesc.ClientID%>').value;
+            let num = document.getElementById('<%=txtPasoNum.ClientID%>').value;
+
+            $('#tablePasos').append(
+                "<tr id=\"Row_" + num + "\">" +
+                "<th style=\"width: 10%\">" + num + "</th >" +
+                "<th style=\"width: 80%\">" + descripcion + "</th >" +
+                "<td style=\" text-align: center\"> <a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent;\" class=\"btn  btn-xs \" onclick=\"javascript: return borrarPaso('Row_" + num + "');\" >" +
+                "<i class=\"fa fa-trash - o\" style=\"color: black\"></i> </a> </td>" +
+                "</tr>"
+            )
+            let inum = parseInt(num);
+            inum++;
+            let procedimientosAll = document.getElementById('<%=hfPasos.ClientID%>').value;
+            procedimientosAll += num + "-" + descripcion+";";
+
+            document.getElementById('<%=hfPasos.ClientID%>').value = procedimientosAll ;
+
+            document.getElementById('<%=txtPasoNum.ClientID%>').value = inum;
+            document.getElementById('<%=txtPasoDesc.ClientID%>').value = '';
+
+        }
+
+        function borrarPaso(idRow) {
+
+
+            $('#' + idRow).remove();
+            let Paso = document.getElementById('<%=hfPasos.ClientID%>').value.split(';');
+            let nuevosPaso = "";
+            for (let x = 0; x < Paso.length; x++) {
+                if (Paso[x] != "") {
+                    if (!Paso[x].includes(idRow)) {
+                        nuevosPaso += Paso[x] + ";";
+                    }
+                    else {
+                        /* var productoAEliminar = Paso[x].split(',')[2];*/
+                        //ContentPlaceHolder1_txtPesoBruto.value = parseFloat(ContentPlaceHolder1_txtPesoBruto.value) - parseFloat(productoAEliminar);
+                        //if (ContentPlaceHolder1_txtRinde.value != "") {
+                        //    ContentPlaceHolder1_txtCoeficiente.value = (parseFloat(ContentPlaceHolder1_txtPesoBruto.value) / parseFloat(ContentPlaceHolder1_txtRinde.value)).toFixed(2);
+                        //    ContentPlaceHolder1_hiddenCoeficiente.value = ContentPlaceHolder1_txtCoeficiente.value;
+
+                        //}
+                    }
+                }
+            }
+            document.getElementById('<%=hfPasos.ClientID%>').value = nuevosPaso;
+        }
+
+    </script>
+    <script type="text/javascript">
+        "use strict";
+        var $image = $("#imgDocF")
+
+        var $inputImageF = $("#<%=inputImage2.ClientID%>");
+
+        if (window.FileReader) {
+            //inputImageF.addEventListener("change",
+            $("#form").on('change', '#ContentPlaceHolder1_inputImage2', function () {
+                var fileReader = new FileReader(),
+                    files = this.files,
+                    file;
+                if (!files.length) {
+                    return;
+                }
+                file = files[0];
+                if (/^image\/\w+$/.test(file.type)) {
+                    fileReader.readAsDataURL(file);
+                    fileReader.onload = function () {
+                        $("#imgDocF").attr("src", this.result)
+                    };
+                } else {
+                    showMessage("Please choose an image file.");
+                }
+            });
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#wizard").steps();
+            $("#form").steps({
+
+                labels: {
+                    cancel: "Cancelar",
+                    previous: 'Anterior',
+                    next: 'Siguiente',
+                    finish: 'Guardar',
+                    current: ''
+                },
+                bodyTag: "fieldset",
+                onStepChanging: function (event, currentIndex, newIndex) {
+                    // Always allow going backward even if the current step contains invalid fields!
+                    if (currentIndex > newIndex) {
+                        return true;
+                    }
+
+                    // Forbid suppressing "Warning" step if the user is to young
+                    if (newIndex === 3 && Number($("#age").val()) < 18) {
+                        return false;
+                    }
+
+
+                    var form = $(this);
+
+                    // Clean up if user went backward before
+                    if (currentIndex < newIndex) {
+                        // To remove error styles
+                        $(".body:eq(" + newIndex + ") label.error", form).remove();
+                        $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+                    }
+
+                    // Disable validation on fields that are disabled or hidden.
+                    form.validate().settings.ignore = ":disabled,:hidden";
+
+                    // Start validation; Prevent going forward if false
+                    return form.valid();
+                },
+                onStepChanged: function (event, currentIndex, priorIndex) {
+                    // Suppress (skip) "Warning" step if the user is old enough.
+                    if (currentIndex === 2 && Number($("#age").val()) >= 18) {
+                        $(this).steps("next");
+                    }
+
+                    // Suppress (skip) "Warning" step if the user is old enough and wants to the previous step.
+                    if (currentIndex === 2 && currentIndex ===3) {
+                        $(this).steps("previous");
+                    }
+                },
+                onFinishing: function (event, currentIndex) {
+                    var form = $(this);
+                    //----------------------------------------------------------------------------- REVISAR 
+                    // Disable validation on fields that are disabled.
+                    // At this point it's recommended to do an overall check (mean ignoring only disabled fields)
+                    //form.validate().settings.ignore = ":disabled";
+                    
+                    if (form.valid()) {
+                            let selectUnidadMedida = document.getElementById('<%=ddlUnidadMedida.ClientID%>');
+                            let selectTipoReceta = document.getElementById('<%=ddlTipoReceta.ClientID%>');
+                        let url = window.location.href;
+                        if (!url.includes("a=2")) {
+
+
+                       <%-- document.getElementById('<%= btnGuardar%>').click()--%>
+
+                            $.ajax({
+                                method: "POST",
+                                url: "ProductosABM.aspx/GuardarReceta2",
+                                data: '{ descripcion: "' + document.getElementById('<%=txtDescripcionReceta.ClientID%>').value
+                                    + '" , codigo: "' + document.getElementById('<%=txtCodigo.ClientID%>').value
+                                    + '" , Categoria: "' + document.getElementById('<%=txtDescripcionCategoria.ClientID%>').value
+                                    + '" , Sector: "' + document.getElementById('<%=txtSector.ClientID%>').value
+                                    + '" , Atributos: "' + document.getElementById('<%=txtDescripcionAtributo.ClientID%>').value
+                                    + '" , Unidad: "' + selectUnidadMedida.selectedOptions[0].value
+                                    + '" , Tipo: "' + selectTipoReceta.selectedOptions[0].value
+                                    + '" , rinde: "' + document.getElementById('<%=txtRinde.ClientID%>').value
+                                    + '" , prVenta: "' + document.getElementById('<%=txtPrVenta.ClientID%>').value
+                                    + '" , idProductosRecetas: "' + document.getElementById('<%=idProductosRecetas.ClientID%>').value
+                                    + '" , BrutoT: "' + document.getElementById('<%=txtKgBrutTotal.ClientID%>').value
+                                    + '" , CostoT: "' + document.getElementById('<%=txtCostoTotal.ClientID%>').value
+                                    + '" , BrutoU: "' + document.getElementById('<%=txtKgxPorcion.ClientID%>').value
+                                    + '" , CostoU: "' + document.getElementById('<%=txtCostoxPorcion.ClientID%>').value
+                                    + '" , FoodCost: "' + document.getElementById('<%=txtPFoodCost.ClientID%>').value
+                                    + '" , ContMarg: "' + document.getElementById('<%=txtContMarg.ClientID%>').value
+                                    + '" , BuenasPract: "' + document.getElementById('<%=txtObservaciones.ClientID%>').value
+                                    + '" , InfoNut: "' + document.getElementById('<%=txtInfoNutr.ClientID%>').value
+                                    + '" , idPasosRecetas: "' + document.getElementById('<%=hfPasos.ClientID%>').value
+
+                                    + '"}',
+                                contentType: "application/json",
+                                dataType: 'json',
+                                error: (error) => {
+                                    console.log(JSON.stringify(error));
+                                    $.msgbox("No se pudo cargar la tabla", { type: "error" });
+                                },
+                                success: recargarPagina()
+                            });
+                        }
+                       <%-- else {
+                            let parameter = url.split("?")
+                            let queryString = new URLSearchParams(parameter);
+                            let idReceta =''
+                            for (let pair of queryString.entries()) {
+                                if (pair[0] == "i")
+                                    idReceta = pair[1];
+                            }
+                            $.ajax({
+                                method: "POST",
+                                url: "ProductosABM.aspx/EditarReceta2",
+                                data: '{ descripcion: "' + document.getElementById('<%=txtDescripcionReceta.ClientID%>').value
+                                     + '" , codigo: "' + document.getElementById('<%=txtCodigo.ClientID%>').value
+                                    + '" , Categoria: "' + document.getElementById('<%=txtDescripcionCategoria.ClientID%>').value
+                                    + '" , Sector: "' + document.getElementById('<%=txtSector.ClientID%>').value
+                                    + '" , Atributos: "' + document.getElementById('<%=txtDescripcionAtributo.ClientID%>').value
+                                    + '" , Unidad: "' + selectUnidadMedida.selectedOptions[0].value
+                                    + '" , Tipo: "' + selectTipoReceta.selectedOptions[0].value
+                                    + '" , rinde: "' + document.getElementById('<%=txtRinde.ClientID%>').value
+                                    + '" , prVenta: "' + document.getElementById('<%=txtPrVenta.ClientID%>').value
+                                    + '" , idProductosRecetas: "' + document.getElementById('<%=idProductosRecetas.ClientID%>').value
+                                    + '" , BrutoT: "' + document.getElementById('<%=txtKgBrutTotal.ClientID%>').value
+                                    + '" , CostoT: "' + document.getElementById('<%=txtCostoTotal.ClientID%>').value
+                                    + '" , BrutoU: "' + document.getElementById('<%=txtKgxPorcion.ClientID%>').value
+                                    + '" , CostoU: "' + document.getElementById('<%=txtCostoxPorcion.ClientID%>').value
+                                    + '" , FoodCost: "' + document.getElementById('<%=txtPFoodCost.ClientID%>').value
+                                    + '" , ContMarg: "' + document.getElementById('<%=txtContMarg.ClientID%>').value
+                                    + '" , BuenasPract: "' + document.getElementById('<%=txtObservaciones.ClientID%>').value
+                                    + '" , InfoNut: "' + document.getElementById('<%=txtInfoNutr.ClientID%>').value
+                                     + '" , idPasosRecetas: "' + document.getElementById('<%=hfPasos.ClientID%>').value
+                                    + '" , idReceta: "' + idReceta
+                                     + '"}',
+                                 contentType: "application/json",
+                                 dataType: 'json',
+                                 error: (error) => {
+                                     console.log(JSON.stringify(error));
+                                     $.msgbox("No se pudo cargar la tabla", { type: "error" });
+                                 },
+                                 success: recargarPagina()
+                             });
+                        }--%>
+                    }
+                    // Start validation; Prevent form submission if false
+                   /* return form.valid();*/
+                },
+                onCanceled: function (event, currentIndex) {
+                    var form = $(this);
+                    //----------------------------------------------------------------------------- REVISAR
+
+                    // Submit form input
+                    window.location.replace('Recetas.aspx');
+                },
+                onFinished: function (event, currentIndex) {
+                    var form = $(this);
+                    //----------------------------------------------------------------------------- REVISAR
+
+                    // Submit form input
+                    form.submit();
+                }
+            })
+                .validate({
+                    errorPlacement: function (error, element) {
+                        element.before(error);
+                    },
+                    rules: {
+                        confirm: {
+                            equalTo: "#password"
+                        }
+                    }
+                });
+        });
+    </script>
+
+    <script>         
+        function recargarPagina() {
+            //toastr.success("guardado con exito!", "Exito")
+             window.location.href = 'RecetasABM.aspx?m=1';
+            
+            
+            //alert('Guardado con exito');
+        }
+        function mostrarGestion() {
+            var checkBox = document.getElementById("ContentPlaceHolder1_cbxGestion");
+            // Get the output text
+            var div1 = document.getElementById("ContentPlaceHolder1_divGrupo");
+            var div2 = document.getElementById("ContentPlaceHolder1_divSubgrupo");
+
+            // If the checkbox is checked, display the output text
+            if (checkBox.checked == true) {
+                div1.style.display = "block";
+                div2.style.display = "block";
+            } else {
+                div1.style.display = "none";
+                div2.style.display = "none";
+            }
+        }
+
+        function actualizarSubGrupo() {
+            var hiddenGrupo = document.getElementById('ContentPlaceHolder1_hiddenGrupo');
+            hiddenGrupo.value = ContentPlaceHolder1_ListGrupo.value;
+
+            $.ajax({
+                method: "POST",
+                url: "Productos.aspx/GetSubgrupos",
+                data: '{id: "' + ContentPlaceHolder1_ListGrupo.value + '" }',
+                contentType: "application/json",
+                dataType: 'json',
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                    //$.msgbox("No se pudo cargar la tabla", { type: "error" });
+                },
+                success: successCambiarListSubgrupos
+            });
+
+
+        }
+        function successCambiarListSubgrupos(response) {
+            var obj = JSON.parse(response.d);
+            var data = obj.split(';');
+
+            for (var i = 0; i < data.length; i++) {
+                if (data[i] != "") {
+                    $('#ContentPlaceHolder1_ListSubgrupo').append($('<option>', {
+                        value: data[i].split(',')[0],
+                        text: data[i].split(',')[1]
+                    }));
+                }
+            }
+        }
+
+        
+    </script>
+
+    <script>
+        function MostrarModalFamilia(familia) {
+            document.querySelector('#lblFamilia').textContent = familia;
+            $('#modalFamilia').modal('show');
+        }
+        function CalcularCantBruta() {
+            let Cantidad = parseFloat(document.getElementById('<%= txtCantidad.ClientID%>').value.replace(',',''));
+            let Factor;
+            if (document.getElementById('<%= txtFactor.ClientID%>').value == "")
+                Factor = 0;
+            else
+                Factor = parseFloat(document.getElementById('<%= txtFactor.ClientID%>').value);
+
+            let CantBruta = Cantidad * Factor;
+            document.getElementById('<%=txtCantBruta.ClientID%>').value = myFormat( Math.round10(CantBruta, -2));
+        }
+
+        function ActualizarUnidades() {
+            let select = document.getElementById('<%= ddlUnidadMedida.ClientID%>');
+            let txtSelect = select.options[select.selectedIndex].text;
+            let idSelect = select.options[select.selectedIndex].value;
+            if (txtSelect.toUpperCase() == "KILOGRAMOS") {
+                document.getElementById('lblBrutoUnidad').textContent = "Kg Br. ";
+                document.getElementById('lblBrutoTotal').textContent = "Kg Br. Total";
+
+            } else if (txtSelect.toUpperCase() == "LITRO") {
+                document.getElementById('lblBrutoUnidad').textContent = "l Br. ";
+                document.getElementById('lblBrutoTotal').textContent = "l Br. Total";
+            } else if (txtSelect.toUpperCase() == "METROS") {
+                document.getElementById('lblBrutoUnidad').textContent = "m Br. ";
+                document.getElementById('lblBrutoTotal').textContent = "m Br. Total";
+            } else {
+                document.getElementById('lblBrutoUnidad').textContent = "Br. ";
+                document.getElementById('lblBrutoTotal').textContent = "Br. Total";
+            }
+
+            if (idSelect == "-1") {
+                document.getElementById('lblTotalUnidad').textContent = "Rinde ";
+                document.getElementById('lblBrutoUnidad').textContent = " Br. ";
+                document.getElementById('lblCosto').textContent = "Costo ";
+            } else {
+
+                
+                document.getElementById('lblBrutoUnidad').textContent = document.getElementById('lblBrutoUnidad').textContent + txtSelect;
+               
+            }
+
+
+        }
+
+        function ActualizarxPorcion() {
+
+            let costototal = parseFloat(document.getElementById('<%=txtCostoTotal.ClientID%>').value.replace(',', ''));
+            let cantTotal = parseFloat(document.getElementById('<%= txtKgBrutTotal.ClientID%>').value.replace(',', ''));
+            let porciones = parseFloat(document.getElementById('<%=txtRinde.ClientID%>').value);
+            if (porciones > 0) {
+
+                document.getElementById('<%=txtKgxPorcion.ClientID%>').value = myFormat( cantTotal / porciones);
+                document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = myFormat( costototal / porciones);
+            } else {
+                document.getElementById('<%=txtKgxPorcion.ClientID%>').value = "0.00";
+                document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = "0.00";
+            }
+        }
+        function ActualizarxPrVenta() {
+            let PRVenta = parseFloat(document.getElementById('<%=txtPrVenta.ClientID%>').value.replace(',', ''));
+            let costototal = parseFloat(document.getElementById('<%=txtCostoxPorcion.ClientID%>').value.replace(',', ''));
+            let ContMarg = parseFloat(document.getElementById('<%=txtContMarg.ClientID%>').value);
+            if (PRVenta > 0) {
+
+                document.getElementById('<%=txtPFoodCost.ClientID%>').value = myFormat(costototal / PRVenta * 100);
+                document.getElementById('<%=txtContMarg.ClientID%>').value = myFormat(PRVenta - costototal);
+            } else {
+                document.getElementById('<%=txtPFoodCost.ClientID%>').value = "0.00";
+                document.getElementById('<%=txtContMarg.ClientID%>').value = "0.00";
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        function editarPresentaciones() {
+            var hiddenPresentation = document.getElementById('ContentPlaceHolder1_idPresentacion');
+            var inputs = $('#ContentPlaceHolder1_UpdatePanel5').find(':checkbox');
+            for (var j = 0; j < inputs.length; j++) {
+                inputs[j].checked = false;
+            }
+
+
+            var presentaciones = hiddenPresentation.value.split(',');
+            var inputs = $('#ContentPlaceHolder1_UpdatePanel5').find(':checkbox');
+            for (var i = 0; i < inputs.length; i++) {
+                for (var j = 0; j < presentaciones.length; j++) {
+                    if (inputs[i].id.split('_')[2].split('-')[0].trim() == presentaciones[j]) {
+                        inputs[i].checked = true;
+                    }
+                }
+            }
+
+        }
+    </script>
+    <script>
+        function ActualizarLabels() {
+            let descripcion = document.getElementById('<%=txtDescripcionReceta.ClientID%>').value;
+            descripcion = descripcion.toUpperCase();
+            document.querySelector('#lblDescripcion1').textContent = descripcion;
+            //document.querySelector('#lblDescripcion2').textContent = descripcion;
+            document.querySelector('#lblDescripcion3').textContent = descripcion;
+            document.querySelector('#lblDescripcion4').textContent = descripcion;
+            //document.querySelector('#lblDescripcionFinal').textContent = descripcion;
+
+        }
+
+
+    </script>
+
+    <script>
+      
+        function agregarCategoria(id) {
+            ContentPlaceHolder1_txtDescripcionCategoria.value = id.split('_')[2] + ' - ' + id.split('_')[3];
+            $('#modalCategoria').modal('hide');
+            document.querySelector('#txtBusqueda').value = '';
+            let btnAtributos = document.getElementById('btnAtributos');
+            btnAtributos.removeAttribute('disabled');
+            $.ajax({
+                method: "POST",
+                url: "Categorias.aspx/GetSubAtributos2",
+                data: '{id: "' + id.split('_')[2] + '" }',
+                contentType: "application/json",
+                dataType: 'json',
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                    $.msgbox("No se pudo cargar la tabla", { type: "error" });
+                },
+                success: successAgregarTipoAtributo
+            });
+
+        }
+
+     
+        function agregarDesdetxtCategoria() {
+            let btnAtributos = document.getElementById('btnAtributos');
+            btnAtributos.removeAttribute('disabled');
+
+            let txtcat = document.getElementById('<%=txtDescripcionCategoria.ClientID%>').value
+            const idOption = document.querySelector('option[value="' + txtcat + '"]').id;
+            
+         
+            
+            $.ajax({
+                method: "POST",
+                url: "Categorias.aspx/GetSubAtributos2",
+                data: '{id: "' + idOption.split('_')[1] + '" }',
+                contentType: "application/json",
+                dataType: 'json',
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                    $.msgbox("No se pudo cargar la tabla", { type: "error" });
+                },
+                success: successAgregarTipoAtributo
+            });
+        }
+
+        function pulsar(e) {
+            if (e.keyCode === 13 && !e.shiftKey) {
+                e.preventDefault();
+                AgregarPaso();
+            }
+        }
+
+        function successAgregarTipoAtributo(response) {
+            var obj = JSON.parse(response.d);
+            var inputs = document.querySelectorAll('input[type=checkbox]')
+
+            if (obj == null) {
+                return;
+            }
+
+            var tiposAtributos = obj.split(',');
+
+            let table2 = document.getElementById('editable22');
+            let cuerpor = document.getElementById("tbodyEditable1");
+            let max = table2.rows.length;
+            table2.getElementsByTagName('tbody')[0].innerHTML = '';
+            //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
+            for (let j = 0; j < tiposAtributos.length; j++) {
+
+
+
+                $('#editable22').append(`<tr>
+                        <td>${tiposAtributos[j].split("_")[0]}</td>
+                        <td>${tiposAtributos[j].split("_")[1]}</td>
+                        <td style="text-align:right"> <input id="ContentPlaceHolder1_btnSelecAtrib_${tiposAtributos[j].split("_")[0]}_${tiposAtributos[j].split("_")[1]}" class="presentacion radio btn btn-primary btn-xs" type="checkbox" checked> </td>
+                        </tr>`);
+
+            }
+        }
+
+        function OrdenarTablaPasos() {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("tablePasos");
+            switching = true;
+            /* Make a loop that will continue until
+            no switching has been done: */
+            while (switching) {
+                // Start by saying: no switching is done:
+                switching = false;
+                rows = table.rows;
+                /* Loop through all table rows (except the
+                first, which contains table headers): */
+                for (i = 1; i < (rows.length - 1); i++) {
+                    // Start by saying there should be no switching:
+                    shouldSwitch = false;
+                    /* Get the two elements you want to compare,
+                    one from current row and one from the next: */
+                    x = rows[i].getElementsByTagName("TD")[0];
+                    y = rows[i + 1].getElementsByTagName("TD")[0];
+                    // Check if the two rows should switch place:
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        // If so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+                if (shouldSwitch) {
+                    /* If a switch has been marked, make the switch
+                    and mark that a switch has been done: */
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+
+        function agregarAtributos() {
+            let table2 = document.getElementById('editable22');
+            let cuerpor = document.getElementById("tbodyEditable1");
+            let max = table2.rows.length;
+            let presentacionFinal = '';
+            //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
+            for (let i = 1; i < max; i++) {
+                /*if (i > 1) {*/
+                if (table2.rows[i].cells[2].children[0].checked) {
+
+                    presentacionFinal += table2.rows[i].cells[0].innerHTML + " - " + table2.rows[i].cells[1].innerHTML + ', ';
+
+                }
+
+            }
+
+            $('#modalAtributo').modal('hide');
+            document.getElementById('ContentPlaceHolder1_txtDescripcionAtributo').value = presentacionFinal.trimEnd(', ');
+           
+
+            return true;
+        }
+
+        function EliminarFila(id) {
+            let table1 = document.getElementById('editable1');
+            let presentacionFinal = document.querySelector('#lblPresentacion').textContent;
+            let max = table1.rows.length;
+
+            for (let i = 1; i < max; i++) {
+                if (table1.rows[i].cells[0].innerHTML == id) {
+                    if (presentacionFinal.includes(table1.rows[i].cells[1].innerHTML)) {
+                        let texto = table1.rows[i].cells[1].innerHTML;
+                        presentacionFinal = presentacionFinal.replace(texto, '');
+                    }
+                    document.getElementById('editable1').rows[i].remove();
+                    return;
+                }
+            }
+        }
+    </script>
+    <script>
+        function FocusSearch( accion ) {
+            //$("#editable2 [type='search']").focus();
+            //$("div.editable2_filter input").focus();
+
+            switch (parseInt(accion)) {
+                case 1:
+                    document.getElementById('txtBusquedaIngredientes').focus;
+                    break;
+            }
+        }
+        function agregarProductoPH() {
+            var codigo = ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0];
+            var cantidad = ContentPlaceHolder1_txtCantidad.value.replace(',', '');
+            var tipo = ContentPlaceHolder1_Hiddentipo.value;
+            let unidad = ContentPlaceHolder1_HiddenUnidad.value;
+            let costo = ContentPlaceHolder1_HiddenCosto.value;
+
+            let costAux = parseFloat(costo.replace(',', '.'));
+            let CantAux = parseFloat(cantidad);
+            let costototal = 0;
+
+            costototal = Math.round10(costAux * CantAux, -2);
+            let auxCostoTotal = myFormat( costototal.toString());
+            if (!auxCostoTotal.includes('.'))
+                auxCostoTotal += ".00";
+            //costototal = costototal.toString().replace('.', ',');
+            let btnRec = "";
+            let styleCorrect = "";
+            let listaDesplegable = "";
+            if (tipo == "Receta") {
+                btnRec = "<a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent;\" class=\"btn  btn-xs \" onclick=\"javascript: return CargarmodalRecetaDetalle('" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "');\" >" +
+                    "<i><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 576 512\" style=\"width: 15px; vertical-align: middle; \">" +
+                    "<path d=\"M240 144c0-53-43-96-96-96s-96 43-96 96s43 96 96 96s96-43 96-96zm44.4 32C269.9 240.1 212.5 288 144 288C64.5 288 0 223.5 0 144S64.5 0 144 0c68.5 0 125.9 47.9 140.4 112h71.8c8.8-9.8 21.6-16 35.8-16H496c26.5 0 48 21.5 48 48s-21.5 48-48 48H392c-14.2 0-27-6.2-35.8-16H284.4zM144 208c-35.3 0-64-28.7-64-64s28.7-64 64-64s64 28.7 64 64s-28.7 64-64 64zm256 32c13.3 0 24 10.7 24 24v8h96c13.3 0 24 10.7 24 24s-10.7 24-24 24H280c-13.3 0-24-10.7-24-24s10.7-24 24-24h96v-8c0-13.3 10.7-24 24-24zM288 464V352H512V464c0 26.5-21.5 48-48 48H336c-26.5 0-48-21.5-48-48zM48 320h80 16 32c26.5 0 48 21.5 48 48s-21.5 48-48 48H160c0 17.7-14.3 32-32 32H64c-17.7 0-32-14.3-32-32V336c0-8.8 7.2-16 16-16zm128 64c8.8 0 16-7.2 16-16s-7.2-16-16-16H160v32h16zM24 464H200c13.3 0 24 10.7 24 24s-10.7 24-24 24H24c-13.3 0-24-10.7-24-24s10.7-24 24-24z\" />" +
+                    "</svg>" +
+
+                    "</i>  </a> ";
+                styleCorrect = "margin-left: 34px;";
+                listaDesplegable = "<td> <div id=\"jstree" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaLI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</li></ul></div></td>";
+
+            } else {
+                listaDesplegable = "<td> " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
+
+            }
+            if (!document.getElementById('<%= idProductosRecetas.ClientID%>').value.includes(tipo + '_' + codigo)) {
+                $('#tableProductos').append(
+                    "<tr id=" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "\">" +
+                    "<td style=\" text-align: right\"> " + codigo + "</td>" +
+                    listaDesplegable +
+                    //"<td ondblclick=\"CargarmodalRecetaDetalle('" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0]+"')\" > " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>" +
+                    "<td style=\" text-align: right\"> " + myFormat( cantidad )+ "</td>" +
+                    "<td> " + unidad + "</td>" +
+                    "<td style=\" text-align:right;\"> " + costo + "</td>" +
+                    "<td style=\" text-align:right;\"> " + auxCostoTotal + "</td>" +
+                    "<td style=\" text-align: center\">" +
+                    " <a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent; " + styleCorrect + "\" class=\"btn  btn-xs \" onclick=\"javascript: return borrarProd('" + tipo + "_" + codigo + "');\" >" +
+                    "<i class=\"fa fa-trash - o\" style=\"color: black\"></i> </a> " +
+                    btnRec
+                    +"</td > " +
+                    "</tr>"
+                );
+                let CostoTotalFinal = document.getElementById('<%=txtCostoTotal.ClientID%>').value;
+                CostoTotalFinal = CostoTotalFinal.replace(',', '');
+                CostoTotalFinal = parseFloat(CostoTotalFinal);
+                let aux;
+                
+                    aux = costototal;
+                CostoTotalFinal += parseFloat(aux);
+                let CostoTotalFinalAux = CostoTotalFinal.toString();
+                if (!CostoTotalFinalAux.includes('.'))
+                    CostoTotalFinalAux += ".00";
+                document.getElementById('<%=txtCostoTotal.ClientID%>').value = myFormat(CostoTotalFinalAux);
+
+
+                let KgBrutoTotal = parseFloat(document.getElementById('<%=txtKgBrutTotal.ClientID%>').value);
+                KgBrutoTotal += CantAux;
+                document.getElementById('<%=txtKgBrutTotal.ClientID%>').value = myFormat( KgBrutoTotal);
+
+                if (document.getElementById('<%= idProductosRecetas.ClientID%>').value == "") {
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0];
+                }
+                else {
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += ";" + codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0];
+                }
+                if (!document.getElementById('<%= txtRinde.ClientID%>').value == "") {
+                    let rinde = parseFloat(document.getElementById('<%= txtRinde.ClientID%>').value);
+                    if (rinde > 0) {
+
+                        document.getElementById('<%=txtKgxPorcion.ClientID%>').value = myFormat(myFormat(KgBrutoTotal) / rinde);
+                        document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = myFormat(CostoTotalFinal / rinde);
+                    }
+                }
+                if (!document.getElementById('<%= txtPrVenta.ClientID%>').value == "") {
+                    let prVenta = parseFloat(document.getElementById('<%= txtPrVenta.ClientID%>').value);
+                    if (prVenta > 0) {
+                        ActualizarxPrVenta();
+                        
+                    }
+                }
+                if (tipo == "Receta") {
+
+                    ObtenerListaIntegradoraDetalleReceta(ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim())
+
+                    
+                }
+                ContentPlaceHolder1_txtDescripcionProductos.value = "";
+                ContentPlaceHolder1_txtCantidad.value = "0";
+                document.getElementById('<%=txtFactor.ClientID%>').value = "1";
+                document.getElementById('<%=txtCantBruta.ClientID%>').value = "0";
+                document.getElementById('<%=txtCostoLimpio.ClientID%>').value = "";
+                document.getElementById('<%=txtUnidadMed.ClientID%>').value = "";
+                document.getElementById('ContentPlaceHolder1_txtDescripcionProductos').focus();
+               
+            }
+        }
+        function CargarmodalRecetaDetalle(id) {
+
+            $.ajax({
+                method: "POST",
+                url: "Categorias.aspx/GetProductosRecetaByIdReceta",
+                data: '{idReceta: "' + id.trim() + '" }',
+                contentType: "application/json",
+                dataType: 'json',
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                    $.msgbox("No se pudo cargar la tabla", { type: "error" });
+                },
+                success: successAgregarDetallesRecetas
+            });
+
+           
+
+            
+        }
+
+        function successAgregarDetallesRecetas(response) {
+            var obj = JSON.parse(response.d);
+            
+
+            if (obj == null) {
+                return;
+            }
+
+            var Recetas_ListProduc = obj.split(',');
+
+            let table2 = document.getElementById('editable27');
+           
+            table2.getElementsByTagName('tbody')[0].innerHTML = '';
+            //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
+            for (let j = 0; j < Recetas_ListProduc.length; j++) {
+
+
+
+                $("#editable27").append(
+                    "<tr>" +
+                    "<td style=\" text-align: right\"> " + Recetas_ListProduc[j].split("_")[0] + "</td>" +
+
+                    "<td> " + Recetas_ListProduc[j].split("_")[1] + "</td>" +
+                    "<td style=\" text-align: right\"> " + Recetas_ListProduc[j].split("_")[2] + "</td>" +
+                    "<td> " + Recetas_ListProduc[j].split("_")[3] + "</td>" +
+                    "<td style=\" text-align:right;\"> " + Recetas_ListProduc[j].split("_")[4] + "</td>" +
+                    "<td style=\" text-align:right;\"> " + Recetas_ListProduc[j].split("_")[5] + "</td>" +
+                    "<td style=\" text-align: center\">" +
+                    "</td > " +
+                    "</tr>"
+                );
+
+            }
+            $('#modalRecetaDetalle').modal('show');
+        }
+
+        function ObtenerListaIntegradoraDetalleReceta(id) {
+            $.ajax({
+                method: "POST",
+                url: "Categorias.aspx/GetListProductosRecetaByIdReceta",
+                data: '{idReceta: "' + id.trim() + '" }',
+                contentType: "application/json",
+                dataType: 'json',
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                    $.msgbox("No se pudo cargar la tabla", { type: "error" });
+                },
+                success: function (respuesta) {
+                    console.log(respuesta);
+                    var obj2 = JSON.parse(respuesta.d);
+
+                    if (obj2 == null) {
+                        return;
+                    }
+                    $("#RecetaLI_" + id).append(
+                        obj2
+                    );
+
+                    $('#jstree'+id).jstree({
+                        'core': {
+                            'check_callback': true
+                        },
+                        'plugins': ['types', 'dnd'],
+                        'types': {
+                            'default': {
+                                'icon': 'fa fa-folder'
+                            },
+                            'html': {
+                                'icon': 'fa fa-file-code-o'
+                            },
+                            'svg': {
+                                'icon': 'fa fa-file-picture-o'
+                            },
+                            'css': {
+                                'icon': 'fa fa-file-code-o'
+                            },
+                            'img': {
+                                'icon': 'fa fa-file-image-o'
+                            },
+                            'js': {
+                                'icon': 'fa fa-file-text-o'
+                            }
+
+                        }
+                    });
+                }
+            });
+
+        }
+
+        function CargarlistaDesplegableRecetaDetalle(respuesta) {
+            console.log(respuesta);
+            var obj2 = JSON.parse(respuesta.d);
+
+            if (obj2 == null) {
+                return;
+            }
+            $("#RecetaLI_" + "29").append(
+                obj2
+            );
+        }
+        function myFormat(str) {
+            //const cleaned = str.replace(/[^\d,]/g, '').replace(",", ".")
+            return Number(str).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+        }
+
+    </script>
+    <script>
+        function agregarProducto(clickedId, costo) {
+            ContentPlaceHolder1_txtDescripcionProductos.value = clickedId.split('_')[2] + ' - ' + clickedId.split('_')[3];
+            ContentPlaceHolder1_Hiddentipo.value = "Producto";
+            ContentPlaceHolder1_HiddenUnidad.value = clickedId.split('_')[4];
+            ContentPlaceHolder1_txtUnidadMed.value = clickedId.split('_')[4];
+            ContentPlaceHolder1_HiddenCosto.value = costo;
+            document.getElementById('<%=txtCostoLimpio.ClientID%>').value = costo;
+            
+             $('input[type=search]').val('');// Clear Search input.
+            document.querySelector('#txtBusquedaIngredientes').value = ''
+
+             $('#modalTabsProductos').modal('hide');
+             document.getElementById('<%=txtCantidad.ClientID%>').value = '';
+             document.getElementById('<%=txtCantidad.ClientID%>').focus();
+        }
+        function agregarReceta(clickedId, costo) {
+            ContentPlaceHolder1_txtDescripcionProductos.value = clickedId.split('_')[2] + ' - ' + clickedId.split('_')[3];
+            ContentPlaceHolder1_Hiddentipo.value = "Receta";
+            ContentPlaceHolder1_HiddenUnidad.value = clickedId.split('_')[4];
+            ContentPlaceHolder1_txtUnidadMed.value = clickedId.split('_')[4];
+            ContentPlaceHolder1_HiddenCosto.value = costo;
+            document.getElementById('<%=txtCostoLimpio.ClientID%>').value = costo;
+
+            $('input[type=search]').val('');// Clear Search input.
+            document.querySelector('#txtBusquedaIngredientes').value = ''
+
+            $('#modalTabsProductos').modal('hide');
+            document.getElementById('<%=txtCantidad.ClientID%>').value = '';
+            document.getElementById('<%=txtCantidad.ClientID%>').focus();
+        }
+        function agregarSector() {
+            //ContentPlaceHolder1_txtSector.value = id.split('_')[2] + ' - ' + id.split('_')[3];
+
+            let table2 = document.getElementById('editable7');
+            let cuerpor = document.getElementById("tbodyEditable1");
+            let max = table2.rows.length;
+            let presentacionFinal = '';
+            //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
+            for (let i = 1; i < max; i++) {
+                /*if (i > 1) {*/
+                if (table2.rows[i].cells[3].children[0].checked) {
+
+                    presentacionFinal += table2.rows[i].cells[0].innerHTML + " - " + table2.rows[i].cells[1].innerHTML + ', ';
+
+                }
+
+            }
+            document.getElementById('ContentPlaceHolder1_txtSector').value = presentacionFinal.trimEnd(', ');
+            //document.getElementById('btnAgregarSectores').classList.remove("buttonLoading");
+          /*  document.querySelector('#txtBusquedaSector').value = '';*/
+            $('#modalSectores').modal('hide');
+        }
+        function borrarProd(idprod) {
+            event.preventDefault();
+            let precio = document.getElementById(idprod.trim()).children[5].innerHTML;
+            precio = parseFloat(precio.replace(',', ''));
+            let CostoTotalFinal = document.getElementById('<%=txtCostoTotal.ClientID%>').value;
+            if (CostoTotalFinal.includes(','))
+                CostoTotalFinal = parseFloat(CostoTotalFinal.replace(',', ''));
+
+            CostoTotalFinal -= precio;
+            if (!CostoTotalFinal.toString().includes('.'))
+                CostoTotalFinal += ".00";
+             document.getElementById('<%=txtCostoTotal.ClientID%>').value = CostoTotalFinal.toString();
+
+            let Cantidad = parseFloat(document.getElementById(idprod.trim()).children[2].innerHTML.replace(',',''));
+            let CantTotal = parseFloat(document.getElementById('<%=txtKgBrutTotal.ClientID%>').value.replace(',', ''));
+
+             CantTotal -= Cantidad;
+
+            document.getElementById('<%=txtKgBrutTotal.ClientID%>').value = Math.round10(CantTotal, -2); 
+
+            if (parseFloat(document.getElementById('<%=txtRinde.ClientID%>').value) == 0
+                 && precio == 0 && CostoTotalFinal == 0
+             ) {
+                 document.getElementById('lblBrutoUnidad').textContent = "0";
+                 document.getElementById('lblBrutoUnidad').textContent = "0";
+             } else {
+                 let CantxUnidad = parseFloat(document.getElementById('<%=txtRinde.ClientID%>').value);
+                if (CantxUnidad > 0) {
+                    let x = CantTotal / CantxUnidad;
+                    if (!x.toString().includes('.'))
+                        x += ".00";
+                    document.getElementById('<%=txtKgxPorcion.ClientID%>').value = myFormat(x);
+                    let y = CostoTotalFinal / CantxUnidad;
+                    if (!y.toString().includes('.'))
+                        y += ".00";
+                    document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = myFormat(y);
+                 } else {
+                     document.getElementById('<%=txtKgxPorcion.ClientID%>').value = "0.00";
+                     document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = "0.00";
+                }
+            }
+
+            $('#' + idprod).remove();
+            var productos = ContentPlaceHolder1_idProductosRecetas.value.split(';');
+            var nuevosProductos = "";
+            for (var x = 0; x < productos.length; x++) {
+                if (productos[x] != "") {
+                    if (!productos[x].includes(idprod)) {
+                        nuevosProductos += productos[x] + ";";
+                    }
+                    else {
+                       /* var productoAEliminar = productos[x].split(',')[2];*/
+                        //ContentPlaceHolder1_txtPesoBruto.value = parseFloat(ContentPlaceHolder1_txtPesoBruto.value) - parseFloat(productoAEliminar);
+                        //if (ContentPlaceHolder1_txtRinde.value != "") {
+                        //    ContentPlaceHolder1_txtCoeficiente.value = (parseFloat(ContentPlaceHolder1_txtPesoBruto.value) / parseFloat(ContentPlaceHolder1_txtRinde.value)).toFixed(2);
+                        //    ContentPlaceHolder1_hiddenCoeficiente.value = ContentPlaceHolder1_txtCoeficiente.value;
+
+                        //}
+                    }
+                }
+            }
+            ContentPlaceHolder1_idProductosRecetas.value = nuevosProductos;
+        }
+        function PasarAFactor(event) {
+            if (event.which == 13) {
+
+                document.getElementById('<%=txtFactor.ClientID%>').focus();
+            }
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#editable2').DataTable({
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay información",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "searchPlaceholder": "Escriba su busqueda",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
+          
+            $('#editable6').DataTable({
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay información",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "searchPlaceholder": "Escriba su busqueda",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                },
+                "bLengthChange": false,
+                "bInfo": false
+            });
+
+            $('.dataTables_filter').hide();
+            $('#txtBusqueda').on('keyup', function () {
+                $('#editable6').DataTable().search(
+                    this.value
+                ).draw();
+            });
+
+            $('.dataTables_filter').hide();
+            $('#txtBusquedaIngredientes').on('keyup', function () {
+                $('#editable2').DataTable().search(
+                    this.value
+                ).draw();
+            });
+
+            $('.dataTables_filter').hide();
+           
+
+            $(document).on('keyup', "input[type='search']", function () {
+                var oTable = $('.dataTable').dataTable();
+                oTable.fnFilter($(this).val());
+            });
+
+
+
+
+          
+
+        });
+        $(document).ready(function () {
+           
+            $(".money").inputmask({
+                'alias': 'decimal',
+                rightAlign: true,
+                'groupSeparator': ',',
+                'autoGroup': true
+            });
+        })
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            $('#jstree1').jstree({
+                'core': {
+                    'check_callback': true
+                },
+                'plugins': ['types', 'dnd'],
+                'types': {
+                    'default': {
+                        'icon': 'fa fa-folder'
+                    },
+                    'html': {
+                        'icon': 'fa fa-file-code-o'
+                    },
+                    'svg': {
+                        'icon': 'fa fa-file-picture-o'
+                    },
+                    'css': {
+                        'icon': 'fa fa-file-code-o'
+                    },
+                    'img': {
+                        'icon': 'fa fa-file-image-o'
+                    },
+                    'js': {
+                        'icon': 'fa fa-file-text-o'
+                    }
+
+                }
+            });
+
+            $('#using_json').jstree({
+                'core': {
+                    'data': [
+                        'Empty Folder',
+                        {
+                            'text': 'Resources',
+                            'state': {
+                                'opened': true
+                            },
+                            'children': [
+                                {
+                                    'text': 'css',
+                                    'children': [
+                                        {
+                                            'text': 'animate.css', 'icon': 'none'
+                                        },
+                                        {
+                                            'text': 'bootstrap.css', 'icon': 'none'
+                                        },
+                                        {
+                                            'text': 'main.css', 'icon': 'none'
+                                        },
+                                        {
+                                            'text': 'style.css', 'icon': 'none'
+                                        }
+                                    ],
+                                    'state': {
+                                        'opened': true
+                                    }
+                                },
+                                {
+                                    'text': 'js',
+                                    'children': [
+                                        {
+                                            'text': 'bootstrap.js', 'icon': 'none'
+                                        },
+                                        {
+                                            'text': 'inspinia.min.js', 'icon': 'none'
+                                        },
+                                        {
+                                            'text': 'jquery.min.js', 'icon': 'none'
+                                        },
+                                        {
+                                            'text': 'jsTree.min.js', 'icon': 'none'
+                                        },
+                                        {
+                                            'text': 'custom.min.js', 'icon': 'none'
+                                        }
+                                    ],
+                                    'state': {
+                                        'opened': true
+                                    }
+                                },
+                                {
+                                    'text': 'html',
+                                    'children': [
+                                        {
+                                            'text': 'layout.html', 'icon': 'none'
+                                        },
+                                        {
+                                            'text': 'navigation.html', 'icon': 'none'
+                                        },
+                                        {
+                                            'text': 'navbar.html', 'icon': 'none'
+                                        },
+                                        {
+                                            'text': 'footer.html', 'icon': 'none'
+                                        },
+                                        {
+                                            'text': 'sidebar.html', 'icon': 'none'
+                                        }
+                                    ],
+                                    'state': {
+                                        'opened': true
+                                    }
+                                }
+                            ]
+                        },
+                        'Fonts',
+                        'Images',
+                        'Scripts',
+                        'Templates',
+                    ]
+                }
+            });
+
+        });
+
+    </script>
+    <script>
+        function validarNro(e) {
+            var key;
+            if (window.event) // IE
+            {
+                key = e.keyCode;
+            }
+            else if (e.which) // Netscape/Firefox/Opera
+            {
+                key = e.which;
+            }
+
+            if (key < 48 || key > 57) {
+                if (key == 46  || key == 8)//|| key == 44)  Detectar . (punto) , backspace (retroceso) y , (coma)
+                { return true; }
+                else { return false; }
+            }
+            return true;
+        }
+        (function () {
+            /**
+             * Ajuste decimal de un número.
+             *
+             * @param {String}  tipo  El tipo de ajuste.
+             * @param {Number}  valor El numero.
+             * @param {Integer} exp   El exponente (el logaritmo 10 del ajuste base).
+             * @returns {Number} El valor ajustado.
+             */
+            function decimalAdjust(type, value, exp) {
+                // Si el exp no está definido o es cero...
+                if (typeof exp === 'undefined' || +exp === 0) {
+                    return Math[type](value);
+                }
+                value = +value;
+                exp = +exp;
+                // Si el valor no es un número o el exp no es un entero...
+                if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+                    return NaN;
+                }
+                // Shift
+                value = value.toString().split('e');
+                value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+                // Shift back
+                value = value.toString().split('e');
+                return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+            }
+
+            // Decimal round
+            if (!Math.round10) {
+                Math.round10 = function (value, exp) {
+                    return decimalAdjust('round', value, exp);
+                };
+            }
+            // Decimal floor
+            if (!Math.floor10) {
+                Math.floor10 = function (value, exp) {
+                    return decimalAdjust('floor', value, exp);
+                };
+            }
+            // Decimal ceil
+            if (!Math.ceil10) {
+                Math.ceil10 = function (value, exp) {
+                    return decimalAdjust('ceil', value, exp);
+                };
+            }
+        })();
+    </script>
+</asp:Content>

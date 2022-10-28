@@ -513,14 +513,121 @@ namespace Tecnocuisine
         public static string GetSubAtributos(int id)
         {
             ControladorCategoria controlador = new ControladorCategoria();
-            string tiposAtributos = controlador.obtenerTipoAtributos(id);
+            Tecnocuisine_API.Entitys.Categorias categoriaPadre = controlador.ObtenerCategoriaPadreFinal(id);
+            string tiposAtributos = controlador.obtenerTipoAtributos(categoriaPadre.id);
 
             JavaScriptSerializer javaScript = new JavaScriptSerializer();
             javaScript.MaxJsonLength = 5000000;
             string resultadoJSON = javaScript.Serialize(tiposAtributos);
             return resultadoJSON;
         }
+        [WebMethod]
+        public static string GetSubAtributos2(int id)
+        {
+            ControladorCategoria controlador = new ControladorCategoria();
+            ControladorAtributo ca = new ControladorAtributo();
 
+            Tecnocuisine_API.Entitys.Categorias categoriaPadre = controlador.ObtenerCategoriaPadreFinal(id);
+            string tiposAtributos = controlador.obtenerTipoAtributos(categoriaPadre.id);
+             string[] vec = tiposAtributos.Split(',');
+            string datos = "";
+            List<Atributos> atributos = new List<Atributos>();
+
+            foreach(var atributoAux in vec)
+            {
+               Tecnocuisine_API.Entitys.Atributos a = ca.ObtenerAtributoById(Convert.ToInt32(atributoAux));
+                if(a!=null)
+                datos += a.id + "_" + a.descripcion +",";
+            }
+            datos= datos.Remove(datos.LastIndexOf(",")).TrimEnd();
+
+            JavaScriptSerializer javaScript = new JavaScriptSerializer();
+            javaScript.MaxJsonLength = 5000000;
+            string resultadoJSON = javaScript.Serialize(datos);
+            return resultadoJSON;
+        }
+        [WebMethod]
+        public static string GetProductosRecetaByIdReceta(int idReceta)
+        {
+            ControladorReceta controlador = new ControladorReceta();
+            ControladorUnidad cu = new ControladorUnidad();
+           
+            
+            var listaRP= controlador.ObtenerProductosByReceta(idReceta); //recetas_productos
+
+            string datos = "";
+
+            
+
+           foreach (var RP in listaRP)
+            {
+                if (RP != null)
+                {
+                    string UnidadMedida = "";
+                    if (RP.Productos.unidadMedida != 0)
+                    {
+                        UnidadMedida = cu.ObtenerUnidadId(RP.Productos.unidadMedida).descripcion;
+                    }
+                    decimal costoTotal = decimal.Round( RP.cantidad * RP.Productos.costo,2);
+                    datos += RP.Productos.id + "_" + RP.Productos.descripcion + "_" + RP.cantidad.ToString().Replace(',', '.') + "_" + UnidadMedida + "_" + RP.Productos.costo.ToString().Replace(',','.') +"_" +costoTotal.ToString().Replace(',','.') +",";
+                }
+            }
+                   
+            datos = datos.Remove(datos.LastIndexOf(",")).TrimEnd();
+
+            JavaScriptSerializer javaScript = new JavaScriptSerializer();
+            javaScript.MaxJsonLength = 5000000;
+            string resultadoJSON = javaScript.Serialize(datos);
+            return resultadoJSON;
+        }
+
+        [WebMethod]
+        public static string GetListProductosRecetaByIdReceta(int idReceta)
+        {
+            ControladorReceta controlador = new ControladorReceta();
+           
+
+
+            var listaRP = controlador.ObtenerProductosByReceta(idReceta); //recetas_productos
+            string lista = "<ul>";
+            var listaRR = controlador.obtenerRecetasbyReceta(idReceta); //recetas_recetas
+
+            if (listaRR != null && listaRR.Count>0)
+            {
+                foreach (var rr in listaRR)
+                {
+                    lista += "<li>" + rr.Recetas.descripcion+ "<ul>";
+                    var listaProdAux = controlador.ObtenerProductosByReceta(rr.Recetas.id);
+                    foreach (var RP in listaProdAux)
+                    {
+                        if (RP != null)
+                        {
+                            lista += "<li data-jstree='{\"type\":\"html\"}'>" + RP.Productos.id + "-" + RP.Productos.descripcion + "</li>";
+
+                        }
+                    }
+                    lista += "</ul></li>";
+
+                }
+            }
+
+            foreach (var RP in listaRP)
+            {
+                if (RP != null)
+                {
+                    lista += "<li data-jstree='{\"type\":\"html\"}'>" + RP.Productos.id + "-" + RP.Productos.descripcion + "</li>";
+                  
+                }
+            }
+
+            lista += "</ul>";
+            //datos = datos.Remove(datos.LastIndexOf(",")).TrimEnd();
+
+            JavaScriptSerializer javaScript = new JavaScriptSerializer();
+            javaScript.MaxJsonLength = 5000000;
+            string resultadoJSON = javaScript.Serialize(lista);
+            return resultadoJSON;
+        }
         [WebMethod]
         public static string ModificarRelaciones(string id)
         {

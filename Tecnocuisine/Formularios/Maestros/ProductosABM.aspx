@@ -15,6 +15,14 @@
             {
                 cursor: pointer;
             }
+
+            .wizard > .content > .body {
+    float: left;
+    /* position: absolute; */
+    width: 95%;
+    height: 95%;
+    padding: 2.5%;
+}
     </style>
 
 
@@ -57,14 +65,14 @@
                                 </a>--%>
                             </div>
                         </div>
-                        <fieldset class="ibox-content">
+                        <div class="ibox-content">
                             <%--<p>
                                 This is basic example of Step
                             </p>--%>
                             <%--<form id="form" action="#" class="wizard-big" >--%>
                             <form id="form" action="#" class="wizard-big">
                                 <h1>DESCRIPCION</h1>
-                                <fieldset>
+                                <fieldset  style="position: relative;">
                                     <h1>Datos del producto</h1>
                                     <div class="row">
                                         <div class="col-lg-8">
@@ -77,13 +85,13 @@
                                             <label id="valDocFrente">Imagen del producto</label><br/>
                                             <div class="image-crop btn-group">
                                                 <%--<label for="ContentPlaceHolder1_inputImage2" style="display:contents" class="lblImgDocF">--%>
-                                                <label for="ContentPlaceHolder1_inputImage2" class="lblImgDocF">
-                                                    <img src="../../Img/photo.png" id="imgDocF" width="35%"
-                                                        height="35%"/>
+                                                <label for="inputImage2" style="display:contents" class="lblImgDocF">
+                                                    <img src="../../Img/photo.png" id="imgDocF" width="20%"
+                                                        height="20%"/>
                                                 </label>
-                                                <%--<input type="file" accept="image/*" name="file2" id="inputImage2" class="hide">--%>
+                                                <input type="file" accept="image/*" name="file2" id="inputImage2" class="hide"/>
                                                 <%--<input type="file" id="inputImage2" name="file2" class="hide" accept="image/*" onchange="cargarImagen()"/>--%>
-                                                <asp:FileUpload ID="inputImage2" runat="server" CssClass="hide" />
+                                                <%--<asp:FileUpload ID="inputImage2" runat="server" CssClass="hide" />--%>
                                             </div>
 
                                         </div>
@@ -97,33 +105,32 @@
                                         </div>
                                     </div>
                                     <div class="row">
-
                                       
-
+                                        
                                     </div>
 
                                 </fieldset>
                                 <h1>CATEGORIA Y ATRIBUTOS</h1>
-                                <fieldset>
+                                <fieldset style="position: relative;">
                                     <h1><label id="lblDescripcion1"></label> </h1>
                                     <div class="text-center m-t-md">
                                         <div class="row" style="margin-top: 2%">
                                             <label class="col-sm-2 control-label editable">Categoria</label>
                                             <div class="col-sm-7">
 
-                                                <asp:TextBox ID="txtDescripcionCategoria" class="form-control" runat="server" />
+                                                <asp:TextBox ID="txtDescripcionCategoria" class="form-control required" disabled="disabled" runat="server" />
                                                 <asp:HiddenField ID="idCategoria" runat="server" />
                                             </div>
 
                                             <div class="col-sm-2">
-                                                <asp:LinkButton runat="server" ID="btnCategorias" class="btn btn-primary dim" data-toggle="modal" href="#modalCategoria"><i style="color: white" runat="server" class="fa fa-plus"></i></asp:LinkButton>
+                                                <asp:LinkButton runat="server" ID="btnCategorias" class="btn btn-primary dim" data-toggle="modal" data-keyboard="false" data-backdrop="static" href="#modalCategoria" ><i style="color: white" runat="server" class="fa fa-plus"></i></asp:LinkButton>
                                             </div>
 
                                         </div>
                                         <div class="row" style="margin-top: 2%">
                                             <label class="col-sm-2 control-label editable">Atributo</label>
                                             <div class="col-sm-7">
-                                                <asp:TextBox ID="txtDescripcionAtributo" class="form-control" runat="server" />
+                                                <asp:TextBox ID="txtDescripcionAtributo" class="form-control required" disabled="disabled" runat="server" />
                                                 <asp:HiddenField ID="idAtributo" runat="server" />
 
                                             </div>
@@ -165,7 +172,7 @@
                                 </fieldset>
 
                                 <h1>COSTOS</h1>
-                                <fieldset>
+                                <fieldset  style="position: relative;">
                                     <h1><label id="lblDescripcion2"></label> </h1>
                                     <div class="row" style="margin-top: 2%">
                                         <label class="col-sm-2 control-label editable">Costo</label>
@@ -192,8 +199,8 @@
                                     </div>
                                 </fieldset>
                                 
-                                <h1>UNIDADES DE MEDIDA Y PRESENTACIÓN</h1>
-                                <fieldset>
+                                <h1>UNIDADES DE MEDIDA</h1>
+                                <fieldset  style="position: relative;">
                                     <h1><label id="lblDescripcion3"></label> </h1>
                                     <div class="row" style="margin-top: 2%">
                                         <label class="col-sm-2 control-label editable">Unidad de medida</label>
@@ -216,9 +223,33 @@
                                         </div>
 
                                     </div>
+                                    <div class="row" style="margin-top: 2%">
+                                        <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                                            <ContentTemplate>
+                                                <div class="table-responsive col-lg-8 center-block">
+                                                    <table class="table table-striped table-bordered table-hover " id="editable1">
+
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="width: 20%">#</th>
+                                                                <th style="width: 60%">Descripcion</th>
+                                                                <th style="width: 10%">Cantidad</th>
+                                                                <th style="width: 10%"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="tbodyEditable1">
+                                                           
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                            </ContentTemplate>
+
+                                        </asp:UpdatePanel>
+                                    </div>
                                 </fieldset>
                                 <h1>REVISION</h1>
-                                <fieldset>
+                                <fieldset  style="position: relative;">
                                     <h1><label id="lblDescripcion4"></label> </h1>
                                    <%-- <input id="acceptTerms" name="acceptTerms" type="checkbox" class="required"/>
                                     <label for="acceptTerms">I agree with the Terms and Conditions.</label>--%>
@@ -261,13 +292,13 @@
                                     <div class="row" style="margin-top: 2%">
                                          <label class="col-sm-2 control-label editable" >Presentacion</label>
                                           <div class="col-sm-7">
-                                            <label> aca va una grilla</label>
+                                            <label id="lblPresentacion"></label>
                                         </div>
                                      </div>
                                   
                                 </fieldset>
                             </form>
-                            </fieldset>
+                            </div>
                         </div>
                     </div>
 
@@ -288,27 +319,20 @@
                         <div class="ibox-content">
                             <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                                 <ContentTemplate>
-                                    <div class="wrapper wrapper-content  animated fadeInRight">
 
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="ibox ">
-                                                    <div class="ibox-content">
-
-
-
-                                                        <div class="dd" id="nestable3">
-                                                            <ol id="main" runat="server" class="dd-list">
-                                                            </ol>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered table-hover " id="editable22">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Descripcion</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <asp:PlaceHolder ID="phInsumos" runat="server"></asp:PlaceHolder>
+                                            </tbody>
+                                        </table>
                                     </div>
 
                                 </ContentTemplate>
@@ -325,39 +349,46 @@
             </div>
         </div>
 
-        <div id="modalCategoria" class="modal" tabindex="-1" role="dialog">
+          <div id="modalCategoria" class="modal" role="dialog">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Elegir Categoria</h4>
+                        <h2 class="modal-title">Empecemos identificando tu Categoria
+                        <span>
+                            <%--<i style='color:black;' class='fa fa-search'></i>--%>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" style="width: 50px; vertical-align: middle; margin-left: 25px;">
+                                <path d="M240 144c0-53-43-96-96-96s-96 43-96 96s43 96 96 96s96-43 96-96zm44.4 32C269.9 240.1 212.5 288 144 288C64.5 288 0 223.5 0 144S64.5 0 144 0c68.5 0 125.9 47.9 140.4 112h71.8c8.8-9.8 21.6-16 35.8-16H496c26.5 0 48 21.5 48 48s-21.5 48-48 48H392c-14.2 0-27-6.2-35.8-16H284.4zM144 208c-35.3 0-64-28.7-64-64s28.7-64 64-64s64 28.7 64 64s-28.7 64-64 64zm256 32c13.3 0 24 10.7 24 24v8h96c13.3 0 24 10.7 24 24s-10.7 24-24 24H280c-13.3 0-24-10.7-24-24s10.7-24 24-24h96v-8c0-13.3 10.7-24 24-24zM288 464V352H512V464c0 26.5-21.5 48-48 48H336c-26.5 0-48-21.5-48-48zM48 320h80 16 32c26.5 0 48 21.5 48 48s-21.5 48-48 48H160c0 17.7-14.3 32-32 32H64c-17.7 0-32-14.3-32-32V336c0-8.8 7.2-16 16-16zm128 64c8.8 0 16-7.2 16-16s-7.2-16-16-16H160v32h16zM24 464H200c13.3 0 24 10.7 24 24s-10.7 24-24 24H24c-13.3 0-24-10.7-24-24s10.7-24 24-24z" />
+                            </svg>
+
+                        </span>
+                        </h2>
                     </div>
                     <div class="modal-body">
+                        <div class="input-group m-b">
+                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+
+
+                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" />
+                        </div>
+
                         <div class="ibox-content">
                             <asp:UpdatePanel ID="UpdatePanel3" runat="server">
                                 <ContentTemplate>
-                                    <div class="wrapper wrapper-content  animated fadeInRight">
+                                    <table class="table table-bordered table-hover" id="editable6">
+                                        <thead>
+                                            <tr>
 
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="ibox ">
-                                                    <div class="ibox-content">
-
-
-
-                                                        <div class="dd" id="nestable">
-                                                            <ol id="olCategorias" runat="server" class="dd-list">
-                                                            </ol>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    </div>
+                                                <th>Descripcion</th>
+                                                <th>Categoria</th>
+                                                <%--<th style="width: 20%">Unidad Medida</th>--%>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <asp:PlaceHolder ID="PHCategorias" runat="server" />
+                                        </tbody>
+                                    </table>
 
                                 </ContentTemplate>
 
@@ -414,7 +445,7 @@
                             </asp:UpdatePanel>
                         </div>
                         <div class="modal-footer">
-                            <button id="btnAgregarPresentacion" onclick="agregarPresentaciones();return false;" class="buttonLoading btn btn-primary"><i class="fa fa-check"></i>&nbsp;Agregar </button>
+                            <a id="btnAgregarPresentacion" onclick="agregarPresentaciones()" class=" btn btn-primary"><i class="fa fa-check"></i>&nbsp;Agregar </a>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
 
                         </div>
@@ -440,6 +471,7 @@
 
         <!-- Jquery Validate -->
         <script src="/../Scripts/plugins/validate/jquery.validate.min.js"></script>
+        <%--<script src="../../js/plugins/nestable/jquery.nestable.js"></script>--%>
 
 
         <%--<script src="../../Scripts/plugins/iCheck/icheck.min.js"></script>--%>
@@ -454,11 +486,11 @@
             "use strict";
             var $image = $("#imgDocF")
 
-            var $inputImageF = $("#<%=inputImage2.ClientID%>");
+            var $inputImageF = $("#inputImage2");
 
             if (window.FileReader) {
                 //inputImageF.addEventListener("change",
-                $("#form").on('change', '#ContentPlaceHolder1_inputImage2', function () {
+                $("#form").on('change', '#inputImage2', function () {
                     var fileReader = new FileReader(),
                         files = this.files,
                         file;
@@ -486,7 +518,7 @@
                     cancel: "Cancelar",
                     previous: 'Anterior',
                     next: 'Siguiente',
-                    finish: 'Finalizar',
+                    finish: 'Guardar',
                     current: ''
                 },
                 bodyTag: "fieldset",
@@ -549,9 +581,38 @@
                     // Disable validation on fields that are disabled.
                     // At this point it's recommended to do an overall check (mean ignoring only disabled fields)
                     form.validate().settings.ignore = ":disabled";
-
+                    let selectUnidadMedida = document.getElementById('<%=ListUnidadMedida.ClientID%>');
+                    let selectAliCuota = document.getElementById('<%=ListAlicuota.ClientID%>');
+                    $.ajax({
+                        method: "POST",
+                        url: "ProductosABM.aspx/GuardarProducto",
+                        data: '{ descripcion: "' + document.querySelector('#lblDescripcionFinal').textContent
+                            + '" , Categoria: "' + document.querySelector('#lblCategoriaFinal').textContent
+                            + '" , Atributos: "' + document.querySelector('#lblAtributoFinal').textContent
+                            + '" , Costo: "' + document.querySelector('#lblCosto').textContent
+                            + '" , IVA: "' + selectAliCuota.selectedOptions[0].value
+                            + '" , Unidad: "' + selectUnidadMedida.selectedOptions[0].value
+                            + '" , Presentacion: "' + document.querySelector('#lblPresentacion').textContent
+                            + '" , cbxGestion: "' + document.getElementById('ContentPlaceHolder1_cbxGestion').checked
+                            + '" , img: "' + document.querySelector('#imgDocF').src
+                            +'"}',
+                        contentType: "application/json",
+                        dataType: 'json',
+                        error: (error) => {
+                            console.log(JSON.stringify(error));
+                            $.msgbox("No se pudo cargar la tabla", { type: "error" });
+                        },
+                        success: recargarPagina()
+                    });
                     // Start validation; Prevent form submission if false
                     return form.valid();
+                },
+                onCanceled: function (event, currentIndex) {
+                    var form = $(this);
+                    //----------------------------------------------------------------------------- REVISAR
+
+                    // Submit form input
+                    window.location.replace('Productos.aspx');
                 },
                 onFinished: function (event, currentIndex) {
                     var form = $(this);
@@ -569,8 +630,72 @@
                         equalTo: "#password"
                     }
                 }
+                });
+
+            // activate Nestable for list 1
+            //$('#nestable3').nestable({
+            //    group: 1
+            //}).on('change', updateOutput);
+            //updateOutput($('#nestable3').data('output', $('#nestable-output')));
+            $('#editable6').DataTable({
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay información",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "searchPlaceholder": "Escriba su busqueda",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                },
+                "bLengthChange": false,
+                "bInfo": false
+            });
+
+            $('.dataTables_filter').hide();
+            $('#txtBusqueda').on('keyup', function () {
+                $('#editable6').DataTable().search(
+                    this.value
+                ).draw();
             });
         });
+
+        function recargarPagina() {
+            window.location.replace('ProductosABM.aspx?m=1');
+          
+        }
+
+        function GuardarProducto2() {
+            var formData = new FormData();
+            var files = $('#inputImage2')[0].files[0];
+            formData.append('file', files);
+
+            $.ajax({
+                method: "POST",
+                url: "ProductosABM.aspx/GuardarProducto2",
+                data: "{id: '1'}",               
+                contentType: false,
+                processData: false,
+                async:false,
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                },
+                success: function (rta) {
+                    console.log(rta);
+                }
+            });
+        }
     </script>
 
     <script>         
@@ -693,6 +818,125 @@
         
     </script>
 
-   
+   <script>
+       function agregarPresentaciones() {
+           //let table1 = $('#editable1').DataTable();
+           let table2 = document.getElementById('editable2');
+           let cuerpor = document.getElementById("tbodyEditable1");
+           let max = table2.rows.length;
+           let presentacionFinal ='';
+           //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
+           for (let i = 1; i < max; i++) {
+               /*if (i > 1) {*/
+               if (table2.rows[i].cells[3].children[0].checked) {
+                   
+                   presentacionFinal += table2.rows[i].cells[0].innerHTML+" - "+ table2.rows[i].cells[1].innerHTML + ', ';
+                       cuerpor.innerHTML += `<tr>
+                        <td>${table2.rows[i].cells[0].innerHTML}</td>
+                        <td>${table2.rows[i].cells[1].innerHTML}</td>
+                        <td>${table2.rows[i].cells[2].innerHTML}</td>
+                        <td>${table2.rows[i].cells[3].innerHTML} &nbsp <a onclick="EliminarFila('${table2.rows[i].cells[0].innerHTML}')" id="ContentPlaceHolder1_btnEliminar_${table2.rows[i].cells[0].innerHTML}" class="btn  btn-xs" style="background-color:transparent;"><span><i style="color:black" class="fa fa-trash - o"></i></span></a> </td>
+                        </tr>`
+               }
+             
+           }
+          
+           $('#modalPresentacion').modal('hide');
+           document.querySelector('#lblPresentacion').textContent = presentacionFinal;
 
+           return true;
+       }
+
+       function EliminarFila(id) {
+           let table1 = document.getElementById('editable1');
+           let presentacionFinal = document.querySelector('#lblPresentacion').textContent;
+           let max = table1.rows.length;
+
+           for (let i = 1; i < max; i++) {
+               if (table1.rows[i].cells[0].innerHTML == id) {
+                   if (presentacionFinal.includes(table1.rows[i].cells[1].innerHTML)) {
+                       let texto = table1.rows[i].cells[1].innerHTML;
+                       presentacionFinal= presentacionFinal.replace(texto, '');
+                   }
+                   document.getElementById('editable1').rows[i].remove();
+                   return;
+               }
+           }
+       }
+
+       function agregarCategoria(id) {
+           ContentPlaceHolder1_txtDescripcionCategoria.value = id.split('_')[2] + ' - ' + id.split('_')[3];
+           $('#modalCategoria').modal('hide');
+           document.querySelector('#txtBusqueda').value = '';
+           let btnAtributos = document.getElementById('ContentPlaceHolder1_btnAtributos');
+           btnAtributos.removeAttribute('disabled');
+           document.querySelector('#lblCategoriaFinal').textContent = id.split('_')[2] + ' - ' + id.split('_')[3];
+           $.ajax({
+               method: "POST",
+               url: "Categorias.aspx/GetSubAtributos2",
+               data: '{id: "' + id.split('_')[2] + '" }',
+               contentType: "application/json",
+               dataType: 'json',
+               error: (error) => {
+                   console.log(JSON.stringify(error));
+                   $.msgbox("No se pudo cargar la tabla", { type: "error" });
+               },
+               success: successAgregarTipoAtributo
+           });
+           
+       }
+   </script>
+  <script>
+
+      function successAgregarTipoAtributo(response) {
+          var obj = JSON.parse(response.d);
+          var inputs = document.querySelectorAll('input[type=checkbox]')
+          
+          if (obj == null) {
+              return;
+          }
+
+          var tiposAtributos = obj.split(',');
+
+          let table2 = document.getElementById('editable22');
+          let cuerpor = document.getElementById("tbodyEditable1");
+          let max = table2.rows.length;
+          //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
+          for (let j = 0; j < tiposAtributos.length; j++) {
+
+              
+
+              $('#editable22').append( `<tr>
+                        <td>${tiposAtributos[j].split("_")[0]}</td>
+                        <td>${tiposAtributos[j].split("_")[1]}</td>
+                        <td style="text-align:right"> <input id="ContentPlaceHolder1_btnSelecAtrib_${tiposAtributos[j].split("_")[0]}_${tiposAtributos[j].split("_")[1]}" class="presentacion radio btn btn-primary btn-xs" type="checkbox" checked> </td>
+                        </tr>`);
+             
+          }
+      }
+     
+          function agregarAtributos() {
+              let table2 = document.getElementById('editable22');
+              let cuerpor = document.getElementById("tbodyEditable1");
+              let max = table2.rows.length;
+              let presentacionFinal = '';
+              //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
+              for (let i = 1; i < max; i++) {
+                  /*if (i > 1) {*/
+                  if (table2.rows[i].cells[2].children[0].checked) {
+
+                      presentacionFinal += table2.rows[i].cells[0].innerHTML+ " - " + table2.rows[i].cells[1].innerHTML + ', ';
+                    
+                  }
+
+              }
+
+              $('#modalAtributo').modal('hide');
+              document.getElementById('ContentPlaceHolder1_txtDescripcionAtributo').value = presentacionFinal.trimEnd(', ');
+              document.querySelector('#lblAtributoFinal').textContent = presentacionFinal.trimEnd(', ');
+              
+              return true;
+        }
+  
+  </script>
 </asp:Content>

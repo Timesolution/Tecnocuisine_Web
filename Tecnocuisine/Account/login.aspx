@@ -27,7 +27,7 @@
                 <h1 class="logo-name">TC+</h1>
 
             </div>
-            <h3>Bienvenido a TecnoCuisine</h3>
+            <asp:Label runat="server" ID="lblTitulo" Text="Bienvenido a Tecnocuisine" meta:resourcekey="lblTitulo" Font-Size="Larger"> </asp:Label> 
                 <!--Continually expanded and constantly improved Inspinia Admin Them (IN+)-->
             <p>Inicie Sesion.</p>
             <form class="m-t" role="form" runat="server" method="post" >

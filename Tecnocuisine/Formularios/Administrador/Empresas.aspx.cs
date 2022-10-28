@@ -67,7 +67,7 @@ namespace Tecnocuisine.Formularios.Administrador
                         "\"Razon_Social\":\"" + item.Razon_Social + "\"," +
                         "\"Ingresos_Brutos\":\"" + item.Ingresos_Brutos + "\"," +
                         "\"Fecha_inicio\":\"" + item.Fecha_inicio?.ToString("dd/MM/yyyy") + "\"," +
-                        "\"idCondicion_IVA\":\"" + item.idCondicion_IVA + "\"," +
+                        "\"idCondicion_IVA\":\"" + item.Condicion_IVA + "\"," +
                         "\"Condicion_IVA\":\"" + item.Condicion_IVA + "\"," +
                         "\"Direccion\":\"" + item.Direccion + "\"," +
                         "\"Alias\":\"" + item.Alias + "\"," +

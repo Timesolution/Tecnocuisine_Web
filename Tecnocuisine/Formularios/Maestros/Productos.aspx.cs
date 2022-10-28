@@ -50,7 +50,7 @@ namespace Tecnocuisine
 
                 CargarUnidadesMedida();
                 CargarAlicuotasIVA();
-                cargarNestedListCategorias();
+               
                 cargarNestedListAtributos();
                 if (accion == 2)
                 {
