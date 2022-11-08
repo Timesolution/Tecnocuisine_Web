@@ -72,6 +72,7 @@ namespace Tecnocuisine.Formularios.Maestros
             {
 
                 var listaCategoria = cc.obtenerTodasCategoriasHijas();
+                CargarCategoriasOptions(listaCategoria);
                 foreach (var categoria in listaCategoria)
                 {
                     CargarCategoriaPH(categoria);
@@ -81,6 +82,27 @@ namespace Tecnocuisine.Formularios.Maestros
             {
 
 
+            }
+        }
+        private void CargarCategoriasOptions(List<Tecnocuisine_API.Entitys.Categorias> categorias)
+        {
+            try
+            {
+                var builder = new System.Text.StringBuilder();
+
+                foreach (var cat in categorias)
+                {
+
+                    builder.Append(String.Format("<option value='{0}' id='c_" + cat.id + "_" + cat.descripcion + "'>", cat.id + " - " + cat.descripcion));
+                }
+
+                //for (int i = 0; i < table.Rows.Count; i++)
+                //    builder.Append(String.Format("<option value='{0}'>", table.Rows[i][0]));
+                listaCategoria.InnerHtml = builder.ToString();
+
+            }
+            catch (Exception ex)
+            {
             }
         }
         private void CargarCategoriaPH(Tecnocuisine_API.Entitys.Categorias categoria)
@@ -464,7 +486,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                 Recetas_Receta recetaNueva = new Recetas_Receta();
                                 recetaNueva.idReceta = resultado;
                                 recetaNueva.idRecetaIngrediente = Convert.ToInt32(producto[0]);
-                                recetaNueva.cantidad = Convert.ToInt32(producto[2]);
+                                recetaNueva.cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
                                 controladorReceta.AgregarReceta_Receta(recetaNueva);
                             }
                         }
@@ -655,68 +677,38 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 if (resultado > 0)
                 {
+                    controladorReceta.EliminarIngredientes(Receta.id);
                     string[] items = idProductosRecetas.Split(';');
-                    int idProducto = 0;
                     foreach (var pr in items)
                     {
-                        if (pr != "")
+                        if (!string.IsNullOrEmpty(pr))
                         {
+
                             string[] producto = pr.Split(',');
                             if (producto[1] == "Producto")
                             {
                                 Recetas_Producto productoNuevo = new Recetas_Producto();
-                                
-                                productoNuevo.idReceta = Convert.ToInt32(idReceta);
+                                productoNuevo.idReceta = Receta.id;
                                 productoNuevo.idProducto = Convert.ToInt32(producto[0]);
-                                idProducto = productoNuevo.idProducto;
-                                productoNuevo.cantidad = Convert.ToInt32(producto[2]);
-                                var prodAUX = controladorProducto.existeProductoEnReceta(Convert.ToInt32(idReceta), Convert.ToInt32(producto[0]));//devuelvereceta_producto
-                                if (prodAUX!= null)
-                                {
-                                    prodAUX.cantidad= Convert.ToInt32(producto[2]);
-                                    controladorReceta.ActualizarReceta_Producto(productoNuevo);
-                                }
-                                else
-                                {
-                                    controladorReceta.AgregarReceta_Producto(productoNuevo);
-                                }
+                                productoNuevo.cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
+                                controladorReceta.AgregarReceta_Producto(productoNuevo);
                             }
                             else
                             {
                                 Recetas_Receta recetaNueva = new Recetas_Receta();
-                                recetaNueva.idReceta = resultado;
+                                recetaNueva.idReceta = Receta.id;
                                 recetaNueva.idRecetaIngrediente = Convert.ToInt32(producto[0]);
-                                recetaNueva.cantidad = Convert.ToInt32(producto[2]);
+                                recetaNueva.cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
                                 controladorReceta.AgregarReceta_Receta(recetaNueva);
                             }
                         }
                     }
-                    if (controladorReceta.EsMonoProducto(resultado))
-                    {
-                        int categoria = controladorProducto.ObtenerProductoId(idProducto).categoria;
-                        if (categoria > 0)
-                        {
-                            Tecnocuisine_API.Entitys.Recetas r = controladorReceta.ObtenerRecetaId(resultado);
-                            r.categoria = categoria;
-                            controladorReceta.EditarReceta(r);
-
-                            List<Productos_Atributo> atributos = controladorAtributo.ObtenerAtributosByIdProducto(idProducto);
-                            foreach (Productos_Atributo item in atributos)
-                            {
-                                Recetas_Atributo atributo = new Recetas_Atributo();
-                                atributo.idAtributo = item.atributo;
-                                atributo.idReceta = resultado;
-
-
-                                controladorReceta.AgregarReceta_Atributo(atributo);
-                            }
-
-                        }
-                    }
+                    
                     try
                     {
                         string[] itemsA = Atributos.Split(',');
                         int idAtributo = 0;
+                        controladorReceta.EliminarAtributos(Convert.ToInt32(idReceta));
                         foreach (var pr in itemsA)
                         {
                             if (pr != "")
@@ -725,7 +717,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                 if (Atributo[1] != "")
                                 {
                                     Recetas_Atributo AtributoNuevo = new Recetas_Atributo();
-                                    AtributoNuevo.idReceta = resultado;
+                                    AtributoNuevo.idReceta = Receta.id;
                                     AtributoNuevo.idAtributo = Convert.ToInt32(Atributo[0]);
                                     idAtributo = AtributoNuevo.idAtributo.Value;
 
@@ -741,6 +733,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     {
                         string[] itemsP = idPasosRecetas.Split(';');
 
+                        controladorReceta.eliminarPasos(Convert.ToInt32(idReceta));
                         foreach (var pr in itemsP)
                         {
                             if (pr != "")
@@ -749,7 +742,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                 if (Pasos[1] != "")
                                 {
                                     Recetas_Pasos PasosNuevo = new Recetas_Pasos();
-                                    PasosNuevo.idReceta = resultado;
+                                    PasosNuevo.idReceta = Receta.id;
                                     PasosNuevo.numpaso = Pasos[0];
                                     PasosNuevo.paso = Pasos[1];
                                     PasosNuevo.estado = 1;
@@ -778,7 +771,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                 if (Sect[1] != "")
                                 {
                                     SectorP_Recetas sectorP_ = new SectorP_Recetas();
-                                    sectorP_.idReceta = resultado;
+                                    sectorP_.idReceta = Receta.id;
                                     sectorP_.idSectorP = Convert.ToInt32(Sect[0]);
                                     sectorP_.estado = 1;
 
@@ -948,7 +941,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 if (presentaciones.Count > 0)
                 {
-
+                    CargarOptionsListPresentacion(presentaciones);
                     foreach (var item in presentaciones)
                     {
                         CargarPresentacionesPH(item);
@@ -962,6 +955,30 @@ namespace Tecnocuisine.Formularios.Maestros
 
             }
         }
+
+        private void CargarOptionsListPresentacion(List<Tecnocuisine_API.Entitys.Presentaciones> presentaciones)
+        {
+            try
+            {
+                var builder = new System.Text.StringBuilder();
+
+                foreach (var press in presentaciones)
+                {
+
+                    builder.Append(String.Format("<option value='{0}' id='PresentacionID_" + press.id + "_" + press.cantidad+ "'>", press.descripcion));
+                }
+
+                //for (int i = 0; i < table.Rows.Count; i++)
+                //    builder.Append(String.Format("<option value='{0}'>", table.Rows[i][0]));
+                ListOptionsPresentacion.InnerHtml = builder.ToString();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
         public void CargarPresentacionesPH(Tecnocuisine_API.Entitys.Presentaciones presentacion)
         {
 

@@ -136,7 +136,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                     ddlTipoReceta.SelectedIndex = Receta.Tipo.Value;
                     ddlUnidadMedida.SelectedIndex = Receta.UnidadMedida.Value;
-                    txtKgBrutTotal.Text = Receta.peso.ToString();
+                    txtKgBrutTotal.Text = Receta.peso.ToString().Replace(',', '.');
                     txtKgxPorcion.Text = Receta.PesoU.Value.ToString().Replace(',','.');
                     txtRinde.Text = Receta.rinde.Value.ToString().Replace(',', '.');
                     txtCostoTotal.Text = Receta.Costo.Value.ToString().Replace(',', '.');
@@ -172,12 +172,13 @@ namespace Tecnocuisine.Formularios.Maestros
             try
             {
                 List<Tecnocuisine_API.Entitys.Recetas> recetasH = controladorReceta.obteneRecetasPadres(idReceta);
+                var listaRR = controladorReceta.obtenerRecetasbyReceta(idReceta); //recetas_recetas
 
-                if (recetasH.Count > 0)
+                if (listaRR.Count > 0)
                 {
                     //CargarProductosOptions(productos);
 
-                    foreach (var item in recetasH)
+                    foreach (var item in listaRR)
                     {
                         CargarRecetasPHModal2(item);
                     }
@@ -817,21 +818,22 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
+                //LinkButton btnEditDetalles = new LinkButton();
+                //btnEditDetalles.CssClass = "btn btn-xs";
+                //btnEditDetalles.Attributes.Add("data-toggle", "tooltip");
+                //btnEditDetalles.Text = "<span><i style=\"color: black\" class='fa fa-pencil'></i></span>";
+                //btnEditDetalles.Attributes.Add("class", "btn  btn-xs");
+                //btnEditDetalles.Attributes.Add("style", "padding: 0% 5% 2% 5.5%;background-color: transparent;");
+                //btnEditDetalles.Attributes.Add("onclick", "EditarProd('ContentPlaceHolder1_Producto_" + producto.id.ToString() + "');");
+                //celAccion.Controls.Add(btnEditDetalles);
+
                 LinkButton btnDetalles = new LinkButton();
                 btnDetalles.CssClass = "btn btn-xs";
-
                 btnDetalles.Attributes.Add("data-toggle", "tooltip");
-
                 btnDetalles.Text = "<span><i style=\"color: black\" class='fa fa-trash'></i></span>";
                 btnDetalles.Attributes.Add("class", "btn  btn-xs");
                 btnDetalles.Attributes.Add("style", "padding: 0% 5% 2% 5.5%;background-color: transparent;");
-
-                //btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                btnDetalles.Attributes.Add("onclick", "borrarProd('Producto_" + producto.id.ToString() + "');");
-                //btnDetalles.Style.Add("padding", " 0% 5% 2% 5.5%"); btnDetalles.Style.Add("background-color"," transparent");
-                //btnDetalles.Attributes.Add("type", "checkbox");
-                //btnDetalles.ID = "btnSelecProd_" + producto.id + "_" + producto.descripcion + "_" + UnidadMedida;
-                //btnDetalles.InnerText = "<i class=\"fa fa-trash - o\" style=\"color: black\"></i>";
+                btnDetalles.Attributes.Add("onclick", "borrarProd('ContentPlaceHolder1_Producto_" + producto.id.ToString() + "');");
                 celAccion.Controls.Add(btnDetalles);
 
                 celAccion.Width = Unit.Percentage(25);
@@ -840,7 +842,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 phProductos.Controls.Add(tr);
 
-                idProductosRecetas.Value += producto.id.ToString() + " ,Producto," + prodRec.FirstOrDefault().cantidad.ToString() + ", Producto_" + producto.id.ToString() + ";";
+                idProductosRecetas.Value += producto.id.ToString() + " ,Producto," + prodRec.FirstOrDefault().cantidad.ToString().Replace(',','.') + ", ContentPlaceHolder1_Producto_" + producto.id.ToString() + ";";
 
             }
             catch (Exception ex)
@@ -1030,7 +1032,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
         }
 
-        public void CargarRecetasPHModal2(Tecnocuisine_API.Entitys.Recetas Receta)
+        public void CargarRecetasPHModal2(Tecnocuisine_API.Entitys.Recetas_Receta Receta)
         {
 
             try
@@ -1039,54 +1041,91 @@ namespace Tecnocuisine.Formularios.Maestros
                 //fila
                 List<Tecnocuisine_API.Entitys.Productos> productosInRecetaHijo = controladorReceta.obteneProductosPadres(Receta.id);
 
+                HFRecetas.Value += Receta.Recetas.id + ",";
                 TableRow tr = new TableRow();
-                tr.ID = "Recetas_" + Receta.id.ToString() + "_" + Receta.UnidadMedida;
+                tr.ID = "Receta_" + Receta.Recetas.id.ToString() ;
 
                 //Celdas
                 TableCell celNumero = new TableCell();
-                celNumero.Text = Receta.id.ToString();
+                celNumero.Text = Receta.Recetas.id.ToString();
                 celNumero.VerticalAlign = VerticalAlign.Middle;
                 celNumero.HorizontalAlign = HorizontalAlign.Right;
-                celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celNumero.Attributes.Add("style", " text-align: right");
 
                 tr.Cells.Add(celNumero);
 
                 TableCell celDescripcion = new TableCell();
-                celDescripcion.Text = Receta.descripcion;
+                celDescripcion.Text = "<div id=\"jstree"+ Receta.Recetas.id + "\"> <ul><li id='RecetaLI_" + Receta.Recetas.id+ "' class=\"jstree-open\">"+ Receta.Recetas.descripcion + ObtenerrecetaString(Receta.Recetas.id) + "</li></ul></div>";
                 celDescripcion.VerticalAlign = VerticalAlign.Middle;
                 celDescripcion.HorizontalAlign = HorizontalAlign.Left;
-                celDescripcion.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //celDescripcion.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celDescripcion);
 
+                TableCell celCantidad = new TableCell();
+                celCantidad.Text = Receta.cantidad.ToString().Replace(',', '.');
+                celCantidad.VerticalAlign = VerticalAlign.Middle;
+                celCantidad.HorizontalAlign = HorizontalAlign.Left;
+                celCantidad.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
+                tr.Cells.Add(celCantidad);
+
+                ControladorUnidad cu = new ControladorUnidad();
+                string UnidadMedida = "";
+                UnidadMedida = cu.ObtenerUnidadId(Receta.Recetas.UnidadMedida.Value).descripcion;
+
+                TableCell celUM = new TableCell();
+                celUM.Text = UnidadMedida;
+                celUM.VerticalAlign = VerticalAlign.Middle;
+                celUM.HorizontalAlign = HorizontalAlign.Left;
+                //celUM.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celUM);
+
                 TableCell celCosto = new TableCell();
-                celCosto.Text = Receta.Costo.ToString().Replace(',', '.');
+                celCosto.Text = Receta.Recetas.Costo.ToString().Replace(',', '.');
                 celCosto.VerticalAlign = VerticalAlign.Middle;
                 celCosto.HorizontalAlign = HorizontalAlign.Left;
                 celCosto.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
                 tr.Cells.Add(celCosto);
 
-                ControladorUnidad cu = new ControladorUnidad();
-                string UnidadMedida = "";
-                UnidadMedida = cu.ObtenerUnidadId(Receta.UnidadMedida.Value).descripcion;
+                TableCell celCostoTotal = new TableCell();
+                celCostoTotal.Text = (Receta.Recetas.Costo * Receta.cantidad).ToString().Replace(',', '.');
+                celCostoTotal.VerticalAlign = VerticalAlign.Middle;
+                celCostoTotal.HorizontalAlign = HorizontalAlign.Left;
+                celCostoTotal.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
+                tr.Cells.Add(celCostoTotal);
 
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
-                //LinkButton btnDetalles = new LinkButton();
-                //btnDetalles.CssClass = "btn btn-primary btn-xs";
-                HtmlGenericControl btnDetalles = new HtmlGenericControl("input");
-                btnDetalles.Attributes.Add("class", "presentacion radio btn btn-primary btn-xs pull-right");
-                //btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                btnDetalles.Attributes.Add("onclick", "agregarReceta(this.id,'" + Receta.Costo.ToString().Replace(',', '.') + "'); return false;");
-                btnDetalles.Attributes.Add("type", "checkbox");
-                btnDetalles.ID = "btnSelecProd_" + Receta.id + "_" + Receta.descripcion + "_" + UnidadMedida;
-                //btnDetalles.Text = "<span><i class='fa fa-check'></i></span>";
+
+                //LinkButton btnEditDetalles = new LinkButton();
+                //btnEditDetalles.CssClass = "btn btn-xs";
+
+                //btnEditDetalles.Attributes.Add("data-toggle", "tooltip");
+
+                //btnEditDetalles.Text = "<span><i style=\"color: black\" class='fa fa-pencil'></i></span>";
+                //btnEditDetalles.Attributes.Add("class", "btn  btn-xs");
+                //btnEditDetalles.Attributes.Add("style", "padding: 0% 5% 2% 5.5%;background-color: transparent;");
+                //btnEditDetalles.Attributes.Add("onclick", "EditarProd('ContentPlaceHolder1_Receta_" + Receta.Recetas.id.ToString() + "');");
+                //celAccion.Controls.Add(btnEditDetalles);
+
+                LinkButton btnDetalles = new LinkButton();
+                btnDetalles.CssClass = "btn btn-xs";
+
+                btnDetalles.Attributes.Add("data-toggle", "tooltip");
+
+                btnDetalles.Text = "<span><i style=\"color: black\" class='fa fa-trash'></i></span>";
+                btnDetalles.Attributes.Add("class", "btn  btn-xs");
+                btnDetalles.Attributes.Add("style", "padding: 0% 5% 2% 5.5%;background-color: transparent;");
+                btnDetalles.Attributes.Add("onclick", "borrarProd('ContentPlaceHolder1_Receta_" + Receta.Recetas.id.ToString() + "');");
                 celAccion.Controls.Add(btnDetalles);
 
                 celAccion.Width = Unit.Percentage(25);
-                celAccion.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celAccion.Attributes.Add("style", " text-align: center");
                 tr.Cells.Add(celAccion);
 
-                phProductosAgregar.Controls.Add(tr);
+                phProductos.Controls.Add(tr);
+
+                idProductosRecetas.Value += Receta.Recetas.id.ToString() + " ,Receta," + Receta.cantidad.ToString().Replace(',','.') + ", ContentPlaceHolder1_Receta_" + Receta.Recetas.id.ToString() + ";";
+
 
             }
             catch (Exception ex)
@@ -1094,6 +1133,64 @@ namespace Tecnocuisine.Formularios.Maestros
 
             }
 
+        }
+
+        string ObtenerrecetaString(int idReceta)
+        {
+            try
+            {
+                ControladorReceta controlador = new ControladorReceta();
+
+
+
+                var listaRP = controlador.ObtenerProductosByReceta(idReceta); //recetas_productos
+                string lista = "<ul>";
+                var listaRR = controlador.obtenerRecetasbyReceta(idReceta); //recetas_recetas
+                                                                            //receta
+                if (listaRR != null && listaRR.Count > 0)
+                {
+                    foreach (var rr in listaRR)
+                    {
+                        lista += "<li>" + rr.Recetas.descripcion + "<ul>";
+                        //var listaProdAux = controlador.ObtenerProductosByReceta(rr.Recetas.id);
+                        string type = ObtenerrecetaString(rr.Recetas.id);
+
+                        type = "" + type.Substring(4);
+                        type = type.Remove(type.Length - 5);
+                        lista += type;
+                        //foreach (var RP in listaProdAux)
+                        //{
+                        //    if (RP != null)
+                        //    {
+                        //        lista += "<li data-jstree='{\"type\":\"html\"}'>" + RP.Productos.id + "-" + RP.Productos.descripcion + "</li>";
+
+                        //    }
+                        //}
+                        lista += "</ul></li>";
+
+                    }
+                }
+                //productos
+                foreach (var RP in listaRP)
+                {
+                    if (RP != null)
+                    {
+                        lista += "<li data-jstree='{\"type\":\"html\"}'>" + RP.Productos.id + "-" + RP.Productos.descripcion + "</li>";
+
+                    }
+                }
+
+                lista += "</ul>";
+                //datos = datos.Remove(datos.LastIndexOf(",")).TrimEnd();
+
+                
+                return lista;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
         private void cargarNestedListAtributos(int idTipoAtributo, HtmlGenericControl liPadre)

@@ -11,11 +11,11 @@
 
     <script src="/../js/jquery-2.1.1.js"></script>
 
-
+     
     <link href="/../css/bootstrap.min.css" rel="stylesheet" />
     <link href="/../font-awesome/css/font-awesome.css" rel="stylesheet" />
 
-
+        <link href="/../css/plugins/jsTree/style.min.css" rel="stylesheet"/>
     <!-- Morris -->
     <link href="/../css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
 
@@ -24,6 +24,7 @@
 
     <link href="/../css/animate.css" rel="stylesheet" />
     <link href="/../css/style.css" rel="stylesheet" />
+        <%--<link rel="Stylesheet" href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/themes/redmond/jquery-ui.css" />--%>
 
 
     <link href="/../css/plugins/iCheck/custom.css" rel="stylesheet" />
@@ -71,7 +72,7 @@
     <script src="/../js/plugins/jeditable/jquery.jeditable.js"></script>
 
     <!-- Peity -->
-    <script src="js/plugins/peity/jquery.peity.min.js"></script>
+    <%--<script src="js/plugins/peity/jquery.peity.min.js"></script>--%>
 
 
     <!-- Custom and plugin javascript -->
@@ -158,7 +159,7 @@
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Vendedores.aspx">Vendedores</a></li>
                             </ul>
                         </li>
-                        <li >
+                        <li>
                             <a href="#">
                                 <i class="fa fa-calculator text-white"></i>
                                 <span class="nav-label " style="color: white;">Contabilidad</span>
@@ -168,7 +169,7 @@
                                 <li><a style="color: white !important;" href="../../Formularios/Contabilidad/PlanDeCuentas.aspx">Plan de cuentas</a></li>
                             </ul>
                         </li>
-                        <li >
+                        <li>
                             <a href="#">
                                 <i class="fa fa-gears text-white"></i>
                                 <span class="nav-label " style="color: white;">Administrador</span>
@@ -197,7 +198,7 @@
                         <div class="navbar-header">
                             <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i></a>
                             <div class="navbar-form-custom">
-                                <asp:Label ID="lblSiteMap" Style="font-size: 13px; color: white" Text="text" class="form-control" runat="server" />
+                                <asp:Label ID="lblSiteMap" Style="font-size: 20px; color: white" Text="text" class="form-control" runat="server" />
                             </div>
                         </div>
                         <ul class="nav navbar-top-links navbar-right">
@@ -215,11 +216,8 @@
                     </nav>
                     <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                         <div class="navbar-header">
-                            <%--                        <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
-                            <div class="form-group">
-                                <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
-                            </div>
-                        </form>--%>
+                            <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
+                            </form>
                         </div>
                     </nav>
 

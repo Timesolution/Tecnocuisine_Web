@@ -13,8 +13,22 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="ibox float-e-margins">
-
                                             <div class="ibox-content">
+                                                <div style="margin-left: 0px; margin-right: 0px;" class="row">
+                                                    <div class="col-md-10">
+
+                                                        <div class="input-group m-b">
+                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+
+
+                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+
+                                                        <a href="ProductosABM.aspx" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                                                    </div>
+                                                </div>
                                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                                     <thead>
                                                         <tr>
@@ -586,7 +600,8 @@
                 },
 
                 "width": "90%",
-                "height": "100%"
+                "height": "100%",
+                "pageLength": 25
             });
 
             /* Apply the jEditable handlers to the table */
@@ -607,10 +622,11 @@
             });
             $("#editable_filter").appendTo("#editable_length");
 
-            $("#editable_filter").css('display', 'inline');
+            $("#editable_filter").css('display', 'none');
             $("#editable_filter").css('padding-left', '5%');
             var parent = $("#editable_length")[0].parentNode;
             parent.className = 'col-sm-12';
+            parent.style='display:none';
             var div = document.getElementById('editable_filter');
             var button = document.createElement('a');
            /* button.id = "btnAgregar";*/
@@ -628,10 +644,15 @@
             var filter = $("#editable_filter");
             filter[0].id = 'editable_filter2';
 
-            var filter = $("#editable_length");
-            filter[0].id = 'editable_length2';
-            var filter = $("#editable_length");
-            filter[0].id = 'editable_length2';
+            //var filter = $("#editable_length");
+            //filter[0].id = 'editable_length2';
+           
+
+            $('#txtBusqueda').on('keyup', function () {
+                $('#editable').DataTable().search(
+                    this.value
+                ).draw();
+            });
         });
 
  

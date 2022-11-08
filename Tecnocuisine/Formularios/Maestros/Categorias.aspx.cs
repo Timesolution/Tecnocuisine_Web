@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Script.Serialization;
@@ -584,49 +585,62 @@ namespace Tecnocuisine
         [WebMethod]
         public static string GetListProductosRecetaByIdReceta(int idReceta)
         {
-            ControladorReceta controlador = new ControladorReceta();
-           
-
-
-            var listaRP = controlador.ObtenerProductosByReceta(idReceta); //recetas_productos
-            string lista = "<ul>";
-            var listaRR = controlador.obtenerRecetasbyReceta(idReceta); //recetas_recetas
-
-            if (listaRR != null && listaRR.Count>0)
+            try
             {
-                foreach (var rr in listaRR)
+                ControladorReceta controlador = new ControladorReceta();
+
+
+
+                var listaRP = controlador.ObtenerProductosByReceta(idReceta); //recetas_productos
+                string lista = "<ul>";
+                var listaRR = controlador.obtenerRecetasbyReceta(idReceta); //recetas_recetas
+                                                                            //receta
+                if (listaRR != null && listaRR.Count > 0)
                 {
-                    lista += "<li>" + rr.Recetas.descripcion+ "<ul>";
-                    var listaProdAux = controlador.ObtenerProductosByReceta(rr.Recetas.id);
-                    foreach (var RP in listaProdAux)
+                    foreach (var rr in listaRR)
                     {
-                        if (RP != null)
-                        {
-                            lista += "<li data-jstree='{\"type\":\"html\"}'>" + RP.Productos.id + "-" + RP.Productos.descripcion + "</li>";
+                        lista += "<li>" + rr.Recetas.descripcion + "<ul>";
+                        //var listaProdAux = controlador.ObtenerProductosByReceta(rr.Recetas.id);
+                        dynamic dynamicObject = JsonConvert.DeserializeObject(GetListProductosRecetaByIdReceta(rr.Recetas.id));
+                        string type = dynamicObject;
+                        type = "" + type.Substring(4);
+                        type = type.Remove(type.Length - 5);
+                        lista += type;
+                        //foreach (var RP in listaProdAux)
+                        //{
+                        //    if (RP != null)
+                        //    {
+                        //        lista += "<li data-jstree='{\"type\":\"html\"}'>" + RP.Productos.id + "-" + RP.Productos.descripcion + "</li>";
 
-                        }
+                        //    }
+                        //}
+                        lista += "</ul></li>";
+
                     }
-                    lista += "</ul></li>";
-
                 }
-            }
-
-            foreach (var RP in listaRP)
-            {
-                if (RP != null)
+                //productos
+                foreach (var RP in listaRP)
                 {
-                    lista += "<li data-jstree='{\"type\":\"html\"}'>" + RP.Productos.id + "-" + RP.Productos.descripcion + "</li>";
-                  
+                    if (RP != null)
+                    {
+                        lista += "<li data-jstree='{\"type\":\"html\"}'>" + RP.Productos.id + "-" + RP.Productos.descripcion + "</li>";
+
+                    }
                 }
+
+                lista += "</ul>";
+                //datos = datos.Remove(datos.LastIndexOf(",")).TrimEnd();
+
+                JavaScriptSerializer javaScript = new JavaScriptSerializer();
+                javaScript.MaxJsonLength = 5000000;
+                string resultadoJSON = javaScript.Serialize(lista);
+                return resultadoJSON;
             }
+            catch (Exception ex)
+            {
 
-            lista += "</ul>";
-            //datos = datos.Remove(datos.LastIndexOf(",")).TrimEnd();
-
-            JavaScriptSerializer javaScript = new JavaScriptSerializer();
-            javaScript.MaxJsonLength = 5000000;
-            string resultadoJSON = javaScript.Serialize(lista);
-            return resultadoJSON;
+                throw;
+            }
         }
         [WebMethod]
         public static string ModificarRelaciones(string id)

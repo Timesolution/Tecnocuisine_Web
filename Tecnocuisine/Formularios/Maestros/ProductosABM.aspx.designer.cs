@@ -15,6 +15,15 @@ namespace Tecnocuisine.Formularios.Maestros
     {
 
         /// <summary>
+        /// Control listaCategoria.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl listaCategoria;
+
+        /// <summary>
         /// Control txtDescripcionCategoria.
         /// </summary>
         /// <remarks>
@@ -22,15 +31,6 @@ namespace Tecnocuisine.Formularios.Maestros
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDescripcionCategoria;
-
-        /// <summary>
-        /// Control idCategoria.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField idCategoria;
 
         /// <summary>
         /// Control btnCategorias.
@@ -42,6 +42,15 @@ namespace Tecnocuisine.Formularios.Maestros
         protected global::System.Web.UI.WebControls.LinkButton btnCategorias;
 
         /// <summary>
+        /// Control idCategoria.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField idCategoria;
+
+        /// <summary>
         /// Control txtDescripcionAtributo.
         /// </summary>
         /// <remarks>
@@ -51,15 +60,6 @@ namespace Tecnocuisine.Formularios.Maestros
         protected global::System.Web.UI.WebControls.TextBox txtDescripcionAtributo;
 
         /// <summary>
-        /// Control idAtributo.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField idAtributo;
-
-        /// <summary>
         /// Control btnAtributos.
         /// </summary>
         /// <remarks>
@@ -67,6 +67,15 @@ namespace Tecnocuisine.Formularios.Maestros
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnAtributos;
+
+        /// <summary>
+        /// Control idAtributo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField idAtributo;
 
         /// <summary>
         /// Control cbxGestion.
@@ -159,6 +168,15 @@ namespace Tecnocuisine.Formularios.Maestros
         protected global::System.Web.UI.WebControls.DropDownList ListUnidadMedida;
 
         /// <summary>
+        /// Control ListOptionsPresentacion.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ListOptionsPresentacion;
+
+        /// <summary>
         /// Control txtDescripcionPresentacion.
         /// </summary>
         /// <remarks>
@@ -168,15 +186,6 @@ namespace Tecnocuisine.Formularios.Maestros
         protected global::System.Web.UI.WebControls.TextBox txtDescripcionPresentacion;
 
         /// <summary>
-        /// Control idPresentacion.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField idPresentacion;
-
-        /// <summary>
         /// Control btnPresentacion.
         /// </summary>
         /// <remarks>
@@ -184,6 +193,15 @@ namespace Tecnocuisine.Formularios.Maestros
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnPresentacion;
+
+        /// <summary>
+        /// Control idPresentacion.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField idPresentacion;
 
         /// <summary>
         /// Control UpdatePanel2.

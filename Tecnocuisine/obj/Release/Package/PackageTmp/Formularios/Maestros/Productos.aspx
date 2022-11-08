@@ -13,8 +13,22 @@
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="ibox float-e-margins">
-
                                             <div class="ibox-content">
+                                                <div style="margin-left: 0px; margin-right: 0px;" class="row">
+                                                    <div class="col-md-10">
+
+                                                        <div class="input-group m-b">
+                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+
+
+                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+
+                                                        <a href="ProductosABM.aspx" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                                                    </div>
+                                                </div>
                                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                                     <thead>
                                                         <tr>
@@ -111,7 +125,7 @@
                         <label class="col-sm-2 control-label editable">Costo</label>
                         <div class="col-sm-7">
                             <div class="input-group m-b">
-                                <span class="input-group-addon">$</span><asp:TextBox ID="txtCosto" class="form-control" runat="server" />
+                                <span class="input-group-addon">$</span><asp:TextBox ID="txtCosto" onkeypress="javascript:return validarNro(event)" class="form-control" runat="server" />
                             </div>
                         </div>
 
@@ -146,7 +160,7 @@
 
                     </div>
                      <div class="row" style="margin-top: 2%">
-                        <label class="col-sm-2 control-label editable">Sistema Gestion</label>
+                        <label class="col-sm-2 control-label editable">Producto Final </label>
                         <div class="col-sm-7">
                             <div class="input-group m-b">
                                 <asp:CheckBox  ID="cbxGestion" onclick="mostrarGestion()"  runat="server" />
@@ -510,6 +524,24 @@
     </script>
 
     <script type="text/javascript">
+        function validarNro(e) {
+            var key;
+            if (window.event) // IE
+            {
+                key = e.keyCode;
+            }
+            else if (e.which) // Netscape/Firefox/Opera
+            {
+                key = e.which;
+            }
+
+            if (key < 48 || key > 57) {
+                if (key == 46 || key == 8)// || key == 44) // Detectar . (punto) , backspace (retroceso) y , (coma)
+                { return true; }
+                else { return false; }
+            }
+            return true;
+        }
         function vaciarFormulario() {
             ContentPlaceHolder1_hiddenEditar.value = "";
             ContentPlaceHolder1_txtDescripcionProducto.value = "";
@@ -568,7 +600,8 @@
                 },
 
                 "width": "90%",
-                "height": "100%"
+                "height": "100%",
+                "pageLength": 25
             });
 
             /* Apply the jEditable handlers to the table */
@@ -589,19 +622,21 @@
             });
             $("#editable_filter").appendTo("#editable_length");
 
-            $("#editable_filter").css('display', 'inline');
+            $("#editable_filter").css('display', 'none');
             $("#editable_filter").css('padding-left', '5%');
             var parent = $("#editable_length")[0].parentNode;
             parent.className = 'col-sm-12';
+            parent.style='display:none';
             var div = document.getElementById('editable_filter');
-            var button = document.createElement('linkbutton');
-            button.id = "btnAgregar";
+            var button = document.createElement('a');
+           /* button.id = "btnAgregar";*/
             button.style.float = "right";
             button.style.marginRight = "1%";
-            button.setAttribute("type", "button");
-            button.setAttribute("href", "#modalAgregar");
-            button.setAttribute("onclick", "vaciarFormulario()");
-            button.setAttribute("data-toggle", "modal");
+            //button.setAttribute("type", "button");
+            button.setAttribute("href", "ProductosABM.aspx");
+            //button.setAttribute("href", "#modalAgregar");
+            //button.setAttribute("onclick", "vaciarFormulario()");
+            //button.setAttribute("data-toggle", "modal");
             button.setAttribute("class", "btn");
             
             button.innerHTML = "<i style='color: black' class='fa fa-plus'></i>";
@@ -609,10 +644,15 @@
             var filter = $("#editable_filter");
             filter[0].id = 'editable_filter2';
 
-            var filter = $("#editable_length");
-            filter[0].id = 'editable_length2';
-            var filter = $("#editable_length");
-            filter[0].id = 'editable_length2';
+            //var filter = $("#editable_length");
+            //filter[0].id = 'editable_length2';
+           
+
+            $('#txtBusqueda').on('keyup', function () {
+                $('#editable').DataTable().search(
+                    this.value
+                ).draw();
+            });
         });
 
  
