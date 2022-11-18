@@ -150,7 +150,7 @@
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Grupos.aspx">Grupos</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Marcas.aspx">Marcas</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Presentaciones.aspx">Presentaciones</a></li>
-                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Productos.aspx">Productos</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Productos.aspx">Insumos</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Recetas.aspx">Recetas</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/SectorProductivo.aspx">Sector Productivo</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Subgrupos.aspx">Subgrupos</a></li>
@@ -172,7 +172,7 @@
                         <li>
                             <a href="#">
                                 <i class="fa fa-gears text-white"></i>
-                                <span class="nav-label " style="color: white;">Administrador</span>
+                                <span class="nav-label " style="color: white;">Configuracion</span>
                                 <span class="fa arrow"></span>
                             </a>
                             <ul class="nav nav-second-level">
@@ -180,6 +180,20 @@
                                 <li><a style="color: white !important;" href="../../Formularios/Administrador/Sucursales.aspx">Sucursales</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Administrador/Sectores.aspx">Sectores</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Administrador/PuntosDeVenta.aspx">Puntos de Venta</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Administrador/Paises.aspx" >Paises</a></li>
+
+                            </ul>
+                        </li>
+                         <li>
+                            <a href="#">
+                                <i class="fa fa-shopping-cart text-white"></i>
+                                <span class="nav-label " style="color: white;">Compras</span>
+                                <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;">Ordenes de compra</a></li>
+                                <li><a style="color: white !important;">Entrega</a></li>
+                                <li><a style="color: white !important;" href="../..\Formularios\Compras\Proveedores.aspx" >Proveedores</a></li>
                             </ul>
                         </li>
                         <li>

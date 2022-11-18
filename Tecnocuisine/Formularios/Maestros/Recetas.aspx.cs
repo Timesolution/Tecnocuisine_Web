@@ -484,7 +484,7 @@ namespace Tecnocuisine
                 LinkButton lb = sender as LinkButton;
                 string[] id = lb.ID.Split('_');
 
-                Response.Redirect("RecetasDetalle.aspx?id=" + id[1]);
+                Response.Redirect("RecetasABM.aspx?a=2&i=" + id[1] + "&b=1");
             }
             catch (Exception Ex)
             {

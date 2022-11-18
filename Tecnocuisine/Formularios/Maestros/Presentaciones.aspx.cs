@@ -170,7 +170,7 @@ namespace Tecnocuisine
                 tr.Cells.Add(celNombre);
 
                 TableCell celCantidad = new TableCell();
-                celCantidad.Text = presentacion.cantidad.ToString(); 
+                celCantidad.Text = presentacion.cantidad.ToString().Replace(',','.'); 
                 celCantidad.VerticalAlign = VerticalAlign.Middle;
                 celCantidad.HorizontalAlign = HorizontalAlign.Right;
                 celCantidad.Attributes.Add("style", "padding-bottom: 1px !important;");

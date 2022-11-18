@@ -85,8 +85,8 @@
                                                         <label>Descripcion *</label>
                                                     </div>
                                                     <div class="col-md-8">
-
-                                                        <input id="ProdDescripcion" onchange="ActualizarLabels()" name="ProdDescripcion" type="text" class="form-control required" />
+                                                        <asp:TextBox ID="ProdDescripcion" onchange="ActualizarLabels()" runat="server"  class="form-control required"></asp:TextBox>
+                                                        <%--<input id="ProdDescripcion" onchange="ActualizarLabels()" name="ProdDescripcion" type="text" class="form-control required" />--%>
                                                     </div>
                                                 </div>
                                                 <div class="row" style="margin-top: 2%">
@@ -220,6 +220,7 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody id="tbodyEditable1">
+                                                                        <asp:PlaceHolder ID="PHPresentacionFinal" runat="server"></asp:PlaceHolder>
                                                                 </tbody>
                                                             </table>
                                                         </div>
@@ -450,7 +451,7 @@
                         <div class="modal-footer">
                             <a id="btnAgregarPresentacion" onclick="agregarPresentaciones()" class=" btn btn-primary"><i class="fa fa-check"></i>&nbsp;Agregar </a>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
-
+                            <asp:HiddenField runat="server" ID="hfPresentaciones" />
                         </div>
                     </div>
                 </div>
@@ -586,27 +587,62 @@
                     form.validate().settings.ignore = ":disabled";
                     let selectUnidadMedida = document.getElementById('<%=ListUnidadMedida.ClientID%>');
                     let selectAliCuota = document.getElementById('<%=ListAlicuota.ClientID%>');
-                    $.ajax({
-                        method: "POST",
-                        url: "ProductosABM.aspx/GuardarProducto",
-                        data: '{ descripcion: "' + document.querySelector('#lblDescripcionFinal').textContent
-                            + '" , Categoria: "' + document.querySelector('#lblCategoriaFinal').textContent
-                            + '" , Atributos: "' + document.querySelector('#lblAtributoFinal').textContent
-                            + '" , Costo: "' + document.querySelector('#lblCosto').textContent
-                            + '" , IVA: "' + selectAliCuota.selectedOptions[0].value
-                            + '" , Unidad: "' + selectUnidadMedida.selectedOptions[0].value
-                            + '" , Presentacion: "' + document.querySelector('#lblPresentacion').textContent
-                            + '" , cbxGestion: "' + document.getElementById('ContentPlaceHolder1_cbxGestion').checked
-                            + '" , img: "' + ""
-                            +'"}',
-                        contentType: "application/json",
-                        dataType: 'json',
-                        error: (error) => {
-                            console.log(JSON.stringify(error));
-                            $.msgbox("No se pudo cargar la tabla", { type: "error" });
-                        },
-                        success: recargarPagina()
-                    });
+
+                    let url = window.location.href;
+                    if (!url.includes("a=2")) {
+                        $.ajax({
+                            method: "POST",
+                            url: "ProductosABM.aspx/GuardarProducto",
+                            data: '{ descripcion: "' + document.querySelector('#lblDescripcionFinal').textContent
+                                + '" , Categoria: "' + document.querySelector('#lblCategoriaFinal').textContent
+                                + '" , Atributos: "' + document.querySelector('#lblAtributoFinal').textContent
+                                + '" , Costo: "' + document.querySelector('#lblCosto').textContent
+                                + '" , IVA: "' + selectAliCuota.selectedOptions[0].value
+                                + '" , Unidad: "' + selectUnidadMedida.selectedOptions[0].value
+                                + '" , Presentacion: "' + document.querySelector('#lblPresentacion').textContent
+                                + '" , cbxGestion: "' + document.getElementById('ContentPlaceHolder1_cbxGestion').checked
+                                + '" , img: "' + ""
+                                + '"}',
+                            contentType: "application/json",
+                            dataType: 'json',
+                            error: (error) => {
+                                console.log(JSON.stringify(error));
+                                $.msgbox("No se pudo cargar la tabla", { type: "error" });
+                            },
+                            success: recargarPagina()
+                        });
+                    } else {
+                        let parameter = url.split("?")[1]
+                        let queryString = new URLSearchParams(parameter);
+                        let idProd = ''
+                        for (let pair of queryString.entries()) {
+                            if (pair[0] == "i")
+                                idProd = pair[1];
+                        }
+                        $.ajax({
+                            method: "POST",
+                            url: "ProductosABM.aspx/EditarProducto",
+                            data: '{ descripcion: "' + document.getElementById('<%=ProdDescripcion.ClientID%>').value
+                                + '" , Categoria: "' + document.getElementById('<%=txtDescripcionCategoria.ClientID%>').value
+                                + '" , Atributos: "' + document.getElementById('ContentPlaceHolder1_txtDescripcionAtributo').value
+                                + '" , Costo: "' + document.querySelector('#lblCosto').textContent
+                                + '" , IVA: "' + selectAliCuota.selectedOptions[0].value
+                                + '" , Unidad: "' + selectUnidadMedida.selectedOptions[0].value
+                                + '" , Presentacion: "' + document.getElementById('<%=hfPresentaciones.ClientID%>').value
+                                + '" , cbxGestion: "' + document.getElementById('ContentPlaceHolder1_cbxGestion').checked
+                                + '" , img: "' + ""
+                                + '" , idProducto: "' + idProd
+                                + '"}',
+                            contentType: "application/json",
+                            dataType: 'json',
+                            error: (error) => {
+                                console.log(JSON.stringify(error));
+                                $.msgbox("No se pudo cargar la tabla", { type: "error" });
+                            },
+                            success: recargarPagina2
+                        });
+                    }
+                   
                     // Start validation; Prevent form submission if false
                     /*return form.valid();*/
                 },
@@ -678,7 +714,25 @@
             window.location.replace('ProductosABM.aspx?m=1');
           
         }
+        function recargarPagina2(response) {
 
+            var obj = JSON.parse(response.d);
+            toastr.options = { "positionClass": "toast-bottom-right" };
+            if (obj == null) {
+                alert('Obj es null');
+                //return;
+            }
+            else {
+                if (obj.toUpperCase().includes("ERROR")) {
+                    toastr.error(obj, "Error");
+                }
+                else {
+                    console.log(obj);
+                    toastr.success(obj, "Exito!");
+                }
+            }
+
+        }
         function GuardarProducto2() {
             var formData = new FormData();
             var files = $('#inputImage2')[0].files[0];
@@ -793,7 +847,7 @@
     </script>
     <script>
         function ActualizarLabels() {
-            let descripcion = document.querySelector('#ProdDescripcion').value;
+            let descripcion = document.getElementById('<%=ProdDescripcion.ClientID%>').value;
            
             document.querySelector('#lblDescripcionFinal').textContent = descripcion;
 
@@ -843,7 +897,7 @@
           
            $('#modalPresentacion').modal('hide');
            document.querySelector('#lblPresentacion').textContent = presentacionFinal;
-
+           document.getElementById('<%=hfPresentaciones.ClientID%>').value = presentacionFinal;
            return true;
        }
 
@@ -856,7 +910,8 @@
                if (table1.rows[i].cells[0].innerHTML == id) {
                    if (presentacionFinal.includes(table1.rows[i].cells[1].innerHTML)) {
                        let texto = document.getElementById('editable1').rows[i].cells[0].innerHTML + " - " + table1.rows[i].cells[1].innerHTML;
-                       document.querySelector('#lblPresentacion').textContent= document.querySelector('#lblPresentacion').textContent.replace(texto+',', '');
+                       document.querySelector('#lblPresentacion').textContent = document.querySelector('#lblPresentacion').textContent.replace(texto + ',', '');
+                       document.getElementById('<%=hfPresentaciones.ClientID%>').value = document.getElementById('<%=hfPresentaciones.ClientID%>').value.replace(texto + ',', '');
                    }
                    document.getElementById('editable1').rows[i].remove();
                    return;
@@ -935,8 +990,8 @@
       function successAgregarTipoAtributo(response) {
           var obj = JSON.parse(response.d);
           var inputs = document.querySelectorAll('input[type=checkbox]')
-          
-          if (obj == null) {
+
+          if (obj == null || obj == '') {
               return;
           }
 
@@ -945,17 +1000,18 @@
           let table2 = document.getElementById('editable22');
           let cuerpor = document.getElementById("tbodyEditable1");
           let max = table2.rows.length;
+          table2.getElementsByTagName('tbody')[0].innerHTML = '';
           //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
           for (let j = 0; j < tiposAtributos.length; j++) {
 
-              
 
-              $('#editable22').append( `<tr>
+
+              $('#editable22').append(`<tr>
                         <td>${tiposAtributos[j].split("_")[0]}</td>
                         <td>${tiposAtributos[j].split("_")[1]}</td>
                         <td style="text-align:right"> <input id="ContentPlaceHolder1_btnSelecAtrib_${tiposAtributos[j].split("_")[0]}_${tiposAtributos[j].split("_")[1]}" class="presentacion radio btn btn-primary btn-xs" type="checkbox" checked> </td>
                         </tr>`);
-             
+
           }
       }
      

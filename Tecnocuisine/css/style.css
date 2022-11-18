@@ -228,7 +228,7 @@ h5 {
     float: left;
     height: 50px;
     padding: 0;
-    width: 300px;
+   
     display: inline-table;
 }
 
@@ -2621,15 +2621,15 @@ label.error {
     }
 
 #toast-container > .toast-warning:before {
-    content: "\f003";
+    content: "\f071";
 }
 
 #toast-container > .toast-error:before {
-    content: "\f001";
+    content: "\f057";
 }
 
 #toast-container > .toast-info:before {
-    content: "\f005";
+    content: "\f0e5";
 }
 
 #toast-container > .toast-success:before {

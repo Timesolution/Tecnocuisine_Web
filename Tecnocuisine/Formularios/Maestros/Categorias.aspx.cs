@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Script.Serialization;
 using System.Web.Services;
@@ -525,27 +526,39 @@ namespace Tecnocuisine
         [WebMethod]
         public static string GetSubAtributos2(int id)
         {
-            ControladorCategoria controlador = new ControladorCategoria();
-            ControladorAtributo ca = new ControladorAtributo();
-
-            Tecnocuisine_API.Entitys.Categorias categoriaPadre = controlador.ObtenerCategoriaPadreFinal(id);
-            string tiposAtributos = controlador.obtenerTipoAtributos(categoriaPadre.id);
-             string[] vec = tiposAtributos.Split(',');
-            string datos = "";
-            List<Atributos> atributos = new List<Atributos>();
-
-            foreach(var atributoAux in vec)
+            try
             {
-               Tecnocuisine_API.Entitys.Atributos a = ca.ObtenerAtributoById(Convert.ToInt32(atributoAux));
-                if(a!=null)
-                datos += a.id + "_" + a.descripcion +",";
-            }
-            datos= datos.Remove(datos.LastIndexOf(",")).TrimEnd();
+                ControladorCategoria controlador = new ControladorCategoria();
+                ControladorAtributo ca = new ControladorAtributo();
 
-            JavaScriptSerializer javaScript = new JavaScriptSerializer();
-            javaScript.MaxJsonLength = 5000000;
-            string resultadoJSON = javaScript.Serialize(datos);
-            return resultadoJSON;
+                Tecnocuisine_API.Entitys.Categorias categoriaPadre = controlador.ObtenerCategoriaPadreFinal(id);
+                string tiposAtributos = controlador.obtenerTipoAtributos(categoriaPadre.id);
+                string[] vec = tiposAtributos.Split(',');
+                string datos = "";
+                List<Atributos> atributos = new List<Atributos>();
+
+                foreach (var atributoAux in vec)
+                {
+                    Tecnocuisine_API.Entitys.Atributos a = ca.ObtenerAtributoById(Convert.ToInt32(atributoAux));
+                    if (a != null)
+                        datos += a.id + "_" + a.descripcion + ",";
+                }
+                datos = datos.Remove(datos.LastIndexOf(",")).TrimEnd();
+
+                JavaScriptSerializer javaScript = new JavaScriptSerializer();
+                javaScript.MaxJsonLength = 5000000;
+                string resultadoJSON = javaScript.Serialize(datos);
+                return resultadoJSON;
+            }
+            catch (Exception ex)
+            {
+
+                JavaScriptSerializer javaScript = new JavaScriptSerializer();
+                javaScript.MaxJsonLength = 5000000;
+                string resultadoJSON = javaScript.Serialize("");
+                return resultadoJSON;
+            }
+           
         }
         [WebMethod]
         public static string GetProductosRecetaByIdReceta(int idReceta)
@@ -624,6 +637,269 @@ namespace Tecnocuisine
                     if (RP != null)
                     {
                         lista += "<li data-jstree='{\"type\":\"html\"}'>" + RP.Productos.id + "-" + RP.Productos.descripcion + "</li>";
+
+                    }
+                }
+
+                lista += "</ul>";
+                //datos = datos.Remove(datos.LastIndexOf(",")).TrimEnd();
+
+                JavaScriptSerializer javaScript = new JavaScriptSerializer();
+                javaScript.MaxJsonLength = 5000000;
+                string resultadoJSON = javaScript.Serialize(lista);
+                return resultadoJSON;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        [WebMethod]
+        public static string GetListProductosCantidadRecetaByIdReceta(int idReceta,decimal Cant)
+        {
+            try
+            {
+                ControladorReceta controlador = new ControladorReceta();
+                CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+                var receta = controlador.ObtenerRecetaId(idReceta);
+
+                decimal PR_Cant = Cant /receta.peso;
+                decimal PesoT = receta.peso * PR_Cant;
+
+                var listaRP = controlador.ObtenerProductosByReceta(idReceta); //recetas_productos
+                string lista = "<ul>";
+                var listaRR = controlador.obtenerRecetasbyReceta(idReceta); //recetas_recetas
+                                                                            //receta
+                if (listaRR != null && listaRR.Count > 0)
+                {
+                    foreach (var rr in listaRR)
+                    {
+                        decimal PR_cantReceta = rr.cantidad/ receta.peso;
+                        decimal auxCantReceta = PesoT * PR_cantReceta;
+                       
+                        lista += "<li>" + auxCantReceta.ToString("N",culture) + "<ul>";
+                        //var listaProdAux = controlador.ObtenerProductosByReceta(rr.Recetas.id);
+                        dynamic dynamicObject = JsonConvert.DeserializeObject(GetListProductosCantidadRecetaByIdReceta(rr.Recetas.id, auxCantReceta));
+                        string type = dynamicObject;
+                        type = "" + type.Substring(4);
+                        type = type.Remove(type.Length - 5);
+                        lista += type;
+                        //foreach (var RP in listaProdAux)
+                        //{
+                        //    if (RP != null)
+                        //    {
+                        //        lista += "<li data-jstree='{\"type\":\"html\"}'>" + RP.Productos.id + "-" + RP.Productos.descripcion + "</li>";
+
+                        //    }
+                        //}
+                        lista += "</ul></li>";
+
+                    }
+                }
+                //productos
+                foreach (var RP in listaRP)
+                {
+                    if (RP != null)
+                    {
+                        
+                        decimal PR_cantProducto = RP.cantidad / receta.peso;
+                        decimal auxCantProducto = PesoT * PR_cantProducto;
+                        lista += "<li data-jstree='{\"type\":\"html\"}'>" +  auxCantProducto.ToString("#,##0.000", culture)  + "</li>";
+
+                    }
+                }
+
+                lista += "</ul>";
+                //datos = datos.Remove(datos.LastIndexOf(",")).TrimEnd();
+
+                JavaScriptSerializer javaScript = new JavaScriptSerializer();
+                javaScript.MaxJsonLength = 5000000;
+                string resultadoJSON = javaScript.Serialize(lista);
+                return resultadoJSON;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        [WebMethod]
+        public static string GetListProductosCostosRecetaByIdReceta(int idReceta)
+        {
+            try
+            {
+                ControladorReceta controlador = new ControladorReceta();
+
+
+
+                var listaRP = controlador.ObtenerProductosByReceta(idReceta); //recetas_productos
+                string lista = "<ul>";
+                var listaRR = controlador.obtenerRecetasbyReceta(idReceta); //recetas_recetas
+                                                                            //receta
+                if (listaRR != null && listaRR.Count > 0)
+                {
+                    foreach (var rr in listaRR)
+                    {
+                        lista += "<li>" + rr.Recetas.Costo.Value.ToString("N") + "<ul>";
+                        //var listaProdAux = controlador.ObtenerProductosByReceta(rr.Recetas.id);
+                        dynamic dynamicObject = JsonConvert.DeserializeObject(GetListProductosCostosRecetaByIdReceta(rr.Recetas.id));
+                        string type = dynamicObject;
+                        type = "" + type.Substring(4);
+                        type = type.Remove(type.Length - 5);
+                        lista += type;
+                        //foreach (var RP in listaProdAux)
+                        //{
+                        //    if (RP != null)
+                        //    {
+                        //        lista += "<li data-jstree='{\"type\":\"html\"}'>" + RP.Productos.id + "-" + RP.Productos.descripcion + "</li>";
+
+                        //    }
+                        //}
+                        lista += "</ul></li>";
+
+                    }
+                }
+                //productos
+                foreach (var RP in listaRP)
+                {
+                    if (RP != null)
+                    {
+                        lista += "<li data-jstree='{\"type\":\"html\"}'>" + RP.Productos.costo.ToString("N") + "</li>";
+
+                    }
+                }
+
+                lista += "</ul>";
+                //datos = datos.Remove(datos.LastIndexOf(",")).TrimEnd();
+
+                JavaScriptSerializer javaScript = new JavaScriptSerializer();
+                javaScript.MaxJsonLength = 5000000;
+                string resultadoJSON = javaScript.Serialize(lista);
+                return resultadoJSON;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        [WebMethod]
+        public static string GetListProductosCostosTotalRecetaByIdReceta(int idReceta, decimal Cant)
+        {
+            try
+            {
+                ControladorReceta controlador = new ControladorReceta();
+
+                var receta = controlador.ObtenerRecetaId(idReceta);
+
+                decimal PR_Cant = Cant / receta.peso;
+                decimal PesoT = receta.peso * PR_Cant;
+
+                var listaRP = controlador.ObtenerProductosByReceta(idReceta); //recetas_productos
+                string lista = "<ul>";
+                var listaRR = controlador.obtenerRecetasbyReceta(idReceta); //recetas_recetas
+                                                                            //receta
+                if (listaRR != null && listaRR.Count > 0)
+                {
+                    foreach (var rr in listaRR)
+                    {
+                        decimal PR_cantReceta = rr.cantidad / receta.peso;
+                        decimal auxCantReceta = PesoT * PR_cantReceta;
+                        decimal CostoTRec = rr.Recetas.Costo.Value * auxCantReceta;
+                        lista += "<li>" +  CostoTRec.ToString("N") + "<ul>";
+                        //var listaProdAux = controlador.ObtenerProductosByReceta(rr.Recetas.id);
+                        dynamic dynamicObject = JsonConvert.DeserializeObject(GetListProductosCostosTotalRecetaByIdReceta(rr.Recetas.id, Cant));
+                        string type = dynamicObject;
+                        type = "" + type.Substring(4);
+                        type = type.Remove(type.Length - 5);
+                        lista += type;
+                        //foreach (var RP in listaProdAux)
+                        //{
+                        //    if (RP != null)
+                        //    {
+                        //        lista += "<li data-jstree='{\"type\":\"html\"}'>" + RP.Productos.id + "-" + RP.Productos.descripcion + "</li>";
+
+                        //    }
+                        //}
+                        lista += "</ul></li>";
+
+                    }
+                }
+                //productos
+                foreach (var RP in listaRP)
+                {
+                    if (RP != null)
+                    {
+                        decimal PR_cantProducto = RP.cantidad / receta.peso;
+                        decimal auxCantProducto = PesoT * PR_cantProducto;
+                        decimal PrecioProducto = RP.Productos.costo * auxCantProducto;
+                        lista += "<li data-jstree='{\"type\":\"html\"}'>" + string.Format("{0:N4}", PrecioProducto) + "</li>";
+
+                    }
+                }
+
+                lista += "</ul>";
+                //datos = datos.Remove(datos.LastIndexOf(",")).TrimEnd();
+
+                JavaScriptSerializer javaScript = new JavaScriptSerializer();
+                javaScript.MaxJsonLength = 5000000;
+                string resultadoJSON = javaScript.Serialize(lista);
+                return resultadoJSON;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        [WebMethod]
+        public static string GetListProductosUMRecetaByIdReceta(int idReceta)
+        {
+            try
+            {
+                ControladorReceta controlador = new ControladorReceta();
+
+                ControladorUnidad controladorUnidad = new ControladorUnidad();
+                var listaRP = controlador.ObtenerProductosByReceta(idReceta); //recetas_productos
+                string lista = "<ul>";
+                var listaRR = controlador.obtenerRecetasbyReceta(idReceta); //recetas_recetas
+                                                                            //receta
+                if (listaRR != null && listaRR.Count > 0)
+                {
+                    foreach (var rr in listaRR)
+                    {
+                        var unidad = controladorUnidad.ObtenerUnidadId(rr.Recetas.UnidadMedida.Value);
+                        lista += "<li>" + unidad.descripcion + "<ul>";
+                        //var listaProdAux = controlador.ObtenerProductosByReceta(rr.Recetas.id);
+                        dynamic dynamicObject = JsonConvert.DeserializeObject(GetListProductosUMRecetaByIdReceta(rr.Recetas.id));
+                        string type = dynamicObject;
+                        type = "" + type.Substring(4);
+                        type = type.Remove(type.Length - 5);
+                        lista += type;
+                        //foreach (var RP in listaProdAux)
+                        //{
+                        //    if (RP != null)
+                        //    {
+                        //        lista += "<li data-jstree='{\"type\":\"html\"}'>" + RP.Productos.id + "-" + RP.Productos.descripcion + "</li>";
+
+                        //    }
+                        //}
+                        lista += "</ul></li>";
+
+                    }
+                }
+                //productos
+                foreach (var RP in listaRP)
+                {
+                    if (RP != null)
+                    {
+                        var unidad = controladorUnidad.ObtenerUnidadId(RP.Productos.unidadMedida);
+                        lista += "<li data-jstree='{\"type\":\"html\"}'>" + unidad.descripcion + "</li>";
 
                     }
                 }

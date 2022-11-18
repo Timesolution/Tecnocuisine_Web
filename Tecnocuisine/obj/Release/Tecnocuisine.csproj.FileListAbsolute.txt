@@ -486,3 +486,34 @@ C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\System.Memory.x
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\System.Numerics.Vectors.xml
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\System.Runtime.CompilerServices.Unsafe.xml
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\System.Threading.Tasks.Extensions.xml
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Gestion Api.dll
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\WSAFIPFE.dll
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\LinqToExcel.dll
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\RestSharp.dll
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Ionic.Zip.dll
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\DocumentFormat.OpenXml.dll
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Planario_Api.dll
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\itextsharp.dll
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Estetica Api.dll
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Modula_Api.dll
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\SMS_Notification.dll
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Report_Api.dll
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Remotion.Data.Linq.dll
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Task_Api.dll
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Twilio.Api.dll
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Microsoft.ReportViewer.WinForms.dll
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Microsoft.ReportViewer.Common.dll
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Microsoft.ReportViewer.ProcessingObjectModel.dll
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Microsoft.ReportViewer.DataVisualization.dll
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Microsoft.SqlServer.Types.dll
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Gestion Api.pdb
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Gestion Api.dll.config
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\WSAFIPFE.dll.config
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\LinqToExcel.xml
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\RestSharp.xml
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\DocumentFormat.OpenXml.xml
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\itextsharp.xml
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Estetica Api.pdb
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Estetica Api.dll.config
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Twilio.Api.pdb
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Twilio.Api.xml

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Recetas" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="RecetasABM.aspx.cs" Inherits="Tecnocuisine.Formularios.Maestros.RecetasABM" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="RecetasABM.aspx.cs" Inherits="Tecnocuisine.Formularios.Maestros.RecetasABM" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
@@ -108,7 +108,7 @@
                                                             <datalist id="listaCategoria" runat="server"></datalist>
                                                             <asp:TextBox ID="txtDescripcionCategoria" list="ContentPlaceHolder1_listaCategoria" onfocusout="agregarDesdetxtCategoria(); return false;" onchange="ValidationCategoria()"  class="form-control" runat="server" />
                                                             <span class="input-group-btn">
-                                                                <linkbutton id="btnCategorias" class="btn btn-primary dim" onclick="FocusSearch()" data-toggle="modal" data-backdrop="static" data-target="#modalCategoria"><i style="color: white" class="fa fa-plus"></i></linkbutton>
+                                                                <asp:LinkButton ID="btnCategorias" runat="server" class="btn btn-primary dim" onclientclick="FocusSearch()" data-toggle="modal" data-backdrop="static" data-target="#modalCategoria"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
 
                                                             </span>
                                                         </div>
@@ -170,7 +170,7 @@
                                                         <div class="input-group">
                                                             <asp:TextBox ID="txtSector" disabled="disabled" placeholder="Sector" class="form-control" runat="server" />
                                                             <span class="input-group-btn">
-                                                                <linkbutton id="btnSectores" class="btn btn-primary dim" onclick="FocusSearch()" data-toggle="modal" data-backdrop="static" data-target="#modalSectores"><i style="color: white" class="fa fa-plus"></i></linkbutton>
+                                                                <asp:LinkButton runat="server" ID="btnSectores" class="btn btn-primary dim" onclientclick="FocusSearch()" data-toggle="modal" data-backdrop="static" data-target="#modalSectores"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
 
                                                             </span>
                                                         </div>
@@ -235,7 +235,7 @@
                                                
                                                 <asp:TextBox ID="txtDescripcionProductos" onfocusout="handle(event)" list="ContentPlaceHolder1_ListaNombreProd" class="form-control" runat="server" />
                                                 <span class="input-group-btn">
-                                                    <linkbutton id="btnProductos" class="btn btn-primary dim" onclick="FocusSearch('1')" data-toggle="modal" data-backdrop="static" data-target="#modalTabsProductos"><i style="color: white" class="fa fa-plus"></i></linkbutton>
+                                                    <asp:LinkButton runat="server" id="btnProductos" class="btn btn-primary dim" onclientclick="FocusSearch('1')" data-toggle="modal" data-backdrop="static" data-target="#modalTabsProductos"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
 
                                                 </span>
                                             </div>
@@ -269,9 +269,9 @@
                                             <asp:TextBox ID="txtCostoLimpio" disabled="disabled" onkeypress="javascript:return validarNro(event)" Style="text-align: right" class="form-control" runat="server" />
                                         </div>
                                         <div class="col-md-1" style="width: 70px;margin-top: 1.7%;text-align: right;">
-                                            <linkbutton id="btnAgregarProducto" onclick="agregarProductoPH();" class="btn btn-primary dim required"><i style="color: white" class="fa fa-check"></i></linkbutton>
+                                            <LinkButton ID="btnAgregarProducto" onclick="agregarProductoPH();" class="btn btn-primary dim required"><i style="color: white" class="fa fa-check"></i></LinkButton>
                                             <linkbutton id="btnEditarProducto" style="display:none" onclick="editarProductoPH();" class="btn btn-primary dim" data-toggle="tooltip" data-placement="top" title="Editar ingrediente"><i style="color: white" class="fa fa-pencil"></i></linkbutton>
-                                            
+                                            <%--<asp:LinkButton runat="server" ID="btnAgregarProducto"></asp:LinkButton>--%>
                                         </div>
 
                                     </div>
@@ -280,14 +280,14 @@
                                     <table class="table table-bordered table-hover" id="tableProductos">
                                         <thead>
                                             <tr>
-                                                <th style="width: 10%">Cod. Producto</th>
+                                                <th style="width: 5%">Cod. Producto</th>
                                                 <%--<th style="width: 10%">Tipo</th>--%>
-                                                <th style="width: 20%">Descripcion</th>
+                                                <th style="width: 15%">Descripcion</th>
                                                 <th style="width: 10%; text-align:right">Cantidad</th>
                                                 <th style="width: 10%">Unidad Medida</th>
                                                 <th style="width: 10%;text-align:right">Costo $</th>
                                                 <th style="width: 10%;text-align:right">Costo Total $</th>
-                                                <th style="width: 10%"></th>
+                                                <th style="width: 5%"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -348,7 +348,7 @@
                                                 <asp:TextBox ID="txtPasoDesc" placeholder="Detalle el paso" onkeypress="pulsar(event)" class="form-control" runat="server" />
                                                 <span class="input-group-btn">
                                                     <%--<linkbutton id="btnProductos" class="btn btn-primary dim" onclick="FocusSearch()" data-toggle="modal" data-backdrop="static" data-target="#modalTabsProductos"><i style="color: white" class="fa fa-plus"></i></linkbutton>--%>
-                                                    <linkbutton id="btnAgregarPaso" onclick="AgregarPaso()" class="btn btn-primary dim"><i style="color: white" class="fa fa-plus"></i></linkbutton>
+                                                    <asp:LinkButton ID="btnAgregarPaso" runat="server" onclientclick="AgregarPaso()" class="btn btn-primary dim"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
                                                 </span>
                                             </div>
                                         </div>
@@ -929,6 +929,10 @@
     </script>
     <script>
         $(document).ready(function () {
+            let url = window.location.href;
+            if (url.includes("a=2")) {
+                ActualizarLabels();
+            }
             $("#wizard").steps();
             $("#form").steps({
 
@@ -1061,13 +1065,13 @@
                                     console.log(JSON.stringify(error));
                                     $.msgbox("No se pudo cargar la tabla", { type: "error" });
                                 },
-                                success: recargarPagina()
+                                success: recargarPagina
                             });
                       
                          
                            
                         }
-                    } else {
+                    } else if (!url.includes('b=1')) {
                         let parameter = url.split("?")[1]
                         let queryString = new URLSearchParams(parameter);
                         let idReceta = ''
@@ -1129,8 +1133,220 @@
                 
                 for (let i=0; i < document.getElementById('ContentPlaceHolder1_HFRecetas').value.split(',').length; i++) {
                     if (document.getElementById('ContentPlaceHolder1_HFRecetas').value.split(',')[i] != "") {
+                        let id = document.getElementById('ContentPlaceHolder1_HFRecetas').value.split(',')[i];
+                        $('#jstree' + document.getElementById('ContentPlaceHolder1_HFRecetas').value.split(',')[i])
+                            .on('after_open.jstree', function (e, data) {
 
-                        $('#jstree' + document.getElementById('ContentPlaceHolder1_HFRecetas').value.split(',')[i]).jstree({
+                                let banderaC = false;
+                                let JidCant = $("#jstree_C" + id).jstree()._model.data
+                                let JidCantaux = Object.values(JidCant);
+
+                                for (i = 0; i < JidCantaux.length; i++) {
+                                    if (JidCantaux[i].id.includes('_')) {
+                                        let res = JidCantaux[i].id.split('_')[1];
+                                        console.log(data.node.id)
+                                        console.log(data.node.data)
+                                        let res2 = data.node.id.split('_')[1];
+                                        if (banderaC == false) {
+
+                                            if (res.includes("LI")) {
+                                                $("#jstree_C" + id).jstree("open_node", "#RecetaC_LI_" + id);
+                                                banderaC = true;
+                                            } else
+                                                if (res == res2) {
+                                                    $("#jstree_C" + id).jstree("open_node", "#" + JidCantaux[i].id);
+                                                    banderaC = true;
+                                                }
+                                        }
+                                    }
+                                }
+                                let banderaUM = false;
+                                let JidUM = $("#jstree_UM" + id).jstree()._model.data
+                                let JidUMTaux = Object.values(JidUM);
+
+                                for (i = 0; i < JidUMTaux.length; i++) {
+                                    if (JidUMTaux[i].id.includes('_')) {
+                                        let res = JidUMTaux[i].id.split('_')[1];
+                                        console.log(data.node.id)
+                                        console.log(data.node.data)
+                                        let res2 = data.node.id.split('_')[1];
+                                        if (banderaUM == false) {
+
+                                            if (res.includes("LI")) {
+                                                $("#jstree_UM" + id).jstree("open_node", "#RecetaUM_LI_" + id);
+                                                banderaUM = true;
+                                            } else
+                                                if (res == res2) {
+                                                    $("#jstree_UM" + id).jstree("open_node", "#" + JidUMTaux[i].id);
+                                                    banderaUM = true;
+                                                }
+                                        }
+                                    }
+                                }
+
+                                let JidCS = $("#jstree_CS" + id).jstree()._model.data
+                                let JidCSaux = Object.values(JidCS);
+                                let banderaCS = false;
+
+                                for (i = 0; i < JidCSaux.length; i++) {
+                                    if (JidCSaux[i].id.includes('_')) {
+                                        let res = JidCSaux[i].id.split('_')[1];
+                                        console.log(data.node.id)
+                                        console.log(data.node.data)
+                                        let res2 = data.node.id.split('_')[1];
+                                        if (banderaCS == false) {
+
+                                            if (res.includes("LI")) {
+                                                $("#jstree_CS" + id).jstree("open_node", "#RecetaCS_LI_" + id);
+                                                banderaCS = true;
+                                            } else
+                                                if (res == res2) {
+                                                    $("#jstree_CS" + id).jstree("open_node", "#" + JidCSaux[i].id);
+                                                    banderaCS = true;
+                                                }
+                                        }
+                                    }
+                                }
+
+                                let JidCST = $("#jstree_CST" + id).jstree()._model.data
+                                let JidCSTaux = Object.values(JidCST);
+                                let banderaCST = false
+                                for (i = 0; i < JidCSTaux.length; i++) {
+                                    if (JidCSTaux[i].id.includes('_')) {
+                                        let res = JidCSTaux[i].id.split('_')[1];
+                                        console.log(data.node.id)
+                                        console.log(data.node.data)
+                                        let res2 = data.node.id.split('_')[1];
+                                        if (banderaCST == false) {
+
+                                            if (res.includes("LI")) {
+                                                $("#jstree_CST" + id).jstree("open_node", "#RecetaCST_LI_" + id);
+                                                banderaCST = true;
+                                            } else
+                                                if (res == res2) {
+                                                    $("#jstree_CST" + id).jstree("open_node", "#" + JidCSTaux[i].id);
+                                                    banderaCST = true;
+                                                }
+                                        }
+                                    }
+                                }
+
+                                //$("#jstree_C" + id).jstree("open_all", JidCantaux.id);
+                                //$("#jstree_UM" + id).jstree("open_all", JidUMTaux.id);
+                                //$("#jstree_CS" + id).jstree("open_all", JidCSaux.id);
+                                //$("#jstree_CST" + id).jstree("open_all", JidCSTaux.id);
+                            })
+                            .on('after_close.jstree', function (e, data) {
+                                let JidCant = $("#jstree_C" + id).jstree()._model.data
+                                let JidCantaux = Object.values(JidCant);
+                                let banderaC = false;
+                                for (i = 0; i < JidCantaux.length; i++) {
+                                    if (JidCantaux[i].id.includes('_')) {
+                                        let res = JidCantaux[i].id.split('_')[1];
+                                        console.log(data.node.id)
+                                        console.log(data.node.data)
+                                        let res2 = data.node.id.split('_')[1];
+                                        if (banderaC == false) {
+
+                                            if (res.includes("LI")) {
+                                                $("#jstree_C" + id).jstree("close_node", "#RecetaC_LI_" + id);
+                                                banderaC = true;
+                                            } else
+                                                if (res == res2) {
+                                                    $("#jstree_C" + id).jstree("close_node", "#" + JidCantaux[i].id);
+                                                    banderaC = true;
+                                                }
+                                        }
+                                    }
+                                }
+                                let banderaUM = false;
+                                let JidUM = $("#jstree_UM" + id).jstree()._model.data
+                                let JidUMTaux = Object.values(JidUM);
+
+                                for (i = 0; i < JidUMTaux.length; i++) {
+                                    if (JidUMTaux[i].id.includes('_')) {
+                                        let res = JidUMTaux[i].id.split('_')[1];
+                                        console.log(data.node.id)
+                                        console.log(data.node.data)
+                                        let res2 = data.node.id.split('_')[1];
+                                        if (banderaUM == false) {
+
+                                            if (res.includes("LI")) {
+                                                $("#jstree_UM" + id).jstree("close_node", "#RecetaUM_LI_" + id);
+                                                banderaUM = true;
+                                            } else
+                                                if (res == res2) {
+                                                    $("#jstree_UM" + id).jstree("close_node", "#" + JidUMTaux[i].id);
+                                                    banderaUM = true;
+                                                }
+                                        }
+                                    }
+                                }
+
+                                let JidCS = $("#jstree_CS" + id).jstree()._model.data
+                                let JidCSaux = Object.values(JidCS);
+                                let banderaCS = false
+                                for (i = 0; i < JidCSaux.length; i++) {
+                                    if (JidCSaux[i].id.includes('_')) {
+                                        let res = JidCSaux[i].id.split('_')[1];
+                                        console.log(data.node.id)
+                                        console.log(data.node.data)
+                                        let res2 = data.node.id.split('_')[1];
+                                        if (banderaCS == false) {
+
+                                            if (res.includes("LI")) {
+                                                $("#jstree_CS" + id).jstree("close_node", "#RecetaCS_LI_" + id);
+                                                banderaCS = true
+                                            } else
+                                                if (res == res2) {
+                                                    $("#jstree_CS" + id).jstree("close_node", "#" + JidCSaux[i].id);
+                                                    banderaCS = true
+                                                }
+                                        }
+                                    }
+                                }
+
+                                let JidCST = $("#jstree_CST" + id).jstree()._model.data
+                                let JidCSTaux = Object.values(JidCST);
+                                let banderaCST = false;
+                                for (i = 0; i < JidCSTaux.length; i++) {
+                                    if (JidCSTaux[i].id.includes('_')) {
+                                        let res = JidCSTaux[i].id.split('_')[1];
+                                        console.log(data.node.id)
+                                        console.log(data.node.data)
+                                        let res2 = data.node.id.split('_')[1];
+                                        if (banderaCST == false) {
+
+                                            if (res.includes("LI")) {
+                                                $("#jstree_CST" + id).jstree("close_node", "#RecetaCST_LI_" + id);
+                                                banderaCST = true;
+                                            } else
+                                                if (res == res2) {
+                                                    $("#jstree_CST" + id).jstree("close_node", "#" + JidCSTaux[i].id);
+                                                    banderaCST = true;
+                                                }
+                                        }
+                                    }
+                                }
+                                //console.log('prueba2');
+                                //let JidCant2 = $("#jstree_C" + id).jstree()._model.data
+                                //let JidCantaux2 = Object.values(JidCant2)[11];
+
+                                //let JidUM2 = $("#jstree_UM" + id).jstree()._model.data
+                                //let JidUMTaux2 = Object.values(JidUM2)[11];
+
+                                //let JidCS2 = $("#jstree_CS" + id).jstree()._model.data
+                                //let JidCSaux2 = Object.values(JidCS2)[11];
+
+                                //let JidCST2 = $("#jstree_CST" + id).jstree()._model.data
+                                //let JidCSTaux2 = Object.values(JidCST2)[11];
+
+                                //$("#jstree_C" + id).jstree("close_all",  "#"+JidCantaux2.id);
+                                //$("#jstree_UM" + id).jstree("close_all", "#"+JidUMTaux2.id);
+                                //$("#jstree_CS" + id).jstree("close_all", "#"+JidCSaux2.id);
+                                //$("#jstree_CST" + id).jstree("close_all","#"+ JidCSTaux2.id);
+                            })
+                            .jstree({
                         'core': {
                             'check_callback': true
                         },
@@ -1156,7 +1372,115 @@
                             }
 
                         }
-                    });
+                        });
+                        $('#jstree_C' + document.getElementById('ContentPlaceHolder1_HFRecetas').value.split(',')[i]).jstree({
+                            'core': {
+                                'check_callback': true
+                            },
+                            'plugins': ['types', 'dnd'],
+                            'types': {
+                                'default': {
+                                    'icon': 'fa fa-folder'
+                                },
+                                'html': {
+                                    'icon': 'fa fa-file-code-o'
+                                },
+                                'svg': {
+                                    'icon': 'fa fa-file-picture-o'
+                                },
+                                'css': {
+                                    'icon': 'fa fa-file-code-o'
+                                },
+                                'img': {
+                                    'icon': 'fa fa-file-image-o'
+                                },
+                                'js': {
+                                    'icon': 'fa fa-file-text-o'
+                                }
+
+                            }
+                        });
+                        $('#jstree_UM' + document.getElementById('ContentPlaceHolder1_HFRecetas').value.split(',')[i]).jstree({
+                            'core': {
+                                'check_callback': true
+                            },
+                            'plugins': ['types', 'dnd'],
+                            'types': {
+                                'default': {
+                                    'icon': 'fa fa-folder'
+                                },
+                                'html': {
+                                    'icon': 'fa fa-file-code-o'
+                                },
+                                'svg': {
+                                    'icon': 'fa fa-file-picture-o'
+                                },
+                                'css': {
+                                    'icon': 'fa fa-file-code-o'
+                                },
+                                'img': {
+                                    'icon': 'fa fa-file-image-o'
+                                },
+                                'js': {
+                                    'icon': 'fa fa-file-text-o'
+                                }
+
+                            }
+                        });
+                        $('#jstree_CS' + document.getElementById('ContentPlaceHolder1_HFRecetas').value.split(',')[i]).jstree({
+                            'core': {
+                                'check_callback': true
+                            },
+                            'plugins': ['types', 'dnd'],
+                            'types': {
+                                'default': {
+                                    'icon': 'fa fa-folder'
+                                },
+                                'html': {
+                                    'icon': 'fa fa-file-code-o'
+                                },
+                                'svg': {
+                                    'icon': 'fa fa-file-picture-o'
+                                },
+                                'css': {
+                                    'icon': 'fa fa-file-code-o'
+                                },
+                                'img': {
+                                    'icon': 'fa fa-file-image-o'
+                                },
+                                'js': {
+                                    'icon': 'fa fa-file-text-o'
+                                }
+
+                            }
+                        });
+                        $('#jstree_CST' + document.getElementById('ContentPlaceHolder1_HFRecetas').value.split(',')[i]).jstree({
+                            'core': {
+                                'check_callback': true
+                            },
+                            'plugins': ['types', 'dnd'],
+                            'types': {
+                                'default': {
+                                    'icon': 'fa fa-folder'
+                                },
+                                'html': {
+                                    'icon': 'fa fa-file-code-o'
+                                },
+                                'svg': {
+                                    'icon': 'fa fa-file-picture-o'
+                                },
+                                'css': {
+                                    'icon': 'fa fa-file-code-o'
+                                },
+                                'img': {
+                                    'icon': 'fa fa-file-image-o'
+                                },
+                                'js': {
+                                    'icon': 'fa fa-file-text-o'
+                                }
+
+                            }
+                        });
                     }
                 }
             }
@@ -1165,12 +1489,26 @@
     </script>
 
     <script>         
-        function recargarPagina() {
+        function recargarPagina(response) {
             //toastr.success("guardado con exito!", "Exito")
-             window.location.href = 'RecetasABM.aspx?m=1';
+             //window.location.href = 'RecetasABM.aspx?m=1';
             
-            
-            //alert('Guardado con exito');
+            var obj = JSON.parse(response.d);
+            var inputs = document.querySelectorAll('input[type=checkbox]')
+            toastr.options = { "positionClass": "toast-bottom-right" };
+            if (obj == null) {
+                alert('Obj es null');
+                //return;
+            }
+            else {
+                if (obj.toUpperCase().includes("ERROR")) {
+                    toastr.error(obj, "Error");
+                }
+                else {
+                    console.log(obj);
+                    window.location.href = 'RecetasABM.aspx?m=1';
+                }
+            }
         }
         function recargarPagina2() {
             toastr.success("guardado con exito!", "Exito")
@@ -1245,7 +1583,7 @@
                 Factor = parseFloat(document.getElementById('<%= txtFactor.ClientID%>').value);
 
             let CantBruta = Cantidad * Factor;
-            document.getElementById('<%=txtCantBruta.ClientID%>').value = myFormat( Math.round10(CantBruta, -2));
+            document.getElementById('<%=txtCantBruta.ClientID%>').value = myFormat( Math.round10(CantBruta, -3));
         }
         function ValidationCategoria() {
             let cat = document.getElementById('<%= txtDescripcionCategoria.ClientID%>');
@@ -1296,8 +1634,8 @@
             let porciones = parseFloat(document.getElementById('<%=txtRinde.ClientID%>').value);
             if (porciones > 0) {
 
-                document.getElementById('<%=txtKgxPorcion.ClientID%>').value = myFormat( cantTotal / porciones);
-                document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = myFormat( costototal / porciones);
+                document.getElementById('<%=txtKgxPorcion.ClientID%>').value = myFormat(Math.round10(cantTotal / porciones));
+                document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = myFormat(Math.round10( costototal / porciones));
             } else {
                 document.getElementById('<%=txtKgxPorcion.ClientID%>').value = "0.00";
                 document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = "0.00";
@@ -1309,8 +1647,8 @@
             let ContMarg = parseFloat(document.getElementById('<%=txtContMarg.ClientID%>').value);
             if (PRVenta > 0) {
 
-                document.getElementById('<%=txtPFoodCost.ClientID%>').value = myFormat(costototal / PRVenta * 100);
-                document.getElementById('<%=txtContMarg.ClientID%>').value = myFormat(PRVenta - costototal);
+                document.getElementById('<%=txtPFoodCost.ClientID%>').value = myFormat(Math.round10(costototal / PRVenta * 100));
+                document.getElementById('<%=txtContMarg.ClientID%>').value = myFormat(Math.round10( PRVenta - costototal));
             } else {
                 document.getElementById('<%=txtPFoodCost.ClientID%>').value = "0.00";
                 document.getElementById('<%=txtContMarg.ClientID%>').value = "0.00";
@@ -1411,7 +1749,7 @@
             var obj = JSON.parse(response.d);
             var inputs = document.querySelectorAll('input[type=checkbox]')
 
-            if (obj == null) {
+            if (obj == null || obj == '') {
                 return;
             }
 
@@ -1522,7 +1860,7 @@
             }
         }
         function editarProductoPH() {
-            document.getElementById('btnAgregarProducto').style.display = 'none';
+            //document.getElementById('btnAgregarProducto').style.display = 'none';
             document.getElementById('btnEditarProducto').style.display = null
             
         }
@@ -1537,7 +1875,7 @@
             let CantAux = parseFloat(cantidad);
             let costototal = 0;
 
-            costototal = Math.round10(costAux * CantAux, -2);
+            costototal = Math.round10(costAux * CantAux, -3);
             let auxCostoTotal = myFormat( costototal.toString());
             if (!auxCostoTotal.includes('.'))
                 auxCostoTotal += ".00";
@@ -1545,6 +1883,10 @@
             let btnRec = "";
             let styleCorrect = "";
             let listaDesplegable = "";
+            let listaCantidadDesplegable = "";
+            let listaUnidadesDesplegable = "";
+            let listaCostosDesplegable = "";
+            let listaCostototalDesplegable = "";
             if (tipo == "Receta") {
                 btnRec = "<a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent;\" class=\"btn  btn-xs \" onclick=\"javascript: return CargarmodalRecetaDetalle('" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "');\" >" +
                     "<i><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 576 512\" style=\"width: 15px; vertical-align: middle; \">" +
@@ -1552,23 +1894,32 @@
                     "</svg>" +
 
                     "</i>  </a> ";
-                styleCorrect = "margin-left: 34px;";
+                styleCorrect = "";
                 listaDesplegable = "<td> <div id=\"jstree" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaLI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</li></ul></div></td>";
-
+                listaCantidadDesplegable = "<td> <div id=\"jstree_C" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaC_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + myFormat(cantidad) + "</li></ul></div></td>";
+                listaUnidadesDesplegable = "<td> <div id=\"jstree_UM" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaUM_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + unidad + "</li></ul></div></td>";
+                listaCostosDesplegable = "<td> <div id=\"jstree_CS" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaCS_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + costo + "</li></ul></div></td>";
+                listaCostototalDesplegable = "<td> <div id=\"jstree_CST" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaCST_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + auxCostoTotal + "</li></ul></div></td>";
             } else {
                 listaDesplegable = "<td> " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
-
+                listaCantidadDesplegable = "<td style=\" text-align: right\"> " + myFormat(cantidad) + "</td>";
+                listaUnidadesDesplegable = "<td> " + unidad + "</td>";
+                listaCostosDesplegable = "<td style=\" text-align:right;\"> " + costo + "</td>";
+                listaCostototalDesplegable = "<td style=\" text-align:right;\"> " + auxCostoTotal + "</td>";
             }
             if (!document.getElementById('<%= idProductosRecetas.ClientID%>').value.includes(tipo + '_' + codigo)) {
                 $('#tableProductos').append(
                     "<tr id=" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "\">" +
                     "<td style=\" text-align: right\"> " + codigo + "</td>" +
                     listaDesplegable +
+                    listaCantidadDesplegable+
                     //"<td ondblclick=\"CargarmodalRecetaDetalle('" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0]+"')\" > " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>" +
-                    "<td style=\" text-align: right\"> " + myFormat( cantidad )+ "</td>" +
-                    "<td> " + unidad + "</td>" +
-                    "<td style=\" text-align:right;\"> " + costo + "</td>" +
-                    "<td style=\" text-align:right;\"> " + auxCostoTotal + "</td>" +
+                    listaUnidadesDesplegable +
+                    listaCostosDesplegable +
+                    listaCostototalDesplegable+
+                    
+                    
+                    
                     "<td style=\" text-align: center\">" +
                     " <a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent; " + styleCorrect + "\" class=\"btn  btn-xs \" onclick=\"javascript: return borrarProd('" + tipo + "_" + codigo + "');\" >" +
                     "<i class=\"fa fa-trash - o\" style=\"color: black\"></i> </a> " +
@@ -1615,9 +1966,22 @@
                     }
                 }
                 if (tipo == "Receta") {
-
-                    ObtenerListaIntegradoraDetalleReceta(ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim())
-
+                    
+                  
+                    ObtenerListaIntegradoraDetalleReceta(ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim());
+                    setTimeout(ObtenerListaIntegradoraDetalleCantidadReceta(ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim(), myFormat(cantidad)), 10);
+                    
+                    setTimeout(ObtenerListaIntegradoraDetalleUnidadesReceta(ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim()), 45);
+                    
+                    setTimeout(ObtenerListaIntegradoraDetalleCostosReceta(ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim()), 20);
+                    
+                    setTimeout(ObtenerListaIntegradoraDetalleCostosTotalReceta(ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim(), myFormat(cantidad)), 25);
+                    
+                    //;
+                    //;
+                    //;
+                    //
+                    //
                     
                 }
                 ContentPlaceHolder1_txtDescripcionProductos.value = "";
@@ -1708,7 +2072,436 @@
                         obj2
                     );
 
-                    $('#jstree'+id).jstree({
+                    $('#jstree' + id)
+                        .on('after_open.jstree', function (e, data) {
+
+                            let banderaC = false;
+                            let JidCant = $("#jstree_C"+id).jstree()._model.data
+                            let JidCantaux = Object.values(JidCant);
+
+                            for (i = 0; i < JidCantaux.length; i++) {
+                                if (JidCantaux[i].id.includes('_')) {
+                                    let res = JidCantaux[i].id.split('_')[1];
+                                    console.log(data.node.id)
+                                    console.log(data.node.data)
+                                    let res2 = data.node.id.split('_')[1];
+                                    if (banderaC == false) {
+
+                                    if (res.includes("LI")) {
+                                        $("#jstree_C" + id).jstree("open_node", "#RecetaC_LI_" + id);
+                                        banderaC = true;
+                                    } else
+                                    if (res == res2) {
+                                        $("#jstree_C" + id).jstree("open_node", "#" + JidCantaux[i].id);
+                                        banderaC = true;
+                                    }
+                                    }
+                                }
+                            }
+                            let banderaUM = false;
+                            let JidUM = $("#jstree_UM"+id).jstree()._model.data
+                            let JidUMTaux = Object.values(JidUM);
+
+                            for (i = 0; i < JidUMTaux.length; i++) {
+                                if (JidUMTaux[i].id.includes('_')) {
+                                    let res = JidUMTaux[i].id.split('_')[1];
+                                    console.log(data.node.id)
+                                    console.log(data.node.data)
+                                    let res2 = data.node.id.split('_')[1];
+                                    if (banderaUM == false) {
+
+                                        if (res.includes("LI")) {
+                                            $("#jstree_UM" + id).jstree("open_node", "#RecetaUM_LI_" + id);
+                                            banderaUM = true;
+                                        } else
+                                            if (res == res2) {
+                                                $("#jstree_UM" + id).jstree("open_node", "#" + JidUMTaux[i].id);
+                                                banderaUM = true;
+                                            }
+                                    }
+                                }
+                            }
+
+                            let JidCS = $("#jstree_CS"+id).jstree()._model.data
+                            let JidCSaux = Object.values(JidCS);
+                            let banderaCS = false;
+
+                            for (i = 0; i < JidCSaux.length; i++) {
+                                if (JidCSaux[i].id.includes('_')) {
+                                    let res = JidCSaux[i].id.split('_')[1];
+                                    console.log(data.node.id)
+                                    console.log(data.node.data)
+                                    let res2 = data.node.id.split('_')[1];
+                                    if (banderaCS == false) {
+
+                                    if (res.includes("LI")) {
+                                        $("#jstree_CS" + id).jstree("open_node", "#RecetaCS_LI_" + id);
+                                        banderaCS = true;
+                                    } else
+                                    if (res == res2) {
+                                        $("#jstree_CS" + id).jstree("open_node", "#" + JidCSaux[i].id);
+                                        banderaCS = true;
+                                    }
+                                    }
+                                } 
+                            }
+
+                            let JidCST = $("#jstree_CST" + id).jstree()._model.data
+                            let JidCSTaux = Object.values(JidCST);
+                            let banderaCST = false
+                            for (i = 0; i < JidCSTaux.length; i++) {
+                                if (JidCSTaux[i].id.includes('_')) {
+                                    let res = JidCSTaux[i].id.split('_')[1];
+                                    console.log(data.node.id)
+                                    console.log(data.node.data)
+                                    let res2 = data.node.id.split('_')[1];
+                                    if (banderaCST == false) {
+
+                                    if (res.includes("LI")) {
+                                        $("#jstree_CST" + id).jstree("open_node", "#RecetaCST_LI_" + id);
+                                        banderaCST = true;
+                                    } else
+                                    if (res == res2) {
+                                        $("#jstree_CST" + id).jstree("open_node", "#" + JidCSTaux[i].id);
+                                        banderaCST = true;
+                                    }
+                                    }
+                                } 
+                            }
+
+                            //$("#jstree_C" + id).jstree("open_all", JidCantaux.id);
+                            //$("#jstree_UM" + id).jstree("open_all", JidUMTaux.id);
+                            //$("#jstree_CS" + id).jstree("open_all", JidCSaux.id);
+                            //$("#jstree_CST" + id).jstree("open_all", JidCSTaux.id);
+                        })
+                        .on('after_close.jstree', function (e, data) {
+                            let JidCant = $("#jstree_C" + id).jstree()._model.data
+                            let JidCantaux = Object.values(JidCant);
+                            let banderaC = false;
+                            for (i = 0; i < JidCantaux.length; i++) {
+                                if (JidCantaux[i].id.includes('_')) {
+                                    let res = JidCantaux[i].id.split('_')[1];
+                                    console.log(data.node.id)
+                                    console.log(data.node.data)
+                                    let res2 = data.node.id.split('_')[1];
+                                    if (banderaC == false) {
+
+                                        if (res.includes("LI")) {
+                                            $("#jstree_C" + id).jstree("close_node", "#RecetaC_LI_" + id);
+                                            banderaC = true;
+                                        } else
+                                            if (res == res2) {
+                                                $("#jstree_C" + id).jstree("close_node", "#" + JidCantaux[i].id);
+                                                banderaC = true;
+                                            }
+                                    }
+                                } 
+                            }
+                            let banderaUM = false;
+                            let JidUM = $("#jstree_UM" + id).jstree()._model.data
+                            let JidUMTaux = Object.values(JidUM);
+
+                            for (i = 0; i < JidUMTaux.length; i++) {
+                                if (JidUMTaux[i].id.includes('_')) {
+                                    let res = JidUMTaux[i].id.split('_')[1];
+                                    console.log(data.node.id)
+                                    console.log(data.node.data)
+                                    let res2 = data.node.id.split('_')[1];
+                                    if (banderaUM == false) {
+
+                                        if (res.includes("LI")) {
+                                            $("#jstree_UM" + id).jstree("close_node", "#RecetaUM_LI_" + id);
+                                            banderaUM = true;
+                                        } else
+                                            if (res == res2) {
+                                                $("#jstree_UM" + id).jstree("close_node", "#" + JidUMTaux[i].id);
+                                                banderaUM = true;
+                                            }
+                                    }
+                                } 
+                            }
+
+                            let JidCS = $("#jstree_CS" + id).jstree()._model.data
+                            let JidCSaux = Object.values(JidCS);
+                            let banderaCS = false
+                            for (i = 0; i < JidCSaux.length; i++) {
+                                if (JidCSaux[i].id.includes('_')) {
+                                    let res = JidCSaux[i].id.split('_')[1];
+                                    console.log(data.node.id)
+                                    console.log(data.node.data)
+                                    let res2 = data.node.id.split('_')[1];
+                                    if (banderaCS == false) {
+
+                                        if (res.includes("LI")) {
+                                            $("#jstree_CS" + id).jstree("close_node", "#RecetaCS_LI_" + id);
+                                            banderaCS =true
+                                        } else
+                                            if (res == res2) {
+                                                $("#jstree_CS" + id).jstree("close_node", "#" + JidCSaux[i].id);
+                                                banderaCS = true
+                                            }
+                                    }
+                                } 
+                            }
+
+                            let JidCST = $("#jstree_CST" + id).jstree()._model.data
+                            let JidCSTaux = Object.values(JidCST);
+                            let banderaCST = false;
+                            for (i = 0; i < JidCSTaux.length; i++) {
+                                if (JidCSTaux[i].id.includes('_')) {
+                                    let res = JidCSTaux[i].id.split('_')[1];
+                                    console.log(data.node.id)
+                                    console.log(data.node.data)
+                                    let res2 = data.node.id.split('_')[1];
+                                    if (banderaCST == false) {
+
+                                    if (res.includes("LI")) {
+                                        $("#jstree_CST" + id).jstree("close_node", "#RecetaCST_LI_" + id);
+                                        banderaCST = true;
+                                    } else
+                                    if (res == res2) {
+                                        $("#jstree_CST" + id).jstree("close_node", "#" + JidCSTaux[i].id);
+                                        banderaCST = true;
+                                    }
+                                    }
+                                }
+                            }
+                            //console.log('prueba2');
+                            //let JidCant2 = $("#jstree_C" + id).jstree()._model.data
+                            //let JidCantaux2 = Object.values(JidCant2)[11];
+
+                            //let JidUM2 = $("#jstree_UM" + id).jstree()._model.data
+                            //let JidUMTaux2 = Object.values(JidUM2)[11];
+
+                            //let JidCS2 = $("#jstree_CS" + id).jstree()._model.data
+                            //let JidCSaux2 = Object.values(JidCS2)[11];
+
+                            //let JidCST2 = $("#jstree_CST" + id).jstree()._model.data
+                            //let JidCSTaux2 = Object.values(JidCST2)[11];
+
+                            //$("#jstree_C" + id).jstree("close_all",  "#"+JidCantaux2.id);
+                            //$("#jstree_UM" + id).jstree("close_all", "#"+JidUMTaux2.id);
+                            //$("#jstree_CS" + id).jstree("close_all", "#"+JidCSaux2.id);
+                            //$("#jstree_CST" + id).jstree("close_all","#"+ JidCSTaux2.id);
+                        })
+                        .jstree({
+                        'core': {
+                            'check_callback': true
+                        },
+                        'plugins': ['types', 'dnd'],
+                        'types': {
+                            'default': {
+                                'icon': 'fa fa-folder'
+                            },
+                            'html': {
+                                'icon': 'fa fa-file-code-o'
+                            },
+                            'svg': {
+                                'icon': 'fa fa-file-picture-o'
+                            },
+                            'css': {
+                                'icon': 'fa fa-file-code-o'
+                            },
+                            'img': {
+                                'icon': 'fa fa-file-image-o'
+                            },
+                            'js': {
+                                'icon': 'fa fa-file-text-o'
+                            }
+
+                        }
+                        //'open_all': "#j2_2",
+                        //'closed_all':"#j2_2"
+                    });
+                    
+                }
+            });
+
+        }
+
+        function ObtenerListaIntegradoraDetalleCantidadReceta(id,cantidad) {
+            $.ajax({
+                method: "POST",
+                url: "Categorias.aspx/GetListProductosCantidadRecetaByIdReceta",
+                data: '{idReceta: "' + id.trim() + '",Cant: "' + cantidad + '" }',
+                contentType: "application/json",
+                dataType: 'json',
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                    $.msgbox("No se pudo cargar la tabla", { type: "error" });
+                },
+                success: function (respuesta) {
+                    console.log(respuesta);
+                    var obj2 = JSON.parse(respuesta.d);
+
+                    if (obj2 == null) {
+                        return;
+                    }
+                    $("#RecetaC_LI_" + id).append(
+                        obj2
+                    );
+
+                    $('#jstree_C' + id).jstree({
+                        'core': {
+                            'check_callback': true
+                        },
+                        'plugins': ['types', 'dnd'],
+                        'types': {
+                            'default': {
+                                'icon': 'fa fa-folder'
+                            },
+                            'html': {
+                                'icon': 'fa fa-file-code-o'
+                            },
+                            'svg': {
+                                'icon': 'fa fa-file-picture-o'
+                            },
+                            'css': {
+                                'icon': 'fa fa-file-code-o'
+                            },
+                            'img': {
+                                'icon': 'fa fa-file-image-o'
+                            },
+                            'js': {
+                                'icon': 'fa fa-file-text-o'
+                            }
+
+                        }
+                    });
+                }
+            });
+
+        }
+        function ObtenerListaIntegradoraDetalleUnidadesReceta(id) {
+            $.ajax({
+                method: "POST",
+                url: "Categorias.aspx/GetListProductosUMRecetaByIdReceta",
+                data: '{idReceta: "' + id.trim() + '" }',
+                contentType: "application/json",
+                dataType: 'json',
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                    $.msgbox("No se pudo cargar la tabla", { type: "error" });
+                },
+                success: function (respuesta) {
+                    console.log(respuesta);
+                    var obj2 = JSON.parse(respuesta.d);
+
+                    if (obj2 == null) {
+                        return;
+                    }
+                    $("#RecetaUM_LI_" + id).append(
+                        obj2
+                    );
+
+                    $('#jstree_UM' + id).jstree({
+                        'core': {
+                            'check_callback': true
+                        },
+                        'plugins': ['types', 'dnd'],
+                        'types': {
+                            'default': {
+                                'icon': 'fa fa-folder'
+                            },
+                            'html': {
+                                'icon': 'fa fa-file-code-o'
+                            },
+                            'svg': {
+                                'icon': 'fa fa-file-picture-o'
+                            },
+                            'css': {
+                                'icon': 'fa fa-file-code-o'
+                            },
+                            'img': {
+                                'icon': 'fa fa-file-image-o'
+                            },
+                            'js': {
+                                'icon': 'fa fa-file-text-o'
+                            }
+
+                        }
+                    });
+                }
+            });
+
+        }
+        function ObtenerListaIntegradoraDetalleCostosReceta(id) {
+            $.ajax({
+                method: "POST",
+                url: "Categorias.aspx/GetListProductosCostosRecetaByIdReceta",
+                data: '{idReceta: "' + id.trim() + '" }',
+                contentType: "application/json",
+                dataType: 'json',
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                    $.msgbox("No se pudo cargar la tabla", { type: "error" });
+                },
+                success: function (respuesta) {
+                    console.log(respuesta);
+                    var obj2 = JSON.parse(respuesta.d);
+
+                    if (obj2 == null) {
+                        return;
+                    }
+                    $("#RecetaCS_LI_" + id).append(
+                        obj2
+                    );
+
+                    $('#jstree_CS' + id).jstree({
+                        'core': {
+                            'check_callback': true
+                        },
+                        'plugins': ['types', 'dnd'],
+                        'types': {
+                            'default': {
+                                'icon': 'fa fa-folder'
+                            },
+                            'html': {
+                                'icon': 'fa fa-file-code-o'
+                            },
+                            'svg': {
+                                'icon': 'fa fa-file-picture-o'
+                            },
+                            'css': {
+                                'icon': 'fa fa-file-code-o'
+                            },
+                            'img': {
+                                'icon': 'fa fa-file-image-o'
+                            },
+                            'js': {
+                                'icon': 'fa fa-file-text-o'
+                            }
+
+                        }
+                    });
+                }
+            });
+
+        }
+
+        function ObtenerListaIntegradoraDetalleCostosTotalReceta(id,cantidad) {
+            $.ajax({
+                method: "POST",
+                url: "Categorias.aspx/GetListProductosCostosTotalRecetaByIdReceta",
+                data: '{idReceta: "' + id.trim() + '",Cant: "' + cantidad + '" }',
+                contentType: "application/json",
+                dataType: 'json',
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                    $.msgbox("No se pudo cargar la tabla", { type: "error" });
+                },
+                success: function (respuesta) {
+                    console.log(respuesta);
+                    var obj2 = JSON.parse(respuesta.d);
+
+                    if (obj2 == null) {
+                        return;
+                    }
+                    $("#RecetaCST_LI_" + id).append(
+                        obj2
+                    );
+
+                    $('#jstree_CST' + id).jstree({
                         'core': {
                             'check_callback': true
                         },
@@ -1753,7 +2546,7 @@
         }
         function myFormat(str) {
             //const cleaned = str.replace(/[^\d,]/g, '').replace(",", ".")
-            return Number(str).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+            return Number(str).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4})
         }
 
     </script>
@@ -1812,28 +2605,30 @@
         }
         function borrarProd(idprod) {
             event.preventDefault();
-            let precio = document.getElementById(idprod.trim()).children[5].innerHTML;
-            precio = parseFloat(precio.replace(',', ''));
-            let CostoTotalFinal = document.getElementById('<%=txtCostoTotal.ClientID%>').value;
-            if (CostoTotalFinal.includes(','))
-                CostoTotalFinal = parseFloat(CostoTotalFinal.replace(',', ''));
+            if (idprod.includes("Producto")) {
+                let precio = document.getElementById(idprod.trim()).children[5].innerHTML;
+                precio = parseFloat(precio.replace(',', ''));
+                let CostoTotalFinal = document.getElementById('<%=txtCostoTotal.ClientID%>').value;
+                if (CostoTotalFinal.includes(','))
+                    CostoTotalFinal = parseFloat(CostoTotalFinal.replace(',', ''));
 
-            CostoTotalFinal -= precio;
-            if (!CostoTotalFinal.toString().includes('.'))
-                CostoTotalFinal += ".00";
-             document.getElementById('<%=txtCostoTotal.ClientID%>').value = CostoTotalFinal.toString();
+                CostoTotalFinal -= precio;
+                if (!CostoTotalFinal.toString().includes('.'))
+                    CostoTotalFinal += ".00";
+                document.getElementById('<%=txtCostoTotal.ClientID%>').value = CostoTotalFinal.toString();
 
-            let Cantidad = parseFloat(document.getElementById(idprod.trim()).children[2].innerHTML.replace(',',''));
-            let CantTotal = parseFloat(document.getElementById('<%=txtKgBrutTotal.ClientID%>').value.replace(',', ''));
+                let Cantidad = parseFloat(document.getElementById(idprod.trim()).children[2].innerHTML.replace(',', ''));
 
-             CantTotal -= Cantidad;
+                let CantTotal = parseFloat(document.getElementById('<%=txtKgBrutTotal.ClientID%>').value.replace(',', ''));
 
-            document.getElementById('<%=txtKgBrutTotal.ClientID%>').value = Math.round10(CantTotal, -2); 
+                CantTotal -= Cantidad;
 
-            if (parseFloat(document.getElementById('<%=txtRinde.ClientID%>').value) == 0
-                 && precio == 0 && CostoTotalFinal == 0
-            ) {
-                document.getElementById('<%=txtKgxPorcion.ClientID%>').innerText = "0";
+                document.getElementById('<%=txtKgBrutTotal.ClientID%>').value = Math.round10(CantTotal, -3);
+
+                if (parseFloat(document.getElementById('<%=txtRinde.ClientID%>').value) == 0
+                    && precio == 0 && CostoTotalFinal == 0
+                ) {
+                    document.getElementById('<%=txtKgxPorcion.ClientID%>').innerText = "0";
                 document.getElementById('<%=txtCostoxPorcion.ClientID%>').textContent = "0";
              } else {
                  let CantxUnidad = parseFloat(document.getElementById('<%=txtRinde.ClientID%>').value);
@@ -1848,30 +2643,99 @@
                     document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = myFormat(y);
                  } else {
                      document.getElementById('<%=txtKgxPorcion.ClientID%>').value = "0.00";
-                     document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = "0.00";
-                }
-            }
-
-            $('#' + idprod).remove();
-            var productos = ContentPlaceHolder1_idProductosRecetas.value.split(';');
-            var nuevosProductos = "";
-            for (var x = 0; x < productos.length; x++) {
-                if (productos[x] != "") {
-                    if (!productos[x].includes(idprod)) {
-                        nuevosProductos += productos[x] + ";";
-                    }
-                    else {
-                       /* var productoAEliminar = productos[x].split(',')[2];*/
-                        //ContentPlaceHolder1_txtPesoBruto.value = parseFloat(ContentPlaceHolder1_txtPesoBruto.value) - parseFloat(productoAEliminar);
-                        //if (ContentPlaceHolder1_txtRinde.value != "") {
-                        //    ContentPlaceHolder1_txtCoeficiente.value = (parseFloat(ContentPlaceHolder1_txtPesoBruto.value) / parseFloat(ContentPlaceHolder1_txtRinde.value)).toFixed(2);
-                        //    ContentPlaceHolder1_hiddenCoeficiente.value = ContentPlaceHolder1_txtCoeficiente.value;
-
-                        //}
+                        document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = "0.00";
                     }
                 }
+
+                $('#' + idprod).remove();
+                var productos = ContentPlaceHolder1_idProductosRecetas.value.split(';');
+                var nuevosProductos = "";
+                for (var x = 0; x < productos.length; x++) {
+                    if (productos[x] != "") {
+                        if (!productos[x].includes(idprod)) {
+                            nuevosProductos += productos[x] + ";";
+                        }
+                        else {
+                            /* var productoAEliminar = productos[x].split(',')[2];*/
+                            //ContentPlaceHolder1_txtPesoBruto.value = parseFloat(ContentPlaceHolder1_txtPesoBruto.value) - parseFloat(productoAEliminar);
+                            //if (ContentPlaceHolder1_txtRinde.value != "") {
+                            //    ContentPlaceHolder1_txtCoeficiente.value = (parseFloat(ContentPlaceHolder1_txtPesoBruto.value) / parseFloat(ContentPlaceHolder1_txtRinde.value)).toFixed(2);
+                            //    ContentPlaceHolder1_hiddenCoeficiente.value = ContentPlaceHolder1_txtCoeficiente.value;
+
+                            //}
+                        }
+                    }
+                }
+                ContentPlaceHolder1_idProductosRecetas.value = nuevosProductos;
+            } else {
+                let numId = idprod.split('_')[1].trim();
+                if (numId.includes("Receta")) {
+                    numId = idprod.split('_')[2].trim();
+                }
+                let precio = document.getElementById('RecetaCST_LI_' + numId).children[1].innerText
+                precio = parseFloat(precio.replace(',', ''));
+                let CostoTotalFinal = document.getElementById('<%=txtCostoTotal.ClientID%>').value;
+                if (CostoTotalFinal.includes(','))
+                    CostoTotalFinal = parseFloat(CostoTotalFinal.replace(',', ''));
+
+                CostoTotalFinal -= precio;
+                if (!CostoTotalFinal.toString().includes('.'))
+                    CostoTotalFinal += ".00";
+                document.getElementById('<%=txtCostoTotal.ClientID%>').value = CostoTotalFinal.toString();
+
+                let Cantidad = parseFloat(document.getElementById('RecetaC_LI_' + numId).children[1].innerText.replace(',', ''));
+
+                let CantTotal = parseFloat(document.getElementById('<%=txtKgBrutTotal.ClientID%>').value.replace(',', ''));
+
+                CantTotal -= Cantidad;
+
+                document.getElementById('<%=txtKgBrutTotal.ClientID%>').value = Math.round10(CantTotal, -3);
+
+                if (parseFloat(document.getElementById('<%=txtRinde.ClientID%>').value) == 0
+                    && precio == 0 && CostoTotalFinal == 0
+                ) {
+                    document.getElementById('<%=txtKgxPorcion.ClientID%>').innerText = "0";
+                document.getElementById('<%=txtCostoxPorcion.ClientID%>').textContent = "0";
+             } else {
+                 let CantxUnidad = parseFloat(document.getElementById('<%=txtRinde.ClientID%>').value);
+                if (CantxUnidad > 0) {
+                    let x = CantTotal / CantxUnidad;
+                    if (!x.toString().includes('.'))
+                        x += ".00";
+                    document.getElementById('<%=txtKgxPorcion.ClientID%>').value = myFormat(x);
+                    let y = CostoTotalFinal / CantxUnidad;
+                    if (!y.toString().includes('.'))
+                        y += ".00";
+                    document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = myFormat(y);
+                 } else {
+                     document.getElementById('<%=txtKgxPorcion.ClientID%>').value = "0.00";
+                        document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = "0.00";
+                    }
+                }
+
+                $('#' + idprod).remove();
+                var productos = ContentPlaceHolder1_idProductosRecetas.value.split(';');
+                var nuevosProductos = "";
+                for (var x = 0; x < productos.length; x++) {
+                    if (productos[x] != "") {
+                        if (!productos[x].includes(idprod)) {
+                            nuevosProductos += productos[x] + ";";
+                        }
+                        else {
+                            /* var productoAEliminar = productos[x].split(',')[2];*/
+                            //ContentPlaceHolder1_txtPesoBruto.value = parseFloat(ContentPlaceHolder1_txtPesoBruto.value) - parseFloat(productoAEliminar);
+                            //if (ContentPlaceHolder1_txtRinde.value != "") {
+                            //    ContentPlaceHolder1_txtCoeficiente.value = (parseFloat(ContentPlaceHolder1_txtPesoBruto.value) / parseFloat(ContentPlaceHolder1_txtRinde.value)).toFixed(2);
+                            //    ContentPlaceHolder1_hiddenCoeficiente.value = ContentPlaceHolder1_txtCoeficiente.value;
+
+                            //}
+                        }
+                    }
+                }
+                ContentPlaceHolder1_idProductosRecetas.value = nuevosProductos;
+
             }
-            ContentPlaceHolder1_idProductosRecetas.value = nuevosProductos;
+           
         }
         function PasarAFactor(event) {
             if (event.which == 13) {
@@ -1953,11 +2817,6 @@
                 var oTable = $('.dataTable').dataTable();
                 oTable.fnFilter($(this).val());
             });
-
-
-
-
-          
 
         });
         $(document).ready(function () {

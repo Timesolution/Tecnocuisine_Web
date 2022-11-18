@@ -493,7 +493,7 @@ namespace Tecnocuisine
                 tr.Cells.Add(celUnidad);
 
                 TableCell celCosto = new TableCell();
-                celCosto.Text = producto.costo.ToString(); ;
+                celCosto.Text = producto.costo.ToString().Replace(',','.');
                 celCosto.VerticalAlign = VerticalAlign.Middle;
                 celCosto.HorizontalAlign = HorizontalAlign.Right;
                 celCosto.Attributes.Add("style", "padding-bottom: 1px !important;");
@@ -521,7 +521,7 @@ namespace Tecnocuisine
                 tr.Cells.Add(celPresentacion);
 
                 TableCell celAlicuota = new TableCell();
-                celAlicuota.Text = producto.Alicuotas_IVA.porcentaje.ToString() + "%";
+                celAlicuota.Text = producto.Alicuotas_IVA.porcentaje.ToString().Replace(',','.') + "%";
                 celAlicuota.VerticalAlign = VerticalAlign.Middle;
                 celAlicuota.HorizontalAlign = HorizontalAlign.Left;
                 celAlicuota.Attributes.Add("style", "padding-bottom: 1px !important;");
@@ -593,7 +593,7 @@ namespace Tecnocuisine
                 LinkButton lb = sender as LinkButton;
                 string[] id = lb.ID.Split('_');
 
-                Response.Redirect("Productos.aspx?a=2&i=" + id[1]);
+                Response.Redirect("ProductosABM.aspx?a=2&i=" + id[1]);
             }
             catch (Exception Ex)
             {

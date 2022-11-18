@@ -15,6 +15,15 @@ namespace Tecnocuisine.Formularios.Maestros
     {
 
         /// <summary>
+        /// Control ProdDescripcion.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox ProdDescripcion;
+
+        /// <summary>
         /// Control listaCategoria.
         /// </summary>
         /// <remarks>
@@ -213,6 +222,15 @@ namespace Tecnocuisine.Formularios.Maestros
         protected global::System.Web.UI.UpdatePanel UpdatePanel2;
 
         /// <summary>
+        /// Control PHPresentacionFinal.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder PHPresentacionFinal;
+
+        /// <summary>
         /// Control UpdatePanel1.
         /// </summary>
         /// <remarks>
@@ -274,5 +292,14 @@ namespace Tecnocuisine.Formularios.Maestros
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder phPresentaciones;
+
+        /// <summary>
+        /// Control hfPresentaciones.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfPresentaciones;
     }
 }

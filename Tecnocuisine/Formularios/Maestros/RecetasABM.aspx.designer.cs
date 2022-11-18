@@ -87,6 +87,15 @@ namespace Tecnocuisine.Formularios.Maestros
         protected global::System.Web.UI.WebControls.TextBox txtDescripcionCategoria;
 
         /// <summary>
+        /// Control btnCategorias.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnCategorias;
+
+        /// <summary>
         /// Control txtDescripcionAtributo.
         /// </summary>
         /// <remarks>
@@ -130,6 +139,15 @@ namespace Tecnocuisine.Formularios.Maestros
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSector;
+
+        /// <summary>
+        /// Control btnSectores.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnSectores;
 
         /// <summary>
         /// Control txtKgBrutTotal.
@@ -220,6 +238,15 @@ namespace Tecnocuisine.Formularios.Maestros
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDescripcionProductos;
+
+        /// <summary>
+        /// Control btnProductos.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnProductos;
 
         /// <summary>
         /// Control txtCantidad.
@@ -337,6 +364,15 @@ namespace Tecnocuisine.Formularios.Maestros
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPasoDesc;
+
+        /// <summary>
+        /// Control btnAgregarPaso.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnAgregarPaso;
 
         /// <summary>
         /// Control PasosPH.

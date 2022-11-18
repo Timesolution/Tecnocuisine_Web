@@ -225,7 +225,7 @@ namespace Tecnocuisine
                 LinkButton lb = sender as LinkButton;
                 string[] id = lb.ID.Split('_');
 
-                Response.Redirect("Sectores.aspx?a=2&i=" + id[1]);
+                Response.Redirect("SectorProductivo.aspx?a=2&i=" + id[1]);
             }
             catch (Exception Ex)
             {
@@ -280,7 +280,7 @@ namespace Tecnocuisine
 
                 if (resultado > 0)
                 {
-                    Response.Redirect("Sectores.aspx?m=1");
+                    Response.Redirect("SectorProductivo.aspx?m=1");
                 }
                 else
                 {
