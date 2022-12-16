@@ -166,12 +166,12 @@ namespace Tecnocuisine.Formularios.Administrador
                 }
                 else
                 {
-                    this.m.ShowToastr(this.Page, "No se pudo eliminar la categoria", "warning");
+                    this.m.ShowToastr(this.Page, "No se pudo eliminar el país", "warning");
                 }
             }
             catch (Exception ex)
             {
-                this.m.ShowToastr(this.Page, "No se pudo eliminar la categoria", "warning");
+                this.m.ShowToastr(this.Page, "No se pudo eliminar el país", "warning");
             }
         }
         protected void btnAgregar_Click(object sender, EventArgs e)

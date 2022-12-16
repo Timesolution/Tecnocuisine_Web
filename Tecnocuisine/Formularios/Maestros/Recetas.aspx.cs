@@ -123,10 +123,10 @@ namespace Tecnocuisine
                     idCategoria.Value = Receta.Categorias.id.ToString();
                     txtDescripcionCategoria.Text = Receta.Categorias.id + " - " + Receta.Categorias.descripcion;
                     string descripcionAtributos = "";
-                    if (Receta.Recetas_Atributo1 != null)
+                    if (Receta.Recetas_Atributo != null)
                     {
                         ControladorAtributo controladorAtributo = new ControladorAtributo();
-                        foreach (Recetas_Atributo item in Receta.Recetas_Atributo1)
+                        foreach (Recetas_Atributo item in Receta.Recetas_Atributo)
                         {
 
                             Tecnocuisine_API.Entitys.Atributos atributo = controladorAtributo.ObtenerAtributoById((int)item.idAtributo);
@@ -1074,7 +1074,7 @@ namespace Tecnocuisine
             ControladorReceta controlador = new ControladorReceta();
             Tecnocuisine_API.Entitys.Recetas r = controlador.ObtenerRecetaId(id);
             string resultado = "";
-            if(r.Recetas_Atributo1.Count > 0)
+            if(r.Recetas_Atributo.Count > 0)
              resultado = "true," + id.ToString(); 
             else
                 resultado = "false," + id.ToString();

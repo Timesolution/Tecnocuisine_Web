@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Web.Script.Serialization;
 using System.Web.Services;
 using System.Web.UI;
@@ -605,20 +606,21 @@ namespace Tecnocuisine
 
 
                 var listaRP = controlador.ObtenerProductosByReceta(idReceta); //recetas_productos
-                string lista = "<ul>";
+                StringBuilder lista = new StringBuilder("");
+                 lista.Append( "<ul>");
                 var listaRR = controlador.obtenerRecetasbyReceta(idReceta); //recetas_recetas
                                                                             //receta
                 if (listaRR != null && listaRR.Count > 0)
                 {
                     foreach (var rr in listaRR)
                     {
-                        lista += "<li>" + rr.Recetas.descripcion + "<ul>";
+                        lista.Append("<li>" + rr.Recetas.descripcion + "<ul>");
                         //var listaProdAux = controlador.ObtenerProductosByReceta(rr.Recetas.id);
-                        dynamic dynamicObject = JsonConvert.DeserializeObject(GetListProductosRecetaByIdReceta(rr.Recetas.id));
+                        dynamic dynamicObject = JsonConvert.DeserializeObject(GetListProductosRecetaByIdReceta(rr.idRecetaIngrediente));
                         string type = dynamicObject;
                         type = "" + type.Substring(4);
                         type = type.Remove(type.Length - 5);
-                        lista += type;
+                        lista.Append( type);
                         //foreach (var RP in listaProdAux)
                         //{
                         //    if (RP != null)
@@ -627,7 +629,7 @@ namespace Tecnocuisine
 
                         //    }
                         //}
-                        lista += "</ul></li>";
+                        lista.Append("</ul></li>");
 
                     }
                 }
@@ -636,17 +638,17 @@ namespace Tecnocuisine
                 {
                     if (RP != null)
                     {
-                        lista += "<li data-jstree='{\"type\":\"html\"}'>" + RP.Productos.id + "-" + RP.Productos.descripcion + "</li>";
+                        lista.Append("<li data-jstree='{\"type\":\"html\"}'>" + RP.Productos.id + "-" + RP.Productos.descripcion + "</li>");
 
                     }
                 }
 
-                lista += "</ul>";
+                lista.Append( "</ul>");
                 //datos = datos.Remove(datos.LastIndexOf(",")).TrimEnd();
 
                 JavaScriptSerializer javaScript = new JavaScriptSerializer();
                 javaScript.MaxJsonLength = 5000000;
-                string resultadoJSON = javaScript.Serialize(lista);
+                string resultadoJSON = javaScript.Serialize(lista.ToString());
                 return resultadoJSON;
             }
             catch (Exception ex)
@@ -669,7 +671,8 @@ namespace Tecnocuisine
                 decimal PesoT = receta.peso * PR_Cant;
 
                 var listaRP = controlador.ObtenerProductosByReceta(idReceta); //recetas_productos
-                string lista = "<ul>";
+                StringBuilder lista = new StringBuilder("");
+                lista.Append("<ul>");
                 var listaRR = controlador.obtenerRecetasbyReceta(idReceta); //recetas_recetas
                                                                             //receta
                 if (listaRR != null && listaRR.Count > 0)
@@ -679,13 +682,13 @@ namespace Tecnocuisine
                         decimal PR_cantReceta = rr.cantidad/ receta.peso;
                         decimal auxCantReceta = PesoT * PR_cantReceta;
                        
-                        lista += "<li>" + auxCantReceta.ToString("N",culture) + "<ul>";
+                        lista.Append( "<li>" + auxCantReceta.ToString("N",culture) + "<ul>");
                         //var listaProdAux = controlador.ObtenerProductosByReceta(rr.Recetas.id);
-                        dynamic dynamicObject = JsonConvert.DeserializeObject(GetListProductosCantidadRecetaByIdReceta(rr.Recetas.id, auxCantReceta));
+                        dynamic dynamicObject = JsonConvert.DeserializeObject(GetListProductosCantidadRecetaByIdReceta(rr.idRecetaIngrediente, auxCantReceta));
                         string type = dynamicObject;
                         type = "" + type.Substring(4);
                         type = type.Remove(type.Length - 5);
-                        lista += type;
+                        lista.Append( type);
                         //foreach (var RP in listaProdAux)
                         //{
                         //    if (RP != null)
@@ -694,7 +697,7 @@ namespace Tecnocuisine
 
                         //    }
                         //}
-                        lista += "</ul></li>";
+                        lista.Append("</ul></li>");
 
                     }
                 }
@@ -706,17 +709,17 @@ namespace Tecnocuisine
                         
                         decimal PR_cantProducto = RP.cantidad / receta.peso;
                         decimal auxCantProducto = PesoT * PR_cantProducto;
-                        lista += "<li data-jstree='{\"type\":\"html\"}'>" +  auxCantProducto.ToString("#,##0.000", culture)  + "</li>";
+                        lista.Append("<li data-jstree='{\"type\":\"html\"}'>" + auxCantProducto.ToString("#,##0.000", culture) + "</li>");
 
                     }
                 }
 
-                lista += "</ul>";
+                lista.Append("</ul>");
                 //datos = datos.Remove(datos.LastIndexOf(",")).TrimEnd();
 
                 JavaScriptSerializer javaScript = new JavaScriptSerializer();
                 javaScript.MaxJsonLength = 5000000;
-                string resultadoJSON = javaScript.Serialize(lista);
+                string resultadoJSON = javaScript.Serialize(lista.ToString());
                 return resultadoJSON;
             }
             catch (Exception ex)
@@ -736,20 +739,21 @@ namespace Tecnocuisine
 
 
                 var listaRP = controlador.ObtenerProductosByReceta(idReceta); //recetas_productos
-                string lista = "<ul>";
+                StringBuilder lista = new StringBuilder("");
+                lista.Append("<ul>");
                 var listaRR = controlador.obtenerRecetasbyReceta(idReceta); //recetas_recetas
                                                                             //receta
                 if (listaRR != null && listaRR.Count > 0)
                 {
                     foreach (var rr in listaRR)
                     {
-                        lista += "<li>" + rr.Recetas.Costo.Value.ToString("N") + "<ul>";
+                        lista.Append("<li>" + rr.Recetas.Costo.Value.ToString("N") + "<ul>");
                         //var listaProdAux = controlador.ObtenerProductosByReceta(rr.Recetas.id);
-                        dynamic dynamicObject = JsonConvert.DeserializeObject(GetListProductosCostosRecetaByIdReceta(rr.Recetas.id));
+                        dynamic dynamicObject = JsonConvert.DeserializeObject(GetListProductosCostosRecetaByIdReceta(rr.idRecetaIngrediente));
                         string type = dynamicObject;
                         type = "" + type.Substring(4);
                         type = type.Remove(type.Length - 5);
-                        lista += type;
+                        lista.Append(type);
                         //foreach (var RP in listaProdAux)
                         //{
                         //    if (RP != null)
@@ -758,7 +762,7 @@ namespace Tecnocuisine
 
                         //    }
                         //}
-                        lista += "</ul></li>";
+                        lista.Append("</ul></li>");
 
                     }
                 }
@@ -767,17 +771,17 @@ namespace Tecnocuisine
                 {
                     if (RP != null)
                     {
-                        lista += "<li data-jstree='{\"type\":\"html\"}'>" + RP.Productos.costo.ToString("N") + "</li>";
+                        lista.Append("<li data-jstree='{\"type\":\"html\"}'>" + RP.Productos.costo.ToString("N") + "</li>");
 
                     }
                 }
 
-                lista += "</ul>";
+                lista.Append("</ul>");
                 //datos = datos.Remove(datos.LastIndexOf(",")).TrimEnd();
 
                 JavaScriptSerializer javaScript = new JavaScriptSerializer();
                 javaScript.MaxJsonLength = 5000000;
-                string resultadoJSON = javaScript.Serialize(lista);
+                string resultadoJSON = javaScript.Serialize(lista.ToString());
                 return resultadoJSON;
             }
             catch (Exception ex)
@@ -800,7 +804,8 @@ namespace Tecnocuisine
                 decimal PesoT = receta.peso * PR_Cant;
 
                 var listaRP = controlador.ObtenerProductosByReceta(idReceta); //recetas_productos
-                string lista = "<ul>";
+                StringBuilder lista = new StringBuilder("");
+                lista.Append("<ul>");
                 var listaRR = controlador.obtenerRecetasbyReceta(idReceta); //recetas_recetas
                                                                             //receta
                 if (listaRR != null && listaRR.Count > 0)
@@ -810,13 +815,13 @@ namespace Tecnocuisine
                         decimal PR_cantReceta = rr.cantidad / receta.peso;
                         decimal auxCantReceta = PesoT * PR_cantReceta;
                         decimal CostoTRec = rr.Recetas.Costo.Value * auxCantReceta;
-                        lista += "<li>" +  CostoTRec.ToString("N") + "<ul>";
+                        lista.Append("<li>" + CostoTRec.ToString("N") + "<ul>");
                         //var listaProdAux = controlador.ObtenerProductosByReceta(rr.Recetas.id);
-                        dynamic dynamicObject = JsonConvert.DeserializeObject(GetListProductosCostosTotalRecetaByIdReceta(rr.Recetas.id, Cant));
+                        dynamic dynamicObject = JsonConvert.DeserializeObject(GetListProductosCostosTotalRecetaByIdReceta(rr.idRecetaIngrediente, Cant));
                         string type = dynamicObject;
                         type = "" + type.Substring(4);
                         type = type.Remove(type.Length - 5);
-                        lista += type;
+                        lista.Append(type);
                         //foreach (var RP in listaProdAux)
                         //{
                         //    if (RP != null)
@@ -825,7 +830,7 @@ namespace Tecnocuisine
 
                         //    }
                         //}
-                        lista += "</ul></li>";
+                        lista.Append("</ul></li>");
 
                     }
                 }
@@ -837,17 +842,17 @@ namespace Tecnocuisine
                         decimal PR_cantProducto = RP.cantidad / receta.peso;
                         decimal auxCantProducto = PesoT * PR_cantProducto;
                         decimal PrecioProducto = RP.Productos.costo * auxCantProducto;
-                        lista += "<li data-jstree='{\"type\":\"html\"}'>" + string.Format("{0:N4}", PrecioProducto) + "</li>";
+                        lista.Append("<li data-jstree='{\"type\":\"html\"}'>" + string.Format("{0:N4}", PrecioProducto) + "</li>");
 
                     }
                 }
 
-                lista += "</ul>";
+                lista.Append("</ul>");
                 //datos = datos.Remove(datos.LastIndexOf(",")).TrimEnd();
 
                 JavaScriptSerializer javaScript = new JavaScriptSerializer();
                 javaScript.MaxJsonLength = 5000000;
-                string resultadoJSON = javaScript.Serialize(lista);
+                string resultadoJSON = javaScript.Serialize(lista.ToString());
                 return resultadoJSON;
             }
             catch (Exception ex)
@@ -866,7 +871,8 @@ namespace Tecnocuisine
 
                 ControladorUnidad controladorUnidad = new ControladorUnidad();
                 var listaRP = controlador.ObtenerProductosByReceta(idReceta); //recetas_productos
-                string lista = "<ul>";
+                StringBuilder lista = new StringBuilder("");
+                lista.Append("<ul>");
                 var listaRR = controlador.obtenerRecetasbyReceta(idReceta); //recetas_recetas
                                                                             //receta
                 if (listaRR != null && listaRR.Count > 0)
@@ -874,13 +880,13 @@ namespace Tecnocuisine
                     foreach (var rr in listaRR)
                     {
                         var unidad = controladorUnidad.ObtenerUnidadId(rr.Recetas.UnidadMedida.Value);
-                        lista += "<li>" + unidad.descripcion + "<ul>";
+                        lista.Append("<li>" + unidad.descripcion + "<ul>");
                         //var listaProdAux = controlador.ObtenerProductosByReceta(rr.Recetas.id);
-                        dynamic dynamicObject = JsonConvert.DeserializeObject(GetListProductosUMRecetaByIdReceta(rr.Recetas.id));
+                        dynamic dynamicObject = JsonConvert.DeserializeObject(GetListProductosUMRecetaByIdReceta(rr.idRecetaIngrediente));
                         string type = dynamicObject;
                         type = "" + type.Substring(4);
                         type = type.Remove(type.Length - 5);
-                        lista += type;
+                        lista.Append(type);
                         //foreach (var RP in listaProdAux)
                         //{
                         //    if (RP != null)
@@ -889,7 +895,7 @@ namespace Tecnocuisine
 
                         //    }
                         //}
-                        lista += "</ul></li>";
+                        lista.Append("</ul></li>");
 
                     }
                 }
@@ -899,17 +905,17 @@ namespace Tecnocuisine
                     if (RP != null)
                     {
                         var unidad = controladorUnidad.ObtenerUnidadId(RP.Productos.unidadMedida);
-                        lista += "<li data-jstree='{\"type\":\"html\"}'>" + unidad.descripcion + "</li>";
+                        lista.Append("<li data-jstree='{\"type\":\"html\"}'>" + unidad.descripcion + "</li>");
 
                     }
                 }
 
-                lista += "</ul>";
+                lista.Append("</ul>");
                 //datos = datos.Remove(datos.LastIndexOf(",")).TrimEnd();
 
                 JavaScriptSerializer javaScript = new JavaScriptSerializer();
                 javaScript.MaxJsonLength = 5000000;
-                string resultadoJSON = javaScript.Serialize(lista);
+                string resultadoJSON = javaScript.Serialize(lista.ToString());
                 return resultadoJSON;
             }
             catch (Exception ex)
@@ -949,88 +955,7 @@ namespace Tecnocuisine
             return "1";
         }
 
-        //#region ABM
-        //public void GuardarInsumo()
-        //{
-        //    try
-        //    {
-        //        Insumos insumo = new Insumos();
 
-        //        insumo.Descripcion = txtDescripcionInsumo.Text;
-        //        insumo.Estado = 1;
-
-        //        int resultado = controladorInsumo.AgregarInsumo(insumo);
-
-        //        if (resultado > 0)
-        //        {
-        //            this.m.ShowToastr(this.Page, "Proceso concluido con éxito", "Exito");
-        //            ObtenerInsumos();
-        //        }
-        //        else
-        //        {
-        //            this.m.ShowToastr(this.Page, "Proceso no se pudo concluir", "warning");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //    }
-
-        //}
-
-        //public void EditarInsumo()
-        //{
-        //    try
-        //    {
-        //        Insumos insumo = new Insumos();
-        //        insumo.id_insumo = this.idInsumo;
-        //        insumo.Descripcion = txtDescripcionInsumo.Text;
-        //        insumo.Estado = 1;
-
-        //        int resultado = controladorInsumo.EditarInsumo(insumo);
-
-        //        if (resultado > 0)
-        //        {
-        //            this.m.ShowToastr(this.Page, "Insumo editado con Exito!", "Exito");
-        //            Response.Redirect("InsumosF.aspx");
-
-        //        }
-        //        else
-        //        {
-        //            this.m.ShowToastr(this.Page, "No se pudo editar el insumo", "warning");
-        //        }
-
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //    }
-        //}
-
-        //protected void btnSi_Click(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        int idInsumo = Convert.ToInt32(this.txtMovimiento.Text);
-        //        int resultado = controladorInsumo.EliminarInsumo(idInsumo);
-
-        //        if (resultado > 0)
-        //        {
-        //            this.m.ShowToastr(this.Page, "Insumo Eliminado con Exito!", "Exito");
-        //            ObtenerInsumos();
-        //        }
-        //        else
-        //        {
-        //            this.m.ShowToastr(this.Page, "No se pudo eliminar el insumo", "warning");
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //    }
-        //}
-        //#endregion
 
     }
 }

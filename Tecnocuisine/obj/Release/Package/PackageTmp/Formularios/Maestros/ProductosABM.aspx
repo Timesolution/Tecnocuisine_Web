@@ -162,7 +162,7 @@
                                                 <label class="col-sm-4 control-label editable">Costo</label>
                                                 <div class="col-sm-8">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span><asp:TextBox ID="txtCosto" onchange="ActualizarLabelCosto('valiva')" onkeypress="javascript:return validarNro(event)" class="form-control required" runat="server" />
+                                                        <span class="input-group-addon">$</span><asp:TextBox ID="txtCosto" onchange="ActualizarLabelCosto('valiva')" onkeypress="javascript:return validarNro(event)" class="form-control num required" runat="server" />
                                                     </div>
 
                                                 </div>
@@ -1039,4 +1039,12 @@
         }
   
   </script>
+     <script src="/../Scripts/autoNumeric/autoNumeric.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $('#ContentPlaceHolder1_txtCosto').autoNumeric('init', { vMin: '0.000', vMax: '99999999999.999', aSign: '', aSep: ',', aPad: false, mDec: '3', aDec: '.', aForm: false })
+        })
+
+    </script>
 </asp:Content>

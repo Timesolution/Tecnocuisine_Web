@@ -205,8 +205,19 @@
                                     </div>
                                        <div class="row" >
                                    
-                                        <label class="col-sm-9 control-label editable" ></label>
-                                           
+                                        <label class="col-sm-1 control-label editable" ></label>
+                                           <div class="col-sm-2" style="margin-top: 1.5%">
+
+                                           <div class="input-group">
+                                               <asp:TextBox ID="txtPresentaciones" disabled="disabled" placeholder="Presentaciones" class="form-control" runat="server" />
+                                               <span class="input-group-btn">
+                                                                                                                   <asp:LinkButton runat="server" ID="LinkButton1" class="btn btn-primary dim" data-toggle="modal" data-backdrop="static" data-target="#modalPresentacion"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
+
+                                                    <%--<button  class="btn btn-primary" data-toggle="modal" data-backdrop="static" data-target="#modalPresentacion"> <i style="color: white" class="fa fa-plus"></i></button>--%>
+                                               </span>
+                                           </div>
+                                           </div>
+                                           <div class="col-sm-5"></div>
                                         <div class="col-md-1" style="text-align: center;">
                                             <label id="rxrt" style="margin-bottom:0px">Pr.Venta</label>
                                             <asp:TextBox Text="0" Style="text-align: right;" ID="txtPrVenta"  onkeyUp="ActualizarxPrVenta()" class="form-control" runat="server" />
@@ -737,7 +748,61 @@
             </div>
         </div>
 
-       
+               <div id="modalPresentacion" class="modal" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Elegir Presentacion</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="ibox-content">
+                            <asp:UpdatePanel ID="UpdatePanel5" runat="server">
+                                <ContentTemplate>
+
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="ibox ">
+                                                <asp:UpdatePanel ID="UpdatePanel6" runat="server">
+                                                    <ContentTemplate>
+                                                        <div class="table-responsive">
+                                                            <table class="table table-striped table-bordered table-hover " id="editable4">
+
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>#</th>
+                                                                        <th>Descripcion</th>
+                                                                        <th>Cantidad</th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="tbodyEditable1">
+                                                                    <asp:PlaceHolder ID="phPresentaciones" runat="server"></asp:PlaceHolder>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+                                                    </ContentTemplate>
+
+                                                </asp:UpdatePanel>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    </div>
+                                </ContentTemplate>
+
+                            </asp:UpdatePanel>
+                        </div>
+                        <div class="modal-footer">
+                           <%-- <a id="btnAgregarPresentacion" onclick="agregarPresentaciones()" class=" btn btn-primary"><i class="fa fa-check"></i>&nbsp;Agregar </a>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>--%>
+                            <asp:HiddenField runat="server" ID="hfPresentaciones" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div id="modalAtributos" class="modal" role="dialog">
             <div class="modal-dialog modal-sm">
@@ -850,6 +915,27 @@
         }
     </script>
     <script>
+        function agregarPresentaciones(id) {
+            //let table1 = $('#editable1').DataTable();
+            let table2 = document.getElementById('editable4');
+            let max = table2.rows.length;
+            let presentacionFinal = '';
+            //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
+            for (let i = 1; i < max; i++) {
+                /*if (i > 1) {*/
+                if (table2.rows[i].cells[3].children[0].checked) {
+
+                    presentacionFinal += table2.rows[i].cells[0].innerHTML + " - " + table2.rows[i].cells[1].innerHTML + ', ';
+                    table2.rows[i].cells[3].children[0].checked = false;
+                }
+
+            }
+
+            $('#modalPresentacion').modal('hide');
+            document.getElementById('<%=hfPresentaciones.ClientID%>').value = presentacionFinal;
+            document.getElementById('<%=txtPresentaciones.ClientID%>').value = presentacionFinal;
+               return true;
+           }
         function AgregarPaso() {
             let descripcion = document.getElementById('<%=txtPasoDesc.ClientID%>').value;
             let num = document.getElementById('<%=txtPasoNum.ClientID%>').value;
@@ -1057,7 +1143,7 @@
                                     + '" , BuenasPract: "' + document.getElementById('<%=txtObservaciones.ClientID%>').value
                                     + '" , InfoNut: "' + document.getElementById('<%=txtInfoNutr.ClientID%>').value
                                     + '" , idPasosRecetas: "' + document.getElementById('<%=hfPasos.ClientID%>').value
-
+                                    + '" , Presentaciones: "' + document.getElementById('<%=hfPresentaciones.ClientID%>').value
                                     + '"}',
                                 contentType: "application/json",
                                 dataType: 'json',
@@ -1102,6 +1188,7 @@
                                     + '" , InfoNut: "' + document.getElementById('<%=txtInfoNutr.ClientID%>').value
                                     + '" , idPasosRecetas: "' + document.getElementById('<%=hfPasos.ClientID%>').value
                                     + '" , idReceta: "' + idReceta
+                                    + '" , Presentaciones: "' + document.getElementById('<%=hfPresentaciones.ClientID%>').value
                                     + '"}',
                                 contentType: "application/json",
                                 dataType: 'json',
@@ -1494,7 +1581,6 @@
              //window.location.href = 'RecetasABM.aspx?m=1';
             
             var obj = JSON.parse(response.d);
-            var inputs = document.querySelectorAll('input[type=checkbox]')
             toastr.options = { "positionClass": "toast-bottom-right" };
             if (obj == null) {
                 alert('Obj es null');

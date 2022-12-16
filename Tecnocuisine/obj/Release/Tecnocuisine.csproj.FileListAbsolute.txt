@@ -500,7 +500,6 @@ C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\SMS_Notificatio
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Report_Api.dll
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Remotion.Data.Linq.dll
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Task_Api.dll
-C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Twilio.Api.dll
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Microsoft.ReportViewer.WinForms.dll
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Microsoft.ReportViewer.Common.dll
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Microsoft.ReportViewer.ProcessingObjectModel.dll
@@ -515,5 +514,3 @@ C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\DocumentFormat.
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\itextsharp.xml
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Estetica Api.pdb
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Estetica Api.dll.config
-C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Twilio.Api.pdb
-C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Twilio.Api.xml

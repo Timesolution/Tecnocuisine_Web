@@ -158,7 +158,8 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Tecnocuisine_API">
+    <Reference Include="Tecnocuisine_API, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\tecnocousine Api\Tecnocuisine_API\bin\Debug\Tecnocuisine_API.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
@@ -281,16 +282,21 @@
     <Content Include="Formularios\Administrador\Sectores.aspx" />
     <Content Include="Formularios\Administrador\PuntosDeVenta.aspx" />
     <Content Include="Formularios\Administrador\Sucursales.aspx" />
+    <Content Include="Formularios\Compras\EntregasE.aspx" />
+    <Content Include="Formularios\Compras\ProveedoresP.aspx" />
     <Content Include="Formularios\Compras\Proveedores.aspx" />
     <Content Include="Formularios\Contabilidad\PlanDeCuentas.aspx" />
+    <Content Include="Formularios\Compras\Entregas.aspx" />
     <Content Include="Formularios\Maestros\RecetasABM.aspx" />
     <Content Include="Formularios\Maestros\ProductosABM.aspx" />
     <Content Include="Formularios\Maestros\SectorProductivo.aspx" />
     <Content Include="Formularios\Maestros\Clasificaciones.aspx" />
+    <Content Include="Formularios\Maestros\StockDetallado.aspx" />
     <Content Include="Formularios\Maestros\StockPopUp.aspx" />
     <Content Include="Formularios\Maestros\Stock.aspx" />
     <Content Include="Formularios\Maestros\Clientes.aspx" />
     <Content Include="Formularios\Maestros\EstadoClientes.aspx" />
+    <Content Include="Formularios\Maestros\StockProductosYRecetas.aspx" />
     <Content Include="Formularios\Maestros\Subgrupos.aspx" />
     <Content Include="Formularios\Maestros\Grupos.aspx" />
     <Content Include="Formularios\Maestros\Marcas.aspx" />
@@ -770,6 +776,8 @@
     <Content Include="js\plugins\toastr\toastr.min.js" />
     <Content Include="js\plugins\validate\jquery.validate.min.js" />
     <Content Include="js\plugins\video\responsible-video.js" />
+    <Content Include="Scripts\autoNumeric\autoNumeric-min.js" />
+    <Content Include="Scripts\autoNumeric\autoNumeric.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -872,6 +880,20 @@
     <Compile Include="Formularios\Administrador\Sucursales.aspx.designer.cs">
       <DependentUpon>Sucursales.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Formularios\Compras\EntregasE.aspx.cs">
+      <DependentUpon>EntregasE.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Compras\EntregasE.aspx.designer.cs">
+      <DependentUpon>EntregasE.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Compras\ProveedoresP.aspx.cs">
+      <DependentUpon>ProveedoresP.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Compras\ProveedoresP.aspx.designer.cs">
+      <DependentUpon>ProveedoresP.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Formularios\Compras\Proveedores.aspx.cs">
       <DependentUpon>Proveedores.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -885,6 +907,13 @@
     </Compile>
     <Compile Include="Formularios\Contabilidad\PlanDeCuentas.aspx.designer.cs">
       <DependentUpon>PlanDeCuentas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Compras\Entregas.aspx.cs">
+      <DependentUpon>Entregas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Compras\Entregas.aspx.designer.cs">
+      <DependentUpon>Entregas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Maestros\RecetasABM.aspx.cs">
       <DependentUpon>RecetasABM.aspx</DependentUpon>
@@ -914,6 +943,13 @@
     <Compile Include="Formularios\Maestros\Clasificaciones.aspx.designer.cs">
       <DependentUpon>Clasificaciones.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Formularios\Maestros\StockDetallado.aspx.cs">
+      <DependentUpon>StockDetallado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\StockDetallado.aspx.designer.cs">
+      <DependentUpon>StockDetallado.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Formularios\Maestros\StockPopUp.aspx.cs">
       <DependentUpon>StockPopUp.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -941,6 +977,13 @@
     </Compile>
     <Compile Include="Formularios\Maestros\EstadoClientes.aspx.designer.cs">
       <DependentUpon>EstadoClientes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\StockProductosYRecetas.aspx.cs">
+      <DependentUpon>StockProductosYRecetas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\StockProductosYRecetas.aspx.designer.cs">
+      <DependentUpon>StockProductosYRecetas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Maestros\Subgrupos.aspx.cs">
       <DependentUpon>Subgrupos.aspx</DependentUpon>

@@ -522,6 +522,7 @@ C:\Proyectos\Luciano_Diaz\Tecnocuisine\Tecnocuisine\obj\Debug\Tecnocuisine.cspro
 C:\Proyectos\Luciano_Diaz\Tecnocuisine\Tecnocuisine\obj\Debug\Tecnocuisine.csproj.CopyComplete
 C:\Proyectos\Luciano_Diaz\Tecnocuisine\Tecnocuisine\obj\Debug\Tecnocuisine.dll
 C:\Proyectos\Luciano_Diaz\Tecnocuisine\Tecnocuisine\obj\Debug\Tecnocuisine.pdb
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\obj\Debug\Tecnocuisine.csproj.CoreCompileInputs.cache
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Tecnocuisine.dll.config
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Tecnocuisine.dll
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Tecnocuisine.pdb
@@ -626,7 +627,6 @@ C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Microsoft.AspNe
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Microsoft.Owin.Host.SystemWeb.dll
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Remotion.Data.Linq.dll
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Task_Api.dll
-C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Twilio.Api.dll
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Microsoft.ReportViewer.WinForms.dll
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Microsoft.ReportViewer.Common.dll
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Microsoft.ReportViewer.ProcessingObjectModel.dll
@@ -672,10 +672,7 @@ C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Estetica Api.pd
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Estetica Api.dll.config
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Microsoft.AspNet.Identity.Owin.xml
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Microsoft.Owin.Host.SystemWeb.xml
-C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Twilio.Api.pdb
-C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\bin\Twilio.Api.xml
-C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\obj\Debug\Tecnocuisine.csproj.AssemblyReference.cache
-C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\obj\Debug\Tecnocuisine.csproj.CoreCompileInputs.cache
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\obj\Debug\Tecnocuisine.csproj.CopyComplete
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\obj\Debug\Tecnocuisine.dll
 C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\obj\Debug\Tecnocuisine.pdb
+C:\Users\David\Desktop\laburo\Tecnocousine_Web2\Tecnocuisine\obj\Debug\Tecnocuisine.csproj.AssemblyReference.cache

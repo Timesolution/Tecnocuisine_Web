@@ -562,7 +562,7 @@ namespace Tecnocuisine.Formularios.Maestros
         [WebMethod]
         public static string GuardarReceta2(string descripcion,string codigo,string Categoria,string Sector,string Atributos,string Unidad, 
             string Tipo, string rinde, string prVenta, string idProductosRecetas,string BrutoT,string CostoT,string BrutoU,string CostoU,
-            string FoodCost,string ContMarg, string BuenasPract,string InfoNut, string idPasosRecetas)
+            string FoodCost,string ContMarg, string BuenasPract,string InfoNut, string idPasosRecetas,string Presentaciones)
         {
             try
             {
@@ -756,6 +756,40 @@ namespace Tecnocuisine.Formularios.Maestros
 
                        
                     }
+
+                    try
+                    {
+                        string[] itemsPres;
+
+                        if (Sector.Contains(","))
+                            itemsPres = Presentaciones.Split(',');
+                        else
+                            itemsPres = Presentaciones.Split(';');
+
+                        foreach (var pr in itemsPres)
+                        {
+                            if (pr != "")
+                            {
+                                string[] PRess = pr.Split('-');
+                                if (PRess[1] != "")
+                                {
+                                    Recetas_Presentacion Rec_Pres = new Recetas_Presentacion();
+                                    Rec_Pres.idPresentacion = Convert.ToInt32(PRess[0]);
+                                    Rec_Pres.idRecetas = resultado;
+
+
+                                    controladorReceta.AgregarPresentacionReceta(Rec_Pres);
+                                }
+
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+
+                    }
+
                     JavaScriptSerializer javaScript = new JavaScriptSerializer();
                     javaScript.MaxJsonLength = 5000000;
                     string resultadoJSON = javaScript.Serialize("Exito guardando la Receta.");
@@ -782,7 +816,7 @@ namespace Tecnocuisine.Formularios.Maestros
         [WebMethod]
         public static void EditarReceta2(string descripcion, string codigo, string Categoria, string Sector, string Atributos, string Unidad,
            string Tipo, string rinde, string prVenta, string idProductosRecetas, string BrutoT, string CostoT, string BrutoU, string CostoU,
-           string FoodCost, string ContMarg, string BuenasPract, string InfoNut, string idPasosRecetas, string idReceta)
+           string FoodCost, string ContMarg, string BuenasPract, string InfoNut, string idPasosRecetas, string idReceta,string Presentaciones)
         {
             try
             {
@@ -936,6 +970,38 @@ namespace Tecnocuisine.Formularios.Maestros
 
 
                                     controladorReceta.AgregarSectorProductivoReceta(sectorP_);
+                                }
+
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+
+                    }
+                    try
+                    {
+                        string[] itemsPres;
+                        controladorReceta.EliminarPresentaciones(resultado);
+                        if (Sector.Contains(","))
+                            itemsPres = Presentaciones.Split(',');
+                        else
+                            itemsPres = Presentaciones.Split(';');
+
+                        foreach (var pr in itemsPres)
+                        {
+                            if (pr != "")
+                            {
+                                string[] PRess = pr.Split('-');
+                                if (PRess[1] != "")
+                                {
+                                    Recetas_Presentacion Rec_Pres = new Recetas_Presentacion();
+                                    Rec_Pres.idPresentacion = Convert.ToInt32(PRess[0]);
+                                    Rec_Pres.idRecetas = resultado;
+
+
+                                    controladorReceta.AgregarPresentacionReceta(Rec_Pres);
                                 }
 
                             }
