@@ -3,7 +3,7 @@
      <div class="wrapper wrapper-content">
         <div class="container-fluid">
             <div class="ibox float-e-margins">
-                <div class="ibox-content">
+                <div >
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
 

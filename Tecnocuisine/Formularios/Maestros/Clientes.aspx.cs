@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -436,7 +437,7 @@ namespace Tecnocuisine
                 cliente.razonSocial = txtRazonSocial.Text;
                 cliente.alias = txtAlias.Text;
                 cliente.observaciones = txtObservaciones.Text;
-                cliente.saldoMax = Convert.ToDecimal(txtSaldoMax.Text);
+                cliente.saldoMax = decimal.Parse(txtSaldoMax.Text, CultureInfo.InvariantCulture);
                 cliente.vencimientoFC = Convert.ToInt32(txtVencimientoFC.Text);
                 cliente.activo = 1;
                 cliente.formaPago = Convert.ToInt32(ListFormaPago.SelectedValue);

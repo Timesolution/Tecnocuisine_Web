@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Script.Serialization;
 using System.Web.Services;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Tecnocuisine_API.Controladores;
 using Tecnocuisine_API.Entitys;
@@ -16,7 +17,10 @@ namespace Tecnocuisine.Formularios.Administrador
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+            }
+                cargarEmpresasBackEnd();
         }
 
         [WebMethod]
@@ -48,6 +52,127 @@ namespace Tecnocuisine.Formularios.Administrador
                 return null;
             }
         }
+        public void cargarEmpresasBackEnd()
+        {
+            try
+            {
+                ControladorEmpresa contEmpresas = new ControladorEmpresa();
+
+                var empresas = contEmpresas.GetEmpresas();
+                foreach (var empresa in empresas)
+                {
+                    CargarEmpresaPH(empresa);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void CargarEmpresaPH(Empresa empresa)
+        {
+            try
+            {
+                TableRow tr = new TableRow();
+                tr.ID = empresa.Id.ToString();
+
+                TableCell celrazonSocial = new TableCell();
+                celrazonSocial.Text = empresa.Razon_Social;
+                celrazonSocial.VerticalAlign = VerticalAlign.Middle;
+                tr.Cells.Add(celrazonSocial);
+
+                TableCell celCuit = new TableCell();
+                celCuit.Text = empresa.Cuit;
+                celCuit.VerticalAlign = VerticalAlign.Middle;
+                tr.Cells.Add(celCuit);
+
+                TableCell celIIBB = new TableCell();
+                celIIBB.Text = empresa.Ingresos_Brutos;
+                celIIBB.VerticalAlign = VerticalAlign.Middle;
+                tr.Cells.Add(celIIBB);
+
+                TableCell celFechaInicio = new TableCell(); 
+                celFechaInicio.Text = "<span> " + empresa.Fecha_inicio.Value.ToString("yyyyMMdd") + "</span>" + empresa.Fecha_inicio.Value.ToString("dd/MM/yyyy");
+                celFechaInicio.VerticalAlign = VerticalAlign.Middle;
+                tr.Cells.Add(celFechaInicio);
+
+                TableCell celIVA = new TableCell();
+                celIVA.Text = empresa.Condicion_IVA;
+                celIVA.VerticalAlign = VerticalAlign.Middle;
+                tr.Cells.Add(celIVA);
+
+                TableCell celDireccion = new TableCell();
+                celDireccion.Text = empresa.Direccion;
+                celDireccion.VerticalAlign = VerticalAlign.Middle;
+                tr.Cells.Add(celDireccion);
+
+                TableCell celAlias = new TableCell();
+                celAlias.Text = empresa.Alias;
+                celAlias.VerticalAlign = VerticalAlign.Middle;
+                tr.Cells.Add(celAlias);
+
+                TableCell celCBU = new TableCell();
+                celCBU.Text = empresa.CBU;
+                celCBU.VerticalAlign = VerticalAlign.Middle;
+                tr.Cells.Add(celCBU);
+
+                TableCell celAction = new TableCell();
+
+                HtmlGenericControl btnEditar = new HtmlGenericControl("a");
+                btnEditar.Attributes.Add("class", "btn btn-xs");
+                btnEditar.Style.Add("background-color", "transparent");
+                btnEditar.Style.Add("margin-right", "10px");
+                //btnEditar.Attributes.Add("title data-original-title", familia);
+                //btnEditar.Attributes.Add("data-toggle", "modal");
+                //btnEditar.Attributes.Add("title data-original-title", "Editar");
+                btnEditar.InnerHtml = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
+                btnEditar.Attributes.Add("OnClick", "vaciarInputs();ModalModificar('" + empresa.Id + "','" + empresa.Razon_Social + "','" + empresa.Cuit + "','" + empresa.Ingresos_Brutos + "','" + empresa.Condicion_IVA + "','" + empresa.Direccion + "','" + empresa.Alias + "','" + empresa.CBU + "'); ");
+                celAction.Controls.Add(btnEditar);
+
+                //LinkButton btnEditar = new LinkButton();
+                ////btnEditar.ID = "BtnEdit_" + empresa.id.ToString() + "_";
+                //btnEditar.OnClientClick = 
+                //btnEditar.CssClass = "btn btn-xs";
+                //btnEditar.Style.Add("background-color", "transparent");
+                ////btnDetalles.Attributes.Add("data-toggle", "tooltip");
+                ////btnDetalles.Attributes.Add("title data-original-title", "Editar");
+                //btnEditar.Text = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
+
+                //celAction.Controls.Add(btnEditar);
+
+
+                Literal l = new Literal();
+                l.Text = "&nbsp";
+                celAction.Controls.Add(l);
+
+
+
+                HtmlGenericControl btnEliminar = new HtmlGenericControl("a");
+                btnEliminar.Attributes.Add("class", "btn btn-xs");
+                btnEliminar.Style.Add("background-color", "transparent");
+                btnEliminar.Style.Add("margin-right", "10px");
+                //btnEliminar.Attributes.Add("title data-original-title", familia);
+                //btnEliminar.Attributes.Add("data-toggle", "modal");
+                //btnEliminar.Attributes.Add("title data-original-title", "Editar");
+                btnEliminar.InnerHtml = "<span><i style='color:black;' class='fa fa-trash'></i></span>";
+                btnEliminar.Attributes.Add("OnClick", "ModalConfirmacion(" + empresa.Id + ");");
+
+                celAction.Controls.Add(btnEliminar);
+                celAction.Width = Unit.Percentage(10);
+                celAction.VerticalAlign = VerticalAlign.Middle;
+                celAction.HorizontalAlign = HorizontalAlign.Center;
+                tr.Cells.Add(celAction);
+
+                phEmpresas2.Controls.Add(tr);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
 
         [WebMethod]
         public static string CargarEmpresas()
@@ -63,7 +188,7 @@ namespace Tecnocuisine.Formularios.Administrador
                 {
                     emp += "{" +
                         "\"Id\":\"" + item.Id + "\"," +
-                        "\"Cuit\":\"" + item.Cuit + "\"," +
+                        "\"FechaInicio\":\"" + item.Fecha_inicio + "\"," +
                         "\"Razon_Social\":\"" + item.Razon_Social + "\"," +
                         "\"Ingresos_Brutos\":\"" + item.Ingresos_Brutos + "\"," +
                         "\"Fecha_inicio\":\"" + item.Fecha_inicio?.ToString("dd/MM/yyyy") + "\"," +
@@ -102,7 +227,7 @@ namespace Tecnocuisine.Formularios.Administrador
 
                     Empresa emp = new Empresa();
                     emp.Razon_Social = razonSocial;
-                    emp.Cuit = cuit;
+                    emp.Fecha_inicio = DateTime.Now;
                     emp.Ingresos_Brutos = ingBrutos;
                     emp.Fecha_inicio = DateTime.Now;
                     emp.Condicion_IVA = condIVA;
@@ -139,7 +264,7 @@ namespace Tecnocuisine.Formularios.Administrador
                     Empresa emp = new Empresa();
                     emp.Id = Convert.ToInt32(id);
                     emp.Razon_Social = razonSocial;
-                    emp.Cuit = cuit;
+                    //emp.Fecha_inicio = Convert.ToDateTime( FechaInicio);
                     emp.Ingresos_Brutos = ingBrutos;
                     emp.Fecha_inicio = DateTime.Now;
                     emp.Condicion_IVA = condIVA;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Services;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Tecnocuisine_API.Controladores;
 using Tecnocuisine_API.Entitys;
@@ -14,7 +15,90 @@ namespace Tecnocuisine.Formularios.Administrador
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                CargarSectoresBackEnd();
+            }
+        }
 
+        private void CargarSectoresBackEnd()
+        {
+            try
+            {
+                ControladorSector contSec = new ControladorSector();
+
+                var sectores = contSec.GetSectores();
+
+                foreach (var sector in sectores)
+                {
+                    CargarSectorPH(sector);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void CargarSectorPH(Tecnocuisine_API.Entitys.Sectores sector)
+        {
+            try
+            {
+                TableRow tr = new TableRow();
+                tr.ID = sector.id.ToString();
+
+                TableCell celDescripcion = new TableCell();
+                celDescripcion.Text = sector.nombre;
+                celDescripcion.VerticalAlign = VerticalAlign.Middle;
+                tr.Cells.Add(celDescripcion);
+
+                TableCell celEstado = new TableCell();
+                celEstado.Text = sector.estado.ToString();
+                celEstado.VerticalAlign = VerticalAlign.Middle;
+                tr.Cells.Add(celEstado);
+
+
+                TableCell celAction = new TableCell();
+
+                HtmlGenericControl btnEditar = new HtmlGenericControl("a");
+                btnEditar.Attributes.Add("class", "btn btn-xs");
+                btnEditar.Style.Add("background-color", "transparent");
+                btnEditar.Style.Add("margin-right", "10px");
+                //btnEditar.Attributes.Add("title data-original-title", familia);
+                //btnEditar.Attributes.Add("data-toggle", "modal");
+                //btnEditar.Attributes.Add("title data-original-title", "Editar");
+                btnEditar.InnerHtml = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
+                btnEditar.Attributes.Add("OnClick", "vaciarInputs();ModalModificar('" + sector.id + "','" + sector.nombre + "','" + sector.id_emp + "'); ");
+                celAction.Controls.Add(btnEditar);
+
+                Literal l = new Literal();
+                l.Text = "&nbsp";
+                celAction.Controls.Add(l);
+
+
+                HtmlGenericControl btnEliminar = new HtmlGenericControl("a");
+                btnEliminar.Attributes.Add("class", "btn btn-xs");
+                btnEliminar.Style.Add("background-color", "transparent");
+                btnEliminar.Style.Add("margin-right", "10px");
+                //btnEliminar.Attributes.Add("title data-original-title", familia);
+                //btnEliminar.Attributes.Add("data-toggle", "modal");
+                //btnEliminar.Attributes.Add("title data-original-title", "Editar");
+                btnEliminar.InnerHtml = "<span><i style='color:black;' class='fa fa-trash'></i></span>";
+                btnEliminar.Attributes.Add("OnClick", "ModalConfirmacion(" + sector.id + ");");
+
+
+                celAction.Controls.Add(btnEliminar);
+                celAction.Width = Unit.Percentage(10);
+                celAction.VerticalAlign = VerticalAlign.Middle;
+                celAction.HorizontalAlign = HorizontalAlign.Center;
+                tr.Cells.Add(celAction);
+
+                SectoresPH.Controls.Add(tr);
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         [WebMethod]

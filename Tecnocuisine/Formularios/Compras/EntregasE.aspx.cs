@@ -58,8 +58,9 @@ namespace Tecnocuisine.Formularios.Compras
 
                 Tecnocuisine_API.Entitys.Proveedores p = ControladorProveedores.ObtenerProveedorByID(entrega.idProveedor);
                 Tecnocuisine_API.Entitys.SectorProductivo s = ControladorSector.ObtenerSectorProductivoId(entrega.idSector);
+
                 TableCell celFechaEntrega = new TableCell();
-                celFechaEntrega.Text = entrega.fechaEntrega.ToString("dd/MM/yyyy");
+                celFechaEntrega.Text = "<span> "+ entrega.fechaEntrega.ToString("yyyyMMdd")+"</span>"+ entrega.fechaEntrega.ToString("dd/MM/yyyy");
                 celFechaEntrega.VerticalAlign = VerticalAlign.Middle;
                 tr.Cells.Add(celFechaEntrega);
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Script.Serialization;
@@ -475,8 +476,9 @@ namespace Tecnocuisine
                 articulo.fechaModificacion = DateTime.Now;
                 articulo.fechaActualizacionPrecio = DateTime.Now;
                 articulo.fechaAlta = DateTime.Now;
-                articulo.costo = Convert.ToDecimal(txtCosto.Text);
-                articulo.precioVenta = Convert.ToDecimal(txtPrecioVenta.Text);
+
+                articulo.costo = decimal.Parse(txtCosto.Text, CultureInfo.InvariantCulture);
+                articulo.precioVenta = decimal.Parse(txtPrecioVenta.Text, CultureInfo.InvariantCulture);
                 articulo.grupo = Convert.ToInt32(ListGrupo.SelectedValue);
                 //articulo.subgrupo = Convert.ToInt32(ListSubgrupo.SelectedValue);
                 articulo.subgrupo = 1;

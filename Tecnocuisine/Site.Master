@@ -91,10 +91,14 @@
     <script src="/../js/plugins/dataTables/dataTables.bootstrap.js"></script>
     <script src="/../js/plugins/dataTables/dataTables.responsive.js"></script>
     <script src="/../js/plugins/dataTables/dataTables.tableTools.min.js"></script>
+    <script src="/../js/plugins/dataTables/dataTables.tableTools.min.js"></script>
     <script src="/../js/daypilot-modal-2.0.js"></script>
 
        <script src="/../js/plugins/chosen/chosen.jquery.js"></script>
-
+    
+        <!-- Sorttable-->
+      <script src="/../js/plugins/fullcalendar/moment.min.js"></script>
+    <script src="/../js/plugins/sorting/datetime-moment.js"></script>
    <!-- JSKnob -->
    <script src="/../js/plugins/jsKnob/jquery.knob.js"></script>
 
@@ -104,9 +108,6 @@
        <!-- Autonumeric-->
      <%--<script src="/../Scripts/autoNumeric/autoNumeric-min.js"></script>--%>
          <script src="/../Scripts/autoNumeric/autoNumeric.js"></script>
-    <%--<script src="//unpkg.com/autonumeric"></script>--%>
-
-
 
     <style>
         .text-white {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Services;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Tecnocuisine_API.Controladores;
 using Tecnocuisine_API.Entitys;
@@ -14,9 +15,97 @@ namespace Tecnocuisine.Formularios.Administrador
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack){
+                CargarSucursalesBackEnd();
+            }
         }
-        
+
+        private void CargarSucursalesBackEnd()
+        {
+            try
+            {
+                ControladorSucursal contSuc = new ControladorSucursal();
+
+                var sucursales = contSuc.GetSucursales();
+
+                foreach (var s in sucursales)
+                {
+                    CargarSucursalPH(s);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        private void CargarSucursalPH(sucursales s)
+        {
+            
+                try
+                {
+                    TableRow tr = new TableRow();
+                    tr.ID = s.id.ToString();
+
+                    TableCell celDescripcion = new TableCell();
+                    celDescripcion.Text = s.nombre;
+                    celDescripcion.VerticalAlign = VerticalAlign.Middle;
+                    tr.Cells.Add(celDescripcion);
+
+                    TableCell celDireccion = new TableCell();
+                    celDireccion.Text = s.direccion;
+                    celDireccion.VerticalAlign = VerticalAlign.Middle;
+                    tr.Cells.Add(celDireccion);
+
+                    TableCell celEstado = new TableCell();
+                    celEstado.Text = s.estado.ToString();
+                    celEstado.VerticalAlign = VerticalAlign.Middle;
+                    tr.Cells.Add(celEstado);
+
+
+                    TableCell celAction = new TableCell();
+
+                    HtmlGenericControl btnEditar = new HtmlGenericControl("a");
+                    btnEditar.Attributes.Add("class", "btn btn-xs");
+                    btnEditar.Style.Add("background-color", "transparent");
+                    btnEditar.Style.Add("margin-right", "10px");
+                    //btnEditar.Attributes.Add("title data-original-title", familia);
+                    //btnEditar.Attributes.Add("data-toggle", "modal");
+                    //btnEditar.Attributes.Add("title data-original-title", "Editar");
+                    btnEditar.InnerHtml = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
+                    btnEditar.Attributes.Add("OnClick", "vaciarInputs();ModalModificar('" + s.id + "','" + s.nombre + "','" + s.id_emp + "','" + s.direccion + "'); ");
+                    celAction.Controls.Add(btnEditar);
+
+                    Literal l = new Literal();
+                    l.Text = "&nbsp";
+                    celAction.Controls.Add(l);
+
+
+                HtmlGenericControl btnEliminar = new HtmlGenericControl("a");
+                btnEliminar.Attributes.Add("class", "btn btn-xs");
+                btnEliminar.Style.Add("background-color", "transparent");
+                btnEliminar.Style.Add("margin-right", "10px");
+                //btnEliminar.Attributes.Add("title data-original-title", familia);
+                //btnEliminar.Attributes.Add("data-toggle", "modal");
+                //btnEliminar.Attributes.Add("title data-original-title", "Editar");
+                btnEliminar.InnerHtml = "<span><i style='color:black;' class='fa fa-trash'></i></span>";
+                btnEliminar.Attributes.Add("OnClick", "ModalConfirmacion(" + s.id + ");");
+                celAction.Controls.Add(btnEliminar);
+
+                    celAction.Width = Unit.Percentage(10);
+                    celAction.VerticalAlign = VerticalAlign.Middle;
+                    celAction.HorizontalAlign = HorizontalAlign.Center;
+                    tr.Cells.Add(celAction);
+
+                    phSucursalesPH.Controls.Add(tr);
+                }
+                catch (Exception ex)
+                {
+
+                }
+        }
+
         [WebMethod]
         public static string CargarEmpresas()
         {

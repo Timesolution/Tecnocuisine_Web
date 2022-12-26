@@ -1,5 +1,10 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EntregasE.aspx.cs" Inherits="Tecnocuisine.Formularios.Compras.EntregasE" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <style>
+        #editable span{
+  display:none;
+}
+    </style>
     <div class="wrapper wrapper-content">
         <div class="container-fluid">
             <div class="ibox float-e-margins">
@@ -77,8 +82,28 @@
     </div>
 
     <script>
-        $(document).ready(function () {
+        //$(document).ready(function () {
 
+        //    $.fn.dataTable.moment = function (format, locale) {
+        //        var types = $.fn.dataTable.ext.type;
+
+        //        // Add type detection
+        //        types.detect.unshift(function (d) {
+        //            return moment(d, format, locale, true).isValid() ?
+        //                'moment-' + format :
+        //                null;
+        //        });
+
+        //        // Add sorting method - use an integer for the sorting
+        //        types.order['moment-' + format + '-pre'] = function (d) {
+        //            return moment(d, format, locale, true).unix();
+        //        };
+        //    };
+
+        //    $('#editable').DataTable();
+        //});
+       
+        $(document).ready(function () {
 
 
             $('.dataTables-example').dataTable({
@@ -88,7 +113,6 @@
                     "sSwfPath": "js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
                 }
             });
-
             /* Init DataTables */
             var oTable = $('#editable').dataTable();
             var oTable2 = $('#editable2').dataTable();

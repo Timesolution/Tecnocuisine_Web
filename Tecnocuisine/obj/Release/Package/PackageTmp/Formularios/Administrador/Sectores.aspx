@@ -19,47 +19,39 @@
             display:none;
         }
     </style>
-    <div class="wrapper wrapper-content">
-        <div class="row animated fadeInRight">
-            <div class="container-fluid-nestable">
-                <div class="ibox nestable float-e-margins" style="padding: 1.5%;">
-                    <div class="ibox-title">
-                        <h5>Herramientas</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-                        <div class="row m-l m-r">
-                            <div class="col-md-12 text-right ">
-                                <a onclick="vaciarInputs();ModalAgregar()" data-toggle="tooltip" data-placement="top" title="Agregar" class="btn btn-primary"><i class="fa fa-plus"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+   
 
     <div class="wrapper wrapper-content">
         <div class="row animated fadeInRight">
             <div class="container-fluid-nestable">
 
                 <div class="ibox nestable float-e-margins" style="padding: 1.5%">
-                    <div class="ibox-title">
-                        <h5>Sectores</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
 
-                        <div class="table-responsive">
-                            <table class="table">
+                    <div class="ibox-content">
+                                            <div style="margin-left: 0px; margin-right: 0px;" class="row">
+                                                    <div class="col-md-10">
+
+                                                        <div class="input-group m-b">
+                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+
+
+                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+
+                                                        <a onclick="ModalAgregar()" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                                                    </div>
+                                                </div>
+                       <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+
+                        <ContentTemplate>
+
+                      
+
+
+                        <div class="">
+                            <table class="table table-striped table-bordered table-hover" id="editable">
                                 <thead>
                                     <tr>
                                         <th>Nombre</th>
@@ -68,14 +60,17 @@
                                     </tr>
                                 </thead>
                                 <tbody id="phSectores">
+                                    <asp:PlaceHolder runat="server" ID="SectoresPH"></asp:PlaceHolder>
                                 </tbody>
                             </table>
-                            <div id="Progressbars" class="progress progress-striped active">
+                           <%-- <div id="Progressbars" class="progress progress-striped active">
                                 <div style="width: 100%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="75" role="progressbar" class="progress-bar progress-bar-danger">
                                     <span class="sr-only">100% Complete (success)</span>
                                 </div>
-                            </div>
+                            </div>--%>
                         </div>
+                              </ContentTemplate>
+                       </asp:UpdatePanel>
 
                     </div>
                 </div>
@@ -382,5 +377,73 @@
             document.getElementById('ddlEmpresa').value = 0
         }
     </script>
+        <script>
+            $(document).ready(function () {
 
+
+                $('.dataTables-example').dataTable({
+                    responsive: true,
+                    "dom": 'T<"clear">lfrtip',
+                    "tableTools": {
+                        "sSwfPath": "js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
+                    }
+                });
+                /* Init DataTables */
+                var oTable = $('#editable').dataTable();
+
+
+                /* Apply the jEditable handlers to the table */
+                oTable.$('td').editable('../example_ajax.php', {
+                    "callback": function (sValue, y) {
+                        var aPos = oTable.fnGetPosition(this);
+                        oTable.fnUpdate(sValue, aPos[0], aPos[1]);
+                    },
+                    "submitdata": function (value, settings) {
+                        return {
+                            "row_id": this.parentNode.getAttribute('id'),
+                            "column": oTable.fnGetPosition(this)[2]
+                        };
+                    },
+
+                    "width": "90%",
+                    "height": "100%",
+                    "pageLength": 25
+                });
+
+
+                $("#editable_filter").appendTo("#editable_length");
+
+                $("#editable_filter").css('display', 'none');
+                $("#editable_filter").css('padding-left', '5%');
+                var parent = $("#editable_length")[0].parentNode;
+                parent.className = 'col-sm-12';
+                parent.style = 'display:none';
+                var div = document.getElementById('editable_filter');
+                var button = document.createElement('a');
+                /* button.id = "btnAgregar";*/
+                button.style.float = "right";
+                button.style.marginRight = "1%";
+                //button.setAttribute("type", "button");
+                button.setAttribute("href", "ProductosABM.aspx");
+                //button.setAttribute("href", "#modalAgregar");
+                //button.setAttribute("onclick", "vaciarFormulario()");
+                //button.setAttribute("data-toggle", "modal");
+                button.setAttribute("class", "btn");
+
+                button.innerHTML = "<i style='color: black' class='fa fa-plus'></i>";
+                div.prepend(button);
+                var filter = $("#editable_filter");
+                filter[0].id = 'editable_filter2';
+
+                //var filter = $("#editable_length");
+                //filter[0].id = 'editable_length2';
+
+
+                $('#txtBusqueda').on('keyup', function () {
+                    $('#editable').DataTable().search(
+                        this.value
+                    ).draw();
+                });
+            });
+        </script>
 </asp:Content>

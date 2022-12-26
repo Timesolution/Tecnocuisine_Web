@@ -53,7 +53,7 @@
     </div>
 
     <%--seccion modales --%>
-    <div id="ModalNuevoPais" class="modal" role="dialog">
+    <div id="ModalNuevoPais" class="modal fade" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
@@ -95,7 +95,7 @@
         </div>
     </div>
 
-     <div id="modalConfirmacion2" class="modal" role="dialog">
+     <div id="modalConfirmacion2" class="modal fade" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">

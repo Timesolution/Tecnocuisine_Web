@@ -313,9 +313,14 @@
                     //quito los options que pudiera tener previamente el combo
                     $("#<%=ddlPresentaciones.ClientID%>").html("");
                     //recorro cada item que devuelve el servicio web y lo aÃ±ado como un opcion
-                    $.each(respuesta.d, function() {
-                         $("#<%=ddlPresentaciones.ClientID%>").append($("<option></option>").attr("value", this.id).text(this.descripcion))
-                    });
+                    if (respuesta.d.length > 0) {
+                        $.each(respuesta.d, function () {
+                            $("#<%=ddlPresentaciones.ClientID%>").append($("<option></option>").attr("value", this.id).text(this.descripcion))
+                        });
+
+                    } else {
+                        $("#<%=ddlPresentaciones.ClientID%>").append($("<option></option>").attr("value", 0).text("No tiene presentaciones asignadas"))
+                    }
                 }   
             });
            

@@ -38,6 +38,7 @@ namespace Tecnocuisine.Formularios.Compras
                 ObtenerProveedores();
                 //ObtenerPresentaciones();
                 txtFechaEntrega.Text = DateTime.Now.ToString("dd/MM/yyyy");
+                txtFechaVencimiento.Text = DateTime.Now.AddMonths(1).ToString("dd/MM/yyyy");
                 if (accion == 2)
                 {
                     CargarEntregaEdit();

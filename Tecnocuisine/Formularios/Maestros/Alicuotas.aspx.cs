@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -263,7 +264,7 @@ namespace Tecnocuisine
             {
                 Tecnocuisine_API.Entitys.Alicuotas_IVA unidad = new Tecnocuisine_API.Entitys.Alicuotas_IVA();
 
-                unidad.porcentaje = Convert.ToDecimal(txtPorcentajeAlicuota.Text);
+                unidad.porcentaje = decimal.Parse(txtPorcentajeAlicuota.Text, CultureInfo.InvariantCulture);
                 unidad.estado = 1;
 
                 int resultado = controladorIVA.AgregarAlicuota(unidad);
@@ -291,7 +292,7 @@ namespace Tecnocuisine
                 Tecnocuisine_API.Entitys.Alicuotas_IVA unidad = new Tecnocuisine_API.Entitys.Alicuotas_IVA();
 
                 unidad.id = this.idAlicuota;
-                unidad.porcentaje = Convert.ToDecimal(txtPorcentajeAlicuota.Text);
+                unidad.porcentaje = decimal.Parse(txtPorcentajeAlicuota.Text, CultureInfo.InvariantCulture);
                 unidad.estado = 1;
 
                 int resultado = controladorIVA.EditarAlicuota(unidad);

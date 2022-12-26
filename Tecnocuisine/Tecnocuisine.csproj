@@ -352,6 +352,7 @@
     <Content Include="font-awesome\scss\_variables.scss" />
     <Content Include="Img\Logo.jpg" />
     <Content Include="Img\photo.png" />
+    <Content Include="js\plugins\fullcalendar\moment.min.js" />
     <Content Include="js\plugins\jsTree\jstree.min.js" />
     <Content Include="js\plugins\justified-gallery\README.md" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
@@ -603,7 +604,6 @@
     <Content Include="js\plugins\flot\jquery.flot.symbol.js" />
     <Content Include="js\plugins\flot\jquery.flot.tooltip.min.js" />
     <Content Include="js\plugins\fullcalendar\fullcalendar.min.js" />
-    <Content Include="js\plugins\fullcalendar\moment.min.js" />
     <Content Include="js\plugins\gritter\images\gritter-light.png" />
     <Content Include="js\plugins\gritter\images\gritter-long.png" />
     <Content Include="js\plugins\gritter\images\gritter.png" />
@@ -769,6 +769,7 @@
     <Content Include="js\plugins\rickshaw\vendor\d3.v3.js" />
     <Content Include="js\plugins\slimscroll\jquery.slimscroll.js" />
     <Content Include="js\plugins\slimscroll\jquery.slimscroll.min.js" />
+    <Content Include="js\plugins\sorting\datetime-moment.js" />
     <Content Include="js\plugins\sparkline\jquery.sparkline.min.js" />
     <Content Include="js\plugins\staps\jquery.steps.min.js" />
     <Content Include="js\plugins\summernote\summernote.min.js" />
@@ -793,6 +794,7 @@
     <Content Include="Scripts\plugins\summernote\summernote.min.js" />
     <Content Include="Scripts\plugins\toastr\toastr.min.js" />
     <Content Include="Scripts\plugins\validate\jquery.validate.min.js" />
+    <Content Include="js\sorttable.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
     <Content Include="Scripts\WebForms\Focus.js" />
     <Content Include="Scripts\WebForms\GridView.js" />

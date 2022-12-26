@@ -6,15 +6,23 @@
         <div class="container-fluid">
 
             <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Alicuotas</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                    </div>
-                </div>
+
                 <div class="ibox-content">
+                     <div style="margin-left: 0px; margin-right: 0px;" class="row">
+                                                    <div class="col-md-10">
+
+                                                        <div class="input-group m-b">
+                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+
+
+                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+
+                                                        <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                                                    </div>
+                                                </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
                             <div class="table-responsive"  >
@@ -63,7 +71,7 @@
         </div>
     </div>
 
-    <div id="modalAgregar" class="modal" tabindex="-1" role="dialog">
+    <div id="modalAgregar" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
@@ -112,6 +120,8 @@
     </script>
     <script>
         $(document).ready(function () {
+
+
             $('.dataTables-example').dataTable({
                 responsive: true,
                 "dom": 'T<"clear">lfrtip',
@@ -119,9 +129,9 @@
                     "sSwfPath": "js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
                 }
             });
-
             /* Init DataTables */
             var oTable = $('#editable').dataTable();
+            var oTable2 = $('#editable2').dataTable();
 
             /* Apply the jEditable handlers to the table */
             oTable.$('td').editable('../example_ajax.php', {
@@ -137,32 +147,67 @@
                 },
 
                 "width": "90%",
+                "height": "100%",
+                "pageLength": 25
+            });
+
+            /* Apply the jEditable handlers to the table */
+            oTable2.$('td').editable('../example_ajax.php', {
+                "callback": function (sValue, y) {
+                    var aPos = oTable2.fnGetPosition(this);
+                    oTable2.fnUpdate(sValue, aPos[0], aPos[1]);
+                },
+                "submitdata": function (value, settings) {
+                    return {
+                        "row_id": this.parentNode.getAttribute('id'),
+                        "column": oTable2.fnGetPosition(this)[2]
+                    };
+                },
+
+                "width": "90%",
                 "height": "100%"
             });
             $("#editable_filter").appendTo("#editable_length");
 
-            $("#editable_filter").css('display', 'inline');
+            $("#editable_filter").css('display', 'none');
             $("#editable_filter").css('padding-left', '5%');
             var parent = $("#editable_length")[0].parentNode;
             parent.className = 'col-sm-12';
+            parent.style = 'display:none';
             var div = document.getElementById('editable_filter');
-            var button = document.createElement('linkbutton');
-            button.id = "btnAgregar";
+            var button = document.createElement('a');
+            /* button.id = "btnAgregar";*/
             button.style.float = "right";
             button.style.marginRight = "1%";
-            button.setAttribute("type", "button");
-            button.setAttribute("href", "#modalAgregar");
-            button.setAttribute("onclick", "vaciarFormulario()");
-            button.setAttribute("data-toggle", "modal");
+            //button.setAttribute("type", "button");
+            button.setAttribute("href", "ProductosABM.aspx");
+            //button.setAttribute("href", "#modalAgregar");
+            //button.setAttribute("onclick", "vaciarFormulario()");
+            //button.setAttribute("data-toggle", "modal");
             button.setAttribute("class", "btn");
-            
+
             button.innerHTML = "<i style='color: black' class='fa fa-plus'></i>";
             div.prepend(button);
             var filter = $("#editable_filter");
             filter[0].id = 'editable_filter2';
-            var filter = $("#editable_length");
-            filter[0].id = 'editable_length2';
 
+            //var filter = $("#editable_length");
+            //filter[0].id = 'editable_length2';
+
+
+            $('#txtBusqueda').on('keyup', function () {
+                $('#editable').DataTable().search(
+                    this.value
+                ).draw();
+            });
         });
+    </script>
+     <script src="/../Scripts/autoNumeric/autoNumeric.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $('#ContentPlaceHolder1_txtPorcentajeAlicuota').autoNumeric('init', { vMin: '0.000', vMax: '99999999999.999', aSign: '', aSep: ',', aPad: false, mDec: '3', aDec: '.', aForm: false })
+        })
+
     </script>
 </asp:Content>

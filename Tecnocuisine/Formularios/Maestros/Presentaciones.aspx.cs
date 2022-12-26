@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -300,7 +301,7 @@ namespace Tecnocuisine
 
                 presentacion.id = this.idPresentacion;
                 presentacion.descripcion = txtDescripcionPresentacion.Text;
-                presentacion.cantidad = Convert.ToDecimal(txtCantidadPresentacion.Text);
+                presentacion.cantidad = decimal.Parse(txtCantidadPresentacion.Text, CultureInfo.InvariantCulture);
                 presentacion.estado = 1;
 
 
