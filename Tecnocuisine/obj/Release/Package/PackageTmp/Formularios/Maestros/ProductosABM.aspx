@@ -126,6 +126,47 @@
                                                     </div>
 
                                                 </div>
+
+                                                             <%-- ACA VA MARCAS --%>
+
+                                                <div class="row" style="margin-top: 2%">
+                                                <label class="col-sm-4 control-label editable">Marcas</label>
+                                                <div class="col-sm-8">
+                                                    <datalist id="ListOptionMarcas" runat="server"></datalist>
+                                                    <div class="input-group">
+                                                        <asp:TextBox ID="txtDescripcionMarca" list="ContentPlaceHolder1_ListOptionMarcas" onkeypress="AgregarMarcaDesdeTxt(event)" class="form-control" runat="server" />
+                                                        <span class="input-group-btn">
+                                                            <asp:LinkButton runat="server" ID="LinkButtonMarcas1" OnClientClick="editarMarcas()" class="btn btn-primary dim" data-toggle="modal" href="#modalMarca"><i style="color: white"  class="fa fa-plus"></i></asp:LinkButton>
+                                                        </span>
+                                                    </div>
+                                                    <asp:HiddenField ID="idMarca" runat="server" />
+                                                </div>
+                                               
+                                            </div>
+                                            <div class="row" style="margin-top: 2%; padding-left: 15px">
+                                                <asp:UpdatePanel ID="UpdatePanelMarcas6" runat="server">
+                                                    <ContentTemplate>
+                                                        <div class="table-responsive col-lg-12 center-block" style="max-width: 97.5%;">
+                                                            <table class="table table-striped table-bordered table-hover " id="editableMarcas1">
+
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th style="width: 10%">#</th>
+                                                                        <th style="width: 40%">Descripcion</th>
+                                                                        <th style="width: 10%"></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="tbodyEditableMarcas1">
+                                                                        <asp:PlaceHolder ID="phMarcasDefinitivo" runat="server"></asp:PlaceHolder>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+                                                    </ContentTemplate>
+
+                                                </asp:UpdatePanel>
+                                            </div>
+                                                 <%-- Termina MARCAS --%>
                                                 <div class="row" style="margin-top: 2%">
                                                     <label class="col-sm-4 control-label editable">Producto final</label>
                                                     <div class="col-sm-8">
@@ -153,7 +194,6 @@
                                                     <asp:HiddenField runat="server" ID="hiddenSubGrupo" />
 
                                                 </div>
-
 
                                             </div>
                                         </div>
@@ -299,6 +339,12 @@
                                             <label id="lblPresentacion"></label>
                                         </div>
                                      </div>
+                                     <div class="row" style="margin-top: 2%">
+                                         <label class="col-sm-2 control-label editable" >Marcas</label>
+                                          <div class="col-sm-7">
+                                            <label id="lblMarcas"></label>
+                                        </div>
+                                     </div>
                                   
                                 </fieldset>
                             </form>
@@ -402,6 +448,7 @@
                 </div>
             </div>
         </div>
+  <%--      PRESENTACION--%>
         <div id="modalPresentacion" class="modal" tabindex="-2" role="dialog">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
@@ -452,6 +499,64 @@
                             <a id="btnAgregarPresentacion" onclick="agregarPresentaciones()" class=" btn btn-primary"><i class="fa fa-check"></i>&nbsp;Agregar </a>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
                             <asp:HiddenField runat="server" ID="hfPresentaciones" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+               <%-- Modal MARCAS--%>
+
+
+
+          <div id="modalMarca" class="modal" tabindex="-2" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Elegir Marca</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="ibox-content">
+                            <asp:UpdatePanel ID="UpdatePanel7" runat="server">
+                                <ContentTemplate>
+
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="ibox ">
+                                                <asp:UpdatePanel ID="UpdatePanel8" runat="server">
+                                                    <ContentTemplate>
+                                                        <div class="table-responsive">
+                                                            <table class="table table-striped table-bordered table-hover " id="editableMarcas2">
+
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Descripcion</th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <asp:PlaceHolder ID="phMarcas" runat="server"></asp:PlaceHolder>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+                                                    </ContentTemplate>
+
+                                                </asp:UpdatePanel>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    </div>
+                                </ContentTemplate>
+
+                            </asp:UpdatePanel>
+                        </div>
+                        <div class="modal-footer">
+                            <a id="btnAgregarMarca" onclick="agregarMarcas()" class=" btn btn-primary"><i class="fa fa-check"></i>&nbsp;Agregar </a>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+                            <asp:HiddenField runat="server" ID="hfMarcas" />
                         </div>
                     </div>
                 </div>
@@ -600,6 +705,7 @@
                                 + '" , IVA: "' + selectAliCuota.selectedOptions[0].value
                                 + '" , Unidad: "' + selectUnidadMedida.selectedOptions[0].value
                                 + '" , Presentacion: "' + document.querySelector('#lblPresentacion').textContent
+                                + '" , Marca: "' + document.querySelector('#lblMarcas').textContent
                                 + '" , cbxGestion: "' + document.getElementById('ContentPlaceHolder1_cbxGestion').checked
                                 + '" , img: "' + ""
                                 + '"}',
@@ -919,6 +1025,7 @@
            }
        }
 
+
        function agregarCategoria(id) {
            ContentPlaceHolder1_txtDescripcionCategoria.value = id.split('_')[2] + ' - ' + id.split('_')[3];
            $('#modalCategoria').modal('hide');
@@ -1036,7 +1143,100 @@
               document.querySelector('#lblAtributoFinal').textContent = presentacionFinal.trimEnd(', ');
               
               return true;
-        }
+      }
+
+
+      /*MARCAS*/
+      function agregarMarcas() {
+          //let table1 = $('#editable1').DataTable();
+          let table2 = document.getElementById('editableMarcas2');
+          let cuerpor = document.getElementById("tbodyEditableMarcas1");
+          let max = table2.rows.length;
+          let MarcaFinal = '';
+          //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
+          for (let i = 1; i < max; i++) {
+              /*if (i > 1) {*/
+              if (table2.rows[i].cells[1].children[0].checked) {
+                  let id = table2.rows[i].id.split("_")[2]
+                  let descripcion = table2.rows[i].cells[0].innerHTML
+                  MarcaFinal += id + " - " + descripcion + ', ';
+                  cuerpor.innerHTML += `<tr>
+                        <td>${id}</td>
+                        <td>${descripcion}</td>
+                       <td><a onclick="EliminarFilaMarca('${id}')" id="ContentPlaceHolder1_btnEliminar_${table2.rows[i].cells[0].innerHTML}" class="btn  btn-xs" style="background-color:transparent;"><span><i style="color:black" class="fa fa-trash - o"></i></span></a> </td>
+                        </tr>`;
+              }
+
+          }
+
+          $('#modalMarca').modal('hide');
+          document.querySelector('#lblMarcas').textContent = MarcaFinal;
+          document.getElementById('<%=hfMarcas.ClientID%>').value = MarcaFinal;
+                 return true;
+             }
+
+
+      /*       AgregarMarcaDesdeTxt*/
+      function AgregarMarcaDesdeTxt(e) {
+          if (e.keyCode === 13 && !e.shiftKey) {
+              let txtMarca = document.getElementById('<%=txtDescripcionMarca.ClientID%>').value
+              const idOption = document.querySelector('option[value="' + txtMarca + '"]').id;
+
+
+               const columns = idOption.split("_");
+              let cuerpor = document.getElementById("tbodyEditableMarcas1");
+               cuerpor.innerHTML += `<tr>
+                        <td>${columns[1]}</td>
+                        <td>${txtMarca.split('-')[1].slice(1)}</td>
+                        <td><a onclick="EliminarFilaMarca('${columns[1]}')" id="ContentPlaceHolder1_btnEliminar_${columns[1]}" class="btn  btn-xs" style="background-color:transparent;"><span><i style="color:black" class="fa fa-trash - o"></i></span></a> </td>
+                        </tr>`;
+              let MarcaFinal = columns[1] + " - " + txtMarca.split('-')[1].slice(1);
+              document.querySelector('#lblMarcas').textContent += MarcaFinal + ", ";
+               document.getElementById('<%=txtDescripcionMarca.ClientID%>').value = '';
+           }
+       }
+
+
+
+      function EliminarFilaMarca(id) {
+          let table1 = document.getElementById('editableMarcas1');
+          let MarcaFinal = document.querySelector('#lblMarcas').textContent;
+          let max = table1.rows.length;
+
+          for (let i = 1; i < max; i++) {
+              if (table1.rows[i].cells[0].innerHTML == id) {
+                  if (MarcaFinal.includes(table1.rows[i].cells[1].innerHTML)) {
+                      let texto = document.getElementById('editableMarcas1').rows[i].cells[0].innerHTML + " - " + table1.rows[i].cells[1].innerHTML;
+                      document.querySelector('#lblMarcas').textContent = document.querySelector('#lblMarcas').textContent.replace(texto + ',', '');
+                      document.getElementById('<%=hfMarcas.ClientID%>').value = document.getElementById('<%=hfMarcas.ClientID%>').value.replace(texto + ',', '');
+                         }
+                  document.getElementById('editableMarcas1').rows[i].remove();
+                         return;
+                     }
+                 }
+      }
+
+        <%--editarMarcas--%>
+      function editarMarcas() {
+          var hiddenMarca = document.getElementById('ContentPlaceHolder1_idMarca');
+          var inputs = $('#ContentPlaceHolder1_UpdatePanelMarcas5').find(':checkbox');
+          for (var j = 0; j < inputs.length; j++) {
+              inputs[j].checked = false;
+          }
+
+
+          var marcas = hiddenMarca.value.split(',');
+          var inputs = $('#ContentPlaceHolder1_UpdatePanelMarcas5').find(':checkbox');
+          for (var i = 0; i < inputs.length; i++) {
+              for (var j = 0; j < marcas.length; j++) {
+                  if (inputs[i].id.split('_')[2].split('-')[0].trim() == marcas[j]) {
+                      inputs[i].checked = true;
+                  }
+              }
+          }
+
+      }
+
   
   </script>
      <script src="/../Scripts/autoNumeric/autoNumeric.js"></script>

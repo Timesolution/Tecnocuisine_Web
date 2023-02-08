@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Entregas.aspx.cs" Inherits="Tecnocuisine.Formularios.Compras.Entregas" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Entregas.aspx.cs" Inherits="Tecnocuisine.Formularios.Compras.Entregas" EnableEventValidation="false" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="wrapper wrapper-content animated fadeInRight">
@@ -82,30 +82,35 @@
 
                                     <asp:TextBox ID="txtCantidad" Text="0" onkeypress="javascript:return validarNro(event)" Style="text-align: right" class="form-control money" runat="server" />
                                 </div>
-                                 <div class="form-group col-md-2" >
-                                        <label style="margin-bottom: auto;">Lote</label>
-                                        <asp:TextBox runat="server" ID="txtLote" class="form-control"></asp:TextBox>
-                                       
                                     </div>
-                                    <div class="form-group col-md-3" id="data_2">
-                                        <label style="margin-bottom: auto;">vencimiento</label>
-                                        <div class="input-group date">
-                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                            <asp:TextBox  class="form-control" runat="server" ID="txtFechaVencimiento" ></asp:TextBox>
-                                          
-                                        </div>
-                                    </div>
-                                <div class="col-md-5" style="text-align: center;">
+                                <div class="col-md-3" style="text-align: center;">
                                     <label style="margin-bottom: auto;">Presentacion</label>
 
                                     <%--<asp:TextBox ID="txtUnidadMed" disabled="disabled" Style="text-align: right" class="form-control" runat="server" />--%>
                                     <asp:DropDownList runat="server" ID="ddlPresentaciones" class="form-control"></asp:DropDownList>
                                 </div>
+                            <%-- MARCAS --%>
+                                     <div class="form-group col-md-2" >
+                                        <label style="margin-bottom: auto;">Marca</label>
+                                        <asp:DropDownList runat="server" ID="ddlMarca" class="form-control"></asp:DropDownList>
+                                       
+                                    </div>
+                                 <div class="form-group col-md-2" >
+                                        <label style="margin-bottom: auto;">Lote</label>
+                                        <asp:TextBox runat="server" ID="txtLote" class="form-control"></asp:TextBox>
+                                       
+                                    </div>
+                                    <div class="form-group col-md-2" id="data_2">
+                                        <label style="margin-bottom: auto;">vencimiento</label>
+                                        <div class="input-group date">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            <asp:TextBox  class="form-control" runat="server" ID="txtFechaVencimiento"></asp:TextBox>
+                                        </div>
+                                         <p  id="valiva" class="text-danger text-hide">La fecha de vencimiento no puede ser menor a 30 dias </p>
+                                        </div>
                                 <div class="col-md-1" style="margin-top: 19px;">
                                     <linkbutton id="btnAgregarProducto" onclick="agregarProductoPH();" class="btn btn-primary dim required"><i style="color: white" class="fa fa-check"></i></linkbutton>
-
                                 </div>
-                                                                    </div>
 
                                 <asp:HiddenField runat="server" ID="idProductosRecetas" />
                                 <asp:HiddenField runat="server" ID="hiddenReceta" />
@@ -114,7 +119,8 @@
                                         <tr>
                                             <th style="width: 5%">Cod. Producto</th>
                                             <%--<th style="width: 10%">Tipo</th>--%>
-                                            <th style="width: 15%">Descripcion</th>
+                                            <th style="width: 10%">Descripcion</th>
+                                            <th style="width: 5%">Marca</th>
                                             <th style="width: 5%; text-align: right">Cantidad</th>
                                             <th style="width: 10%">Presentacion</th>
                                             <th style="width: 5%">Lote</th>
@@ -290,13 +296,43 @@
                     agregarProducto(idOption, costo);
 
                     CargarOptionsDllPresentaciones(txtProd.split('-')[0].trim(), 1);
+                    CargarOptionDllMarcas(txtProd.split('-')[0].trim(), 1);
                 }
                 else if (idOption.includes("c_r_")) {
                     agregarReceta(idOption, costo)
                     CargarOptionsDllPresentaciones(txtProd.split('-')[0].trim(), 2);
+                    CargarOptionDllMarcas(txtProd.split('-')[0].trim(), 1);
                 }
             }
         }
+        function CargarOptionDllMarcas(id, tipo) {
+            $.ajax({
+                method: "POST",
+                url: "Entregas.aspx/GetMarca",
+                data: '{idProd: "' + id + '"}',
+                contentType: "application/json",
+                dataType: "json",
+                dataType: "json",
+                async: false,
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                },
+                success: function (respuesta) {
+                    //quito los options que pudiera tener previamente el combo
+                    $("#<%=ddlMarca.ClientID%>").html("");
+                        //recorro cada item que devuelve el servicio web y lo aÃ±ado como un opcion
+                        if (respuesta.d.length > 0) {
+                            $.each(respuesta.d, function () {
+                                $("#<%=ddlMarca.ClientID%>").append($("<option></option>").attr("value", this.id).text(this.descripcion))
+                        });
+
+                    } else {
+                            $("#<%=ddlMarca.ClientID%>").append($("<option></option>").attr("value", 0).text("No Existen Marcas"))
+                        }
+                    }
+                });
+
+          }
         function CargarOptionsDllPresentaciones(id,tipo) {
             $.ajax({
                 method: "POST",
@@ -323,9 +359,35 @@
                     }
                 }   
             });
-           
         }
+
+
+        function ComprobarFecha(date,DiaIngresado) {
+            DiaIngresado = DiaIngresado.replaceAll("/", "-")
+            DiaIngresado = DiaIngresado.split(['-']).reverse().join("-")
+            let date1 = date
+            let date2 = new Date(DiaIngresado)
+            console.log(date1, date2)
+            if (date2 > date1) {
+                var diff = date2.getTime() - date1.getTime();
+                return dias = Math.round(diff / (1000 * 60 * 60 * 24));
+            }
+            else if (date2 != null && date2 < date1) {
+                return alert("La fecha final de la promoción debe ser mayor a la fecha inicial");
+            }
+
+        }
+
         function agregarProductoPH() {
+            let today = new Date();
+            let DiasDiferencia = ComprobarFecha(today, document.getElementById('<%=txtFechaVencimiento.ClientID%>').value)
+            console.log(document.getElementById('<%=txtFechaVencimiento.ClientID%>').value, 'VALOR ACTUAL')
+
+            if (DiasDiferencia < 30) {
+                document.getElementById('valiva').className = 'text-danger'
+                return false
+            }
+            document.getElementById('valiva').className = 'text-danger text-hide'
             var codigo = ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0];
             var cantidad = ContentPlaceHolder1_txtCantidad.value.replace(',', '');
             var tipo = ContentPlaceHolder1_Hiddentipo.value;
@@ -343,13 +405,16 @@
             
                 listaDesplegable = "<td> " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
                 listaCantidadDesplegable = "<td style=\" text-align: right\"> " + myFormat(cantidad) + "</td>";
-                listaUnidadesDesplegable = "<td> " + unidad + "</td>";
+            listaUnidadesDesplegable = "<td> " + unidad + "</td>";
+            marca = "<td> " + document.getElementById('<%=ddlMarca.ClientID%>').selectedOptions[0].text + "</td>";
+            idMarca = document.getElementById('<%=ddlMarca.ClientID%>').value.trim()
             
             if (!document.getElementById('<%= idProductosRecetas.ClientID%>').value.includes(tipo + '_' + codigo+"," + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value)) {
                 $('#tableProductos').append(
                     "<tr id=" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value.trim() + ">" +
                       "<td style=\" text-align: right\"> " + codigo + "</td>" +
-                      listaDesplegable +
+                    listaDesplegable +
+                    marca +
                       listaCantidadDesplegable +
                       //"<td ondblclick=\"CargarmodalRecetaDetalle('" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0]+"')\" > " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>" +
                       listaUnidadesDesplegable +
@@ -365,10 +430,10 @@
                       "</tr>"
                   );
                 if (document.getElementById('<%= idProductosRecetas.ClientID%>').value == "") {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value+ "," + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value;
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += codigo + "," + tipo + "," + idMarca + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value+ "," + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value;
                 }
                 else {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += ";" + codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value+ "," + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value;
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += ";" + codigo + "," + tipo + "," + idMarca + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value+ "," + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value;
                      }
                  
                   ContentPlaceHolder1_txtDescripcionProductos.value = "";

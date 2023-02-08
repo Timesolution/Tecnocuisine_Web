@@ -53,7 +53,7 @@
     </Reference>
     <Reference Include="Gestion Api, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Gestion_Api\Gestion Api\bin\Debug\Gestion Api.dll</HintPath>
+      <HintPath>..\..\Gestion API\Gestion Api.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -160,7 +160,7 @@
     </Reference>
     <Reference Include="Tecnocuisine_API, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\tecnocousine Api\Tecnocuisine_API\bin\Debug\Tecnocuisine_API.dll</HintPath>
+      <HintPath>..\..\tecnocuisine_API\Tecnocuisine_API\bin\Debug\Tecnocuisine_API.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>

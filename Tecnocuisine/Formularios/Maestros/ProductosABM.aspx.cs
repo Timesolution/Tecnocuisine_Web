@@ -15,6 +15,8 @@ using Tecnocuisine_API.Controladores;
 using Tecnocuisine_API.Entitys;
 using Microsoft.AspNetCore.Http;
 using System.Globalization;
+using static Tecnocuisine.Formularios.Compras.Entregas;
+using Gestion_Api.Entitys;
 
 namespace Tecnocuisine.Formularios.Maestros
 {
@@ -67,8 +69,98 @@ namespace Tecnocuisine.Formularios.Maestros
             ObtenerGruposArticulos();
             //ObtenerSubGruposArticulos(Convert.ToInt32(ListGrupo.SelectedValue));
             ObtenerPresentaciones();
+            ObtenerMarca();
         }
+        public void ObtenerMarca()
+        {
+            try
+            {
+                phMarcas.Controls.Clear();
+                ControladorMarca controladorMarca = new ControladorMarca();
+                var marcas = controladorMarca.ObtenerTodasMarcas();
+                if (marcas.Count > 0)
+                {
+                    CargarOptionsListMarcas(marcas);
+                    foreach (var item in marcas)
+                    {
+                        CargarMarcasPH(item);
 
+                    }
+                }
+                else
+                {
+                    new List<PresentacionClass>();
+                }
+            }
+            catch (Exception)
+            {
+                new List<PresentacionClass>();
+
+            }
+        }
+        private void CargarOptionsListMarcas(List<Tecnocuisine_API.Entitys.Articulos_Marcas> marcas)
+        {
+            try
+            {
+                var builder = new System.Text.StringBuilder();
+
+                foreach (var press in marcas)
+                {
+
+                    builder.Append(String.Format("<option value='{0}' id='Marca_" + press.id + " _ " + press.descripcion + "'>", press.id + " - " + press.descripcion));
+                }
+
+                //for (int i = 0; i < table.Rows.Count; i++)
+                //    builder.Append(String.Format("<option value='{0}'>", table.Rows[i][0]));
+                ListOptionMarcas.InnerHtml = builder.ToString();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        public void CargarMarcasPH(Tecnocuisine_API.Entitys.Articulos_Marcas marca)
+        {
+            try
+            {
+
+                //fila
+                TableRow tr = new TableRow();
+                tr.ID =  "marca_" + marca.id.ToString();
+
+                //Celdas
+
+                TableCell celNombre = new TableCell();
+                celNombre.Text = marca.descripcion;
+                celNombre.VerticalAlign = VerticalAlign.Middle;
+                celNombre.HorizontalAlign = HorizontalAlign.Left;
+                celNombre.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celNombre);
+
+
+                //agrego fila a tabla
+                TableCell celAccion = new TableCell();
+                HtmlGenericControl cbxAgregar = new HtmlGenericControl("input");
+                cbxAgregar.Attributes.Add("class", "presentacion radio btn btn-primary btn-xs pull-right");
+                cbxAgregar.Attributes.Add("type", "checkbox");
+                //cbxAgregar.Attributes.Add("value", "1");
+                cbxAgregar.ID = "btnSelecPres_" + marca.id + " - " + marca.descripcion;
+                celAccion.Controls.Add(cbxAgregar);
+
+                celAccion.Width = Unit.Percentage(25);
+                celAccion.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celAccion);
+
+                phMarcas.Controls.Add(tr);
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+        }
         public void CargarProducto()
         {
             try
@@ -380,7 +472,7 @@ namespace Tecnocuisine.Formularios.Maestros
             }
         }
         [WebMethod]
-        public static void GuardarProducto(string descripcion, string Categoria, string Atributos, string Costo, string IVA, string Unidad, string Presentacion, bool cbxGestion, string img)
+        public static void GuardarProducto(string descripcion, string Categoria, string Atributos, string Costo, string IVA, string Unidad, string Presentacion, string Marca, bool cbxGestion, string img)
         {
             try
             {
@@ -428,8 +520,25 @@ namespace Tecnocuisine.Formularios.Maestros
                         PresentacionProd.Add(pp);
                     }
                 }
+                List<Marca_Productos> marca_Productos= new List<Marca_Productos>();
 
-                producto.Productos_Presentacion = PresentacionProd;
+                string[] verMarcas = Marca.Split(',');
+
+                foreach (string i in verMarcas)
+                {
+                    if (!string.IsNullOrEmpty(i) && i.Trim().Count() > 0)
+                    {
+                        Marca_Productos pp = new Marca_Productos();
+                        pp.id_marca = Convert.ToInt32(i.Split('-')[0].Trim());
+                        pp.estado = 1;
+                        pp.FechaCreacion = DateTime.Now;
+
+                        marca_Productos.Add(pp);
+                    }
+                }
+
+
+                producto.Marca_Productos = marca_Productos;
                 //producto.presentacion = Convert.ToInt32(ListPresentaciones.SelectedValue);
 
                 int resultado = controladorProducto.AgregarProducto(producto);

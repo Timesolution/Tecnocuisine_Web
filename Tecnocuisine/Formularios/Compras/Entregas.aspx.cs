@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gestion_Api.Modelo;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
@@ -8,9 +9,11 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 using Tecnocuisine.Modelos;
 using Tecnocuisine_API.Controladores;
 using Tecnocuisine_API.Entitys;
+using static Tecnocuisine.Formularios.Compras.Entregas;
 
 namespace Tecnocuisine.Formularios.Compras
 {
@@ -38,7 +41,8 @@ namespace Tecnocuisine.Formularios.Compras
                 ObtenerProveedores();
                 //ObtenerPresentaciones();
                 txtFechaEntrega.Text = DateTime.Now.ToString("dd/MM/yyyy");
-                txtFechaVencimiento.Text = DateTime.Now.AddMonths(1).ToString("dd/MM/yyyy");
+                txtFechaVencimiento.Text = DateTime.Now.AddDays(31).ToString("dd/MM/yyyy");
+                //DateTime.Now.AddMonths(1).ToString("dd/MM/yyyy");
                 if (accion == 2)
                 {
                     CargarEntregaEdit();
@@ -648,25 +652,37 @@ namespace Tecnocuisine.Formularios.Compras
                             {
                                 if (pr != "")
                                 {
+          //codigo + ","
+          //+ tipo + ","
+          //+ idMarca + ","
+          //+ cantidad + ","
+          //+ ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + ","
+          //+ document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value;
+
                                     string[] producto = pr.Split(',');
+                                    string id_Marca = producto[2];
+                                    string id_Producto = producto[0];
+                                    string Tipo = producto[1];
+                                    string Cantidad = producto[3];
+                                    string Presentaciones = producto[5];
                                     if (producto[1] == "Producto")
                                     {
                                         Entregas_Productos productoNuevo = new Entregas_Productos();
                                         productoNuevo.idEntregas = i;
-                                        productoNuevo.idProductos = Convert.ToInt32(producto[0]);
+                                        productoNuevo.idProductos = Convert.ToInt32(id_Producto);
+                                        productoNuevo.idMarca = Convert.ToInt32(id_Marca);
                                         idProducto = productoNuevo.idProductos.Value;
-                                        productoNuevo.Cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
-                                        ControladorEntregas.AgregarEntrega_Producto(productoNuevo, newEntrega.idSector, txtLote.Text, txtFechaVencimiento.Text,Convert.ToInt32( producto[4]));
+                                        productoNuevo.Cantidad = decimal.Parse(Cantidad, CultureInfo.InvariantCulture);
+                                        ControladorEntregas.AgregarEntrega_Producto(productoNuevo, newEntrega.idSector, txtLote.Text, txtFechaVencimiento.Text,Convert.ToInt32(Presentaciones));
                                     }
                                     else
                                     {
                                         Entregas_Recetas RecetaNuevo = new Entregas_Recetas();
-
                                         RecetaNuevo.idEntregas = i;
-                                        RecetaNuevo.idRecetas = Convert.ToInt32(producto[0]);
+                                        RecetaNuevo.idRecetas = Convert.ToInt32(id_Producto);
                                         idProducto = RecetaNuevo.idRecetas.Value;
                                         RecetaNuevo.Cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
-                                        ControladorEntregas.AgregarEntrega_Receta(RecetaNuevo, newEntrega.idSector, txtLote.Text, txtFechaVencimiento.Text, Convert.ToInt32(producto[4]));
+                                        ControladorEntregas.AgregarEntrega_Receta(RecetaNuevo, newEntrega.idSector, txtLote.Text, txtFechaVencimiento.Text, Convert.ToInt32(Presentaciones));
                                     }
                                 }
                             }
@@ -772,6 +788,40 @@ namespace Tecnocuisine.Formularios.Compras
 
             }
         }
+
+
+        //OBTENER TODAS LAS MARCAS
+
+        [WebMethod]
+        public static List<PresentacionClass> GetMarca(int idProd)
+        {
+            try
+            {
+                ControladorMarca controladorMarca = new ControladorMarca();
+                var marcas = controladorMarca.ObtenerMarcaPorIDProducto(idProd);
+                List<PresentacionClass> listaFInal = new List<PresentacionClass>();
+                if (marcas.Count > 0)
+                {
+                    foreach (var item in marcas)
+                    {
+                        PresentacionClass pc = new PresentacionClass();
+                        pc.id = item.Articulos_Marcas.id;
+                        pc.descripcion = item.Articulos_Marcas.descripcion;
+                        listaFInal.Add(pc);
+                    }
+                    return listaFInal;
+                }
+                else
+                {
+                return new List<PresentacionClass>();
+                }
+            }
+            catch (Exception)
+            {
+                return new List<PresentacionClass>();
+
+            }
+        }
         public class PresentacionClass
         {
            public int id { get; set; }
@@ -779,3 +829,30 @@ namespace Tecnocuisine.Formularios.Compras
         }
     }
 }
+
+
+
+//ControladorMarca controladorMarca = new ControladorMarca();
+//var marcas = controladorMarca.ObtenerTodasMarcas();
+//List<PresentacionClass> listaFInal = new List<PresentacionClass>();
+//if (marcas.Count > 0)
+//{
+//    foreach (var item in marcas)
+//    {
+//        PresentacionClass pc = new PresentacionClass();
+//        pc.id = item.id;
+//        pc.descripcion = item.descripcion;
+//        listaFInal.Add(pc);
+//    }
+//    return listaFInal;
+//}
+//else
+//{
+//    return new List<PresentacionClass>();
+//}
+//            }
+//            catch (Exception)
+//{
+//    return new List<PresentacionClass>();
+
+//}
