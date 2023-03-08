@@ -15,7 +15,7 @@
     <link href="/../css/bootstrap.min.css" rel="stylesheet" />
     <link href="/../font-awesome/css/font-awesome.css" rel="stylesheet" />
 
-        <link href="/../css/plugins/jsTree/style.min.css" rel="stylesheet"/>
+    <link href="/../css/plugins/jsTree/style.min.css" rel="stylesheet" />
     <!-- Morris -->
     <link href="/../css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
 
@@ -24,7 +24,7 @@
 
     <link href="/../css/animate.css" rel="stylesheet" />
     <link href="/../css/style.css" rel="stylesheet" />
-        <%--<link rel="Stylesheet" href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/themes/redmond/jquery-ui.css" />--%>
+    <%--<link rel="Stylesheet" href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/themes/redmond/jquery-ui.css" />--%>
 
 
     <link href="/../css/plugins/iCheck/custom.css" rel="stylesheet" />
@@ -94,20 +94,20 @@
     <script src="/../js/plugins/dataTables/dataTables.tableTools.min.js"></script>
     <script src="/../js/daypilot-modal-2.0.js"></script>
 
-       <script src="/../js/plugins/chosen/chosen.jquery.js"></script>
-    
-        <!-- Sorttable-->
-      <script src="/../js/plugins/fullcalendar/moment.min.js"></script>
-    <script src="/../js/plugins/sorting/datetime-moment.js"></script>
-   <!-- JSKnob -->
-   <script src="/../js/plugins/jsKnob/jquery.knob.js"></script>
+    <script src="/../js/plugins/chosen/chosen.jquery.js"></script>
 
-   <!-- Input Mask-->
+    <!-- Sorttable-->
+    <script src="/../js/plugins/fullcalendar/moment.min.js"></script>
+    <script src="/../js/plugins/sorting/datetime-moment.js"></script>
+    <!-- JSKnob -->
+    <script src="/../js/plugins/jsKnob/jquery.knob.js"></script>
+
+    <!-- Input Mask-->
     <script src="/../js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
-       <!-- Autonumeric-->
-     <%--<script src="/../Scripts/autoNumeric/autoNumeric-min.js"></script>--%>
-         <script src="/../Scripts/autoNumeric/autoNumeric.js"></script>
+    <!-- Autonumeric-->
+    <%--<script src="/../Scripts/autoNumeric/autoNumeric-min.js"></script>--%>
+    <script src="/../Scripts/autoNumeric/autoNumeric.js"></script>
 
     <style>
         .text-white {
@@ -197,11 +197,13 @@
                                 <li><a style="color: white !important;" href="../../Formularios/Administrador/Sucursales.aspx">Sucursales</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Administrador/Sectores.aspx">Sectores</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Administrador/PuntosDeVenta.aspx">Puntos de Venta</a></li>
-                                <li><a style="color: white !important;" href="../../Formularios/Administrador/Paises.aspx" >Paises</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Administrador/Paises.aspx">Paises</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Administrador/PanelDeControl.aspx">Panel de Control</a></li>
+
 
                             </ul>
                         </li>
-                         <li>
+                        <li>
                             <a href="#">
                                 <i class="fa fa-shopping-cart text-white"></i>
                                 <span class="nav-label " style="color: white;">Compras</span>
@@ -209,10 +211,37 @@
                             </a>
                             <ul class="nav nav-second-level">
                                 <li><a style="color: white !important;">Ordenes de compra</a></li>
-                                <li><a style="color: white !important;"  href="../..\Formularios\Compras\EntregasE.aspx">Entregas</a></li>
-                                <li><a style="color: white !important;" href="../..\Formularios\Compras\ProveedoresP.aspx" >Proveedores</a></li>
+                                <li><a style="color: white !important;" href="../..\Formularios\Compras\EntregasE.aspx">Entregas</a></li>
+                                <li><a style="color: white !important;" href="../..\Formularios\Compras\ProveedoresP.aspx">Proveedores</a></li>
+
                             </ul>
                         </li>
+
+
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-usd text-white"></i>
+                                <span class="nav-label " style="color: white;">Ventas</span>
+                                <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a style="color: white !important;" href="../..\Formularios\Ventas\Produccion.aspx">Producción </a>
+                                </li>
+                                <li>
+                                    <a style="color: white !important;" href="../..\Formularios\Ventas\Ventas.aspx">Ventas</a>
+                                </li>
+
+
+                            </ul>
+                        </li>
+
+
+
+
+
+
+
                         <li>
                             <asp:LinkButton Text="text" runat="server" ID="btnGestion" OnClick="btnGestion_Click">
                                 <i class="fa fa-desktop text-white"></i>
@@ -227,7 +256,7 @@
                 <div class="row border-bottom">
                     <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0; background-color: rgb(35,54,69)!important;">
                         <div class="navbar-header">
-                            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i></a>
+                            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#" onclick="ChangeNavBar()"><i class="fa fa-bars"></i></a>
                             <div class="navbar-form-custom">
                                 <asp:Label ID="lblSiteMap" Style="font-size: 20px; color: white" Text="text" class="form-control" runat="server" />
                             </div>
@@ -274,9 +303,21 @@
 </body>
 <script>
     $(document).ready(function () {
-        $("body").toggleClass("mini-navbar");
+        $("body").toggleClass("pace-done pace-done");
         SmoothlyMenu();
     });
+
+    function ChangeNavBar() {
+        if ($("body").hasClass("pace-done pace-done")) {
+
+            $("body").toggleClass
+                ("mini-navbar");
+        } else {
+            $("body").toggleClass
+                ("pace-done pace-done");
+        }
+
+    }
 </script>
 
 

@@ -26,7 +26,8 @@
                                                     </div>
                                                     <div class="col-md-2">
 
-                                                        <a href="ProductosABM.aspx" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                                                        <a href="ProductosABM.aspx" class="btn btn-primary dim" data-toggle="tooltip" data-placement="top"
+                                                            data-original-title="Crear Producto" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
                                                     </div>
                                                 </div>
                                                 <table class="table table-striped table-bordered table-hover " id="editable">
@@ -39,8 +40,10 @@
                                                             <th>Unidades</th>
                                                             <th>Costo</th>
                                                             <th>Presentaciones</th>
+                                                            <th>Marcas</th>
                                                             <th>Alicuota</th>
                                                             <th></th>
+                                                    
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -80,7 +83,7 @@
     </div>
 
     <div id="modalAgregar" class="modal" tabindex="-1" role="dialog">
-    
+
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
@@ -159,44 +162,44 @@
                         </div>
 
                     </div>
-                     <div class="row" style="margin-top: 2%">
+                    <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Producto Final </label>
                         <div class="col-sm-7">
                             <div class="input-group m-b">
-                                <asp:CheckBox  ID="cbxGestion" onclick="mostrarGestion()"  runat="server" />
+                                <asp:CheckBox ID="cbxGestion" onclick="mostrarGestion()" runat="server" />
                             </div>
                         </div>
 
                     </div>
-                    <div class="row" runat="server" id="divGrupo" style="margin-top: 2%;display: none;">
+                    <div class="row" runat="server" id="divGrupo" style="margin-top: 2%; display: none;">
                         <label class="col-sm-2 control-label editable">Grupo</label>
                         <div class="col-sm-7">
-                                <asp:DropDownList ID="ListGrupo" onchange="actualizarSubGrupo()"  class="form-control m-b" runat="server">
-                                </asp:DropDownList>
-                            <asp:HiddenField  runat="server" ID="hiddenGrupo"/>
+                            <asp:DropDownList ID="ListGrupo" onchange="actualizarSubGrupo()" class="form-control m-b" runat="server">
+                            </asp:DropDownList>
+                            <asp:HiddenField runat="server" ID="hiddenGrupo" />
                         </div>
 
                     </div>
-                    <div class="row" runat="server" id="divSubgrupo" style="margin-top: 2%;display:none">
+                    <div class="row" runat="server" id="divSubgrupo" style="margin-top: 2%; display: none">
                         <label class="col-sm-2 control-label editable">Subgrupo</label>
                         <div class="col-sm-7">
-                                <asp:DropDownList ID="ListSubgrupo" onchange="actualizarHiddenSubGrupo()" class="form-control m-b" runat="server">
-                                </asp:DropDownList>
+                            <asp:DropDownList ID="ListSubgrupo" onchange="actualizarHiddenSubGrupo()" class="form-control m-b" runat="server">
+                            </asp:DropDownList>
                         </div>
-                            <asp:HiddenField  runat="server" ID="hiddenSubGrupo"/>
+                        <asp:HiddenField runat="server" ID="hiddenSubGrupo" />
 
                     </div>
 
                 </div>
                 <div class="modal-footer">
-                    <asp:LinkButton runat="server" ID="btnGuardar" class="buttonLoading btn btn-primary"  OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <asp:LinkButton runat="server" ID="btnGuardar" class="buttonLoading btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
                     <asp:HiddenField ID="hiddenEditar" runat="server" />
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
 
                 </div>
             </div>
         </div>
-              
+
     </div>
 
 
@@ -306,36 +309,36 @@
                         <asp:UpdatePanel ID="UpdatePanel4" runat="server">
                             <ContentTemplate>
 
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="ibox ">
-                                                    <asp:UpdatePanel ID="UpdatePanel5" runat="server">
-                                                        <ContentTemplate>
-                                                            <div class="table-responsive" >
-                                                                <table class="table table-striped table-bordered table-hover " id="editable2">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="ibox ">
+                                            <asp:UpdatePanel ID="UpdatePanel5" runat="server">
+                                                <ContentTemplate>
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped table-bordered table-hover " id="editable2">
 
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>#</th>
-                                                                            <th>Descripcion</th>
-                                                                            <th>Cantidad</th>
-                                                                            <th></th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <asp:PlaceHolder ID="phPresentaciones" runat="server"></asp:PlaceHolder>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>Descripcion</th>
+                                                                    <th>Cantidad</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <asp:PlaceHolder ID="phPresentaciones" runat="server"></asp:PlaceHolder>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
 
-                                                        </ContentTemplate>
+                                                </ContentTemplate>
 
-                                                    </asp:UpdatePanel>
-                                                </div>
-                                            </div>
+                                            </asp:UpdatePanel>
                                         </div>
-
                                     </div>
+                                </div>
+
+                                </div>
                             </ContentTemplate>
 
                         </asp:UpdatePanel>
@@ -354,7 +357,12 @@
 
 
 
-    <script>         
+    <script>    
+
+        $(document).ready(function () {
+            $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+        });
+
         function mostrarGestion() {
             var checkBox = document.getElementById("ContentPlaceHolder1_cbxGestion");
             // Get the output text
@@ -371,21 +379,21 @@
             }
         }
 
-        
+
         function abrirdialog(valor) {
             document.getElementById('<%= hiddenID.ClientID %>').value = valor;
             $('#modalconfirmacion2').modal('show');
         }
     </script>
 
-    
+
 
 
     <script type="text/javascript">
         function actualizarSubGrupo() {
             var hiddenGrupo = document.getElementById('ContentPlaceHolder1_hiddenGrupo');
             hiddenGrupo.value = ContentPlaceHolder1_ListGrupo.value;
-            
+
             $.ajax({
                 method: "POST",
                 url: "Productos.aspx/GetSubgrupos",
@@ -419,7 +427,7 @@
             var hiddenSubGrupo = document.getElementById('ContentPlaceHolder1_hiddenSubGrupo');
             hiddenSubGrupo.value = ContentPlaceHolder1_ListSubgrupo.value;
         }
-    </script> 
+    </script>
     <script type="text/javascript">
         function openModal() {
             $('#modalAgregar').modal('show');
@@ -626,10 +634,10 @@
             $("#editable_filter").css('padding-left', '5%');
             var parent = $("#editable_length")[0].parentNode;
             parent.className = 'col-sm-12';
-            parent.style='display:none';
+            parent.style = 'display:none';
             var div = document.getElementById('editable_filter');
             var button = document.createElement('a');
-           /* button.id = "btnAgregar";*/
+            /* button.id = "btnAgregar";*/
             button.style.float = "right";
             button.style.marginRight = "1%";
             //button.setAttribute("type", "button");
@@ -638,7 +646,7 @@
             //button.setAttribute("onclick", "vaciarFormulario()");
             //button.setAttribute("data-toggle", "modal");
             button.setAttribute("class", "btn");
-            
+
             button.innerHTML = "<i style='color: black' class='fa fa-plus'></i>";
             div.prepend(button);
             var filter = $("#editable_filter");
@@ -646,7 +654,7 @@
 
             //var filter = $("#editable_length");
             //filter[0].id = 'editable_length2';
-           
+
 
             $('#txtBusqueda').on('keyup', function () {
                 $('#editable').DataTable().search(
@@ -655,9 +663,9 @@
             });
         });
 
- 
 
- 
+
+
     </script>
     <script>
         $(document).ready(function () {

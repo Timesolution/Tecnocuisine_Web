@@ -144,6 +144,14 @@ namespace Tecnocuisine.Formularios.Maestros
                     //categoria
                     var categoria = cc.ObtenerCategoriaById(Receta.categoria.Value);
                     txtDescripcionCategoria.Text = categoria.id + " - " + categoria.descripcion;
+                    if (Receta.ProductoFinal == true)
+                    {
+
+                        CheckProductoFinal.Checked = true;
+                    } else
+                    {
+                        CheckProductoFinal.Checked = false;
+                    }
                     //sector
 
                     var listaSectores = Receta.SectorP_Recetas;
@@ -485,7 +493,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 HtmlGenericControl btnDetalles = new HtmlGenericControl("input");
                 btnDetalles.Attributes.Add("class", "presentacion radio btn btn-primary btn-xs");
                 //btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                btnDetalles.Attributes.Add("onclick", "agregarPresentaciones(" + presentacion.id.ToString() + ")");
+                btnDetalles.Attributes.Add("onclick", "agregarPresentaciones()");
                 btnDetalles.Attributes.Add("type", "checkbox");
                 btnDetalles.ID = "btnPresentacion_" + presentacion.id.ToString();
 
@@ -1318,14 +1326,6 @@ namespace Tecnocuisine.Formularios.Maestros
                         type = "" + type.Substring(4);
                         type = type.Remove(type.Length - 5);
                         lista += type;
-                        //foreach (var RP in listaProdAux)
-                        //{
-                        //    if (RP != null)
-                        //    {
-                        //        lista += "<li data-jstree='{\"type\":\"html\"}'>" + RP.Productos.id + "-" + RP.Productos.descripcion + "</li>";
-
-                        //    }
-                        //}
                         lista += "</ul></li>";
 
                     }
@@ -1575,6 +1575,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 Receta.descripcion = txtDescripcionReceta.Text;
                 Receta.estado = 1;
+                Receta.ProductoFinal = CheckProductoFinal.Checked;
                 //Receta.coeficiente = Convert.ToDecimal(hiddenCoeficiente.Value.Replace('.', ','));
                 //Receta.peso = Convert.ToDecimal(hiddenPeso.Value.Replace('.', ','));
                 if (txtRinde.Text == "")

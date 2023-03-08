@@ -763,6 +763,7 @@ C:\TimeSolution\Repositorios\WEB\Tecnocuisine\bin\System.Web.Razor.dll
 C:\TimeSolution\Repositorios\WEB\Tecnocuisine\bin\System.Web.WebPages.Deployment.dll
 C:\TimeSolution\Repositorios\WEB\Tecnocuisine\bin\System.Web.WebPages.dll
 C:\TimeSolution\Repositorios\WEB\Tecnocuisine\bin\System.Web.WebPages.Razor.dll
+C:\TimeSolution\Repositorios\WEB\Tecnocuisine\bin\Tecnocuisine_API.dll
 C:\TimeSolution\Repositorios\WEB\Tecnocuisine\bin\WebGrease.dll
 C:\TimeSolution\Repositorios\WEB\Tecnocuisine\bin\Microsoft.AspNet.Identity.Owin.dll
 C:\TimeSolution\Repositorios\WEB\Tecnocuisine\bin\Microsoft.Owin.Host.SystemWeb.dll
@@ -802,4 +803,3 @@ C:\TimeSolution\Repositorios\WEB\Tecnocuisine\obj\Debug\Tecnocuisine.csproj.Core
 C:\TimeSolution\Repositorios\WEB\Tecnocuisine\obj\Debug\Tecnocuisine.csproj.CopyComplete
 C:\TimeSolution\Repositorios\WEB\Tecnocuisine\obj\Debug\Tecnocuisine.dll
 C:\TimeSolution\Repositorios\WEB\Tecnocuisine\obj\Debug\Tecnocuisine.pdb
-C:\TimeSolution\Repositorios\WEB\Tecnocuisine\bin\Tecnocuisine_API.dll

@@ -105,15 +105,6 @@ namespace Tecnocuisine.Formularios.Maestros
         protected global::System.Web.UI.WebControls.TextBox txtDescripcionMarca;
 
         /// <summary>
-        /// Control LinkButtonMarcas1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButtonMarcas1;
-
-        /// <summary>
         /// Control idMarca.
         /// </summary>
         /// <remarks>
@@ -247,15 +238,6 @@ namespace Tecnocuisine.Formularios.Maestros
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDescripcionPresentacion;
-
-        /// <summary>
-        /// Control btnPresentacion.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnPresentacion;
 
         /// <summary>
         /// Control idPresentacion.

@@ -5,7 +5,8 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PublishTargetUrl>C:\TimeSolution\Publish\Tecnocuisine</_PublishTargetUrl>
-    <History>True|2022-12-23T18:29:57.0788154Z;True|2022-12-23T15:27:33.6386123-03:00;True|2022-12-22T10:34:13.5955422-03:00;False|2022-12-22T10:25:30.6805173-03:00;False|2022-12-22T10:25:24.5191108-03:00;True|2022-12-16T17:29:31.9431208-03:00;True|2022-12-16T16:40:07.4719136-03:00;True|2022-12-16T15:21:13.0040771-03:00;True|2022-12-16T10:00:21.8411797-03:00;False|2022-12-16T10:00:04.5724791-03:00;True|2022-12-15T15:23:34.7930757-03:00;True|2022-12-15T15:19:04.8139884-03:00;True|2022-12-15T15:18:49.9155890-03:00;True|2022-12-12T10:09:36.1317506-03:00;True|2022-12-07T17:52:21.0975337-03:00;True|2022-12-07T15:14:11.5365683-03:00;True|2022-12-07T15:04:02.8659134-03:00;True|2022-12-07T14:47:22.3468507-03:00;True|2022-12-07T10:02:55.7859370-03:00;True|2022-12-06T17:37:19.4512514-03:00;True|2022-12-05T12:14:02.5369969-03:00;True|2022-11-29T15:43:11.1955864-03:00;True|2022-11-18T11:59:39.3678928-03:00;True|2022-11-15T10:44:26.1516414-03:00;True|2022-11-15T10:12:19.0097333-03:00;True|2022-11-15T09:42:08.4470739-03:00;True|2022-11-10T09:08:01.2676782-03:00;True|2022-11-09T12:04:30.8376839-03:00;True|2022-11-09T12:02:23.0822972-03:00;True|2022-11-09T11:57:17.2464619-03:00;True|2022-11-09T11:55:41.0270094-03:00;True|2022-11-09T11:42:53.5832136-03:00;True|2022-11-07T09:43:52.5654413-03:00;True|2022-11-01T12:23:26.7714687-03:00;True|2022-10-31T15:56:10.7747528-03:00;True|2022-10-31T15:46:15.2789906-03:00;True|2022-10-28T09:19:12.8105763-03:00;False|2022-10-26T16:35:16.6726615-03:00;True|2022-10-25T14:44:05.7596988-03:00;True|2022-10-25T14:16:49.3087819-03:00;True|2022-10-25T14:09:19.3815615-03:00;True|2022-10-25T13:52:26.4710863-03:00;True|2022-10-20T15:10:30.7203310-03:00;True|2022-10-20T15:03:23.5858971-03:00;True|2022-10-20T14:55:46.4796618-03:00;True|2022-10-20T14:35:16.7902872-03:00;True|2022-10-17T14:19:55.9732891-03:00;True|2022-10-06T16:07:52.4113687-03:00;True|2022-10-04T14:45:04.5750589-03:00;True|2022-10-04T09:58:41.4177918-03:00;True|2022-09-19T16:32:21.1744599-03:00;True|2022-09-16T15:26:34.4760594-03:00;True|2022-09-13T14:33:43.8910635-03:00;True|2022-09-13T14:18:41.0017579-03:00;False|2022-09-13T14:16:56.9949031-03:00;True|2022-08-24T14:08:13.2104088-03:00;True|2022-08-16T16:20:15.6281946-03:00;True|2022-08-16T13:57:59.0075988-03:00;True|2022-08-16T11:56:20.2685643-03:00;True|2022-08-09T23:56:04.5586582-03:00;True|2022-08-09T23:50:20.1414498-03:00;True|2022-08-09T23:49:13.1050457-03:00;False|2022-08-08T14:31:16.9618100-03:00;False|2021-06-04T16:08:23.1814603-03:00;True|2021-05-20T10:08:51.3436064-03:00;True|2021-05-20T10:03:12.6344181-03:00;</History>
+    <History>True|2023-02-14T17:23:12.5354472Z;True|2022-12-23T15:29:57.0788154-03:00;True|2022-12-23T15:27:33.6386123-03:00;True|2022-12-22T10:34:13.5955422-03:00;False|2022-12-22T10:25:30.6805173-03:00;False|2022-12-22T10:25:24.5191108-03:00;True|2022-12-16T17:29:31.9431208-03:00;True|2022-12-16T16:40:07.4719136-03:00;True|2022-12-16T15:21:13.0040771-03:00;True|2022-12-16T10:00:21.8411797-03:00;False|2022-12-16T10:00:04.5724791-03:00;True|2022-12-15T15:23:34.7930757-03:00;True|2022-12-15T15:19:04.8139884-03:00;True|2022-12-15T15:18:49.9155890-03:00;True|2022-12-12T10:09:36.1317506-03:00;True|2022-12-07T17:52:21.0975337-03:00;True|2022-12-07T15:14:11.5365683-03:00;True|2022-12-07T15:04:02.8659134-03:00;True|2022-12-07T14:47:22.3468507-03:00;True|2022-12-07T10:02:55.7859370-03:00;True|2022-12-06T17:37:19.4512514-03:00;True|2022-12-05T12:14:02.5369969-03:00;True|2022-11-29T15:43:11.1955864-03:00;True|2022-11-18T11:59:39.3678928-03:00;True|2022-11-15T10:44:26.1516414-03:00;True|2022-11-15T10:12:19.0097333-03:00;True|2022-11-15T09:42:08.4470739-03:00;True|2022-11-10T09:08:01.2676782-03:00;True|2022-11-09T12:04:30.8376839-03:00;True|2022-11-09T12:02:23.0822972-03:00;True|2022-11-09T11:57:17.2464619-03:00;True|2022-11-09T11:55:41.0270094-03:00;True|2022-11-09T11:42:53.5832136-03:00;True|2022-11-07T09:43:52.5654413-03:00;True|2022-11-01T12:23:26.7714687-03:00;True|2022-10-31T15:56:10.7747528-03:00;True|2022-10-31T15:46:15.2789906-03:00;True|2022-10-28T09:19:12.8105763-03:00;False|2022-10-26T16:35:16.6726615-03:00;True|2022-10-25T14:44:05.7596988-03:00;True|2022-10-25T14:16:49.3087819-03:00;True|2022-10-25T14:09:19.3815615-03:00;True|2022-10-25T13:52:26.4710863-03:00;True|2022-10-20T15:10:30.7203310-03:00;True|2022-10-20T15:03:23.5858971-03:00;True|2022-10-20T14:55:46.4796618-03:00;True|2022-10-20T14:35:16.7902872-03:00;True|2022-10-17T14:19:55.9732891-03:00;True|2022-10-06T16:07:52.4113687-03:00;True|2022-10-04T14:45:04.5750589-03:00;True|2022-10-04T09:58:41.4177918-03:00;True|2022-09-19T16:32:21.1744599-03:00;True|2022-09-16T15:26:34.4760594-03:00;True|2022-09-13T14:33:43.8910635-03:00;True|2022-09-13T14:18:41.0017579-03:00;False|2022-09-13T14:16:56.9949031-03:00;True|2022-08-24T14:08:13.2104088-03:00;True|2022-08-16T16:20:15.6281946-03:00;True|2022-08-16T13:57:59.0075988-03:00;True|2022-08-16T11:56:20.2685643-03:00;True|2022-08-09T23:56:04.5586582-03:00;True|2022-08-09T23:50:20.1414498-03:00;True|2022-08-09T23:49:13.1050457-03:00;False|2022-08-08T14:31:16.9618100-03:00;False|2021-06-04T16:08:23.1814603-03:00;True|2021-05-20T10:08:51.3436064-03:00;True|2021-05-20T10:03:12.6344181-03:00;</History>
+    <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
     <File Include="About.aspx">
@@ -360,19 +361,19 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="bin/Tecnocuisine.dll">
-      <publishTime>02/08/2023 17:07:12</publishTime>
+      <publishTime>03/07/2023 17:53:39</publishTime>
     </File>
     <File Include="bin/Tecnocuisine.pdb">
-      <publishTime>02/08/2023 17:07:12</publishTime>
+      <publishTime>03/07/2023 17:53:39</publishTime>
     </File>
     <File Include="bin/Tecnocuisine_API.dll">
-      <publishTime>02/08/2023 16:35:24</publishTime>
+      <publishTime>03/07/2023 17:52:50</publishTime>
     </File>
     <File Include="bin/Tecnocuisine_API.dll.config">
       <publishTime>02/07/2023 14:34:37</publishTime>
     </File>
     <File Include="bin/Tecnocuisine_API.pdb">
-      <publishTime>02/08/2023 16:35:24</publishTime>
+      <publishTime>03/07/2023 17:52:50</publishTime>
     </File>
     <File Include="bin/Twilio.Api.dll">
       <publishTime>01/01/0001 00:00:00</publishTime>
@@ -788,6 +789,9 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="Formularios/Administrador/Paises.aspx">
       <publishTime>02/07/2023 14:34:57</publishTime>
     </File>
+    <File Include="Formularios/Administrador/PanelDeControl.aspx">
+      <publishTime>03/01/2023 12:25:18</publishTime>
+    </File>
     <File Include="Formularios/Administrador/PuntosDeVenta.aspx">
       <publishTime>02/07/2023 14:34:57</publishTime>
     </File>
@@ -797,8 +801,11 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="Formularios/Administrador/Sucursales.aspx">
       <publishTime>02/07/2023 14:34:57</publishTime>
     </File>
+    <File Include="Formularios/Compras/CrearVenta.aspx">
+      <publishTime>02/23/2023 14:14:29</publishTime>
+    </File>
     <File Include="Formularios/Compras/Entregas.aspx">
-      <publishTime>02/08/2023 16:43:07</publishTime>
+      <publishTime>02/23/2023 14:14:34</publishTime>
     </File>
     <File Include="Formularios/Compras/EntregasE.aspx">
       <publishTime>02/07/2023 14:34:57</publishTime>
@@ -808,6 +815,9 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     </File>
     <File Include="Formularios/Compras/ProveedoresP.aspx">
       <publishTime>02/07/2023 14:34:57</publishTime>
+    </File>
+    <File Include="Formularios/Compras/Ventas.aspx">
+      <publishTime>02/17/2023 15:19:38</publishTime>
     </File>
     <File Include="Formularios/Contabilidad/PlanDeCuentas.aspx">
       <publishTime>02/07/2023 14:34:57</publishTime>
@@ -849,16 +859,16 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>02/07/2023 14:34:57</publishTime>
     </File>
     <File Include="Formularios/Maestros/Productos.aspx">
-      <publishTime>02/07/2023 14:34:57</publishTime>
+      <publishTime>02/15/2023 11:38:23</publishTime>
     </File>
     <File Include="Formularios/Maestros/ProductosABM.aspx">
-      <publishTime>02/08/2023 12:13:56</publishTime>
+      <publishTime>03/01/2023 12:59:18</publishTime>
     </File>
     <File Include="Formularios/Maestros/Recetas.aspx">
       <publishTime>02/07/2023 14:34:57</publishTime>
     </File>
     <File Include="Formularios/Maestros/RecetasABM.aspx">
-      <publishTime>02/07/2023 14:34:57</publishTime>
+      <publishTime>02/23/2023 14:14:31</publishTime>
     </File>
     <File Include="Formularios/Maestros/RecetasDetalle.aspx">
       <publishTime>02/07/2023 14:34:57</publishTime>
@@ -870,13 +880,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>02/07/2023 14:34:57</publishTime>
     </File>
     <File Include="Formularios/Maestros/StockDetallado.aspx">
-      <publishTime>02/07/2023 14:34:57</publishTime>
+      <publishTime>03/01/2023 11:46:01</publishTime>
     </File>
     <File Include="Formularios/Maestros/StockPopUp.aspx">
       <publishTime>02/07/2023 14:34:57</publishTime>
     </File>
     <File Include="Formularios/Maestros/StockProductosYRecetas.aspx">
-      <publishTime>02/07/2023 14:34:57</publishTime>
+      <publishTime>02/14/2023 10:52:03</publishTime>
     </File>
     <File Include="Formularios/Maestros/Subgrupos.aspx">
       <publishTime>02/07/2023 14:34:57</publishTime>
@@ -886,6 +896,24 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     </File>
     <File Include="Formularios/Maestros/Vendedores.aspx">
       <publishTime>02/07/2023 14:34:57</publishTime>
+    </File>
+    <File Include="Formularios/Ventas/GenerarProduccion.aspx">
+      <publishTime>03/07/2023 17:35:05</publishTime>
+    </File>
+    <File Include="Formularios/Ventas/GenerarVenta.aspx">
+      <publishTime>03/02/2023 12:51:56</publishTime>
+    </File>
+    <File Include="Formularios/Ventas/Produccion.aspx">
+      <publishTime>03/07/2023 17:09:33</publishTime>
+    </File>
+    <File Include="Formularios/Ventas/ProduccionDetallada.aspx">
+      <publishTime>03/07/2023 17:24:31</publishTime>
+    </File>
+    <File Include="Formularios/Ventas/VentaDetallada.aspx">
+      <publishTime>03/02/2023 12:32:40</publishTime>
+    </File>
+    <File Include="Formularios/Ventas/Ventas.aspx">
+      <publishTime>03/02/2023 11:51:30</publishTime>
     </File>
     <File Include="Global.asax">
       <publishTime>02/07/2023 14:34:26</publishTime>
@@ -2292,7 +2320,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>02/07/2023 14:34:26</publishTime>
     </File>
     <File Include="Site.Master">
-      <publishTime>02/07/2023 14:34:57</publishTime>
+      <publishTime>02/27/2023 12:10:36</publishTime>
     </File>
     <File Include="Site.Mobile.Master">
       <publishTime>02/07/2023 14:34:26</publishTime>
@@ -2301,7 +2329,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>02/07/2023 14:34:26</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>02/08/2023 17:07:13</publishTime>
+      <publishTime>03/01/2023 13:37:57</publishTime>
     </File>
   </ItemGroup>
 </Project>

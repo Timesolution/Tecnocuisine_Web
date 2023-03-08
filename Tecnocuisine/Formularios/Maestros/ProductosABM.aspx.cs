@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Http;
 using System.Globalization;
 using static Tecnocuisine.Formularios.Compras.Entregas;
 using Gestion_Api.Entitys;
+using Gestion_Api.Modelo;
 
 namespace Tecnocuisine.Formularios.Maestros
 {
@@ -41,7 +42,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
             if (!IsPostBack)
             {
-               
+
 
                 CargarUnidadesMedida();
                 CargarAlicuotasIVA();
@@ -127,7 +128,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 //fila
                 TableRow tr = new TableRow();
-                tr.ID =  "marca_" + marca.id.ToString();
+                tr.ID = "marca_" + marca.id.ToString();
 
                 //Celdas
 
@@ -135,7 +136,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 celNombre.Text = marca.descripcion;
                 celNombre.VerticalAlign = VerticalAlign.Middle;
                 celNombre.HorizontalAlign = HorizontalAlign.Left;
-                celNombre.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celNombre.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
                 tr.Cells.Add(celNombre);
 
 
@@ -148,8 +149,8 @@ namespace Tecnocuisine.Formularios.Maestros
                 cbxAgregar.ID = "btnSelecPres_" + marca.id + " - " + marca.descripcion;
                 celAccion.Controls.Add(cbxAgregar);
 
-                celAccion.Width = Unit.Percentage(25);
-                celAccion.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celAccion.Width = Unit.Percentage(5);
+                celAccion.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
                 tr.Cells.Add(celAccion);
 
                 phMarcas.Controls.Add(tr);
@@ -173,6 +174,15 @@ namespace Tecnocuisine.Formularios.Maestros
                     txtCosto.Text = producto.costo.ToString().Replace(',', '.');
                     idCategoria.Value = producto.Categorias.id.ToString();
                     string descripcionAtributos = "";
+                    if (producto.ProductoFinal == true)
+                    {
+
+                        cbxGestion.Checked = true;
+                    }
+                    else
+                    {
+                        cbxGestion.Checked = false;
+                    }
                     if (producto.Productos_Atributo != null)
                     {
                         ControladorAtributo controladorAtributo = new ControladorAtributo();
@@ -199,7 +209,7 @@ namespace Tecnocuisine.Formularios.Maestros
                         ControladorPresentacion controladorPresentacion = new ControladorPresentacion();
                         foreach (Productos_Presentacion item in producto.Productos_Presentacion)
                         {
-                            
+
                             Tecnocuisine_API.Entitys.Presentaciones presentacion = controladorPresentacion.ObtenerPresentacionId(item.idPresentacion);
                             if (descripcionPresentaciones == "")
                             {
@@ -216,9 +226,39 @@ namespace Tecnocuisine.Formularios.Maestros
 
                         }
                     }
+                    string descripcionMarcas = "";
+                    if (producto.Marca_Productos != null)
+                    {
+                        ControladorMarca controladorMarca = new ControladorMarca();
+                        foreach (Marca_Productos item in producto.Marca_Productos)
+                        {
+                            Tecnocuisine_API.Entitys.Articulos_Marcas marcas = controladorMarca.ObtenerMarcaId((int)item.id_marca);
+                            if (marcas != null)
+                            {
 
-                    txtDescripcionPresentacion.Text = descripcionPresentaciones;
+                                if (descripcionMarcas == "")
+                                {
+                                    descripcionMarcas = marcas.id + " - " + marcas.descripcion;
+                                    idMarca.Value = marcas.id.ToString();
+                                }
+
+                                else
+                                {
+                                    descripcionMarcas += " , " + marcas.id + " - " + marcas.descripcion;
+                                    idMarca.Value += "," + marcas.id.ToString();
+                                }
+                                CargarMarcaFinalPH(marcas);
+
+                            }
+                        }
+                    }
+
+
+
+                    txtDescripcionPresentacion.Text = "";
                     hfPresentaciones.Value = descripcionPresentaciones;
+                    txtDescripcionMarca.Text = "";
+                    hfMarcas.Value = descripcionMarcas;
                     txtDescripcionAtributo.Text = descripcionAtributos;
                     txtDescripcionCategoria.Text = producto.Categorias.id + " - " + producto.Categorias.descripcion;
                     ListAlicuota.SelectedValue = producto.alicuota.ToString();
@@ -291,7 +331,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 celDescripcion.Font.Bold = true;
                 celDescripcion.VerticalAlign = VerticalAlign.Middle;
                 celDescripcion.HorizontalAlign = HorizontalAlign.Left;
-                celDescripcion.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celDescripcion.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
                 tr.Cells.Add(celDescripcion);
 
                 TableCell celFamilia = new TableCell();
@@ -299,7 +339,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 celFamilia.VerticalAlign = VerticalAlign.Middle;
                 celFamilia.HorizontalAlign = HorizontalAlign.Left;
                 celFamilia.Width = Unit.Percentage(5);
-                //celFamilia.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celFamilia.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
                 tr.Cells.Add(celFamilia);
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
@@ -334,7 +374,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
 
                 celAccion.Width = Unit.Percentage(5);
-                celAccion.Attributes.Add("style", "padding-bottom: 1px !important;text-align:right");
+                celAccion.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
                 tr.Cells.Add(celAccion);
 
                 PHCategorias.Controls.Add(tr);
@@ -481,21 +521,37 @@ namespace Tecnocuisine.Formularios.Maestros
                 Tecnocuisine_API.Entitys.Productos producto = new Tecnocuisine_API.Entitys.Productos();
 
                 producto.descripcion = descripcion;
-                producto.categoria = Convert.ToInt32(Categoria.Split('-')[0].Trim());
-
+                producto.ProductoFinal = cbxGestion;
+                if (Categoria.Trim() == "")
+                {
+                    producto.categoria = 1;
+                }
+                else
+                {
+                    producto.categoria = Convert.ToInt32(Categoria.Split('-')[0].Trim());
+                }
                 List<Productos_Atributo> AtributosProd = new List<Productos_Atributo>();
 
-                string[] vecAtributos = Atributos.Split(',');
-
-                foreach (string i in vecAtributos)
+                if (Atributos.Trim() != "")
                 {
-                    if (!string.IsNullOrEmpty(i))
-                    {
-                        Productos_Atributo pa = new Productos_Atributo();
-                        pa.atributo = Convert.ToInt32(i.Split('-')[0].Trim());
+                    string[] vecAtributos = Atributos.Split(',');
 
-                        AtributosProd.Add(pa);
+                    foreach (string i in vecAtributos)
+                    {
+                        if (!string.IsNullOrEmpty(i))
+                        {
+                            Productos_Atributo pa = new Productos_Atributo();
+                            pa.atributo = Convert.ToInt32(i.Split('-')[0].Trim());
+
+                            AtributosProd.Add(pa);
+                        }
                     }
+                }
+                else
+                {
+                    Productos_Atributo pa = new Productos_Atributo();
+                    pa.atributo = 1;
+                    AtributosProd.Add(pa);
                 }
 
                 producto.Productos_Atributo = AtributosProd;
@@ -507,38 +563,63 @@ namespace Tecnocuisine.Formularios.Maestros
 
 
                 List<Productos_Presentacion> PresentacionProd = new List<Productos_Presentacion>();
-
-                string[] vecPresentaciones = Presentacion.Split(',');
-
-                foreach (string i in vecPresentaciones)
+                if (Presentacion.Trim() == "")
                 {
-                    if (!string.IsNullOrEmpty(i) && i.Trim().Count() > 0)
-                    {
-                        Productos_Presentacion pp = new Productos_Presentacion();
-                        pp.idPresentacion = Convert.ToInt32(i.Split('-')[0].Trim());
+                    Productos_Presentacion pp = new Productos_Presentacion();
+                    pp.idPresentacion = 1;
 
-                        PresentacionProd.Add(pp);
+                    PresentacionProd.Add(pp);
+                }
+                else
+                {
+
+                    string[] vecPresentaciones = Presentacion.Split(',');
+
+                    foreach (string i in vecPresentaciones)
+                    {
+                        if (!string.IsNullOrEmpty(i) && i.Trim().Count() > 0)
+                        {
+                            Productos_Presentacion pp = new Productos_Presentacion();
+                            pp.idPresentacion = Convert.ToInt32(i.Split('-')[0].Trim());
+
+                            PresentacionProd.Add(pp);
+                        }
                     }
                 }
-                List<Marca_Productos> marca_Productos= new List<Marca_Productos>();
-
-                string[] verMarcas = Marca.Split(',');
-
-                foreach (string i in verMarcas)
+                producto.Productos_Presentacion = PresentacionProd;
+                List<Marca_Productos> marca_Productos = new List<Marca_Productos>();
+                if (Marca.Trim() == "")
                 {
-                    if (!string.IsNullOrEmpty(i) && i.Trim().Count() > 0)
-                    {
-                        Marca_Productos pp = new Marca_Productos();
-                        pp.id_marca = Convert.ToInt32(i.Split('-')[0].Trim());
-                        pp.estado = 1;
-                        pp.FechaCreacion = DateTime.Now;
+                    Marca_Productos pp = new Marca_Productos();
+                    pp.id_marca = 1;
+                    pp.estado = 1;
+                    pp.FechaCreacion = DateTime.Now;
 
-                        marca_Productos.Add(pp);
+                    marca_Productos.Add(pp);
+
+                }
+                else
+                {
+
+                    string[] verMarcas = Marca.Split(',');
+
+                    foreach (string i in verMarcas)
+                    {
+                        if (!string.IsNullOrEmpty(i) && i.Trim().Count() > 0)
+                        {
+                            Marca_Productos pp = new Marca_Productos();
+                            pp.id_marca = Convert.ToInt32(i.Split('-')[0].Trim());
+                            pp.estado = 1;
+                            pp.FechaCreacion = DateTime.Now;
+
+                            marca_Productos.Add(pp);
+                        }
                     }
                 }
 
 
                 producto.Marca_Productos = marca_Productos;
+
                 //producto.presentacion = Convert.ToInt32(ListPresentaciones.SelectedValue);
 
                 int resultado = controladorProducto.AgregarProducto(producto);
@@ -594,57 +675,118 @@ namespace Tecnocuisine.Formularios.Maestros
 
         }
         [WebMethod]
-        public static string EditarProducto(string descripcion, string Categoria, string Atributos, string Costo, string IVA, string Unidad, string Presentacion, bool cbxGestion, string img , string idProducto)
+        public static string EditarProducto(string descripcion, string Categoria, string Atributos, string Costo, string IVA, string Unidad, string Presentacion, string Marca, bool cbxGestion, string img, string idProducto)
         {
             try
             {
                 ControladorProducto controladorProducto = new ControladorProducto();
                 Tecnocuisine_API.Entitys.Productos producto = new Tecnocuisine_API.Entitys.Productos();
 
-                producto.id = Convert.ToInt32( idProducto);
+                producto.id = Convert.ToInt32(idProducto);
                 producto.descripcion = descripcion;
-                producto.categoria = Convert.ToInt32(Categoria.Split('-')[0].Trim());
-                producto.costo = Convert.ToDecimal(Costo);
+                if (Categoria.Trim() == "")
+                {
+                    producto.categoria = 1;
+                }
+                else
+                {
+                    producto.categoria = Convert.ToInt32(Categoria.Split('-')[0].Trim());
+                }
+                producto.costo = Convert.ToDecimal(Costo.Replace(".", ","));
                 producto.unidadMedida = Convert.ToInt32(Unidad);
                 producto.alicuota = Convert.ToInt32(IVA);
                 producto.estado = 1;
+                producto.ProductoFinal = cbxGestion;
                 //producto.presentacion = Convert.ToInt32(ListPresentaciones.SelectedValue);
 
                 int resultado = controladorProducto.EditarProducto(producto);
 
                 if (resultado > 0)
                 {
-
-                    string[] atributos = Atributos.Split(',');
-                    controladorProducto.EliminarProductoAtributo(producto.id);
-
-                    foreach (string s in atributos)
+                    if (Atributos.Trim() != "")
                     {
-                        if (s != "")
-                        {
-                            Productos_Atributo atributo = new Productos_Atributo();
-                            atributo.producto = producto.id;
-                            atributo.atributo = Convert.ToInt32(s.Split('-')[0]);
-                            controladorProducto.AgregarProductoAtributo(atributo);
-                        }
 
+                        string[] atributos = Atributos.Split(',');
+                        controladorProducto.EliminarProductoAtributo(producto.id);
+
+                        foreach (string s in atributos)
+                        {
+                            if (s != "")
+                            {
+                                Productos_Atributo atributo = new Productos_Atributo();
+                                atributo.producto = producto.id;
+                                atributo.atributo = Convert.ToInt32(s.Split('-')[0]);
+                                controladorProducto.AgregarProductoAtributo(atributo);
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        controladorProducto.EliminarProductoAtributo(producto.id);
+                        Productos_Atributo atributo = new Productos_Atributo();
+                        atributo.producto = producto.id;
+                        atributo.atributo = 1;
+                        controladorProducto.AgregarProductoAtributo(atributo);
+                    }
+
+                    if (Presentacion.Trim() != "")
+                    {
+
+                        string[] presentaciones = Presentacion.Split(',');
+                        controladorProducto.EliminarProductoPresentacion(producto.id);
+
+                        foreach (string s in presentaciones)
+                        {
+                            if (s.Trim() != "")
+                            {
+                                Productos_Presentacion pres = new Productos_Presentacion();
+                                pres.idProducto = producto.id;
+                                pres.idPresentacion = Convert.ToInt32(s.Split('-')[0]);
+                                controladorProducto.AgregarProductoPresentacion(pres);
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        controladorProducto.EliminarProductoPresentacion(producto.id);
+                        Productos_Presentacion pres = new Productos_Presentacion();
+                        pres.idProducto = producto.id;
+                        pres.idPresentacion = 1;
+                        controladorProducto.AgregarProductoPresentacion(pres);
                     }
 
 
-                    string[] presentaciones = Presentacion.Split(',');
-                    controladorProducto.EliminarProductoPresentacion(producto.id);
 
-                    foreach (string s in presentaciones)
+                    if (Marca.Trim() != "")
                     {
-                        if (s != "")
+                        string[] verMarcas = Marca.Split(',');
+                        controladorProducto.EliminarProductoMarca(producto.id);
+                        foreach (string i in verMarcas)
                         {
-                            Productos_Presentacion atributo = new Productos_Presentacion();
-                            atributo.idProducto = producto.id;
-                            atributo.idPresentacion = Convert.ToInt32(s.Split('-')[0]);
-                            controladorProducto.AgregarProductoPresentacion(atributo);
-                        }
+                            if (!string.IsNullOrEmpty(i) && i.Trim().Count() > 0)
+                            {
+                                Marca_Productos pp = new Marca_Productos();
+                                pp.id_producto = producto.id;
+                                pp.id_marca = Convert.ToInt32(i.Split('-')[0].Trim());
+                                pp.estado = 1;
+                                pp.FechaCreacion = DateTime.Now;
 
+                                controladorProducto.AgregarProductoMarca(pp);
+                            }
+                        }
                     }
+                    else
+                    {
+                        controladorProducto.EliminarProductoMarca(producto.id);
+                        Marca_Productos pp = new Marca_Productos();
+                        pp.id_producto = producto.id;
+                        pp.id_marca = 1;
+                        pp.estado = 1;
+                        pp.FechaCreacion = DateTime.Now;
+                    }
+
                     JavaScriptSerializer javaScript = new JavaScriptSerializer();
                     javaScript.MaxJsonLength = 5000000;
                     string resultadoJSON = javaScript.Serialize("Exito al editar el Producto.");
@@ -669,9 +811,9 @@ namespace Tecnocuisine.Formularios.Maestros
         }
 
         [WebMethod]
-        public static string GuardarReceta2(string descripcion,string codigo,string Categoria,string Sector,string Atributos,string Unidad, 
-            string Tipo, string rinde, string prVenta, string idProductosRecetas,string BrutoT,string CostoT,string BrutoU,string CostoU,
-            string FoodCost,string ContMarg, string BuenasPract,string InfoNut, string idPasosRecetas,string Presentaciones)
+        public static string GuardarReceta2(string descripcion, string codigo, string Categoria, string Sector, string Atributos, string Unidad,
+            string Tipo, string rinde, string prVenta, string idProductosRecetas, string BrutoT, string CostoT, string BrutoU, string CostoU,
+            string FoodCost, string ContMarg, string BuenasPract, string InfoNut, string idPasosRecetas, string Presentaciones, bool ProdFinal)
         {
             try
             {
@@ -694,6 +836,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 Receta.CostMarginal = decimal.Parse(ContMarg, CultureInfo.InvariantCulture);
                 Receta.BuenasPracticas = BuenasPract;
                 Receta.InfNutricional = InfoNut;
+                Receta.ProductoFinal = ProdFinal;
                 //Receta.sector -- falta agregar
 
                 Receta.estado = 1;
@@ -706,7 +849,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 {
                     Receta.rinde = decimal.Parse(rinde, CultureInfo.InvariantCulture);
                 }
-               
+
                 //if (txtDesperdicio.Text == "")
                 //{
                 //    Receta.desperdicio = null;
@@ -774,7 +917,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     }
                     try
                     {
-                        string[] itemsA ;
+                        string[] itemsA;
                         if (Atributos.Contains(","))
                             itemsA = Atributos.Split(',');
                         else
@@ -803,7 +946,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     try
                     {
                         string[] itemsP;
-                        if(idPasosRecetas.Contains(";"))
+                        if (idPasosRecetas.Contains(";"))
                             itemsP = idPasosRecetas.Split(';');
                         else
                             itemsP = idPasosRecetas.Split(',');
@@ -829,14 +972,14 @@ namespace Tecnocuisine.Formularios.Maestros
                     catch (Exception ex)
                     {
 
-                      
+
                     }
 
                     try
                     {
                         string[] itemsS;
 
-                        if(Sector.Contains(","))
+                        if (Sector.Contains(","))
                             itemsS = Sector.Split(',');
                         else
                             itemsS = Sector.Split(';');
@@ -863,7 +1006,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     catch (Exception)
                     {
 
-                       
+
                     }
 
                     try
@@ -916,7 +1059,7 @@ namespace Tecnocuisine.Formularios.Maestros
             {
                 JavaScriptSerializer javaScript = new JavaScriptSerializer();
                 javaScript.MaxJsonLength = 5000000;
-                string resultadoJSON = javaScript.Serialize(" Error al guardar la Receta. ex:"+ex.Message);
+                string resultadoJSON = javaScript.Serialize(" Error al guardar la Receta. ex:" + ex.Message);
                 return resultadoJSON;
             }
 
@@ -925,7 +1068,7 @@ namespace Tecnocuisine.Formularios.Maestros
         [WebMethod]
         public static void EditarReceta2(string descripcion, string codigo, string Categoria, string Sector, string Atributos, string Unidad,
            string Tipo, string rinde, string prVenta, string idProductosRecetas, string BrutoT, string CostoT, string BrutoU, string CostoU,
-           string FoodCost, string ContMarg, string BuenasPract, string InfoNut, string idPasosRecetas, string idReceta,string Presentaciones)
+           string FoodCost, string ContMarg, string BuenasPract, string InfoNut, string idPasosRecetas, string idReceta, string Presentaciones, bool ProdFinal)
         {
             try
             {
@@ -948,6 +1091,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 Receta.CostMarginal = decimal.Parse(ContMarg, CultureInfo.InvariantCulture);
                 Receta.BuenasPracticas = BuenasPract;
                 Receta.InfNutricional = InfoNut;
+                Receta.ProductoFinal = ProdFinal;
                 //Receta.sector -- falta agregar
 
                 Receta.estado = 1;
@@ -1005,7 +1149,7 @@ namespace Tecnocuisine.Formularios.Maestros
                             }
                         }
                     }
-                    
+
                     try
                     {
                         string[] itemsA = Atributos.Split(',');
@@ -1123,7 +1267,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     }
 
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -1154,7 +1298,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 //            await formFile.CopyToAsync(stream);
                 //        }
                 //        path = System.IO.Path.Combine(filePath);
-                        
+
                 //    }
                 //}
 
@@ -1299,7 +1443,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 foreach (var press in presentaciones)
                 {
 
-                    builder.Append(String.Format("<option value='{0}' id='PresentacionID_" + press.id + "_" + press.cantidad+ "'>", press.descripcion));
+                    builder.Append(String.Format("<option value='{0}' id='PresentacionID_" + press.id + "_" + press.cantidad + "'>", press.descripcion));
                 }
 
                 //for (int i = 0; i < table.Rows.Count; i++)
@@ -1312,6 +1456,59 @@ namespace Tecnocuisine.Formularios.Maestros
                 throw;
             }
         }
+
+        public void CargarMarcaFinalPH(Tecnocuisine_API.Entitys.Articulos_Marcas marcas)
+        {
+            try
+            {
+
+                //fila
+                TableRow tr = new TableRow();
+                //tr.ID = "presentacion_" + presentacion.id.ToString();
+
+                //Celdas
+                TableCell celNumero = new TableCell();
+                celNumero.Text = marcas.id.ToString();
+                celNumero.VerticalAlign = VerticalAlign.Middle;
+                celNumero.HorizontalAlign = HorizontalAlign.Right;
+                celNumero.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:  0px; vertical-align: middle;");
+
+                tr.Cells.Add(celNumero);
+
+                TableCell celNombre = new TableCell();
+                celNombre.Text = marcas.descripcion;
+                celNombre.VerticalAlign = VerticalAlign.Middle;
+                celNombre.HorizontalAlign = HorizontalAlign.Left;
+                celNombre.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:  0px; vertical-align: middle;");
+                tr.Cells.Add(celNombre);
+
+                //agrego fila a tabla
+                TableCell celAccion = new TableCell();
+                HtmlGenericControl cbxAgregar = new HtmlGenericControl("a");
+                cbxAgregar.Attributes.Add("class", "btn  btn-xs");
+                cbxAgregar.Attributes.Add("onclick", $"EliminarFilaMarca({marcas.id})");
+                cbxAgregar.Attributes.Add("data-toggle", "tooltip");
+                cbxAgregar.Attributes.Add("data-original-title", "Eliminar");
+                cbxAgregar.Attributes.Add("data-toggle", "tooltip");
+                //cbxAgregar.Attributes.Add("value", "1");
+                cbxAgregar.Style.Add("background-color", "transparent");
+                cbxAgregar.ID = "ContentPlaceHolder1_btnEliminar_" + marcas.id;
+                cbxAgregar.InnerHtml = "<span><i style=\"color: black\" class=\"fa fa-trash - o\"></i></span>";
+                celAccion.Controls.Add(cbxAgregar);
+
+                celAccion.Width = Unit.Percentage(25);
+                celAccion.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:  0px; vertical-align: middle;");
+                tr.Cells.Add(celAccion);
+
+                phMarcasDefinitivo.Controls.Add(tr);
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
         public void CargarPresentacionesFinalPH(Tecnocuisine_API.Entitys.Presentaciones presentacion)
         {
 
@@ -1327,7 +1524,9 @@ namespace Tecnocuisine.Formularios.Maestros
                 celNumero.Text = presentacion.id.ToString();
                 celNumero.VerticalAlign = VerticalAlign.Middle;
                 celNumero.HorizontalAlign = HorizontalAlign.Right;
-                celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celNumero.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:  0px; vertical-align: middle;");
+
+
 
                 tr.Cells.Add(celNumero);
 
@@ -1335,14 +1534,15 @@ namespace Tecnocuisine.Formularios.Maestros
                 celNombre.Text = presentacion.descripcion;
                 celNombre.VerticalAlign = VerticalAlign.Middle;
                 celNombre.HorizontalAlign = HorizontalAlign.Left;
-                celNombre.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celNombre.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
+
                 tr.Cells.Add(celNombre);
 
                 TableCell celCantidad = new TableCell();
-                celCantidad.Text = presentacion.cantidad.ToString().Replace(',','.');
+                celCantidad.Text = presentacion.cantidad.ToString().Replace(',', '.');
                 celCantidad.VerticalAlign = VerticalAlign.Middle;
                 celCantidad.HorizontalAlign = HorizontalAlign.Right;
-                celCantidad.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celCantidad.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
                 tr.Cells.Add(celCantidad);
 
                 //agrego fila a tabla
@@ -1350,17 +1550,21 @@ namespace Tecnocuisine.Formularios.Maestros
                 HtmlGenericControl cbxAgregar = new HtmlGenericControl("a");
                 cbxAgregar.Attributes.Add("class", "btn  btn-xs");
                 //cbxAgregar.Attributes.Add("value", "1");
+                cbxAgregar.Attributes.Add("onclick", $"EliminarFila({presentacion.id})");
+                cbxAgregar.Attributes.Add("data-toggle", "tooltip");
+                cbxAgregar.Attributes.Add("data-original-title", "Eliminar");
+                cbxAgregar.Attributes.Add("data-toggle", "tooltip");
+
                 cbxAgregar.Style.Add("background-color", "transparent");
                 cbxAgregar.ID = "ContentPlaceHolder1_btnEliminar_" + presentacion.id;
                 cbxAgregar.InnerHtml = "<span><i style=\"color: black\" class=\"fa fa-trash - o\"></i></span>";
                 celAccion.Controls.Add(cbxAgregar);
 
                 celAccion.Width = Unit.Percentage(25);
-                celAccion.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celAccion.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
                 tr.Cells.Add(celAccion);
 
                 PHPresentacionFinal.Controls.Add(tr);
-
             }
             catch (Exception ex)
             {
@@ -1383,7 +1587,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 celNumero.Text = presentacion.id.ToString();
                 celNumero.VerticalAlign = VerticalAlign.Middle;
                 celNumero.HorizontalAlign = HorizontalAlign.Right;
-                celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celNumero.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
 
                 tr.Cells.Add(celNumero);
 
@@ -1391,14 +1595,14 @@ namespace Tecnocuisine.Formularios.Maestros
                 celNombre.Text = presentacion.descripcion;
                 celNombre.VerticalAlign = VerticalAlign.Middle;
                 celNombre.HorizontalAlign = HorizontalAlign.Left;
-                celNombre.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celNombre.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
                 tr.Cells.Add(celNombre);
 
                 TableCell celCantidad = new TableCell();
                 celCantidad.Text = presentacion.cantidad.ToString();
                 celCantidad.VerticalAlign = VerticalAlign.Middle;
                 celCantidad.HorizontalAlign = HorizontalAlign.Right;
-                celCantidad.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celCantidad.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
                 tr.Cells.Add(celCantidad);
 
                 //agrego fila a tabla
@@ -1411,7 +1615,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 celAccion.Controls.Add(cbxAgregar);
 
                 celAccion.Width = Unit.Percentage(25);
-                celAccion.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celAccion.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
                 tr.Cells.Add(celAccion);
 
                 phPresentaciones.Controls.Add(tr);

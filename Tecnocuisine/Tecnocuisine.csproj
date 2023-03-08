@@ -279,6 +279,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Formularios\Administrador\Empresas.aspx" />
     <Content Include="Formularios\Administrador\Paises.aspx" />
+    <Content Include="Formularios\Administrador\PanelDeControl.aspx" />
     <Content Include="Formularios\Administrador\Sectores.aspx" />
     <Content Include="Formularios\Administrador\PuntosDeVenta.aspx" />
     <Content Include="Formularios\Administrador\Sucursales.aspx" />
@@ -311,6 +312,12 @@
     <Content Include="Formularios\Maestros\Productos.aspx" />
     <Content Include="Formularios\Maestros\Unidades.aspx" />
     <Content Include="Formularios\Maestros\InsumosF.aspx" />
+    <Content Include="Formularios\Ventas\GenerarProduccion.aspx" />
+    <Content Include="Formularios\Ventas\GenerarVenta.aspx" />
+    <Content Include="Formularios\Ventas\Produccion.aspx" />
+    <Content Include="Formularios\Ventas\ProduccionDetallada.aspx" />
+    <Content Include="Formularios\Ventas\VentaDetallada.aspx" />
+    <Content Include="Formularios\Ventas\Ventas.aspx" />
     <Content Include="Global.asax" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -861,6 +868,13 @@
     <Compile Include="Formularios\Administrador\Paises.aspx.designer.cs">
       <DependentUpon>Paises.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Formularios\Administrador\PanelDeControl.aspx.cs">
+      <DependentUpon>PanelDeControl.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Administrador\PanelDeControl.aspx.designer.cs">
+      <DependentUpon>PanelDeControl.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Formularios\Administrador\Sectores.aspx.cs">
       <DependentUpon>Sectores.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1084,6 +1098,48 @@
     </Compile>
     <Compile Include="Formularios\Maestros\InsumosF.aspx.designer.cs">
       <DependentUpon>InsumosF.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Ventas\GenerarProduccion.aspx.cs">
+      <DependentUpon>GenerarProduccion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Ventas\GenerarProduccion.aspx.designer.cs">
+      <DependentUpon>GenerarProduccion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Ventas\GenerarVenta.aspx.cs">
+      <DependentUpon>GenerarVenta.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Ventas\GenerarVenta.aspx.designer.cs">
+      <DependentUpon>GenerarVenta.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Ventas\Produccion.aspx.cs">
+      <DependentUpon>Produccion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Ventas\Produccion.aspx.designer.cs">
+      <DependentUpon>Produccion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Ventas\ProduccionDetallada.aspx.cs">
+      <DependentUpon>ProduccionDetallada.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Ventas\ProduccionDetallada.aspx.designer.cs">
+      <DependentUpon>ProduccionDetallada.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Ventas\VentaDetallada.aspx.cs">
+      <DependentUpon>VentaDetallada.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Ventas\VentaDetallada.aspx.designer.cs">
+      <DependentUpon>VentaDetallada.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Ventas\Ventas.aspx.cs">
+      <DependentUpon>Ventas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Ventas\Ventas.aspx.designer.cs">
+      <DependentUpon>Ventas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

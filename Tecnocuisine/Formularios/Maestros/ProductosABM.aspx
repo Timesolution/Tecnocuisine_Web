@@ -10,30 +10,31 @@
         .hide {
             display: none;
         }
-        
-            .lblImgDocF:hover
-            {
-                cursor: pointer;
-            }
 
-            .wizard > .content > .body {
-    float: left;
-    /* position: absolute; */
-    width: 95%;
-    height: 95%;
-    padding: 2.5%;
-}
-            .wizard > .steps{
-                display:none
-            }
-            .form-group{
-                height:35px;
-            }
+        .lblImgDocF:hover {
+            cursor: pointer;
+        }
+
+        .wizard > .content > .body {
+            float: left;
+            /* position: absolute; */
+            width: 95%;
+            height: 95%;
+            padding: 2.5%;
+        }
+
+        .wizard > .steps {
+            display: none
+        }
+
+        .form-group {
+            height: 35px;
+        }
     </style>
 
 
     <div class="row wrapper border-bottom white-bg page-heading">
-       <%-- <div class="col-lg-10">
+        <%-- <div class="col-lg-10">
             <h2>Notificaciones</h2>
             <ol class="breadcrumb">
                 <li>
@@ -51,42 +52,29 @@
 
                 <div class="col-lg-12">
                     <div class="ibox">
-                        
+
                         <div class="ibox-content">
                             <%--<p>
                                 This is basic example of Step
                             </p>--%>
                             <%--<form id="form" action="#" class="wizard-big" >--%>
                             <form id="form" action="#" class="wizard-big">
-                                <h1 style="display:none" >DESCRIPCION</h1>
+                                <h1 style="display: none">DESCRIPCION</h1>
                                 <fieldset style="position: relative">
 
                                     <div class="row">
                                         <div class="col-lg-6">
 
-                                            <%-- <div class="form-group">
-                                            <label id="valDocFrente">Imagen del producto</label><br/>
-                                            <div class="image-crop btn-group">
-                                                <label for="ContentPlaceHolder1_inputImage2" style="display:contents" class="lblImgDocF">
-                                                <label for="inputImage2" style="display:contents" class="lblImgDocF">
-                                                    <img src="../../Img/photo.png" id="imgDocF" width="20%"
-                                                        height="20%"/>
-                                                </label>
-                                                <input type="file" accept="image/*" name="file2" id="inputImage2" class="hide"/>
-                                                <input type="file" id="inputImage2" name="file2" class="hide" accept="image/*" onchange="cargarImagen()"/>
-                                                <asp:FileUpload ID="inputImage2" runat="server" CssClass="hide" />
-                                            </div>
-
-                                        </div>--%>
-                                            <div >
+                                            <div>
                                                 <div class="row">
                                                     <div class="col-md-4">
 
                                                         <label>Descripcion *</label>
                                                     </div>
                                                     <div class="col-md-8">
-                                                        <asp:TextBox ID="ProdDescripcion" onchange="ActualizarLabels()" runat="server"  class="form-control required"></asp:TextBox>
+                                                        <asp:TextBox ID="ProdDescripcion" onchange="ActualizarLabels()" runat="server" class="form-control required"></asp:TextBox>
                                                         <%--<input id="ProdDescripcion" onchange="ActualizarLabels()" name="ProdDescripcion" type="text" class="form-control required" />--%>
+                                                        <p id="ValivaDescripcion" class="text-danger text-hide">Tienes que ingresar una Descripcion</p>
                                                     </div>
                                                 </div>
                                                 <div class="row" style="margin-top: 2%">
@@ -96,12 +84,13 @@
                                                         <datalist id="listaCategoria" runat="server"></datalist>
                                                         <div class="input-group">
 
-                                                            <asp:TextBox ID="txtDescripcionCategoria" onfocusout="agregarDesdetxtCategoria(); return false;" list="ContentPlaceHolder1_listaCategoria" class="form-control" runat="server" />
-                                                            <span class="input-group-btn">
+                                                            <asp:TextBox ID="txtDescripcionCategoria" onchange="ActualizarCategoria()" onfocusout="agregarDesdetxtCategoria(); return false;" list="ContentPlaceHolder1_listaCategoria" class="form-control" runat="server" />
+                                                            <span class="input-group-btn" data-toggle="tooltip" data-placement="top" data-original-title="Selecionar una Categoria">
 
                                                                 <asp:LinkButton runat="server" ID="btnCategorias" class="btn btn-primary dim" data-toggle="modal" data-keyboard="false" data-backdrop="static" href="#modalCategoria"><i style="color: white" runat="server" class="fa fa-plus"></i></asp:LinkButton>
                                                             </span>
                                                         </div>
+                                                        <p id="ValivaCategoria" class="text-danger text-hide">Tienes que ingresar una Categoria</p>
                                                         <asp:HiddenField ID="idCategoria" runat="server" />
                                                     </div>
 
@@ -114,9 +103,10 @@
                                                     <div class="col-sm-8">
                                                         <div class="input-group">
                                                             <asp:TextBox ID="txtDescripcionAtributo" class="form-control required" disabled="disabled" runat="server" />
-                                                            <span class="input-group-btn">
+                                                            <span class="input-group-btn" data-toggle="tooltip" data-placement="top"
+                                                                data-original-title="Selecionar Atributo">
 
-                                                                <asp:LinkButton runat="server" disabled="disabled" ID="btnAtributos" class="btn btn-primary dim" data-toggle="modal" href="#modalAtributo"><i style="color: white"  class="fa fa-plus"></i></asp:LinkButton>
+                                                                <asp:LinkButton runat="server" disabled="disabled" ID="btnAtributos" class="btn btn-primary dim"  data-toggle="modal" data-keyboard="false" data-backdrop="static" href="#modalAtributo"><i style="color: white"  class="fa fa-plus"></i></asp:LinkButton>
                                                             </span>
                                                         </div>
                                                         <asp:HiddenField ID="idAtributo" runat="server" />
@@ -127,51 +117,52 @@
 
                                                 </div>
 
-                                                             <%-- ACA VA MARCAS --%>
+                                                <%-- ACA VA MARCAS --%>
 
                                                 <div class="row" style="margin-top: 2%">
-                                                <label class="col-sm-4 control-label editable">Marcas</label>
-                                                <div class="col-sm-8">
-                                                    <datalist id="ListOptionMarcas" runat="server"></datalist>
-                                                    <div class="input-group">
-                                                        <asp:TextBox ID="txtDescripcionMarca" list="ContentPlaceHolder1_ListOptionMarcas" onkeypress="AgregarMarcaDesdeTxt(event)" class="form-control" runat="server" />
-                                                        <span class="input-group-btn">
-                                                            <asp:LinkButton runat="server" ID="LinkButtonMarcas1" OnClientClick="editarMarcas()" class="btn btn-primary dim" data-toggle="modal" href="#modalMarca"><i style="color: white"  class="fa fa-plus"></i></asp:LinkButton>
-                                                        </span>
-                                                    </div>
-                                                    <asp:HiddenField ID="idMarca" runat="server" />
-                                                </div>
-                                               
-                                            </div>
-                                            <div class="row" style="margin-top: 2%; padding-left: 15px">
-                                                <asp:UpdatePanel ID="UpdatePanelMarcas6" runat="server">
-                                                    <ContentTemplate>
-                                                        <div class="table-responsive col-lg-12 center-block" style="max-width: 97.5%;">
-                                                            <table class="table table-striped table-bordered table-hover " id="editableMarcas1">
-
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th style="width: 10%">#</th>
-                                                                        <th style="width: 40%">Descripcion</th>
-                                                                        <th style="width: 10%"></th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody id="tbodyEditableMarcas1">
-                                                                        <asp:PlaceHolder ID="phMarcasDefinitivo" runat="server"></asp:PlaceHolder>
-                                                                </tbody>
-                                                            </table>
+                                                    <label class="col-sm-4 control-label editable">Marcas</label>
+                                                    <div class="col-sm-8">
+                                                        <datalist id="ListOptionMarcas" runat="server"></datalist>
+                                                        <div class="input-group">
+                                                            <asp:TextBox ID="txtDescripcionMarca" onChange="ActualizarMarca()" list="ContentPlaceHolder1_ListOptionMarcas" onkeypress="AgregarMarcaDesdeTxt(event)" class="form-control" runat="server" />
+                                                            <span class="input-group-btn" data-toggle="tooltip" data-placement="top" data-original-title="Selecionar Marca">
+                                                                <a id="LinkButtonMarcas1" onclick="editarMarcas()" class="btn btn-primary dim" data-toggle="modal" data-target="#modalMarca" data-backdrop="static" data-keyboard="false"><i style="color: white" class="fa fa-plus"></i></a>
+                                                            </span>
                                                         </div>
+                                                        <p id="ValivaMarcas" class="text-danger text-hide">Tienes que selecionar minimo una Marca</p>
+                                                        <asp:HiddenField ID="idMarca" runat="server" />
+                                                    </div>
 
-                                                    </ContentTemplate>
+                                                </div>
+                                                <div class="row" style="margin-top: 0.8%; padding-left: 15px">
+                                                    <asp:UpdatePanel ID="UpdatePanelMarcas6" runat="server">
+                                                        <ContentTemplate>
+                                                            <div class="table-responsive col-lg-12 center-block" style="max-width: 97.5%;">
+                                                                <table class="table table-striped table-bordered table-hover " id="editableMarcas1">
 
-                                                </asp:UpdatePanel>
-                                            </div>
-                                                 <%-- Termina MARCAS --%>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th style="width: 10%">#</th>
+                                                                            <th style="width: 40%">Descripcion</th>
+                                                                            <th style="width: 10%"></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="tbodyEditableMarcas1">
+                                                                        <asp:PlaceHolder ID="phMarcasDefinitivo" runat="server"></asp:PlaceHolder>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+
+                                                        </ContentTemplate>
+
+                                                    </asp:UpdatePanel>
+                                                </div>
+                                                <%-- Termina MARCAS --%>
                                                 <div class="row" style="margin-top: 2%">
                                                     <label class="col-sm-4 control-label editable">Producto final</label>
                                                     <div class="col-sm-8">
                                                         <div class="input-group m-b">
-                                                            <asp:CheckBox ID="cbxGestion" onclick="mostrarGestion()" runat="server" />
+                                                            <asp:CheckBox ID="cbxGestion" runat="server"  data-toggle="tooltip" data-placement="top" data-original-title="Selecionar como Producto Final" />
                                                         </div>
                                                     </div>
 
@@ -204,7 +195,7 @@
                                                     <div class="input-group">
                                                         <span class="input-group-addon">$</span><asp:TextBox ID="txtCosto" onchange="ActualizarLabelCosto('valiva')" onkeypress="javascript:return validarNro(event)" class="form-control num required" runat="server" />
                                                     </div>
-
+                                                    <p id="ValivaCosto" class="text-danger text-hide">Tienes que ingresar un costo.</p>
                                                 </div>
                                             </div>
 
@@ -231,21 +222,22 @@
                                                     *Seleccione un valor de Medida.
                                                 </p>
                                             </div>
-                                            <div class="row" style="margin-top: 2%">
+                                            <div class="row" style="margin-top: 0.4%">
                                                 <label class="col-sm-4 control-label editable">Presentacion</label>
                                                 <div class="col-sm-8">
                                                     <datalist id="ListOptionsPresentacion" runat="server"></datalist>
                                                     <div class="input-group">
                                                         <asp:TextBox ID="txtDescripcionPresentacion" list="ContentPlaceHolder1_ListOptionsPresentacion" onkeypress="AgregarPresentacionDesdeTxt(event)" class="form-control" runat="server" />
-                                                        <span class="input-group-btn">
-                                                            <asp:LinkButton runat="server" ID="btnPresentacion" OnClientClick="editarPresentaciones()" class="btn btn-primary dim" data-toggle="modal" href="#modalPresentacion"><i style="color: white"  class="fa fa-plus"></i></asp:LinkButton>
+                                                        <span class="input-group-btn" data-toggle="tooltip" data-placement="top" data-original-title="Selecionar Presentacion">
+                                                            <a id="btnPresentacion" onclick="editarPresentaciones()" class="btn btn-primary dim" data-toggle="modal" data-target="#modalPresentacion" data-backdrop="static" data-keyboard="false"><i style="color: white" class="fa fa-plus"></i></a>
                                                         </span>
                                                     </div>
+                                                    <p id="ValivaPresentacion" class="text-danger text-hide">Tienes que selecionar minimo una Presentacion</p>
                                                     <asp:HiddenField ID="idPresentacion" runat="server" />
                                                 </div>
-                                               
+
                                             </div>
-                                            <div class="row" style="margin-top: 2%; padding-left: 15px">
+                                            <div class="row" style="margin-top: 0.7%; padding-left: 15px">
                                                 <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                                                     <ContentTemplate>
                                                         <div class="table-responsive col-lg-12 center-block" style="max-width: 97.5%;">
@@ -260,7 +252,7 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody id="tbodyEditable1">
-                                                                        <asp:PlaceHolder ID="PHPresentacionFinal" runat="server"></asp:PlaceHolder>
+                                                                    <asp:PlaceHolder ID="PHPresentacionFinal" runat="server"></asp:PlaceHolder>
                                                                 </tbody>
                                                             </table>
                                                         </div>
@@ -270,10 +262,11 @@
                                                 </asp:UpdatePanel>
                                             </div>
                                         </div>
-                                    </div>
-                                  
 
-                            <%--  </fieldset>
+                                    </div>
+
+
+                                    <%--  </fieldset>
                                   <h1>CATEGORIA Y ATRIBUTOS</h1>
                                 <fieldset style="position: relative;">
                                     <h1><label id="lblDescripcion1"></label> </h1>
@@ -292,69 +285,71 @@
                                     
                                   
                                 </fieldset>--%>
-                               <%-- <h1>REVISION</h1>--%>
-                                <fieldset  style="position: relative; display:none">
-                                    <h1><label id="lblDescripcion4"></label> </h1>
-                                   <%-- <input id="acceptTerms" name="acceptTerms" type="checkbox" class="required"/>
+                                    <%-- <h1>REVISION</h1>--%>
+                                    <fieldset style="position: relative; display: none">
+                                        <h1>
+                                            <label id="lblDescripcion4"></label>
+                                        </h1>
+                                        <%-- <input id="acceptTerms" name="acceptTerms" type="checkbox" class="required"/>
                                     <label for="acceptTerms">I agree with the Terms and Conditions.</label>--%>
-                                     <div class="row" style="margin-top: 2%">
-                                         <label class="col-sm-2 control-label editable" >Descripcion</label>
-                                          <div class="col-sm-7">
-                                            <label id="lblDescripcionFinal" ></label>
+                                        <div class="row" style="margin-top: 2%">
+                                            <label class="col-sm-2 control-label editable">Descripcion</label>
+                                            <div class="col-sm-7">
+                                                <label id="lblDescripcionFinal"></label>
+                                            </div>
                                         </div>
-                                     </div>
-                                      <div class="row" style="margin-top: 2%">
-                                         <label class="col-sm-2 control-label editable" >Categoria</label>
-                                          <div class="col-sm-7">
-                                            <label id="lblCategoriaFinal"></label>
+                                        <div class="row" style="margin-top: 2%">
+                                            <label class="col-sm-2 control-label editable">Categoria</label>
+                                            <div class="col-sm-7">
+                                                <label id="lblCategoriaFinal"></label>
+                                            </div>
                                         </div>
-                                     </div>
-                                     <div class="row" style="margin-top: 2%">
-                                         <label class="col-sm-2 control-label editable" >Atributo</label>
-                                          <div class="col-sm-7">
-                                            <label id="lblAtributoFinal"></label>
+                                        <div class="row" style="margin-top: 2%">
+                                            <label class="col-sm-2 control-label editable">Atributo</label>
+                                            <div class="col-sm-7">
+                                                <label id="lblAtributoFinal"></label>
+                                            </div>
                                         </div>
-                                     </div>
-                                      <div class="row" style="margin-top: 2%">
-                                         <label class="col-sm-2 control-label editable" >Costo</label>
-                                          <div class="col-sm-7">
-                                            $<label id="lblCosto"></label>
+                                        <div class="row" style="margin-top: 2%">
+                                            <label class="col-sm-2 control-label editable">Costo</label>
+                                            <div class="col-sm-7">
+                                                $<label id="lblCosto"></label>
+                                            </div>
                                         </div>
-                                     </div>
-                                    <div class="row" style="margin-top: 2%">
-                                         <label class="col-sm-2 control-label editable" >Alicuota IVA</label>
-                                          <div class="col-sm-7">
-                                            <label id="lbliva"></label>
+                                        <div class="row" style="margin-top: 2%">
+                                            <label class="col-sm-2 control-label editable">Alicuota IVA</label>
+                                            <div class="col-sm-7">
+                                                <label id="lbliva"></label>
+                                            </div>
                                         </div>
-                                     </div>
-                                      <div class="row" style="margin-top: 2%">
-                                         <label class="col-sm-2 control-label editable" >Unidad de medida</label>
-                                          <div class="col-sm-7">
-                                            <label id="lblUnidadMedida"> </label>
+                                        <div class="row" style="margin-top: 2%">
+                                            <label class="col-sm-2 control-label editable">Unidad de medida</label>
+                                            <div class="col-sm-7">
+                                                <label id="lblUnidadMedida"></label>
+                                            </div>
                                         </div>
-                                     </div>
-                                    <div class="row" style="margin-top: 2%">
-                                         <label class="col-sm-2 control-label editable" >Presentacion</label>
-                                          <div class="col-sm-7">
-                                            <label id="lblPresentacion"></label>
+                                        <div class="row" style="margin-top: 2%">
+                                            <label class="col-sm-2 control-label editable">Presentacion</label>
+                                            <div class="col-sm-7">
+                                                <label id="lblPresentacion"></label>
+                                            </div>
                                         </div>
-                                     </div>
-                                     <div class="row" style="margin-top: 2%">
-                                         <label class="col-sm-2 control-label editable" >Marcas</label>
-                                          <div class="col-sm-7">
-                                            <label id="lblMarcas"></label>
+                                        <div class="row" style="margin-top: 2%">
+                                            <label class="col-sm-2 control-label editable">Marcas</label>
+                                            <div class="col-sm-7">
+                                                <label id="lblMarcas"></label>
+                                            </div>
                                         </div>
-                                     </div>
-                                  
-                                </fieldset>
+
+                                    </fieldset>
                             </form>
-                            </div>
                         </div>
                     </div>
-
                 </div>
+
             </div>
-        
+        </div>
+
 
 
 
@@ -390,7 +385,7 @@
                             </asp:UpdatePanel>
                         </div>
                         <div class="modal-footer">
-                            <button id="btnAgregarAtributo" onclick="agregarAtributos();return false;" class="buttonLoading btn btn-primary"><i class="fa fa-check"></i>&nbsp;Agregar </button>
+                            <button id="btnAgregarAtributo" onclick="agregarAtributos();return false;" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;Agregar </button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
 
                         </div>
@@ -399,7 +394,7 @@
             </div>
         </div>
 
-          <div id="modalCategoria" class="modal" role="dialog">
+        <div id="modalCategoria" class="modal" role="dialog">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -448,7 +443,7 @@
                 </div>
             </div>
         </div>
-  <%--      PRESENTACION--%>
+        <%--      PRESENTACION--%>
         <div id="modalPresentacion" class="modal" tabindex="-2" role="dialog">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
@@ -505,11 +500,11 @@
             </div>
         </div>
 
-               <%-- Modal MARCAS--%>
+        <%-- Modal MARCAS--%>
 
 
 
-          <div id="modalMarca" class="modal" tabindex="-2" role="dialog">
+        <div id="modalMarca" class="modal" tabindex="-2" role="dialog">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -572,7 +567,7 @@
         <%--<script src="../../Scripts/plugins/slimscroll/jquery.slimscroll.min.js"></script>--%>
 
         <!-- Custom and plugin javascript -->
-        
+
         <%--<script src="../Scripts/plugins/pace/pace.min.js"></script>--%>
 
         <!-- Steps -->
@@ -591,35 +586,50 @@
         <script src="//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
         <link href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.css" rel="stylesheet" />
     </div>
-        <script type="text/javascript">
-            "use strict";
-            var $image = $("#imgDocF")
+    <script type="text/javascript">
+        "use strict";
+        var $image = $("#imgDocF")
 
-            var $inputImageF = $("#inputImage2");
+        var $inputImageF = $("#inputImage2");
 
-            if (window.FileReader) {
-                //inputImageF.addEventListener("change",
-                $("#form").on('change', '#inputImage2', function () {
-                    var fileReader = new FileReader(),
-                        files = this.files,
-                        file;
-                    if (!files.length) {
-                        return;
-                    }
-                    file = files[0];
-                    if (/^image\/\w+$/.test(file.type)) {
-                        fileReader.readAsDataURL(file);
-                        fileReader.onload = function () {
-                            $("#imgDocF").attr("src", this.result)
-                        };
-                    } else {
-                        showMessage("Please choose an image file.");
-                    }
-                });
-            }
-        </script>
+        if (window.FileReader) {
+            //inputImageF.addEventListener("change",
+            $("#form").on('change', '#inputImage2', function () {
+                var fileReader = new FileReader(),
+                    files = this.files,
+                    file;
+                if (!files.length) {
+                    return;
+                }
+                file = files[0];
+                if (/^image\/\w+$/.test(file.type)) {
+                    fileReader.readAsDataURL(file);
+                    fileReader.onload = function () {
+                        $("#imgDocF").attr("src", this.result)
+                    };
+                } else {
+                    showMessage("Please choose an image file.");
+                }
+            });
+        }
+
+
+            //table2 = document.getElementById('tbodyEditable1');
+            //max = table2.rows.length;
+            //for (let i = 0; i < max; i++) {
+            //    id = table2.rows[i].cells[0].innerHTML
+            //    descripcion = table2.rows[i].cells[1].innerHTML
+
+            //    console.log(id + " - " + descripcion);
+            //}
+
+    </script>
     <script>
         $(document).ready(function () {
+            $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+
+
+
             $("#wizard").steps();
             $("#form").steps({
 
@@ -685,7 +695,17 @@
                     }
                 },
                 onFinishing: function (event, currentIndex) {
+                    list = document.querySelectorAll('[aria-label="Pagination"]')
+                    listaUL = list[0]
+                    listaUL.className = "ULFORM"
+                    ulFinal = $(".ULFORM li")[2]
+
+                    document.getElementById("")
                     var form = $(this);
+                    var i = ValidarForm();
+                    if (i == false) {
+                        return false
+                    }
 
                     // Disable validation on fields that are disabled.
                     // At this point it's recommended to do an overall check (mean ignoring only disabled fields)
@@ -694,6 +714,10 @@
                     let selectAliCuota = document.getElementById('<%=ListAlicuota.ClientID%>');
 
                     let url = window.location.href;
+                    ulFinal.className = "disabled"
+
+                    EliminarRepetidos()
+
                     if (!url.includes("a=2")) {
                         $.ajax({
                             method: "POST",
@@ -712,10 +736,14 @@
                             contentType: "application/json",
                             dataType: 'json',
                             error: (error) => {
+                                finishButton.removeClass();
                                 console.log(JSON.stringify(error));
                                 $.msgbox("No se pudo cargar la tabla", { type: "error" });
+                                ulFinal.className = ""
                             },
-                            success: recargarPagina()
+                            success: setTimeout(function () {
+                                recargarPagina();
+                            }, 2000)
                         });
                     } else {
                         let parameter = url.split("?")[1]
@@ -734,7 +762,8 @@
                                 + '" , Costo: "' + document.querySelector('#lblCosto').textContent
                                 + '" , IVA: "' + selectAliCuota.selectedOptions[0].value
                                 + '" , Unidad: "' + selectUnidadMedida.selectedOptions[0].value
-                                + '" , Presentacion: "' + document.getElementById('<%=hfPresentaciones.ClientID%>').value
+                                + '" , Presentacion: "' + document.querySelector('#lblPresentacion').textContent
+                                + '" , Marca: "' + document.querySelector('#lblMarcas').textContent
                                 + '" , cbxGestion: "' + document.getElementById('ContentPlaceHolder1_cbxGestion').checked
                                 + '" , img: "' + ""
                                 + '" , idProducto: "' + idProd
@@ -744,11 +773,12 @@
                             error: (error) => {
                                 console.log(JSON.stringify(error));
                                 $.msgbox("No se pudo cargar la tabla", { type: "error" });
+                                ulFinal.className = ""
                             },
                             success: recargarPagina2
                         });
                     }
-                   
+
                     // Start validation; Prevent form submission if false
                     /*return form.valid();*/
                 },
@@ -767,14 +797,14 @@
                 }
             })
                 .validate({
-                errorPlacement: function (error, element) {
-                    element.before(error);
-                },
-                rules: {
-                    confirm: {
-                        equalTo: "#password"
+                    errorPlacement: function (error, element) {
+                        element.before(error);
+                    },
+                    rules: {
+                        confirm: {
+                            equalTo: "#password"
+                        }
                     }
-                }
                 });
 
             // activate Nestable for list 1
@@ -814,29 +844,51 @@
                     this.value
                 ).draw();
             });
+
+            AgregarToolTips();
+
+
         });
 
         function recargarPagina() {
             window.location.replace('ProductosABM.aspx?m=1');
-          
-        }
-        function recargarPagina2(response) {
 
+        }
+        function AgregarToolTips() {
+            let list = document.querySelectorAll('[aria-label="Pagination"]');
+            let listaUL = list[0];
+            listaUL.className = "ULFORM";
+            let ulFinal = $(".ULFORM li")[2];
+            let buttonGuardar = ulFinal.lastChild;
+            buttonGuardar.setAttribute("data-toggle", "tooltip");
+            buttonGuardar.setAttribute("data-original-title", "Guardar/Editar Producto");
+            buttonGuardar.setAttribute("data-placement", "top");
+            let ulFinalCancel = $(".ULFORM li")[3];
+            let buttonCancel = ulFinalCancel.lastChild;
+            buttonCancel.setAttribute("data-toggle", "tooltip");
+            buttonCancel.setAttribute("data-original-title", "Cancelar Operacion");
+            buttonCancel.setAttribute("data-placement", "top");
+
+        };
+        function recargarPagina2(response) {
             var obj = JSON.parse(response.d);
             toastr.options = { "positionClass": "toast-bottom-right" };
             if (obj == null) {
                 alert('Obj es null');
                 //return;
+            } else if (obj.toUpperCase().includes("ERROR")) {
+                toastr.error(obj, "Error");
+                ulFinal.className = ""
+            } else {
+                console.log(obj);
+                toastr.success(obj, "Exito!");
+                setTimeout(function () {
+                    location.reload()
+                        , 3000
+                })
+
             }
-            else {
-                if (obj.toUpperCase().includes("ERROR")) {
-                    toastr.error(obj, "Error");
-                }
-                else {
-                    console.log(obj);
-                    toastr.success(obj, "Exito!");
-                }
-            }
+
 
         }
         function GuardarProducto2() {
@@ -847,10 +899,10 @@
             $.ajax({
                 method: "POST",
                 url: "ProductosABM.aspx/GuardarProducto2",
-                data: "{id: '1'}",               
+                data: "{id: '1'}",
                 contentType: false,
                 processData: false,
-                async:false,
+                async: false,
                 error: (error) => {
                     console.log(JSON.stringify(error));
                 },
@@ -861,7 +913,44 @@
         }
     </script>
 
-    <script>         
+    <script>      
+        function EliminarRepetidos() {
+
+            let Presentaciones = document.getElementById('lblPresentacion').textContent
+            let Marcas = document.querySelector('#lblMarcas').textContent
+
+            let MarcaCopia = Marcas
+            let PresentacionesCopia = Presentaciones
+
+            PresentacionesCopia = PresentacionesCopia.split(",")
+            MarcaCopia = MarcaCopia.split(",")
+
+            for (let i = 0; i < MarcaCopia.length; i++) {
+                MarcaCopia[i] = MarcaCopia[i].trim();
+            }
+            for (let i = 0; i < PresentacionesCopia.length; i++) {
+                PresentacionesCopia[i] = PresentacionesCopia[i].trim();
+            }
+
+
+            let resultMarcas = MarcaCopia.filter((item, index) => {
+                return MarcaCopia.indexOf(item) === index;
+            })
+            let resultPresentaciones = PresentacionesCopia.filter((item, index) => {
+                return PresentacionesCopia.indexOf(item) === index;
+            })
+
+
+            resultMarcas = resultMarcas.join(", ")
+            resultPresentaciones = resultPresentaciones.join(", ")
+
+            document.getElementById('lblPresentacion').textContent = resultPresentaciones
+            document.querySelector('#lblMarcas').textContent = resultMarcas
+
+
+
+
+        }
         function mostrarGestion() {
             var checkBox = document.getElementById("ContentPlaceHolder1_cbxGestion");
             // Get the output text
@@ -952,14 +1041,40 @@
         }
     </script>
     <script>
-        function ActualizarLabels() {
-            let descripcion = document.getElementById('<%=ProdDescripcion.ClientID%>').value;
-           
-            document.querySelector('#lblDescripcionFinal').textContent = descripcion;
+        function ActualizarCategoria() {
+            document.getElementById('ValivaCategoria').className = 'text-danger text-hide';
 
+            let textDescripcionFinal = document.getElementById('<%=txtDescripcionCategoria.ClientID%>').value
+            let btnAtributos = document.getElementById('ContentPlaceHolder1_btnAtributos');
+            document.getElementById('ContentPlaceHolder1_txtDescripcionAtributo').value = "";
+            document.querySelector('#lblAtributoFinal').textContent = "";
+            if (textDescripcionFinal.length < 3) {
+                /* btnAtributos.clasetssName = 'btn btn - primary dim disabled';*/
+                btnAtributos.setAttribute("disabled", "disabled");
+            } else {
+                /* btnAtributos.className = 'btn btn - primary dim'*/
+                btnAtributos.removeAttribute("disabled");
+            }
+
+
+        }
+
+
+        function ActualizarMarca() {
+            document.getElementById('ValivaMarcas').className = 'text-danger text-hide';
+        }
+        function ActualizarPresentacion() {
+            document.getElementById('ValivaPresentacion').className = 'text-danger text-hide';
+        }
+        function ActualizarLabels() {
+            document.getElementById('ValivaDescripcion').className = 'text-danger text-hide';
+            let descripcion = document.getElementById('<%=ProdDescripcion.ClientID%>').value;
+
+            document.querySelector('#lblDescripcionFinal').textContent = descripcion;
         }
         function ActualizarLabelCosto(id) {
             document.getElementById(id).className = 'text-hide';
+            document.getElementById('ValivaCosto').className = 'text-danger text-hide';
             let Costo = document.getElementById('<%=txtCosto.ClientID%>').value;
             document.querySelector('#lblCosto').textContent = Costo;
         }
@@ -975,271 +1090,440 @@
             let value = select.options[select.selectedIndex].text;
             document.querySelector('#lblUnidadMedida').textContent = value;
         }
-        
+        function ComprobarTablaMarca(descripcion) {
+            let ValidarPorTabla = ValidarMarcasMedianteTabla(descripcion);
+            if (!ValidarPorTabla) { return false }
+            let stringMarca = document.querySelector('#lblMarcas').textContent
+            if (stringMarca.includes(descripcion)) { return false } else { return true }
+        }
+        function ComprobarTablaPresentacion(descripcion) {
+            let ValidarPorTabla = ValidarPresentacionesMedianteTabla(descripcion);
+            if (!ValidarPorTabla) { return false }
+            let stringMarca = document.querySelector('#lblPresentacion').textContent
+            if (stringMarca.includes(descripcion)) { return false } else { return true }
+        }
+
     </script>
 
-   <script>
-       function agregarPresentaciones() {
-           //let table1 = $('#editable1').DataTable();
-           let table2 = document.getElementById('editable2');
-           let cuerpor = document.getElementById("tbodyEditable1");
-           let max = table2.rows.length;
-           let presentacionFinal ='';
-           //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
-           for (let i = 1; i < max; i++) {
-               /*if (i > 1) {*/
-               if (table2.rows[i].cells[3].children[0].checked) {
-                   
-                   presentacionFinal += table2.rows[i].cells[0].innerHTML+" - "+ table2.rows[i].cells[1].innerHTML + ', ';
-                       cuerpor.innerHTML += `<tr>
-                        <td>${table2.rows[i].cells[0].innerHTML}</td>
-                        <td>${table2.rows[i].cells[1].innerHTML}</td>
-                        <td>${table2.rows[i].cells[2].innerHTML}</td>
-                        <td><a onclick="EliminarFila('${table2.rows[i].cells[0].innerHTML}')" id="ContentPlaceHolder1_btnEliminar_${table2.rows[i].cells[0].innerHTML}" class="btn  btn-xs" style="background-color:transparent;"><span><i style="color:black" class="fa fa-trash - o"></i></span></a> </td>
+    <script>
+        function agregarPresentaciones() {
+            //let table1 = $('#editable1').DataTable();
+            let table2 = document.getElementById('editable2');
+            let cuerpor = document.getElementById("tbodyEditable1");
+            let max = table2.rows.length;
+            let presentacionFinal = '';
+            ActualizarPresentacion();
+            //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
+            for (let i = 1; i < max; i++) {
+                /*if (i > 1) {*/
+                if (table2.rows[i].cells[3].children[0].checked) {
+                    descripcion = table2.rows[i].cells[1].innerHTML
+                    let prueba = ComprobarTablaPresentacion(descripcion)
+                    if (prueba) {
+
+                        presentacionFinal += table2.rows[i].cells[0].innerHTML + " - " + table2.rows[i].cells[1].innerHTML + ', ';
+                        cuerpor.innerHTML += `<tr>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;" align="right">${table2.rows[i].cells[0].innerHTML}</td>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;">${table2.rows[i].cells[1].innerHTML}</td>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;" align="right">${table2.rows[i].cells[2].innerHTML}</td>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;"><a onclick="EliminarFila('${table2.rows[i].cells[0].innerHTML}')" id="ContentPlaceHolder1_btnEliminar_${table2.rows[i].cells[0].innerHTML}" data-toggle="tooltip" data-placement="top" data-original-title="Eliminar" class="btn  btn-xs" style="background-color:transparent;"><span><i style="color:black" class="fa fa-trash - o"></i></span></a> </td>
                         </tr>`
-               }
-             
-           }
-          
-           $('#modalPresentacion').modal('hide');
-           document.querySelector('#lblPresentacion').textContent = presentacionFinal;
-           document.getElementById('<%=hfPresentaciones.ClientID%>').value = presentacionFinal;
-           return true;
-       }
+                    }
+                }
 
-       function EliminarFila(id) {
-           let table1 = document.getElementById('editable1');
-           let presentacionFinal = document.querySelector('#lblPresentacion').textContent;
-           let max = table1.rows.length;
+            }
 
-           for (let i = 1; i < max; i++) {
-               if (table1.rows[i].cells[0].innerHTML == id) {
-                   if (presentacionFinal.includes(table1.rows[i].cells[1].innerHTML)) {
-                       let texto = document.getElementById('editable1').rows[i].cells[0].innerHTML + " - " + table1.rows[i].cells[1].innerHTML;
-                       document.querySelector('#lblPresentacion').textContent = document.querySelector('#lblPresentacion').textContent.replace(texto + ',', '');
-                       document.getElementById('<%=hfPresentaciones.ClientID%>').value = document.getElementById('<%=hfPresentaciones.ClientID%>').value.replace(texto + ',', '');
-                   }
-                   document.getElementById('editable1').rows[i].remove();
-                   return;
-               }
-           }
-       }
+            $('#modalPresentacion').modal('hide');
+            document.querySelector('#lblPresentacion').textContent = presentacionFinal;
+            document.getElementById('<%=hfPresentaciones.ClientID%>').value = presentacionFinal;
+            return true;
+        }
 
+        function EliminarFila(id) {
+            let table1 = document.getElementById('editable1');
+            let presentacionFinal = document.querySelector('#lblPresentacion').textContent;
+            let max = table1.rows.length;
 
-       function agregarCategoria(id) {
-           ContentPlaceHolder1_txtDescripcionCategoria.value = id.split('_')[2] + ' - ' + id.split('_')[3];
-           $('#modalCategoria').modal('hide');
-           document.querySelector('#txtBusqueda').value = '';
-           let btnAtributos = document.getElementById('ContentPlaceHolder1_btnAtributos');
-           btnAtributos.removeAttribute('disabled');
-           document.querySelector('#lblCategoriaFinal').textContent = id.split('_')[2] + ' - ' + id.split('_')[3];
-           $.ajax({
-               method: "POST",
-               url: "Categorias.aspx/GetSubAtributos2",
-               data: '{id: "' + id.split('_')[2] + '" }',
-               contentType: "application/json",
-               dataType: 'json',
-               error: (error) => {
-                   console.log(JSON.stringify(error));
-                   $.msgbox("No se pudo cargar la tabla", { type: "error" });
-               },
-               success: successAgregarTipoAtributo
-           });
-           
-       }
-
-       function agregarDesdetxtCategoria() {
-           let btnAtributos = document.getElementById('<%=btnAtributos.ClientID%>');
-           btnAtributos.removeAttribute('disabled');
-
-           let txtcat = document.getElementById('<%=txtDescripcionCategoria.ClientID%>').value
-           const idOption = document.querySelector('option[value="' + txtcat + '"]').id;
-
-           document.querySelector('#lblCategoriaFinal').textContent = txtcat;
-
-           $.ajax({
-               method: "POST",
-               url: "Categorias.aspx/GetSubAtributos2",
-               data: '{id: "' + idOption.split('_')[1] + '" }',
-               contentType: "application/json",
-               dataType: 'json',
-               error: (error) => {
-                   console.log(JSON.stringify(error));
-                   $.msgbox("No se pudo cargar la tabla", { type: "error" });
-               },
-               success: successAgregarTipoAtributo
-           });
-       }
-
-       function AgregarPresentacionDesdeTxt(e) {
-           if (e.keyCode === 13 && !e.shiftKey) {
-               let txtPresentacion = document.getElementById('<%=txtDescripcionPresentacion.ClientID%>').value
-               const idOption = document.querySelector('option[value="' + txtPresentacion + '"]').id;
+            for (let i = 1; i < max; i++) {
+                if (table1.rows[i].cells[0].innerHTML == id) {
+                    if (presentacionFinal.includes(table1.rows[i].cells[1].innerHTML)) {
+                        let texto = document.getElementById('editable1').rows[i].cells[0].innerHTML + " - " + table1.rows[i].cells[1].innerHTML;
+                        document.querySelector('#lblPresentacion').textContent = document.querySelector('#lblPresentacion').textContent.replace(texto + ',', '');
+                        document.getElementById('<%=hfPresentaciones.ClientID%>').value = document.getElementById('<%=hfPresentaciones.ClientID%>').value.replace(texto + ',', '');
+                    }
+                    document.getElementById('editable1').rows[i].remove();
+                    return;
+                }
+            }
+        }
 
 
-               const columns = idOption.split("_");
-               let cuerpor = document.getElementById("tbodyEditable1");
-               cuerpor.innerHTML += `<tr>
-                        <td>${columns[1]}</td>
-                        <td>${txtPresentacion}</td>
-                        <td>${columns[2]}</td>
-                        <td><a onclick="EliminarFila('${columns[1]}')" id="ContentPlaceHolder1_btnEliminar_${columns[1]}" class="btn  btn-xs" style="background-color:transparent;"><span><i style="color:black" class="fa fa-trash - o"></i></span></a> </td>
+        function agregarCategoria(id) {
+            ContentPlaceHolder1_txtDescripcionCategoria.value = id.split('_')[2] + ' - ' + id.split('_')[3];
+            $('#modalCategoria').modal('hide');
+            document.querySelector('#txtBusqueda').value = '';
+            let btnAtributos = document.getElementById('ContentPlaceHolder1_btnAtributos');
+            btnAtributos.removeAttribute('disabled');
+            document.querySelector('#lblCategoriaFinal').textContent = id.split('_')[2] + ' - ' + id.split('_')[3];
+            $.ajax({
+                method: "POST",
+                url: "Categorias.aspx/GetSubAtributos2",
+                data: '{id: "' + id.split('_')[2] + '" }',
+                contentType: "application/json",
+                dataType: 'json',
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                    $.msgbox("No se pudo cargar la tabla", { type: "error" });
+                },
+                success: successAgregarTipoAtributo
+            });
+
+        }
+
+        function agregarDesdetxtCategoria() {
+            let btnAtributos = document.getElementById('<%=btnAtributos.ClientID%>');
+            btnAtributos.removeAttribute('disabled');
+
+            let txtcat = document.getElementById('<%=txtDescripcionCategoria.ClientID%>').value
+            if (txtcat == "") {
+                btnAtributos.setAttribute("disabled", "disabled");
+                let table2 = document.getElementById('editable22');
+                table2.getElementsByTagName('tbody')[0].innerHTML = '';
+                return false
+            }
+            const idOption = document.querySelector('option[value="' + txtcat + '"]').id;
+
+            document.querySelector('#lblCategoriaFinal').textContent = txtcat;
+
+            $.ajax({
+                method: "POST",
+                url: "Categorias.aspx/GetSubAtributos2",
+                data: '{id: "' + idOption.split('_')[1] + '" }',
+                contentType: "application/json",
+                dataType: 'json',
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                    $.msgbox("No se pudo cargar la tabla", { type: "error" });
+                },
+                success: successAgregarTipoAtributo
+            });
+        }
+
+        function AgregarPresentacionDesdeTxt(e) {
+            if (e.keyCode === 13 && !e.shiftKey) {
+                ActualizarPresentacion();
+                let txtPresentacion = document.getElementById('<%=txtDescripcionPresentacion.ClientID%>').value
+                let prueba = ComprobarTablaPresentacion(txtPresentacion)
+                if (prueba) {
+
+                    const idOption = document.querySelector('option[value="' + txtPresentacion + '"]').id;
+
+
+                    const columns = idOption.split("_");
+                    let cuerpor = document.getElementById("tbodyEditable1");
+                    cuerpor.innerHTML += `<tr>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;" align="right">${columns[1]}</td>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;">${txtPresentacion}</td>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;" align="right">${columns[2]}</td>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;"><a onclick="EliminarFila('${columns[1]}')" id="ContentPlaceHolder1_btnEliminar_${columns[1]}" class="btn  btn-xs" data-toggle="tooltip" data-placement="top" data-original-title="Eliminar" style="background-color:transparent;"><span><i style="color:black" class="fa fa-trash - o"></i></span></a> </td>
                         </tr>`;
-               let presentacionFinal = idOption.split("_")[1] + " - " + txtPresentacion;
-               document.querySelector('#lblPresentacion').textContent += presentacionFinal + ", ";
-               document.getElementById('<%=txtDescripcionPresentacion.ClientID%>').value = '';
-           }
-       }
+                    let presentacionFinal = idOption.split("_")[1] + " - " + txtPresentacion;
+                    document.querySelector('#lblPresentacion').textContent += presentacionFinal + ", ";
+                    document.getElementById('<%=txtDescripcionPresentacion.ClientID%>').value = '';
+                }
+            }
+        }
 
-   </script>
-  <script>
+    </script>
+    <script>
 
-      function successAgregarTipoAtributo(response) {
-          var obj = JSON.parse(response.d);
-          var inputs = document.querySelectorAll('input[type=checkbox]')
+        function successAgregarTipoAtributo(response) {
+            var obj = JSON.parse(response.d);
+            var inputs = document.querySelectorAll('input[type=checkbox]')
 
-          if (obj == null || obj == '') {
-              return;
-          }
+            if (obj == null || obj == '') {
+                return;
+            }
 
-          var tiposAtributos = obj.split(',');
+            var tiposAtributos = obj.split(',');
 
-          let table2 = document.getElementById('editable22');
-          let cuerpor = document.getElementById("tbodyEditable1");
-          let max = table2.rows.length;
-          table2.getElementsByTagName('tbody')[0].innerHTML = '';
-          //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
-          for (let j = 0; j < tiposAtributos.length; j++) {
+            let table2 = document.getElementById('editable22');
+            let cuerpor = document.getElementById("tbodyEditable1");
+            let max = table2.rows.length;
+            table2.getElementsByTagName('tbody')[0].innerHTML = '';
+            //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
+            for (let j = 0; j < tiposAtributos.length; j++) {
 
-
-
-              $('#editable22').append(`<tr>
+                $('#editable22').append(`<tr>
                         <td>${tiposAtributos[j].split("_")[0]}</td>
                         <td>${tiposAtributos[j].split("_")[1]}</td>
                         <td style="text-align:right"> <input id="ContentPlaceHolder1_btnSelecAtrib_${tiposAtributos[j].split("_")[0]}_${tiposAtributos[j].split("_")[1]}" class="presentacion radio btn btn-primary btn-xs" type="checkbox" checked> </td>
                         </tr>`);
+            }
+        }
 
-          }
-      }
-     
-          function agregarAtributos() {
-              let table2 = document.getElementById('editable22');
-              let cuerpor = document.getElementById("tbodyEditable1");
-              let max = table2.rows.length;
-              let presentacionFinal = '';
-              //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
-              for (let i = 1; i < max; i++) {
-                  /*if (i > 1) {*/
-                  if (table2.rows[i].cells[2].children[0].checked) {
+        function agregarAtributos() {
+            let table2 = document.getElementById('editable22');
+            let cuerpor = document.getElementById("tbodyEditable1");
+            let max = table2.rows.length;
+            let presentacionFinal = '';
+            //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
+            for (let i = 1; i < max; i++) {
+                /*if (i > 1) {*/
+                if (table2.rows[i].cells[2].children[0].checked) {
 
-                      presentacionFinal += table2.rows[i].cells[0].innerHTML+ " - " + table2.rows[i].cells[1].innerHTML + ', ';
-                    
-                  }
+                    presentacionFinal += table2.rows[i].cells[0].innerHTML + " - " + table2.rows[i].cells[1].innerHTML + ', ';
 
-              }
+                }
 
-              $('#modalAtributo').modal('hide');
-              document.getElementById('ContentPlaceHolder1_txtDescripcionAtributo').value = presentacionFinal.trimEnd(', ');
-              document.querySelector('#lblAtributoFinal').textContent = presentacionFinal.trimEnd(', ');
-              
-              return true;
-      }
+            }
 
+            $('#modalAtributo').modal('hide');
+            document.getElementById('ContentPlaceHolder1_txtDescripcionAtributo').value = presentacionFinal.trimEnd(', ');
+            document.querySelector('#lblAtributoFinal').textContent = presentacionFinal.trimEnd(', ');
 
-      /*MARCAS*/
-      function agregarMarcas() {
-          //let table1 = $('#editable1').DataTable();
-          let table2 = document.getElementById('editableMarcas2');
-          let cuerpor = document.getElementById("tbodyEditableMarcas1");
-          let max = table2.rows.length;
-          let MarcaFinal = '';
-          //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
-          for (let i = 1; i < max; i++) {
-              /*if (i > 1) {*/
-              if (table2.rows[i].cells[1].children[0].checked) {
-                  let id = table2.rows[i].id.split("_")[2]
-                  let descripcion = table2.rows[i].cells[0].innerHTML
-                  MarcaFinal += id + " - " + descripcion + ', ';
-                  cuerpor.innerHTML += `<tr>
-                        <td>${id}</td>
-                        <td>${descripcion}</td>
-                       <td><a onclick="EliminarFilaMarca('${id}')" id="ContentPlaceHolder1_btnEliminar_${table2.rows[i].cells[0].innerHTML}" class="btn  btn-xs" style="background-color:transparent;"><span><i style="color:black" class="fa fa-trash - o"></i></span></a> </td>
+            return true;
+        }
+
+        /*MARCAS*/
+        function agregarMarcas() {
+            //let table1 = $('#editable1').DataTable();
+            ActualizarMarca();
+            let table2 = document.getElementById('editableMarcas2');
+            let cuerpor = document.getElementById("tbodyEditableMarcas1");
+            let max = table2.rows.length;
+            let MarcaFinal = '';
+            //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
+            for (let i = 1; i < max; i++) {
+                /*if (i > 1) {*/
+                if (table2.rows[i].cells[1].children[0].checked) {
+                    let id = table2.rows[i].id.split("_")[2]
+                    let descripcion = table2.rows[i].cells[0].innerHTML
+                    let prueba = ComprobarTablaMarca(descripcion)
+                    if (prueba) {
+                        MarcaFinal += id + " - " + descripcion + ', ';
+                        cuerpor.innerHTML += `<tr>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;" align="right">${id}</td>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;">${descripcion}</td>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;">
+                            <a onclick="EliminarFilaMarca('${id}')" id="ContentPlaceHolder1_btnEliminar_${table2.rows[i].cells[0].innerHTML}" data-toggle="tooltip" data-placement="top" data-original-title="Eliminar" class="btn  btn-xs" style="background-color:transparent;">
+                                <span>
+                                    <i style="color:black" class="fa fa-trash - o"></i>
+                                </span>
+                            </a> 
+                        </td>
                         </tr>`;
-              }
+                    }
+                }
 
-          }
+            }
 
-          $('#modalMarca').modal('hide');
-          document.querySelector('#lblMarcas').textContent = MarcaFinal;
-          document.getElementById('<%=hfMarcas.ClientID%>').value = MarcaFinal;
-                 return true;
-             }
-
-
-      /*       AgregarMarcaDesdeTxt*/
-      function AgregarMarcaDesdeTxt(e) {
-          if (e.keyCode === 13 && !e.shiftKey) {
-              let txtMarca = document.getElementById('<%=txtDescripcionMarca.ClientID%>').value
-              const idOption = document.querySelector('option[value="' + txtMarca + '"]').id;
+            $('#modalMarca').modal('hide');
+            document.querySelector('#lblMarcas').textContent = MarcaFinal;
+            document.getElementById('<%=hfMarcas.ClientID%>').value = MarcaFinal;
+            return true;
+        }
 
 
-               const columns = idOption.split("_");
-              let cuerpor = document.getElementById("tbodyEditableMarcas1");
-               cuerpor.innerHTML += `<tr>
-                        <td>${columns[1]}</td>
-                        <td>${txtMarca.split('-')[1].slice(1)}</td>
-                        <td><a onclick="EliminarFilaMarca('${columns[1]}')" id="ContentPlaceHolder1_btnEliminar_${columns[1]}" class="btn  btn-xs" style="background-color:transparent;"><span><i style="color:black" class="fa fa-trash - o"></i></span></a> </td>
+        /*       AgregarMarcaDesdeTxt*/
+        function AgregarMarcaDesdeTxt(e) {
+            if (e.keyCode === 13 && !e.shiftKey) {
+                ActualizarMarca();
+                let txtMarca = document.getElementById('<%=txtDescripcionMarca.ClientID%>').value
+                const idOption = document.querySelector('option[value="' + txtMarca + '"]').id;
+
+
+                const columns = idOption.split("_");
+                let descripcion = txtMarca.split('-')[1].slice(1)
+                let prueba = ComprobarTablaMarca(descripcion)
+                if (prueba) {
+                    let cuerpor = document.getElementById("tbodyEditableMarcas1");
+                    cuerpor.innerHTML += `<tr>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;" align="right">${columns[1]}</td>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;">${txtMarca.split('-')[1].slice(1)}</td>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;">
+                         <a onclick="EliminarFilaMarca('${columns[1]}')" id="ContentPlaceHolder1_btnEliminar_${columns[1]}" class="btn  btn-xs" data-toggle="tooltip" data-placement="top" data-original-title="Eliminar" style="background-color:transparent;">
+                         <span><i style="color:black" class="fa fa-trash - o"></i>
+                         </span>
+                           </a>
+                          </td>
                         </tr>`;
-              let MarcaFinal = columns[1] + " - " + txtMarca.split('-')[1].slice(1);
-              document.querySelector('#lblMarcas').textContent += MarcaFinal + ", ";
-               document.getElementById('<%=txtDescripcionMarca.ClientID%>').value = '';
-           }
-       }
+                    let MarcaFinal = columns[1] + " - " + txtMarca.split('-')[1].slice(1);
+                    document.querySelector('#lblMarcas').textContent += MarcaFinal + ", ";
+                    document.getElementById('<%=txtDescripcionMarca.ClientID%>').value = '';
+                }
+            }
+        }
 
 
 
-      function EliminarFilaMarca(id) {
-          let table1 = document.getElementById('editableMarcas1');
-          let MarcaFinal = document.querySelector('#lblMarcas').textContent;
-          let max = table1.rows.length;
+        function EliminarFilaMarca(id) {
+            let table1 = document.getElementById('editableMarcas1');
+            let MarcaFinal = document.querySelector('#lblMarcas').textContent;
+            let max = table1.rows.length;
 
-          for (let i = 1; i < max; i++) {
-              if (table1.rows[i].cells[0].innerHTML == id) {
-                  if (MarcaFinal.includes(table1.rows[i].cells[1].innerHTML)) {
-                      let texto = document.getElementById('editableMarcas1').rows[i].cells[0].innerHTML + " - " + table1.rows[i].cells[1].innerHTML;
-                      document.querySelector('#lblMarcas').textContent = document.querySelector('#lblMarcas').textContent.replace(texto + ',', '');
-                      document.getElementById('<%=hfMarcas.ClientID%>').value = document.getElementById('<%=hfMarcas.ClientID%>').value.replace(texto + ',', '');
-                         }
-                  document.getElementById('editableMarcas1').rows[i].remove();
-                         return;
-                     }
-                 }
-      }
+            for (let i = 1; i < max; i++) {
+                if (table1.rows[i].cells[0].innerHTML == id) {
+                    if (MarcaFinal.includes(table1.rows[i].cells[1].innerHTML)) {
+                        let texto = document.getElementById('editableMarcas1').rows[i].cells[0].innerHTML + " - " + table1.rows[i].cells[1].innerHTML;
+                        document.querySelector('#lblMarcas').textContent = document.querySelector('#lblMarcas').textContent.replace(texto + ',', '');
+                        document.getElementById('<%=hfMarcas.ClientID%>').value = document.getElementById('<%=hfMarcas.ClientID%>').value.replace(texto + ',', '');
+                    }
+                    document.getElementById('editableMarcas1').rows[i].remove();
+                    return;
+                }
+            }
+        }
 
         <%--editarMarcas--%>
-      function editarMarcas() {
-          var hiddenMarca = document.getElementById('ContentPlaceHolder1_idMarca');
-          var inputs = $('#ContentPlaceHolder1_UpdatePanelMarcas5').find(':checkbox');
-          for (var j = 0; j < inputs.length; j++) {
-              inputs[j].checked = false;
-          }
+        function editarMarcas() {
+            var hiddenMarca = document.getElementById('ContentPlaceHolder1_idMarca');
+            var inputs = $('#ContentPlaceHolder1_UpdatePanelMarcas5').find(':checkbox');
+            for (var j = 0; j < inputs.length; j++) {
+                inputs[j].checked = false;
+            }
 
 
-          var marcas = hiddenMarca.value.split(',');
-          var inputs = $('#ContentPlaceHolder1_UpdatePanelMarcas5').find(':checkbox');
-          for (var i = 0; i < inputs.length; i++) {
-              for (var j = 0; j < marcas.length; j++) {
-                  if (inputs[i].id.split('_')[2].split('-')[0].trim() == marcas[j]) {
-                      inputs[i].checked = true;
-                  }
-              }
-          }
+            var marcas = hiddenMarca.value.split(',');
+            var inputs = $('#ContentPlaceHolder1_UpdatePanelMarcas5').find(':checkbox');
+            for (var i = 0; i < inputs.length; i++) {
+                for (var j = 0; j < marcas.length; j++) {
+                    if (inputs[i].id.split('_')[2].split('-')[0].trim() == marcas[j]) {
+                        inputs[i].checked = true;
+                    }
+                }
+            }
 
-      }
+        }
 
-  
-  </script>
-     <script src="/../Scripts/autoNumeric/autoNumeric.js"></script>
+        function CargarlblPresentacion() {
+            table2 = document.getElementById('tbodyEditable1');
+            max = table2.rows.length;
+            let Present = document.querySelector('#lblPresentacion');
+            if (max < 1) {
+                return false
+            }
+            for (let i = 0; i < max; i++) {
+                id = table2.rows[i].cells[0].innerHTML
+                descripcion = table2.rows[i].cells[1].innerHTML
+
+                Present.textContent += id + " - " + descripcion + ', ';
+            }
+            return true
+
+        }
+        function AgregarlblMarcas() {
+            let table2 = document.getElementById('tbodyEditableMarcas1');
+            let max = table2.rows.length;
+            let Marc = document.querySelector('#lblMarcas');
+            if (max < 1) {
+                return false
+            }
+            for (let i = 0; i < max; i++) {
+                id = table2.rows[i].cells[0].innerHTML
+                descripcion = table2.rows[i].cells[1].innerHTML
+
+                Marc.textContent += (id + " - " + descripcion + ', ');
+            }
+
+        }
+
+
+        function ValidarForm() {
+            AgregarlblMarcas();
+            CargarlblPresentacion();
+
+
+            // Descripcion
+            let des = document.getElementById('<%=ProdDescripcion.ClientID%>')
+            if (des.value.length < 1) {
+                document.getElementById('ValivaDescripcion').className = 'text-danger'
+                return false
+            } else {
+                document.getElementById('ValivaDescripcion').className = "text-danger text-hide"
+            }
+
+
+
+            // Categoria
+            // Desactivo TEMPORAL
+        <%--    let Cat = document.getElementById('<%=txtDescripcionCategoria.ClientID%>')
+            if (Cat.value.length < 1) {
+                document.getElementById('ValivaCategoria').className = 'text-danger'
+                return false
+            } else {
+                document.getElementById('ValivaCategoria').className = "text-danger text-hide"
+            }--%>
+
+
+            // Marcas
+                // Desactivo TEMPORAL
+            //let Marc = document.querySelector('#lblMarcas').textContent;
+            //if (Marc.length < 1 || Marc == '' || Marc == ' ' || Marc == '  ') {
+            //    document.getElementById('ValivaMarcas').className = "text-danger"
+            //    return false
+            //}
+
+
+            // Costo 
+
+            //let Cost = document.querySelector('#lblCosto').textContent;
+            let Cost = document.getElementById('<%=txtCosto.ClientID%>').value
+            if (Cost.length <= 1) {
+                document.getElementById('ValivaCosto').className = "text-danger"
+                return false
+            } else {
+                document.querySelector('#lblCosto').textContent = Cost
+            }
+
+
+            // Presentacion
+            // Desactivo TEMPORAL
+            //let Present = document.querySelector('#lblPresentacion').textContent;
+            //if (Present.length < 1 || Present == '' || Present == ' ' || Present == '  ') {
+            //    document.getElementById('ValivaPresentacion').className = "text-danger"
+            //    return false
+            //}
+
+            return true;
+        }
+
+        function ValidarMarcasMedianteTabla(text) {
+            var resume_table = document.getElementById("tbodyEditableMarcas1");
+
+            for (var i = 0, row; row = resume_table.rows[i]; i++) {
+                //alert(cell[i].innerText);
+                for (var j = 0, col; col = row.cells[j]; j++) {
+                    if (col.innerText.includes(text)) {
+                        return false
+                    }
+                }
+            }
+            return true
+        }
+
+        function ValidarPresentacionesMedianteTabla(text) {
+            var resume_table = document.getElementById("tbodyEditable1");
+
+            for (var i = 0, row; row = resume_table.rows[i]; i++) {
+                //alert(cell[i].innerText);
+                for (var j = 0, col; col = row.cells[j]; j++) {
+                    if (col.innerText.includes(text)) {
+                        return false
+                    }
+                }
+            }
+            return true
+        }
+<%--      let i = document.getElementById('<%=txtProveedor.ClientID%>').value
+      if (i.length < 1) {
+          document.getElementById('valivaProv').className = 'text-danger'
+          return false
+      } --%>
+
+
+    </script>
+    <script src="/../Scripts/autoNumeric/autoNumeric.js"></script>
     <script>
 
         $(document).ready(function () {

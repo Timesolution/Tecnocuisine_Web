@@ -62,6 +62,8 @@ namespace Tecnocuisine.Formularios.Compras
                 TableCell celFechaEntrega = new TableCell();
                 celFechaEntrega.Text = "<span> "+ entrega.fechaEntrega.ToString("yyyyMMdd")+"</span>"+ entrega.fechaEntrega.ToString("dd/MM/yyyy");
                 celFechaEntrega.VerticalAlign = VerticalAlign.Middle;
+                //celFechaEntrega.Attributes.Add("style", " text-align: center");
+                //celfechaentrega.attributes.add("style", "vertical-align:middle");
                 tr.Cells.Add(celFechaEntrega);
 
                 TableCell celAlias = new TableCell();
