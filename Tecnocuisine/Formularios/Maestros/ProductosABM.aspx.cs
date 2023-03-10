@@ -18,6 +18,7 @@ using System.Globalization;
 using static Tecnocuisine.Formularios.Compras.Entregas;
 using Gestion_Api.Entitys;
 using Gestion_Api.Modelo;
+using System.Web.Services.Description;
 
 namespace Tecnocuisine.Formularios.Maestros
 {
@@ -47,7 +48,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 CargarUnidadesMedida();
                 CargarAlicuotasIVA();
 
-                CargarListaCategoriasSoloHijas();
+                //CargarListaCategoriasSoloHijas();
                 //cargarNestedListAtributos();
 
                 if (accion == 2)
@@ -72,6 +73,11 @@ namespace Tecnocuisine.Formularios.Maestros
             ObtenerPresentaciones();
             ObtenerMarca();
         }
+
+
+
+
+
         public void ObtenerMarca()
         {
             try
@@ -172,7 +178,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     //hiddenEditar.Value = producto.id.ToString();
                     ProdDescripcion.Text = producto.descripcion;
                     txtCosto.Text = producto.costo.ToString().Replace(',', '.');
-                    idCategoria.Value = producto.Categorias.id.ToString();
+                    //idCategoria.Value = producto.Categorias.id.ToString();
                     string descripcionAtributos = "";
                     if (producto.ProductoFinal == true)
                     {
@@ -193,13 +199,13 @@ namespace Tecnocuisine.Formularios.Maestros
                             if (descripcionAtributos == "")
                             {
                                 descripcionAtributos = atributo.id + " - " + atributo.descripcion;
-                                idAtributo.Value = atributo.id.ToString();
+                                //idAtributo.Value = atributo.id.ToString();
                             }
 
                             else
                             {
                                 descripcionAtributos += " , " + atributo.id + " - " + atributo.descripcion;
-                                idAtributo.Value += "," + atributo.id.ToString();
+                                //idAtributo.Value += "," + atributo.id.ToString();
                             }
                         }
                     }
@@ -259,11 +265,11 @@ namespace Tecnocuisine.Formularios.Maestros
                     hfPresentaciones.Value = descripcionPresentaciones;
                     txtDescripcionMarca.Text = "";
                     hfMarcas.Value = descripcionMarcas;
-                    txtDescripcionAtributo.Text = descripcionAtributos;
-                    txtDescripcionCategoria.Text = producto.Categorias.id + " - " + producto.Categorias.descripcion;
+                    //txtDescripcionAtributo.Text = descripcionAtributos;
+                    //txtDescripcionCategoria.Text = producto.Categorias.id + " - " + producto.Categorias.descripcion;
                     ListAlicuota.SelectedValue = producto.alicuota.ToString();
                     ListUnidadMedida.SelectedValue = producto.unidadMedida.ToString();
-                    btnAtributos.Attributes.Remove("disabled");
+                    //btnAtributos.Attributes.Remove("disabled");
 
                 }
 
@@ -306,7 +312,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 //for (int i = 0; i < table.Rows.Count; i++)
                 //    builder.Append(String.Format("<option value='{0}'>", table.Rows[i][0]));
-                listaCategoria.InnerHtml = builder.ToString();
+                //listaCategoria.InnerHtml = builder.ToString();
 
             }
             catch (Exception ex)
@@ -455,7 +461,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 producto.id = idProducto;
                 //producto.descripcion = txtDescripcionProducto.Text;
-                producto.categoria = Convert.ToInt32(idCategoria.Value.Trim());
+                producto.categoria = 1;
                 producto.costo = Convert.ToDecimal(txtCosto.Text);
                 producto.unidadMedida = Convert.ToInt32(ListUnidadMedida.SelectedValue);
                 producto.alicuota = Convert.ToInt32(ListAlicuota.SelectedValue);
@@ -467,20 +473,20 @@ namespace Tecnocuisine.Formularios.Maestros
                 if (resultado > 0)
                 {
 
-                    string[] atributos = idAtributo.Value.Split(',');
-                    controladorProducto.EliminarProductoAtributo(producto.id);
+                    //string[] atributos = idAtributo.Value.Split(',');
+                    //controladorProducto.EliminarProductoAtributo(producto.id);
 
-                    foreach (string s in atributos)
-                    {
-                        if (s != "")
-                        {
-                            Productos_Atributo atributo = new Productos_Atributo();
-                            atributo.producto = producto.id;
-                            atributo.atributo = Convert.ToInt32(s.Split('-')[0]);
-                            controladorProducto.AgregarProductoAtributo(atributo);
-                        }
+                    //foreach (string s in atributos)
+                    //{
+                    //    if (s != "")
+                    //    {
+                    //        Productos_Atributo atributo = new Productos_Atributo();
+                    //        atributo.producto = producto.id;
+                    //        atributo.atributo = Convert.ToInt32(s.Split('-')[0]);
+                    //        controladorProducto.AgregarProductoAtributo(atributo);
+                    //    }
 
-                    }
+                    //}
 
 
                     string[] presentaciones = idPresentacion.Value.Split(',');
@@ -511,6 +517,67 @@ namespace Tecnocuisine.Formularios.Maestros
 
             }
         }
+
+        [WebMethod]
+        public static string GuardarPresentacion(string descripcion, string Cantidad)
+        {
+            try
+            {
+                Tecnocuisine_API.Entitys.Presentaciones presentacion = new Tecnocuisine_API.Entitys.Presentaciones();
+                ControladorPresentacion controladorPresentacion = new ControladorPresentacion();
+                presentacion.descripcion = descripcion;
+                presentacion.cantidad = Convert.ToDecimal(Cantidad);
+                presentacion.estado = 1;
+
+                int resultado = controladorPresentacion.AgregarPresentacion(presentacion);
+
+                if (resultado > 0)
+                {
+                    return resultado + "-" + descripcion;
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+
+        }
+
+        [WebMethod]
+        public static string CrearMarca(string descripcion)
+        {
+            try
+            {
+                Tecnocuisine_API.Entitys.Articulos_Marcas marca = new Tecnocuisine_API.Entitys.Articulos_Marcas();
+                ControladorMarca controladorMarca = new ControladorMarca();
+
+                marca.descripcion = descripcion;
+                marca.estado = 1;
+
+                int resultado = controladorMarca.AgregarMarca(marca);
+
+                if (resultado > 0)
+                {
+                    return resultado + " - " + descripcion;
+                }
+                else
+                {
+                return "";
+                }
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+        }
+
+
+
+
         [WebMethod]
         public static void GuardarProducto(string descripcion, string Categoria, string Atributos, string Costo, string IVA, string Unidad, string Presentacion, string Marca, bool cbxGestion, string img)
         {

@@ -48,7 +48,15 @@
                             </div>
                             <div class="col-sm-8">
 
-
+                                <div class="form-group" style="padding-right: 5px;">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>Entrega Numero:</label>
+                                        </div>
+                                        <div class="col-md-8" id="lblProdNum" runat="server">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group" style="padding-right: 5px;">
                                     <%--<div class="col-md-6">--%>
 
@@ -99,7 +107,7 @@
                                     <asp:TextBox runat="server" onChange="ValidadLote()" ID="txtLote" class="form-control"></asp:TextBox>
 
                                 </div>
-                                <div class="form-group col-md-2" id="data_2">
+                                <div class="form-group col-md-3" id="data_2">
                                     <label style="margin-bottom: auto;">vencimiento</label>
                                     <div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -107,7 +115,7 @@
                                     </div>
                                     <p id="valiva" class="text-danger text-hide">La fecha de vencimiento no puede ser menor a 30 dias </p>
                                 </div>
-                                <div class="col-md-1" style="margin-top: 19px;">
+                                <div class="col-md-1" style="float: right; margin-right: 0px; margin-top: 18px;">
                                     <linkbutton id="btnAgregarProducto" onclick="agregarProductoPH();" data-toggle="tooltip" data-placement="top"
                                         data-original-title="Agregar Producto" class="btn btn-primary dim required">
                                         <i style="color: white" class="fa fa-check"></i>
@@ -138,7 +146,7 @@
                                 <div>
 
                                     <%--<button class="btn btn-sm btn-primary pull-right m-t-n-xs" style="margin-right: 8px;" type="submit"><strong>Guardar</strong></button>--%>
-                                    <asp:Button class="btn btn-sm btn-primary pull-right m-t-n-xs" Style="margin-right: 8px;" data-toggle="tooltip" data-placement="top" title data-original-title="Guardar" 
+                                    <asp:Button class="btn btn-sm btn-primary pull-right m-t-n-xs" Style="margin-right: 8px;" data-toggle="tooltip" data-placement="top" title data-original-title="Guardar"
                                         Text="Guardar" runat="server" ValidationGroup="AgregarEntregas" ID="btnGuardar" OnClick="btnGuardar_Click" />
                                 </div>
                             </div>
@@ -330,10 +338,10 @@
                     if (respuesta.d.length > 0) {
                         $.each(respuesta.d, function () {
                             $("#<%=ddlMarca.ClientID%>").append($("<option></option>").attr("value", this.id).text(this.descripcion))
-                            });
+                        });
 
-                        } else {
-                            $("#<%=ddlMarca.ClientID%>").append($("<option></option>").attr("value", 0).text("No Existen Marcas"))
+                    } else {
+                        $("#<%=ddlMarca.ClientID%>").append($("<option></option>").attr("value", 0).text("No Existen Marcas"))
                     }
                 }
             });
@@ -609,13 +617,13 @@
                 return false
             } else {
 
-            if (DiasDiferencia < 30) {
-                document.getElementById('valiva').className = 'text-danger'
-                return false
-            } else {
-                document.getElementById('valiva').className = 'text-danger text-hide'
-                return true
-            }
+                if (DiasDiferencia < 30) {
+                    document.getElementById('valiva').className = 'text-danger'
+                    return false
+                } else {
+                    document.getElementById('valiva').className = 'text-danger text-hide'
+                    return true
+                }
             }
         }
     </script>

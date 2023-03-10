@@ -38,12 +38,12 @@
                                                             <th>Categoria</th>
                                                             <th>Atributo</th>
                                                             <th>Unidades</th>
-                                                            <th>Costo</th>
+                                                            <th style="text-align: right;">Costo</th>
                                                             <th>Presentaciones</th>
                                                             <th>Marcas</th>
-                                                            <th>Alicuota</th>
+                                                            <th style="text-align: right;">Alicuota</th>
                                                             <th></th>
-                                                    
+
                                                         </tr>
                                                     </thead>
                                                     <tbody>

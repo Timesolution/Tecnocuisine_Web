@@ -166,8 +166,8 @@
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Grupos.aspx">Grupos</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Marcas.aspx">Marcas</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Presentaciones.aspx">Presentaciones</a></li>
-                                <li><a style="color: white !important;" href="../../Formularios/Maestros/StockProductosYRecetas.aspx">Productos</a></li>
-                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Productos.aspx">Insumos</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/StockProductosYRecetas.aspx">Stock</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Productos.aspx">Productos</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Recetas.aspx">Recetas</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/SectorProductivo.aspx">Sector Productivo</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Subgrupos.aspx">Subgrupos</a></li>

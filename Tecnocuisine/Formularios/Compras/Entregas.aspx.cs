@@ -10,6 +10,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
+using Tecnocuisine.Formularios.Ventas;
 using Tecnocuisine.Modelos;
 using Tecnocuisine_API.Controladores;
 using Tecnocuisine_API.Entitys;
@@ -50,7 +51,40 @@ namespace Tecnocuisine.Formularios.Compras
                     CargarEntregaEdit();
                 }
             }
+                    CargarNumeroVenta();
         }
+
+        private void CargarNumeroVenta()
+        {
+            try
+            {
+                ControladorEntregas ce = new ControladorEntregas();
+                GenerarVenta generar = new GenerarVenta();
+                var listaVentas = ce.ObtenerEntregasAll();
+                string fac1;
+                if (listaVentas.Count == 0)
+                {
+                    fac1 = "000001";
+                }
+                else
+                {
+                    string codigo = (listaVentas.Count + 1).ToString();
+                    fac1 = generar.GenerarCodigoPedido(codigo);
+
+
+                    var h3 = new HtmlGenericControl("h3");
+                    h3.InnerText = "#" + fac1;
+                    h3.Attributes["style"] = "float: right; margin-right:10px;";
+                    lblProdNum.Controls.Add(h3);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
+
         public void ObtenerPresentaciones()
         {
             try
@@ -601,6 +635,19 @@ namespace Tecnocuisine.Formularios.Compras
                     newEntrega.fechaEntrega = Convert.ToDateTime(fecha);
                     newEntrega.fechaRealizada = DateTime.Now;
                     newEntrega.Estado = 1;
+                    var EntregasList = ControladorEntregas.ObtenerEntregasAll();
+                    string fac1 = "000000";
+                    if (EntregasList.Count == 0)
+                    {
+                        fac1 = "000001";
+                    }
+                    else
+                    {
+                        string codigo = (EntregasList.Count + 1).ToString();
+                        fac1 = GenerarCodigoPedido(codigo);
+
+                    }
+                    newEntrega.CodigoEntrega = fac1;
 
                     string fechaVencimiento = txtFechaVencimiento.Text;
 
@@ -619,21 +666,31 @@ namespace Tecnocuisine.Formularios.Compras
                             {
                                 if (pr != "")
                                 {
-                                    AgregarNuevoProductoVenta(pr, Convert.ToInt32(txtSector.Text.Split('-')[0]), txtFechaVencimiento.Text);
                                     string[] producto = pr.Split(',');
+                                    string id_Marca = producto[2];
+                                    string id_Producto = producto[0];
+                                    string Tipo = producto[1];
+                                    string Cantidad = producto[3];
+                                    string Presentaciones = producto[5];
+                                    string LoteEnviado = producto[6];
+                                   
                                     if (producto[1] == "Producto")
                                     {
-                                        string LoteEnviado = producto[6];
                                         Entregas_Productos productoNuevo = new Entregas_Productos();
                                         productoNuevo.idEntregas = i;
                                         productoNuevo.idProductos = Convert.ToInt32(producto[0]);
-                                        idProducto = productoNuevo.idProductos.Value;
+                                        productoNuevo.Lote = LoteEnviado;
+                                        productoNuevo.Stock = null;
+                                        productoNuevo.CodigoEntrega = "";
+                                        productoNuevo.idSector = Convert.ToInt32(txtSector.Text.Split('-')[0]);
+                                        productoNuevo.idPresentacion = Convert.ToInt32(Presentaciones);
+                                        productoNuevo.FechaVencimiento = txtFechaVencimiento.Text;
+                                        productoNuevo.idMarca = Convert.ToInt32(id_Marca);
                                         productoNuevo.Cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
                                         ControladorEntregas.AgregarEntrega_Producto(productoNuevo,newEntrega.idSector, LoteEnviado, txtFechaEntrega.Text,Convert.ToInt32(producto[4]));
                                     }
                                     else
                                     {
-                                        string LoteEnviado = producto[6];
                                         Entregas_Recetas RecetaNuevo = new Entregas_Recetas();
                                         RecetaNuevo.idEntregas = i;
                                         RecetaNuevo.idRecetas = Convert.ToInt32(producto[0]);
@@ -661,16 +718,9 @@ namespace Tecnocuisine.Formularios.Compras
 
                             foreach (var pr in items)
                             {
-                                AgregarNuevoProductoVenta(pr, Convert.ToInt32(txtSector.Text.Split('-')[0]), txtFechaVencimiento.Text);
+                                //AgregarNuevoProductoVenta(pr, Convert.ToInt32(txtSector.Text.Split('-')[0]), txtFechaVencimiento.Text);
                                 if (pr != "")
                                 {
-          //codigo + ","
-          //+ tipo + ","
-          //+ idMarca + ","
-          //+ cantidad + ","
-          //+ ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + ","
-          //+ document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value;
-
                                     string[] producto = pr.Split(',');
                                     string id_Marca = producto[2];
                                     string id_Producto = producto[0];
@@ -678,14 +728,20 @@ namespace Tecnocuisine.Formularios.Compras
                                     string Cantidad = producto[3];
                                     string Presentaciones = producto[5];
                                     string LoteEnviado = producto[6];
+
                                     if (producto[1] == "Producto")
                                     {
                                         Entregas_Productos productoNuevo = new Entregas_Productos();
                                         productoNuevo.idEntregas = i;
-                                        productoNuevo.idProductos = Convert.ToInt32(id_Producto);
+                                        productoNuevo.idProductos = Convert.ToInt32(producto[0]);
+                                        productoNuevo.Lote = LoteEnviado;
+                                        productoNuevo.Stock = null;
+                                        productoNuevo.CodigoEntrega = "";
+                                        productoNuevo.idSector = Convert.ToInt32(txtSector.Text.Split('-')[0]);
+                                        productoNuevo.idPresentacion = Convert.ToInt32(Presentaciones);
+                                        productoNuevo.FechaVencimiento = txtFechaVencimiento.Text;
                                         productoNuevo.idMarca = Convert.ToInt32(id_Marca);
-                                        idProducto = productoNuevo.idProductos.Value;
-                                        productoNuevo.Cantidad = decimal.Parse(Cantidad, CultureInfo.InvariantCulture);
+                                        productoNuevo.Cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
                                         ControladorEntregas.AgregarEntrega_Producto(productoNuevo, newEntrega.idSector, LoteEnviado, txtFechaVencimiento.Text,Convert.ToInt32(Presentaciones));
                                     }
                                     else
@@ -720,7 +776,15 @@ namespace Tecnocuisine.Formularios.Compras
 
             }
         }
-
+        public string GenerarCodigoPedido(string value)
+        {
+            var value2 = Convert.ToInt64(value);
+            int length = value2.ToString().Length;
+            int calc = 6 - length;
+            int decimalLength = value2.ToString("D").Length + calc;
+            var result2 = value2.ToString("D" + decimalLength.ToString());
+            return result2;
+        }
         public void AgregarNuevoProductoVenta(string prod,int idsector,string fecha)
         {
            Tecnocuisine_API.Entitys.ProductoVentas newProductoVentas = new Tecnocuisine_API.Entitys.ProductoVentas();

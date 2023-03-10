@@ -2,6 +2,7 @@
 using Gestion_Api.Modelo;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -94,12 +95,10 @@ namespace Tecnocuisine.Formularios.Ventas
             var receta = ControladorReceta.ObtenerRecetaId(this.id);
             if (receta != null)
             {
-                //phTablaProductos
-
                 GetProductosEnRecetasConIDQuery(this.id);
                 string Add = receta.id + " - " + receta.descripcion + " - " + "Receta";
                 txtDescripcionProductos.Text = Add;
-                NRinde.Text = receta.rinde.ToString();
+                NRinde.Text = receta.rinde.ToString().Replace(',', '.');
             }
         }
         public void GetProductosEnRecetasConIDQuery(int idProd)
@@ -153,7 +152,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 //fila
                 TableRow tr = new TableRow();
                 //tr.ID = "presentacion_" + presentacion.id.ToString();
-                tr.Attributes.Add("id", "Receta," + receta.id + "," + item.cantidad);
+                tr.Attributes.Add("id", "Receta%" + receta.id + "%" + item.cantidad);
                 //Celdas
                 TableCell celNumero = new TableCell();
                 celNumero.Text = receta.id.ToString();
@@ -171,18 +170,21 @@ namespace Tecnocuisine.Formularios.Ventas
                 tr.Cells.Add(celNombre);
 
                 TableCell CelCantNecesaria = new TableCell();
-                CelCantNecesaria.Text = item.cantidad.ToString();
+                CelCantNecesaria.Text = item.cantidad.ToString().Replace(',', '.');
                 CelCantNecesaria.VerticalAlign = VerticalAlign.Middle;
                 CelCantNecesaria.HorizontalAlign = HorizontalAlign.Left;
                 CelCantNecesaria.Attributes.Add("style", "vertical-align: middle; text-align: right;");
                 tr.Cells.Add(CelCantNecesaria);
 
+
+                string desc = String.Concat(receta.descripcion.Where(c => !Char.IsWhiteSpace(c)));
                 if (CantStock != null)
                 {
                     TableCell Stock = new TableCell();
-                    Stock.Text = CantStock.stock.ToString();
+                    Stock.Text = CantStock.stock.ToString().Replace(',', '.');
                     Stock.VerticalAlign = VerticalAlign.Middle;
                     Stock.HorizontalAlign = HorizontalAlign.Left;
+                    Stock.Attributes.Add("id", CantStock.stock.ToString().Replace(',', '.') + "-" + desc + "-" + receta.id.ToString());
                     Stock.Attributes.Add("style", "vertical-align: middle; text-align: right;");
                     tr.Cells.Add(Stock);
                 }
@@ -191,6 +193,7 @@ namespace Tecnocuisine.Formularios.Ventas
                     TableCell Stock = new TableCell();
                     Stock.Text = "0";
                     Stock.VerticalAlign = VerticalAlign.Middle;
+                    Stock.Attributes.Add("id", 0 + "-" + desc + "-" + receta.id.ToString());
                     Stock.HorizontalAlign = HorizontalAlign.Left;
                     Stock.Attributes.Add("style", "color:red;vertical-align: middle; text-align: right;");
                     tr.Cells.Add(Stock);
@@ -292,7 +295,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 //fila
                 TableRow tr = new TableRow();
                 //tr.ID = "presentacion_" + presentacion.id.ToString();
-                tr.Attributes.Add("id", "Producto," + item.Productos.id + "," + item.cantidad);
+                tr.Attributes.Add("id", "Producto%" + item.Productos.id + "%" + item.cantidad);
                 //Celdas
                 TableCell celNumero = new TableCell();
                 celNumero.Text = item.Productos.id.ToString();
@@ -310,18 +313,21 @@ namespace Tecnocuisine.Formularios.Ventas
                 tr.Cells.Add(celNombre);
 
                 TableCell CelCantNecesaria = new TableCell();
-                CelCantNecesaria.Text = item.cantidad.ToString();
+                CelCantNecesaria.Text = item.cantidad.ToString().Replace(',', '.');
                 CelCantNecesaria.VerticalAlign = VerticalAlign.Middle;
                 CelCantNecesaria.HorizontalAlign = HorizontalAlign.Left;
                 CelCantNecesaria.Attributes.Add("style", "vertical-align: middle; text-align: right;");
                 tr.Cells.Add(CelCantNecesaria);
 
+
+                string desc = String.Concat(item.Productos.descripcion.Where(c => !Char.IsWhiteSpace(c)));
                 if (stock != null)
                 {
                     TableCell Stock = new TableCell();
-                    Stock.Text = stock.stock.ToString();
+                    Stock.Text = stock.stock.ToString().Replace(',', '.');
                     Stock.VerticalAlign = VerticalAlign.Middle;
                     Stock.HorizontalAlign = HorizontalAlign.Left;
+                    Stock.Attributes.Add("id", stock.stock.ToString().Replace(',', '.') + "-" + desc + "-" + item.Productos.id.ToString());
                     Stock.Attributes.Add("style", "vertical-align: middle;text-align: right;");
                     tr.Cells.Add(Stock);
                 }
@@ -329,6 +335,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 {
                     TableCell Stock = new TableCell();
                     Stock.Text = "0";
+                    Stock.Attributes.Add("id", 0 + "-" + desc + "-" + item.Productos.id.ToString());
                     Stock.VerticalAlign = VerticalAlign.Middle;
                     Stock.HorizontalAlign = HorizontalAlign.Left;
                     Stock.Attributes.Add("style", "color:red;vertical-align: middle;text-align: right;");
@@ -772,11 +779,11 @@ namespace Tecnocuisine.Formularios.Ventas
                         var stock = controladorStockProducto.ObtenerStockProducto(item.idProducto);
                         if (stock != null)
                         {
-                            ListFinal += item.idProducto + "," + item.Productos.descripcion + "," + item.cantidad + "," + stock.stock + "," + controladorUnidad.ObtenerUnidadId(item.Productos.unidadMedida).descripcion + "," + "Producto" + ";";
+                            ListFinal += item.idProducto + "," + item.Productos.descripcion + "," + item.cantidad.ToString().Replace(",",".") + "," + stock.stock.ToString().Replace(",", ".") + "," + controladorUnidad.ObtenerUnidadId(item.Productos.unidadMedida).descripcion + "," + "Producto" + ";";
                         }
                         else
                         {
-                            ListFinal += item.idProducto + "," + item.Productos.descripcion + "," + item.cantidad + "," + 0 + "," + controladorUnidad.ObtenerUnidadId(item.Productos.unidadMedida).descripcion + "," + "Producto" + ";";
+                            ListFinal += item.idProducto + "," + item.Productos.descripcion + "," + item.cantidad.ToString().Replace(",", ".") + "," + 0 + "," + controladorUnidad.ObtenerUnidadId(item.Productos.unidadMedida).descripcion + "," + "Producto" + ";";
 
                         }
                     }
@@ -800,12 +807,12 @@ namespace Tecnocuisine.Formularios.Ventas
                             }
                             if (item.Recetas.UnidadMedida == null)
                             {
-                                ListFinal += receta.id + "," + receta.descripcion + "," + stock + "," + item.cantidad + "," + "1" + "," + "Receta" + ";";
+                                ListFinal += receta.id + "," + receta.descripcion + "," + stock.ToString().Replace(",", ".") + "," + item.cantidad.ToString().Replace(",", ".") + "," + "1" + "," + "Receta" + ";";
 
                             }
                             else
                             {
-                                ListFinal += receta.id + "," + receta.descripcion + "," + item.cantidad + "," + stock + "," + controladorUnidad.ObtenerUnidadId((int)item.Recetas.UnidadMedida).descripcion + "," + "Receta" + ";";
+                                ListFinal += receta.id + "," + receta.descripcion + "," + item.cantidad.ToString().Replace(",", ".") + "," + stock.ToString().Replace(",", ".") + "," + controladorUnidad.ObtenerUnidadId((int)item.Recetas.UnidadMedida).descripcion + "," + "Receta" + ";";
                             }
                         }
                     }
@@ -820,10 +827,11 @@ namespace Tecnocuisine.Formularios.Ventas
         }
 
         [WebMethod]
-        public static void GenerarProduccionFinal(string List, string Marca, string Presentacion, string UnidadMedida, string Sector, string Lote, string CantidadProducida, string idReceta)
+        public static string GenerarProduccionFinal(string List, string Marca, string Presentacion, string UnidadMedida, string Sector, string Lote, string CantidadProducida, string idReceta)
         {
             try
             {
+                string ERROR = "";
                 ControladorStockReceta controladorStockReceta = new ControladorStockReceta();
                 ControladorUnidad cu = new ControladorUnidad();
                 ControladorReceta cr = new ControladorReceta();
@@ -836,16 +844,27 @@ namespace Tecnocuisine.Formularios.Ventas
                 int unidadid = Convert.ToInt16(UnidadMedida.Split('-')[0].Trim());
                 int idreceta = Convert.ToInt16(idReceta);
                 decimal cantProducida = Convert.ToDecimal(CantidadProducida);
-                foreach (var i in item)
+                foreach (var i3 in item)
                 {
-                    if (i != "")
+                    try
                     {
-                        VaciarStockProductos(i.Split(','));
+
+                    if (i3 != "")
+                    {
+                        VaciarStockProductos(i3.Split('%'));
+                    }
+                    }
+                    catch (Exception)
+                    {
+                        ERROR += "-2"+",";
                     }
                 }
+
                 var receta = controladorReceta.ObtenerRecetaId(Convert.ToInt16(idReceta));
                 if (receta != null)
                 {
+                    try
+                    {
 
                     // Stock Receta General
                     var sr = controladorStockReceta.ObtenerStockReceta(receta.id);
@@ -857,7 +876,7 @@ namespace Tecnocuisine.Formularios.Ventas
                         p.Cantidad = Convert.ToDecimal(CantidadProducida);
                         p.idEntregas = null;
 
-                        int i = controladorStockReceta.AgregarStockAll_Receta(p, sectorid, Lote, fecha, presentacionid, marcaid);
+                        int i2 = controladorStockReceta.AgregarStockAll_Receta(p, sectorid, Lote, fecha, presentacionid, marcaid);
 
 
 
@@ -975,21 +994,32 @@ namespace Tecnocuisine.Formularios.Ventas
                     }
 
 
+                    }
+                    catch (Exception)
+                    {
+                        ERROR += "-3" + ",";
+                    }
 
                 }
 
 
 
-                CrearHistoricoProduccion(item, marcaid, presentacionid, sectorid, Lote, cantProducida, unidadid, idreceta);
+              int i =  CrearHistoricoProduccion(item, marcaid, presentacionid, sectorid, Lote, cantProducida, unidadid, idreceta);
+                if (i < 0)
+                {
+                    return ERROR += i+",";
+
+                }
+            return "1,";
             }
             catch (Exception)
             {
-
+                return "-4";
             }
 
         }
 
-        public static void CrearHistoricoProduccion(string[] list, int marca, int presentaciones, int sector, string lote, decimal cantProducida, int unidad, int idreceta)
+        public static int CrearHistoricoProduccion(string[] list, int marca, int presentaciones, int sector, string lote, decimal cantProducida, int unidad, int idreceta)
         {
             try
             {
@@ -1024,10 +1054,13 @@ namespace Tecnocuisine.Formularios.Ventas
                 int idVentaProduccion = controladorVentas.AgregarVentaProducion(VD);
                 foreach (var item in list)
                 {
+                    try
+                    {
+
                     if (item != "")
                     {
 
-                        var arr = item.Split(',');
+                        var arr = item.Split('%');
                         string type = arr[0];
                         int id = Convert.ToInt16(arr[1]);
                         decimal CantProdu = Convert.ToDecimal(arr[3]);
@@ -1052,11 +1085,17 @@ namespace Tecnocuisine.Formularios.Ventas
                         controladorVentas.AgregarVentaProducionRecetaProducto(VDRP);
 
                     }
+                    }
+                    catch (Exception)
+                    {
+
+                    }
                 }
+                return 1;
             }
             catch (Exception)
             {
-
+                return -1;
             }
         }
 

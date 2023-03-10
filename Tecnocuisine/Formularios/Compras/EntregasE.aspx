@@ -39,8 +39,7 @@
                                                             <th style="max-width:100px">Fecha Entrega</th>
                                                             <th >PROVEEDOR </th>
                                                             <th>Sector</th>
-                                                            <th>Observaciones</th>
-                                                            
+                                                            <th>CodigoEntrega</th>
                                                             <th style="max-width:100px"></th>
                                                         </tr>
                                                     </thead>

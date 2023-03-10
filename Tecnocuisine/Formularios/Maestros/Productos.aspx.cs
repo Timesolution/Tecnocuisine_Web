@@ -511,7 +511,7 @@ namespace Tecnocuisine
                 celCosto.Text = producto.costo.ToString().Replace(',', '.');
                 celCosto.VerticalAlign = VerticalAlign.Middle;
                 celCosto.HorizontalAlign = HorizontalAlign.Right;
-                celCosto.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celCosto.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
                 tr.Cells.Add(celCosto);
 
 
@@ -579,7 +579,7 @@ namespace Tecnocuisine
                 celAlicuota.Text = producto.Alicuotas_IVA.porcentaje.ToString().Replace(',', '.') + "%";
                 celAlicuota.VerticalAlign = VerticalAlign.Middle;
                 celAlicuota.HorizontalAlign = HorizontalAlign.Left;
-                celAlicuota.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celAlicuota.Attributes.Add("style", "padding-bottom: 1px !important;text-align: right;");
                 tr.Cells.Add(celAlicuota);
 
 

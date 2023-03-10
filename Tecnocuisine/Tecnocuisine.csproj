@@ -283,6 +283,7 @@
     <Content Include="Formularios\Administrador\Sectores.aspx" />
     <Content Include="Formularios\Administrador\PuntosDeVenta.aspx" />
     <Content Include="Formularios\Administrador\Sucursales.aspx" />
+    <Content Include="Formularios\Compras\EntregaDetallada.aspx" />
     <Content Include="Formularios\Compras\EntregasE.aspx" />
     <Content Include="Formularios\Compras\ProveedoresP.aspx" />
     <Content Include="Formularios\Compras\Proveedores.aspx" />
@@ -895,6 +896,13 @@
     </Compile>
     <Compile Include="Formularios\Administrador\Sucursales.aspx.designer.cs">
       <DependentUpon>Sucursales.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Compras\EntregaDetallada.aspx.cs">
+      <DependentUpon>EntregaDetallada.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Compras\EntregaDetallada.aspx.designer.cs">
+      <DependentUpon>EntregaDetallada.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Compras\EntregasE.aspx.cs">
       <DependentUpon>EntregasE.aspx</DependentUpon>

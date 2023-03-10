@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -77,7 +78,7 @@ namespace Tecnocuisine.Formularios.Compras
                 tr.Cells.Add(celSectorProd);
 
                 TableCell celObservaciones = new TableCell();
-                celObservaciones.Text = entrega.Observaciones;
+                celObservaciones.Text = entrega.CodigoEntrega;
                 celObservaciones.VerticalAlign = VerticalAlign.Middle;
                 tr.Cells.Add(celObservaciones);
 
@@ -91,31 +92,11 @@ namespace Tecnocuisine.Formularios.Compras
                 btnEditar.Style.Add("background-color", "transparent");
                 //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                 //btnDetalles.Attributes.Add("title data-original-title", "Editar");
-                btnEditar.Text = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
-                btnEditar.Click += new EventHandler(this.editarEntrega);
+                btnEditar.Text = "<i class='fa fa-search' style=\"color: black\"></i>";
+                btnEditar.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; background-color: transparent; padding-top: 12px;");
+                btnEditar.Attributes.Add("href", "EntregaDetallada.aspx?i=" + entrega.id);
                 celAction.Controls.Add(btnEditar);
-
-
-                Literal l = new Literal();
-                l.Text = "&nbsp";
-                celAction.Controls.Add(l);
-
-
-                LinkButton btnEliminar = new LinkButton();
-                btnEliminar.ID = "btnEliminar_" + entrega.id;
-
-
-                btnEliminar.OnClientClick = "abrirdialog(" + entrega.id + ");";
-                btnEliminar.CssClass = "btn btn-xs";
-                btnEliminar.Style.Add("background-color", "transparent");
-                //btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                //btnDetalles.Attributes.Add("title data-original-title", "Editar");
-                btnEliminar.Text = "<span><i style='color:black;' class='fa fa-trash'></i></span>";
-                //btnEliminar.Click += new EventHandler(this.EliminarProveedor);
-                celAction.Controls.Add(btnEliminar);
-                celAction.Width = Unit.Percentage(10);
-                celAction.VerticalAlign = VerticalAlign.Middle;
-                celAction.HorizontalAlign = HorizontalAlign.Center;
+                celAction.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
                 tr.Cells.Add(celAction);
 
                 phEntregas.Controls.Add(tr);

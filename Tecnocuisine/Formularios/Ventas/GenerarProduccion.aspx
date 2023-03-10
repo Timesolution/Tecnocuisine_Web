@@ -139,7 +139,20 @@
                                                 <th style="width: 5%; text-align: right;">Cantidad Necesaria</th>
                                                 <th style="width: 5%; text-align: right;">Stock</th>
                                                 <th style="width: 5%; text-align: right;">Unidad de Medida</th>
-                                                <th style="width: 8%; text-align: center;">Cantidad Real</th>
+                                                <th style="width: 8%; text-align: center;">
+                                                    <div class="row">
+                                                        Unidad Real
+
+                                                        <div style="float: right; margin-right: 15px;">
+
+                                                            <a onclick="CargarDatosDeLaTabla()" data-toggle="tooltip" data-placement="top" data-original-title="Rellenar con Cantidad Necesaria">
+                                                                <i class="fa fa-arrow-circle-o-down" style="color: black;"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+
+
+                                                </th>
                                                 <th style="width: 2%; text-align: center;"></th>
                                             </tr>
                                         </thead>
@@ -186,7 +199,7 @@
     <script>
         $(document).ready(function () {
             $("body").tooltip({ selector: '[data-toggle=tooltip]' });
-          let txtProd = document.getElementById("ContentPlaceHolder1_txtDescripcionProductos")
+            let txtProd = document.getElementById("ContentPlaceHolder1_txtDescripcionProductos")
 
             if (txtProd.value != "") {
                 let id = txtProd.value.split("-")[0].trim()
@@ -207,6 +220,28 @@
             }
         }
 
+
+        function CargarDatosDeLaTabla() {
+            var resume_table = document.getElementById("tableProductos");
+            for (var i = 1, row; row = resume_table.rows[i]; i++) {
+                //alert(cell[i].innerText);
+                let Cant = 0;
+                for (var j = 0, col; col = row.cells[j]; j++) {
+                    //alert(col[j].innerText);
+
+                    if (j == 2) {
+                        Cant = col.innerText;
+
+                    }
+                    if (j == 5) {
+                        col2 = col.childNodes[0];
+                        col2.value = Cant;
+                    }
+                }
+            }
+
+        }
+
         function CargarTablaReceta(id) {
             $.ajax({
                 method: "POST",
@@ -220,9 +255,10 @@
                     console.log(JSON.stringify(error));
                 },
                 success: (respuesta) => {
-                    AgregarATabla(respuesta.d)
-                    PedirStockTotal(id)
-                    
+                    console.log(respuesta.d);
+                    AgregarATabla(respuesta.d);
+                    PedirStockTotal(id);
+
                 }
             });
         }
@@ -327,7 +363,7 @@
         }
 
         function RellenarCampos(response) {
-            document.getElementById('ContentPlaceHolder1_NRinde').value = response[2];
+            document.getElementById('ContentPlaceHolder1_NRinde').value = response[2].replace(',', '.');
             document.getElementById('ContentPlaceHolder1_NRinde').disabled = true;
         }
     </script>
@@ -353,9 +389,9 @@
                         document.getElementById("StockDisponible").innerText = 0;
 
                     } else {
-                    document.getElementById("StockDisponible").innerText = stocktotal;
+                        document.getElementById("StockDisponible").innerText = stocktotal;
                     }
-                    
+
                 }
             });
         }
@@ -371,13 +407,13 @@
                     let item = listArr[i].split(",");
                     let id = item[0];
                     let name = item[1];
-                    let cantNecesaria = item[2];
-                    let stock = item[3]
+                    let cantNecesaria = Number(item[2].replace(',', '.')).toFixed(2);
+                    let stock = Number(item[3].replace(',', '.')).toFixed(2)
                     let unidad = item[4];
                     let tipo = item[5];
                     let faReceta = "<td></td>";
 
-                    
+
                     if (tipo == "Receta") {
                         faReceta = "<td> <a data-toggle=tooltip data-placement=top data-original-title=Ver_Receta href=/Formularios/Maestros/RecetasABM.aspx?a=2&i=" + id + "&b=1" + " " + "target=\"_blank\" style=\"color: black;\" > <i class=\"fa fa-search-plus\"></i> </a>   <a data-toggle=tooltip data-placement=top data-original-title=Producir_Receta href=GenerarProduccion.aspx?i=" + id + " " + "target=\"_blank\" style=\"color: black;\" > <i class=\"fa fa-cutlery\"></i> </a>  </td>";
                     }
@@ -385,13 +421,13 @@
                     let Nombre = "<td> " + name + "</td>";
                     let ID = "<td style=\" text-align: right\"> " + id + "</td>";
                     let STOCK = stock > cantNecesaria ? "<td id=" + stock + "-" + name.replaceAll(" ", "") + "-" + id + " style=\" text-align: right;\"> " + stock + "</td>" : "<td id=" + stock + "-" + name.replaceAll(" ", "") + "-" + id + " style=\" text-align: right; color: red;\"> " + stock + "</td>"
-                    let CantNecesaria = "<td style=\" text-align: left\"> " + cantNecesaria + "</td>";
+                    let CantNecesaria = "<td style=\" text-align: right\"> " + cantNecesaria + "</td>";
                     let Unidad = "<td style=\" text-align: right\">" + unidad + "</td>";
 
 
                     if (!document.getElementById('<%= idProductosRecetas.ClientID%>').value.includes(tipo + '_' + id + "," + cantNecesaria)) {
                         $('#tableProductos').append(
-                            "<tr id=" + tipo + "," + id + "," + cantNecesaria + ">" +
+                            "<tr id=" + tipo + "%" + id + "%" + cantNecesaria + ">" +
                             ID +
                             Nombre +
                             CantNecesaria +
@@ -425,7 +461,7 @@
             ListTablaFinal.value = "";
             var resume_table = document.getElementById("tableProductos");
             for (var i = 1, row; row = resume_table.rows[i]; i++) {
-                let ListaAgregar = row.id
+                let ListaAgregar = row.id.replaceAll(".", ",");
                 let total = 0;
                 let stock = 0;
 
@@ -444,24 +480,23 @@
                     }
 
                     if (j == 5) {
-                        console.log(col.childNodes[0].value)
                         if (col.childNodes[0].value == "" || col.childNodes[0].value <= 0) {
                             col2 = col.childNodes[0];
                             col2.style.color = "red";
                             //toastr.error('No puedes poner una Cantidad Real menor o igual a 0 ')
                             //return false
-                            ListaAgregar += "," + col.childNodes[0].value;
+                            ListaAgregar += "%" + col.childNodes[0].value.replace(".", ",");
                         }
                         else if (Number(stock) < Number(col.childNodes[0].value)) {
                             /*           toastr.error('No puedes poner una Cantidad Real mayor al stock disponible ')*/
                             col2 = col.childNodes[0];
                             col2.style.color = "red";
                             /* return false*/
-                            ListaAgregar += "," + col.childNodes[0].value;
+                            ListaAgregar += "%" + col.childNodes[0].value.replace(".", ",");
                         } else {
                             col2 = col.childNodes[0]
                             col2.style.color = "#676a6c";
-                            ListaAgregar += "," + col.childNodes[0].value;
+                            ListaAgregar += "%" + col.childNodes[0].value.replace(".", ",");
                         }
                     }
                 }
@@ -489,7 +524,7 @@
                     + '" , UnidadMedida: "' + document.getElementById("ContentPlaceHolder1_NUnidadMedida").value
                     + '" , Sector: "' + document.getElementById("ContentPlaceHolder1_NSector").value
                     + '" , Lote: "' + document.getElementById("ContentPlaceHolder1_NLote").value
-                    + '" , CantidadProducida: "' + document.getElementById("ContentPlaceHolder1_NCantidadProducida").value
+                    + '" , CantidadProducida: "' + document.getElementById("ContentPlaceHolder1_NCantidadProducida").value.replace(".", ",")
                     + '" , idReceta: "' + document.getElementById('ContentPlaceHolder1_txtDescripcionProductos').value.split("-")[0].trim()
                     + '"}',
                 contentType: "application/json",
@@ -500,9 +535,14 @@
                     btn.disabled = false;
                 },
                 success: (respuesta) => {
-                    toastr.success('Produccion Generada con Exito');
+                    arr = respuesta.d.split(",")
+                    for (let i = 0; i < arr.length; ++i) {
+                        if (arr[i] == "-1" || arr[i] == "-2" || arr[i] == "-3" || arr[i] == "-4") {
+                            return toastr.error('Error de Produccion = ' + arr[i]);
+                        }
+                    }
                     window.location.href = "GenerarProduccion.aspx?m=1"
-                }
+                },
             });
         }
 

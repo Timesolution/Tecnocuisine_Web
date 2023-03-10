@@ -78,6 +78,16 @@
                                                     </div>
                                                 </div>
                                                 <div class="row" style="margin-top: 2%">
+                                                    <label class="col-sm-4 control-label editable">Unidad de medida</label>
+                                                    <div class="col-sm-8">
+                                                        <asp:DropDownList ID="ListUnidadMedida" onchange="ActualizarLabelUnidad('valMedida')" class="form-control m-b" runat="server">
+                                                        </asp:DropDownList>
+                                                    </div>
+                                                    <p id="valMedida" class="text-danger text-hide">
+                                                        *Seleccione un valor de Medida.
+                                                    </p>
+                                                </div>
+                                                <%--<div class="row" style="margin-top: 2%">
 
                                                     <label class="col-sm-4 control-label editable">Categoria</label>
                                                     <div class="col-sm-8">
@@ -97,8 +107,8 @@
 
 
 
-                                                </div>
-                                                <div class="row" style="margin-top: 2%">
+                                                </div>--%>
+                                                <%--     <div class="row" style="margin-top: 2%">
                                                     <label class="col-sm-4 control-label editable">Atributo</label>
                                                     <div class="col-sm-8">
                                                         <div class="input-group">
@@ -115,26 +125,35 @@
                                                     <div class="col-sm-2">
                                                     </div>
 
-                                                </div>
+                                                </div>--%>
 
                                                 <%-- ACA VA MARCAS --%>
 
-                                                <div class="row" style="margin-top: 2%">
+                                                <div class="row">
                                                     <label class="col-sm-4 control-label editable">Marcas</label>
                                                     <div class="col-sm-8">
                                                         <datalist id="ListOptionMarcas" runat="server"></datalist>
                                                         <div class="input-group">
-                                                            <asp:TextBox ID="txtDescripcionMarca" onChange="ActualizarMarca()" list="ContentPlaceHolder1_ListOptionMarcas" onkeypress="AgregarMarcaDesdeTxt(event)" class="form-control" runat="server" />
-                                                            <span class="input-group-btn" data-toggle="tooltip" data-placement="top" data-original-title="Selecionar Marca">
+                                                            <asp:TextBox ID="txtDescripcionMarca" Style="width: 100%" onChange="ActualizarMarca()" list="ContentPlaceHolder1_ListOptionMarcas" onkeypress="AgregarMarcaDesdeTxt(event)" class="form-control" runat="server" />
+
+                                                            <span class="input-group-btn" data-toggle="tooltip" data-placement="top" data-original-title="Agregar/Crear Marca" style="padding-right: 3px; padding-left: 1px;">
+                                                                <a id="LinkButtonMarcas2" class="btn btn-primary dim" data-backdrop="static" data-keyboard="false" onclick="AgregarMarcaDesdeTxt2()"><%--data-toggle="modal" data-target="#modalMarca"--%>
+                                                                    <i style="color: white;" class="fa fa-check"></i>
+                                                                </a>
+                                                            </span>
+                                                            <span class="input-group-btn" data-toggle="tooltip" data-placement="top" data-original-title="Agregar Varias Marcas">
                                                                 <a id="LinkButtonMarcas1" onclick="editarMarcas()" class="btn btn-primary dim" data-toggle="modal" data-target="#modalMarca" data-backdrop="static" data-keyboard="false"><i style="color: white" class="fa fa-plus"></i></a>
                                                             </span>
                                                         </div>
+
+
                                                         <p id="ValivaMarcas" class="text-danger text-hide">Tienes que selecionar minimo una Marca</p>
                                                         <asp:HiddenField ID="idMarca" runat="server" />
                                                     </div>
 
+
                                                 </div>
-                                                <div class="row" style="margin-top: 0.8%; padding-left: 15px">
+                                                <div class="row" style="padding-left: 15px">
                                                     <asp:UpdatePanel ID="UpdatePanelMarcas6" runat="server">
                                                         <ContentTemplate>
                                                             <div class="table-responsive col-lg-12 center-block" style="max-width: 97.5%;">
@@ -162,7 +181,7 @@
                                                     <label class="col-sm-4 control-label editable">Producto final</label>
                                                     <div class="col-sm-8">
                                                         <div class="input-group m-b">
-                                                            <asp:CheckBox ID="cbxGestion" runat="server"  data-toggle="tooltip" data-placement="top" data-original-title="Selecionar como Producto Final" />
+                                                            <asp:CheckBox ID="cbxGestion" runat="server" data-toggle="tooltip" data-placement="top" data-original-title="Selecionar como Producto Final" />
                                                         </div>
                                                     </div>
 
@@ -212,22 +231,17 @@
                                                 </div>
 
                                             </div>
-                                            <div class="row" style="margin-top: 2%">
-                                                <label class="col-sm-4 control-label editable">Unidad de medida</label>
-                                                <div class="col-sm-8">
-                                                    <asp:DropDownList ID="ListUnidadMedida" onchange="ActualizarLabelUnidad('valMedida')" class="form-control m-b" runat="server">
-                                                    </asp:DropDownList>
-                                                </div>
-                                                <p id="valMedida" class="text-danger text-hide">
-                                                    *Seleccione un valor de Medida.
-                                                </p>
-                                            </div>
                                             <div class="row" style="margin-top: 0.4%">
                                                 <label class="col-sm-4 control-label editable">Presentacion</label>
                                                 <div class="col-sm-8">
                                                     <datalist id="ListOptionsPresentacion" runat="server"></datalist>
                                                     <div class="input-group">
                                                         <asp:TextBox ID="txtDescripcionPresentacion" list="ContentPlaceHolder1_ListOptionsPresentacion" onkeypress="AgregarPresentacionDesdeTxt(event)" class="form-control" runat="server" />
+                                                        <span class="input-group-btn" data-toggle="tooltip" data-placement="top" data-original-title="Agregar/Crear Presentacion" style="padding-right: 3px; padding-left: 1px;">
+                                                            <a id="LinkButtonPresentacion2" class="btn btn-primary dim" data-backdrop="static" data-keyboard="false" onclick="AgregarPresentacionDesdeTxt2()"><%--data-toggle="modal" data-target="#modalMarca"--%>
+                                                                <i style="color: white;" class="fa fa-check"></i>
+                                                            </a>
+                                                        </span>
                                                         <span class="input-group-btn" data-toggle="tooltip" data-placement="top" data-original-title="Selecionar Presentacion">
                                                             <a id="btnPresentacion" onclick="editarPresentaciones()" class="btn btn-primary dim" data-toggle="modal" data-target="#modalPresentacion" data-backdrop="static" data-keyboard="false"><i style="color: white" class="fa fa-plus"></i></a>
                                                         </span>
@@ -264,8 +278,6 @@
                                         </div>
 
                                     </div>
-
-
                                     <%--  </fieldset>
                                   <h1>CATEGORIA Y ATRIBUTOS</h1>
                                 <fieldset style="position: relative;">
@@ -353,7 +365,7 @@
 
 
 
-        <div id="modalAtributo" class="modal" tabindex="-2" role="dialog">
+        <%-- <div id="modalAtributo" class="modal" tabindex="-2" role="dialog">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -392,7 +404,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>--%>
 
         <div id="modalCategoria" class="modal" role="dialog">
             <div class="modal-dialog modal-sm">
@@ -499,6 +511,82 @@
                 </div>
             </div>
         </div>
+
+
+
+        <%-- MODAL AGREGAR MARCA--%>
+
+        <div id="modalAgregarMarca" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Estas por crear una Nueva Marca</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <label style="color: red;margin-top: 6px;" class="danger">*</label>
+                            </div>
+                            <label  style="margin-top: 6px;" class="col-sm-2 control-label editable">Descripción</label>
+                            <div class="col-sm-8">
+                                <asp:TextBox ID="txtNuevaMarca" class="form-control" runat="server" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" onclick="CrearNuevaMarca2(event)"><i class="fa fa-check"></i>&nbsp;Agregar </button>
+                        <asp:HiddenField ID="hiddenEditar" runat="server" />
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <%--     MODAL CREAR PRESENTACION--%>
+        <div id="modalCrearPresentaciones" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Agregar</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="col-sm-1">
+                                <label style="color: red;margin-top: 6px;" class="danger">*</label>
+                            </div>
+                            <label style="margin-top: 6px;" class="col-sm-2 control-label editable">Descripción</label>
+                            <div class="col-sm-9">
+                                <asp:TextBox ID="txtDescripcionPresentacionCrear" class="form-control" runat="server" />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="padding-top: 7%">
+                            <div class="col-sm-1">
+                                <label style="color: red;margin-top: 6px;" class="danger">*</label>
+                            </div>
+                            <label style="margin-top: 6px;" class="col-sm-2 control-label editable">
+                                Cantidad</label>
+                            <div class="col-sm-9">
+                                <asp:TextBox ID="txtCantidadPresentacionCrear" class="form-control" runat="server" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" onclick="CrearNuevaPresentacion(event)"><i class="fa fa-check"></i>&nbsp;Agregar </button>
+                        <asp:HiddenField ID="HiddenField1" runat="server" />
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <%-- Modal MARCAS--%>
 
@@ -757,8 +845,8 @@
                             method: "POST",
                             url: "ProductosABM.aspx/EditarProducto",
                             data: '{ descripcion: "' + document.getElementById('<%=ProdDescripcion.ClientID%>').value
-                                + '" , Categoria: "' + document.getElementById('<%=txtDescripcionCategoria.ClientID%>').value
-                                + '" , Atributos: "' + document.getElementById('ContentPlaceHolder1_txtDescripcionAtributo').value
+                                + '" , Categoria: "' + 1                                                                          <%--document.getElementById('<%=txtDescripcionCategoria.ClientID%>').value--%>
+                                + '" , Atributos: "' + 1
                                 + '" , Costo: "' + document.querySelector('#lblCosto').textContent
                                 + '" , IVA: "' + selectAliCuota.selectedOptions[0].value
                                 + '" , Unidad: "' + selectUnidadMedida.selectedOptions[0].value
@@ -914,6 +1002,138 @@
     </script>
 
     <script>      
+        
+        function CrearNuevaPresentacion(e) {
+            e.preventDefault();
+            txtCantidad = document.getElementById('<%=txtCantidadPresentacionCrear.ClientID%>').value;
+            txtDescripcion = document.getElementById('<%=txtDescripcionPresentacionCrear.ClientID%>').value;
+            console.log(txtCantidad, " ", txtDescripcion);
+            if (txtDescripcion.trim() != "" && txtCantidad > 0) {
+                    $.ajax({
+                        method: "POST",
+                        url: "ProductosABM.aspx/GuardarPresentacion",
+                        data: '{ descripcion: "' + txtDescripcion
+                            + '" , Cantidad: "' + txtCantidad
+                            +'"}',
+                        contentType: "application/json",
+                        dataType: 'json',
+                        error: (error) => {
+                            console.log(JSON.stringify(error));
+                        },
+                        success: (result) => {
+                            $('#modalCrearPresentaciones').modal('hide');
+                            if (result.d != "") {
+                                
+                                let list = document.getElementById("ContentPlaceHolder1_ListOptionsPresentacion")
+                                let arr = result.d.split("-");
+
+                                let newOption = `<option value="${arr[1]}" id="PresentacionID_${arr[0]}_${txtCantidad}"></option>`
+                                list.innerHTML += newOption;
+                                AgregarPresentacionATabla(arr[1]);
+                                toastr.success("Presentacion Creada con EXITO");
+                            } else {
+                                toastr.error("Error, intente de nuevo");
+                            }
+                        }
+
+                    });
+                } else {
+                    toastr.error("Faltan Datos");
+                }
+
+            }
+
+
+
+        function CrearNuevaMarca2(e) {
+            e.preventDefault();
+            nombreMarca = document.getElementById('<%=txtNuevaMarca.ClientID%>').value
+            if (nombreMarca.trim() != "") {
+                $.ajax({
+                    method: "POST",
+                    url: "ProductosABM.aspx/CrearMarca",
+                    data: '{ descripcion: "' + nombreMarca
+                        + '"}',
+                    contentType: "application/json",
+                    dataType: 'json',
+                    error: (error) => {
+                        console.log(JSON.stringify(error));
+                        $.msgbox("No se pudo cargar la tabla", { type: "error" });
+                        ulFinal.className = ""
+                    },
+                    success: (result) => {
+                        $('#modalAgregarMarca').modal('hide');
+                        if (result.d != "") {
+                            let list = document.getElementById("ContentPlaceHolder1_ListOptionMarcas")
+                            let arr = result.d.split("-");
+                            
+                            let newOption = `<option value="${result.d}" id='Marca_ ${arr[0].trim()} _ ${arr[1].trim()}'></option>`
+                            list.innerHTML += newOption;
+                            AgregarMarcaATabla(result.d);
+                            toastr.success("Marca Creada con EXITO");
+                        } else {
+                            toastr.error("Error, intente de nuevo");
+                        }
+                    }
+
+                });
+            } else {
+                toastr.error("No se puede crear una Marca con descripcion vacia");
+            }
+
+        }
+
+
+        function AgregarPresentacionATabla(txt){
+            ActualizarPresentacion();
+            let txtPresentacion = txt;
+                let prueba = ComprobarTablaPresentacion(txtPresentacion)
+                if (prueba) {
+
+                    const idOption = document.querySelector('option[value="' + txtPresentacion + '"]').id;
+
+
+                    const columns = idOption.split("_");
+                    let cuerpor = document.getElementById("tbodyEditable1");
+                    cuerpor.innerHTML += `<tr>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;" align="right">${columns[1]}</td>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;">${txtPresentacion}</td>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;" align="right">${columns[2]}</td>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;"><a onclick="EliminarFila('${columns[1]}')" id="ContentPlaceHolder1_btnEliminar_${columns[1]}" class="btn  btn-xs" data-toggle="tooltip" data-placement="top" data-original-title="Eliminar" style="background-color:transparent;"><span><i style="color:black" class="fa fa-trash - o"></i></span></a> </td>
+                        </tr>`;
+                    let presentacionFinal = idOption.split("_")[1] + " - " + txtPresentacion;
+                    document.querySelector('#lblPresentacion').textContent += presentacionFinal + ", ";
+                    document.getElementById('<%=txtDescripcionPresentacion.ClientID%>').value = '';
+                }
+        }
+        function AgregarMarcaATabla(txt) {
+            ActualizarMarca();
+            let txtMarca = txt
+            const idOption = document.querySelector('option[value="' + txtMarca + '"]').id;
+
+
+            const columns = idOption.split("_");
+            let descripcion = txtMarca.split('-')[1].slice(1)
+            let prueba = ComprobarTablaMarca(descripcion)
+            if (prueba) {
+                let cuerpor = document.getElementById("tbodyEditableMarcas1");
+                cuerpor.innerHTML += `<tr>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;" align="right">${columns[1]}</td>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;">${txtMarca.split('-')[1].slice(1)}</td>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;">
+                         <a onclick="EliminarFilaMarca('${columns[1]}')" id="ContentPlaceHolder1_btnEliminar_${columns[1]}" class="btn  btn-xs" data-toggle="tooltip" data-placement="top" data-original-title="Eliminar" style="background-color:transparent;">
+                         <span><i style="color:black" class="fa fa-trash - o"></i>
+                         </span>
+                           </a>
+                          </td>
+                        </tr>`;
+                let MarcaFinal = columns[1] + " - " + txtMarca.split('-')[1].slice(1);
+                document.querySelector('#lblMarcas').textContent += MarcaFinal + ", ";
+                document.getElementById('<%=txtDescripcionMarca.ClientID%>').value = '';
+            }
+        }
+
+
         function EliminarRepetidos() {
 
             let Presentaciones = document.getElementById('lblPresentacion').textContent
@@ -1041,7 +1261,7 @@
         }
     </script>
     <script>
-        function ActualizarCategoria() {
+      <%--  function ActualizarCategoria() {
             document.getElementById('ValivaCategoria').className = 'text-danger text-hide';
 
             let textDescripcionFinal = document.getElementById('<%=txtDescripcionCategoria.ClientID%>').value
@@ -1057,7 +1277,7 @@
             }
 
 
-        }
+        }--%>
 
 
         function ActualizarMarca() {
@@ -1158,29 +1378,29 @@
         }
 
 
-        function agregarCategoria(id) {
-            ContentPlaceHolder1_txtDescripcionCategoria.value = id.split('_')[2] + ' - ' + id.split('_')[3];
-            $('#modalCategoria').modal('hide');
-            document.querySelector('#txtBusqueda').value = '';
-            let btnAtributos = document.getElementById('ContentPlaceHolder1_btnAtributos');
-            btnAtributos.removeAttribute('disabled');
-            document.querySelector('#lblCategoriaFinal').textContent = id.split('_')[2] + ' - ' + id.split('_')[3];
-            $.ajax({
-                method: "POST",
-                url: "Categorias.aspx/GetSubAtributos2",
-                data: '{id: "' + id.split('_')[2] + '" }',
-                contentType: "application/json",
-                dataType: 'json',
-                error: (error) => {
-                    console.log(JSON.stringify(error));
-                    $.msgbox("No se pudo cargar la tabla", { type: "error" });
-                },
-                success: successAgregarTipoAtributo
-            });
+        //function agregarCategoria(id) {
+        //    ContentPlaceHolder1_txtDescripcionCategoria.value = id.split('_')[2] + ' - ' + id.split('_')[3];
+        //    $('#modalCategoria').modal('hide');
+        //    document.querySelector('#txtBusqueda').value = '';
+        //    let btnAtributos = document.getElementById('ContentPlaceHolder1_btnAtributos');
+        //    btnAtributos.removeAttribute('disabled');
+        //    document.querySelector('#lblCategoriaFinal').textContent = id.split('_')[2] + ' - ' + id.split('_')[3];
+        //    $.ajax({
+        //        method: "POST",
+        //        url: "Categorias.aspx/GetSubAtributos2",
+        //        data: '{id: "' + id.split('_')[2] + '" }',
+        //        contentType: "application/json",
+        //        dataType: 'json',
+        //        error: (error) => {
+        //            console.log(JSON.stringify(error));
+        //            $.msgbox("No se pudo cargar la tabla", { type: "error" });
+        //        },
+        //        success: successAgregarTipoAtributo
+        //    });
 
-        }
+        //}
 
-        function agregarDesdetxtCategoria() {
+     <%--   function agregarDesdetxtCategoria() {
             let btnAtributos = document.getElementById('<%=btnAtributos.ClientID%>');
             btnAtributos.removeAttribute('disabled');
 
@@ -1207,7 +1427,51 @@
                 },
                 success: successAgregarTipoAtributo
             });
+        }--%>
+        function BuscarEnModalPresentacion(nombre) {
+            table2 = document.getElementById('editable2');
+            let max = table2.rows.length;
+            //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
+            for (let i = 1; i < max; i++) {
+                /*if (i > 1) {*/
+                if (nombre.toLowerCase() == table2.rows[i].cells[1].innerText.toLowerCase()) {
+                    return true;
+                }
+            }
+            return false
         }
+
+
+        function AgregarPresentacionDesdeTxt2() {
+            ActualizarPresentacion();
+            let txtPresentacion = document.getElementById('<%=txtDescripcionPresentacion.ClientID%>').value
+            let Name = txtPresentacion.trim();
+            let result = BuscarEnModalPresentacion(Name);
+            if (result == false) {
+                document.getElementById('<%=txtDescripcionPresentacionCrear.ClientID%>').value = Name;
+                $('#modalCrearPresentaciones').modal('show');
+                return 1;
+            }
+            let prueba = ComprobarTablaPresentacion(txtPresentacion)
+            if (prueba) {
+
+                const idOption = document.querySelector('option[value="' + txtPresentacion + '"]').id;
+
+
+                const columns = idOption.split("_");
+                let cuerpor = document.getElementById("tbodyEditable1");
+                cuerpor.innerHTML += `<tr>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;" align="right">${columns[1]}</td>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;">${txtPresentacion}</td>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;" align="right">${columns[2]}</td>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;"><a onclick="EliminarFila('${columns[1]}')" id="ContentPlaceHolder1_btnEliminar_${columns[1]}" class="btn  btn-xs" data-toggle="tooltip" data-placement="top" data-original-title="Eliminar" style="background-color:transparent;"><span><i style="color:black" class="fa fa-trash - o"></i></span></a> </td>
+                        </tr>`;
+                let presentacionFinal = idOption.split("_")[1] + " - " + txtPresentacion;
+                document.querySelector('#lblPresentacion').textContent += presentacionFinal + ", ";
+                document.getElementById('<%=txtDescripcionPresentacion.ClientID%>').value = '';
+            }
+        }
+
 
         function AgregarPresentacionDesdeTxt(e) {
             if (e.keyCode === 13 && !e.shiftKey) {
@@ -1324,8 +1588,70 @@
             return true;
         }
 
-
+        function BuscarEnModal(nombre) {
+            table2 = document.getElementById('editableMarcas2');
+            let max = table2.rows.length;
+            //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
+            for (let i = 1; i < max; i++) {
+                /*if (i > 1) {*/
+                if (nombre.toLowerCase() == table2.rows[i].cells[0].innerText.toLowerCase()) {
+                    return true;
+                }
+            }
+            return false
+        }
         /*       AgregarMarcaDesdeTxt*/
+
+        function AgregarMarcaDesdeTxt2() {
+            ActualizarMarca();
+
+            let txtMarca = document.getElementById('<%=txtDescripcionMarca.ClientID%>').value
+            if (!txtMarca.includes("-")) {
+                let Name = txtMarca.trim();
+                let result = BuscarEnModal(Name);
+                if (result == false) {
+                    document.getElementById('<%=txtNuevaMarca.ClientID%>').value = Name;
+                    $('#modalAgregarMarca').modal('show');
+                    return 1;
+                }
+
+            } else {
+                arr = txtMarca.split("-");
+                let name = arr[1].trim()
+                if (name != "") {
+                    let result = BuscarEnModal(name);
+                    if (result == false) {
+                        document.getElementById('<%=txtNuevaMarca.ClientID%>').value = name;
+                        $('#modalAgregarMarca').modal('show');
+                        return 1;
+                    }
+                }
+            }
+            const idOption = document.querySelector('option[value="' + txtMarca + '"]').id;
+
+
+            const columns = idOption.split("_");
+            let descripcion = txtMarca.split('-')[1].slice(1)
+            let prueba = ComprobarTablaMarca(descripcion)
+            if (prueba) {
+                let cuerpor = document.getElementById("tbodyEditableMarcas1");
+                cuerpor.innerHTML += `<tr>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;" align="right">${columns[1]}</td>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;">${txtMarca.split('-')[1].slice(1)}</td>
+                        <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;">
+                         <a onclick="EliminarFilaMarca('${columns[1]}')" id="ContentPlaceHolder1_btnEliminar_${columns[1]}" class="btn  btn-xs" data-toggle="tooltip" data-placement="top" data-original-title="Eliminar" style="background-color:transparent;">
+                         <span><i style="color:black" class="fa fa-trash - o"></i>
+                         </span>
+                           </a>
+                          </td>
+                        </tr>`;
+                let MarcaFinal = columns[1] + " - " + txtMarca.split('-')[1].slice(1);
+                document.querySelector('#lblMarcas').textContent += MarcaFinal + ", ";
+                document.getElementById('<%=txtDescripcionMarca.ClientID%>').value = '';
+            }
+        }
+
+
         function AgregarMarcaDesdeTxt(e) {
             if (e.keyCode === 13 && !e.shiftKey) {
                 ActualizarMarca();
@@ -1457,7 +1783,7 @@
 
 
             // Marcas
-                // Desactivo TEMPORAL
+            // Desactivo TEMPORAL
             //let Marc = document.querySelector('#lblMarcas').textContent;
             //if (Marc.length < 1 || Marc == '' || Marc == ' ' || Marc == '  ') {
             //    document.getElementById('ValivaMarcas').className = "text-danger"
