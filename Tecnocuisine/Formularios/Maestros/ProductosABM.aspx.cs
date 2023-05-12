@@ -28,6 +28,8 @@ namespace Tecnocuisine.Formularios.Maestros
         ControladorProducto controladorProducto = new ControladorProducto();
         ControladorStock controladorStock = new ControladorStock();
         ControladorCategoria cc = new ControladorCategoria();
+        ControladorReceta cr = new ControladorReceta();
+        
 
         Gestion_Api.Controladores.controladorArticulo controladorArticulo = new Gestion_Api.Controladores.controladorArticulo();
         Gestion_Api.Controladores.ControladorArticulosEntity contArtEnt = new Gestion_Api.Controladores.ControladorArticulosEntity();
@@ -69,14 +71,54 @@ namespace Tecnocuisine.Formularios.Maestros
                 }
             }
             ObtenerGruposArticulos();
+            CargarRubros();
             //ObtenerSubGruposArticulos(Convert.ToInt32(ListGrupo.SelectedValue));
             ObtenerPresentaciones();
             ObtenerMarca();
         }
 
 
+        public void CargarRubros()
+        {
+            try
+            {
+
+                ControladorRubros cr = new ControladorRubros();
+
+                var listRubros = cr.ObtenerTodosRubros();
+                CargarOptionsRubros(listRubros);
+               
 
 
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        private void CargarOptionsRubros(List<Tecnocuisine_API.Entitys.Rubros> marcas)
+        {
+            try
+            {
+                var builder = new System.Text.StringBuilder();
+
+                foreach (var press in marcas)
+                {
+
+                    builder.Append(String.Format("<option value='{0}' id='Rubro_" + press.id + " _ " + press.descripcion + "'>", press.id + " - " + press.descripcion));
+                }
+
+                //for (int i = 0; i < table.Rows.Count; i++)
+                //    builder.Append(String.Format("<option value='{0}'>", table.Rows[i][0]));
+                ListOptionRubro.InnerHtml = builder.ToString();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
         public void ObtenerMarca()
         {
@@ -467,7 +509,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 producto.alicuota = Convert.ToInt32(ListAlicuota.SelectedValue);
                 producto.estado = 1;
                 //producto.presentacion = Convert.ToInt32(ListPresentaciones.SelectedValue);
-
+              
                 int resultado = controladorProducto.EditarProducto(producto);
 
                 if (resultado > 0)
@@ -517,6 +559,36 @@ namespace Tecnocuisine.Formularios.Maestros
 
             }
         }
+
+        [WebMethod]
+        public static string GuardarRubro(string descripcion)
+        {
+            try
+            {
+                ControladorRubros controladorRubros = new ControladorRubros();
+                Tecnocuisine_API.Entitys.Rubros rubro = new Tecnocuisine_API.Entitys.Rubros();
+
+                rubro.descripcion = descripcion;
+                rubro.estado = true;
+
+                int resultado = controladorRubros.AgregarRubros(rubro);
+
+                if (resultado > 0)
+                {
+                    return "Rubro Agregado con Exito ;" + resultado ;
+                }
+                else
+                {
+                    return "Error al agregar el Rubro";
+                }
+            }
+            catch (Exception ex)
+            {
+                return "Error al agregar el Rubro";
+            }
+        }
+
+
 
         [WebMethod]
         public static string GuardarPresentacion(string descripcion, string Cantidad)
@@ -579,7 +651,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
 
         [WebMethod]
-        public static void GuardarProducto(string descripcion, string Categoria, string Atributos, string Costo, string IVA, string Unidad, string Presentacion, string Marca, bool cbxGestion, string img)
+        public static void GuardarProducto(string descripcion, string Categoria, string Atributos, string Costo, string IVA, string Unidad, string Presentacion, string Marca, bool cbxGestion,string Rubro, string img)
         {
             try
             {
@@ -589,6 +661,13 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 producto.descripcion = descripcion;
                 producto.ProductoFinal = cbxGestion;
+                if (Rubro == "")
+                {
+                    producto.idRubro = 1;
+                } else
+                {
+                    producto.idRubro = Convert.ToInt32(Rubro);
+                }
                 if (Categoria.Trim() == "")
                 {
                     producto.categoria = 1;
@@ -742,15 +821,23 @@ namespace Tecnocuisine.Formularios.Maestros
 
         }
         [WebMethod]
-        public static string EditarProducto(string descripcion, string Categoria, string Atributos, string Costo, string IVA, string Unidad, string Presentacion, string Marca, bool cbxGestion, string img, string idProducto)
+        public static string EditarProducto(string descripcion, string Categoria, string Atributos, string Costo, string IVA, string Unidad, string Presentacion, string Marca, bool cbxGestion, string Rubro, string idProducto)
         {
             try
             {
                 ControladorProducto controladorProducto = new ControladorProducto();
                 Tecnocuisine_API.Entitys.Productos producto = new Tecnocuisine_API.Entitys.Productos();
-
+                ControladorReceta cr = new ControladorReceta();
                 producto.id = Convert.ToInt32(idProducto);
                 producto.descripcion = descripcion;
+                if (Rubro == "")
+                {
+                    producto.idRubro = 1;
+                }
+                else
+                {
+                    producto.idRubro = Convert.ToInt32(Rubro);
+                }
                 if (Categoria.Trim() == "")
                 {
                     producto.categoria = 1;
@@ -765,7 +852,11 @@ namespace Tecnocuisine.Formularios.Maestros
                 producto.estado = 1;
                 producto.ProductoFinal = cbxGestion;
                 //producto.presentacion = Convert.ToInt32(ListPresentaciones.SelectedValue);
-
+                List<Recetas_Producto> ListRP = cr.ObtenerListRecetaByIdProducto(Convert.ToInt32(idProducto));
+                if (ListRP.Count > 0)
+                {
+                    VerificarCosto(ListRP, Costo);
+                }
                 int resultado = controladorProducto.EditarProducto(producto);
 
                 if (resultado > 0)
@@ -874,6 +965,52 @@ namespace Tecnocuisine.Formularios.Maestros
                 javaScript.MaxJsonLength = 5000000;
                 string resultadoJSON = javaScript.Serialize("Error al editar. ex:" + ex.Message);
                 return resultadoJSON;
+            }
+        }
+
+        public static void VerificarCosto(List<Recetas_Producto> ListRP, string Costo)
+        {
+            try
+            {
+                ControladorProducto controladorProducto = new ControladorProducto();
+                ControladorReceta cr = new ControladorReceta();
+                foreach(var item in ListRP)
+                {
+                  decimal costoActualizado = Convert.ToDecimal(Costo.Replace(".", ","));
+                    if (item.Productos.costo != costoActualizado)
+                    {
+                       decimal CostoViejo = (decimal)item.Recetas.Costo;
+                       decimal costoNuevo = (CostoViejo - item.Productos.costo) + costoActualizado;
+                        Tecnocuisine_API.Entitys.Recetas receta = new Tecnocuisine_API.Entitys.Recetas();
+                        receta.id = item.Recetas.id;
+                        receta.descripcion = item.Recetas.descripcion;
+                        receta.estado = item.Recetas.estado;
+                        receta.desperdicio = item.Recetas.desperdicio;
+                        receta.peso = item.Recetas.peso;
+                        receta.rinde = item.Recetas.rinde;
+                        receta.merma = item.Recetas.merma;
+                        receta.coeficiente = item.Recetas.coeficiente;
+                        receta.categoria = item.Recetas.categoria;
+                        receta.Tipo = item.Recetas.Tipo;
+                        receta.UnidadMedida = item.Recetas.UnidadMedida;
+                        receta.Costo = costoNuevo;
+                        receta.PrVenta = item.Recetas.PrVenta;
+                        receta.PorcFoodCost = item.Recetas.PorcFoodCost;
+                        receta.CostMarginal = item.Recetas.CostMarginal;
+                        receta.BuenasPracticas = item.Recetas.BuenasPracticas;
+                        receta.InfNutricional = item.Recetas.InfNutricional;
+                        receta.Codigo = item.Recetas.Codigo;
+                        receta.PesoU = item.Recetas.PesoU;
+                        receta.CostoU = costoNuevo / item.Recetas.rinde;
+                        receta.ProductoFinal = item.Recetas.ProductoFinal;
+
+                        cr.EditarReceta(receta);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
             }
         }
 

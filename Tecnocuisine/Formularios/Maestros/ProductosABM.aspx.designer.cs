@@ -33,6 +33,24 @@ namespace Tecnocuisine.Formularios.Maestros
         protected global::System.Web.UI.WebControls.DropDownList ListUnidadMedida;
 
         /// <summary>
+        /// Control ListRubro.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox ListRubro;
+
+        /// <summary>
+        /// Control ListOptionRubro.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ListOptionRubro;
+
+        /// <summary>
         /// Control ListOptionMarcas.
         /// </summary>
         /// <remarks>
@@ -337,5 +355,23 @@ namespace Tecnocuisine.Formularios.Maestros
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hfMarcas;
+
+        /// <summary>
+        /// Control TxTRubroAgregar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TxTRubroAgregar;
+
+        /// <summary>
+        /// Control HiddenField2.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField HiddenField2;
     }
 }

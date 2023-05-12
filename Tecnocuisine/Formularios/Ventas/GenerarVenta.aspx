@@ -48,7 +48,7 @@
                                 <div class="col-lg-6">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <h4 style="margin-left: 5%">Venta Numero:</h4>
+                                            <h4 style="margin-left: 5%">Factura Numero:</h4>
                                         </div>
                                         <div class="col-md-8">
                                             <div id="lblVentaNum" runat="server">
@@ -90,10 +90,19 @@
                                                 <h5 style="margin-left: 5%">Precio Venta:</h5>
                                             </div>
                                             <div class="col-md-8">
-                                                <asp:TextBox runat="server" ID="PVenta" class="form-control" Style="margin-left: 15px; width: 70%" />
+                                                <div style="display: flex;">
+
+                                                    <asp:TextBox runat="server" ID="PVenta" onfocusout="formatearNum()" class="form-control" Style="margin-left: 15px; width: 70%" />
+                                                    <div style="margin-left: 20px;">
+                                                        <linkbutton class="btn btn-sm btn-primary" style="margin-right: 8px; margin-top: 5%;" data-toggle="tooltip" data-placement="top" data-original-title="Agregar"
+                                                            text="Agregar" validationgroup="AgregarEntregas" id="Button1" onclick="AgregarATabla(event)">
+                                                            <i style="color: white" class="fa fa-check"></i>
+                                                        </linkbutton>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <%--        <div class="row">
                                             <div class="col-md-4">
                                             </div>
                                             <div class="col-md-8">
@@ -104,12 +113,65 @@
                                                     </linkbutton>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>--%>
                                     </div>
                                 </div>
+                                <%--        <asp:DropDownList ID="txtTipoCliente" runat="server" class="form-control">
+
+                                                                <asp:ListItem Value="1">Mujer</asp:ListItem>
+                                                                <asp:ListItem Value="2">Hombre</asp:ListItem>
+                                                                <asp:ListItem Value="3">Niño</asp:ListItem>
+
+                                                            </asp:DropDownList>--%>
                                 <%-- Columna 2--%>
                                 <div class="col-lg-6">
                                     <div>
+                                        <div class="row"  style="margin-top: 2%">
+                                            <div class="col-md-4">
+                                                <h4 style="margin-left: 5%">Cliente:</h4>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <datalist id="ListClientes" runat="server"></datalist> 
+                                                <div style="display:flex;">
+
+                                                <asp:TextBox runat="server" ID="txtClientes" list="ContentPlaceHolder1_ListClientes" class="form-control" Style="margin-left: 15px; width: 70%" />
+                                                <a id="LinkButtonMarcas1" class="btn btn-primary dim" data-toggle="modal" data-target="#modalAgregar" data-backdrop="static" data-keyboard="false"><i style="color: white" class="fa fa-plus"></i></a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row"  style="margin-top: 2%">
+                                            <div class="col-md-4">
+                                                <h4 style="margin-left: 5%">Tipo Documento:</h4>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <asp:DropDownList ID="txtTipoDocumento" runat="server" class="form-control" onchange="ObtenerCodigo()" Style="margin-left: 15px; width: 70%">
+                                                    <%-- Harcodeamos pero le ponemos como value el id de los tipos de documentos de la base de datos --%>
+                                                    <asp:ListItem Value="1">Factura A</asp:ListItem>
+                                                    <asp:ListItem Value="6">Factura B</asp:ListItem>
+                                                    <asp:ListItem Value="3">Nota de Credito A</asp:ListItem>
+                                                    <asp:ListItem Value="8">Nota de Credito B</asp:ListItem>
+                                                    <asp:ListItem Value="2">Nota de Debito A</asp:ListItem>
+                                                    <asp:ListItem Value="7">Nota de Debito B</asp:ListItem>
+                                                    <asp:ListItem Value="97">Presupuesto</asp:ListItem>
+                                                    <asp:ListItem Value="99">Presupuesto Nota de Credito</asp:ListItem>
+                                                    <asp:ListItem Value="100">Presupuesto Nota de Debito</asp:ListItem>
+                                                </asp:DropDownList>
+                                            </div>
+                                        </div>
+                                        <div class="row"  style="margin-top: 2%">
+                                            <div class="col-md-4">
+                                                <h4 style="margin-left: 5%">Forma de Pago:</h4>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <asp:DropDownList ID="txtFormaPago" runat="server" class="form-control" Style="margin-left: 15px; width: 70%">
+                                                    <%-- Harcodeamos pero le ponemos como value el id de los tipos de documentos de la base de datos --%>
+                                                    <asp:ListItem Value="1">Contado</asp:ListItem>
+                                                    <asp:ListItem Value="2">Cuenta Corriente</asp:ListItem>
+                                                    <asp:ListItem Value="3">Tarjeta de Credito</asp:ListItem>
+                                                </asp:DropDownList>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -156,10 +218,110 @@
 
         </div>
     </div>
+
+
+
+    <div id="modalAgregar" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Agregar</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label class="col-sm-2 control-label editable">Codigo</label>
+                        <div class="col-sm-8">
+                            <asp:TextBox ID="txtCodigo" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 2%">
+                        <label class="col-sm-2 control-label editable">Razon Social</label>
+                        <div class="col-sm-8">
+                            <asp:TextBox ID="txtRazonSocial" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 2%">
+                        <label class="col-sm-2 control-label editable">CUIT</label>
+                        <div class="col-sm-8">
+                            <asp:TextBox ID="txtCuit" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 2%">
+                        <label class="col-sm-2 control-label editable">Alias</label>
+                        <div class="col-sm-8">
+                            <asp:TextBox ID="txtAlias" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 2%">
+                        <label class="col-sm-2 control-label editable">IVA</label>
+                        <div class="col-sm-8">
+                            <asp:DropDownList ID="ListRegimen" style="margin-left: 3%;" class="form-control m-b" runat="server">
+                            </asp:DropDownList>
+                        </div>
+
+                    </div>
+                    <div class="row" style="margin-top: 2%">
+                        <label class="col-sm-2 control-label editable">Forma de Pago</label>
+                        <div class="col-sm-8">
+                            <asp:DropDownList ID="ListFormaPago" style="margin-left: 3%;" class="form-control m-b" runat="server">
+                            </asp:DropDownList>
+                        </div>
+
+                    </div>
+                     <div class="row" style="margin-top: 2%">
+                        <label class="col-sm-2 control-label editable">Vendedor</label>
+                        <div class="col-sm-8">
+                            <asp:DropDownList ID="ListVendedor" style="margin-left: 3%;" class="form-control m-b" runat="server">
+                            </asp:DropDownList>
+                        </div>
+
+                    </div>
+                    <div class="row" style="margin-top: 2%">
+                        <label class="col-sm-2 control-label editable">Vencimiento FC</label>
+                        <div class="col-sm-8">
+                            <asp:TextBox ID="txtVencimientoFC" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 2%">
+                        <label class="col-sm-2 control-label editable">Saldo Maximo</label>
+                        <div class="col-sm-8">
+                            <asp:TextBox ID="txtSaldoMax" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 2%">
+                        <label class="col-sm-2 control-label editable">Estado</label>
+                        <div class="col-sm-8">
+                            <asp:DropDownList ID="ListEstado" style="margin-left: 3%;" class="form-control m-b" runat="server">
+                            </asp:DropDownList>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 2%">
+                        <label class="col-sm-2 control-label editable">Observaciones</label>
+                        <div class="col-sm-8">
+                            <asp:TextBox ID="txtObservaciones" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <asp:LinkButton runat="server" ID="LinkButton1" class="buttonLoading btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <asp:HiddenField ID="hiddenEditar" runat="server" />
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <script src="../Scripts/plugins/toastr/toastr.min.js"></script>
     <script>
         $(document).ready(function () {
             $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+            ObtenerCodigo("1");
+
         });
         $('#data_1 .input-group.date').datepicker({
             todayBtn: "linked",
@@ -190,6 +352,29 @@
                     CargarDllProducto(Number(id));
                 }
             }
+        }
+
+        function ObtenerCodigo() {
+            valueid = document.getElementById("ContentPlaceHolder1_txtTipoDocumento").value;
+            $.ajax({
+                method: "POST",
+                url: "GenerarVenta.aspx/GenerarCodigoFactura",
+                data: '{id: "' + valueid + '"}',
+                contentType: "application/json",
+                dataType: "json",
+                dataType: "json",
+                async: false,
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                },
+                success: (respuesta) => {
+                    if (respuesta.d != "") {
+                        factnum = document.getElementById("ContentPlaceHolder1_lblVentaNum");
+                        factnum.innerHTML = "";
+                        factnum.innerHTML = '<h3 style="margin-left:15px;">'+ respuesta.d +'</h3>'
+                    }
+                }
+            });
         }
         function CargarDllProducto(id) {
             $.ajax({
@@ -239,11 +424,11 @@
             document.getElementById('ContentPlaceHolder1_NRinde').disabled = true;
             document.getElementById('ContentPlaceHolder1_NCosto').disabled = true;
         }
-
+        /* formatearNumero revertirNumero*/
         function RellenarCampos(response) {
             document.getElementById('ContentPlaceHolder1_NRinde').value = response[2];
-            document.getElementById('ContentPlaceHolder1_NCosto').value = response[0];
-            document.getElementById('ContentPlaceHolder1_PVenta').value = response[1];
+            document.getElementById('ContentPlaceHolder1_NCosto').value = formatearNumero(Number(response[0]));
+            document.getElementById('ContentPlaceHolder1_PVenta').value = formatearNumero(Number(response[1]));
             document.getElementById('ContentPlaceHolder1_NRinde').disabled = true;
             document.getElementById('ContentPlaceHolder1_NCosto').disabled = true;
         }
@@ -255,10 +440,16 @@
             event.preventDefault();
             let btn = document.getElementById("btnGuardar")
             btn.disabled = true;
+            let list = document.getElementById('<%= idProductosRecetas.ClientID%>').value;
+
             $.ajax({
                 method: "POST",
                 url: "GenerarVenta.aspx/ConfirmarLaVenta",
-                data: '{list: "' + document.getElementById('<%= idProductosRecetas.ClientID%>').value + '"}',
+                data: '{list: "' + list.replaceAll(".", ",")
+                    + '" , cliente: "' + document.getElementById("ContentPlaceHolder1_txtClientes").value
+                    + '" , tipofac: "' + document.getElementById("ContentPlaceHolder1_txtTipoDocumento").value
+                    + '" , formapago: "' + document.getElementById("ContentPlaceHolder1_txtFormaPago").value
+                    + '"}',
                 contentType: "application/json",
                 dataType: "json",
                 dataType: "json",
@@ -281,8 +472,7 @@
             }
             let Costo = document.getElementById('ContentPlaceHolder1_NCosto').value;
             let Venta = document.getElementById('ContentPlaceHolder1_PVenta').value;
-            console.log(Venta);
-            let Cantidad = document.getElementById('ContentPlaceHolder1_NCantidad').value;
+            let Cantidad = (document.getElementById('ContentPlaceHolder1_NCantidad').value);
             let producto = document.getElementById('ContentPlaceHolder1_txtDescripcionProductos').value;
 
             let listaDesplegable = "<td> " + producto.split('-')[1] + "</td>";
@@ -359,6 +549,21 @@
                 }
             }
             ContentPlaceHolder1_idProductosRecetas.value = nuevosProductos;
+        }
+
+
+        function formatearNumero(numero) {
+            return numero.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+        function revertirNumero(numeroFormateado) {
+            var numero = parseFloat(numeroFormateado.replace(/,/g, ''));
+            return numero;
+        }
+        function formatearNum() {
+            input = document.getElementById("ContentPlaceHolder1_PVenta");
+            num = Number(revertirNumero(input.value));
+            newnum = formatearNumero(num);
+            input.value = newnum;
         }
 
     </script>

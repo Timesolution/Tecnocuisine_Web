@@ -283,14 +283,18 @@
     <Content Include="Formularios\Administrador\Sectores.aspx" />
     <Content Include="Formularios\Administrador\PuntosDeVenta.aspx" />
     <Content Include="Formularios\Administrador\Sucursales.aspx" />
+    <Content Include="Formularios\Compras\Compras.aspx" />
+    <Content Include="Formularios\Compras\CuentaCorriente.aspx" />
     <Content Include="Formularios\Compras\EntregaDetallada.aspx" />
     <Content Include="Formularios\Compras\EntregasE.aspx" />
+    <Content Include="Formularios\Compras\FacturaCompras.aspx" />
     <Content Include="Formularios\Compras\ProveedoresP.aspx" />
     <Content Include="Formularios\Compras\Proveedores.aspx" />
     <Content Include="Formularios\Contabilidad\PlanDeCuentas.aspx" />
     <Content Include="Formularios\Compras\Entregas.aspx" />
     <Content Include="Formularios\Maestros\RecetasABM.aspx" />
     <Content Include="Formularios\Maestros\ProductosABM.aspx" />
+    <Content Include="Formularios\Maestros\Rubros.aspx" />
     <Content Include="Formularios\Maestros\SectorProductivo.aspx" />
     <Content Include="Formularios\Maestros\Clasificaciones.aspx" />
     <Content Include="Formularios\Maestros\StockDetallado.aspx" />
@@ -313,6 +317,7 @@
     <Content Include="Formularios\Maestros\Productos.aspx" />
     <Content Include="Formularios\Maestros\Unidades.aspx" />
     <Content Include="Formularios\Maestros\InsumosF.aspx" />
+    <Content Include="Formularios\Ventas\CuentaCorriente.aspx" />
     <Content Include="Formularios\Ventas\GenerarProduccion.aspx" />
     <Content Include="Formularios\Ventas\GenerarVenta.aspx" />
     <Content Include="Formularios\Ventas\Produccion.aspx" />
@@ -897,6 +902,20 @@
     <Compile Include="Formularios\Administrador\Sucursales.aspx.designer.cs">
       <DependentUpon>Sucursales.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Formularios\Compras\Compras.aspx.cs">
+      <DependentUpon>Compras.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Compras\Compras.aspx.designer.cs">
+      <DependentUpon>Compras.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Compras\CuentaCorriente.aspx.cs">
+      <DependentUpon>CuentaCorriente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Compras\CuentaCorriente.aspx.designer.cs">
+      <DependentUpon>CuentaCorriente.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Formularios\Compras\EntregaDetallada.aspx.cs">
       <DependentUpon>EntregaDetallada.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -910,6 +929,13 @@
     </Compile>
     <Compile Include="Formularios\Compras\EntregasE.aspx.designer.cs">
       <DependentUpon>EntregasE.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Compras\FacturaCompras.aspx.cs">
+      <DependentUpon>FacturaCompras.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Compras\FacturaCompras.aspx.designer.cs">
+      <DependentUpon>FacturaCompras.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Compras\ProveedoresP.aspx.cs">
       <DependentUpon>ProveedoresP.aspx</DependentUpon>
@@ -952,6 +978,13 @@
     </Compile>
     <Compile Include="Formularios\Maestros\ProductosABM.aspx.designer.cs">
       <DependentUpon>ProductosABM.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Rubros.aspx.cs">
+      <DependentUpon>Rubros.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Rubros.aspx.designer.cs">
+      <DependentUpon>Rubros.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Maestros\SectorProductivo.aspx.cs">
       <DependentUpon>SectorProductivo.aspx</DependentUpon>
@@ -1106,6 +1139,13 @@
     </Compile>
     <Compile Include="Formularios\Maestros\InsumosF.aspx.designer.cs">
       <DependentUpon>InsumosF.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Ventas\CuentaCorriente.aspx.cs">
+      <DependentUpon>CuentaCorriente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Ventas\CuentaCorriente.aspx.designer.cs">
+      <DependentUpon>CuentaCorriente.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Ventas\GenerarProduccion.aspx.cs">
       <DependentUpon>GenerarProduccion.aspx</DependentUpon>

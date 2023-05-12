@@ -733,7 +733,6 @@ C:\TimeSolution\Repositorios\WEB\Tecnocuisine\bin\AspNet.ScriptManager.bootstrap
 C:\TimeSolution\Repositorios\WEB\Tecnocuisine\bin\AspNet.ScriptManager.jQuery.dll
 C:\TimeSolution\Repositorios\WEB\Tecnocuisine\bin\EntityFramework.dll
 C:\TimeSolution\Repositorios\WEB\Tecnocuisine\bin\EntityFramework.SqlServer.dll
-C:\TimeSolution\Repositorios\WEB\Tecnocuisine\bin\Gestion Api.dll
 C:\TimeSolution\Repositorios\WEB\Tecnocuisine\bin\Microsoft.AspNet.FriendlyUrls.dll
 C:\TimeSolution\Repositorios\WEB\Tecnocuisine\bin\Microsoft.AspNet.Identity.Core.dll
 C:\TimeSolution\Repositorios\WEB\Tecnocuisine\bin\Microsoft.AspNet.Identity.EntityFramework.dll

@@ -154,6 +154,7 @@
                                                 <asp:ListItem Value="3" Text="Glaseada"></asp:ListItem>
                                                 <asp:ListItem Value="4" Text="Masa"></asp:ListItem>
                                                 <asp:ListItem Value="5" Text="Relleno"></asp:ListItem>
+                                                <asp:ListItem Value="6" Text="Salsa"></asp:ListItem>
                                             </asp:DropDownList>
                                         </div>
                                         <div class="col-md-2" style="margin-top: 1.5%">
@@ -163,27 +164,7 @@
                                                 *Seleccione Unidad de medida.
                                             </p>
                                         </div>
-                                        <div class="col-md-2" style="margin-top: 1.5%">
-                                           <asp:HiddenField id="HFRecetas" runat="server" />
-
-                                                    
-
-                                                        <div class="input-group">
-                                                            <asp:TextBox ID="txtSector" disabled="disabled" placeholder="Sector" class="form-control" runat="server" />
-                                                            <span class="input-group-btn">
-                                                                <asp:LinkButton runat="server" ID="btnSectores" class="btn btn-primary dim" onclientclick="FocusSearch()" data-toggle="modal" data-backdrop="static" data-target="#modalSectores"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
-
-                                                            </span>
-                                                        </div>
-                                                    
-                                                
-                                            <%--<asp:DropDownList ID="ddlCalculos" runat="server" class="form-control">
-                                                <asp:ListItem Value="-1" Text="Tipo Calculo"> </asp:ListItem>
-                                                <asp:ListItem Value="1" Text="PPP"></asp:ListItem>
-                                                <asp:ListItem Value="2" Text="Ultima Compra"></asp:ListItem>
-                                            </asp:DropDownList>--%>
-                                        </div>
-                                        <div class="col-md-1" style="text-align: center;">
+                                        <div class="col-md-2" style="text-align: center;">
                                             <label id="lblBrutoTotal" style="margin-bottom: auto;">Kg Br. Total</label>
                                             <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtKgBrutTotal" class="form-control" runat="server" />
                                         </div>
@@ -218,13 +199,30 @@
                                                </span>
                                            </div>
                                            </div>
-                                           <div class="col-sm-5"></div>
+                                            <div class="col-md-2" style="margin-top: 1.5%">
+                                           <asp:HiddenField id="HFRecetas" runat="server" />
+                                                        <div class="input-group">
+                                                            <asp:TextBox ID="txtSector" disabled="disabled" placeholder="Sector" class="form-control" runat="server" />
+                                                            <span class="input-group-btn">
+                                                                <asp:LinkButton runat="server" ID="btnSectores" class="btn btn-primary dim" onclientclick="FocusSearch()" data-toggle="modal" data-backdrop="static" data-target="#modalSectores"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
+
+                                                            </span>
+                                                        </div>
+                                                    
+                                                
+                                            <%--<asp:DropDownList ID="ddlCalculos" runat="server" class="form-control">
+                                                <asp:ListItem Value="-1" Text="Tipo Calculo"> </asp:ListItem>
+                                                <asp:ListItem Value="1" Text="PPP"></asp:ListItem>
+                                                <asp:ListItem Value="2" Text="Ultima Compra"></asp:ListItem>
+                                            </asp:DropDownList>--%>
+                                        </div>
+                                           <div class="col-sm-2"></div>
                                         <div class="col-md-1" style="text-align: center;">
                                             <label id="rxrt" style="margin-bottom:0px">Pr.Venta</label>
                                             <asp:TextBox Text="0" Style="text-align: right;" ID="txtPrVenta"  onkeyUp="ActualizarxPrVenta()" class="form-control" runat="server" />
                                         </div>
-                                        <div class="col-md-1" style="text-align: center;">
-                                            <label style="margin-bottom: auto;">% Food Cost</label>
+                                        <div class="col-md-2" style="text-align: center;">
+                                            <label style="margin-bottom: auto;">Food Cost</label>
                                             <asp:TextBox Text="0.00" disabled="disabled" Style="text-align: right;" ID="txtPFoodCost" class="form-control" runat="server" />
                                         </div>
                                         <div class="col-md-1" style="text-align: center;">
@@ -236,7 +234,7 @@
 
                                     <div class="well"style="margin-top:1%;margin-right: -15px;margin-left: -15px;">
                                     <div class="row" style="margin-top: 0.5%; margin-bottom: 2%">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                           
                                             <label  style="margin-left:5px;margin-bottom: 0px;"> Ingredientes </label>
                                              
@@ -245,7 +243,7 @@
 
                                                 </datalist>
                                                
-                                                <asp:TextBox ID="txtDescripcionProductos" onfocusout="handle(event)" list="ContentPlaceHolder1_ListaNombreProd" class="form-control" runat="server" />
+                                                <asp:TextBox ID="txtDescripcionProductos" onfocusout="handle(event)" list="ContentPlaceHolder1_ListaNombreProd" class="form-control" runat="server"/>
                                                 <span class="input-group-btn">
                                                     <asp:LinkButton runat="server" id="btnProductos" class="btn btn-primary dim" onclientclick="FocusSearch('1')" data-toggle="modal" data-backdrop="static" data-target="#modalTabsProductos"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
 
@@ -260,7 +258,7 @@
 
                                             <asp:TextBox ID="txtCantidad" Text="0" onkeydown="PasarAFactor(event)" onchange="CalcularCantBruta()" onkeypress="javascript:return validarNro(event)" Style="text-align: right" class="form-control money" runat="server" />
                                         </div>
-                                        <div class="col-md-1" style="text-align: center;">
+                                        <div class="col-md-2" style="text-align: center;">
                                             <label style="margin-bottom: auto;">Unidad Med.</label>
 
                                             <asp:TextBox ID="txtUnidadMed" disabled="disabled" Style="text-align: right" class="form-control" runat="server" />
@@ -268,7 +266,7 @@
                                         <div class="col-md-1" style="text-align: center;">
                                             <label style="margin-bottom: auto;">Factor</label>
 
-                                            <asp:TextBox ID="txtFactor" Text="1" onkeyUp="CalcularCantBruta()" onkeypress="validarNro(event)" Style="text-align: right" class="form-control" runat="server" />
+                                            <asp:TextBox ID="txtFactor" Text="1" onkeyUp="CalcularCantBruta()" onkeypress="agregarProductoPH()" Style="text-align: right" class="form-control" runat="server" />
                                         </div>
                                         <div class="col-md-1" style="text-align: center;">
                                             <label style="margin-bottom: auto;">Cant. Bruta</label>
@@ -1267,8 +1265,8 @@
                                 for (i = 0; i < JidUMTaux.length; i++) {
                                     if (JidUMTaux[i].id.includes('_')) {
                                         let res = JidUMTaux[i].id.split('_')[1];
-                                        console.log(data.node.id)
-                                        console.log(data.node.data)
+                                        //console.log(data.node.id)
+                                        //console.log(data.node.data)
                                         let res2 = data.node.id.split('_')[1];
                                         if (banderaUM == false) {
 
@@ -1291,8 +1289,8 @@
                                 for (i = 0; i < JidCSaux.length; i++) {
                                     if (JidCSaux[i].id.includes('_')) {
                                         let res = JidCSaux[i].id.split('_')[1];
-                                        console.log(data.node.id)
-                                        console.log(data.node.data)
+                                        //console.log(data.node.id)
+                                        //console.log(data.node.data)
                                         let res2 = data.node.id.split('_')[1];
                                         if (banderaCS == false) {
 
@@ -1314,8 +1312,8 @@
                                 for (i = 0; i < JidCSTaux.length; i++) {
                                     if (JidCSTaux[i].id.includes('_')) {
                                         let res = JidCSTaux[i].id.split('_')[1];
-                                        console.log(data.node.id)
-                                        console.log(data.node.data)
+                                        //console.log(data.node.id)
+                                        //console.log(data.node.data)
                                         let res2 = data.node.id.split('_')[1];
                                         if (banderaCST == false) {
 
@@ -1331,20 +1329,24 @@
                                     }
                                 }
 
-                                //$("#jstree_C" + id).jstree("open_all", JidCantaux.id);
-                                //$("#jstree_UM" + id).jstree("open_all", JidUMTaux.id);
-                                //$("#jstree_CS" + id).jstree("open_all", JidCSaux.id);
-                                //$("#jstree_CST" + id).jstree("open_all", JidCSTaux.id);
+                                $("#jstree_C" + id).jstree("open_all", JidCantaux.id);
+                                $("#jstree_UM" + id).jstree("open_all", JidUMTaux.id);
+                                $("#jstree_CS" + id).jstree("open_all", JidCSaux.id);
+                                $("#jstree_CST" + id).jstree("open_all", JidCSTaux.id);
                             })
                             .on('after_close.jstree', function (e, data) {
+                                //$("#jstree_C" + id).jstree("close_node", JidCantaux.id);
+                                //$("#jstree_UM" + id).jstree("close_node", JidUMTaux.id);
+                                //$("#jstree_CS" + id).jstree("close_node", JidCSaux.id);
+                                //$("#jstree_CST" + id).jstree("close_node", JidCSTaux.id);
                                 let JidCant = $("#jstree_C" + id).jstree()._model.data
                                 let JidCantaux = Object.values(JidCant);
                                 let banderaC = false;
                                 for (i = 0; i < JidCantaux.length; i++) {
                                     if (JidCantaux[i].id.includes('_')) {
                                         let res = JidCantaux[i].id.split('_')[1];
-                                        console.log(data.node.id)
-                                        console.log(data.node.data)
+                                        //console.log(data.node.id)
+                                        //console.log(data.node.data)
                                         let res2 = data.node.id.split('_')[1];
                                         if (banderaC == false) {
 
@@ -1366,8 +1368,8 @@
                                 for (i = 0; i < JidUMTaux.length; i++) {
                                     if (JidUMTaux[i].id.includes('_')) {
                                         let res = JidUMTaux[i].id.split('_')[1];
-                                        console.log(data.node.id)
-                                        console.log(data.node.data)
+                                        //console.log(data.node.id)
+                                        //console.log(data.node.data)
                                         let res2 = data.node.id.split('_')[1];
                                         if (banderaUM == false) {
 
@@ -1389,8 +1391,8 @@
                                 for (i = 0; i < JidCSaux.length; i++) {
                                     if (JidCSaux[i].id.includes('_')) {
                                         let res = JidCSaux[i].id.split('_')[1];
-                                        console.log(data.node.id)
-                                        console.log(data.node.data)
+                                        //console.log(data.node.id)
+                                        //console.log(data.node.data)
                                         let res2 = data.node.id.split('_')[1];
                                         if (banderaCS == false) {
 
@@ -1412,8 +1414,8 @@
                                 for (i = 0; i < JidCSTaux.length; i++) {
                                     if (JidCSTaux[i].id.includes('_')) {
                                         let res = JidCSTaux[i].id.split('_')[1];
-                                        console.log(data.node.id)
-                                        console.log(data.node.data)
+                                        //console.log(data.node.id)
+                                        //console.log(data.node.data)
                                         let res2 = data.node.id.split('_')[1];
                                         if (banderaCST == false) {
 
@@ -1440,11 +1442,11 @@
 
                                 //let JidCST2 = $("#jstree_CST" + id).jstree()._model.data
                                 //let JidCSTaux2 = Object.values(JidCST2)[11];
-
-                                //$("#jstree_C" + id).jstree("close_all",  "#"+JidCantaux2.id);
-                                //$("#jstree_UM" + id).jstree("close_all", "#"+JidUMTaux2.id);
-                                //$("#jstree_CS" + id).jstree("close_all", "#"+JidCSaux2.id);
-                                //$("#jstree_CST" + id).jstree("close_all","#"+ JidCSTaux2.id);
+                                console.log("LLEGE ACA")
+                                $("#jstree_C" + id).jstree("close_node", "#RecetaC_LI_" + id);
+                                $("#jstree_UM" + id).jstree("close_node", "#RecetaUM_LI_" + id);
+                                $("#jstree_CS" + id).jstree("close_node", "#RecetaCS_LI_" + id);
+                                $("#jstree_CST" + id).jstree("close_node","#RecetaCST_LI_"+ id);
                             })
                             .jstree({
                                 'core': {
@@ -2692,7 +2694,7 @@
                 /*if (i > 1) {*/
                 if (table2.rows[i].cells[3].children[0].checked) {
 
-                    presentacionFinal += table2.rows[i].cells[0].innerHTML + " - " + table2.rows[i].cells[1].innerHTML + ', ';
+                    presentacionFinal += table2.rows[i].cells[0].innerHTML + " - " + table2.rows[i].cells[2].innerHTML + ', ';
 
                 }
 

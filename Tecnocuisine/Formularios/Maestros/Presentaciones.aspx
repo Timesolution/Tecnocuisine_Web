@@ -50,6 +50,7 @@
         </div>
 
 
+    </div>
 
         <div id="modalConfirmacion2" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-sm">
@@ -71,7 +72,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     <div id="modalAgregar" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-sm">

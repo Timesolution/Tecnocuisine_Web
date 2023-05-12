@@ -23,6 +23,7 @@
 
                         <th style="width: 5%">Receta/Producto</th>
                         <th style="width: 5%; text-align: right;">Cantidad Producida</th>
+                        <th  style="width: 5%; text-align: right;">Costo</th>
                     </tr>
                 </thead>
                 <tbody>

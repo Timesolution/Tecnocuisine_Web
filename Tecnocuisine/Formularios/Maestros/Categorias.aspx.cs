@@ -391,7 +391,7 @@ namespace Tecnocuisine
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }

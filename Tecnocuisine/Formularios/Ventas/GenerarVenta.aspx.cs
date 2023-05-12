@@ -1,5 +1,7 @@
-﻿using Gestion_Api.Entitys;
+﻿using Antlr.Runtime;
+using Gestion_Api.Entitys;
 using Gestion_Api.Modelo;
+using Gestor_Solution.Controladores;
 using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json.Linq;
 using System;
@@ -30,6 +32,7 @@ namespace Tecnocuisine.Formularios.Ventas
         ControladorProveedores ControladorProveedores = new ControladorProveedores();
         ControladorEntregas ControladorEntregas = new ControladorEntregas();
         ControladorReceta ControladorReceta = new ControladorReceta();
+        ControladorCliente ControladorCliente = new ControladorCliente();
         CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
 
         int accion;
@@ -42,7 +45,12 @@ namespace Tecnocuisine.Formularios.Ventas
             {
                 ObtenerRecetas();
                 ObtenerProductos();
-                CargarNumeroVenta();
+                //CargarNumeroVenta();
+                CargarClientes();
+                CargarFormasPago();
+                CargarRegimenesIVA();
+                CargarVendedores();
+                CargarEstadosClientes();
                 //ObtenerNumeroVenta();
                 if (accion == 2)
                 {
@@ -50,9 +58,148 @@ namespace Tecnocuisine.Formularios.Ventas
                 }
             }
         }
-       
+
+        private void CargarRegimenesIVA()
+        {
+            try
+            {
+
+                ControladorRegimen controladorIVA = new ControladorRegimen();
+                this.ListRegimen.DataSource = controladorIVA.ObtenerTodosRegimenes();
+                this.ListRegimen.DataValueField = "id";
+                this.ListRegimen.DataTextField = "descripcion";
+                this.ListRegimen.DataBind();
+                ListRegimen.Items.Insert(0, new ListItem("Seleccione", "-1"));
 
 
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void CargarFormasPago()
+        {
+
+            try
+            {
+
+                ControladorFormaPago controladorFormaPago = new ControladorFormaPago();
+                this.ListFormaPago.DataSource = controladorFormaPago.ObtenerTodasFormasPago();
+                this.ListFormaPago.DataValueField = "id";
+                this.ListFormaPago.DataTextField = "descripcion";
+                this.ListFormaPago.DataBind();
+                ListFormaPago.Items.Insert(0, new ListItem("Seleccione", "-1"));
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        private void CargarVendedores()
+        {
+
+            try
+            {
+
+                ControladorVendedor controladorVendedor = new ControladorVendedor();
+                List<Tecnocuisine_API.Entitys.Vendedores> listaVendedores = controladorVendedor.ObtenerTodosVendedores();
+                List<Tecnocuisine_API.Entitys.Vendedores> listaNuevaVendedores = new List<Tecnocuisine_API.Entitys.Vendedores>();
+                foreach (Tecnocuisine_API.Entitys.Vendedores item in listaVendedores)
+                {
+                    Tecnocuisine_API.Entitys.Vendedores vendedor = new Tecnocuisine_API.Entitys.Vendedores { nombre = item.nombre + " " + item.apellido, id = item.id };
+                    listaNuevaVendedores.Add(vendedor);
+                }
+                this.ListVendedor.DataSource = listaNuevaVendedores;
+                this.ListVendedor.DataValueField = "id";
+                this.ListVendedor.DataTextField = "nombre";
+                this.ListVendedor.DataBind();
+                ListVendedor.Items.Insert(0, new ListItem("Seleccione", "-1"));
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        private void CargarEstadosClientes()
+        {
+
+            try
+            {
+
+                this.ListEstado.DataSource = ControladorCliente.ObtenerTodosEstados();
+                this.ListEstado.DataValueField = "id";
+                this.ListEstado.DataTextField = "descripcion";
+                this.ListEstado.DataBind();
+                ListEstado.Items.Insert(0, new ListItem("Seleccione", "-1"));
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void CargarClientes()
+        {
+            try
+            {
+                ControladorCliente ControladorCliente = new ControladorCliente();
+
+                var clientes = ControladorCliente.ObtenerTodosClientes();
+
+
+                if (clientes.Count > 0)
+                {
+                    CargarClientesOptions(clientes);
+                    //foreach (var item in Recetas)
+                    //{
+
+                    //    CargarRecetasPHModal(item);
+
+                    //}
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        private void CargarClientesOptions(List<Tecnocuisine_API.Entitys.Clientes> clientes)
+        {
+            try
+            {
+                ControladorUnidad cu = new ControladorUnidad();
+                var builder = new System.Text.StringBuilder();
+
+                foreach (var cli in clientes)
+                {
+                        builder.Append(String.Format("<option value='{0}' id='c_r_" + cli.id + "_" + cli.alias + "_" + cli.cuit + "'>", cli.id + " - " + cli.alias));
+              
+                   
+                }
+
+                //for (int i = 0; i < table.Rows.Count; i++)
+                //    builder.Append(String.Format("<option value='{0}'>", table.Rows[i][0]));
+
+                ListClientes.InnerHtml = builder.ToString();
+
+            }
+            catch (Exception ex)
+            {
+            }
+        }
         private void CargarNumeroVenta()
         {
             try
@@ -72,12 +219,52 @@ namespace Tecnocuisine.Formularios.Ventas
 
 
                     var h3 = new HtmlGenericControl("h3");
-                    h3.InnerText = "#" +fac1;
+                    h3.Attributes.Add("style", "margin-left: 15px;");
+                    h3.InnerText = "#" + fac1;
                     lblVentaNum.Controls.Add(h3);
                 }
             }
             catch (Exception ex)
             {
+            }
+
+        }
+
+        protected void btnGuardar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Tecnocuisine_API.Entitys.Clientes cliente = new Tecnocuisine_API.Entitys.Clientes();
+
+                cliente.codigo = txtCodigo.Text;
+                cliente.cuit = txtCuit.Text;
+                cliente.razonSocial = txtRazonSocial.Text;
+                cliente.alias = txtAlias.Text;
+                cliente.observaciones = txtObservaciones.Text;
+                cliente.saldoMax = Convert.ToDecimal(txtSaldoMax.Text);
+                cliente.vencimientoFC = Convert.ToInt32(txtVencimientoFC.Text);
+                cliente.activo = 1;
+                cliente.formaPago = Convert.ToInt32(ListFormaPago.SelectedValue);
+                cliente.iva = Convert.ToInt32(ListRegimen.SelectedValue);
+                cliente.estado = Convert.ToInt32(ListEstado.SelectedValue);
+                cliente.vendedor = Convert.ToInt32(ListVendedor.SelectedValue);
+                cliente.fechaAlta = DateTime.Now;
+
+                int resultado = ControladorCliente.AgregarCliente(cliente);
+
+                if (resultado > 0)
+                {
+                    txtClientes.Text = resultado.ToString() + " - " + cliente.alias;
+                    this.m.ShowToastr(this.Page, "Cliente Creado con Exito", "success");
+                }
+                else
+                {
+                    this.m.ShowToastr(this.Page, "No se pudo agregar el cliente", "warning");
+                }
+            }
+            catch (Exception ex)
+            {
+
             }
 
         }
@@ -150,7 +337,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 string All = "";
                 if (receta != null)
                 {
-                    All = receta.Costo.ToString() + " - " + receta.PrVenta.ToString() + " - " + receta.rinde.ToString();
+                    All = receta.Costo.ToString().Replace(',', '.') + " - " + receta.PrVenta.ToString().Replace(',', '.') + " - " + receta.rinde.ToString().Replace(',', '.');
                 }
                 return All;
             }
@@ -176,7 +363,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 {
                     ControladorUnidad controladorUnidad = new ControladorUnidad();
                     var medida = controladorUnidad.ObtenerUnidadId(productos.unidadMedida);
-                    All = productos.costo.ToString() + " - " + "0" + " - " + medida.descripcion.ToString();
+                    All = productos.costo.ToString().Replace(',', '.') + " - " + "0" + " - " + medida.descripcion.ToString();
                     return All;
                 }
                 return All;
@@ -327,8 +514,7 @@ namespace Tecnocuisine.Formularios.Ventas
 
 
         [WebMethod]
-
-        public static void ConfirmarLaVenta(string list)
+        public static void ConfirmarLaVenta(string list, string cliente, string tipofac, string formapago)
         {
             try
             {
@@ -357,10 +543,10 @@ namespace Tecnocuisine.Formularios.Ventas
                             {
                                 int id = Convert.ToInt32(array[0]);
                                 string type = array[1];
-                                decimal PVenta = Convert.ToDecimal(array[2]);
-                                decimal CantVendida = Convert.ToDecimal(array[3]);
+                                decimal PVenta = Convert.ToDecimal(array[2].Replace(",", ""));
+                                decimal CantVendida = Convert.ToDecimal(array[3].Replace(",", ""));
                                 string Rinde = array[4];
-                                decimal costo = Convert.ToDecimal(array[0]);
+                                decimal costo = Convert.ToDecimal(array[5].Replace(",", ""));
 
 
                                 CostoTotal += costo;
@@ -474,7 +660,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 {
 
                 }
-                CrearDetalleVenta(list, CostoTotal, CantidadTotal, VentaTotal);
+               CrearDetalleVenta(list, CostoTotal, CantidadTotal, VentaTotal,cliente,tipofac,formapago);
 
             }
             catch (Exception)
@@ -482,12 +668,27 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
 
-        public static void CrearDetalleVenta(string list, decimal CostoTotal, decimal CantidadTotal, decimal VentaTotal)
+        public static void CrearDetalleVenta(string list, decimal CostoTotal, decimal CantidadTotal, decimal VentaTotal, string cliente, string tipofac, string formapago)
         {
             //document.getElementById('<%= idProductosRecetas.ClientID%>').value += ";" + producto.split('-')[0].trim() + "-" + tipo + "-" + Venta.toString().trim() + "-" + Cantidad.toString().trim() + "-" + Rinde.toString().trim();
             ControladorVentas controladorVentas = new ControladorVentas();
             GenerarVenta generar = new GenerarVenta();
             VentasDetalle VD = new VentasDetalle();
+            VD.idTipoFactura = Convert.ToInt32(tipofac);
+            VD.idCliente = Convert.ToInt32(cliente.Split('-')[0].Trim());
+            string formapagofinal = "";
+            switch (formapago)
+            {
+                case "1": formapagofinal = "Contado";
+                    break;
+                case "2": formapagofinal = "Cuenta Corriente";
+                    break;
+                case "3": formapagofinal = "Tarjeta de Credito";
+                    break;
+                default: formapagofinal = "No Se Encontro Forma de Pago";
+                    break;
+            }
+            VD.FormaPago = formapagofinal;
             var listaVentas = controladorVentas.ObtenerTodasLasVentas();
             string fac1 = "000000";
             if (listaVentas.Count == 0)
@@ -499,6 +700,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 string codigo = (listaVentas.Count + 1).ToString();
                 fac1 = generar.GenerarCodigoPedido(codigo);
             }
+            VD.NumeroFactura = GenerarCodigoFactura2(tipofac);
             VD.CantidadTotal = CantidadTotal;
             VD.FechaVenta = DateTime.Now;
             VD.CostoTotal = CostoTotal;
@@ -513,10 +715,10 @@ namespace Tecnocuisine.Formularios.Ventas
                 var detalles = item.Split('-');
                 int id = Convert.ToInt32(detalles[0]);
                 string type = detalles[1];
-                decimal PVenta = Convert.ToDecimal(detalles[2]);
-                decimal CantVendida = Convert.ToDecimal(detalles[3]);
+                decimal PVenta = Convert.ToDecimal(detalles[2].Replace(",", ""));
+                decimal CantVendida = Convert.ToDecimal(detalles[3].Replace(",", ""));
                 string Rinde = detalles[4];
-                decimal costo = Convert.ToDecimal(detalles[5]);
+                decimal costo = Convert.ToDecimal(detalles[5].Replace(",", ""));
 
                 if (type == "Receta")
                 {
@@ -541,6 +743,60 @@ namespace Tecnocuisine.Formularios.Ventas
 
                 controladorVentas.AgregarVentaDetalleRecetaProducto(VDRP);
 
+            }
+            if (formapagofinal == "Cuenta Corriente")
+            {
+
+            Tecnocuisine_API.Entitys.CuentaCorrienteVentas cuentaCorriente = new Tecnocuisine_API.Entitys.CuentaCorrienteVentas();
+                ControladorCuentaCorrienteVentas controladorCuentaCorrienteVentas = new ControladorCuentaCorrienteVentas();
+            ControladorTipoDocumento controladorTipoDocumento = new ControladorTipoDocumento();
+            var TipoDocumento = controladorTipoDocumento.ObtenerTipoDocumentoByID((int)VD.idTipoFactura);
+            cuentaCorriente.fecha = DateTime.Now;
+            cuentaCorriente.idVenta = idVentaDetalle;
+            cuentaCorriente.Descripcion = TipoDocumento.Descripcion + " " + VD.NumeroFactura;
+            cuentaCorriente.idCliente = Convert.ToInt32(cliente.Split('-')[0].Trim());
+            if (TipoDocumento.Descripcion.ToLower().Contains("credito"))
+            {
+                cuentaCorriente.Debe = 0;
+                cuentaCorriente.Haber = Convert.ToDecimal(VD.CantidadTotal.ToString().Replace(",", "").Replace(".", ","));
+            }
+            else
+            {
+                cuentaCorriente.Debe = Convert.ToDecimal(VD.CantidadTotal.ToString().Replace(",", "").Replace(".", ","));
+                cuentaCorriente.Haber = 0;
+            }
+            int result = controladorCuentaCorrienteVentas.AgregarEnCuentaCorrienteVentas(cuentaCorriente);
+           
+            }
+        }
+
+      
+        public static string GenerarCodigoFactura2(string id)
+        {
+            try
+            {
+                ControladorVentas controladorVentas = new ControladorVentas();
+                string NumFac = controladorVentas.TraerUltimoNum(Convert.ToInt32(id));
+                return NumFac;
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+        }
+
+        [WebMethod]
+        public static string GenerarCodigoFactura(string id)
+        {
+            try
+            {
+                ControladorVentas controladorVentas = new ControladorVentas();
+              string NumFac = controladorVentas.TraerUltimoNum(Convert.ToInt32(id));
+                return NumFac;
+            }
+            catch (Exception ex)
+            {
+                return "";
             }
         }
         public string GenerarCodigoPedido(string value)

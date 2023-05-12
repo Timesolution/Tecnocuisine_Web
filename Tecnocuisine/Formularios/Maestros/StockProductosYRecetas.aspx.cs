@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -191,7 +192,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 tr.Cells.Add(celUM);
 
                 TableCell celCosto = new TableCell();
-                celCosto.Text = Receta.Costo.ToString().Replace(',', '.');
+                celCosto.Text = FormatearNumero((decimal)Receta.Costo);
                 celCosto.VerticalAlign = VerticalAlign.Middle;
                 celCosto.HorizontalAlign = HorizontalAlign.Left;
                 celCosto.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
@@ -201,9 +202,9 @@ namespace Tecnocuisine.Formularios.Maestros
                 TableCell celStock = new TableCell();
                 var stockR = controladorStockProducto.ObtenerStockReceta(Receta.id);
                 if (stockR != null)
-                    celStock.Text = stockR.stock.Value.ToString();
+                    celStock.Text = FormatearNumero(stockR.stock.Value);
                 else
-                    celStock.Text = "0";
+                    celStock.Text = "0.00";
 
                 //celStock.Text = stockR.stock.Value.ToString();
                 celStock.VerticalAlign = VerticalAlign.Middle;
@@ -264,6 +265,17 @@ namespace Tecnocuisine.Formularios.Maestros
             {
 
             }
+        }
+        decimal RevertirNumero(string numeroFormateado)
+        {
+            string numeroSinComas = numeroFormateado.Replace(",", "");
+            decimal numero = decimal.Parse(numeroSinComas, CultureInfo.InvariantCulture);
+            return numero;
+        }
+
+        string FormatearNumero(decimal numero)
+        {
+            return numero.ToString("N2", new CultureInfo("en-US"));
         }
     }
 }

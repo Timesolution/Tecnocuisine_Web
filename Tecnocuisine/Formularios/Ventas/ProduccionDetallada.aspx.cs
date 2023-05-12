@@ -107,9 +107,31 @@ namespace Tecnocuisine.Formularios.Ventas
                 CantProd.HorizontalAlign = HorizontalAlign.Left;
                 CantProd.Attributes.Add("style", "padding-bottom: 1px !important; text-align: end;vertical-align: middle;");
                 tr.Cells.Add(CantProd);
+                if (i.Costo == null)
+                {
 
 
+                TableCell Costo = new TableCell();
+                Costo.Text = "0.00";
+                Costo.Font.Bold = true;
+                Costo.VerticalAlign = VerticalAlign.Middle;
+                Costo.HorizontalAlign = HorizontalAlign.Left;
+                Costo.Attributes.Add("style", "padding-bottom: 1px !important; text-align: end;vertical-align: middle;");
+                tr.Cells.Add(Costo);
                 phTablaProductos.Controls.Add(tr);
+                } else
+                {
+                    TableCell Costo = new TableCell();
+                    Costo.Text = i.Costo.ToString().Replace(',','.');
+                    Costo.Font.Bold = true;
+                    Costo.VerticalAlign = VerticalAlign.Middle;
+                    Costo.HorizontalAlign = HorizontalAlign.Left;
+                    Costo.Attributes.Add("style", "padding-bottom: 1px !important; text-align: end;vertical-align: middle;");
+                    tr.Cells.Add(Costo);
+                    phTablaProductos.Controls.Add(tr);
+                }
+
+
             }
             catch (Exception ex)
             {

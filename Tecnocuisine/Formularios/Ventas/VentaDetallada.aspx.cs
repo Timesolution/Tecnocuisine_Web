@@ -98,7 +98,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 tr.Cells.Add(celNombreProd);
 
                 TableCell CelCosto = new TableCell();
-                CelCosto.Text = "$" + i.Costo.ToString();
+                CelCosto.Text = "$" + FormatearNumero((decimal)i.Costo);
                 CelCosto.Font.Bold = true;
                 CelCosto.VerticalAlign = VerticalAlign.Middle;
                 CelCosto.HorizontalAlign = HorizontalAlign.Left;
@@ -128,6 +128,17 @@ namespace Tecnocuisine.Formularios.Ventas
             {
 
             }
+        }
+        decimal RevertirNumero(string numeroFormateado)
+        {
+            string numeroSinComas = numeroFormateado.Replace(",", "");
+            decimal numero = decimal.Parse(numeroSinComas, CultureInfo.InvariantCulture);
+            return numero;
+        }
+
+        string FormatearNumero(decimal numero)
+        {
+            return numero.ToString("N2", new CultureInfo("en-US"));
         }
     }
 }

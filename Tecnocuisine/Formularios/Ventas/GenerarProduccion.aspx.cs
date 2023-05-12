@@ -58,6 +58,7 @@ namespace Tecnocuisine.Formularios.Ventas
             }
             CargarNumeroVenta();
             CargarProducto();
+            CargarDLLProductos();
         }
 
 
@@ -229,6 +230,18 @@ namespace Tecnocuisine.Formularios.Ventas
 
                 //agrego fila a tabla
                 TableCell Celld = new TableCell();
+                HtmlGenericControl cbxCalculator = new HtmlGenericControl("a");
+                cbxCalculator.Attributes.Add("data-toggle", "tooltip");
+                cbxCalculator.Attributes.Add("data-original-title", "Elegir Stock");
+                cbxCalculator.Attributes.Add("data-placement", "top");
+                cbxCalculator.Attributes.Add("onclick", "ModalTablaStocks('"+ receta.id + "-R')");
+                cbxCalculator.Style.Add("background-color", "transparent");
+                cbxCalculator.InnerHtml = " <i id=\" "+receta.id+"-R\" class=\"fa fa-calculator\"></i>";
+                // <a data-toggle=tooltip data-placement=top data-original-title=Ver_Receta href=/Formularios/Maestros/RecetasABM.aspx?a=2&i=" + id + "&b=1" + " " + "target=\"_blank\" style=\"color: black;\" > <i class=\"fa fa-search-plus\"></i> </a>
+                Celld.Controls.Add(cbxCalculator);
+
+
+
                 HtmlGenericControl cbxAgregar = new HtmlGenericControl("a");
                 cbxAgregar.Attributes.Add("data-toggle", "tooltip");
                 cbxAgregar.Attributes.Add("data-original-title", "Producir Esta Receta");
@@ -313,7 +326,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 tr.Cells.Add(celNombre);
 
                 TableCell CelCantNecesaria = new TableCell();
-                CelCantNecesaria.Text = item.cantidad.ToString().Replace(',', '.');
+                CelCantNecesaria.Text = FormatearNumero(item.cantidad);
                 CelCantNecesaria.VerticalAlign = VerticalAlign.Middle;
                 CelCantNecesaria.HorizontalAlign = HorizontalAlign.Left;
                 CelCantNecesaria.Attributes.Add("style", "vertical-align: middle; text-align: right;");
@@ -324,7 +337,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 if (stock != null)
                 {
                     TableCell Stock = new TableCell();
-                    Stock.Text = stock.stock.ToString().Replace(',', '.');
+                    Stock.Text = FormatearNumero((decimal)stock.stock);
                     Stock.VerticalAlign = VerticalAlign.Middle;
                     Stock.HorizontalAlign = HorizontalAlign.Left;
                     Stock.Attributes.Add("id", stock.stock.ToString().Replace(',', '.') + "-" + desc + "-" + item.Productos.id.ToString());
@@ -352,12 +365,19 @@ namespace Tecnocuisine.Formularios.Ventas
                 CantReal.Text = "<input type=\"number\" style=\"withd 100%;\" placeholder=\"Ingresa la cantidad real que utilizaste\" />";
                 CantReal.VerticalAlign = VerticalAlign.Middle;
                 CantReal.HorizontalAlign = HorizontalAlign.Left;
-                CantReal.Attributes.Add("style", "vertical-align: middle;");
+                CantReal.Attributes.Add("style", "vertical-align: middle; aling-item: rigth;");
                 tr.Cells.Add(CantReal);
 
                 //agrego fila a tabla
                 TableCell Celld = new TableCell();
-
+                HtmlGenericControl cbxCalculator = new HtmlGenericControl("a");
+                cbxCalculator.Attributes.Add("data-toggle", "tooltip");
+                cbxCalculator.Attributes.Add("data-original-title", "Elegir Stock");
+                cbxCalculator.Attributes.Add("data-placement", "top");
+                cbxCalculator.Attributes.Add("onclick", "ModalTablaStocks('"+item.Productos.id + "-P')");
+                cbxCalculator.InnerHtml = " <i id=\""+item.Productos.id +"-P\" class=\"fa fa-calculator\"></i>";
+                // <a data-toggle=tooltip data-placement=top data-original-title=Ver_Receta href=/Formularios/Maestros/RecetasABM.aspx?a=2&i=" + id + "&b=1" + " " + "target=\"_blank\" style=\"color: black;\" > <i class=\"fa fa-search-plus\"></i> </a>
+                Celld.Controls.Add(cbxCalculator);
 
                 tr.Cells.Add(Celld);
 
@@ -408,7 +428,32 @@ namespace Tecnocuisine.Formularios.Ventas
 
             }
         }
+        private void CargarDLLProductos()
+        {
+            try
+            {
+                ControladorProducto cp = new ControladorProducto();
+                List<Tecnocuisine_API.Entitys.Productos> ListProduct = cp.ObtenerTodosProductos();
+                var builder = new System.Text.StringBuilder();
 
+                foreach (var rec in ListProduct)
+                {
+
+                    builder.Append(String.Format("<option value='{0}' id='"+ rec.id +"'>", rec.id + " - " + rec.descripcion));
+                }
+
+
+
+                //for (int i = 0; i < table.Rows.Count; i++)
+                //    builder.Append(String.Format("<option value='{0}'>", table.Rows[i][0]));
+
+                ListaDLLProductos.InnerHtml = builder.ToString();
+
+            }
+            catch (Exception ex)
+            {
+            }
+        }
         private void CargarUnidadOptions(List<Tecnocuisine_API.Entitys.Unidades> unidad)
         {
             try
@@ -544,26 +589,44 @@ namespace Tecnocuisine.Formularios.Ventas
             {
             }
         }
+        [WebMethod]
+        public static string obtenerStockProd(string id)
+        {
+            try
+            {
+                ControladorStockProducto controladorStockProducto = new ControladorStockProducto();
+               var stock =  controladorStockProducto.ObtenerStockProducto(Convert.ToInt32(id));
+                if (stock == null)
+                {
+                    return "";
+                }
+                return stock.stock.ToString().Replace(',','.');
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+        }
+
+
 
         [WebMethod]
-        public static string GetStockRecetas(int idProd)
+        public static string GetStockProdRect(string idProd)
         {
             try
             {
                 ControladorStockReceta controladorStockReceta = new ControladorStockReceta();
-
-                var stock = controladorStockReceta.ObtenerStockReceta(idProd);
-                if (stock != null)
+                ControladorStockProducto controladorStockProducto = new ControladorStockProducto();
+                string tipo = idProd.Split('-')[1];
+                int ID = Convert.ToInt32(idProd.Split('-')[0]);
+                string result;
+                if (tipo == "P") {
+                  result =  controladorStockProducto.obtenerAllStockArticulo(ID);
+                } else
                 {
-                    GenerarProduccion gp = new GenerarProduccion();
-                    string stocktotal = ((double)stock.stock).ToString();
-                    return stocktotal;
+                    result = controladorStockReceta.obtenerAllStockArticulo(ID);
                 }
-                else
-                {
-                    return "";
-                }
-
+                return result.Replace(',','.');
             }
             catch (Exception)
             {
@@ -578,12 +641,13 @@ namespace Tecnocuisine.Formularios.Ventas
             try
             {
                 ControladorReceta controladorReceta = new ControladorReceta();
-
+                ControladorUnidad cu = new ControladorUnidad();
                 Tecnocuisine_API.Entitys.Recetas receta = controladorReceta.ObtenerRecetaId(idProd);
+                Tecnocuisine_API.Entitys.Unidades uni = cu.ObtenerUnidadId((int)receta.UnidadMedida);
                 string All = "";
                 if (receta != null)
                 {
-                    All = receta.Costo.ToString() + " - " + receta.PrVenta.ToString() + " - " + receta.rinde.ToString();
+                    All = receta.Costo.ToString() + ";" + receta.PrVenta.ToString() + ";" + receta.rinde.ToString() + ";" + uni.id+"-"+uni.descripcion;
                 }
                 return All;
             }
@@ -610,6 +674,33 @@ namespace Tecnocuisine.Formularios.Ventas
                     ControladorUnidad controladorUnidad = new ControladorUnidad();
                     var medida = controladorUnidad.ObtenerUnidadId(productos.unidadMedida);
                     All = productos.costo.ToString() + " - " + "0" + " - " + medida.descripcion.ToString();
+                    return All;
+                }
+                return All;
+
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+        }
+
+
+
+        [WebMethod]
+        public static string GetProductoChange(string idProd)
+        {
+            try
+            {
+                ControladorProducto controladorProducto = new ControladorProducto();
+
+                Tecnocuisine_API.Entitys.Productos productos = controladorProducto.ObtenerProductoId(Convert.ToInt32(idProd));
+                string All = "";
+                if (productos != null)
+                {
+                    ControladorUnidad controladorUnidad = new ControladorUnidad();
+                    var medida = controladorUnidad.ObtenerUnidadId(productos.unidadMedida);
+                    All = productos.id + "-" + productos.descripcion + "-" + medida.descripcion.ToString() +"-" + productos.costo.ToString().Replace(',','.');
                     return All;
                 }
                 return All;
@@ -758,6 +849,40 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
 
+        [WebMethod]
+        public static string ObtenerListaHistoricoCambio(string idProd,string Type)
+        {
+            try
+            {
+                ControladorCambiosHistorico controladorCambiosHistorico = new ControladorCambiosHistorico();
+                ControladorProducto controladorProducto = new ControladorProducto();
+
+                bool trueOrFalse = true;
+                if (Type == "Receta")
+                {
+                    trueOrFalse = false;
+                }
+                string ListFinal = "";
+                List<CambioProductoHistorico> listProd = controladorCambiosHistorico.ObtenerAllHistoricosCambiosIdOriginal(Convert.ToInt16(idProd), trueOrFalse);
+                if (listProd.Count > 0)
+                {
+                    foreach (var item in listProd)
+                    {
+                     Tecnocuisine_API.Entitys.Productos prod =  controladorProducto.ObtenerProductoId((int)item.idProductoRemplazo);
+                        if (prod != null) {
+                            ListFinal += item.id + "_" + item.idProductoRemplazo + " - " + prod.descripcion + "_" + item.CantidadNecesaria.ToString().Replace(',','.') + "%";
+                        }
+                    }
+                }
+                return ListFinal;
+
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+        }
+
 
         [WebMethod]
         public static string GetProductosEnRecetas(string idProd)
@@ -779,11 +904,11 @@ namespace Tecnocuisine.Formularios.Ventas
                         var stock = controladorStockProducto.ObtenerStockProducto(item.idProducto);
                         if (stock != null)
                         {
-                            ListFinal += item.idProducto + "," + item.Productos.descripcion + "," + item.cantidad.ToString().Replace(",",".") + "," + stock.stock.ToString().Replace(",", ".") + "," + controladorUnidad.ObtenerUnidadId(item.Productos.unidadMedida).descripcion + "," + "Producto" + ";";
+                            ListFinal += item.idProducto + "," + item.Productos.descripcion + "," + item.cantidad.ToString().Replace(",",".") + "," + stock.stock.ToString().Replace(",", ".") + "," + controladorUnidad.ObtenerUnidadId(item.Productos.unidadMedida).descripcion + "," + "Producto" + "," + item.Productos.costo.ToString().Replace(',', '.') + "; ";
                         }
                         else
                         {
-                            ListFinal += item.idProducto + "," + item.Productos.descripcion + "," + item.cantidad.ToString().Replace(",", ".") + "," + 0 + "," + controladorUnidad.ObtenerUnidadId(item.Productos.unidadMedida).descripcion + "," + "Producto" + ";";
+                            ListFinal += item.idProducto + "," + item.Productos.descripcion + "," + item.cantidad.ToString().Replace(",", ".") + "," + 0 + "," + controladorUnidad.ObtenerUnidadId(item.Productos.unidadMedida).descripcion + "," + "Producto" + "," + item.Productos.costo.ToString().Replace(',', '.')+ ";";
 
                         }
                     }
@@ -807,12 +932,12 @@ namespace Tecnocuisine.Formularios.Ventas
                             }
                             if (item.Recetas.UnidadMedida == null)
                             {
-                                ListFinal += receta.id + "," + receta.descripcion + "," + stock.ToString().Replace(",", ".") + "," + item.cantidad.ToString().Replace(",", ".") + "," + "1" + "," + "Receta" + ";";
+                                ListFinal += receta.id + "," + receta.descripcion + "," + stock.ToString().Replace(",", ".") + "," + item.cantidad.ToString().Replace(",", ".") + "," + "1" + "," + "Receta" + "," + receta.CostoU.ToString().Replace(',', '.') + ";";
 
                             }
                             else
                             {
-                                ListFinal += receta.id + "," + receta.descripcion + "," + item.cantidad.ToString().Replace(",", ".") + "," + stock.ToString().Replace(",", ".") + "," + controladorUnidad.ObtenerUnidadId((int)item.Recetas.UnidadMedida).descripcion + "," + "Receta" + ";";
+                                ListFinal += receta.id + "," + receta.descripcion + "," + item.cantidad.ToString().Replace(",", ".") + "," + stock.ToString().Replace(",", ".") + "," + controladorUnidad.ObtenerUnidadId((int)item.Recetas.UnidadMedida).descripcion + "," + "Receta" + "," + receta.CostoU.ToString().Replace(',', '.') + ";";
                             }
                         }
                     }
@@ -827,7 +952,8 @@ namespace Tecnocuisine.Formularios.Ventas
         }
 
         [WebMethod]
-        public static string GenerarProduccionFinal(string List, string Marca, string Presentacion, string UnidadMedida, string Sector, string Lote, string CantidadProducida, string idReceta)
+        public static string GenerarProduccionFinal(string List, string Marca, string Presentacion, string UnidadMedida, string Sector, string Lote, string CantidadProducida, string idReceta, string ListStock,string ListHistoricoCambio,string ListCostoCambios,string CostoTotal)
+        
         {
             try
             {
@@ -844,6 +970,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 int unidadid = Convert.ToInt16(UnidadMedida.Split('-')[0].Trim());
                 int idreceta = Convert.ToInt16(idReceta);
                 decimal cantProducida = Convert.ToDecimal(CantidadProducida);
+                var ArrayStock = ListStock.Split('_');
                 foreach (var i3 in item)
                 {
                     try
@@ -851,7 +978,9 @@ namespace Tecnocuisine.Formularios.Ventas
 
                     if (i3 != "")
                     {
-                        VaciarStockProductos(i3.Split('%'));
+                         
+
+                            VaciarStockProductos(i3.Split('%'),ArrayStock);
                     }
                     }
                     catch (Exception)
@@ -1004,7 +1133,13 @@ namespace Tecnocuisine.Formularios.Ventas
 
 
 
-              int i =  CrearHistoricoProduccion(item, marcaid, presentacionid, sectorid, Lote, cantProducida, unidadid, idreceta);
+              int i =  CrearHistoricoProduccion(item, marcaid, presentacionid, sectorid, Lote, cantProducida, unidadid, idreceta,CostoTotal);
+                string[] ListCambios = ListHistoricoCambio.Split('%');
+                CrearHistoricoCambios(ListCambios);
+                if (ListCostoCambios.Trim() != "")
+                {
+                    ModificarCostos(ListCostoCambios.Split('/'));
+                }
                 if (i < 0)
                 {
                     return ERROR += i+",";
@@ -1018,8 +1153,238 @@ namespace Tecnocuisine.Formularios.Ventas
             }
 
         }
+        public static int ModificarCostos(string[] list)
+        {
+            try
+            {
+                ControladorProducto controladorProducto = new ControladorProducto();
+                ControladorReceta cr = new ControladorReceta();
+                foreach(string item in list) {
+                    if (item != "")
+                    {
 
-        public static int CrearHistoricoProduccion(string[] list, int marca, int presentaciones, int sector, string lote, decimal cantProducida, int unidad, int idreceta)
+                    string[] arr = item.Split('%');
+                    string idProducto = arr[1];
+                    string type = arr[0];
+                    string Costo = arr[2].Replace(".",",");
+                    if (type == "Producto")
+                    {
+                        Tecnocuisine_API.Entitys.Productos prod = controladorProducto.ObtenerProductoId(Convert.ToInt32(idProducto));
+                        prod.costo = Convert.ToDecimal(Costo);
+                List<Recetas_Producto> ListRP = cr.ObtenerListRecetaByIdProducto(Convert.ToInt32(idProducto));
+
+
+                if (ListRP.Count > 0)
+                {
+                        controladorProducto.EditarProducto(prod);
+                    foreach(var item2 in ListRP)
+                                {
+                                    ActualizarCostoTotalReceta((int)item2.idReceta);
+                                }
+                }
+                   
+                    } else
+                    {
+                        Tecnocuisine_API.Entitys.Recetas receta = cr.ObtenerRecetaId(Convert.ToInt32(idProducto));
+                        receta.CostoU = Convert.ToDecimal(Costo);
+                        List<Recetas_Receta> ListRR = cr.obtenerRecetasbyRecetaIngrediente(Convert.ToInt32(idProducto));
+                        cr.EditarReceta(receta);
+                         ActualizarCostoTotalReceta(Convert.ToInt32(idProducto));
+                        
+                    }
+                    }
+                
+                
+                
+                }
+                return 1;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
+        public static void ActualizarCostoTotalReceta(int idReceta)
+        {
+            try
+            {
+                ControladorProducto controladorProducto = new ControladorProducto();
+                ControladorReceta cr = new ControladorReceta();
+                var receta = cr.ObtenerRecetaId(idReceta);
+                List<Recetas_Producto> ListRP = cr.ObtenerProductosByReceta(Convert.ToInt32(idReceta));
+                List<Recetas_Receta> ListRRHijas = cr.obtenerRecetasbyRecetaIngrediente(Convert.ToInt32(idReceta));
+                List<Recetas_Receta> ListRRPadre = cr.obtenerRecetasbyReceta(Convert.ToInt32(idReceta));
+
+                decimal costototal = 0;
+                decimal costUnitario = 0;
+                if (ListRP.Count > 0)
+                {
+
+                foreach (var item in ListRP)
+                {
+
+                    costototal += (item.Productos.costo * item.cantidad);
+                  
+                }
+                }
+                if (ListRRPadre.Count > 0)
+                {
+
+                foreach(var item in ListRRHijas)
+                {
+                        ActualizarCostoTotalReceta(item.idRecetaIngrediente);
+                }
+                
+                }
+                foreach(var item in ListRRPadre)
+                {
+                    ActualizarCostoTotalReceta(item.idReceta);
+                    var RecetaIngrediente = cr.ObtenerRecetaId(item.idRecetaIngrediente);
+                    costototal += (decimal)RecetaIngrediente.CostoU * item.cantidad;
+                }
+
+
+                costUnitario = (decimal)(costototal / receta.rinde);
+                receta.Costo = costototal;
+                receta.CostoU = costUnitario;
+                cr.EditarReceta(receta);
+                
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+        public static void VerificarCostoProductoInReceta(List<Recetas_Producto> ListRP, string Costo)
+        {
+            try
+            {
+                ControladorProducto controladorProducto = new ControladorProducto();
+                ControladorReceta cr = new ControladorReceta();
+                foreach (var item in ListRP)
+                {
+                    decimal costoActualizado = Convert.ToDecimal(Costo.Replace(".", ","));
+                    if (item.Productos.costo != costoActualizado)
+                    {
+                        decimal CostoViejo = (decimal)item.Recetas.Costo;
+                        decimal costoNuevo = (CostoViejo - item.Productos.costo) + costoActualizado;
+                        Tecnocuisine_API.Entitys.Recetas receta = new Tecnocuisine_API.Entitys.Recetas();
+                        receta.id = item.Recetas.id;
+                        receta.descripcion = item.Recetas.descripcion;
+                        receta.estado = item.Recetas.estado;
+                        receta.desperdicio = item.Recetas.desperdicio;
+                        receta.peso = item.Recetas.peso;
+                        receta.rinde = item.Recetas.rinde;
+                        receta.merma = item.Recetas.merma;
+                        receta.coeficiente = item.Recetas.coeficiente;
+                        receta.categoria = item.Recetas.categoria;
+                        receta.Tipo = item.Recetas.Tipo;
+                        receta.UnidadMedida = item.Recetas.UnidadMedida;
+                        receta.Costo = costoNuevo;
+                        receta.PrVenta = item.Recetas.PrVenta;
+                        receta.PorcFoodCost = item.Recetas.PorcFoodCost;
+                        receta.CostMarginal = item.Recetas.CostMarginal;
+                        receta.BuenasPracticas = item.Recetas.BuenasPracticas;
+                        receta.InfNutricional = item.Recetas.InfNutricional;
+                        receta.Codigo = item.Recetas.Codigo;
+                        receta.PesoU = item.Recetas.PesoU;
+                        receta.CostoU = costoNuevo / item.Recetas.rinde;
+                        receta.ProductoFinal = item.Recetas.ProductoFinal;
+
+                        cr.EditarReceta(receta);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+        public static void VerificarCostoRecetaInReceta(List<Recetas_Receta> ListRR, string Costo)
+        {
+            try
+            {
+                ControladorProducto controladorProducto = new ControladorProducto();
+                ControladorReceta cr = new ControladorReceta();
+                foreach (var item in ListRR)
+                {
+                    var recetaIngrediente = cr.ObtenerRecetaId(item.idRecetaIngrediente);
+                    var receta = cr.ObtenerRecetaId(item.idReceta);
+                        decimal cantidadUtilizada = item.cantidad;
+
+                    decimal costoActualizado = Convert.ToDecimal(Costo.Replace(".", ","));
+                    if (recetaIngrediente.CostoU != costoActualizado)
+                    {
+                        decimal CostoViejo = (decimal)recetaIngrediente.CostoU * cantidadUtilizada;
+                        decimal costoNuevo = (decimal)((receta.Costo - CostoViejo) + costoActualizado);
+                        receta.CostoU = costoNuevo / item.Recetas.rinde;
+                        receta.Costo = costoNuevo;
+
+                        cr.EditarReceta(receta);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        public static int CrearHistoricoCambios(string[] list)
+        {
+            try
+            {
+                ControladorCambiosHistorico controladorCambiosHistorico = new ControladorCambiosHistorico();
+                foreach(string item in list)
+                {
+                    if (item != "")
+                    {
+
+                    string[] arritem = item.Split('-');
+                string idAntiguoitem = arritem[0].Trim();
+                    string DescripcionAntiguoitem = arritem[1].Trim();
+                    string TypeAntiguoitem = arritem[2].Trim();
+                    bool trueOrFalse = true;
+                    if (TypeAntiguoitem == "Receta")
+                    {
+                        trueOrFalse = false;
+                    }
+                    string idActualitem = arritem[3].Trim();
+                    string idDescripcionitem = arritem[4].Trim();
+                    string CantidadNecesaria = arritem[5].Trim();
+                    CambioProductoHistorico cambio = controladorCambiosHistorico.BuscarHistoricoCambios(Convert.ToInt32(idAntiguoitem), Convert.ToInt32(idActualitem), trueOrFalse);
+                    if (cambio == null)
+                    {
+                        CambioProductoHistorico nuevoCambio = new CambioProductoHistorico();
+                        if (trueOrFalse)
+                        {
+                        nuevoCambio.idProductoOriginal = Convert.ToInt32(idAntiguoitem);
+
+                        } else
+                        {
+                            nuevoCambio.idRecetaOriginal = Convert.ToInt32(idAntiguoitem);
+
+                        }
+                        nuevoCambio.idProductoRemplazo = Convert.ToInt32(idActualitem);
+                        nuevoCambio.CantidadNecesaria = Convert.ToDecimal(CantidadNecesaria.Replace('.',','));
+                            controladorCambiosHistorico.CrearHistoricoCambios(nuevoCambio);
+
+                    } else
+                    {
+                        if (cambio.CantidadNecesaria != Convert.ToDecimal(CantidadNecesaria.Replace('.', ',')) )
+                        {
+                        cambio.CantidadNecesaria = Convert.ToDecimal(CantidadNecesaria.Replace('.', ','));
+                        controladorCambiosHistorico.EditarHistoricoCambios(cambio);
+                        }
+                    }
+                    }
+                }
+
+                return 1;
+            }catch(Exception) { return 0; }  
+        }
+        public static int CrearHistoricoProduccion(string[] list, int marca, int presentaciones, int sector, string lote, decimal cantProducida, int unidad, int idreceta,string CostoTotal)
         {
             try
             {
@@ -1048,6 +1413,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 VD.idUnidadMedida = unidad;
                 VD.idSector = sector;
                 VD.idReceta = idreceta;
+                VD.CostoTotal = Convert.ToDecimal(CostoTotal.Replace(".", ","));
 
 
 
@@ -1064,6 +1430,7 @@ namespace Tecnocuisine.Formularios.Ventas
                         string type = arr[0];
                         int id = Convert.ToInt16(arr[1]);
                         decimal CantProdu = Convert.ToDecimal(arr[3]);
+                            decimal CostUnitario = Convert.ToDecimal(arr[4].Replace(".",","));
                         VentaProducionRecetaProducto VDRP = new VentaProducionRecetaProducto();
 
 
@@ -1073,6 +1440,7 @@ namespace Tecnocuisine.Formularios.Ventas
                             VDRP.idReceta = id;
                             VDRP.CantidadProducida = CantProdu;
                             VDRP.idProducion = idVentaProduccion;
+                            VDRP.Costo = CostUnitario;
                         }
                         else
                         {
@@ -1080,6 +1448,7 @@ namespace Tecnocuisine.Formularios.Ventas
                             VDRP.idReceta = null;
                             VDRP.CantidadProducida = CantProdu;
                             VDRP.idProducion = idVentaProduccion;
+                            VDRP.Costo = CostUnitario;
                         }
 
                         controladorVentas.AgregarVentaProducionRecetaProducto(VDRP);
@@ -1098,7 +1467,6 @@ namespace Tecnocuisine.Formularios.Ventas
                 return -1;
             }
         }
-
         public string GenerarCodigoPedido(string value)
         {
             var value2 = Convert.ToInt64(value);
@@ -1108,7 +1476,7 @@ namespace Tecnocuisine.Formularios.Ventas
             var result2 = value2.ToString("D" + decimalLength.ToString());
             return result2;
         }
-        public static int VaciarStockProductos(string[] list)
+        public static int VaciarStockProductos(string[] list, string[] ArrayStock)
         {
             try
             {
@@ -1122,7 +1490,33 @@ namespace Tecnocuisine.Formularios.Ventas
 
                 string type = list[0];
                 string id = list[1];
+                bool DescontarStockPredefinido = false;
+                foreach (var itemstock in ArrayStock)
+                {
+                    if (itemstock != "")
+                    {
 
+                    string Arr = itemstock.Split(';')[0];
+                       var idComparar = Arr.Split('-')[0];
+                        var typeComparar = Arr.Split('-')[1];
+                        var letra = type.Substring(0,1);
+                    if (idComparar == id && typeComparar == letra)
+                    {
+                        DescontarStockPredefinido = true;
+                        VaciarStockDefinidos(itemstock.Split(';'));
+                    } else
+                    {
+                        DescontarStockPredefinido = false;
+                    }
+
+
+                    }
+
+                }
+                if (DescontarStockPredefinido == true  )
+                {
+                    return 1;
+                }
                 if (type == "Producto")
                 {
 
@@ -1145,7 +1539,139 @@ namespace Tecnocuisine.Formularios.Ventas
         }
 
 
+        public static int VaciarStockDefinidos(string[] list)
+        {
+            try
+            {
+                ControladorStockProducto controladorStockProducto = new ControladorStockProducto();
+                ControladorStockReceta controladorStockReceta = new ControladorStockReceta();
+                var idtipo = list[0];
+                var stockmarca = list[1].Split('/');
+                var stockpres = list[2].Split('/');
+                var stocklotes = list[3].Split('/');
+                var stocksector = list[4].Split('/');
+                var cantAReducir = list[5].Split('/')[0];
+                if (idtipo.Split('-')[1] == "P")
+                {
+                    // PRODUCTO
+                  var stockfinal=  controladorStockProducto.ObtenerStockProducto(Convert.ToInt32(idtipo.Split('-')[0]));
+                    stockfinal.stock = stockfinal.stock - Convert.ToDecimal(cantAReducir);
+                    controladorStockProducto.EditarStockProducto(stockfinal);
+                foreach (var item in stockmarca)
+                {
+                        if (item != "")
+                        {
 
+                    int id = Convert.ToInt32(item.Split('%')[0]);
+                    decimal cant = Convert.ToDecimal(item.Split('%')[1]);
+                    var stock = controladorStockProducto.ObtenerStockMarcaByID(id);
+                    stock.stock = stock.stock - cant;
+                    controladorStockProducto.EditarStockMarca(stock);
+                        }
+                }
+                foreach (var item in stockpres)
+                {
+                        if (item != "")
+                        {
+                            int id = Convert.ToInt32(item.Split('%')[0]);
+                            decimal cant = Convert.ToDecimal(item.Split('%')[1]);
+                            var stock = controladorStockProducto.ObtenerStockPresentacionByID(id);
+                            var stocktotalenkg = stock.stock * stock.Presentaciones.cantidad;
+                            var cantfinal = (stocktotalenkg - cant) / stock.Presentaciones.cantidad;
+                            stock.stock = cantfinal;
+                            controladorStockProducto.EditarStockPresentaciones(stock);
+                        }
+                }
+                foreach (var item in stocklotes)
+                {
+                        if (item != "")
+                        {
+                            int id = Convert.ToInt32(item.Split('%')[0]);
+                            decimal cant = Convert.ToDecimal(item.Split('%')[1]);
+                            var stock = controladorStockProducto.ObtenerStockLotesByID(id);
+                            var stocktotalenkg = stock.stock * stock.Presentaciones.cantidad;
+                            var cantfinal = (stocktotalenkg - cant) / stock.Presentaciones.cantidad;
+                            stock.stock = cantfinal;
+                            controladorStockProducto.EditarStockLotes(stock);
+                        }
+                    }
+                foreach (var item in stocksector)
+                {
+                        if (item != "")
+                        {
+                            int id = Convert.ToInt32(item.Split('%')[0]);
+                            decimal cant = Convert.ToDecimal(item.Split('%')[1]);
+                            var stock = controladorStockProducto.ObtenerStockSectorByID(id);
+                            stock.stock = stock.stock - cant;
+                            controladorStockProducto.EditarStockSectores(stock);
+                        }
+                    }
+                // RECETA
+                } else
+                {
+
+                    var stockfinal = controladorStockReceta.ObtenerStockReceta(Convert.ToInt32(idtipo.Split('-')[0]));
+                    stockfinal.stock = stockfinal.stock - Convert.ToDecimal(cantAReducir);
+                    controladorStockReceta.EditarStockReceta(stockfinal);
+                    foreach (var item in stockmarca)
+                    {
+                        if (item != "")
+                        {
+                            int id = Convert.ToInt32(item.Split('%')[0]);
+                            decimal cant = Convert.ToDecimal(item.Split('%')[1]);
+                            var stock = controladorStockReceta.ObtenerStockMarcaByID(id);
+                            stock.stock = stock.stock - cant;
+                            controladorStockReceta.EditarStockMarcasReceta(stock);
+                        }
+                    }
+                    foreach (var item in stockpres)
+                    {
+                        if (item != "")
+                        {
+                            int id = Convert.ToInt32(item.Split('%')[0]);
+                            decimal cant = Convert.ToDecimal(item.Split('%')[1]);
+                            var stock = controladorStockReceta.ObtenerStockPresentacionByID(id);
+                            var stocktotalenkg = stock.stock * stock.Presentaciones.cantidad;
+                            var cantfinal = (stocktotalenkg - cant) / stock.Presentaciones.cantidad;
+                            stock.stock = cantfinal;
+                            controladorStockReceta.EditarStockPresentacionesReceta(stock);
+                        }
+                    }
+                    foreach (var item in stocklotes)
+                    {
+                        if (item != "")
+                        {
+                            int id = Convert.ToInt32(item.Split('%')[0]);
+                            decimal cant = Convert.ToDecimal(item.Split('%')[1]);
+                            var stock = controladorStockReceta.ObtenerStockLotesByID(id);
+                            var stocktotalenkg = stock.stock * stock.Presentaciones.cantidad;
+                            var cantfinal = (stocktotalenkg - cant) / stock.Presentaciones.cantidad;
+                            stock.stock = cantfinal;
+                            controladorStockReceta.EditarStockLotesReceta(stock);
+                        }
+                    }
+                    foreach (var item in stocksector)
+                    {
+                        if (item != "")
+                        {
+                            int id = Convert.ToInt32(item.Split('%')[0]);
+                            decimal cant = Convert.ToDecimal(item.Split('%')[1]);
+                            var stock = controladorStockReceta.ObtenerStockSectorByID(id);
+                            stock.stock = stock.stock - cant;
+                            controladorStockReceta.EditarStockSectoresReceta(stock);
+                        }
+                    }
+
+                }
+
+
+                return 1;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
 
         public static void ReducirStockReceta(Tecnocuisine_API.Entitys.Recetas receta, string[] array)
         {
@@ -1797,7 +2323,17 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
 
+        decimal RevertirNumero(string numeroFormateado)
+        {
+            string numeroSinComas = numeroFormateado.Replace(",", "");
+            decimal numero = decimal.Parse(numeroSinComas, CultureInfo.InvariantCulture);
+            return numero;
+        }
 
+        string FormatearNumero(decimal numero)
+        {
+            return numero.ToString("N2", new CultureInfo("en-US"));
+        }
 
 
 

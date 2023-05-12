@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Tecnocuisine.Modelos;
 using Tecnocuisine_API.Controladores;
@@ -81,8 +82,28 @@ namespace Tecnocuisine.Formularios.Compras
                 celObservaciones.Text = entrega.CodigoEntrega;
                 celObservaciones.VerticalAlign = VerticalAlign.Middle;
                 tr.Cells.Add(celObservaciones);
+                string efacturado = "";
+                switch (entrega.EstadoFacturado)
+                {
+                    case true:
+                        efacturado = "Entrega Facturada";
+                        break;
+                    case false:
+                        efacturado = "Entrega NO Facturada";
+                        break;
+                    case null:
+                        efacturado = "Entrega NO Facturada";
+                        break;
+                     default:
+                        efacturado = "Entrega NO Facturada";
+                        break;
+                }
+                TableCell celEstadoFacturado = new TableCell();
+                celEstadoFacturado.Text = efacturado;
+                celEstadoFacturado.VerticalAlign = VerticalAlign.Middle;
+                tr.Cells.Add(celEstadoFacturado);
 
-                
+
 
                 TableCell celAction = new TableCell();
                 LinkButton btnEditar = new LinkButton();
@@ -93,10 +114,17 @@ namespace Tecnocuisine.Formularios.Compras
                 //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                 //btnDetalles.Attributes.Add("title data-original-title", "Editar");
                 btnEditar.Text = "<i class='fa fa-search' style=\"color: black\"></i>";
-                btnEditar.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; background-color: transparent; padding-top: 12px;");
+                btnEditar.Attributes.Add("style", "background-color: transparent;");
                 btnEditar.Attributes.Add("href", "EntregaDetallada.aspx?i=" + entrega.id);
                 celAction.Controls.Add(btnEditar);
-                celAction.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
+                celAction.Attributes.Add("style", "vertical-align: middle;");
+
+                HtmlInputCheckBox chkEditar = new HtmlInputCheckBox();
+                chkEditar.ID = "ChkEdit_" + entrega.id.ToString();
+                chkEditar.Attributes.Add("class", "chkEdit");
+                celAction.Controls.Add(chkEditar);
+
+
                 tr.Cells.Add(celAction);
 
                 phEntregas.Controls.Add(tr);

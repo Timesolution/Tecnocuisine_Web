@@ -11,6 +11,7 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Tecnocuisine.Formularios.Maestros;
 using Tecnocuisine.Modelos;
 using Tecnocuisine_API.Controladores;
 using Tecnocuisine_API.Entitys;
@@ -508,7 +509,7 @@ namespace Tecnocuisine
                 tr.Cells.Add(celUnidad);
 
                 TableCell celCosto = new TableCell();
-                celCosto.Text = producto.costo.ToString().Replace(',', '.');
+                celCosto.Text = FormatearNumero(producto.costo);
                 celCosto.VerticalAlign = VerticalAlign.Middle;
                 celCosto.HorizontalAlign = HorizontalAlign.Right;
                 celCosto.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
@@ -614,8 +615,7 @@ namespace Tecnocuisine
                 btnStock.Attributes.Add("data-placement", "top");
                 btnStock.Attributes.Add(" data-original-title", "Visualizar Stock");
                 btnStock.Text = "<span><i style='color:black' class='fa fa-list-alt'></i></span>";
-
-                btnStock.PostBackUrl = "Stock.aspx?articulo=" + producto.id + "&fd=" + DateTime.Today.AddDays(-7).ToString("dd/MM/yyyy") + "&fh=" + DateTime.Today.ToString("dd/MM/yyyy");
+                btnStock.PostBackUrl = "StockDetallado.aspx?t=1&i="+producto.id;
                 celAccion.Controls.Add(btnStock);
 
                 Literal l3 = new Literal();
@@ -1173,7 +1173,17 @@ namespace Tecnocuisine
 
 
         }
+        decimal RevertirNumero(string numeroFormateado)
+        {
+            string numeroSinComas = numeroFormateado.Replace(",", "");
+            decimal numero = decimal.Parse(numeroSinComas, CultureInfo.InvariantCulture);
+            return numero;
+        }
 
+        string FormatearNumero(decimal numero)
+        {
+            return numero.ToString("N2", new CultureInfo("en-US"));
+        }
 
 
     }

@@ -605,5 +605,16 @@ namespace Tecnocuisine.Formularios.Maestros
                 throw;
             }
         }
+        decimal RevertirNumero(string numeroFormateado)
+        {
+            string numeroSinComas = numeroFormateado.Replace(",", "");
+            decimal numero = decimal.Parse(numeroSinComas, CultureInfo.InvariantCulture);
+            return numero;
+        }
+
+        string FormatearNumero(decimal numero)
+        {
+            return numero.ToString("N2", new CultureInfo("en-US"));
+        }
     }
 }

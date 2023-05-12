@@ -1,9 +1,10 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EntregasE.aspx.cs" Inherits="Tecnocuisine.Formularios.Compras.EntregasE" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <style>
-        #editable span{
-  display:none;
-}
+        #editable span {
+            display: none;
+        }
     </style>
     <div class="wrapper wrapper-content">
         <div class="container-fluid">
@@ -27,8 +28,13 @@
                                                             <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-2">
-
+                                                    <div class="col-md-2" style="display: flex; flex-direction: row; align-items: center; justify-content: end;">
+                                                        <div class="btn-group">
+                                                            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" style="margin-right: 3%; float: right" aria-expanded="true"><i class="fa fa-file-text-o"></i></button>
+                                                            <ul class="dropdown-menu" x-placement="bottom-start" style="position: absolute; top: 33px; left: 0px; will-change: top, left;">
+                                                                <li><a class="dropdown-item" onclick="ValidarOptionSelected(event)">Facturar entrega</a></li>
+                                                            </ul>
+                                                        </div>
                                                         <a href="Entregas.aspx" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
                                                     </div>
                                                 </div>
@@ -36,11 +42,12 @@
                                                     <thead>
                                                         <tr>
 
-                                                            <th style="max-width:100px">Fecha Entrega</th>
-                                                            <th >PROVEEDOR </th>
+                                                            <th style="max-width: 100px">Fecha Entrega</th>
+                                                            <th>PROVEEDOR </th>
                                                             <th>Sector</th>
-                                                            <th>CodigoEntrega</th>
-                                                            <th style="max-width:100px"></th>
+                                                            <th>Codigo Entrega</th>
+                                                            <th> Estado Facturado</th>
+                                                            <th style="max-width: 100px"></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -59,7 +66,7 @@
 
     <%--seccion modales --%>
 
-     <div id="modalConfirmacion2" class="modal" role="dialog">
+    <div id="modalConfirmacion2" class="modal" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
@@ -73,38 +80,16 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
-                    <asp:Button runat="server" ID="btnEliminar" OnClick="btnSi_Click" Text="Eliminar" class="buttonLoading btn btn-danger"  />
+                    <asp:Button runat="server" ID="btnEliminar" OnClick="btnSi_Click" Text="Eliminar" class="buttonLoading btn btn-danger" />
                     <asp:HiddenField ID="hiddenID" runat="server" />
                 </div>
             </div>
         </div>
     </div>
-
+    <script src="../Scripts/plugins/toastr/toastr.min.js"></script>
     <script>
-        //$(document).ready(function () {
 
-        //    $.fn.dataTable.moment = function (format, locale) {
-        //        var types = $.fn.dataTable.ext.type;
-
-        //        // Add type detection
-        //        types.detect.unshift(function (d) {
-        //            return moment(d, format, locale, true).isValid() ?
-        //                'moment-' + format :
-        //                null;
-        //        });
-
-        //        // Add sorting method - use an integer for the sorting
-        //        types.order['moment-' + format + '-pre'] = function (d) {
-        //            return moment(d, format, locale, true).unix();
-        //        };
-        //    };
-
-        //    $('#editable').DataTable();
-        //});
-       
         $(document).ready(function () {
-
-
             $('.dataTables-example').dataTable({
                 responsive: true,
                 "dom": 'T<"clear">lfrtip',
@@ -184,6 +169,8 @@
                 ).draw();
             });
         });
+
+
     </script>
     <script type="text/javascript">
         function openModal() {
@@ -192,6 +179,48 @@
         function abrirdialog(id) {
             $('#modalConfirmacion2').modal('show');
             document.getElementById('<%=hiddenID.ClientID%>').value = id;
+        }
+
+
+        function ValidarOptionSelected(e) {
+            e.preventDefault();
+            console.log("ENTRE")
+            var rows = $('#editable tbody tr'); // Obtener todas las filas de la tabla
+            var proveedores = []; // Crear un array para almacenar los proveedores de las filas seleccionadas
+            var ids = []; // Crear un array para almacenar los IDs de las filas seleccionadas
+
+            rows.each(function () {
+                var chkBox = $(this).find('input[type="checkbox"]'); // Obtener el input checkbox de la fila actual
+                if (chkBox.is(':checked')) { // Verificar si el checkbox está seleccionado
+                    var proveedor = $(this).find('td:eq(1)').text().trim(); // Obtener el valor de la segunda columna (proveedor)
+                    proveedores.push(proveedor); // Agregar el proveedor al array
+                    var id = $(this).attr('id').split('_')[1]; // Obtener el ID de la fila sin el prefijo "ContextPlaceHolder_"
+                    ids.push(id); // Agregar el ID al array
+                }
+            });
+
+            // Verificar si todos los proveedores seleccionados son iguales
+            var proveedorUnico = proveedores[0];
+            var todosIguales = true;
+            for (var i = 1; i < proveedores.length; i++) {
+                if (proveedores[i] != proveedorUnico) {
+                    todosIguales = false;
+                    break;
+                }
+            }
+            let idsString = "";
+            for (let item of ids) {
+                idsString += item += "-";
+            }
+
+            if (todosIguales) {
+              
+                window.location.href = "Compras.aspx?i=" + idsString;
+            } else {
+                toastr.error('No puede seleccionar "Facturar Entrega" con diferentes proveedores.')
+            }
+
+            // Imprimir los IDs de las filas seleccionadas
         }
     </script>
 </asp:Content>

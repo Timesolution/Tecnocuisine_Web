@@ -160,6 +160,17 @@ namespace Tecnocuisine.Formularios.Ventas
                 Lote.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle; text-align: center;");
                 tr.Cells.Add(Lote);
 
+                    decimal CostoTotal3 = 0;
+                if (item.CostoTotal != null)
+                {
+                    CostoTotal3 = (decimal)item.CostoTotal;
+                }
+                TableCell CostoTotal = new TableCell();
+                CostoTotal.Text = FormatearNumero(CostoTotal3);
+                CostoTotal.VerticalAlign = VerticalAlign.Middle;
+                CostoTotal.HorizontalAlign = HorizontalAlign.Right;
+                CostoTotal.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle; text-align: right;");
+                tr.Cells.Add(CostoTotal);
 
 
                 //agrego fila a tabla
@@ -246,8 +257,18 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
 
+        decimal RevertirNumero(string numeroFormateado)
+        {
+            string numeroSinComas = numeroFormateado.Replace(",", "");
+            decimal numero = decimal.Parse(numeroSinComas, CultureInfo.InvariantCulture);
+            return numero;
+        }
+
+        string FormatearNumero(decimal numero)
+        {
+            return numero.ToString("N2", new CultureInfo("en-US"));
+        }
 
 
-    
     }
 }

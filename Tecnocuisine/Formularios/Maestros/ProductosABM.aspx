@@ -80,12 +80,9 @@
                                                 <div class="row" style="margin-top: 2%">
                                                     <label class="col-sm-4 control-label editable">Unidad de medida</label>
                                                     <div class="col-sm-8">
-                                                        <asp:DropDownList ID="ListUnidadMedida" onchange="ActualizarLabelUnidad('valMedida')" class="form-control m-b" runat="server">
+                                                        <asp:DropDownList ID="ListUnidadMedida" class="form-control m-b" runat="server">
                                                         </asp:DropDownList>
                                                     </div>
-                                                    <p id="valMedida" class="text-danger text-hide">
-                                                        *Seleccione un valor de Medida.
-                                                    </p>
                                                 </div>
                                                 <%--<div class="row" style="margin-top: 2%">
 
@@ -126,6 +123,21 @@
                                                     </div>
 
                                                 </div>--%>
+
+                                                <div class="row" style="margin-top: 2%">
+                                                    <label class="col-sm-4 control-label editable">Rubro</label>
+                                                    <div class="col-sm-8">
+                                                        <asp:TextBox ID="ListRubro" list="ContentPlaceHolder1_ListOptionRubro" onchange="ValidarRubro()" class="form-control m-b" runat="server">
+                                                        </asp:TextBox>
+                                                        <datalist id="ListOptionRubro" runat="server"></datalist>
+                                                    </div>
+                                                    <p id="valMedida" class="text-danger text-hide">
+                                                        *Seleccione un Rubro*.
+                                                    </p>
+                                                </div>
+
+
+
 
                                                 <%-- ACA VA MARCAS --%>
 
@@ -211,8 +223,9 @@
                                             <div class="row">
                                                 <label class="col-sm-4 control-label editable">Costo</label>
                                                 <div class="col-sm-8">
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">$</span><asp:TextBox ID="txtCosto" onchange="ActualizarLabelCosto('valiva')" onkeypress="javascript:return validarNro(event)" class="form-control num required" runat="server" />
+                                                    <div class="input-group"> 
+                                                        <span class="input-group-addon">$</span><asp:TextBox ID="txtCosto" onchange="ActualizarLabelCosto('valiva')" onkeypress="javascript:return validarNro(event)" class="form-control num required" runat="server" Style="text-align: right;" />
+                                                        
                                                     </div>
                                                     <p id="ValivaCosto" class="text-danger text-hide">Tienes que ingresar un costo.</p>
                                                 </div>
@@ -222,8 +235,8 @@
                                                 <label class="col-sm-4 control-label editable">Alicuota IVA</label>
                                                 <div class="col-sm-8">
                                                     <div class="input-group">
-                                                        <asp:DropDownList ID="ListAlicuota" onchange="ActualizarLabelIVA()" class="form-control m-b valid" runat="server">
-                                                        </asp:DropDownList><span class="input-group-addon">%</span>
+                                                        <span class="input-group-addon">%</span><asp:DropDownList ID="ListAlicuota" onchange="ActualizarLabelIVA()" class="form-control m-b valid" runat="server" Style="text-align: right;">
+                                                        </asp:DropDownList>
                                                     </div>
                                                     <p id="valiva" class="text-danger text-hide">
                                                         *Seleccione un valor de IVA.
@@ -526,9 +539,9 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-sm-1">
-                                <label style="color: red;margin-top: 6px;" class="danger">*</label>
+                                <label style="color: red; margin-top: 6px;" class="danger">*</label>
                             </div>
-                            <label  style="margin-top: 6px;" class="col-sm-2 control-label editable">Descripción</label>
+                            <label style="margin-top: 6px;" class="col-sm-2 control-label editable">Descripción</label>
                             <div class="col-sm-8">
                                 <asp:TextBox ID="txtNuevaMarca" class="form-control" runat="server" />
 
@@ -557,7 +570,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <div class="col-sm-1">
-                                <label style="color: red;margin-top: 6px;" class="danger">*</label>
+                                <label style="color: red; margin-top: 6px;" class="danger">*</label>
                             </div>
                             <label style="margin-top: 6px;" class="col-sm-2 control-label editable">Descripción</label>
                             <div class="col-sm-9">
@@ -568,7 +581,7 @@
 
                         <div class="form-group" style="padding-top: 7%">
                             <div class="col-sm-1">
-                                <label style="color: red;margin-top: 6px;" class="danger">*</label>
+                                <label style="color: red; margin-top: 6px;" class="danger">*</label>
                             </div>
                             <label style="margin-top: 6px;" class="col-sm-2 control-label editable">
                                 Cantidad</label>
@@ -646,6 +659,37 @@
             </div>
         </div>
 
+
+        <div id="modalAgregarRubro" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Detectamos que el rubro Ingresado no existe, Desea crearlo?</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="col-sm-1">
+                                <label style="color: red;" class="danger">*</label>
+                            </div>
+                            <label class="col-sm-2 control-label editable">Descripción</label>
+                            <div class="col-sm-9">
+                                <asp:TextBox ID="TxTRubroAgregar" class="form-control" runat="server" />
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a id="btnGuardarRubro" onclick="GuardarRubro()" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;Agregar </a>
+                        <asp:HiddenField ID="HiddenField2" runat="server" />
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
         <!-- Mainly scripts -->
         <script src="/../js/jquery-2.1.1.js"></script>
         <!-- Mainly scripts -->
@@ -713,6 +757,23 @@
 
     </script>
     <script>
+        CambiarPuntoPorComa();
+        function CambiarPuntoPorComa() {
+            listAli = document.getElementById("ContentPlaceHolder1_ListAlicuota")
+            listAli = listAli.childNodes;
+            let cont = 1;
+            for (let i = 0; i < listAli.length; i++) {
+
+                if (cont == 2) {
+
+                    listAli[i].innerText = listAli[i].innerText.replace(",", ".")
+                    cont = 1;
+                } else {
+
+                    cont++
+                }
+            }
+        }
         $(document).ready(function () {
             $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 
@@ -800,7 +861,7 @@
                     form.validate().settings.ignore = ":disabled";
                     let selectUnidadMedida = document.getElementById('<%=ListUnidadMedida.ClientID%>');
                     let selectAliCuota = document.getElementById('<%=ListAlicuota.ClientID%>');
-
+                    let selectRubro = document.getElementById('<%=ListRubro.ClientID%>');
                     let url = window.location.href;
                     ulFinal.className = "disabled"
 
@@ -813,12 +874,13 @@
                             data: '{ descripcion: "' + document.querySelector('#lblDescripcionFinal').textContent
                                 + '" , Categoria: "' + document.querySelector('#lblCategoriaFinal').textContent
                                 + '" , Atributos: "' + document.querySelector('#lblAtributoFinal').textContent
-                                + '" , Costo: "' + document.querySelector('#lblCosto').textContent
+                                + '" , Costo: "' + document.querySelector('#lblCosto').textContent.replace(",", "")
                                 + '" , IVA: "' + selectAliCuota.selectedOptions[0].value
                                 + '" , Unidad: "' + selectUnidadMedida.selectedOptions[0].value
                                 + '" , Presentacion: "' + document.querySelector('#lblPresentacion').textContent
                                 + '" , Marca: "' + document.querySelector('#lblMarcas').textContent
                                 + '" , cbxGestion: "' + document.getElementById('ContentPlaceHolder1_cbxGestion').checked
+                                + '" , Rubro: "' + document.getElementById('ContentPlaceHolder1_ListRubro').textContent.split("-")[0].trim()
                                 + '" , img: "' + ""
                                 + '"}',
                             contentType: "application/json",
@@ -853,7 +915,7 @@
                                 + '" , Presentacion: "' + document.querySelector('#lblPresentacion').textContent
                                 + '" , Marca: "' + document.querySelector('#lblMarcas').textContent
                                 + '" , cbxGestion: "' + document.getElementById('ContentPlaceHolder1_cbxGestion').checked
-                                + '" , img: "' + ""
+                                + '" , Rubro: "' + document.getElementById('ContentPlaceHolder1_ListRubro').textContent.split("-")[0].trim()
                                 + '" , idProducto: "' + idProd
                                 + '"}',
                             contentType: "application/json",
@@ -1002,46 +1064,115 @@
     </script>
 
     <script>      
-        
+        function ValidarEnOpcionesElRubro(txtRubro) {
+
+            listOptionRubro = document.getElementById("ContentPlaceHolder1_ListOptionRubro")
+            let arr = listOptionRubro.childNodes
+            let ComprobarSiEsVerdadero;
+            for (let i = 0; i < arr.length; ++i) {
+                if (arr[i].value.split("-")[1].trim().toLowerCase() != txtRubro.toLowerCase()) {
+                    ComprobarSiEsVerdadero = false;
+                } else {
+                    return true;
+                }
+
+
+            }
+            return ComprobarSiEsVerdadero;
+        }
+
+        function GuardarRubro() {
+            txtRubro = document.getElementById('<%=TxTRubroAgregar.ClientID%>').value;
+            document.getElementById("btnGuardarRubro").setAttribute("disabled", "disabled")
+            $.ajax({
+                method: "POST",
+                url: "ProductosABM.aspx/GuardarRubro",
+                data: '{ descripcion: "' + txtRubro
+                    + '"}',
+                contentType: "application/json",
+                dataType: 'json',
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                },
+                success: (result) => {
+                    $('#modalAgregarRubro').modal('hide');
+                    if (result.d != "") {
+
+                        let list = document.getElementById("ContentPlaceHolder1_ListOptionRubro")
+                        let arr = result.d.split(";");
+
+                        let newOption = `<option value="${arr[1]} - ${txtRubro}" id="Rubro_${arr[1]}_${txtRubro}"></option>`
+                        list.innerHTML += newOption;
+                        document.getElementById('<%=ListRubro.ClientID%>').value = arr[1] + " - " + txtRubro;
+                        document.getElementById("btnGuardarRubro").removeAttribute("disabled")
+                        toastr.success(arr[0]);
+                    } else {
+                        toastr.error("Error, intente de nuevo");
+                    }
+                }
+
+            });
+
+
+
+        }
+
+        function ValidarRubro() {
+
+            let txtRubro = document.getElementById('<%=ListRubro.ClientID%>').value
+            let comprobacion = true;
+            if (txtRubro == "") { return true }
+            if (!txtRubro.includes("-")) {
+
+                comprobacion = ValidarEnOpcionesElRubro(txtRubro)
+            }
+
+            if (comprobacion == false) {
+                $("#modalAgregarRubro").modal("show");
+                document.getElementById('<%=TxTRubroAgregar.ClientID%>').value = txtRubro
+            }
+
+        }
+
         function CrearNuevaPresentacion(e) {
             e.preventDefault();
             txtCantidad = document.getElementById('<%=txtCantidadPresentacionCrear.ClientID%>').value;
             txtDescripcion = document.getElementById('<%=txtDescripcionPresentacionCrear.ClientID%>').value;
             console.log(txtCantidad, " ", txtDescripcion);
             if (txtDescripcion.trim() != "" && txtCantidad > 0) {
-                    $.ajax({
-                        method: "POST",
-                        url: "ProductosABM.aspx/GuardarPresentacion",
-                        data: '{ descripcion: "' + txtDescripcion
-                            + '" , Cantidad: "' + txtCantidad
-                            +'"}',
-                        contentType: "application/json",
-                        dataType: 'json',
-                        error: (error) => {
-                            console.log(JSON.stringify(error));
-                        },
-                        success: (result) => {
-                            $('#modalCrearPresentaciones').modal('hide');
-                            if (result.d != "") {
-                                
-                                let list = document.getElementById("ContentPlaceHolder1_ListOptionsPresentacion")
-                                let arr = result.d.split("-");
+                $.ajax({
+                    method: "POST",
+                    url: "ProductosABM.aspx/GuardarPresentacion",
+                    data: '{ descripcion: "' + txtDescripcion
+                        + '" , Cantidad: "' + txtCantidad
+                        + '"}',
+                    contentType: "application/json",
+                    dataType: 'json',
+                    error: (error) => {
+                        console.log(JSON.stringify(error));
+                    },
+                    success: (result) => {
+                        $('#modalCrearPresentaciones').modal('hide');
+                        if (result.d != "") {
 
-                                let newOption = `<option value="${arr[1]}" id="PresentacionID_${arr[0]}_${txtCantidad}"></option>`
-                                list.innerHTML += newOption;
-                                AgregarPresentacionATabla(arr[1]);
-                                toastr.success("Presentacion Creada con EXITO");
-                            } else {
-                                toastr.error("Error, intente de nuevo");
-                            }
+                            let list = document.getElementById("ContentPlaceHolder1_ListOptionsPresentacion")
+                            let arr = result.d.split("-");
+
+                            let newOption = `<option value="${arr[1]}" id="PresentacionID_${arr[0]}_${txtCantidad}"></option>`
+
+                            list.innerHTML += newOption;
+                            toastr.success(arr[0]);
+                        } else {
+                            toastr.error("Error, intente de nuevo");
                         }
+                    }
 
-                    });
-                } else {
-                    toastr.error("Faltan Datos");
-                }
-
+                });
+            } else {
+                toastr.error("Faltan Datos");
             }
+
+        }
 
 
 
@@ -1066,7 +1197,7 @@
                         if (result.d != "") {
                             let list = document.getElementById("ContentPlaceHolder1_ListOptionMarcas")
                             let arr = result.d.split("-");
-                            
+
                             let newOption = `<option value="${result.d}" id='Marca_ ${arr[0].trim()} _ ${arr[1].trim()}'></option>`
                             list.innerHTML += newOption;
                             AgregarMarcaATabla(result.d);
@@ -1084,27 +1215,27 @@
         }
 
 
-        function AgregarPresentacionATabla(txt){
+        function AgregarPresentacionATabla(txt) {
             ActualizarPresentacion();
             let txtPresentacion = txt;
-                let prueba = ComprobarTablaPresentacion(txtPresentacion)
-                if (prueba) {
+            let prueba = ComprobarTablaPresentacion(txtPresentacion)
+            if (prueba) {
 
-                    const idOption = document.querySelector('option[value="' + txtPresentacion + '"]').id;
+                const idOption = document.querySelector('option[value="' + txtPresentacion + '"]').id;
 
 
-                    const columns = idOption.split("_");
-                    let cuerpor = document.getElementById("tbodyEditable1");
-                    cuerpor.innerHTML += `<tr>
+                const columns = idOption.split("_");
+                let cuerpor = document.getElementById("tbodyEditable1");
+                cuerpor.innerHTML += `<tr>
                         <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;" align="right">${columns[1]}</td>
                         <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;">${txtPresentacion}</td>
                         <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;" align="right">${columns[2]}</td>
                         <td style="padding-bottom: 0px !important;padding-top: 0px;vertical-align: middle;"><a onclick="EliminarFila('${columns[1]}')" id="ContentPlaceHolder1_btnEliminar_${columns[1]}" class="btn  btn-xs" data-toggle="tooltip" data-placement="top" data-original-title="Eliminar" style="background-color:transparent;"><span><i style="color:black" class="fa fa-trash - o"></i></span></a> </td>
                         </tr>`;
-                    let presentacionFinal = idOption.split("_")[1] + " - " + txtPresentacion;
-                    document.querySelector('#lblPresentacion').textContent += presentacionFinal + ", ";
-                    document.getElementById('<%=txtDescripcionPresentacion.ClientID%>').value = '';
-                }
+                let presentacionFinal = idOption.split("_")[1] + " - " + txtPresentacion;
+                document.querySelector('#lblPresentacion').textContent += presentacionFinal + ", ";
+                document.getElementById('<%=txtDescripcionPresentacion.ClientID%>').value = '';
+            }
         }
         function AgregarMarcaATabla(txt) {
             ActualizarMarca();
@@ -1293,6 +1424,10 @@
             document.querySelector('#lblDescripcionFinal').textContent = descripcion;
         }
         function ActualizarLabelCosto(id) {
+            input = document.getElementById(id);
+            num = Number(revertirNumero(input.value));
+            newnum = formatearNumero(num);
+            input.value = newnum;
             document.getElementById(id).className = 'text-hide';
             document.getElementById('ValivaCosto').className = 'text-danger text-hide';
             let Costo = document.getElementById('<%=txtCosto.ClientID%>').value;
@@ -1846,7 +1981,13 @@
           document.getElementById('valivaProv').className = 'text-danger'
           return false
       } --%>
-
+        function formatearNumero(numero) {
+            return numero.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+        function revertirNumero(numeroFormateado) {
+            var numero = parseFloat(numeroFormateado.replace(/,/g, ''));
+            return numero;
+        }
 
     </script>
     <script src="/../Scripts/autoNumeric/autoNumeric.js"></script>
