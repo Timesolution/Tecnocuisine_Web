@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Productos" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" EnableEventValidation="false" CodeBehind="CuentaCorriente.aspx.cs" Inherits="Tecnocuisine.Ventas.CuentaCorriente" %>
+﻿<%@ Page Title="Cta Cte" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" EnableEventValidation="false" CodeBehind="CuentaCorriente.aspx.cs" Inherits="Tecnocuisine.Ventas.CuentaCorriente" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <style>
@@ -19,7 +19,7 @@
                                     <i class="fa fa-dollar text-navy mid-icon"></i>
                                 </div>
                                 <h2 id="DivSaldo" style="font-weight: bold;">0.00</h2>
-                                <span id="ClienteSelec">Proveedor no Seleccionado</span>
+                                <span id="ClienteSelec">Cliente no Seleccionado</span>
                             </div>
                         </div>
         <div class="container-fluid">
@@ -67,12 +67,15 @@
                                                             <th style=" text-align: left; width: 8%;">Descripcion</th>
                                                             <th style="width: 3%; text-align: right;">Debe</th>
                                                             <th style="width: 3%; text-align: right;">Haber</th>
+                                                            <th style="width: 3%; text-align: right;">Saldo</th>
+
                                                             <th style="width: 2%";></th>
 
                                                     
                                                         </tr>
                                                     </thead>
                                                     <tbody>
+                                                        
                                                         <asp:PlaceHolder ID="phCuentaCorriente" runat="server"></asp:PlaceHolder>
                                                     </tbody>
                                                 </table>
@@ -127,7 +130,7 @@
                                             
                                         </div>
                                         
-                                            <label class="col-md-4">Buscar Proveedor</label>
+                                            <label class="col-md-4">Buscar Cliente</label>
                                             <div class="col-md-6" style="padding: 0px;">
                                                 <input name="txtProveedor" type="text" id="txtProveedor" onchange="ValidarProveedor()" list="ContentPlaceHolder1_ListaProveedores" class="form-control" style="margin-left: 0px; margin-bottom:15px;">
                                                  <p id="ValivaProveedor" class="text-danger text-hide">Tienes que ingresar un Proveedor</p>

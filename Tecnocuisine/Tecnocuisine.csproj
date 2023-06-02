@@ -277,12 +277,19 @@
     <Content Include="font-awesome\css\font-awesome.min.css" />
     <Content Include="font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Formularios\Administrador\CuentasBancarias.aspx" />
     <Content Include="Formularios\Administrador\Empresas.aspx" />
+    <Content Include="Formularios\Administrador\EntidadesBancarias.aspx" />
     <Content Include="Formularios\Administrador\Paises.aspx" />
     <Content Include="Formularios\Administrador\PanelDeControl.aspx" />
     <Content Include="Formularios\Administrador\Sectores.aspx" />
     <Content Include="Formularios\Administrador\PuntosDeVenta.aspx" />
     <Content Include="Formularios\Administrador\Sucursales.aspx" />
+    <Content Include="Formularios\Caja\Cobros.aspx" />
+    <Content Include="Formularios\Caja\CobrosRealizados.aspx" />
+    <Content Include="Formularios\Caja\Contado.aspx" />
+    <Content Include="Formularios\Caja\Imputar.aspx" />
+    <Content Include="Formularios\Caja\TarjetaDeCredito.aspx" />
     <Content Include="Formularios\Compras\Compras.aspx" />
     <Content Include="Formularios\Compras\CuentaCorriente.aspx" />
     <Content Include="Formularios\Compras\EntregaDetallada.aspx" />
@@ -292,6 +299,7 @@
     <Content Include="Formularios\Compras\Proveedores.aspx" />
     <Content Include="Formularios\Contabilidad\PlanDeCuentas.aspx" />
     <Content Include="Formularios\Compras\Entregas.aspx" />
+    <Content Include="Formularios\Maestros\Entidades.aspx" />
     <Content Include="Formularios\Maestros\RecetasABM.aspx" />
     <Content Include="Formularios\Maestros\ProductosABM.aspx" />
     <Content Include="Formularios\Maestros\Rubros.aspx" />
@@ -306,6 +314,7 @@
     <Content Include="Formularios\Maestros\Subgrupos.aspx" />
     <Content Include="Formularios\Maestros\Grupos.aspx" />
     <Content Include="Formularios\Maestros\Marcas.aspx" />
+    <Content Include="Formularios\Maestros\Tarjetas.aspx" />
     <Content Include="Formularios\Maestros\Vendedores.aspx" />
     <Content Include="Formularios\Maestros\Articulos.aspx" />
     <Content Include="Formularios\Maestros\Atributos.aspx" />
@@ -860,12 +869,26 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Formularios\Administrador\CuentasBancarias.aspx.cs">
+      <DependentUpon>CuentasBancarias.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Administrador\CuentasBancarias.aspx.designer.cs">
+      <DependentUpon>CuentasBancarias.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Formularios\Administrador\Empresas.aspx.cs">
       <DependentUpon>Empresas.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Formularios\Administrador\Empresas.aspx.designer.cs">
       <DependentUpon>Empresas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Administrador\EntidadesBancarias.aspx.cs">
+      <DependentUpon>EntidadesBancarias.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Administrador\EntidadesBancarias.aspx.designer.cs">
+      <DependentUpon>EntidadesBancarias.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Administrador\Paises.aspx.cs">
       <DependentUpon>Paises.aspx</DependentUpon>
@@ -901,6 +924,41 @@
     </Compile>
     <Compile Include="Formularios\Administrador\Sucursales.aspx.designer.cs">
       <DependentUpon>Sucursales.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Caja\Cobros.aspx.cs">
+      <DependentUpon>Cobros.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Caja\Cobros.aspx.designer.cs">
+      <DependentUpon>Cobros.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Caja\CobrosRealizados.aspx.cs">
+      <DependentUpon>CobrosRealizados.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Caja\CobrosRealizados.aspx.designer.cs">
+      <DependentUpon>CobrosRealizados.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Caja\Contado.aspx.cs">
+      <DependentUpon>Contado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Caja\Contado.aspx.designer.cs">
+      <DependentUpon>Contado.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Caja\Imputar.aspx.cs">
+      <DependentUpon>Imputar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Caja\Imputar.aspx.designer.cs">
+      <DependentUpon>Imputar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Caja\TarjetaDeCredito.aspx.cs">
+      <DependentUpon>TarjetaDeCredito.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Caja\TarjetaDeCredito.aspx.designer.cs">
+      <DependentUpon>TarjetaDeCredito.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Compras\Compras.aspx.cs">
       <DependentUpon>Compras.aspx</DependentUpon>
@@ -964,6 +1022,13 @@
     </Compile>
     <Compile Include="Formularios\Compras\Entregas.aspx.designer.cs">
       <DependentUpon>Entregas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Entidades.aspx.cs">
+      <DependentUpon>Entidades.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Entidades.aspx.designer.cs">
+      <DependentUpon>Entidades.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Maestros\RecetasABM.aspx.cs">
       <DependentUpon>RecetasABM.aspx</DependentUpon>
@@ -1062,6 +1127,13 @@
     </Compile>
     <Compile Include="Formularios\Maestros\Marcas.aspx.designer.cs">
       <DependentUpon>Marcas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Tarjetas.aspx.cs">
+      <DependentUpon>Tarjetas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Tarjetas.aspx.designer.cs">
+      <DependentUpon>Tarjetas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Maestros\Vendedores.aspx.cs">
       <DependentUpon>Vendedores.aspx</DependentUpon>

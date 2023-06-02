@@ -14,7 +14,7 @@
 
     <link href="/../css/bootstrap.min.css" rel="stylesheet" />
     <link href="/../font-awesome/css/font-awesome.css" rel="stylesheet" />
-
+    
     <link href="/../css/plugins/jsTree/style.min.css" rel="stylesheet" />
     <!-- Morris -->
     <link href="/../css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
@@ -171,6 +171,7 @@
                                     <a style="color: white !important;" href="../../Formularios/Ventas/CuentaCorriente.aspx">Cuenta Corriente</a>
 
                                 </li>
+                                
 
                             </ul>
                         </li>
@@ -191,7 +192,31 @@
                             </ul>
                         </li>
 
+                        <%--CAJA--%>
 
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-money text-white"></i>
+                                <span class="nav-label " style="color: white;">Valores</span>
+                                <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/TarjetaDeCredito.aspx">Tarjeta de Credito</a></li>
+
+                            </ul>
+                              <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/Contado.aspx">Contado</a></li>
+
+                            </ul>
+                              <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/Cobros.aspx">Cobros</a></li>
+
+                            </ul>
+                            <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/CobrosRealizados.aspx">Cobros Realizados</a></li>
+
+                            </ul>
+                        </li>
 
                         <%--COMPRAS--%>
 
@@ -273,6 +298,22 @@
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Atributos.aspx">Atributos</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/InsumosF.aspx">Tipos de Atributos</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Contabilidad/PlanDeCuentas.aspx">Plan de cuentas</a></li>
+                                 <li>
+                                    <a style="color: white !important;" href="../../Formularios/Maestros/Entidades.aspx">Entidades Tarjetas de Credito</a>
+
+                                </li>
+                                 <li>
+                                    <a style="color: white !important;" href="../../Formularios/Maestros/Tarjetas.aspx">Tarjetas</a>
+
+                                </li>
+                                 <li>
+                                    <a style="color: white !important;" href="../../Formularios/Administrador/EntidadesBancarias.aspx">Entidades Bancarias</a>
+
+                                </li>
+                                 <li>
+                                    <a style="color: white !important;" href="../../Formularios/Administrador/CuentasBancarias.aspx">Cuentas Bancarias</a>
+
+                                </li>
                                 <%--                                        <li><a style="color: white !important;" href="../../Formularios/Maestros/Grupos.aspx">Grupos</a></li>
                                         <li><a style="color: white !important;" href="../../Formularios/Maestros/Subgrupos.aspx">Subgrupos</a></li>--%>
                             </ul>

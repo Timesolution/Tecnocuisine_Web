@@ -71,10 +71,17 @@ namespace Tecnocuisine.Ventas
             try
             {
                 Tecnocuisine_API.Entitys.Clientes clientes = ControladorCliente.ObtenerClienteId(idCli);
+                if (clientes == null)
+                {
+                    AliasCliente.Value = "Todos";
+                } else
+                {
                 AliasCliente.Value = clientes.alias;
+
+                }
                 string FechaDesde = ConvertirFecha(FechaD);
                 string FechaHasta = ConvertirFecha(FechaH);
-                var dt = controladorCuentaCorriente.FiltrarCuentaCorrienteVentas(FechaD, FechaH, idCli);
+                var dt = controladorCuentaCorriente.FiltrarCuentaCorrienteVentasFacturasVacias(FechaD, FechaH, idCli);
                 decimal total = 0;
                 foreach (DataRow row in dt.Rows)
                 {
@@ -85,10 +92,14 @@ namespace Tecnocuisine.Ventas
                     cc.Descripcion = row["Descripcion"].ToString();
                     cc.Debe = Convert.ToDecimal(row["Debe"]);
                     cc.Haber = Convert.ToDecimal(row["Haber"]);
-                    cc.idVenta = Convert.ToInt32(row["idVenta"]);
+                    if (!Convert.IsDBNull(row["idVenta"]))
+                    {
+                        cc.idVenta = Convert.ToInt32(row["idVenta"]);
+                    }
+                    cc.Saldo = Convert.ToDecimal(row["Saldo"]);
 
 
-                    total += (decimal)(cc.Debe - cc.Haber);
+                    total += (decimal)(cc.Saldo);
 
                                   RellenarTabla(cc);
 
@@ -129,7 +140,7 @@ namespace Tecnocuisine.Ventas
             {
                 ControladorUnidad cu = new ControladorUnidad();
                 var builder = new System.Text.StringBuilder();
-
+                builder.Append("<option value='0 - Todos'>0 - Todos</option>");
                 foreach (var cli in clientes)
                 {
                     builder.Append(String.Format("<option value='{0}' id='c_r_" + cli.id + "_" + cli.alias + "_" + cli.cuit + "'>", cli.id + " - " + cli.alias));
@@ -194,13 +205,21 @@ namespace Tecnocuisine.Ventas
 
                 TableCell celImporte = new TableCell();
                 celImporte.Width = Unit.Percentage(10);
-                celImporte.Text = "-" + FormatearNumero((decimal)cc.Haber);
+                celImporte.Text = FormatearNumero((decimal)cc.Haber);
                 celImporte.VerticalAlign = VerticalAlign.Middle;
                 celImporte.HorizontalAlign = HorizontalAlign.Left;
                 celImporte.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;text-align: right;");
                 tr.Cells.Add(celImporte);
 
-               
+                TableCell celSaldo = new TableCell();
+                celSaldo.Width = Unit.Percentage(10);
+                celSaldo.Text = FormatearNumero((decimal)cc.Saldo);
+                celSaldo.VerticalAlign = VerticalAlign.Middle;
+                celSaldo.HorizontalAlign = HorizontalAlign.Left;
+                celSaldo.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;text-align: right;");
+                tr.Cells.Add(celSaldo);
+
+
 
 
                 //agrego fila a tabla

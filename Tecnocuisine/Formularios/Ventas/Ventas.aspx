@@ -26,54 +26,69 @@
                                                     <div class="col-md-10">
 
                                                         <div style="display: flex;">
-                                                            <div class="input-group m-b" style="width:30%">
+                                                            <div class="input-group m-b">
                                                                 <div style="display: flex;">
                                                                     <span class="input-group-addon" style="padding-right: 15%;"><i style='color: black;' class='fa fa-search'></i></span>
                                                                     <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 100%" />
                                                                 </div>
                                                             </div>
-
-                                                            <div class="input-group m-b"  style="width:30%">
-                                                                <label class="col-md-4">Desde</label>
-                                                                <div class="form-group" id="data_1">
-                                                                    <div class="input-group date">
-                                                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                                        <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" Style="margin-left: 0px; width: 120%;"></asp:TextBox>
+                                                           
+                                                            <div class="input-group m-b row">
+                                                                <div class="row">
+                                                                    <div class="col-md-2"  style="margin-left: 15px;margin-right: 15px;">
+                                                                        <label class="col-md-4" style="margin-top: 5px;">Desde</label>
+                                                                    </div>
+                                                                    <div class="col-md-8">
+                                                                        <div class="form-group" id="data_1">
+                                                                            <div class="input-group date">
+                                                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                                                <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="input-group m-b"  style="width:30%">
-                                                                <label style="margin-left: 15px" class="col-md-4">Hasta</label>
-                                                                <div class="form-group" id="data_2">
-                                                                    <div class="input-group date">
-                                                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                                        <asp:TextBox class="form-control" runat="server" ID="txtFechaVencimiento" Style="margin-left: 0px; width: 140%;"></asp:TextBox>
+                                                            <div class="input-group m-b">
+                                                                <div class="row">
+                                                                    <div  class="col-md-2"  style="margin-right: 15px;">
+                                                                        <label style="margin-left: 15px; margin-top: 5px;" class="col-md-4">Hasta</label>
+                                                                    </div>
+                                                                    <div class="col-md-8">
+                                                                        <div class="form-group" id="data_2" style="margin-left: 15px;">
+                                                                            <div class="input-group date">
+                                                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                                                <asp:TextBox class="form-control" runat="server" ID="txtFechaVencimiento" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="input-group m-b"  style="width:30%;margin-left: 15px">
-
-                                                                <label style="margin-left: 15px" class="col-md-4">Cliente</label>
-                                                                <div class="col-md-6" style="padding: 0px;">
+                                                            <div class="input-group m-b">
+                                                                <div class="row">
+                                                                    <div  class="col-md-2"  style="margin-right: 15px;">
+                                                                <label style="margin-top: 5px;" class="col-md-4">Cliente</label>
+                                                                    </div>
+                                                                    <div class="col-md-8">
+                                                              
                                                                     <datalist id="ListClientes" runat="server"></datalist>
-                                                                    <input name="txtProveedor" type="text" id="txtProveedor" list="ContentPlaceHolder1_ListClientes" class="form-control" style="margin-left: 0px; margin-bottom: 15px; width: 80%;">
+                                                                    <input name="txtProveedor" type="text" id="txtProveedor" list="ContentPlaceHolder1_ListClientes" class="form-control" style="margin-left:15px;margin-bottom: 15px; width: 100%;">
                                                                     <p id="ValivaCliente" class="text-danger text-hide">Tienes que ingresar un Cliente</p>
                                                                 </div>
+                                                                    
+                                                                </div>
                                                             </div>
-                                                            <div class="input-group m-b" 30%>
+                                                            <%--  <div class="input-group m-b" 30%>
                                                                 <a id="btnFiltrar" onclick="FiltrarVentas()" class="btn btn-primary"><i class="fa fa-paper-plane"></i>&nbsp;Filtrar </a>
 
-                                                            </div>
+                                                            </div>--%>
                                                         </div>
 
 
 
                                                     </div>
                                                     <div class="col-md-2" style="display: flex; flex-direction: row; align-items: center; justify-content: end;">
-                                                        <%-- <div class="btn-group" style="margin-right: 5px">
-                                                            <linkbutton type="button" data-toggle="modal" href="#modalBusqueda" class="btn btn-success">Filtrar&nbsp;<i style="color: white" class="fa fa-filter"></i></linkbutton>
+                                                        <a id="btnFiltrar" onclick="FiltrarVentas()" class="btn btn-primary" style="margin-right: 15px;"><i class="fa fa-paper-plane"></i>&nbsp;Filtrar </a>
 
-                                                        </div>--%>
                                                         <a href="../Ventas/GenerarVenta.aspx" class="btn btn-primary dim" data-toggle="tooltip" data-placement="top"
                                                             data-original-title="Agregar Nueva Entrega" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
                                                     </div>

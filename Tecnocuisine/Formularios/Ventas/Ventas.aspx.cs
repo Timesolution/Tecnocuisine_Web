@@ -1,4 +1,5 @@
 ﻿using Gestion_Api.Entitys;
+using Gestion_Api.Entitys.ModeloImportacion;
 using Gestion_Api.Modelo;
 using Gestor_Solution.Modelo;
 using System;
@@ -128,13 +129,13 @@ namespace Tecnocuisine.Formularios.Ventas
             {
                 ControladorUnidad cu = new ControladorUnidad();
                 var builder = new System.Text.StringBuilder();
-
+                builder.Append("<option value='0 - Todos'>0 - Todos</option>");
                 foreach (var cli in clientes)
                 {
                     builder.Append(String.Format("<option value='{0}' id='c_r_" + cli.id + "_" + cli.alias + "_" + cli.cuit + "'>", cli.id + " - " + cli.alias));
-
-
                 }
+               
+                    
 
                 //for (int i = 0; i < table.Rows.Count; i++)
                 //    builder.Append(String.Format("<option value='{0}'>", table.Rows[i][0]));
@@ -151,7 +152,12 @@ namespace Tecnocuisine.Formularios.Ventas
             try
             {
                 Tecnocuisine_API.Entitys.Clientes clientes = controladorCliente.ObtenerClienteId(idCli);
+                if (clientes == null) {
+                    AliasCliente.Value = "Todos";
+                } else
+                {
                 AliasCliente.Value = clientes.alias;
+                }
                 string FechaDesde = ConvertirFecha(FechaD);
                 string FechaHasta = ConvertirFecha(FechaH);
                 var dt = controladorVentas.FiltrarVentas(FechaD, FechaH, idCli);
@@ -165,8 +171,14 @@ namespace Tecnocuisine.Formularios.Ventas
                     vd.CostoTotal = Convert.ToDecimal(row["CostoTotal"]);
                     vd.PrecioVentaTotal = Convert.ToDecimal(row["PrecioVentaTotal"]);
                     vd.CantidadTotal = Convert.ToInt32(row["CantidadTotal"]);
+                    if (!Convert.IsDBNull(row["idCliente"]))
+                    {
                     vd.idCliente = Convert.ToInt32(row["idCliente"]);
+                    }
+                    if (!Convert.IsDBNull(row["idTipoFactura"]))
+                    {
                     vd.idTipoFactura = Convert.ToInt32(row["idTipoFactura"]);
+                    }
                     vd.NumeroFactura = row["NumeroFactura"].ToString();
                     vd.FormaPago = row["FormaPago"].ToString();
 
@@ -245,8 +257,13 @@ namespace Tecnocuisine.Formularios.Ventas
                 decimal total = 0;
                 foreach (var ventas in ListVentas)
                 {
+                    DateTime date = (DateTime)ventas.FechaVenta;
+                    if (ventas.FechaVenta != null && DateTime.Today == date.Date)
+                    {
                     CargarVentasPH(ventas);
                     total += (decimal)(ventas.PrecioVentaTotal);
+                    }
+                    
                 }
                 SaldoTotal.Value = FormatearNumero(total);
 
@@ -278,15 +295,31 @@ namespace Tecnocuisine.Formularios.Ventas
                 tr.Cells.Add(celID);
 
                 TableCell celFechaVenta = new TableCell();
-                celFechaVenta.Text = "<span> " + venta.FechaVenta.ToString() + "</span>";
+                celFechaVenta.Text = "<span> " + venta.FechaVenta.ToString().Split(' ')[0] + "</span>";
                 celFechaVenta.VerticalAlign = VerticalAlign.Middle;
                 tr.Cells.Add(celFechaVenta);
 
                 TableCell celCliente = new TableCell();
+                if (cliente == null && venta.idCliente != null)
+                {
+                 Tecnocuisine_API.Entitys.Clientes cliente2 = controladorCliente.ObtenerClienteId((int)venta.idCliente);
+                    string cli = cliente2.alias;
+                    celCliente.Text = "<span> " + cli + "</span>";
+                    celCliente.VerticalAlign = VerticalAlign.Middle;
+                    tr.Cells.Add(celCliente);
+                } else if (cliente == null && venta.idCliente == null)
+                {
                 string cli = (venta.idCliente == null ? "ClienteNoDisp" : cliente.alias);
                 celCliente.Text = "<span> " + cli + "</span>";
                 celCliente.VerticalAlign = VerticalAlign.Middle;
                 tr.Cells.Add(celCliente);
+                } else
+                {
+                    string cli =  "ClienteNoDisp" ;
+                    celCliente.Text = "<span> " + cli + "</span>";
+                    celCliente.VerticalAlign = VerticalAlign.Middle;
+                    tr.Cells.Add(celCliente);
+                }
 
 
                 TableCell celFormaDePago = new TableCell();
@@ -366,9 +399,9 @@ namespace Tecnocuisine.Formularios.Ventas
                 celID.VerticalAlign = VerticalAlign.Middle;
                 celID.Style.Add("text-align", "right");
                 tr.Cells.Add(celID);
-
+               
                 TableCell celFechaVenta = new TableCell();
-                celFechaVenta.Text = "<span> " + venta.FechaVenta.ToString() + "</span>";
+                celFechaVenta.Text = "<span> " + venta.FechaVenta.ToString().Split(' ')[0] + "</span>";
                 celFechaVenta.VerticalAlign = VerticalAlign.Middle;
                 tr.Cells.Add(celFechaVenta);
 
