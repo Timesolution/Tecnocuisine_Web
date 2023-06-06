@@ -13,6 +13,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Tecnocuisine.Formularios.Compras;
+using Tecnocuisine.Formularios.Ventas;
 using Tecnocuisine.Modelos;
 using Tecnocuisine_API.Controladores;
 using Tecnocuisine_API.Entitys;
@@ -89,13 +90,30 @@ namespace Tecnocuisine.Formularios.Caja
             }
             if (idClientes != -1)
             {
-                FiltrarVentas(this.idClientes, this.FechaD, this.FechaH);
+                FiltrarVentas(this.idClientes, ConvertDateFormat(this.FechaD), ConvertDateFormat(this.FechaH));
             }else
             {
-            //ObtenerTodosCobros();
+                DateTime fechaConvertida = DateTime.Now;
+                int idcli = 0;
+                string fechafinal = fechaConvertida.ToString("MM/dd/yyyy"); ;
+
+                FiltrarVentas(idcli, fechafinal, fechafinal);
             }
             CargarClientes();
             //ObtenerRecetas();
+        }
+
+
+        private string ConvertDateFormat(string fecha)
+        {
+            DateTime fechaConvertida;
+
+            if (DateTime.TryParseExact(fecha, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaConvertida))
+            {
+                return fechaConvertida.ToString("MM/dd/yyyy");
+            }
+
+            throw new ArgumentException("El formato de fecha proporcionado es inválido.");
         }
         private void CargarClientes()
         {
@@ -152,7 +170,15 @@ namespace Tecnocuisine.Formularios.Caja
             try
             {
                 Tecnocuisine_API.Entitys.Clientes clientes = controladorCliente.ObtenerClienteId(idCli);
-                AliasCliente.Value = clientes.alias;
+                if (clientes == null)
+                {
+                    AliasCliente.Value = "Todos";
+                }
+                else
+                {
+                    AliasCliente.Value = clientes.alias;
+
+                }
                 string FechaDesde = ConvertirFecha(FechaD);
                 string FechaHasta = ConvertirFecha(FechaH);
                 var dt = controladorCobrosRealizados.FiltrarCobrosRealizados(FechaD, FechaH, idCli);
@@ -279,10 +305,29 @@ namespace Tecnocuisine.Formularios.Caja
                 tr.Cells.Add(celFechaVenta);
 
                 TableCell celCliente = new TableCell();
-                string cli = (cobro.idCliente == null ? "ClienteNoDisp" : cliente.alias);
-                celCliente.Text = "<span> " + cli + "</span>";
-                celCliente.VerticalAlign = VerticalAlign.Middle;
-                tr.Cells.Add(celCliente);
+                if (cliente == null && cobro.idCliente != null)
+                {
+                    Tecnocuisine_API.Entitys.Clientes cliente2 = controladorCliente.ObtenerClienteId((int)cobro.idCliente);
+                    string cli = cliente2.alias;
+                    celCliente.Text = "<span> " + cli + "</span>";
+                    celCliente.VerticalAlign = VerticalAlign.Middle;
+                    tr.Cells.Add(celCliente);
+                }
+                else if (cliente == null && cobro.idCliente == null)
+                {
+                    string cli = (cobro.idCliente == null ? "ClienteNoDisp" : cliente.alias);
+                    celCliente.Text = "<span> " + cli + "</span>";
+                    celCliente.VerticalAlign = VerticalAlign.Middle;
+                    tr.Cells.Add(celCliente);
+                }
+                else
+                {
+
+                    celCliente.Text = "<span> " + cliente.alias + "</span>";
+                    celCliente.VerticalAlign = VerticalAlign.Middle;
+                    tr.Cells.Add(celCliente);
+                }
+
 
 
                 TableCell celFormaDePago = new TableCell();

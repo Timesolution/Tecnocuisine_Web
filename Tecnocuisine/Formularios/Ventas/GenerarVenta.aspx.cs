@@ -579,9 +579,68 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
 
+        public static decimal ConvertToDecimal(string valor, string formato = "0,000,000.00")
+        {
+            CultureInfo culture = CultureInfo.CurrentCulture;
+            NumberFormatInfo formatInfo = (NumberFormatInfo)culture.NumberFormat.Clone();
+
+            // Remover separadores de miles y establecer el separador decimal
+            formatInfo.NumberGroupSeparator = ",";
+            formatInfo.NumberDecimalSeparator = ".";
+
+            // Convertir el valor al formato adecuado
+            string valorFormateado = valor.Replace(formatInfo.NumberGroupSeparator, "");
+
+            // Convertir a decimal utilizando la configuración regional
+            decimal resultado;
+            if (decimal.TryParse(valorFormateado, NumberStyles.AllowDecimalPoint, formatInfo, out resultado))
+            {
+                return resultado;
+            }
+
+            // Si no se pudo convertir, intentar convertir a través de palabras numéricas
+            string valorPalabras = TextToNumber(valor, culture);
+            if (!string.IsNullOrEmpty(valorPalabras) && decimal.TryParse(valorPalabras, out resultado))
+            {
+                return resultado;
+            }
+
+            throw new ArgumentException("No se pudo convertir el valor proporcionado a decimal.");
+        }
+
+        public static string TextToNumber(string texto, CultureInfo culture)
+        {
+            string[] partes = texto.Split(new char[] { ',', '.' }, StringSplitOptions.RemoveEmptyEntries);
+            if (partes.Length > 0)
+            {
+                long valor = 0;
+                for (int i = 0; i < partes.Length; i++)
+                {
+                    string palabra = partes[i].Trim();
+                    if (!string.IsNullOrEmpty(palabra))
+                    {
+                        try
+                        {
+                            valor += (long)double.Parse(palabra, culture);
+                        }
+                        catch
+                        {
+                            return null;
+                        }
+                    }
+                }
+
+                return valor.ToString();
+            }
+
+            return null;
+        }
+
+
+
         public static decimal FormatNumber(string number)
         {
-            return Convert.ToDecimal(number.Replace(",",""));
+            return ConvertToDecimal(number);
         }
 
         [WebMethod]
@@ -746,7 +805,7 @@ namespace Tecnocuisine.Formularios.Ventas
             GenerarVenta generar = new GenerarVenta();
             VentasDetalle VD = new VentasDetalle();
             VD.idTipoFactura = Convert.ToInt32(tipofac);
-            VD.idCliente = Convert.ToInt32(cliente.Split('-')[0].Trim());
+            VD.idCliente = Convert.ToInt32(cliente.Split('-')[0].Trim()); 
             string formapagofinal = "";
             switch (formapago)
             {
@@ -829,12 +888,12 @@ namespace Tecnocuisine.Formularios.Ventas
             if (TipoDocumento.Descripcion.ToLower().Contains("credito"))
             {
                 cuentaCorriente.Debe = 0;
-                cuentaCorriente.Haber = FormatNumber(VD.PrecioVentaTotal.ToString());
+                cuentaCorriente.Haber = VD.PrecioVentaTotal;
                 cuentaCorriente.Saldo = cuentaCorriente.Haber * -1;
             }
             else
             {
-                cuentaCorriente.Debe = FormatNumber(VD.PrecioVentaTotal.ToString());
+                cuentaCorriente.Debe = VD.PrecioVentaTotal;
                 cuentaCorriente.Haber = 0;
                 cuentaCorriente.Saldo = cuentaCorriente.Debe;
             }
@@ -854,11 +913,11 @@ namespace Tecnocuisine.Formularios.Ventas
                 if (TipoDocumento.Descripcion.ToLower().Contains("credito"))
                 {
                     CuentaTarjetaCreditoVentas.Debe = 0;
-                    CuentaTarjetaCreditoVentas.Haber = FormatNumber(VD.CantidadTotal.ToString());
+                    CuentaTarjetaCreditoVentas.Haber = VD.PrecioVentaTotal;
                 }
                 else
                 {
-                    CuentaTarjetaCreditoVentas.Debe = FormatNumber(VD.CantidadTotal.ToString());
+                    CuentaTarjetaCreditoVentas.Debe = VD.PrecioVentaTotal;
                     CuentaTarjetaCreditoVentas.Haber = 0;
                 }
                 CuentaTarjetaCreditoVentas.idTarjeta = Convert.ToInt32(idtarjeta);
@@ -876,7 +935,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 cuentaContado.Descripcion = TipoDocumento.Descripcion + " " + VD.NumeroFactura;
                 cuentaContado.idCliente = Convert.ToInt32(cliente.Split('-')[0].Trim());
                
-                cuentaContado.Importe = FormatNumber(VD.CantidadTotal.ToString());
+                cuentaContado.Importe = VD.PrecioVentaTotal;
                 controladorCuentaContado.AgregarEnCuentaContado(cuentaContado);
             }
         }

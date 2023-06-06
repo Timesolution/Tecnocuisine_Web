@@ -33,24 +33,75 @@
                                     <div class="col-lg-12">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-content">
-                                                <div style="margin-left: 0px; margin-right: 0px;" class="row">
+                                               <div style="margin-left: 0px; margin-right: 0px;" class="row">
                                                     <div class="col-md-10">
 
-                                                        <div class="input-group m-b">
-                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                                                        <div style="display: flex;">
+                                                            <div class="input-group m-b">
+                                                                <div style="display: flex;">
+                                                                    <span class="input-group-addon" style="padding-right: 15%;"><i style='color: black;' class='fa fa-search'></i></span>
+                                                                    <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 100%" />
+                                                                </div>
+                                                            </div>
+                                                           
+                                                            <div class="input-group m-b row">
+                                                                <div class="row">
+                                                                    <div class="col-md-2"  style="margin-left: 15px;margin-right: 15px;">
+                                                                        <label class="col-md-4" style="margin-top: 5px;">Desde</label>
+                                                                    </div>
+                                                                    <div class="col-md-8">
+                                                                        <div class="form-group" id="data_1">
+                                                                            <div class="input-group date">
+                                                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                                                <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="input-group m-b">
+                                                                <div class="row">
+                                                                    <div  class="col-md-2"  style="margin-right: 15px;">
+                                                                        <label style="margin-left: 15px; margin-top: 5px;" class="col-md-4">Hasta</label>
+                                                                    </div>
+                                                                    <div class="col-md-8">
+                                                                        <div class="form-group" id="data_2" style="margin-left: 15px;">
+                                                                            <div class="input-group date">
+                                                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                                                <asp:TextBox class="form-control" runat="server" ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="input-group m-b">
+                                                                <div class="row">
+                                                                    <div  class="col-md-2"  style="margin-right: 15px;">
+                                                                <label style="margin-top: 5px;" class="col-md-4">Cliente</label>
+                                                                    </div>
+                                                                    <div class="col-md-8">
+                                                              
+                                                                   
+                                                                    <input name="txtProveedor" type="text" id="txtProveedor" list="ContentPlaceHolder1_ListaProveedores" class="form-control" style="margin-left:15px;margin-bottom: 15px; width: 100%;">
+                                                                    <p id="ValivaCliente" class="text-danger text-hide">Tienes que ingresar un Cliente</p>
+                                                                </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                            <%--  <div class="input-group m-b" 30%>
+                                                                <a id="btnFiltrar" onclick="FiltrarVentas()" class="btn btn-primary"><i class="fa fa-paper-plane"></i>&nbsp;Filtrar </a>
 
-
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                                                            </div>--%>
                                                         </div>
+
+
+
                                                     </div>
-                                                    <div class="col-md-2">
+                                                    <div class="col-md-2" style="display: flex; flex-direction: row; align-items: center; justify-content: end;">
+                                                        <a id="btnFiltrar"onclick="FiltrarCuentaCorriente()" class="btn btn-primary" style="margin-right: 15px;"><i class="fa fa-paper-plane"></i>&nbsp;Filtrar </a>
 
-                                                       
-                                                  <div class="btn-group pull-right" style="height: 100%">
-                                                <linkbutton type="button" data-toggle="modal" href="#modalBusqueda" class="btn btn-success">Filtrar&nbsp;<i style="color:white" class="fa fa-filter"></i></linkbutton>
-
-                                                  </div>
-                                                        </div>
+                    
+                                                    </div>
                                                 </div>
 
                                       <%--          <div class="col-md-12">
@@ -94,7 +145,7 @@
         </div>
     </div>
 
-    <div id="modalBusqueda" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+   <%-- <div id="modalBusqueda" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
                 <div class="modal-dialog">
                     <div class="modal-content">
 
@@ -158,7 +209,7 @@
                     </div>
 
                 </div>
-            </div>
+            </div>--%>
 
 
 
@@ -176,7 +227,7 @@
                 forceParse: false,
                 calendarWeeks: true,
                 autoclose: true,
-                format: 'mm/dd/yyyy'
+                format: 'dd/mm/yyyy'
             });
             $('#data_2 .input-group.date').datepicker({
                 todayBtn: "linked",
@@ -184,7 +235,7 @@
                 forceParse: false,
                 calendarWeeks: true,
                 autoclose: true,
-                format: 'mm/dd/yyyy'
+                format: 'dd/mm/yyyy'
             });
             saldo = document.getElementById("ContentPlaceHolder1_SaldoTotal").value;
             prov = document.getElementById("ContentPlaceHolder1_AliasCliente").value;
@@ -240,7 +291,7 @@
             let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value
             let FechaH = document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value
             let Proveedor = document.getElementById("txtProveedor").value
-            let proveedorValiva = document.getElementById("ValivaProveedor");
+            let proveedorValiva = document.getElementById("ValivaCliente");
             if (Proveedor == "") {
                 proveedorValiva.className = "text-danger"
                 return
@@ -252,7 +303,7 @@
         }
         function ValidarProveedor() {
             let Proveedor = document.getElementById("txtProveedor").value
-            let proveedorValiva = document.getElementById("ValivaProveedor");
+            let proveedorValiva = document.getElementById("ValivaCliente");
             if (Proveedor == "") {
                 proveedorValiva.className = "text-danger"
             } else {
@@ -263,10 +314,10 @@
             var fechaActual = new Date();
 
             // Convertir la fecha en un formato legible para el DatePicker   
-            var fechaFormateada = (fechaActual.getMonth() + 1) + '/' + fechaActual.getDate() + '/' + fechaActual.getFullYear();
-
+            var fechaFormateada = fechaActual.getDate() + '/' + (fechaActual.getMonth() + 1) + '/' + fechaActual.getFullYear();
+            var fechaFormateada2 = ("01" + '/' + "01" + '/' + "2000");
             // Establecer la fecha actual como valor predeterminado del DatePicker 
-            $('#ContentPlaceHolder1_txtFechaHoy').datepicker('setDate', "1/1/2000");
+            $('#ContentPlaceHolder1_txtFechaHoy').datepicker('setDate', fechaFormateada2);
             $('#ContentPlaceHolder1_txtFechaVencimiento').datepicker('setDate', fechaFormateada);
 
         }

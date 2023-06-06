@@ -82,6 +82,7 @@
                                             <th style="width: 15%">Descripcion</th>
                                             <th style="width: 10%">Cliente</th>
                                             <th style="width: 7%">Acredita en</th>
+                                            <th style="width: 7%">Acredita el</th>
                                             <th style="width: 7%";text-align: right;>Importe</th>
                                             <th style="width: 10%"></th>
                                         </tr>

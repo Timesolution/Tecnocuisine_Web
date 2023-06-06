@@ -283,6 +283,8 @@ namespace Tecnocuisine
                 tr.Cells.Add(celCliente);
                 ControladorTarjetas controladorTarjetas2 = new ControladorTarjetas();
                 var tarjeta = controladorTarjetas2.ObtenerTarjetaPorID((int)insumo.idTarjeta);
+
+
                TableCell celAcredita = new TableCell();
                 celAcredita.Text = tarjeta != null ? tarjeta.AcreditaEn.ToString() + " Dias" : "No se encontro acreditacion";
                 celAcredita.VerticalAlign = VerticalAlign.Middle;
@@ -290,6 +292,16 @@ namespace Tecnocuisine
                 celAcredita.Width = Unit.Percentage(40);
                 celAcredita.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celAcredita);
+                DateTime fecha = (DateTime)insumo.fecha;
+                DateTime FechaFinal  = fecha.AddDays((double)tarjeta.AcreditaEn);
+
+                TableCell celAcreditaEl = new TableCell();
+                celAcreditaEl.Text = FechaFinal.ToString().Split(' ')[0];
+                celAcreditaEl.VerticalAlign = VerticalAlign.Middle;
+                celAcreditaEl.HorizontalAlign = HorizontalAlign.Left;
+                celAcreditaEl.Width = Unit.Percentage(40);
+                celAcreditaEl.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celAcreditaEl);
 
                 TableCell NumProduc = new TableCell();
                 NumProduc.Text = FormatearNumero((decimal)insumo.Debe + (decimal)insumo.Haber);
@@ -401,6 +413,17 @@ namespace Tecnocuisine
                 celAcredita.Width = Unit.Percentage(40);
                 celAcredita.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celAcredita);
+
+                DateTime fecha = (DateTime)insumo.fecha;
+                DateTime FechaFinal = fecha.AddDays((double)insumo.Tarjetas.AcreditaEn);
+
+                TableCell celAcreditaEl = new TableCell();
+                celAcreditaEl.Text = FechaFinal.ToString().Split(' ')[0];
+                celAcreditaEl.VerticalAlign = VerticalAlign.Middle;
+                celAcreditaEl.HorizontalAlign = HorizontalAlign.Left;
+                celAcreditaEl.Width = Unit.Percentage(40);
+                celAcreditaEl.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celAcreditaEl);
 
                 TableCell NumProduc = new TableCell();
                 NumProduc.Text = FormatearNumero((decimal)insumo.Debe + (decimal)insumo.Haber);

@@ -89,7 +89,8 @@ namespace Tecnocuisine.Formularios.Ventas
             }
             if (idClientes != -1)
             {
-                FiltrarVentas(this.idClientes, this.FechaD, this.FechaH);
+
+                FiltrarVentas(this.idClientes, ConvertDateFormat(this.FechaD), ConvertDateFormat(this.FechaH));
             }else
             {
             ObtenerTodasVentas();
@@ -97,6 +98,19 @@ namespace Tecnocuisine.Formularios.Ventas
             CargarClientes();
             //ObtenerRecetas();
         }
+
+        private string ConvertDateFormat(string fecha)
+        {
+            DateTime fechaConvertida;
+
+            if (DateTime.TryParseExact(fecha, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaConvertida))
+            {
+                return fechaConvertida.ToString("MM/dd/yyyy");
+            }
+
+            throw new ArgumentException("El formato de fecha proporcionado es inválido.");
+        }
+
         private void CargarClientes()
         {
             try
@@ -315,8 +329,8 @@ namespace Tecnocuisine.Formularios.Ventas
                 tr.Cells.Add(celCliente);
                 } else
                 {
-                    string cli =  "ClienteNoDisp" ;
-                    celCliente.Text = "<span> " + cli + "</span>";
+                  
+                    celCliente.Text = "<span> " + cliente.alias + "</span>";
                     celCliente.VerticalAlign = VerticalAlign.Middle;
                     tr.Cells.Add(celCliente);
                 }
@@ -331,7 +345,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 ControladorTipoDocumento controladorTipoDocumento = new ControladorTipoDocumento();
                 var doc = controladorTipoDocumento.ObtenerTipoDocumentoByID((int)venta.idTipoFactura);
                 TableCell celTipoFactura = new TableCell();
-                string tipofac = (venta.TipoDocumento == null ? "TipoDoc No Disp" : doc.Descripcion);
+                string tipofac = (venta.idTipoFactura == null ? "TipoDoc No Disp" : doc.Descripcion);
                 celTipoFactura.Text = "<span> " + tipofac + "</span>";
                 celTipoFactura.VerticalAlign = VerticalAlign.Middle;
                 tr.Cells.Add(celTipoFactura);

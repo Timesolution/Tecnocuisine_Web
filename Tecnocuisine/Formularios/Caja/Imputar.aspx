@@ -134,7 +134,7 @@
                                                             <div class="form-group" id="data_1">
                                                                 <div class="input-group date">
                                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                                    <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                                    <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
                                                                 </div>
                                                             </div>
 
@@ -649,15 +649,40 @@
             }
 
 
+            //$('#datepicker').datepicker({
+            //    format: 'dd/mm/yyyy', // Formato de fecha deseado
+            //    todayBtn: true, // Mostrar botón "Today"
+            //    todayHighlight: true, // Resaltar fecha actual
+            //    beforeShow: function (input) {
+            //        setTimeout(function () {
+            //            var todayBtn = $('.datepicker').find('.today');
+            //            var todayDate = new Date();
+            //            todayBtn.text('Today ' + todayDate.toLocaleDateString());
+            //        }, 0);
+            //    }
+            //});
+
+
+
             $('#data_1 .input-group.date').datepicker({
-                todayBtn: "linked",
+                todayBtn: true, // Mostrar botón "Today"
+                todayHighlight: true, // Resaltar fecha actual
                 keyboardNavigation: false,
                 forceParse: false,
                 calendarWeeks: true,
                 autoclose: true,
-                format: 'mm/dd/yyyy'
+                format: 'dd/mm/yyyy',
+                beforeShow: function (input) {
+                    setTimeout(function () {
+                        var todayBtn = $('.datepicker').find('.today');
+                        var todayDate = new Date();
+                        todayBtn.text('Today ' + todayDate.toLocaleDateString());
+                    }, 0);
+                }
             });
             establecerDiaHoy();
+
+       
             preciofinal = document.getElementById("SumaFinal").value;
             document.getElementById("totalAingresar").innerText = "$ " + preciofinal;
             let cliente = document.getElementById("ContentPlaceHolder1_idClienteFinal").value.split("-")[1].trim();
@@ -839,15 +864,35 @@
                 input.value = formatearNumero(revertirNumero(value));
             }
         }
+
         function establecerDiaHoy() {
             var fechaActual = new Date();
-
             // Convertir la fecha en un formato legible para el DatePicker   
-            var fechaFormateada = (fechaActual.getMonth() + 1) + '/' + fechaActual.getDate() + '/' + fechaActual.getFullYear();
+            var fechaFormateada = (fechaActual.getDate() + '/' + (fechaActual.getMonth() + 1) + '/' + fechaActual.getFullYear())
             // Establecer la fecha actual como valor predeterminado del DatePicker 
-            $('#ContentPlaceHolder1_txtFechaHoy').datepicker('setDate', fechaFormateada);
+            //$('#ContentPlaceHolder1_txtFechaHoy').datepicker('setDate', fechaFormateada);
+            //$('#ContentPlaceHolder1_txtFechaHoy').datepicker('todayBtn', true);
 
+            document.getElementById("ContentPlaceHolder1_txtFechaHoy").value = formatearFecha(fechaFormateada);
+          /*  document.getElementById("ContentPlaceHolder1_txtFechaHoy").datepicker('setDate', fechaFormateada);*/
 
+        }
+
+        function formatearFecha(fecha) {
+            var partes = fecha.split('/');
+            var dia = partes[0];
+            var mes = partes[1];
+            var anio = partes[2];
+
+            if (dia < 10) {
+                dia = '0' + dia;
+            }
+
+            if (mes < 10) {
+                mes = '0' + mes;
+            }
+
+            return dia + '/' + mes + '/' + anio;
         }
         function ActualizarPrecioFinal(textbox) {
             var totalImputar = 0;

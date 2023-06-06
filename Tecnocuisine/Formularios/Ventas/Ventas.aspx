@@ -42,7 +42,7 @@
                                                                         <div class="form-group" id="data_1">
                                                                             <div class="input-group date">
                                                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                                                <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                                                <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -57,7 +57,7 @@
                                                                         <div class="form-group" id="data_2" style="margin-left: 15px;">
                                                                             <div class="input-group date">
                                                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                                                <asp:TextBox class="form-control" runat="server" ID="txtFechaVencimiento" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                                                <asp:TextBox class="form-control" runat="server" ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -193,9 +193,14 @@
     <script src="../Scripts/plugins/toastr/toastr.min.js"></script>
     <script src="/../Scripts/plugins/staps/jquery.steps.min.js"></script>
     <script src="../../js/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
     <script>
         $(document).ready(function () {
             $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+
+
+
 
             $('#data_1 .input-group.date').datepicker({
                 todayBtn: "linked",
@@ -203,7 +208,7 @@
                 forceParse: false,
                 calendarWeeks: true,
                 autoclose: true,
-                format: 'mm/dd/yyyy'
+                dateFormat: 'dd/mm/yyyy'
             });
             $('#data_2 .input-group.date').datepicker({
                 todayBtn: "linked",
@@ -211,7 +216,13 @@
                 forceParse: false,
                 calendarWeeks: true,
                 autoclose: true,
-                format: 'mm/dd/yyyy'
+                dateFormat: 'dd/mm/yyyy'
+            });
+
+
+            $('#datepicker').datepicker({
+                format: 'mm/dd/yyyy',  // Establecer el formato de fecha deseado
+                autoclose: true
             });
             saldo = document.getElementById("ContentPlaceHolder1_SaldoTotal").value;
             prov = document.getElementById("ContentPlaceHolder1_AliasCliente").value;
@@ -224,6 +235,7 @@
                 document.getElementById("ClienteSelec").innerText = prov;
             }
             establecerDiaHoy();
+          
         });
         function FiltrarVentas() {
             let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value
@@ -240,11 +252,12 @@
             window.location.href = "Ventas.aspx?p=" + Cliente.split("-")[0].trim() + "&FechaD=" + FechaD + "&FechaH=" + FechaH;
         }
 
+
         function establecerDiaHoy() {
             var fechaActual = new Date();
 
             // Convertir la fecha en un formato legible para el DatePicker   
-            var fechaFormateada = (fechaActual.getMonth() + 1) + '/' + fechaActual.getDate() + '/' + fechaActual.getFullYear();
+            var fechaFormateada = fechaActual.getDate() + '/' + (fechaActual.getMonth() + 1) + '/' + fechaActual.getFullYear();
             var fechaFormateada2 = ("01" + '/' + "01" + '/' + "2000");
             // Establecer la fecha actual como valor predeterminado del DatePicker 
             $('#ContentPlaceHolder1_txtFechaHoy').datepicker('setDate', fechaFormateada2);

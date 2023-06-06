@@ -139,7 +139,7 @@
                                                 <div class="form-group" id="data_1">
                                                 <div class="input-group date">
                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                    <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                    <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
                                                 </div>
                                             </div>
                                             </div>
@@ -150,7 +150,7 @@
                                             <div class="form-group" id="data_2">
                                                     <div class="input-group date">
                                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                        <asp:TextBox class="form-control" runat="server" ID="txtFechaVencimiento" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                        <asp:TextBox class="form-control" runat="server" ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
                                                     </div>
                                                 </div>
                                             
@@ -252,7 +252,7 @@
                 forceParse: false,
                 calendarWeeks: true,
                 autoclose: true,
-                format: 'mm/dd/yyyy'
+                format: 'dd/mm/yyyy'
             });
             $('#data_2 .input-group.date').datepicker({
                 todayBtn: "linked",
@@ -260,7 +260,7 @@
                 forceParse: false,
                 calendarWeeks: true,
                 autoclose: true,
-                format: 'mm/dd/yyyy'
+                format: 'dd/mm/yyyy'
             });
             saldo = document.getElementById("ContentPlaceHolder1_SaldoTotal").value;
             prov = document.getElementById("ContentPlaceHolder1_AliasCliente").value;
@@ -496,10 +496,10 @@
             var fechaActual = new Date();
 
             // Convertir la fecha en un formato legible para el DatePicker   
-            var fechaFormateada = (fechaActual.getMonth() + 1) + '/' + fechaActual.getDate() + '/' + fechaActual.getFullYear();
-
+            var fechaFormateada = fechaActual.getDate() + '/' + (fechaActual.getMonth() + 1) + '/' + fechaActual.getFullYear();
+            var fechaFormateada2 = ("01" + '/' + "01" + '/' + "2000");
             // Establecer la fecha actual como valor predeterminado del DatePicker 
-            $('#ContentPlaceHolder1_txtFechaHoy').datepicker('setDate', "1/1/2000");
+            $('#ContentPlaceHolder1_txtFechaHoy').datepicker('setDate', fechaFormateada2);
             $('#ContentPlaceHolder1_txtFechaVencimiento').datepicker('setDate', fechaFormateada);
 
         }

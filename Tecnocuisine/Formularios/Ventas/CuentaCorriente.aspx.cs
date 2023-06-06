@@ -61,9 +61,20 @@ namespace Tecnocuisine.Ventas
 
             if (idCliente != -1)
             {
-                FiltrarVentas(this.idCliente, this.FechaD, this.FechaH);
+                FiltrarVentas(this.idCliente, ConvertDateFormat(this.FechaD), ConvertDateFormat(this.FechaH));
             }
             CargarClientes();
+        }
+        private string ConvertDateFormat(string fecha)
+        {
+            DateTime fechaConvertida;
+
+            if (DateTime.TryParseExact(fecha, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaConvertida))
+            {
+                return fechaConvertida.ToString("MM/dd/yyyy");
+            }
+
+            throw new ArgumentException("El formato de fecha proporcionado es inválido.");
         }
 
         public void FiltrarVentas(int idCli, string FechaD, string FechaH)
@@ -140,7 +151,7 @@ namespace Tecnocuisine.Ventas
             {
                 ControladorUnidad cu = new ControladorUnidad();
                 var builder = new System.Text.StringBuilder();
-                builder.Append("<option value='0 - Todos'>0 - Todos</option>");
+                builder.Append("<option value='0-Todos'>0 - Todos</option>");
                 foreach (var cli in clientes)
                 {
                     builder.Append(String.Format("<option value='{0}' id='c_r_" + cli.id + "_" + cli.alias + "_" + cli.cuit + "'>", cli.id + " - " + cli.alias));
