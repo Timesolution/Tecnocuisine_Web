@@ -48,26 +48,73 @@
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-content">
                                                 <div style="margin-left: 0px; margin-right: 0px;" class="row">
-                                                    <div class="col-md-10">
+                                                                       
+                                                 <div class="col-md-6">
 
+                                                      
+                                                         <div class="input-group m-b">
+                                                                <div style="display: flex;">
+                                                                    <span class="input-group-addon" style="padding-right: 15%;"><i style='color: black;' class='fa fa-search'></i></span>
+                                                                    <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 200%" />
+                                                                </div>
+                                                            </div>
+                                                            
+
+                                                         
+                                              
+
+
+
+                                            </div>
+                                                   
+
+                                                        
+                                                    <div class="col-md-6">
+                                                        <div class="row" style="display: flex;">
+
+                                                       
                                                         <div class="input-group m-b">
-                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                                                        <div class="row">
+                                                            <div class="col-md-2" style="margin-right: 15px;">
+                                                                <label style="margin-top: 5px;" class="col-md-4">Cliente</label>
+                                                            </div>
+                                                            <div class="col-md-8">
 
-
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                                                                <datalist id="Datalist1" runat="server"></datalist>
+                                                                <input name="txtProveedor" type="text" id="txtProveedor" onchange="ValidarProveedor()" list="ContentPlaceHolder1_ListaProveedores" class="form-control" style="margin-left: 0px; margin-bottom:15px;">
+                                                                          <p id="ValivaProveedor" class="text-danger text-hide">Tienes que ingresar un Cliente</p>
+                                                            </div>
+                                                       
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-2">
 
-                                                 <%-- <div class="col-md-2" style="display: flex; flex-direction: row; align-items: center; justify-content: end;">--%>
-                                                          
-                                                        <a class="btn btn-sm btn-primary" style="margin-right: 8px;" data-toggle="tooltip" data-placement="top" data-original-title="CALCULA FC A CANCELAR" onclick="AbrirModal()" text="Agregar" id="Button1">
+
+                                                           <div class="input-group m-b">
+                                                        <div class="row">
+                                                            <div class="col-md-" style="margin-right: 15px;">
+                                                                  <div style="display: flex; gap:15px">
+                                                             <a type="button" data-toggle="modal" onclick="FiltrarCuentaCorriente()" class="btn btn-success">Filtrar&nbsp;<i style="color:white;" class="fa fa-filter"></i></a>
+                                                             <a class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" data-original-title="CALCULA FC A CANCELAR" onclick="AbrirModal()" text="Agregar" id="Button1">
                                                             <i style="color: white;padding: 2px;font-size: 18px;" class="fa fa-dollar"></i>
                                                         </a>
-                                                    
-                                                <a type="button" data-toggle="modal" href="#modalBusqueda" class="btn btn-success">Filtrar&nbsp;<i style="color:white" class="fa fa-filter"></i></a>
+                                                        </div>
+                                                            </div>
+                                                         
 
-                                                  <%--</div>--%>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <%--      <a type="button" data-toggle="modal" onclick="FiltrarCuentaCorriente()" class="btn btn-success">Filtrar&nbsp;<i style="color:white" class="fa fa-filter"></i></a>
+                                                        <a class="btn btn-sm btn-primary" style="margin-right: 8px;" data-toggle="tooltip" data-placement="top" data-original-title="CALCULA FC A CANCELAR" onclick="AbrirModal()" text="Agregar" id="Button1">
+                                                            <i style="color: white;padding: 2px;font-size: 18px;" class="fa fa-dollar"></i>
+                                                        </a>--%>
+
+                                                  
+                                            
+                                                    
+
+                                      </div>
                                                        
                                                         </div>
                                                 </div>
@@ -120,7 +167,7 @@
         </div>
     </div>
    <%-- FILTRAR--%>
-    <div id="modalBusqueda" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+  <%--  <div id="modalBusqueda" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
                 <div class="modal-dialog">
                     <div class="modal-content">
 
@@ -184,7 +231,7 @@
                     </div>
 
                 </div>
-            </div>
+            </div>--%>
     <%--AUTOSELECCION FACTURAS--%>
     <div id="modalAutoSelect" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
                 <div class="modal-dialog">
@@ -246,22 +293,6 @@
             $("body").tooltip({ selector: '[data-toggle=tooltip]' });
             document.getElementById("ContentPlaceHolder1_CobroAutomatico").value = "false";
 
-            $('#data_1 .input-group.date').datepicker({
-                todayBtn: "linked",
-                keyboardNavigation: false,
-                forceParse: false,
-                calendarWeeks: true,
-                autoclose: true,
-                format: 'dd/mm/yyyy'
-            });
-            $('#data_2 .input-group.date').datepicker({
-                todayBtn: "linked",
-                keyboardNavigation: false,
-                forceParse: false,
-                calendarWeeks: true,
-                autoclose: true,
-                format: 'dd/mm/yyyy'
-            });
             saldo = document.getElementById("ContentPlaceHolder1_SaldoTotal").value;
             prov = document.getElementById("ContentPlaceHolder1_AliasCliente").value;
             if (saldo != "") {
@@ -272,7 +303,12 @@
             document.getElementById("txtBusqueda").addEventListener("input", buscarEnTabla);
             establecerDiaHoy();
 
-            var oTable = $('#editable').dataTable();
+            var oTable = $('#editable').dataTable({
+                "bLengthChange": false,
+                "pageLength": 100, // Establece la cantidad predeterminada de registros por página
+                "lengthMenu": [25, 50, 87, 100], // Opciones de cantidad de registros por página
+            });
+
             oTable.$('td').editable('../example_ajax.php', {
                 "callback": function (sValue, y) {
                     var aPos = oTable.fnGetPosition(this);
@@ -284,33 +320,19 @@
                         "column": oTable.fnGetPosition(this)[2]
                     };
                 },
-
                 "width": "90%",
-                "height": "100%",
-                "pageLength": 50
+                "height": "100%"
             });
 
-            $("#editable_filter").appendTo("#editable_length");
 
             $("#editable_filter").css('display', 'none');
-            $("#editable_filter").css('padding-left', '5%');
-            var parent = $("#editable_length")[0].parentNode;
-            parent.className = 'col-sm-12';
-            parent.style = 'display:none';
-            var div = document.getElementById('editable_filter');
-
-            var filter = $("#editable_filter");
-            filter[0].id = 'editable_filter2';
-
-            //var filter = $("#editable_length");
-            //filter[0].id = 'editable_length2';
-
-
             $('#txtBusqueda').on('keyup', function () {
                 $('#editable').DataTable().search(
                     this.value
                 ).draw();
             });
+
+      
         });
 
         function ValidarOption(e) {
@@ -328,7 +350,7 @@
                 }
             });
 
-          
+
             let idsString = "";
             for (let item of ids) {
                 idsString += item += "-";
@@ -336,7 +358,7 @@
             let idcliente = document.getElementById("ClienteSelec").innerText.split("-")[0].trim();
             if (document.getElementById("ContentPlaceHolder1_CobroAutomatico").value == "true") {
                 let total = document.getElementById("ContentPlaceHolder1_MontoCobroAutomatico").value;
-                window.location.href = "Imputar.aspx?i=" + idsString + "&t=" + total + "&c=" + idcliente ;
+                window.location.href = "Imputar.aspx?i=" + idsString + "&t=" + total + "&c=" + idcliente;
             } else {
                 window.location.href = "Imputar.aspx?i=" + idsString + "&c=" + idcliente;
             }
@@ -388,7 +410,7 @@
                     var checkBox = filas[i].cells[6].getElementsByTagName('input')[0];
                     checkBox.checked = true;
                     monto -= importe;
-                   /* calcularImporte2(importe)*/
+                    /* calcularImporte2(importe)*/
                 } else {
                     var checkBox = filas[i].cells[6].getElementsByTagName('input')[0];
                     if (checkBox.checked == true) {
@@ -416,7 +438,7 @@
         }
 
         function calcularImporte(checkbox) {
-            
+
             // Obtener la fila padre del checkbox
             var row = checkbox.parentNode.parentNode;
 
@@ -431,11 +453,11 @@
             if (document.getElementById("ContentPlaceHolder1_CobroAutomatico").value == "true") {
                 DeshabiliarTodosLosCheck();
             } else {
-            if (checkbox.checked) {
-                importeFinal += importe;
-            } else {
-                importeFinal -= importe;
-            }
+                if (checkbox.checked) {
+                    importeFinal += importe;
+                } else {
+                    importeFinal -= importe;
+                }
 
                 document.getElementById("DivSaldo2").innerText = formatearNumero(importeFinal);
                 ChangeButton()
@@ -470,8 +492,6 @@
 
 
         function FiltrarCuentaCorriente() {
-            let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value
-            let FechaH = document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value
             let Proveedor = document.getElementById("txtProveedor").value
             let proveedorValiva = document.getElementById("ValivaProveedor");
             if (Proveedor == "") {
@@ -481,7 +501,7 @@
                 proveedorValiva.className = "text-danger text-hide"
             }
 
-            window.location.href = "Cobros.aspx?p=" + Proveedor.split("-")[0].trim() + "&FechaD=" + FechaD + "&FechaH=" + FechaH;
+            window.location.href = "Cobros.aspx?p=" + Proveedor.split("-")[0].trim();
         }
         function ValidarProveedor() {
             let Proveedor = document.getElementById("txtProveedor").value

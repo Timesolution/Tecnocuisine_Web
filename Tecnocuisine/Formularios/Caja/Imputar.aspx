@@ -29,8 +29,6 @@
                         <th style="text-align: left; width: 50%;">Numero</th>
                         <th style="width: 25%; text-align: left;">Saldo</th>
                         <th style="width: 25%; text-align: left;">Imputar</th>
-
-
                     </tr>
                 </thead>
                 <tbody>
@@ -131,13 +129,9 @@
                                                             <h4 style="margin-left: 5%">Fecha:</h4>
                                                         </div>
                                                         <div class="col-md-8">
-                                                            <div class="form-group" id="data_1">
-                                                                <div class="input-group date">
-                                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                                    <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
-                                                                </div>
-                                                            </div>
-
+                                                           
+                                                                    <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" type="date" data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                               
                                                         </div>
                                                     </div>
 
@@ -145,10 +139,10 @@
                                                     <div>
 
                                                         <div class="col-md-4">
-                                                            <h4 style="margin-left: 5%">Importe:</h4>
+                                                            <h4 style="margin-left: 5%;margin-top: 15px;">Importe:</h4>
                                                         </div>
                                                         <div class="col-md-8">
-                                                            <asp:TextBox class="form-control" ID="txtImporteCheque" Style="text-align: right;" onchange="ChangeCheque(this)" runat="server">
+                                                            <asp:TextBox class="form-control" ID="txtImporteCheque" Style="text-align: right;margin-top: 15px;" onchange="ChangeCheque(this)" runat="server">
                                                                     
                                                             </asp:TextBox>
 
@@ -614,6 +608,8 @@
                             <asp:HiddenField ID="contadorid" runat="server"></asp:HiddenField>
                             <asp:HiddenField ID="idClienteFinal" runat="server"></asp:HiddenField>
                             <asp:HiddenField ID="idNumeroCobro" runat="server"></asp:HiddenField>
+                            <asp:HiddenField ID="ListTarjetas" runat="server"></asp:HiddenField>
+
 
 
                             </div>
@@ -649,39 +645,25 @@
             }
 
 
-            //$('#datepicker').datepicker({
-            //    format: 'dd/mm/yyyy', // Formato de fecha deseado
-            //    todayBtn: true, // Mostrar botón "Today"
-            //    todayHighlight: true, // Resaltar fecha actual
+         
+
+
+
+            //$('#data_1 .input-group.date').datepicker({
+            //    todayBtn: true,
+            //    todayHighlight: true,
+            //    keyboardNavigation: false,
+            //    forceParse: false,
+            //    calendarWeeks: true,
+            //    autoclose: true,
+            //    format: 'dd/mm/yyyy',
             //    beforeShow: function (input) {
-            //        setTimeout(function () {
-            //            var todayBtn = $('.datepicker').find('.today');
-            //            var todayDate = new Date();
-            //            todayBtn.text('Today ' + todayDate.toLocaleDateString());
-            //        }, 0);
-            //    }
-            //});
-
-
-
-            $('#data_1 .input-group.date').datepicker({
-                todayBtn: true, // Mostrar botón "Today"
-                todayHighlight: true, // Resaltar fecha actual
-                keyboardNavigation: false,
-                forceParse: false,
-                calendarWeeks: true,
-                autoclose: true,
-                format: 'dd/mm/yyyy',
-                beforeShow: function (input) {
-                    setTimeout(function () {
-                        var todayBtn = $('.datepicker').find('.today');
-                        var todayDate = new Date();
-                        todayBtn.text('Today ' + todayDate.toLocaleDateString());
-                    }, 0);
-                }
-            });
+            //        console.log("beforeShow");
+            //    },
+            //})
             establecerDiaHoy();
-
+            //var todayBtn = $('.datepicker').find('.today');
+            //todayBtn.addEventListener('click', establecerDiaHoy);
        
             preciofinal = document.getElementById("SumaFinal").value;
             document.getElementById("totalAingresar").innerText = "$ " + preciofinal;
@@ -868,21 +850,14 @@
         function establecerDiaHoy() {
             var fechaActual = new Date();
             // Convertir la fecha en un formato legible para el DatePicker   
-            var fechaFormateada = (fechaActual.getDate() + '/' + (fechaActual.getMonth() + 1) + '/' + fechaActual.getFullYear())
+            var fechaFormateada = (fechaActual.getFullYear() + '/' + (fechaActual.getMonth() + 1) + '/' + fechaActual.getDate())
             // Establecer la fecha actual como valor predeterminado del DatePicker 
             //$('#ContentPlaceHolder1_txtFechaHoy').datepicker('setDate', fechaFormateada);
             //$('#ContentPlaceHolder1_txtFechaHoy').datepicker('todayBtn', true);
-
-            document.getElementById("ContentPlaceHolder1_txtFechaHoy").value = formatearFecha(fechaFormateada);
-          /*  document.getElementById("ContentPlaceHolder1_txtFechaHoy").datepicker('setDate', fechaFormateada);*/
-
-        }
-
-        function formatearFecha(fecha) {
-            var partes = fecha.split('/');
-            var dia = partes[0];
+            var partes = fechaFormateada.split('/');
+            var dia = partes[2];
             var mes = partes[1];
-            var anio = partes[2];
+            var anio = partes[0];
 
             if (dia < 10) {
                 dia = '0' + dia;
@@ -892,8 +867,13 @@
                 mes = '0' + mes;
             }
 
-            return dia + '/' + mes + '/' + anio;
+            fechafinal = anio + '-' + mes + '-' + dia;
+            document.getElementById("ContentPlaceHolder1_txtFechaHoy").value = fechafinal;
+          /*  document.getElementById("ContentPlaceHolder1_txtFechaHoy").datepicker('setDate', fechaFormateada);*/
+
         }
+
+    
         function ActualizarPrecioFinal(textbox) {
             var totalImputar = 0;
             FormatearNumero(textbox);
@@ -1009,7 +989,9 @@
         }
         function AgregarTarjeta(e) {
             e.preventDefault();
-
+            /*            ContentPlaceHolder1_ListTarjetas   */
+            let entidad = document.getElementById("ContentPlaceHolder1_DropDownEntidadList").value;
+            let tarjeta = document.getElementById("ContentPlaceHolder1_DropDownListTarjetaCredito").value;
             let importe = document.getElementById("ContentPlaceHolder1_txtImporteTarjeta").value;
             document.getElementById("ContentPlaceHolder1_txtImporteTarjeta").value = "";
             document.getElementById("buttonTxtTarjeta").disabled = true;
@@ -1032,6 +1014,14 @@
             } else {
                 AgregarATabla("Tarjeta", importe, id);
                 IngresadoTotal();
+            }
+
+            let listtarjetas = document.getElementById("ContentPlaceHolder1_ListTarjetas").value;
+            if (listtarjetas == "") {
+                document.getElementById("ContentPlaceHolder1_ListTarjetas").value += entidad + "/" + tarjeta + "/" + importe;
+
+            } else {
+                document.getElementById("ContentPlaceHolder1_ListTarjetas").value += "%" + entidad + "/" + tarjeta + "/" + importe;
             }
         }
 
@@ -1191,6 +1181,9 @@
 
             // Recorrer cada fila a partir del índice 1 (se salta la fila de encabezados)
             var listFacImputar = "";
+            var listTarjeta = "";
+            var listCheques = "";
+            var totalefectivo = "";
             for (var i = 1; i < filas.length-1; i++) {
                 var celdas = filas[i].getElementsByTagName("td");
                 var id = celdas[0].innerText;
@@ -1207,12 +1200,69 @@
 
             }
             let ingresadototal = revertirNumero(document.getElementById("ingresadoTotal").innerText.split(" ")[1].trim());
+
+            // TABLA ABAJO
+            var tabla2 = document.getElementById("editableGeneral");
+
+            // Obtener todas las filas de la tabla
+            var filas2 = tabla2.getElementsByTagName("tr");
+            listPagos = "";
+            for (var i = 1; i < filas2.length; i++) {
+                var celdas = filas2[i].getElementsByTagName("td");
+                var text = celdas[0].innerText;
+                if (listPagos == "") {
+                    listPagos += text;
+                } else {
+                    listPagos += "%" + text;
+                }
+
+            }
+
+            if (listPagos.includes("Cheque")) {
+
+                var tablaCheques = document.getElementById("editableCheques");
+
+                // Obtener todas las filas de la tabla
+                var filasCheques = tablaCheques.getElementsByTagName("tr");
+
+                for (var i = 1; i < filasCheques.length; i++) {
+                    var celdas = filasCheques[i].getElementsByTagName("td");
+                    var importe = celdas[1].innerText;
+                    var numero = celdas[2].innerText;
+                    var idBanco = celdas[3].innerText;
+                    var Cuenta = celdas[4].innerText;
+                    var Cuit = celdas[5].innerText;
+                    var Librador = celdas[6].innerText;
+                    var fecha = celdas[0].innerText.replaceAll("-","$");
+                    if (listCheques == "") {
+                        listCheques += importe + "/" + numero + "/" + idBanco.split("-")[0].trim() + "/" + Cuenta + "/" + Cuit + "/" + Librador + "/" + fecha;
+                    } else {
+                        listCheques += "%" + importe + "/" + numero + "/" + idBanco + "/" + Cuenta + "/" + Cuit + "/" + Librador + "/" + fecha;
+                    }
+
+
+                }
+            }
+            if (listPagos.includes("Tarjeta")) {
+
+                listTarjeta = document.getElementById("ContentPlaceHolder1_ListTarjetas").value
+
+            }
+            if (listPagos.includes("Efectivo")) {
+                totalefectivo = document.getElementsByName("Efectivo_TableFinal")[0].innerText;
+            }
+
+
+
             $.ajax({
                 method: "POST",
                 url: "Imputar.aspx/ImputarFacturas",
                 data: '{listFacturas: "' + listFacImputar
                     + '" , ImporteCobro: "' + ingresadototal
                     + '" , idCliente: "' + document.getElementById("ContentPlaceHolder1_idClienteFinal").value.split("-")[0].trim()
+                    + '" , listCheques: "' + listCheques
+                    + '" , listTarjetas: "' + listTarjeta
+                    + '" , totalefectivo: "' + totalefectivo
                     + '"}',
                 contentType: "application/json",
                 dataType: "json",

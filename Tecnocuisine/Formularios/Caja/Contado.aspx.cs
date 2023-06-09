@@ -105,7 +105,6 @@ namespace Tecnocuisine.Caja
                     cc.idCliente = Convert.ToInt32(row["idCliente"]);
                     cc.Descripcion = row["Descripcion"].ToString();
                     cc.Importe = Convert.ToDecimal(row["Importe"]);
-                    cc.idVenta = Convert.ToInt32(row["idVenta"]);
 
 
                     total += (decimal)(cc.Importe);
@@ -251,7 +250,7 @@ namespace Tecnocuisine.Caja
         public static string ConvertirFecha(string fecha)
         {
             // Convertir a objeto DateTime
-            DateTime fechaDateTime = DateTime.ParseExact(fecha, "MM/dd/yyyy", null);
+            DateTime fechaDateTime = DateTime.ParseExact(fecha, "yyyy/MM/dd", null);
 
             // Obtener la fecha en formato "anio-dia-mes"
             string fechaNueva = fechaDateTime.ToString("yyyy-dd-MM");

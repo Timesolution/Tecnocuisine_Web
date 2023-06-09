@@ -1186,9 +1186,8 @@ tr td:hover {
 }
 
 #editable_length {
-    margin-left: 10%
+    margin-left: 0px !important;
 }
-
 .chosen-container-multi .chosen-choices li.search-choice {
     background: #f1f1f1;
     border: 1px solid #ededed;

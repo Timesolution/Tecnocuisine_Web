@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" EnableEventValidation="false" CodeBehind="CobrosRealizados.aspx.cs" Inherits="Tecnocuisine.Formularios.Caja.CobrosRealizados" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    
     <div class="wrapper wrapper-content">
         <div class="ibox-content m-b-sm border-bottom" style="margin-top: 10px; padding-top: 0px;">
             <div class="p-xs">
@@ -33,36 +34,31 @@
                                                                 </div>
                                                             </div>
                                                            
-                                                            <div class="input-group m-b row">
+                                                           <div class="input-group m-b row">
                                                                 <div class="row">
-                                                                    <div class="col-md-2"  style="margin-left: 15px;margin-right: 15px;">
+                                                                    <div class="col-md-2" style="margin-left: 15px; margin-right: 15px;">
                                                                         <label class="col-md-4" style="margin-top: 5px;">Desde</label>
                                                                     </div>
                                                                     <div class="col-md-8">
-                                                                        <div class="form-group" id="data_1">
-                                                                            <div class="input-group date">
-                                                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                                                <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
-                                                                            </div>
-                                                                        </div>
+
+                                                                        <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy"  Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="input-group m-b">
                                                                 <div class="row">
-                                                                    <div  class="col-md-2"  style="margin-right: 15px;">
-                                                                        <label style="margin-left: 15px; margin-top: 5px;" class="col-md-4">Hasta</label>
+                                                                    <div class="col-md-2" style="margin-right: 15px;">
+                                                                        <label style="margin-top: 5px;" class="col-md-4">Hasta</label>
                                                                     </div>
                                                                     <div class="col-md-8">
-                                                                        <div class="form-group" id="data_2" style="margin-left: 15px;">
-                                                                            <div class="input-group date">
-                                                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                                                <asp:TextBox class="form-control" runat="server" ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
-                                                                            </div>
-                                                                        </div>
+
+                                                                        <asp:TextBox class="form-control" runat="server" type="date" ID="txtFechaVencimiento" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+
                                                                     </div>
-                                                                </div>
-                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                             <div class="input-group m-b">
                                                                 <div class="row">
                                                                     <div  class="col-md-2"  style="margin-right: 15px;">
@@ -190,26 +186,31 @@
     <script src="../Scripts/plugins/toastr/toastr.min.js"></script>
     <script src="/../Scripts/plugins/staps/jquery.steps.min.js"></script>
     <script src="../../js/plugins/datapicker/bootstrap-datepicker.js"></script>
+     <style>
+            #editable_length {
+                margin-left: 0px !important;
+}
+        </style>
     <script>
         $(document).ready(function () {
             $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 
-            $('#data_1 .input-group.date').datepicker({
-                todayBtn: "linked",
-                keyboardNavigation: false,
-                forceParse: false,
-                calendarWeeks: true,
-                autoclose: true,
-                format: 'dd/mm/yyyy'
-            });
-            $('#data_2 .input-group.date').datepicker({
-                todayBtn: "linked",
-                keyboardNavigation: false,
-                forceParse: false,
-                calendarWeeks: true,
-                autoclose: true,
-                format: 'dd/mm/yyyy'
-            });
+            //$('#data_1 .input-group.date').datepicker({
+            //    todayBtn: "linked",
+            //    keyboardNavigation: false,
+            //    forceParse: false,
+            //    calendarWeeks: true,
+            //    autoclose: true,
+            //    format: 'dd/mm/yyyy'
+            //});
+            //$('#data_2 .input-group.date').datepicker({
+            //    todayBtn: "linked",
+            //    keyboardNavigation: false,
+            //    forceParse: false,
+            //    calendarWeeks: true,
+            //    autoclose: true,
+            //    format: 'dd/mm/yyyy'
+            //});
             saldo = document.getElementById("ContentPlaceHolder1_SaldoTotal").value;
             prov = document.getElementById("ContentPlaceHolder1_AliasCliente").value;
             if (saldo != "") {
@@ -221,10 +222,42 @@
                 document.getElementById("ClienteSelec").innerText = prov;
             }
             establecerDiaHoy();
+
+            var oTable = $('#editable').dataTable({
+                "bLengthChange": false,
+                "pageLength": 100, // Establece la cantidad predeterminada de registros por página
+                "lengthMenu": [25, 50, 87, 100], // Opciones de cantidad de registros por página
+            });
+
+            oTable.$('td').editable('../example_ajax.php', {
+                "callback": function (sValue, y) {
+                    var aPos = oTable.fnGetPosition(this);
+                    oTable.fnUpdate(sValue, aPos[0], aPos[1]);
+                },
+                "submitdata": function (value, settings) {
+                    return {
+                        "row_id": this.parentNode.getAttribute('id'),
+                        "column": oTable.fnGetPosition(this)[2]
+                    };
+                },
+                "width": "90%",
+                "height": "100%"
+            });
+
+
+            $("#editable_filter").css('display', 'none');
+            $('#txtBusqueda').on('keyup', function () {
+                $('#editable').DataTable().search(
+                    this.value
+                ).draw();
+            });
+
+
         });
+       
         function FiltrarCobros() {
-            let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value
-            let FechaH = document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value
+            let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value.replaceAll("-","/")
+            let FechaH = document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value.replaceAll("-","/")
             let Cliente = document.getElementById("txtCliente").value
             let ClienteValiva = document.getElementById("ValivaCliente");
             if (Cliente == "") {
@@ -236,11 +269,18 @@
 
             window.location.href = "CobrosRealizados.aspx?p=" + Cliente.split("-")[0].trim() + "&FechaD=" + FechaD + "&FechaH=" + FechaH;
         }
-        function formatearFecha(fecha) {
-            var partes = fecha.split('/');
-            var dia = partes[0];
+
+        function establecerDiaHoy() {
+            var fechaActual = new Date();
+            // Convertir la fecha en un formato legible para el DatePicker   
+            var fechaFormateada = (fechaActual.getFullYear() + '/' + (fechaActual.getMonth() + 1) + '/' + fechaActual.getDate())
+            // Establecer la fecha actual como valor predeterminado del DatePicker 
+            //$('#ContentPlaceHolder1_txtFechaHoy').datepicker('setDate', fechaFormateada);
+            //$('#ContentPlaceHolder1_txtFechaHoy').datepicker('todayBtn', true);
+            var partes = fechaFormateada.split('/');
+            var dia = partes[2];
             var mes = partes[1];
-            var anio = partes[2];
+            var anio = partes[0];
 
             if (dia < 10) {
                 dia = '0' + dia;
@@ -250,18 +290,10 @@
                 mes = '0' + mes;
             }
 
-            return mes + '/' + dia + '/' + anio;
-        }
+            fechafinal = anio + '-' + mes + '-' + dia;
 
-        function establecerDiaHoy() {
-            var fechaActual = new Date();
-
-            // Convertir la fecha en un formato legible para el DatePicker   
-            var fechaFormateada = fechaActual.getDate() + '/' + (fechaActual.getMonth() + 1) + '/' + fechaActual.getFullYear();
-            var fechaFormateada2 = ("01" + '/' + "01" + '/' + "2000");
-            // Establecer la fecha actual como valor predeterminado del DatePicker 
-            $('#ContentPlaceHolder1_txtFechaHoy').datepicker('setDate', fechaFormateada2);
-            $('#ContentPlaceHolder1_txtFechaVencimiento').datepicker('setDate', fechaFormateada);
+            document.getElementById("ContentPlaceHolder1_txtFechaHoy").value = fechafinal;
+            document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value = fechafinal;
 
         }
         function FiltrarVentas() {

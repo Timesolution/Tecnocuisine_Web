@@ -11,6 +11,9 @@
                 color: black;
                 text-decoration: none;
             }
+              #editable_length {
+                margin-left: 0px !important;
+}
     </style>
    <div class="wrapper wrapper-content">
        <div class="ibox-content m-b-sm border-bottom" style="margin-top: 10px;padding-top: 0px;">
@@ -221,22 +224,22 @@
             $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 
 
-            $('#data_1 .input-group.date').datepicker({
-                todayBtn: "linked",
-                keyboardNavigation: false,
-                forceParse: false,
-                calendarWeeks: true,
-                autoclose: true,
-                format: 'dd/mm/yyyy'
-            });
-            $('#data_2 .input-group.date').datepicker({
-                todayBtn: "linked",
-                keyboardNavigation: false,
-                forceParse: false,
-                calendarWeeks: true,
-                autoclose: true,
-                format: 'dd/mm/yyyy'
-            });
+            //$('#data_1 .input-group.date').datepicker({
+            //    todayBtn: "linked",
+            //    keyboardNavigation: false,
+            //    forceParse: false,
+            //    calendarWeeks: true,
+            //    autoclose: true,
+            //    format: 'dd/mm/yyyy'
+            //});
+            //$('#data_2 .input-group.date').datepicker({
+            //    todayBtn: "linked",
+            //    keyboardNavigation: false,
+            //    forceParse: false,
+            //    calendarWeeks: true,
+            //    autoclose: true,
+            //    format: 'dd/mm/yyyy'
+            //});
             saldo = document.getElementById("ContentPlaceHolder1_SaldoTotal").value;
             prov = document.getElementById("ContentPlaceHolder1_AliasCliente").value;
             if (saldo != "") {
@@ -247,7 +250,13 @@
             document.getElementById("txtBusqueda").addEventListener("input", buscarEnTabla);
             establecerDiaHoy();
 
-            var oTable = $('#editable').dataTable();
+
+            var oTable = $('#editable').dataTable({
+                "bLengthChange": false,
+                "pageLength": 100, // Establece la cantidad predeterminada de registros por página
+                "lengthMenu": [25, 50, 87, 100], // Opciones de cantidad de registros por página
+            });
+
             oTable.$('td').editable('../example_ajax.php', {
                 "callback": function (sValue, y) {
                     var aPos = oTable.fnGetPosition(this);
@@ -259,33 +268,19 @@
                         "column": oTable.fnGetPosition(this)[2]
                     };
                 },
-
                 "width": "90%",
-                "height": "100%",
-                "pageLength": 50
+                "height": "100%"
             });
 
-            $("#editable_filter").appendTo("#editable_length");
 
             $("#editable_filter").css('display', 'none');
-            $("#editable_filter").css('padding-left', '5%');
-            var parent = $("#editable_length")[0].parentNode;
-            parent.className = 'col-sm-12';
-            parent.style = 'display:none';
-            var div = document.getElementById('editable_filter');
-            
-            var filter = $("#editable_filter");
-            filter[0].id = 'editable_filter2';
-
-            //var filter = $("#editable_length");
-            //filter[0].id = 'editable_length2';
-
 
             $('#txtBusqueda').on('keyup', function () {
                 $('#editable').DataTable().search(
                     this.value
                 ).draw();
             });
+
         });
         function FiltrarCuentaCorriente() {
             let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value

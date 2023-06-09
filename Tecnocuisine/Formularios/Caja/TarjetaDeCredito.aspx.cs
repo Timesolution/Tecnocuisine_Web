@@ -101,9 +101,9 @@ namespace Tecnocuisine
             try
             {
                 Tecnocuisine_API.Entitys.Entidades clientes = controladorEntidad.ObtenerEntidadPorID(idCli);
-                AliasCliente.Value = clientes.descripcion;
-                string FechaDesde = ConvertirFecha(FechaD);
-                string FechaHasta = ConvertirFecha(FechaH);
+                AliasCliente.Value = clientes == null ? "Todos" : clientes.descripcion;
+                string FechaDesde = ConvertDateFormat(FechaD);
+                string FechaHasta = ConvertDateFormat(FechaH);
                 var dt = controladorTarjetaDeCreditoVenta.FiltrarCuentaCorrienteVentas(FechaD, FechaH, idCli);
                 decimal total = 0;
                 foreach (DataRow row in dt.Rows)
@@ -116,7 +116,7 @@ namespace Tecnocuisine
                     vd.Debe = Convert.ToDecimal(row["Debe"]);
                     vd.Haber = Convert.ToDecimal(row["Haber"]);
 
-                    vd.idVenta = Convert.ToInt32(row["idVenta"]);
+                    //vd.idVenta = Convert.ToInt32(row["idVenta"]);
                     vd.idTarjeta = Convert.ToInt32(row["idTarjeta"]);
                     vd.idEntidad = Convert.ToInt32(row["idEntidad"]);
 
@@ -131,16 +131,29 @@ namespace Tecnocuisine
             }
             catch (Exception ex) { }
         }
-        public static string ConvertirFecha(string fecha)
+        private string ConvertDateFormat(string fecha)
         {
-            // Convertir a objeto DateTime
-            DateTime fechaDateTime = DateTime.ParseExact(fecha, "MM/dd/yyyy", null);
 
-            // Obtener la fecha en formato "anio-dia-mes"
-            string fechaNueva = fechaDateTime.ToString("yyyy-dd-MM");
+            DateTime fechaConvertida;
+            try
+            {
 
-            // Retornar la fecha nueva
-            return fechaNueva;
+                if (DateTime.TryParseExact(fecha, "yyyy/MM/dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaConvertida))
+                {
+                    return fechaConvertida.ToString("MM/dd/yyyy");
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            catch (Exception ex)
+            {
+
+
+                return "";
+                throw new ArgumentException("El formato de fecha proporcionado es inválido.");
+            }
         }
         public void cargarEntidades()
         {

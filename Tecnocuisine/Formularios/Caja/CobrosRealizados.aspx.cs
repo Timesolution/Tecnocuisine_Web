@@ -106,14 +106,27 @@ namespace Tecnocuisine.Formularios.Caja
 
         private string ConvertDateFormat(string fecha)
         {
+
             DateTime fechaConvertida;
-
-            if (DateTime.TryParseExact(fecha, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaConvertida))
+            try
             {
-                return fechaConvertida.ToString("MM/dd/yyyy");
-            }
 
-            throw new ArgumentException("El formato de fecha proporcionado es inválido.");
+                if (DateTime.TryParseExact(fecha, "yyyy/MM/dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaConvertida))
+                {
+                    return fechaConvertida.ToString("MM/dd/yyyy");
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            catch (Exception ex)
+            {
+
+
+                return "";
+                throw new ArgumentException("El formato de fecha proporcionado es inválido.");
+            }
         }
         private void CargarClientes()
         {

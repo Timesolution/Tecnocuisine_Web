@@ -163,6 +163,11 @@
     <script src="../Scripts/plugins/toastr/toastr.min.js"></script>
     <script src="/../Scripts/plugins/staps/jquery.steps.min.js"></script>
     <script src="../../js/plugins/datapicker/bootstrap-datepicker.js"></script>
+        <style>
+            #editable_length {
+                margin-left: 0px !important;
+}
+        </style>
     <script>
         $(document).ready(function () {
             $("body").tooltip({ selector: '[data-toggle=tooltip]' });
@@ -194,7 +199,12 @@
             document.getElementById("txtBusqueda").addEventListener("input", buscarEnTabla);
             establecerDiaHoy();
 
-            var oTable = $('#editable').dataTable();
+            var oTable = $('#editable').dataTable({
+                "bLengthChange": false,
+                "pageLength": 100, // Establece la cantidad predeterminada de registros por página
+                "lengthMenu": [25, 50, 87, 100], // Opciones de cantidad de registros por página
+            });
+
             oTable.$('td').editable('../example_ajax.php', {
                 "callback": function (sValue, y) {
                     var aPos = oTable.fnGetPosition(this);
@@ -206,27 +216,12 @@
                         "column": oTable.fnGetPosition(this)[2]
                     };
                 },
-
                 "width": "90%",
-                "height": "100%",
-                "pageLength": 50
+                "height": "100%"
             });
 
-            $("#editable_filter").appendTo("#editable_length");
 
             $("#editable_filter").css('display', 'none');
-            $("#editable_filter").css('padding-left', '5%');
-            var parent = $("#editable_length")[0].parentNode;
-            parent.className = 'col-sm-12';
-            parent.style = 'display:none';
-            var div = document.getElementById('editable_filter');
-
-            var filter = $("#editable_filter");
-            filter[0].id = 'editable_filter2';
-
-            //var filter = $("#editable_length");
-            //filter[0].id = 'editable_length2';
-
 
             $('#txtBusqueda').on('keyup', function () {
                 $('#editable').DataTable().search(

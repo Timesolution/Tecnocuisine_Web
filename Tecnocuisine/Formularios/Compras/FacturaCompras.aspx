@@ -11,9 +11,13 @@
                 color: black;
                 text-decoration: none;
             }
+              #editable_length {
+                margin-left: 0px !important;
+}
     </style>
    <div class="wrapper wrapper-content">
               <div class="ibox-content m-b-sm border-bottom" style="margin-top: 10px;padding-top: 0px;">
+
                    <div class="p-xs">
                         <div class="pull-left m-r-md">
                             <i class="fa fa-dollar text-navy mid-icon"></i>
@@ -216,6 +220,41 @@
                 document.getElementById("ProveedorSelec").innerText = prov;
             }
             establecerDiaHoy();
+
+
+            var oTable = $('#editable').dataTable({
+                "bLengthChange": true,
+                "pageLength": 25, // Establece la cantidad predeterminada de registros por página
+                "lengthMenu": [25, 50, 87, 100], // Opciones de cantidad de registros por página
+            });
+
+            oTable.$('td').editable('../example_ajax.php', {
+                "callback": function (sValue, y) {
+                    var aPos = oTable.fnGetPosition(this);
+                    oTable.fnUpdate(sValue, aPos[0], aPos[1]);
+                },
+                "submitdata": function (value, settings) {
+                    return {
+                        "row_id": this.parentNode.getAttribute('id'),
+                        "column": oTable.fnGetPosition(this)[2]
+                    };
+                },
+                "width": "90%",
+                "height": "100%"
+            });
+
+
+            $("#editable_filter").css('display', 'none');
+
+            $('#txtBusqueda').on('keyup', function () {
+                $('#editable').DataTable().search(
+                    this.value
+                ).draw();
+            });
+
+
+
+
         });
         function EliminarFac(id) {
             document.getElementById("ContentPlaceHolder1_idEliminar").value = id;

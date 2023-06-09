@@ -34,8 +34,6 @@ namespace Tecnocuisine.Caja
         ControladorVentas controladorVentas = new ControladorVentas();
 
         int idCliente = -1;
-        string FechaD = "";
-        string FechaH = "";
         int mensaje = 0;
 
 
@@ -49,11 +47,9 @@ namespace Tecnocuisine.Caja
                 mensaje = Convert.ToInt32(Request.QueryString["m"]);
             }
 
-            if (Request.QueryString["FechaD"] != null)
+            if (Request.QueryString["p"] != null)
             {
-            this.FechaD = (Request.QueryString["FechaD"]).ToString();
                 this.idCliente = Convert.ToInt32(Request.QueryString["p"]);
-                this.FechaH = (Request.QueryString["FechaH"]).ToString();
             }
             if (mensaje == 5)
             {
@@ -70,7 +66,7 @@ namespace Tecnocuisine.Caja
 
             if (idCliente != -1)
             {
-                FiltrarVentas(this.idCliente, ConvertDateFormat(this.FechaD), ConvertDateFormat(this.FechaH));
+                FiltrarVentas(this.idCliente);
             }
             CargarClientes();
         }
@@ -88,15 +84,14 @@ namespace Tecnocuisine.Caja
         }
 
 
-        public void FiltrarVentas(int idCli, string FechaD, string FechaH)
+        public void FiltrarVentas(int idCli)
         {
             try
             {
                 Tecnocuisine_API.Entitys.Clientes clientes = ControladorCliente.ObtenerClienteId(idCli);
                 AliasCliente.Value = clientes == null ? "No se encontro cliente" : clientes.id + " - " + clientes.alias;
-                string FechaDesde = ConvertirFecha(FechaD);
-                string FechaHasta = ConvertirFecha(FechaH);
-                var dt = controladorCuentaCorriente.FiltrarCuentaCorrienteVentas(FechaD, FechaH, idCli);
+              
+                var dt = controladorCuentaCorriente.FiltrarCuentaCorrienteVentasPorCliente(idCli);
                 decimal total = 0;
                 foreach (DataRow row in dt.Rows)
                 {

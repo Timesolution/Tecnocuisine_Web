@@ -201,6 +201,20 @@
                                 <span class="fa arrow"></span>
                             </a>
                             <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/Cashflow.aspx">Cashflow</a></li>
+
+                            </ul>
+
+
+                              <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/Cobros.aspx">Cobros</a></li>
+
+                            </ul>
+                            <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/CobrosRealizados.aspx">Cobros Realizados</a></li>
+
+                            </ul>
+                            <ul class="nav nav-second-level">
                                 <li><a style="color: white !important;" href="../../Formularios/Caja/TarjetaDeCredito.aspx">Tarjeta de Credito</a></li>
 
                             </ul>
@@ -208,12 +222,8 @@
                                 <li><a style="color: white !important;" href="../../Formularios/Caja/Contado.aspx">Contado</a></li>
 
                             </ul>
-                              <ul class="nav nav-second-level">
-                                <li><a style="color: white !important;" href="../../Formularios/Caja/Cobros.aspx">Cobros</a></li>
-
-                            </ul>
-                            <ul class="nav nav-second-level">
-                                <li><a style="color: white !important;" href="../../Formularios/Caja/CobrosRealizados.aspx">Cobros Realizados</a></li>
+                             <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/ChequesCobros.aspx">Cheques</a></li>
 
                             </ul>
                         </li>
@@ -293,6 +303,8 @@
                                 </li>
 
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Rubros.aspx">Rubros</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Conceptos.aspx">Conceptos CashFlow</a></li>
+
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Unidades.aspx">Unidades de medida</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Categorias.aspx">Categorias</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Atributos.aspx">Atributos</a></li>

@@ -920,6 +920,7 @@ namespace Tecnocuisine.Formularios.Ventas
                     CuentaTarjetaCreditoVentas.Debe = VD.PrecioVentaTotal;
                     CuentaTarjetaCreditoVentas.Haber = 0;
                 }
+                CuentaTarjetaCreditoVentas.Saldo = VD.PrecioVentaTotal;
                 CuentaTarjetaCreditoVentas.idTarjeta = Convert.ToInt32(idtarjeta);
                 CuentaTarjetaCreditoVentas.idEntidad = Convert.ToInt32(idEntidad);
                 controladorTarjetaVenta.AgregarEnCuentaTarjetaCreditoVentas(CuentaTarjetaCreditoVentas);

@@ -1,4 +1,5 @@
-﻿using Gestion_Api.Modelo;
+﻿using Gestion_Api.Entitys;
+using Gestion_Api.Modelo;
 using Microsoft.AspNet.FriendlyUrls;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
+using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml.Schema;
@@ -118,7 +120,7 @@ namespace Tecnocuisine.Caja
 
         [WebMethod]
 
-        public static string ImputarFacturas(string listFacturas,string ImporteCobro,string idCliente)
+        public static string ImputarFacturas(string listFacturas,string ImporteCobro,string idCliente,string listCheques,string listTarjetas,string totalefectivo)
         {
             ControladorCuentaCorrienteVentas controladorCuentaCorrienteVentas = new ControladorCuentaCorrienteVentas();
             ControladorCobrosRealizados controladorCobrosRealizados = new ControladorCobrosRealizados();
@@ -132,7 +134,7 @@ namespace Tecnocuisine.Caja
                 foreach (string item in listFac)
                 {
                     int id = Convert.ToInt32(item.Split('-')[0].Trim());
-                    decimal monto = Convert.ToDecimal(item.Split('-')[1].Trim().Replace('.', ','));
+                    decimal monto = ConvertToDecimal(item.Split('-')[1].Trim());
                   var factura =  controladorCuentaCorrienteVentas.BuscarCuentaCorrienteByID(id);
                     factura.Saldo = monto;
                    int result2 = controladorCuentaCorrienteVentas.EditarCuentaCorriente(factura);
@@ -145,7 +147,7 @@ namespace Tecnocuisine.Caja
                 CobrosRealizados cobros = new CobrosRealizados();
                 string codigocobro = controladorCobrosRealizados.TraerUltimoNum();
                 cobros.fecha = DateTime.Now;
-                cobros.importe = Convert.ToDecimal(ImporteCobro.Replace('.', ','));
+                cobros.importe = ConvertToDecimal(ImporteCobro);
                 cobros.idCliente = Convert.ToInt32(idCliente);
                 cobros.numeroRecibo = codigocobro;
                 cobros.idTipoDocumento = 102;
@@ -165,6 +167,85 @@ namespace Tecnocuisine.Caja
 
                 controladorCuentaCorrienteVentas.AgregarEnCuentaCorrienteVentas(cobronuevo);
 
+                if (listTarjetas != "")
+                {
+                    string[] list = listTarjetas.Split('%');
+                    foreach (string str in list)
+                    {
+                        if (str != "")
+                        {
+                            int entidad = Convert.ToInt32(str.Split('/')[0]);
+                            int tarjeta = Convert.ToInt32(str.Split('/')[1]);
+                            decimal saldo = ConvertToDecimal(str.Split('/')[2]);
+
+
+                            Tecnocuisine_API.Entitys.CuentaTarjetaCreditoVentas CuentaTarjetaCreditoVentas = new Tecnocuisine_API.Entitys.CuentaTarjetaCreditoVentas();
+                        ControladorTarjetaDeCreditoVenta controladorTarjetaVenta = new ControladorTarjetaDeCreditoVenta();
+                        ControladorTipoDocumento controladorTipoDocumento = new ControladorTipoDocumento();
+                        var TipoDocumento = controladorTipoDocumento.ObtenerTipoDocumentoByID(102);
+                            CuentaTarjetaCreditoVentas.Haber = saldo;
+                            CuentaTarjetaCreditoVentas.Saldo = saldo;
+                            CuentaTarjetaCreditoVentas.Debe = 0M;
+
+                            CuentaTarjetaCreditoVentas.fecha = DateTime.Now;
+                        CuentaTarjetaCreditoVentas.idVenta = null;
+                        CuentaTarjetaCreditoVentas.Descripcion = TipoDocumento.Descripcion + " " + codigofac;
+                        CuentaTarjetaCreditoVentas.idCliente = cobros.idCliente;
+                      
+                        CuentaTarjetaCreditoVentas.idTarjeta = Convert.ToInt32(tarjeta);
+                        CuentaTarjetaCreditoVentas.idEntidad = Convert.ToInt32(entidad);
+                        controladorTarjetaVenta.AgregarEnCuentaTarjetaCreditoVentas(CuentaTarjetaCreditoVentas);
+                        }
+                    }
+                    
+                }
+                if (listCheques != "")
+                {
+                    string[] list = listCheques.Split('%');
+                    foreach (string str in list)
+                    {
+                        decimal importe = ConvertToDecimal(str.Split('/')[0]);
+                        string numero = (str.Split('/')[1]).ToString();
+                        int idBanco = Convert.ToInt32(str.Split('/')[2]);
+                        string cuenta = (str.Split('/')[3]).ToString();
+                        string cuit = (str.Split('/')[4]).ToString();
+                        string librador = (str.Split('/')[5]).ToString();
+                        DateTime fechaCheque = ConvertirFecha(str.Split('/')[6]);
+
+                        Tecnocuisine_API.Entitys.Cheques cheque = new Tecnocuisine_API.Entitys.Cheques();
+                        ControladorCheques controladorCheque = new ControladorCheques();
+                        ControladorTipoDocumento controladorTipoDocumento = new ControladorTipoDocumento();
+                        var TipoDocumento = controladorTipoDocumento.ObtenerTipoDocumentoByID(102);
+                        cheque.cuit = cuit;
+                        cheque.Librador = librador;
+                        cheque.fecha = fechaCheque;
+                        cheque.idClientes = cobros.idCliente;
+                        cheque.Cuenta = cuenta;
+                        cheque.idBanco = idBanco;
+                        cheque.Numero = numero;
+                        cheque.NumeroCheque = controladorCheque.TraerUltimoNumCheque();
+                        cheque.Descripcion = TipoDocumento.Descripcion + " " + codigocobro;
+                        cheque.Importe = importe;
+                        cheque.fecha = fechaCheque;
+                        controladorCheque.AgregarEnCheques(cheque);
+                    }
+
+                }
+                if (totalefectivo != "")
+                {
+                    Tecnocuisine_API.Entitys.CuentaContado cuentaContado = new Tecnocuisine_API.Entitys.CuentaContado();
+                    ControladorCuentaContado controladorCuentaContado = new ControladorCuentaContado();
+                    ControladorTipoDocumento controladorTipoDocumento = new ControladorTipoDocumento();
+                    var TipoDocumento = controladorTipoDocumento.ObtenerTipoDocumentoByID(102);
+                    cuentaContado.fecha = DateTime.Now;
+                    cuentaContado.idVenta = null;
+                    cuentaContado.Descripcion = TipoDocumento.Descripcion + " " + codigocobro;
+                    cuentaContado.idCliente = cobros.idCliente;
+
+                    cuentaContado.Importe = ConvertToDecimal(totalefectivo);
+                    controladorCuentaContado.AgregarEnCuentaContado(cuentaContado);
+                }
+
 
 
 
@@ -183,8 +264,76 @@ namespace Tecnocuisine.Caja
             }
         }
 
-  
+        public static DateTime ConvertirFecha(string fecha)
+        {
+            DateTime resultado;
+            string fecha2 = fecha.Replace('$', '/');
+            if (DateTime.TryParseExact(fecha2, "yyyy/MM/dd", null, System.Globalization.DateTimeStyles.None, out resultado))
+            {
+                return resultado;
+            }
+            else
+            {
+                throw new ArgumentException("El formato de fecha no es válido.");
+            }
+        }
 
+        // FUNCIONES PARA PASAR DE 12,000,000.00 a 12000000.00 ---- SEGUN LA CONFIGURACION DEL PC (. o ,)
+        public static decimal ConvertToDecimal(string valor, string formato = "0,000,000.00")
+        {
+            CultureInfo culture = CultureInfo.CurrentCulture;
+            NumberFormatInfo formatInfo = (NumberFormatInfo)culture.NumberFormat.Clone();
+
+            // Remover separadores de miles y establecer el separador decimal
+            formatInfo.NumberGroupSeparator = ",";
+            formatInfo.NumberDecimalSeparator = ".";
+
+            // Convertir el valor al formato adecuado
+            string valorFormateado = valor.Replace(formatInfo.NumberGroupSeparator, "");
+
+            // Convertir a decimal utilizando la configuración regional
+            decimal resultado;
+            if (decimal.TryParse(valorFormateado, NumberStyles.AllowDecimalPoint, formatInfo, out resultado))
+            {
+                return resultado;
+            }
+
+            // Si no se pudo convertir, intentar convertir a través de palabras numéricas
+            string valorPalabras = TextToNumber(valor, culture);
+            if (!string.IsNullOrEmpty(valorPalabras) && decimal.TryParse(valorPalabras, out resultado))
+            {
+                return resultado;
+            }
+
+            throw new ArgumentException("No se pudo convertir el valor proporcionado a decimal.");
+        }
+        public static string TextToNumber(string texto, CultureInfo culture)
+        {
+            string[] partes = texto.Split(new char[] { ',', '.' }, StringSplitOptions.RemoveEmptyEntries);
+            if (partes.Length > 0)
+            {
+                long valor = 0;
+                for (int i = 0; i < partes.Length; i++)
+                {
+                    string palabra = partes[i].Trim();
+                    if (!string.IsNullOrEmpty(palabra))
+                    {
+                        try
+                        {
+                            valor += (long)double.Parse(palabra, culture);
+                        }
+                        catch
+                        {
+                            return null;
+                        }
+                    }
+                }
+
+                return valor.ToString();
+            }
+
+            return null;
+        }
 
 
         [WebMethod]
@@ -393,7 +542,7 @@ namespace Tecnocuisine.Caja
                 foreach(var item in listcuentas)
                 {
                     RellenarTablaPH(item);
-                    total += Convert.ToDecimal(item.Debe - item.Haber);
+                    total += Convert.ToDecimal(item.Saldo);
                 }
                 RellenarTablaPHFinalRow(total);
             }
