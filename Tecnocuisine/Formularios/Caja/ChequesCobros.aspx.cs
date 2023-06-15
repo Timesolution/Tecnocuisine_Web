@@ -21,6 +21,7 @@ namespace Tecnocuisine
         Mensaje m = new Mensaje();
         ControladorInsumo controladorInsumo = new ControladorInsumo();
         ControladorTarjetaDeCreditoVenta controladorTarjetaDeCreditoVenta = new ControladorTarjetaDeCreditoVenta();
+        ControladorProveedores controladorProveedores = new ControladorProveedores();
         ControladorCheques controladorCheques = new ControladorCheques();
         ControladorCliente controladorCliente = new ControladorCliente();
         ControladorTarjetas controladorTarjetas = new ControladorTarjetas();
@@ -117,8 +118,17 @@ namespace Tecnocuisine
                     cheque.cuit = row["cuit"].ToString();
                     cheque.Librador = row["Librador"].ToString();
                     cheque.fecha = ((DateTime)row["fecha"]);
-                    cheque.idClientes = Convert.ToInt32(row["idClientes"]);
+                   
+                    if (!row.IsNull("idClientes"))
+                    {
+                        cheque.idClientes = Convert.ToInt32(row["idClientes"]);
+                        // Resto de tu lógica aquí
+                    }
+                    else
+                    {
+                        cheque.idProveedor = Convert.ToInt32(row["idProveedor"]);
 
+                    }
 
 
 
@@ -202,7 +212,7 @@ namespace Tecnocuisine
             {
                 ControladorUnidad cu = new ControladorUnidad();
                 var builder = new System.Text.StringBuilder();
-
+                builder.Append("<option value='0 - Todos'>0 - Todos</option>");
                 foreach (var cli in clientes)
                 {
                     builder.Append(String.Format("<option value='{0}' id='c_r_" + cli.id + "_" + cli.alias + "_" + cli.cuit + "'>", cli.id + " - " + cli.alias));
@@ -274,6 +284,8 @@ namespace Tecnocuisine
                 celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celFecha);
 
+                if (cheque.idClientes != null)
+                {
 
                 var cliente = controladorCliente.ObtenerClienteId((int)cheque.idClientes);
                 TableCell celEntidad = new TableCell();
@@ -283,6 +295,17 @@ namespace Tecnocuisine
                 celEntidad.Width = Unit.Percentage(40);
                 celEntidad.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celEntidad);
+                } else
+                {
+                    var prov = controladorProveedores.ObtenerProveedorByID((int)cheque.idProveedor);
+                    TableCell celEntidad = new TableCell();
+                    celEntidad.Text = prov.Alias;
+                    celEntidad.VerticalAlign = VerticalAlign.Middle;
+                    celEntidad.HorizontalAlign = HorizontalAlign.Left;
+                    celEntidad.Width = Unit.Percentage(40);
+                    celEntidad.Attributes.Add("style", "padding-bottom: 1px !important;");
+                    tr.Cells.Add(celEntidad);
+                }
 
 
                 TableCell celDescripcion = new TableCell();

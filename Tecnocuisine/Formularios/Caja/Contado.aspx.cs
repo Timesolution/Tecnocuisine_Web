@@ -92,9 +92,9 @@ namespace Tecnocuisine.Caja
             try
             {
                 Tecnocuisine_API.Entitys.Clientes clientes = ControladorCliente.ObtenerClienteId(idCli);
-                AliasCliente.Value = clientes == null ? "Todos los clientes" : clientes.alias  ;
-                string FechaDesde = ConvertirFecha(FechaD);
-                string FechaHasta = ConvertirFecha(FechaH);
+                AliasCliente.Value = clientes == null ? "Todos" : clientes.alias  ;
+                string FechaDesde = ConvertDateFormat(FechaD);
+                string FechaHasta = ConvertDateFormat(FechaH);
                 var dt = controladorCuentaContado.FiltrarCuentaContado(FechaD, FechaH, idCli);
                 decimal total = 0;
                 foreach (DataRow row in dt.Rows)
@@ -102,9 +102,15 @@ namespace Tecnocuisine.Caja
                     Tecnocuisine_API.Entitys.CuentaContado cc = new Tecnocuisine_API.Entitys.CuentaContado();
                     cc.id = Convert.ToInt32(row["id"]);
                     cc.fecha = ((DateTime)row["fecha"]);
-                    cc.idCliente = Convert.ToInt32(row["idCliente"]);
                     cc.Descripcion = row["Descripcion"].ToString();
                     cc.Importe = Convert.ToDecimal(row["Importe"]);
+                    if (!row.IsNull("idClientes"))
+                    { 
+                        cc.idCliente = Convert.ToInt32(row["idCliente"]);
+                    } else
+                    {
+                        cc.idProveedor = Convert.ToInt32(row["idProveedor"]);
+                    }
 
 
                     total += (decimal)(cc.Importe);
@@ -117,6 +123,32 @@ namespace Tecnocuisine.Caja
             }
             catch (Exception ex) { }
         }
+
+        private string ConvertDateFormat(string fecha)
+        {
+
+            DateTime fechaConvertida;
+            try
+            {
+
+                if (DateTime.TryParseExact(fecha, "yyyy/MM/dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaConvertida))
+                {
+                    return fechaConvertida.ToString("MM/dd/yyyy");
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            catch (Exception ex)
+            {
+
+
+                return "";
+                throw new ArgumentException("El formato de fecha proporcionado es inválido.");
+            }
+        }
+
         private void CargarClientes()
         {
             try
@@ -204,6 +236,10 @@ namespace Tecnocuisine.Caja
                 tr.Cells.Add(celDescripcion);
 
                 ControladorCliente controladorCliente = new ControladorCliente();
+                ControladorProveedores controladorProveedores = new ControladorProveedores();
+                if (cc.idCliente != null)
+                {
+
                 var cliente = controladorCliente.ObtenerClienteId((int)cc.idCliente);
                 TableCell celCliente = new TableCell();
                 celCliente.Width = Unit.Percentage(10);
@@ -212,6 +248,17 @@ namespace Tecnocuisine.Caja
                 celCliente.HorizontalAlign = HorizontalAlign.Left;
                 celCliente.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
                 tr.Cells.Add(celCliente);
+                } else
+                {
+                    var prov = controladorProveedores.ObtenerProveedorByID((int)cc.idProveedor);
+                    TableCell celCliente = new TableCell();
+                    celCliente.Width = Unit.Percentage(10);
+                    celCliente.Text = prov.Alias;
+                    celCliente.VerticalAlign = VerticalAlign.Middle;
+                    celCliente.HorizontalAlign = HorizontalAlign.Left;
+                    celCliente.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
+                    tr.Cells.Add(celCliente);
+                }
 
                 TableCell celImporte = new TableCell();
                 celImporte.Width = Unit.Percentage(10);

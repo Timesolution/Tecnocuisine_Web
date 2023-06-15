@@ -935,8 +935,14 @@ namespace Tecnocuisine.Formularios.Ventas
                 cuentaContado.idVenta = idVentaDetalle;
                 cuentaContado.Descripcion = TipoDocumento.Descripcion + " " + VD.NumeroFactura;
                 cuentaContado.idCliente = Convert.ToInt32(cliente.Split('-')[0].Trim());
-               
-                cuentaContado.Importe = VD.PrecioVentaTotal;
+               if (cuentaContado.Descripcion.ToLower().Contains("credito"))
+                {
+                cuentaContado.Importe = VD.PrecioVentaTotal * -1;
+
+                } else
+                {
+                    cuentaContado.Importe = VD.PrecioVentaTotal;
+                }
                 controladorCuentaContado.AgregarEnCuentaContado(cuentaContado);
             }
         }

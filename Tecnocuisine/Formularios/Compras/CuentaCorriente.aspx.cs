@@ -65,9 +65,9 @@ namespace Tecnocuisine.Compras
             try
             {
                 Tecnocuisine_API.Entitys.Proveedores provedor = cp.ObtenerProveedorByID(idProveedor);
-                AliasProveedor.Value = provedor.Alias;
-            string FechaDesde = ConvertirFecha(FechaD);
-            string FechaHasta = ConvertirFecha(FechaH);
+                AliasProveedor.Value = provedor != null ? provedor.Alias : "Todos";
+            string FechaDesde = ConvertDateFormat(FechaD);
+            string FechaHasta = ConvertDateFormat(FechaH);
             var dt = controladorCuentaCorriente.FiltrarCuentaCorriente(FechaD, FechaH, idProveedor);
             decimal total = 0;
             foreach (DataRow row in dt.Rows)
@@ -79,6 +79,7 @@ namespace Tecnocuisine.Compras
                 cc.Descripcion = (row["Descripcion"]).ToString();
                 cc.Debe = Convert.ToDecimal(row["Debe"]);
                 cc.Haber = Convert.ToDecimal(row["Haber"]);
+                    cc.Saldo = Convert.ToDecimal(row["Saldo"]);
                 total += (decimal)(cc.Debe - cc.Haber);
                 
                         RellenarTabla(cc);
@@ -134,13 +135,22 @@ namespace Tecnocuisine.Compras
 
                 TableCell celImporte = new TableCell();
                 celImporte.Width = Unit.Percentage(10);
-                celImporte.Text = "-" + FormatearNumero((decimal)cc.Haber);
+                celImporte.Text =  FormatearNumero((decimal)cc.Haber);
                 celImporte.VerticalAlign = VerticalAlign.Middle;
                 celImporte.HorizontalAlign = HorizontalAlign.Left;
                 celImporte.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;text-align: right;");
                 tr.Cells.Add(celImporte);
 
-               
+                TableCell celImporteSaldo = new TableCell();
+                celImporteSaldo.Width = Unit.Percentage(10);
+                celImporteSaldo.Text =  cc.Saldo != null ? FormatearNumero((decimal)cc.Saldo) : "Error";
+                celImporteSaldo.VerticalAlign = VerticalAlign.Middle;
+                celImporteSaldo.HorizontalAlign = HorizontalAlign.Left;
+                celImporteSaldo.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;text-align: right;");
+                tr.Cells.Add(celImporteSaldo);
+
+
+
 
 
                 //agrego fila a tabla
@@ -164,7 +174,30 @@ namespace Tecnocuisine.Compras
             catch(Exception ex) { }
         }
 
+        private string ConvertDateFormat(string fecha)
+        {
 
+            DateTime fechaConvertida;
+            try
+            {
+
+                if (DateTime.TryParseExact(fecha, "yyyy/MM/dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaConvertida))
+                {
+                    return fechaConvertida.ToString("MM/dd/yyyy");
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            catch (Exception ex)
+            {
+
+
+                return "";
+                throw new ArgumentException("El formato de fecha proporcionado es inválido.");
+            }
+        }
 
         public static string ConvertirFecha(string fecha)
         {

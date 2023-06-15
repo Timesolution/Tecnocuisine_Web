@@ -257,12 +257,15 @@ namespace Tecnocuisine.Formularios.Compras
                     if (TipoDocumento.Split('-')[1].ToLower().Contains("credito"))
                     {
                         cuentaCorriente.Debe = 0;
-                        cuentaCorriente.Haber = Convert.ToDecimal(ImporteTotal.Replace(",", "").Replace(".", ","));
+                        cuentaCorriente.Haber = FormatNumber(ImporteTotal);
+                        cuentaCorriente.Saldo = cuentaCorriente.Haber * -1;
+
                     }
                     else
                     {
-                        cuentaCorriente.Debe = Convert.ToDecimal(ImporteTotal.Replace(",", "").Replace(".", ","));
+                        cuentaCorriente.Debe = FormatNumber(ImporteTotal);
                         cuentaCorriente.Haber = 0;
+                        cuentaCorriente.Saldo = cuentaCorriente.Debe;
                     }
                     int result = cc.AgregarEnCuentaCorriente(cuentaCorriente);
                     if (result == -1)
@@ -369,16 +372,21 @@ namespace Tecnocuisine.Formularios.Compras
                         cuentaCorriente.Descripcion = TipoDocumento.Split('-')[1] + " " + NumeroFactura;
                         cuentaCorriente.idProveedor = idProveedor;
                         int numTipoDocumento = Convert.ToInt32(tipodoc);
+
                         if (TipoDocumento.Split('-')[1].ToLower().Contains("credito"))
                         {
                             cuentaCorriente.Debe = 0;
-                            cuentaCorriente.Haber = Convert.ToDecimal(ImporteTotal.Replace(",", "").Replace(".", ","));
+                            cuentaCorriente.Haber = FormatNumber(ImporteTotal);
+                            cuentaCorriente.Saldo = cuentaCorriente.Haber * -1;
+
                         }
                         else
                         {
-                            cuentaCorriente.Debe = Convert.ToDecimal(ImporteTotal.Replace(",", "").Replace(".", ","));
+                            cuentaCorriente.Debe = FormatNumber(ImporteTotal);
                             cuentaCorriente.Haber = 0;
+                            cuentaCorriente.Saldo = cuentaCorriente.Debe;
                         }
+
                         int result = cc.AgregarEnCuentaCorriente(cuentaCorriente);
                         if (result == -1)
                         {
@@ -400,6 +408,72 @@ namespace Tecnocuisine.Formularios.Compras
             {
                 return 2;
             }
+        }
+
+
+
+        public static decimal ConvertToDecimal(string valor, string formato = "0,000,000.00")
+        {
+            CultureInfo culture = CultureInfo.CurrentCulture;
+            NumberFormatInfo formatInfo = (NumberFormatInfo)culture.NumberFormat.Clone();
+
+            // Remover separadores de miles y establecer el separador decimal
+            formatInfo.NumberGroupSeparator = ",";
+            formatInfo.NumberDecimalSeparator = ".";
+
+            // Convertir el valor al formato adecuado
+            string valorFormateado = valor.Replace(formatInfo.NumberGroupSeparator, "");
+
+            // Convertir a decimal utilizando la configuración regional
+            decimal resultado;
+            if (decimal.TryParse(valorFormateado, NumberStyles.AllowDecimalPoint, formatInfo, out resultado))
+            {
+                return resultado;
+            }
+
+            // Si no se pudo convertir, intentar convertir a través de palabras numéricas
+            string valorPalabras = TextToNumber(valor, culture);
+            if (!string.IsNullOrEmpty(valorPalabras) && decimal.TryParse(valorPalabras, out resultado))
+            {
+                return resultado;
+            }
+
+            throw new ArgumentException("No se pudo convertir el valor proporcionado a decimal.");
+        }
+
+        public static string TextToNumber(string texto, CultureInfo culture)
+        {
+            string[] partes = texto.Split(new char[] { ',', '.' }, StringSplitOptions.RemoveEmptyEntries);
+            if (partes.Length > 0)
+            {
+                long valor = 0;
+                for (int i = 0; i < partes.Length; i++)
+                {
+                    string palabra = partes[i].Trim();
+                    if (!string.IsNullOrEmpty(palabra))
+                    {
+                        try
+                        {
+                            valor += (long)double.Parse(palabra, culture);
+                        }
+                        catch
+                        {
+                            return null;
+                        }
+                    }
+                }
+
+                return valor.ToString();
+            }
+
+            return null;
+        }
+
+
+
+        public static decimal FormatNumber(string number)
+        {
+            return ConvertToDecimal(number);
         }
     }
 }

@@ -291,12 +291,16 @@
     <Content Include="Formularios\Caja\CobrosRealizados.aspx" />
     <Content Include="Formularios\Caja\Contado.aspx" />
     <Content Include="Formularios\Caja\Imputar.aspx" />
+    <Content Include="Formularios\Caja\Retenciones.aspx" />
     <Content Include="Formularios\Caja\TarjetaDeCredito.aspx" />
+    <Content Include="Formularios\Compras\ImputarPagos.aspx" />
+    <Content Include="Formularios\Compras\Pagos.aspx" />
     <Content Include="Formularios\Compras\Compras.aspx" />
     <Content Include="Formularios\Compras\CuentaCorriente.aspx" />
     <Content Include="Formularios\Compras\EntregaDetallada.aspx" />
     <Content Include="Formularios\Compras\EntregasE.aspx" />
     <Content Include="Formularios\Compras\FacturaCompras.aspx" />
+    <Content Include="Formularios\Compras\PagosRealizados.aspx" />
     <Content Include="Formularios\Compras\ProveedoresP.aspx" />
     <Content Include="Formularios\Compras\Proveedores.aspx" />
     <Content Include="Formularios\Contabilidad\PlanDeCuentas.aspx" />
@@ -970,12 +974,33 @@
     <Compile Include="Formularios\Caja\Imputar.aspx.designer.cs">
       <DependentUpon>Imputar.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Formularios\Caja\Retenciones.aspx.cs">
+      <DependentUpon>Retenciones.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Caja\Retenciones.aspx.designer.cs">
+      <DependentUpon>Retenciones.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Formularios\Caja\TarjetaDeCredito.aspx.cs">
       <DependentUpon>TarjetaDeCredito.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Formularios\Caja\TarjetaDeCredito.aspx.designer.cs">
       <DependentUpon>TarjetaDeCredito.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Compras\ImputarPagos.aspx.cs">
+      <DependentUpon>ImputarPagos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Compras\ImputarPagos.aspx.designer.cs">
+      <DependentUpon>ImputarPagos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Compras\Pagos.aspx.cs">
+      <DependentUpon>Pagos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Compras\Pagos.aspx.designer.cs">
+      <DependentUpon>Pagos.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Compras\Compras.aspx.cs">
       <DependentUpon>Compras.aspx</DependentUpon>
@@ -1011,6 +1036,13 @@
     </Compile>
     <Compile Include="Formularios\Compras\FacturaCompras.aspx.designer.cs">
       <DependentUpon>FacturaCompras.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Compras\PagosRealizados.aspx.cs">
+      <DependentUpon>PagosRealizados.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Compras\PagosRealizados.aspx.designer.cs">
+      <DependentUpon>PagosRealizados.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Compras\ProveedoresP.aspx.cs">
       <DependentUpon>ProveedoresP.aspx</DependentUpon>

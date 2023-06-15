@@ -28,6 +28,7 @@ namespace Tecnocuisine
         int idClientes = -1;
         string FechaD = "";
         string FechaH = "";
+        int Option = 0;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -39,6 +40,10 @@ namespace Tecnocuisine
                 this.FechaD = (Request.QueryString["FechaD"]).ToString();
                 this.idClientes = Convert.ToInt32(Request.QueryString["c"]);
                 this.FechaH = (Request.QueryString["FechaH"]).ToString();
+                if (Request.QueryString["Op"] != null)
+                {
+                   this.Option = Convert.ToInt32(Request.QueryString["Op"]);
+                }
             }
             if (!IsPostBack)
             {
@@ -62,7 +67,7 @@ namespace Tecnocuisine
             }
             if (idClientes != -1)
             {
-                FiltrarVentas(this.idClientes, this.FechaD, this.FechaH);
+                FiltrarVentas(this.idClientes, this.FechaD, this.FechaH, this.Option);
             }
             else
             {
@@ -96,7 +101,7 @@ namespace Tecnocuisine
             }
         }
 
-        public void FiltrarVentas(int idCli, string FechaD, string FechaH)
+        public void FiltrarVentas(int idCli, string FechaD, string FechaH,int option = 0)
         {
             try
             {
@@ -104,7 +109,7 @@ namespace Tecnocuisine
                 AliasCliente.Value = clientes == null ? "Todos" : clientes.descripcion;
                 string FechaDesde = ConvertDateFormat(FechaD);
                 string FechaHasta = ConvertDateFormat(FechaH);
-                var dt = controladorTarjetaDeCreditoVenta.FiltrarCuentaCorrienteVentas(FechaD, FechaH, idCli);
+                var dt = controladorTarjetaDeCreditoVenta.FiltrarCuentaCorrienteVentas(FechaD, FechaH, idCli, option);
                 decimal total = 0;
                 foreach (DataRow row in dt.Rows)
                 {

@@ -154,7 +154,8 @@
                     <div class="row">
                         <label class="col-sm-2 control-label editable">Fecha</label>
                         <div class="col-sm-8">
-                             <asp:TextBox ID="txtDate" type="date" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
+                             <asp:TextBox ID="txtDate" type="date" Style="margin-left: 3%;"  onchange="validarCashFlow()" class="form-control" runat="server"></asp:TextBox>
+                             <p id="ValivaFecha" class="text-danger text-hide"> Tienes que ingresar una fecha</p>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
@@ -171,13 +172,15 @@
                         <label class="col-sm-2 control-label editable">Conceptos</label>
                         <div class="col-sm-8">
                              <datalist id="ListConceptos" runat="server"></datalist>
-                           <asp:TextBox ID="txtConceptos" list="ContentPlaceHolder1_ListConceptos" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
+                           <asp:TextBox ID="txtConceptos" list="ContentPlaceHolder1_ListConceptos"  onchange="validarCashFlow()" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
+                              <p id="ValivaConceptos" class="text-danger text-hide"> Tienes que ingresar un Concepto valido</p>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Importe</label>
                         <div class="col-sm-8">
-                           <asp:TextBox ID="txtImporte" onchange="FormatearNumImput(this)" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
+                           <asp:TextBox ID="txtImporte" onchange="FormatearNumImput(this)"  Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
+                        <p id="ValivaImporte" class="text-danger text-hide"> Tienes que ingresar un Importe</p>
                         </div>
                     </div>
 
@@ -250,11 +253,14 @@
                 EgresoTotal = 0;
             }
             let resultado = 0;
-
             resultado = revertirNumero(ingresoTotal) - revertirNumero(EgresoTotal);
            
-
             document.getElementById("DivRESULTADO").innerText =  formatearNumero(resultado)
+            if (resultado >= 0) {
+                document.getElementById("DivRESULTADO").style.color = "#1ab394"
+            } else {
+                document.getElementById("DivRESULTADO").style.color = "#ED5565"
+            }
 
             let total = revertirNumero(ingresoTotal);
             let total2 = revertirNumero(EgresoTotal);
@@ -332,6 +338,49 @@
                 ultimoDia: ultimoDiaMes
             };
         }
+
+        function validarCashFlow() {
+            let errores = 0;
+            let importe = document.getElementById("ContentPlaceHolder1_txtImporte").value; 
+            let ValivaImporte = document.getElementById("ValivaImporte");
+            if (importe == "NaN" || importe == "" ) {
+                ValivaImporte.className = "text-danger"
+                errores++;
+              
+            } else {
+                ValivaImporte.className = "text-danger text-hide"
+            }
+            let Conceptos = document.getElementById("ContentPlaceHolder1_txtConceptos").value
+            let ValivaConceptos = document.getElementById("ValivaConceptos");
+            if (Conceptos == "" || !Conceptos.includes("-")) {
+                ValivaConceptos.className = "text-danger"
+                errores++;
+               
+            } else {
+                ValivaConceptos.className = "text-danger text-hide"
+            }
+
+            let ValivaFecha = document.getElementById("ValivaFecha");
+            let fecha = document.getElementById("ContentPlaceHolder1_txtDate").value
+            if (fecha == "") {
+                ValivaFecha.className = "text-danger"
+                errores++;
+              
+            } else {
+                ValivaFecha.className = "text-danger text-hide"
+            }
+            if (errores == 0) {
+                document.getElementById("ContentPlaceHolder1_btnGuardarModal").removeAttribute("disabled");
+
+
+            } else {
+
+                let btn = document.getElementById("ContentPlaceHolder1_btnGuardarModal");
+                btn.setAttribute("disabled", "disabled");
+
+            }
+
+        }
         function formatearFechas(fecha) {
 
             var partes = fecha.split('/');
@@ -406,11 +455,9 @@
 
         function FormatearNumImput(input) {
             if (input.value != "") {
-                document.getElementById("ContentPlaceHolder1_btnGuardarModal").removeAttribute("disabled");
                 FormatearNumero2(input)
-            } else {
-                document.getElementById("ContentPlaceHolder1_btnGuardarModal").disabled = "disabled";
-            }
+            } 
+            validarCashFlow();
         }
 
     </script>

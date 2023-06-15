@@ -247,6 +247,11 @@
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Presentaciones.aspx">Presentaciones</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Compras/FacturaCompras.aspx">Factura Compras</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Compras/CuentaCorriente.aspx">Cuenta Corriente</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Compras/Pagos.aspx">Pagos</a></li>
+                                  <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Compras/PagosRealizados.aspx">Pagos Realizados</a></li>
+
+                            </ul>
 
 
 

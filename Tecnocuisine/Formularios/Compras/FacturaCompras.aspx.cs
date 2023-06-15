@@ -189,7 +189,15 @@ namespace Tecnocuisine.Formularios.Compras
                 celDescripcion.HorizontalAlign = HorizontalAlign.Left;
                 celDescripcion.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
                 tr.Cells.Add(celDescripcion);
-               
+
+                TableCell celVto = new TableCell();
+                celVto.Width = Unit.Percentage(10);
+                celVto.Text = item.FechaVencimiento.ToString().Split(' ')[0];
+                celVto.VerticalAlign = VerticalAlign.Middle;
+                celVto.HorizontalAlign = HorizontalAlign.Left;
+                celVto.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
+                tr.Cells.Add(celVto);
+
 
                 TableCell NumProduc = new TableCell();
                 NumProduc.Text = item.Proveedores.Alias;

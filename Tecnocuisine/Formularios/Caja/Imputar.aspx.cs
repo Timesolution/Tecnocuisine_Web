@@ -227,6 +227,7 @@ namespace Tecnocuisine.Caja
                         cheque.Descripcion = TipoDocumento.Descripcion + " " + codigocobro;
                         cheque.Importe = importe;
                         cheque.fecha = fechaCheque;
+                        cheque.Propio = false;
                         controladorCheque.AgregarEnCheques(cheque);
                     }
 

@@ -32,21 +32,21 @@
                                     </div>
                                 </div>
 
-                               <div class="input-group m-b row">
+                               <div class="input-group m-b row" style="margin-right: 15px">
                                                                 <div class="row">
-                                                                    <div class="col-md-2" style="margin-left: 15px; margin-right: 15px;">
+                                                                    <div class="col-md-2" style="margin-left: 5px; margin-right: 25px;">
                                                                         <label class="col-md-4" style="margin-top: 5px;">Desde</label>
                                                                     </div>
                                                                     <div class="col-md-8">
 
-                                                                        <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy"  Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                                        <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy"  Style="margin-left: 0px; width: 100%; padding: 0px"></asp:TextBox>
 
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="input-group m-b">
+                                                            <div class="input-group m-b" style="margin-left: 15px;">
                                                                 <div class="row">
-                                                                    <div class="col-md-2" style="margin-right: 15px;">
+                                                                    <div class="col-md-2" style="margin-right: 20px;">
                                                                         <label style="margin-top: 5px;" class="col-md-4">Hasta</label>
                                                                     </div>
                                                                     <div class="col-md-8">
@@ -56,15 +56,30 @@
                                                                     </div>
                                                         </div>
                                                     </div>
-                                <div class="input-group m-b" style="width: 30%; margin-left: 15px">
+                                <div class="input-group m-b" style="width: 30%; margin-left: 20px">
 
                                     <label style="margin-left: 15px; margin-top: 5px;" class="col-md-4">Entidad</label>
-                                    <div class="col-md-6" style="padding: 0px;">
+                                    <div class="col-md-6">
                                         <datalist id="ListClientes" runat="server"></datalist>
                                         <asp:DropDownList name="txtEntidad" type="text" ID="txtEntidad" runat="server" list="ContentPlaceHolder1_ListClientes" class="form-control" style="margin-left: 0px; margin-bottom: 15px; width: 140%;" />
                                         <p id="ValivaCliente" class="text-danger text-hide">Tienes que ingresar un Cliente</p>
                                     </div>
                                 </div>
+
+                                 <div class="input-group m-b" style="width: 30%; margin-left: 20px">
+
+                                    <label style="margin-left: 15px; margin-top: 5px;" class="col-md-4">Opciones</label>
+                                    <div class="col-md-6">
+                                        <datalist id="Datalist1" runat="server"></datalist>
+                                        <asp:DropDownList name="txtOpcionBusqueda" type="text" ID="txtOpcionBusqueda" runat="server" class="form-control" style="margin-left: 0px; margin-bottom: 15px; width: 140%;">
+                                        <asp:ListItem Text="Busqueda por Acreditacion" Value="0"></asp:ListItem>
+                                        <asp:ListItem Text="Busqueda por Fecha" Value="1"></asp:ListItem>
+                                        </asp:DropDownList>
+
+                                       
+                                    </div>
+                                </div>
+
                                 <%--  <div class="input-group m-b" 30%>
                                                                 <a id="btnFiltrar" onclick="FiltrarVentas()" class="btn btn-primary"><i class="fa fa-paper-plane"></i>&nbsp;Filtrar </a>
 
@@ -223,6 +238,7 @@
         function FiltrarVentas() {
             let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value.replaceAll("-", "/");
             let FechaH = document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value.replaceAll("-", "/");
+            let Opcion = document.getElementById("ContentPlaceHolder1_txtOpcionBusqueda").value;
             let Clientes = document.getElementById("ContentPlaceHolder1_txtEntidad").value
             let proveedorValiva = document.getElementById("ValivaCliente");
             if (Clientes == "-1") {
@@ -232,7 +248,7 @@
                 proveedorValiva.className = "text-danger text-hide"
             }
 
-            window.location.href = "TarjetaDeCredito.aspx?c=" + Clientes.split("-")[0].trim() + "&FechaD=" + FechaD + "&FechaH=" + FechaH;
+            window.location.href = "TarjetaDeCredito.aspx?c=" + Clientes.split("-")[0].trim() + "&FechaD=" + FechaD + "&FechaH=" + FechaH + "&Op=" + Opcion;
         }
     </script>
 

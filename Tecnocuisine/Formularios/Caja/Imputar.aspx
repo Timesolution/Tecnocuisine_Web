@@ -1251,6 +1251,38 @@
             if (listPagos.includes("Efectivo")) {
                 totalefectivo = document.getElementsByName("Efectivo_TableFinal")[0].innerText;
             }
+            let retenciones = "";
+            if (listPagos.includes("INGRESOS BRUTOS") || listPagos.includes("SUSS") || listPagos.includes("IVA") || listPagos.includes("GANANCIAS")) {
+
+                var tabla2 = document.getElementById("editableGeneral");
+
+                // Obtener todas las filas de la tabla
+                var filas2 = tabla2.getElementsByTagName("tr");
+                listPagos = "";
+                for (var i = 1; i < filas2.length; i++) {
+                    var celdas = filas2[i].getElementsByTagName("td");
+                    var text = celdas[0].innerText;
+                    var importe = celda[1].innerText;
+                    if (text.includes("Retenciones")) {
+                        let palabras = text.split(" ");
+
+                        // Verificar si la primera palabra es "Retenciones"
+                        if (palabras[0] === "Retenciones") {
+                            // Unir las palabras a partir de la segunda palabra en adelante
+                            let text2 = palabras.slice(1).join(" ");
+                        if (retenciones == "") {
+                            retenciones += text2 +"$"+ importe;
+                    } else {
+                            retenciones += "%" + text2 + "$" + importe;;
+                        }
+
+                    }
+
+                }
+
+
+
+            }
 
 
 

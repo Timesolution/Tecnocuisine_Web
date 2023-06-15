@@ -71,6 +71,8 @@
                                                         <tr>
                                                             <th style=" text-align: right; width: 2%;">#</th>
                                                             <th  style="width: 5%;">Fecha</th>
+                                                            <th  style="width: 5%;">Fecha Vencimiento</th>
+
                                                             <th style=" text-align: left; width: 4%;">Proveedor</th>
                                                             <th style="width: 5%; text-align: right;">Importe</th>
                                                             <th style="width: 2%";></th>

@@ -33,23 +33,65 @@
                                     <div class="col-lg-12">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-content">
-                                                <div style="margin-left: 0px; margin-right: 0px;" class="row">
                                                     <div class="col-md-10">
 
-                                                        <div class="input-group m-b">
-                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                                                        <div style="display: flex;">
+                                                            <div class="input-group m-b">
+                                                                <div style="display: flex;">
+                                                                    <span class="input-group-addon" style="padding-right: 15%;"><i style='color: black;' class='fa fa-search'></i></span>
+                                                                    <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 100%" />
+                                                                </div>
+                                                            </div>
+                                                           
+                                                             <div class="input-group m-b row">
+                                                                <div class="row">
+                                                                    <div class="col-md-2" style="margin-left: 15px; margin-right: 15px;">
+                                                                        <label class="col-md-4" style="margin-top: 5px;">Desde</label>
+                                                                    </div>
+                                                                    <div class="col-md-8">
 
+                                                                        <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy"  Style="margin-left: 0px; width: 100%;"></asp:TextBox>
 
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="input-group m-b">
+                                                                <div class="row">
+                                                                    <div class="col-md-2" style="margin-right: 15px;">
+                                                                        <label style="margin-top: 5px;" class="col-md-4">Hasta</label>
+                                                                    </div>
+                                                                    <div class="col-md-8">
+
+                                                                        <asp:TextBox class="form-control" runat="server" type="date" ID="txtFechaVencimiento" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+
+                                                                    </div>
+                                                                </div>
+                                                             </div>
+                                                            <div class="input-group m-b">
+                                                                <div class="row">
+                                                                    <div  class="col-md-2"  style="margin-right: 15px;">
+                                                                <label style="margin-top: 5px;" class="col-md-4">Cliente</label>
+                                                                    </div>
+                                                                    <div class="col-md-8">
+                                                              
+                                                                    <datalist id="ListClientes" runat="server"></datalist>
+                                                                    <asp:TextBox name="txtProveedor" type="text" onchange="ValidarProveedor()" ID="txtProveedor" runat="server" list="ContentPlaceHolder1_ListClientes" class="form-control" style="margin-left:15px;margin-bottom: 15px; width: 100%;"> </asp:TextBox>
+                                                                    <p id="ValivaProveedor"  class="text-danger text-hide">Tienes que ingresar un Cliente</p>
+                                                                </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                            <%--  <div class="input-group m-b" 30%>
+                                                                <a id="btnFiltrar" onclick="FiltrarVentas()" class="btn btn-primary"><i class="fa fa-paper-plane"></i>&nbsp;Filtrar </a>
+
+                                                            </div>--%>
                                                         </div>
+
+
+
                                                     </div>
-                                                    <div class="col-md-2">
-
-                                                       
-                                                  <div class="btn-group pull-right" style="height: 100%">
-                                                <linkbutton type="button" data-toggle="modal" href="#modalBusqueda" class="btn btn-success">Filtrar&nbsp;<i style="color:white" class="fa fa-filter"></i></linkbutton>
-
-                                                  </div>
+                                                    <div class="col-md-2" style="display: flex; flex-direction: row; align-items: center; justify-content: end;">
+                                                        <a id="btnFiltrar" onclick="FiltrarVentas()" class="btn btn-primary" style="margin-right: 15px;"><i class="fa fa-paper-plane"></i>&nbsp;Filtrar </a>
                                                         </div>
                                                 </div>
 
@@ -67,6 +109,8 @@
                                                             <th style=" text-align: left; width: 8%;">Descripcion</th>
                                                             <th style="width: 3%; text-align: right;">Debe</th>
                                                             <th style="width: 3%; text-align: right;">Haber</th>
+                                                            <th style="width: 3%; text-align: right;">Saldo</th>
+
                                                             <th style="width: 2%";></th>
 
                                                     
@@ -91,71 +135,7 @@
         </div>
     </div>
 
-    <div id="modalBusqueda" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h4 class="modal-title">Busqueda</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div id="MainContent_UpdatePanel2">
-	
-
-                                    <div role="form" class="form-horizontal col-md-12">
-                                    
-                                            <label class="col-md-4">Desde</label>
-                                            <div class="col-md-6">
-                                                <div class="form-group" id="data_1">
-                                                <div class="input-group date">
-                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                    <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
-                                                </div>
-                                            </div>
-                                            </div>
-                                       
-                                        
-                                            <label class="col-md-4">Hasta</label>
-                                            <div class="col-md-6">
-                                            <div class="form-group" id="data_2">
-                                                    <div class="input-group date">
-                                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                        <asp:TextBox class="form-control" runat="server" ID="txtFechaVencimiento" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
-                                                    </div>
-                                                </div>
-                                            
-                                        </div>
-                                        
-                                            <label class="col-md-4">Buscar Proveedor</label>
-                                            <div class="col-md-6" style="padding: 0px;">
-                                                <input name="txtProveedor" type="text" id="txtProveedor" onchange="ValidarProveedor()" list="ContentPlaceHolder1_ListaProveedores" class="form-control" style="margin-left: 0px; margin-bottom:15px;">
-                                                 <p id="ValivaProveedor" class="text-danger text-hide">Tienes que ingresar un Proveedor</p>
-                                            </div>
-                                       
-
-
-                                        </div>
-                                      
-                                       
-                                     
-                                   
-                                
-                          </div>
-                        </div>
-
-
-                       
-                        <div class="modal-footer" style="border-color: transparent;">
-                    <a id="btnFiltrar" onclick="FiltrarCuentaCorriente()" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;Filtrar </a>
-                    <input type="hidden" name="ctl00$ContentPlaceHolder1$hiddenEditar" id="ContentPlaceHolder1_hiddenEditar">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
-                </div>
-                      
-                    </div>
-
-                </div>
-            </div>
+   
 
 
 
@@ -230,22 +210,22 @@
             });
 
         });
-        function FiltrarCuentaCorriente() {
-            let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value
-            let FechaH = document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value
-            let Proveedor = document.getElementById("txtProveedor").value
+        function FiltrarVentas() {
+            let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value.replaceAll("-", "/");
+            let FechaH = document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value.replaceAll("-", "/");
+            let Clientes = document.getElementById("ContentPlaceHolder1_txtProveedor").value
             let proveedorValiva = document.getElementById("ValivaProveedor");
-            if (Proveedor == "") {
+            if (Clientes == "-1") {
                 proveedorValiva.className = "text-danger"
-                return
+                return 0;
             } else {
                 proveedorValiva.className = "text-danger text-hide"
             }
 
-            window.location.href = "CuentaCorriente.aspx?p=" + Proveedor.split("-")[0].trim() + "&FechaD=" + FechaD + "&FechaH=" + FechaH;
+            window.location.href = "CuentaCorriente.aspx?c=" + Clientes.split("-")[0].trim() + "&FechaD=" + FechaD + "&FechaH=" + FechaH;
         }
         function ValidarProveedor() {
-            let Proveedor = document.getElementById("txtProveedor").value
+            let Proveedor = document.getElementById("ContentPlaceHolder1_txtProveedor").value
             let proveedorValiva = document.getElementById("ValivaProveedor");
             if (Proveedor == "") {
                 proveedorValiva.className = "text-danger"
@@ -255,13 +235,28 @@
         }
         function establecerDiaHoy() {
             var fechaActual = new Date();
-
             // Convertir la fecha en un formato legible para el DatePicker   
-            var fechaFormateada = (fechaActual.getMonth() + 1) + '/' + fechaActual.getDate() + '/' + fechaActual.getFullYear();
-
+            var fechaFormateada = (fechaActual.getFullYear() + '/' + (fechaActual.getMonth() + 1) + '/' + fechaActual.getDate())
             // Establecer la fecha actual como valor predeterminado del DatePicker 
-            $('#ContentPlaceHolder1_txtFechaHoy').datepicker('setDate', "1/1/2000");
-            $('#ContentPlaceHolder1_txtFechaVencimiento').datepicker('setDate', fechaFormateada);
+            //$('#ContentPlaceHolder1_txtFechaHoy').datepicker('setDate', fechaFormateada);
+            //$('#ContentPlaceHolder1_txtFechaHoy').datepicker('todayBtn', true);
+            var partes = fechaFormateada.split('/');
+            var dia = partes[2];
+            var mes = partes[1];
+            var anio = partes[0];
+
+            if (dia < 10) {
+                dia = '0' + dia;
+            }
+
+            if (mes < 10) {
+                mes = '0' + mes;
+            }
+
+            fechafinal = anio + '-' + mes + '-' + dia;
+
+            document.getElementById("ContentPlaceHolder1_txtFechaHoy").value = fechafinal;
+            document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value = fechafinal;
 
         }
         function buscarEnTabla() {

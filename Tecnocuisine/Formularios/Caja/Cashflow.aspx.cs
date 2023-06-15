@@ -9,6 +9,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 using Tecnocuisine.Formularios.Ventas;
 using Tecnocuisine.Modelos;
 using Tecnocuisine_API.Controladores;
@@ -157,14 +158,15 @@ namespace Tecnocuisine.Formularios.Caja
                 int CantDias = 0;
                 DateTime fecha;
                string descripcion = "Tarjeta de Credito";
+                decimal importeTC = 0;
                 foreach (DataRow row in dtTarjetaCredito.Rows)
                 {
                     fecha = ((DateTime)row["fecha"]);
-                    importeContado = Convert.ToDecimal(row["Importe"]);
+                    importeTC = Convert.ToDecimal(row["Importe"]);
                     CantDias = Convert.ToInt32(row["AcreditaEn"]);
-                    importeTarjetaCredito += importeContado;
+                    importeTarjetaCredito += importeTC;
                 }
-                    CargarInsumosPH2("Ingreso", importeContado, descripcion, this.FechaD, this.FechaH);
+                    CargarInsumosPH2("Ingreso", importeTarjetaCredito, descripcion, this.FechaD, this.FechaH);
 
                 decimal importeCheque = 0;
                 string descripcionCheque = "Cheque";
@@ -255,6 +257,10 @@ namespace Tecnocuisine.Formularios.Caja
         {
             try
             {
+                string FechaD = txtFechaHoy.Text.Replace("-", "/");
+                string FechaH = txtFechaVencimiento.Text.Replace("-", "/");
+
+
                 CashFlow cashflow = new CashFlow();
                 cashflow.fecha = ConvertirFecha(txtDate.Text);
                 cashflow.Tipo = ddlOptionsTipo.SelectedValue;
@@ -265,7 +271,7 @@ namespace Tecnocuisine.Formularios.Caja
                 int i = controladorCashFlow.AgregarCashFlow(cashflow);
                 if (i > 0)
                 {
-                Response.Redirect("CashFlow.aspx?a=2&i=" + 1);
+               Response.Redirect("Cashflow.aspx?a=2&i=1&FechaD=" + FechaD + "&FechaH=" + FechaH + "&Op=0");
 
                 } else
                 {
@@ -335,6 +341,7 @@ namespace Tecnocuisine.Formularios.Caja
                 btnEditar.CssClass = "btn btn-xs";
                 btnEditar.Style.Add("background-color", "transparent");
                 btnEditar.Attributes.Add("href", link);
+                    btnEditar.Attributes.Add("target", "_blank");
                 //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                 //btnDetalles.Attributes.Add("title data-original-title", "Editar");
                 btnEditar.Text = "<span><i style='color:black;' class='fa fa-search'></i></span>";
