@@ -1,6 +1,42 @@
 ﻿<%@ Page Title="CashFlow" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" EnableEventValidation="false" CodeBehind="Cashflow.aspx.cs" Inherits="Tecnocuisine.Formularios.Caja.Cashflow" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+
+    <style>
+        .table-wrapper {
+            position: relative;
+        }
+
+            .table-wrapper table {
+                table-layout: fixed;
+            }
+
+            .table-wrapper th:first-child,
+            .table-wrapper td:first-child {
+                position: sticky;
+                left: 0;
+                z-index: 1;
+                background-color: white;
+                width: 100px; /* Ajusta el valor en píxeles según el ancho deseado */
+            }
+
+            .table-wrapper th:nth-child(2),
+            .table-wrapper td:nth-child(2) {
+                position: sticky;
+                left: 149.8px; /* Ajusta el valor en píxeles según el ancho de la primera columna */
+                z-index: 1;
+                background-color: white;
+                width: 100px; /* Ajusta el valor en píxeles según el ancho deseado */
+            }
+
+            /* Agrega este estilo para las celdas de la segunda columna */
+            .table-wrapper td:nth-child(2) {
+                border-left: 1px solid #ddd; /* Establece el borde izquierdo */
+                border-right: 1px solid #ddd; /* Establece el borde derecho */
+            }
+    </style>
+
+
     <div class="wrapper wrapper-content">
         <div class="ibox-content m-b-sm border-bottom" style="margin-top: 10px; padding-top: 0px;">
 
@@ -32,11 +68,9 @@
                         <span>RESULTADO</span>
                     </div>
                 </div>
-
             </div>
-
-
         </div>
+
         <div class="container-fluid">
             <div class="ibox float-e-margins">
                 <div>
@@ -77,16 +111,11 @@
                                                                         <label style="margin-top: 5px;" class="col-md-4">Hasta</label>
                                                                     </div>
                                                                     <div class="col-md-8">
-
                                                                         <asp:TextBox class="form-control" runat="server" type="date" ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
-
                                                                     </div>
                                                                 </div>
                                                             </div>
-
                                                         </div>
-
-
 
                                                     </div>
                                                     <div class="col-md-2" style="display: flex; flex-direction: row; align-items: center; justify-content: end;">
@@ -103,11 +132,11 @@
                                                             <table class="table table-striped table-bordered table-hover " id="editable">
                                                                 <thead>
                                                                     <tr>
-
                                                                         <th style="text-align: left; width: 15%">Tipo</th>
                                                                         <th style="width: 35%">Detalle</th>
                                                                         <th style="text-align: right; width: 25%">Importe</th>
                                                                         <th style="width: 10%"></th>
+                                                                    </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     <asp:PlaceHolder ID="phProductosyRecetas" runat="server"></asp:PlaceHolder>
@@ -117,23 +146,27 @@
 
                                                         <div class="col-lg-6">
                                                             <canvas id="doughnutChart2" style="margin: 18px auto 0px; display: block; height: 300px; width: 600px"></canvas>
-
                                                         </div>
                                                     </div>
                                                 </div>
-
-
-
                                             </div>
                                         </div>
-                                        <asp:HiddenField ID="IngresoTotal" runat="server"></asp:HiddenField>
-                                        <asp:HiddenField ID="EgresoTotal" runat="server"></asp:HiddenField>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div>
+                                    </div>
+                                </div>
+                            </div>
 
-                                        <asp:HiddenField ID="AliasCliente" runat="server"></asp:HiddenField>
-                                        <asp:HiddenField ID="FechaDesde" runat="server"></asp:HiddenField>
-                                        <asp:HiddenField ID="FechaHasta" runat="server"></asp:HiddenField>
 
+                            <asp:HiddenField ID="IngresoTotal" runat="server"></asp:HiddenField>
+                            <asp:HiddenField ID="EgresoTotal" runat="server"></asp:HiddenField>
 
+                            <asp:HiddenField ID="AliasCliente" runat="server"></asp:HiddenField>
+                            <asp:HiddenField ID="FechaDesde" runat="server"></asp:HiddenField>
+                            <asp:HiddenField ID="FechaHasta" runat="server"></asp:HiddenField>
+                            </div>
                         </ContentTemplate>
 
                     </asp:UpdatePanel>
@@ -142,8 +175,29 @@
         </div>
     </div>
 
+    <%-- Aca empieze el div del cashFlowDiario --%>
+    <div class="ibox-content m-b-sm border-bottom" style="margin-top: 10px; padding-top: 0px;">
+        <div class="row">
+            <div class="col-lg-12" style="overflow-x: auto;">
+                <div class="p-xs">
+                    <div style="width: 100%; overflow-x: scroll;">
+                        <div class="table-wrapper">
+                            <table class="table table-striped table-bordered table-hover" id="CashFlowDiario" style="width: 100%; border-spacing: 0;">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                    <asp:PlaceHolder ID="phProductosyRecetasDiariosCabecera" runat="server"></asp:PlaceHolder>
+                                    <asp:PlaceHolder ID="phProductosyRecetasDiarios" runat="server"></asp:PlaceHolder>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <div id="modalAgregar" class="modal fade" tabindex="-1" role="dialog">
+    <div id="modalAgregar" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
@@ -154,33 +208,33 @@
                     <div class="row">
                         <label class="col-sm-2 control-label editable">Fecha</label>
                         <div class="col-sm-8">
-                             <asp:TextBox ID="txtDate" type="date" Style="margin-left: 3%;"  onchange="validarCashFlow()" class="form-control" runat="server"></asp:TextBox>
-                             <p id="ValivaFecha" class="text-danger text-hide"> Tienes que ingresar una fecha</p>
+                            <asp:TextBox ID="txtDate" type="date" Style="margin-left: 3%;" onchange="validarCashFlow()" class="form-control" runat="server"></asp:TextBox>
+                            <p id="ValivaFecha" class="text-danger text-hide">Tienes que ingresar una fecha</p>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Tipo</label>
                         <div class="col-sm-8">
-                              <asp:DropDownList ID="ddlOptionsTipo" runat="server" Style="margin-left: 3%;" class="form-control">
-                                        <asp:ListItem Text="Egreso" Value="Egreso"></asp:ListItem>
-                                        <asp:ListItem Text="Ingreso" Value="Ingreso"></asp:ListItem>
-                                    </asp:DropDownList>
-                            
+                            <asp:DropDownList ID="ddlOptionsTipo" runat="server" Style="margin-left: 3%;" class="form-control">
+                                <asp:ListItem Text="Egreso" Value="Egreso"></asp:ListItem>
+                                <asp:ListItem Text="Ingreso" Value="Ingreso"></asp:ListItem>
+                            </asp:DropDownList>
+
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Conceptos</label>
                         <div class="col-sm-8">
-                             <datalist id="ListConceptos" runat="server"></datalist>
-                           <asp:TextBox ID="txtConceptos" list="ContentPlaceHolder1_ListConceptos"  onchange="validarCashFlow()" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
-                              <p id="ValivaConceptos" class="text-danger text-hide"> Tienes que ingresar un Concepto valido</p>
+                            <datalist id="ListConceptos" runat="server"></datalist>
+                            <asp:TextBox ID="txtConceptos" list="ContentPlaceHolder1_ListConceptos" onchange="validarCashFlow()" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
+                            <p id="ValivaConceptos" class="text-danger text-hide">Tienes que ingresar un Concepto valido</p>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Importe</label>
                         <div class="col-sm-8">
-                           <asp:TextBox ID="txtImporte" onchange="FormatearNumImput(this)"  Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
-                        <p id="ValivaImporte" class="text-danger text-hide"> Tienes que ingresar un Importe</p>
+                            <asp:TextBox ID="txtImporte" onchange="FormatearNumImput(this)" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
+                            <p id="ValivaImporte" class="text-danger text-hide">Tienes que ingresar un Importe</p>
                         </div>
                     </div>
 
@@ -189,14 +243,10 @@
                     <asp:LinkButton runat="server" ID="btnGuardarModal" disabled="disabled" class="buttonLoading btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
                     <asp:HiddenField ID="HiddenField1" runat="server" />
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
-
-
                 </div>
             </div>
         </div>
     </div>
-
-
 
 
 
@@ -212,28 +262,16 @@
     </style>
     <script>
         $(document).ready(function () {
-            $("body").tooltip({ selector: '[data-toggle=tooltip]' });
-
-            //saldo = document.getElementById("ContentPlaceHolder1_SaldoTotal").value;
-            //prov = document.getElementById("ContentPlaceHolder1_AliasCliente").value;
-            //if (saldo != "") {
-
-            //    document.getElementById("DivSaldo").innerText = saldo;
-
-            //}
-            //if (prov != "") {
-            //    document.getElementById("ClienteSelec").innerText = prov;
-            //}
-
-                let fechad = document.getElementById("ContentPlaceHolder1_FechaDesde").value
-                let fechah = document.getElementById("ContentPlaceHolder1_FechaHasta").value
+            $("body").tooltip({ selector: '[data-toggle=tooltip]' });           
+            let fechad = document.getElementById("ContentPlaceHolder1_FechaDesde").value
+            let fechah = document.getElementById("ContentPlaceHolder1_FechaHasta").value
 
             if (fechad != "" && fechah != "") {
 
                 establecerFechasSeleccionadas();
             } else {
 
-            establecerDiaHoy();
+                establecerDiaHoy();
             }
             let ingresoTotal = document.getElementById("ContentPlaceHolder1_IngresoTotal").value;
             let EgresoTotal = document.getElementById("ContentPlaceHolder1_EgresoTotal").value;
@@ -243,7 +281,7 @@
             } else {
 
                 ingresoTotal = 0;
-            } 
+            }
 
             if (EgresoTotal != "") {
 
@@ -254,8 +292,8 @@
             }
             let resultado = 0;
             resultado = revertirNumero(ingresoTotal) - revertirNumero(EgresoTotal);
-           
-            document.getElementById("DivRESULTADO").innerText =  formatearNumero(resultado)
+
+            document.getElementById("DivRESULTADO").innerText = formatearNumero(resultado)
             if (resultado >= 0) {
                 document.getElementById("DivRESULTADO").style.color = "#1ab394"
             } else {
@@ -324,9 +362,6 @@
             var ctx4 = document.getElementById("doughnutChart2").getContext("2d");
             new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
 
-
-
-
         });
         function obtenerRangoFechas() {
             var fechaActual = new Date(); // Obtiene la fecha actual
@@ -341,12 +376,12 @@
 
         function validarCashFlow() {
             let errores = 0;
-            let importe = document.getElementById("ContentPlaceHolder1_txtImporte").value; 
+            let importe = document.getElementById("ContentPlaceHolder1_txtImporte").value;
             let ValivaImporte = document.getElementById("ValivaImporte");
-            if (importe == "NaN" || importe == "" ) {
+            if (importe == "NaN" || importe == "") {
                 ValivaImporte.className = "text-danger"
                 errores++;
-              
+
             } else {
                 ValivaImporte.className = "text-danger text-hide"
             }
@@ -355,7 +390,7 @@
             if (Conceptos == "" || !Conceptos.includes("-")) {
                 ValivaConceptos.className = "text-danger"
                 errores++;
-               
+
             } else {
                 ValivaConceptos.className = "text-danger text-hide"
             }
@@ -365,7 +400,7 @@
             if (fecha == "") {
                 ValivaFecha.className = "text-danger"
                 errores++;
-              
+
             } else {
                 ValivaFecha.className = "text-danger text-hide"
             }
@@ -396,11 +431,11 @@
                 mes = '0' + mes;
             }
 
-          return  fechafinal = anio + '-' + mes + '-' + dia;
+            return fechafinal = anio + '-' + mes + '-' + dia;
 
         }
         function establecerFechasSeleccionadas() {
-           let fechad = document.getElementById("ContentPlaceHolder1_FechaDesde").value
+            let fechad = document.getElementById("ContentPlaceHolder1_FechaDesde").value
             let fehcah = document.getElementById("ContentPlaceHolder1_FechaHasta").value
 
             fechad = fechad.replaceAll("/", "-");
@@ -415,11 +450,7 @@
             var fechaFormateada1 = (fechas.primerDia.getFullYear() + '/' + (fechas.primerDia.getMonth() + 1) + '/' + fechas.primerDia.getDate())
             var fechaFormateada2 = (fechas.ultimoDia.getFullYear() + '/' + (fechas.ultimoDia.getMonth() + 1) + '/' + fechas.ultimoDia.getDate())
 
-            // Establecer la fecha actual como valor predeterminado del DatePicker 
-            //$('#ContentPlaceHolder1_txtFechaHoy').datepicker('setDate', fechaFormateada);
-            //$('#ContentPlaceHolder1_txtFechaHoy').datepicker('todayBtn', true);
-          
-
+         
             document.getElementById("ContentPlaceHolder1_txtFechaHoy").value = formatearFechas(fechaFormateada1);
             document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value = formatearFechas(fechaFormateada2);;
 
@@ -456,7 +487,7 @@
         function FormatearNumImput(input) {
             if (input.value != "") {
                 FormatearNumero2(input)
-            } 
+            }
             validarCashFlow();
         }
 

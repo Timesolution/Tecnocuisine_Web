@@ -96,6 +96,24 @@ namespace Tecnocuisine.Formularios.Caja
         protected global::System.Web.UI.WebControls.HiddenField FechaHasta;
 
         /// <summary>
+        /// Control phProductosyRecetasDiariosCabecera.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder phProductosyRecetasDiariosCabecera;
+
+        /// <summary>
+        /// Control phProductosyRecetasDiarios.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder phProductosyRecetasDiarios;
+
+        /// <summary>
         /// Control txtDate.
         /// </summary>
         /// <remarks>

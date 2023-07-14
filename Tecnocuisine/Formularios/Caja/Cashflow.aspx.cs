@@ -4,9 +4,13 @@ using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
+using System.EnterpriseServices;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Web;
+using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
@@ -26,29 +30,34 @@ namespace Tecnocuisine.Formularios.Caja
         ControladorEntidad controladorEntidad = new ControladorEntidad();
         ControladorTarjetas controladorTarjetas = new ControladorTarjetas();
         ControladorConceptos controladorConceptos = new ControladorConceptos();
-        
-        
+
+
         int accion;
         int Mensaje;
         string FechaD = "";
         string FechaH = "";
         int cont = 0;
+        int ContDiario = 0;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+
+            DateTime date = DateTime.Now;
+
             VerificarLogin();
             this.Mensaje = Convert.ToInt32(Request.QueryString["i"]);
             this.accion = Convert.ToInt32(Request.QueryString["a"]);
             if (Request.QueryString["FechaD"] != null)
             {
                 this.FechaD = (Request.QueryString["FechaD"]).ToString();
-               
+
                 this.FechaH = (Request.QueryString["FechaH"]).ToString();
             }
             if (!IsPostBack)
             {
 
-            this.CargarConceptos();
+                this.CargarConceptos();
+                this.CargarCabeceraPH2();
 
                 if (Mensaje == 1)
                 {
@@ -67,10 +76,11 @@ namespace Tecnocuisine.Formularios.Caja
             if (FechaD != "")
             {
                 FiltrarVentas(this.FechaD, this.FechaH);
+                FiltrarVentasDiarias(this.FechaD, this.FechaH);
             }
             else
             {
-              
+
             }
 
 
@@ -99,6 +109,752 @@ namespace Tecnocuisine.Formularios.Caja
             }
         }
 
+        public void FiltrarVentasDiarias(string FechaD, string FechaH)
+        {
+
+            this.FechaDesde.Value = this.FechaD;
+            this.FechaHasta.Value = this.FechaH;
+
+            string FechaDesde = ConvertDateFormat(FechaD);
+            string FechaHasta = ConvertDateFormat(FechaH);
+
+            var dtTarjetaDeCredito = controladorCashFlow.FiltrarCobrosTarjetaCredito(FechaD, FechaH);
+            var dtCheques = controladorCashFlow.FiltrarCobrosCheques(FechaD, FechaH);
+           
+            
+            int Cont = CargarInsumosDiariosCabeceraPH2(this.FechaD, this.FechaH); //ok
+
+            if (Cont != -1)
+            {
+                CargarArrastreTabla(Cont);
+                CargarInsumosDiariosPH2TablaCheque(Cont);
+                CargarInsumosDiariosPH2Tabla(Cont);
+                CargarTotalesTabla(Cont);
+                CargarEgresosSueldos(Cont);
+                CargarEgresosSUSS(Cont);
+                CargarEgresosPagoAProveedores(Cont);
+                cargarTotalEgresos(Cont);
+                CargarSaldoTabla(Cont);
+                PonerCeros(Cont);
+                SeparadorDeMilesNumeros(Cont);
+                CargarDatosEnTabla(Cont, dtTarjetaDeCredito, dtCheques, FechaD, FechaH);
+                //Aca cargo los campos de la tabla
+                PonerSignoPesos(Cont);
+            }
+
+        }
+
+        public void CargarCabeceraPH2()
+        {
+            try
+            {
+                TableRow tr = new TableRow();
+                tr.ID = "Cabecera_flow";
+
+                TableHeaderCell celType = new TableHeaderCell();
+                celType.Text = "Tipo";
+                celType.VerticalAlign = VerticalAlign.Middle;
+                celType.HorizontalAlign = HorizontalAlign.Left;
+                // celType.Width = Unit.Pixel(150);
+                celType.Attributes.Add("style", "width: 150px; padding-bottom: 1px !important; padding-right: 10px;");
+                celType.Font.Bold = true;
+                tr.Cells.Add(celType);
+
+
+                TableHeaderCell celAcreditaEl = new TableHeaderCell();
+                celAcreditaEl.Text = "Detalle";
+                celAcreditaEl.VerticalAlign = VerticalAlign.Middle;
+                celAcreditaEl.HorizontalAlign = HorizontalAlign.Left;
+                //  celAcreditaEl.Width = Unit.Pixel(150);
+                celAcreditaEl.Attributes.Add("style", "width: 150px; padding-bottom: 1px !important; padding-right: 10px;");
+                celAcreditaEl.Font.Bold = true;
+                tr.Cells.Add(celAcreditaEl);
+
+                phProductosyRecetasDiariosCabecera.Controls.Add(tr);
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        public void cargarTotalEgresos(int Cont)
+        {
+            try
+            {
+                TableRow tr = new TableRow();
+                tr.ID = "ID_Totales_Egresos";
+
+                TableCell celType = new TableCell();
+                celType.Text = "TOTAL EGRESOS";
+                celType.VerticalAlign = VerticalAlign.Middle;
+                celType.HorizontalAlign = HorizontalAlign.Left;
+                celType.Width = Unit.Pixel(150);
+                celType.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
+                celType.Font.Bold = true;
+                tr.Cells.Add(celType);
+
+                for (int i = 0; i < Cont; i++)
+                {
+                    TableCell emptyCell = new TableCell();
+                    tr.Cells.Add(emptyCell);
+                }
+
+                phProductosyRecetasDiarios.Controls.Add(tr);
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+        }
+
+        public void CargarEgresosPagoAProveedores(int Cont)
+        {
+            try
+            {
+                TableRow tr = new TableRow();
+                tr.ID = "ID_EgresoDiarioPagoAProveedores"; //ContDiario.ToString();
+
+
+                TableCell celType = new TableCell();
+                celType.Text = "Egreso";
+                celType.VerticalAlign = VerticalAlign.Middle;
+                celType.HorizontalAlign = HorizontalAlign.Left;
+                celType.Width = Unit.Pixel(150);
+                celType.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
+                celType.Font.Bold = true;
+                tr.Cells.Add(celType);
+
+
+                TableCell celTypeCheques = new TableCell();
+                celTypeCheques.Text = "Pago a Proveedores";
+                celTypeCheques.VerticalAlign = VerticalAlign.Middle;
+                celTypeCheques.HorizontalAlign = HorizontalAlign.Left;
+                celTypeCheques.Width = Unit.Pixel(150);
+                celTypeCheques.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
+                celTypeCheques.Font.Bold = true;
+                tr.Cells.Add(celTypeCheques);
+
+
+                for (int i = 0; i < Cont; i++)
+                {
+                    TableCell emptyCell = new TableCell();
+                    tr.Cells.Add(emptyCell);
+                }
+
+                phProductosyRecetasDiarios.Controls.Add(tr);
+
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+
+        public void CargarEgresosSUSS(int Cont)
+        {
+            try
+            {
+                TableRow tr = new TableRow();
+                tr.ID = "ID_EgresoDiarioSUSS"; //ContDiario.ToString();
+
+
+                TableCell celType = new TableCell();
+                celType.Text = "Egreso";
+                celType.VerticalAlign = VerticalAlign.Middle;
+                celType.HorizontalAlign = HorizontalAlign.Left;
+                celType.Width = Unit.Pixel(150);
+                celType.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
+                celType.Font.Bold = true;
+                tr.Cells.Add(celType);
+
+
+                TableCell celTypeCheques = new TableCell();
+                celTypeCheques.Text = "SUSS";
+                celTypeCheques.VerticalAlign = VerticalAlign.Middle;
+                celTypeCheques.HorizontalAlign = HorizontalAlign.Left;
+                celTypeCheques.Width = Unit.Pixel(150);
+                celTypeCheques.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
+                celTypeCheques.Font.Bold = true;
+                tr.Cells.Add(celTypeCheques);
+
+
+                for (int i = 0; i < Cont; i++)
+                {
+                    TableCell emptyCell = new TableCell();
+                    tr.Cells.Add(emptyCell);
+                }
+
+                phProductosyRecetasDiarios.Controls.Add(tr);
+
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+        }
+
+        public void CargarEgresosSueldos(int Cont)
+        {
+            try
+            {
+                TableRow tr = new TableRow();
+                tr.ID = "ID_EgresoDiarioSueldos"; //ContDiario.ToString();
+
+
+                TableCell celType = new TableCell();
+                celType.Text = "Egreso";
+                celType.VerticalAlign = VerticalAlign.Middle;
+                celType.HorizontalAlign = HorizontalAlign.Left;
+                celType.Width = Unit.Pixel(150);
+                celType.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
+                celType.Font.Bold = true;
+                tr.Cells.Add(celType);
+
+
+                TableCell celTypeCheques = new TableCell();
+                celTypeCheques.Text = "Sueldos";
+                celTypeCheques.VerticalAlign = VerticalAlign.Middle;
+                celTypeCheques.HorizontalAlign = HorizontalAlign.Left;
+                celTypeCheques.Width = Unit.Pixel(150);
+                celTypeCheques.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
+                celTypeCheques.Font.Bold = true;
+                tr.Cells.Add(celTypeCheques);
+
+
+                for (int i = 0; i < Cont; i++)
+                {
+                    TableCell emptyCell = new TableCell();
+                    tr.Cells.Add(emptyCell);
+                }
+
+                phProductosyRecetasDiarios.Controls.Add(tr);
+
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+        }
+
+        public void CargarInsumosDiariosPH2TablaCheque(int Cont)
+        {
+            ContDiario++;
+            try
+            {
+                TableRow tr = new TableRow();
+                tr.ID = "ID_IngresoDiarioCheque"; //ContDiario.ToString();
+
+
+                TableCell celType = new TableCell();
+                celType.Text = "Ingreso";
+                celType.VerticalAlign = VerticalAlign.Middle;
+                celType.HorizontalAlign = HorizontalAlign.Left;
+                celType.Width = Unit.Pixel(150);
+                celType.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
+                celType.Font.Bold = true;
+                tr.Cells.Add(celType);
+
+
+                TableCell celTypeCheques = new TableCell();
+                celTypeCheques.Text = "Cheques";
+                celTypeCheques.VerticalAlign = VerticalAlign.Middle;
+                celTypeCheques.HorizontalAlign = HorizontalAlign.Left;
+                celTypeCheques.Width = Unit.Pixel(150);
+                celTypeCheques.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
+                celTypeCheques.Font.Bold = true;
+                tr.Cells.Add(celTypeCheques);
+
+
+                for (int i = 0; i < Cont; i++)
+                {
+                    TableCell emptyCell = new TableCell();
+                    tr.Cells.Add(emptyCell);
+                }
+
+                phProductosyRecetasDiarios.Controls.Add(tr);
+
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+        }
+
+        public void SeparadorDeMilesNumeros(int Cont)
+        {
+            TableRow filaArrastre = (TableRow)phProductosyRecetasDiarios.Controls[0];
+            TableRow filaIngresoCheque = (TableRow)phProductosyRecetasDiarios.Controls[1];
+            TableRow filaIngreso = (TableRow)phProductosyRecetasDiarios.Controls[2];
+            TableRow filaTotal = (TableRow)phProductosyRecetasDiarios.Controls[3];
+            TableRow filaEgresoSueldos = (TableRow)phProductosyRecetasDiarios.Controls[4];
+            TableRow filaEgresoSUSS = (TableRow)phProductosyRecetasDiarios.Controls[5];
+            TableRow filaEgresoPagoAProveedores = (TableRow)phProductosyRecetasDiarios.Controls[6];
+            TableRow filaTotalEgresos = (TableRow)phProductosyRecetasDiarios.Controls[7];
+            TableRow filaSaldo = (TableRow)phProductosyRecetasDiarios.Controls[8];
+
+            for (int i = 2; i <= Cont; i++)
+            {
+                TableCell celdaArrastre = filaArrastre.Cells[i];
+                TableCell celdaIngresoCheque = filaIngresoCheque.Cells[i];
+                TableCell celdaIngreso = filaIngreso.Cells[i];
+                TableCell celdaTotal = filaTotal.Cells[i];
+
+                TableCell celdaEgresoSueldos = filaEgresoSueldos.Cells[i];
+                TableCell celdaEgresoSUSS = filaEgresoSUSS.Cells[i];
+                TableCell celdaEgresoPagoAProveedores = filaEgresoPagoAProveedores.Cells[i];
+                TableCell celdaTotalEgresos = filaTotalEgresos.Cells[i];
+
+                TableCell celdaSaldo = filaSaldo.Cells[i];
+
+
+                celdaArrastre.Text = Convert.ToDecimal(celdaArrastre.Text).ToString("N2", new CultureInfo("en-US"));
+                celdaIngresoCheque.Text = Convert.ToDecimal(celdaIngresoCheque.Text).ToString("N2", new CultureInfo("en-US"));
+                celdaIngreso.Text = Convert.ToDecimal(celdaIngreso.Text).ToString("N2", new CultureInfo("en-US"));
+                celdaTotal.Text = Convert.ToDecimal(celdaTotal.Text).ToString("N2", new CultureInfo("en-US"));
+
+
+                celdaEgresoSueldos.Text = Convert.ToDecimal(celdaArrastre.Text).ToString("N2", new CultureInfo("en-US"));
+                celdaEgresoSUSS.Text = Convert.ToDecimal(celdaIngresoCheque.Text).ToString("N2", new CultureInfo("en-US"));
+                celdaEgresoPagoAProveedores.Text = Convert.ToDecimal(celdaIngreso.Text).ToString("N2", new CultureInfo("en-US"));
+                celdaTotalEgresos.Text = Convert.ToDecimal(celdaTotal.Text).ToString("N2", new CultureInfo("en-US"));
+
+
+
+                celdaSaldo.Text = Convert.ToDecimal(celdaSaldo.Text).ToString("N2", new CultureInfo("en-US"));
+
+
+
+
+            }
+        }
+        public void PonerSignoPesos(int Cont)
+        {
+            TableRow filaArrastre = (TableRow)phProductosyRecetasDiarios.Controls[0];
+            TableRow filaIngresoCheque = (TableRow)phProductosyRecetasDiarios.Controls[1];
+            TableRow filaIngreso = (TableRow)phProductosyRecetasDiarios.Controls[2];
+            TableRow filaTotal = (TableRow)phProductosyRecetasDiarios.Controls[3];
+            TableRow filaEgresoSueldos = (TableRow)phProductosyRecetasDiarios.Controls[4];
+            TableRow filaEgresoSUSS = (TableRow)phProductosyRecetasDiarios.Controls[5];
+            TableRow filaEgresoPagoAProveedores = (TableRow)phProductosyRecetasDiarios.Controls[6];
+            TableRow filaTotalEgresos = (TableRow)phProductosyRecetasDiarios.Controls[7];
+            TableRow filaSaldo = (TableRow)phProductosyRecetasDiarios.Controls[8];
+
+            for (int i = 2; i <= Cont; i++)
+            {
+                TableCell celdaArrastre = filaArrastre.Cells[i];
+                TableCell celdaIngresoCheque = filaIngresoCheque.Cells[i];
+                TableCell celdaIngreso = filaIngreso.Cells[i];
+                TableCell celdaTotal = filaTotal.Cells[i];
+
+                TableCell celdaEgresoSueldos = filaEgresoSueldos.Cells[i];
+                TableCell celdaEgresoSUSS = filaEgresoSUSS.Cells[i];
+                TableCell celdaEgresoPagoAProveedores = filaEgresoPagoAProveedores.Cells[i];
+                TableCell celdaTotalEgresos = filaTotalEgresos.Cells[i];
+
+                TableCell celdaSaldo = filaSaldo.Cells[i];
+
+
+                celdaArrastre.Text = "$" + celdaArrastre.Text;
+                celdaIngresoCheque.Text = "$" + celdaIngresoCheque.Text;
+                celdaIngreso.Text = "$" + celdaIngreso.Text;
+                celdaTotal.Text = "$" + celdaTotal.Text;
+
+                celdaEgresoSueldos.Text = "$" + celdaEgresoSueldos.Text;
+                celdaEgresoSUSS.Text = "$" + celdaEgresoSUSS.Text;
+                celdaEgresoPagoAProveedores.Text = "$" + celdaEgresoPagoAProveedores.Text;
+                celdaTotalEgresos.Text = "$" + celdaTotalEgresos.Text;
+
+                celdaSaldo.Text = "$" + celdaSaldo.Text;
+            }
+        }
+        public void PonerCeros(int Cont)
+        {
+            TableRow filaArrastre = (TableRow)phProductosyRecetasDiarios.Controls[0];
+            TableRow filaIngresoCheque = (TableRow)phProductosyRecetasDiarios.Controls[1];
+            TableRow filaIngreso = (TableRow)phProductosyRecetasDiarios.Controls[2];
+            TableRow filaTotal = (TableRow)phProductosyRecetasDiarios.Controls[3];
+            TableRow filaEgresoSueldos = (TableRow)phProductosyRecetasDiarios.Controls[4];
+            TableRow filaEgresoSUSS = (TableRow)phProductosyRecetasDiarios.Controls[5];
+            TableRow filaEgresoPagoAProveedores = (TableRow)phProductosyRecetasDiarios.Controls[6];
+            TableRow filaTotalEgresos = (TableRow)phProductosyRecetasDiarios.Controls[7];
+            TableRow filaSaldo = (TableRow)phProductosyRecetasDiarios.Controls[8];
+
+            for (int i = 2; i <= Cont; i++)
+            {
+                TableCell celdaArrastre = filaArrastre.Cells[i];
+                TableCell celdaIngresoCheque = filaIngresoCheque.Cells[i];
+                TableCell celdaIngreso = filaIngreso.Cells[i];
+                TableCell celdaTotal = filaTotal.Cells[i];
+
+                TableCell celdaEgresoSueldos = filaEgresoSueldos.Cells[i];
+                TableCell celdaEgresoSUSS = filaEgresoSUSS.Cells[i];
+                TableCell celdaEgresoPagoAProveedores = filaEgresoPagoAProveedores.Cells[i];
+                TableCell celdaTotalEgresos = filaTotalEgresos.Cells[i];
+
+                TableCell celdaSaldo = filaSaldo.Cells[i];
+
+
+                celdaArrastre.Text = "0";
+                celdaIngreso.Text = "0";
+                celdaIngresoCheque.Text = "0";
+                celdaTotal.Text = "0";
+
+                celdaEgresoSueldos.Text = "0";
+                celdaEgresoSUSS.Text = "0";
+                celdaEgresoPagoAProveedores.Text = "0";
+                celdaTotalEgresos.Text = "0";
+
+
+                celdaSaldo.Text = "0";
+
+                // phProductosyRecetasDiarios.Controls.Add(tr);
+            }
+        }
+        public void CargarDatosEnTabla(int Cont, DataTable dt, DataTable dtCheques, string FechaD, string FechaH)
+        {
+
+            //Ingreso
+            TableRow filaArrastre = (TableRow)phProductosyRecetasDiarios.Controls[0];
+            TableRow filaIngresoCheque = (TableRow)phProductosyRecetasDiarios.Controls[1];
+            TableRow filaIngreso = (TableRow)phProductosyRecetasDiarios.Controls[2];
+            TableRow filaTotal = (TableRow)phProductosyRecetasDiarios.Controls[3];
+            TableRow filaEgresoSueldos = (TableRow)phProductosyRecetasDiarios.Controls[4];
+            TableRow filaEgresoSUSS = (TableRow)phProductosyRecetasDiarios.Controls[5];
+            TableRow filaEgresoPagoAProveedores = (TableRow)phProductosyRecetasDiarios.Controls[6];
+            TableRow filaTotalEgresos = (TableRow)phProductosyRecetasDiarios.Controls[7];
+            TableRow filaSaldo = (TableRow)phProductosyRecetasDiarios.Controls[8];
+
+
+            DataTable dtEgresos = new DataTable();
+            dtEgresos = controladorCashFlow.ObtenerEgresos(FechaD, FechaH);
+
+            DateTime FechaDesdeDateTime = Convert.ToDateTime(FechaD);
+            for (int i = 2; i <= Cont; i++)
+            {
+
+
+                TableCell celdaArrastre = filaArrastre.Cells[i];
+                TableCell celdaIngresoCheque = filaIngresoCheque.Cells[i];
+                TableCell celdaIngreso = filaIngreso.Cells[i];
+                TableCell celdaTotal = filaTotal.Cells[i];
+
+                TableCell celdaEgresoSueldos = filaEgresoSueldos.Cells[i];
+                TableCell celdaEgresoSUSS = filaEgresoSUSS.Cells[i];
+                TableCell celdaEgresoPagoAProveedores = filaEgresoPagoAProveedores.Cells[i];
+                TableCell celdaTotalEgresos = filaTotalEgresos.Cells[i];
+
+                TableCell celdaSaldo = filaSaldo.Cells[i];
+
+                decimal ArrastreDia = 0;
+                decimal IngresoDiario = 0;
+                decimal IngresoDiarioCheque = 0;
+
+                decimal EgresoDiarioSueldos = 0;
+                decimal EgresoDiarioSUSS = 0;
+                decimal EgresoEgresoPagoAProveedores = 0;
+                decimal TotalDia = 0;
+                decimal TotalEgresos = 0;
+                decimal SaldoDia = 0;
+
+                //Tarjeta
+                foreach (DataRow dr in dt.Rows)
+                {
+
+                    if (Convert.ToDateTime(dr["fecha"]).AddDays(int.Parse(dr["AcreditaEn"].ToString())) == FechaDesdeDateTime)
+                    {
+                        IngresoDiario += Convert.ToDecimal(dr["Importe"].ToString());
+                        celdaIngreso.Text = IngresoDiario.ToString("N2", new CultureInfo("en-US"));
+                    }
+
+
+                    TotalDia = IngresoDiario; //Seria mas el egreso pero todavia no esta
+                    celdaTotal.Text = TotalDia.ToString("N2", new CultureInfo("en-US"));
+
+                    SaldoDia = TotalDia;
+                    celdaSaldo.Text = SaldoDia.ToString("N2", new CultureInfo("en-US"));
+                }
+
+                foreach (DataRow dr in dtCheques.Rows)
+                {
+
+                    if (Convert.ToDateTime(dr["fecha"]) == FechaDesdeDateTime)
+                    {
+                        IngresoDiarioCheque += Convert.ToDecimal(dr["Importe"].ToString());
+                        celdaIngresoCheque.Text = IngresoDiarioCheque.ToString("N2", new CultureInfo("en-US"));
+                    }
+
+                    TotalDia = IngresoDiario + IngresoDiarioCheque; //Seria mas el egreso pero todavia no esta
+                    celdaTotal.Text = TotalDia.ToString("N2", new CultureInfo("en-US"));
+
+                    SaldoDia = TotalDia;
+                    celdaSaldo.Text = SaldoDia.ToString("N2", new CultureInfo("en-US"));
+
+                }
+
+                //EGRESOS
+                foreach (DataRow dr in dtEgresos.Rows)
+                {
+
+                    if (Convert.ToDateTime(dr["fecha"]) == FechaDesdeDateTime)
+                    {
+
+                        if (dr["descripcion"].ToString() == "SUSS")
+                        {
+                            EgresoDiarioSUSS += Convert.ToDecimal(dr["Importe"].ToString());
+                            celdaEgresoSUSS.Text = EgresoDiarioSUSS.ToString("N2", new CultureInfo("en-US"));
+                        }
+
+                        if (dr["descripcion"].ToString() == "Sueldos")
+                        {
+                            EgresoDiarioSueldos += Convert.ToDecimal(dr["Importe"].ToString());
+                            celdaEgresoSueldos.Text = EgresoDiarioSueldos.ToString("N2", new CultureInfo("en-US"));
+                        }
+
+                    }
+
+                    TotalEgresos = EgresoDiarioSueldos + EgresoDiarioSUSS + EgresoEgresoPagoAProveedores;
+                    celdaTotalEgresos.Text = TotalEgresos.ToString("N2", new CultureInfo("en-US"));
+
+
+                    SaldoDia = TotalDia - TotalEgresos;
+                    celdaSaldo.Text = SaldoDia.ToString("N2", new CultureInfo("en-US"));
+
+                }
+
+                //EGRESOS, PAGO A PROVEEDORES
+                ControladorFacturas controladorFacturas = new ControladorFacturas();
+                List<Facturas> facturas = controladorFacturas.ObtenerTodasFactura();
+                foreach (var item in facturas)
+                {
+
+                    if (item.FechaVencimiento == FechaDesdeDateTime)
+                    {
+                        EgresoEgresoPagoAProveedores += Convert.ToDecimal(item.ImporteTotal);
+                        celdaEgresoPagoAProveedores.Text = EgresoEgresoPagoAProveedores.ToString("N2", new CultureInfo("en-US"));
+                    }
+
+                    TotalEgresos = EgresoDiarioSueldos + EgresoDiarioSUSS + EgresoEgresoPagoAProveedores;
+                    celdaTotalEgresos.Text = TotalEgresos.ToString("N2", new CultureInfo("en-US"));
+
+
+                    SaldoDia = TotalDia - TotalEgresos;
+                    celdaSaldo.Text = SaldoDia.ToString("N2", new CultureInfo("en-US"));
+
+                }
+                FechaDesdeDateTime = FechaDesdeDateTime.AddDays(1);
+
+                if (i > 2)
+                {
+                    TableCell celdaSaldoDiaAnterior = filaSaldo.Cells[i - 1];
+                    celdaArrastre.Text = celdaSaldoDiaAnterior.Text;
+
+
+                    celdaSaldo.Text = (decimal.Parse(celdaTotal.Text, NumberStyles.Currency, new CultureInfo("en-US")) +
+                    decimal.Parse(celdaArrastre.Text, NumberStyles.Currency, new CultureInfo("en-US")) -
+                    decimal.Parse(celdaTotalEgresos.Text, NumberStyles.Currency, new CultureInfo("en-US"))).ToString
+                    ("N2", new CultureInfo("en-US"));
+                }
+            }
+        }
+        public void CargarSaldoTabla(int Cont)
+        {
+
+            try
+            {
+                TableRow tr = new TableRow();
+                tr.ID = "ID_Saldo";
+
+
+                TableCell celType = new TableCell();
+                celType.Text = "SALDO";
+                celType.VerticalAlign = VerticalAlign.Middle;
+                celType.HorizontalAlign = HorizontalAlign.Left;
+                celType.Width = Unit.Pixel(150);
+                celType.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
+                celType.Font.Bold = true;
+                tr.Cells.Add(celType);
+
+                for (int i = 0; i < Cont; i++)
+                {
+                    TableCell emptyCell = new TableCell();
+                    tr.Cells.Add(emptyCell);
+                }
+
+
+                phProductosyRecetasDiarios.Controls.Add(tr);
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+        public void CargarArrastreTabla(int Cont)
+        {
+            try
+            {
+                TableRow tr = new TableRow();
+                tr.ID = ContDiario.ToString();
+
+
+                TableCell celType = new TableCell();
+                celType.Text = "Arrastre";
+                celType.VerticalAlign = VerticalAlign.Middle;
+                celType.HorizontalAlign = HorizontalAlign.Left;
+                celType.Width = Unit.Pixel(150);
+                celType.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
+                celType.Font.Bold = true;
+                tr.Cells.Add(celType);
+
+                for (int i = 0; i < Cont; i++)
+                {
+                    TableCell emptyCell = new TableCell();
+                    tr.Cells.Add(emptyCell);
+                }
+                phProductosyRecetasDiarios.Controls.Add(tr);
+            }
+            catch (Exception)
+            {
+
+
+            }
+        }
+
+        public void CargarTotalesTabla(int Cont)
+        {
+            ContDiario++;
+            try
+            {
+                TableRow tr = new TableRow();
+                tr.ID = "ID_Totales_Ingresos";
+
+                TableCell celType = new TableCell();
+                celType.Text = "TOTAL INGRESOS";
+                celType.VerticalAlign = VerticalAlign.Middle;
+                celType.HorizontalAlign = HorizontalAlign.Left;
+                celType.Width = Unit.Pixel(150);
+                celType.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
+                celType.Font.Bold = true;
+                tr.Cells.Add(celType);
+
+                for (int i = 0; i < Cont; i++)
+                {
+                    TableCell emptyCell = new TableCell();
+                    tr.Cells.Add(emptyCell);
+                }
+
+                phProductosyRecetasDiarios.Controls.Add(tr);
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+        }
+
+        public int CargarInsumosDiariosCabeceraPH2(string fechad = "", string fechah = "")
+        {
+            try
+            {
+                Control control = phProductosyRecetasDiariosCabecera.FindControl("Cabecera_flow");
+                phProductosyRecetasDiariosCabecera.Controls.Remove(control);
+
+                TableRow tr = new TableRow();
+                tr.ID = "Cabecera_flow";
+
+                TableHeaderCell celType = new TableHeaderCell();
+                celType.Text = "Tipo";
+                celType.VerticalAlign = VerticalAlign.Middle;
+                celType.HorizontalAlign = HorizontalAlign.Left;
+                celType.Width = Unit.Pixel(150);
+                celType.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
+                celType.Font.Bold = true;
+                tr.Cells.Add(celType);
+
+
+                TableHeaderCell celAcreditaEl = new TableHeaderCell();
+                celAcreditaEl.Text = "Detalle";
+                celAcreditaEl.VerticalAlign = VerticalAlign.Middle;
+                celAcreditaEl.HorizontalAlign = HorizontalAlign.Left;
+                celAcreditaEl.Width = Unit.Pixel(150);
+                celAcreditaEl.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
+                celAcreditaEl.Font.Bold = true;
+                tr.Cells.Add(celAcreditaEl);
+                //Hasta arriba esta ok
+
+
+                int Cont = 1;
+                for (DateTime fechaDesde = DateTime.Parse(fechad); fechaDesde <= DateTime.Parse(fechah); fechaDesde = fechaDesde.AddDays(1))
+                {
+                    TableHeaderCell celFecha = new TableHeaderCell();
+                    string FechaDesdeString = ConvertDateFormat(fechaDesde.ToString());
+                    celFecha.Text = fechaDesde.ToString("dd/MM/yyyy"); //FechaDesdeString.ToString();
+                    celFecha.VerticalAlign = VerticalAlign.Middle;
+                    celFecha.HorizontalAlign = HorizontalAlign.Left;
+                    celFecha.Width = Unit.Pixel(150);
+                    celFecha.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
+                    tr.Cells.Add(celFecha);
+                    Cont++;
+                }
+
+                phProductosyRecetasDiariosCabecera.Controls.Add(tr);
+                return Cont;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
+        public void CargarInsumosDiariosPH2Tabla(int Cont)
+        {
+            ContDiario++;
+            try
+            {
+                TableRow tr = new TableRow();
+                tr.ID = "ID_ImporteDiario"; //ContDiario.ToString();
+
+
+                TableCell celType = new TableCell();
+                celType.Text = "Ingreso";
+                celType.VerticalAlign = VerticalAlign.Middle;
+                celType.HorizontalAlign = HorizontalAlign.Left;
+                celType.Width = Unit.Pixel(150);
+                celType.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
+                celType.Font.Bold = true;
+                tr.Cells.Add(celType);
+
+
+                TableCell celTypeTarjetaCredito = new TableCell();
+                celTypeTarjetaCredito.Text = "Tarjeta Credito";
+                celTypeTarjetaCredito.VerticalAlign = VerticalAlign.Middle;
+                celTypeTarjetaCredito.HorizontalAlign = HorizontalAlign.Left;
+                celTypeTarjetaCredito.Width = Unit.Pixel(150);
+                celTypeTarjetaCredito.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
+                celTypeTarjetaCredito.Font.Bold = true;
+                tr.Cells.Add(celTypeTarjetaCredito);
+
+
+                for (int i = 0; i < Cont; i++)
+                {
+                    TableCell emptyCell = new TableCell();
+                    tr.Cells.Add(emptyCell);
+                }
+
+                phProductosyRecetasDiarios.Controls.Add(tr);
+
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+        }
+
 
         private void CargarConceptos()
         {
@@ -108,7 +864,7 @@ namespace Tecnocuisine.Formularios.Caja
                 var builder = new System.Text.StringBuilder();
                 foreach (Conceptos fila in ListConceptos)
                 {
-                   
+
                     builder.Append(String.Format("<option value='{0}' id='c_r_" + fila.id + "_" + fila.descripcion + "'>", fila.id + " - " + fila.descripcion));
 
                 }
@@ -143,7 +899,7 @@ namespace Tecnocuisine.Formularios.Caja
                 var dtContado = controladorCashFlow.FiltrarCobrosContado(FechaD, FechaH);
                 decimal importeContado = 0;
                 string descripcionContado = "Efectivo/Contado";
-               
+
                 foreach (DataRow row in dtContado.Rows)
                 {
                     //vd.id = Convert.ToInt32(row["id"]);
@@ -151,13 +907,13 @@ namespace Tecnocuisine.Formularios.Caja
                     //vd.idCliente = Convert.ToInt32(row["idCliente"]);
                     importeContado += Convert.ToDecimal(row["Importe"]);
                 }
-                CargarInsumosPH2("Ingreso", importeContado, descripcionContado,this.FechaD,this.FechaH);
+                CargarInsumosPH2("Ingreso", importeContado, descripcionContado, this.FechaD, this.FechaH);
 
                 var dtTarjetaCredito = controladorCashFlow.FiltrarCobrosTarjetaCredito(FechaD, FechaH);
                 decimal importeTarjetaCredito = 0;
                 int CantDias = 0;
                 DateTime fecha;
-               string descripcion = "Tarjeta de Credito";
+                string descripcion = "Tarjeta de Credito";
                 decimal importeTC = 0;
                 foreach (DataRow row in dtTarjetaCredito.Rows)
                 {
@@ -166,7 +922,7 @@ namespace Tecnocuisine.Formularios.Caja
                     CantDias = Convert.ToInt32(row["AcreditaEn"]);
                     importeTarjetaCredito += importeTC;
                 }
-                    CargarInsumosPH2("Ingreso", importeTarjetaCredito, descripcion, this.FechaD, this.FechaH);
+                CargarInsumosPH2("Ingreso", importeTarjetaCredito, descripcion, this.FechaD, this.FechaH);
 
                 decimal importeCheque = 0;
                 string descripcionCheque = "Cheque";
@@ -176,10 +932,10 @@ namespace Tecnocuisine.Formularios.Caja
                     importeCheque += Convert.ToDecimal(row["Importe"]);
 
                 }
-                CargarInsumosPH2("Ingreso", importeCheque,descripcionCheque, this.FechaD, this.FechaH);
+                CargarInsumosPH2("Ingreso", importeCheque, descripcionCheque, this.FechaD, this.FechaH);
 
                 var dtCashFlow = controladorCashFlow.FiltrarCashFlow(FechaD, FechaH);
-                foreach(DataRow row in dtCashFlow.Rows)
+                foreach (DataRow row in dtCashFlow.Rows)
                 {
                     var concepto = controladorConceptos.ObtenerConceptosId(Convert.ToInt32(row["idConceptos"]));
                     decimal Importe = Convert.ToDecimal(row["Importe"]);
@@ -187,7 +943,8 @@ namespace Tecnocuisine.Formularios.Caja
                     if (tipo == "Egreso")
                     {
                         totalEgreso += Importe;
-                    } else
+                    }
+                    else
                     {
                         totalIngreso += Importe;
                     }
@@ -271,9 +1028,10 @@ namespace Tecnocuisine.Formularios.Caja
                 int i = controladorCashFlow.AgregarCashFlow(cashflow);
                 if (i > 0)
                 {
-               Response.Redirect("Cashflow.aspx?a=2&i=1&FechaD=" + FechaD + "&FechaH=" + FechaH + "&Op=0");
+                    Response.Redirect("Cashflow.aspx?a=2&i=1&FechaD=" + FechaD + "&FechaH=" + FechaH + "&Op=0");
 
-                } else
+                }
+                else
                 {
                     this.m.ShowToastr(this.Page, "Error al Agregar producto!", "Warning");
                 }
@@ -285,7 +1043,7 @@ namespace Tecnocuisine.Formularios.Caja
         }
 
 
-        public void CargarInsumosPH2(string Tipo, decimal importe, string descripcion,string fechad = "",string fechah = "")
+        public void CargarInsumosPH2(string Tipo, decimal importe, string descripcion, string fechad = "", string fechah = "")
         {
             cont++;
             try
@@ -304,7 +1062,7 @@ namespace Tecnocuisine.Formularios.Caja
                 celType.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celType);
 
-               
+
 
                 TableCell celAcreditaEl = new TableCell();
                 celAcreditaEl.Text = descripcion;
@@ -327,31 +1085,34 @@ namespace Tecnocuisine.Formularios.Caja
                     if (descripcion == "Tarjeta de Credito")
                     {
                         link = "TarjetaDeCredito.aspx?c=0&FechaD=" + fechad + "&FechaH=" + fechah;
-                    } else if (descripcion == "Efectivo/Contado")
+                    }
+                    else if (descripcion == "Efectivo/Contado")
                     {
                         link = "Contado.aspx?p=0&FechaD=" + fechad + "&FechaH=" + fechah;
-                    } else
+                    }
+                    else
                     {
                         link = "ChequesCobros.aspx?c=0&FechaD=" + fechad + "&FechaH=" + fechah;
                     }
-                TableCell celAction = new TableCell();
-                LinkButton btnEditar = new LinkButton();
-             
+                    TableCell celAction = new TableCell();
+                    LinkButton btnEditar = new LinkButton();
 
-                btnEditar.CssClass = "btn btn-xs";
-                btnEditar.Style.Add("background-color", "transparent");
-                btnEditar.Attributes.Add("href", link);
+
+                    btnEditar.CssClass = "btn btn-xs";
+                    btnEditar.Style.Add("background-color", "transparent");
+                    btnEditar.Attributes.Add("href", link);
                     btnEditar.Attributes.Add("target", "_blank");
-                //btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                //btnDetalles.Attributes.Add("title data-original-title", "Editar");
-                btnEditar.Text = "<span><i style='color:black;' class='fa fa-search'></i></span>";
-                celAction.Controls.Add(btnEditar);
-                celAction.Width = Unit.Percentage(10);
-                celAction.VerticalAlign = VerticalAlign.Middle;
-                celAction.HorizontalAlign = HorizontalAlign.Center;
-                tr.Cells.Add(celAction);
+                    //btnDetalles.Attributes.Add("data-toggle", "tooltip");
+                    //btnDetalles.Attributes.Add("title data-original-title", "Editar");
+                    btnEditar.Text = "<span><i style='color:black;' class='fa fa-search'></i></span>";
+                    celAction.Controls.Add(btnEditar);
+                    celAction.Width = Unit.Percentage(10);
+                    celAction.VerticalAlign = VerticalAlign.Middle;
+                    celAction.HorizontalAlign = HorizontalAlign.Center;
+                    tr.Cells.Add(celAction);
 
-                } else
+                }
+                else
                 {
 
                     TableCell celAction = new TableCell();
