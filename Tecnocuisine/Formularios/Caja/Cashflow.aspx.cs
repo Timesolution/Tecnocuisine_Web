@@ -1,6 +1,8 @@
 ﻿using Gestion_Api.Controladores;
 using Gestor_Solution.Controladores;
+using Gestor_Solution.Modelo;
 using Microsoft.Ajax.Utilities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,10 +12,13 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Web;
+using System.Web.Services;
 using System.Web.Services.Description;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
+using Tecnocuisine.Caja;
 using Tecnocuisine.Formularios.Ventas;
 using Tecnocuisine.Modelos;
 using Tecnocuisine_API.Controladores;
@@ -30,6 +35,7 @@ namespace Tecnocuisine.Formularios.Caja
         ControladorEntidad controladorEntidad = new ControladorEntidad();
         ControladorTarjetas controladorTarjetas = new ControladorTarjetas();
         ControladorConceptos controladorConceptos = new ControladorConceptos();
+        int IDEgresoIngreso = 0;
 
 
         int accion;
@@ -38,6 +44,7 @@ namespace Tecnocuisine.Formularios.Caja
         string FechaH = "";
         int cont = 0;
         int ContDiario = 0;
+        private int Accion = 0; //Uso esta variabla para saber si se esta editando en el CashFlow
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -120,13 +127,15 @@ namespace Tecnocuisine.Formularios.Caja
 
             var dtTarjetaDeCredito = controladorCashFlow.FiltrarCobrosTarjetaCredito(FechaD, FechaH);
             var dtCheques = controladorCashFlow.FiltrarCobrosCheques(FechaD, FechaH);
-           
-            
+
+
             int Cont = CargarInsumosDiariosCabeceraPH2(this.FechaD, this.FechaH); //ok
 
             if (Cont != -1)
             {
+                //Esta parte solo genera las filas y columnas de la tabla vacia
                 CargarArrastreTabla(Cont);
+                CargarEfectivoContadoTabla(Cont);
                 CargarInsumosDiariosPH2TablaCheque(Cont);
                 CargarInsumosDiariosPH2Tabla(Cont);
                 CargarTotalesTabla(Cont);
@@ -135,15 +144,53 @@ namespace Tecnocuisine.Formularios.Caja
                 CargarEgresosPagoAProveedores(Cont);
                 cargarTotalEgresos(Cont);
                 CargarSaldoTabla(Cont);
+
+                //Esta parte carga los datos en la tabla ya generada 
                 PonerCeros(Cont);
                 SeparadorDeMilesNumeros(Cont);
-                CargarDatosEnTabla(Cont, dtTarjetaDeCredito, dtCheques, FechaD, FechaH);
-                //Aca cargo los campos de la tabla
+                CargarDatosEnTabla(Cont, dtTarjetaDeCredito, dtCheques, FechaD, FechaH);               
                 PonerSignoPesos(Cont);
             }
 
         }
 
+        public void CargarEfectivoContadoTabla(int Cont)
+        {
+            try
+            {
+                TableRow tr = new TableRow();
+                tr.ID = "ID_EfectivoContadoTabla";
+
+                TableCell celType = new TableCell();
+                celType.Text = "Ingreso";
+                celType.VerticalAlign = VerticalAlign.Middle;
+                celType.HorizontalAlign = HorizontalAlign.Left;
+                celType.Width = Unit.Pixel(150);
+                celType.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
+                celType.Font.Bold = true;
+                tr.Cells.Add(celType);
+
+                TableCell celTypeEfectivoContado = new TableCell();
+                celTypeEfectivoContado.Text = "Efectivo/Contado";
+                celTypeEfectivoContado.VerticalAlign = VerticalAlign.Middle;
+                celTypeEfectivoContado.HorizontalAlign = HorizontalAlign.Left;
+                celTypeEfectivoContado.Width = Unit.Pixel(150);
+                celTypeEfectivoContado.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
+                celTypeEfectivoContado.Font.Bold = true;
+                tr.Cells.Add(celTypeEfectivoContado);
+
+                for (int i = 0; i < Cont; i++)
+                {
+                    TableCell emptyCell = new TableCell();
+                    tr.Cells.Add(emptyCell);
+                }
+
+                phProductosyRecetasDiarios.Controls.Add(tr);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
         public void CargarCabeceraPH2()
         {
             try
@@ -192,6 +239,7 @@ namespace Tecnocuisine.Formularios.Caja
                 celType.Width = Unit.Pixel(150);
                 celType.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
                 celType.Font.Bold = true;
+                celType.ForeColor = System.Drawing.Color.Red;
                 tr.Cells.Add(celType);
 
                 for (int i = 0; i < Cont; i++)
@@ -388,18 +436,20 @@ namespace Tecnocuisine.Formularios.Caja
         public void SeparadorDeMilesNumeros(int Cont)
         {
             TableRow filaArrastre = (TableRow)phProductosyRecetasDiarios.Controls[0];
-            TableRow filaIngresoCheque = (TableRow)phProductosyRecetasDiarios.Controls[1];
-            TableRow filaIngreso = (TableRow)phProductosyRecetasDiarios.Controls[2];
-            TableRow filaTotal = (TableRow)phProductosyRecetasDiarios.Controls[3];
-            TableRow filaEgresoSueldos = (TableRow)phProductosyRecetasDiarios.Controls[4];
-            TableRow filaEgresoSUSS = (TableRow)phProductosyRecetasDiarios.Controls[5];
-            TableRow filaEgresoPagoAProveedores = (TableRow)phProductosyRecetasDiarios.Controls[6];
-            TableRow filaTotalEgresos = (TableRow)phProductosyRecetasDiarios.Controls[7];
-            TableRow filaSaldo = (TableRow)phProductosyRecetasDiarios.Controls[8];
+            TableRow filaEfectivoContado = (TableRow)phProductosyRecetasDiarios.Controls[1];
+            TableRow filaIngresoCheque = (TableRow)phProductosyRecetasDiarios.Controls[2];
+            TableRow filaIngreso = (TableRow)phProductosyRecetasDiarios.Controls[3];
+            TableRow filaTotal = (TableRow)phProductosyRecetasDiarios.Controls[4];
+            TableRow filaEgresoSueldos = (TableRow)phProductosyRecetasDiarios.Controls[5];
+            TableRow filaEgresoSUSS = (TableRow)phProductosyRecetasDiarios.Controls[6];
+            TableRow filaEgresoPagoAProveedores = (TableRow)phProductosyRecetasDiarios.Controls[7];
+            TableRow filaTotalEgresos = (TableRow)phProductosyRecetasDiarios.Controls[8];
+            TableRow filaSaldo = (TableRow)phProductosyRecetasDiarios.Controls[9];
 
             for (int i = 2; i <= Cont; i++)
             {
                 TableCell celdaArrastre = filaArrastre.Cells[i];
+                TableCell celdaEfectivoContado = filaEfectivoContado.Cells[i];
                 TableCell celdaIngresoCheque = filaIngresoCheque.Cells[i];
                 TableCell celdaIngreso = filaIngreso.Cells[i];
                 TableCell celdaTotal = filaTotal.Cells[i];
@@ -413,6 +463,7 @@ namespace Tecnocuisine.Formularios.Caja
 
 
                 celdaArrastre.Text = Convert.ToDecimal(celdaArrastre.Text).ToString("N2", new CultureInfo("en-US"));
+                celdaEfectivoContado.Text = Convert.ToDecimal(celdaEfectivoContado.Text).ToString("N2", new CultureInfo("en-US"));
                 celdaIngresoCheque.Text = Convert.ToDecimal(celdaIngresoCheque.Text).ToString("N2", new CultureInfo("en-US"));
                 celdaIngreso.Text = Convert.ToDecimal(celdaIngreso.Text).ToString("N2", new CultureInfo("en-US"));
                 celdaTotal.Text = Convert.ToDecimal(celdaTotal.Text).ToString("N2", new CultureInfo("en-US"));
@@ -427,26 +478,27 @@ namespace Tecnocuisine.Formularios.Caja
 
                 celdaSaldo.Text = Convert.ToDecimal(celdaSaldo.Text).ToString("N2", new CultureInfo("en-US"));
 
-
-
-
             }
         }
         public void PonerSignoPesos(int Cont)
         {
             TableRow filaArrastre = (TableRow)phProductosyRecetasDiarios.Controls[0];
-            TableRow filaIngresoCheque = (TableRow)phProductosyRecetasDiarios.Controls[1];
-            TableRow filaIngreso = (TableRow)phProductosyRecetasDiarios.Controls[2];
-            TableRow filaTotal = (TableRow)phProductosyRecetasDiarios.Controls[3];
-            TableRow filaEgresoSueldos = (TableRow)phProductosyRecetasDiarios.Controls[4];
-            TableRow filaEgresoSUSS = (TableRow)phProductosyRecetasDiarios.Controls[5];
-            TableRow filaEgresoPagoAProveedores = (TableRow)phProductosyRecetasDiarios.Controls[6];
-            TableRow filaTotalEgresos = (TableRow)phProductosyRecetasDiarios.Controls[7];
-            TableRow filaSaldo = (TableRow)phProductosyRecetasDiarios.Controls[8];
+            TableRow filaEfectivoContado = (TableRow)phProductosyRecetasDiarios.Controls[1];
+            TableRow filaIngresoCheque = (TableRow)phProductosyRecetasDiarios.Controls[2];
+            TableRow filaIngreso = (TableRow)phProductosyRecetasDiarios.Controls[3];
+            TableRow filaTotal = (TableRow)phProductosyRecetasDiarios.Controls[4];
+
+            TableRow filaEgresoSueldos = (TableRow)phProductosyRecetasDiarios.Controls[5];
+            TableRow filaEgresoSUSS = (TableRow)phProductosyRecetasDiarios.Controls[6];
+            TableRow filaEgresoPagoAProveedores = (TableRow)phProductosyRecetasDiarios.Controls[7];
+            TableRow filaTotalEgresos = (TableRow)phProductosyRecetasDiarios.Controls[8];
+
+            TableRow filaSaldo = (TableRow)phProductosyRecetasDiarios.Controls[9];
 
             for (int i = 2; i <= Cont; i++)
             {
                 TableCell celdaArrastre = filaArrastre.Cells[i];
+                TableCell celdaEfectivoContado = filaEfectivoContado.Cells[i];
                 TableCell celdaIngresoCheque = filaIngresoCheque.Cells[i];
                 TableCell celdaIngreso = filaIngreso.Cells[i];
                 TableCell celdaTotal = filaTotal.Cells[i];
@@ -460,6 +512,7 @@ namespace Tecnocuisine.Formularios.Caja
 
 
                 celdaArrastre.Text = "$" + celdaArrastre.Text;
+                celdaEfectivoContado.Text = "$" + celdaEfectivoContado.Text;
                 celdaIngresoCheque.Text = "$" + celdaIngresoCheque.Text;
                 celdaIngreso.Text = "$" + celdaIngreso.Text;
                 celdaTotal.Text = "$" + celdaTotal.Text;
@@ -475,18 +528,20 @@ namespace Tecnocuisine.Formularios.Caja
         public void PonerCeros(int Cont)
         {
             TableRow filaArrastre = (TableRow)phProductosyRecetasDiarios.Controls[0];
-            TableRow filaIngresoCheque = (TableRow)phProductosyRecetasDiarios.Controls[1];
-            TableRow filaIngreso = (TableRow)phProductosyRecetasDiarios.Controls[2];
-            TableRow filaTotal = (TableRow)phProductosyRecetasDiarios.Controls[3];
-            TableRow filaEgresoSueldos = (TableRow)phProductosyRecetasDiarios.Controls[4];
-            TableRow filaEgresoSUSS = (TableRow)phProductosyRecetasDiarios.Controls[5];
-            TableRow filaEgresoPagoAProveedores = (TableRow)phProductosyRecetasDiarios.Controls[6];
-            TableRow filaTotalEgresos = (TableRow)phProductosyRecetasDiarios.Controls[7];
-            TableRow filaSaldo = (TableRow)phProductosyRecetasDiarios.Controls[8];
+            TableRow filaEfectivoContado = (TableRow)phProductosyRecetasDiarios.Controls[1];
+            TableRow filaIngresoCheque = (TableRow)phProductosyRecetasDiarios.Controls[2];
+            TableRow filaIngreso = (TableRow)phProductosyRecetasDiarios.Controls[3];
+            TableRow filaTotal = (TableRow)phProductosyRecetasDiarios.Controls[4];
+            TableRow filaEgresoSueldos = (TableRow)phProductosyRecetasDiarios.Controls[5];
+            TableRow filaEgresoSUSS = (TableRow)phProductosyRecetasDiarios.Controls[6];
+            TableRow filaEgresoPagoAProveedores = (TableRow)phProductosyRecetasDiarios.Controls[7];
+            TableRow filaTotalEgresos = (TableRow)phProductosyRecetasDiarios.Controls[8];
+            TableRow filaSaldo = (TableRow)phProductosyRecetasDiarios.Controls[9];
 
             for (int i = 2; i <= Cont; i++)
             {
                 TableCell celdaArrastre = filaArrastre.Cells[i];
+                TableCell celdaEfectivoContado = filaEfectivoContado.Cells[i];
                 TableCell celdaIngresoCheque = filaIngresoCheque.Cells[i];
                 TableCell celdaIngreso = filaIngreso.Cells[i];
                 TableCell celdaTotal = filaTotal.Cells[i];
@@ -500,17 +555,33 @@ namespace Tecnocuisine.Formularios.Caja
 
 
                 celdaArrastre.Text = "0";
+                celdaArrastre.HorizontalAlign = HorizontalAlign.Right;
+                celdaEfectivoContado.Text = "0";
+                celdaEfectivoContado.HorizontalAlign = HorizontalAlign.Right;
                 celdaIngreso.Text = "0";
+                celdaIngreso.HorizontalAlign = HorizontalAlign.Right;
                 celdaIngresoCheque.Text = "0";
+                celdaIngresoCheque.HorizontalAlign = HorizontalAlign.Right; ;
                 celdaTotal.Text = "0";
-
+                celdaTotal.HorizontalAlign = HorizontalAlign.Right;
+                celdaTotal.Font.Bold = true;
+                celdaTotal.ForeColor = System.Drawing.Color.Green;
                 celdaEgresoSueldos.Text = "0";
+                celdaEgresoSueldos.HorizontalAlign = HorizontalAlign.Right;
                 celdaEgresoSUSS.Text = "0";
+                celdaEgresoSUSS.HorizontalAlign = HorizontalAlign.Right;
                 celdaEgresoPagoAProveedores.Text = "0";
+                celdaEgresoPagoAProveedores.HorizontalAlign = HorizontalAlign.Right;
                 celdaTotalEgresos.Text = "0";
-
+                celdaTotalEgresos.HorizontalAlign = HorizontalAlign.Right;
+                celdaTotalEgresos.Font.Bold = true;
+                celdaTotalEgresos.ForeColor = System.Drawing.Color.Red;
 
                 celdaSaldo.Text = "0";
+                celdaSaldo.HorizontalAlign = HorizontalAlign.Right;
+                celdaSaldo.Font.Bold = true;
+                celdaSaldo.Font.Size = new FontUnit("17px");
+
 
                 // phProductosyRecetasDiarios.Controls.Add(tr);
             }
@@ -520,17 +591,20 @@ namespace Tecnocuisine.Formularios.Caja
 
             //Ingreso
             TableRow filaArrastre = (TableRow)phProductosyRecetasDiarios.Controls[0];
-            TableRow filaIngresoCheque = (TableRow)phProductosyRecetasDiarios.Controls[1];
-            TableRow filaIngreso = (TableRow)phProductosyRecetasDiarios.Controls[2];
-            TableRow filaTotal = (TableRow)phProductosyRecetasDiarios.Controls[3];
-            TableRow filaEgresoSueldos = (TableRow)phProductosyRecetasDiarios.Controls[4];
-            TableRow filaEgresoSUSS = (TableRow)phProductosyRecetasDiarios.Controls[5];
-            TableRow filaEgresoPagoAProveedores = (TableRow)phProductosyRecetasDiarios.Controls[6];
-            TableRow filaTotalEgresos = (TableRow)phProductosyRecetasDiarios.Controls[7];
-            TableRow filaSaldo = (TableRow)phProductosyRecetasDiarios.Controls[8];
+            TableRow filaEfectivoContado = (TableRow)phProductosyRecetasDiarios.Controls[1];
+            TableRow filaIngresoCheque = (TableRow)phProductosyRecetasDiarios.Controls[2];
+            TableRow filaIngreso = (TableRow)phProductosyRecetasDiarios.Controls[3];
+            TableRow filaTotal = (TableRow)phProductosyRecetasDiarios.Controls[4];
+            TableRow filaEgresoSueldos = (TableRow)phProductosyRecetasDiarios.Controls[5];
+            TableRow filaEgresoSUSS = (TableRow)phProductosyRecetasDiarios.Controls[6];
+            TableRow filaEgresoPagoAProveedores = (TableRow)phProductosyRecetasDiarios.Controls[7];
+            TableRow filaTotalEgresos = (TableRow)phProductosyRecetasDiarios.Controls[8];
+            TableRow filaSaldo = (TableRow)phProductosyRecetasDiarios.Controls[9];
 
 
+            DataTable dtEfectivoContado = new DataTable();
             DataTable dtEgresos = new DataTable();
+            dtEfectivoContado = controladorCashFlow.FiltrarCobrosContadoAllColumns(FechaD, FechaH);
             dtEgresos = controladorCashFlow.ObtenerEgresos(FechaD, FechaH);
 
             DateTime FechaDesdeDateTime = Convert.ToDateTime(FechaD);
@@ -539,6 +613,7 @@ namespace Tecnocuisine.Formularios.Caja
 
 
                 TableCell celdaArrastre = filaArrastre.Cells[i];
+                TableCell celdaEfectivoContado = filaEfectivoContado.Cells[i];
                 TableCell celdaIngresoCheque = filaIngresoCheque.Cells[i];
                 TableCell celdaIngreso = filaIngreso.Cells[i];
                 TableCell celdaTotal = filaTotal.Cells[i];
@@ -551,15 +626,34 @@ namespace Tecnocuisine.Formularios.Caja
                 TableCell celdaSaldo = filaSaldo.Cells[i];
 
                 decimal ArrastreDia = 0;
-                decimal IngresoDiario = 0;
+                decimal IngresoDiarioEfectivoContado = 0;
                 decimal IngresoDiarioCheque = 0;
-
+                //Esta variable es el total de tarjeta
+                decimal IngresoDiario = 0;
                 decimal EgresoDiarioSueldos = 0;
                 decimal EgresoDiarioSUSS = 0;
                 decimal EgresoEgresoPagoAProveedores = 0;
                 decimal TotalDia = 0;
                 decimal TotalEgresos = 0;
                 decimal SaldoDia = 0;
+
+                //EfectivoContado
+                foreach (DataRow dr in dtEfectivoContado.Rows)
+                {
+
+                    if (Convert.ToDateTime(dr["fecha"]) == FechaDesdeDateTime)
+                    {
+                        IngresoDiarioEfectivoContado += Convert.ToDecimal(dr["Importe"].ToString());
+                        celdaEfectivoContado.Text = IngresoDiarioEfectivoContado.ToString("N2", new CultureInfo("en-US"));
+                    }
+
+
+                    TotalDia = IngresoDiarioEfectivoContado; //Seria mas el egreso pero todavia no esta
+                    celdaTotal.Text = TotalDia.ToString("N2", new CultureInfo("en-US"));
+
+                    SaldoDia = TotalDia;
+                    celdaSaldo.Text = SaldoDia.ToString("N2", new CultureInfo("en-US"));
+                }
 
                 //Tarjeta
                 foreach (DataRow dr in dt.Rows)
@@ -572,13 +666,14 @@ namespace Tecnocuisine.Formularios.Caja
                     }
 
 
-                    TotalDia = IngresoDiario; //Seria mas el egreso pero todavia no esta
+                    TotalDia = IngresoDiario + IngresoDiarioEfectivoContado; //Seria mas el egreso pero todavia no esta
                     celdaTotal.Text = TotalDia.ToString("N2", new CultureInfo("en-US"));
 
                     SaldoDia = TotalDia;
                     celdaSaldo.Text = SaldoDia.ToString("N2", new CultureInfo("en-US"));
                 }
 
+                //Cheques
                 foreach (DataRow dr in dtCheques.Rows)
                 {
 
@@ -588,7 +683,7 @@ namespace Tecnocuisine.Formularios.Caja
                         celdaIngresoCheque.Text = IngresoDiarioCheque.ToString("N2", new CultureInfo("en-US"));
                     }
 
-                    TotalDia = IngresoDiario + IngresoDiarioCheque; //Seria mas el egreso pero todavia no esta
+                    TotalDia = IngresoDiarioEfectivoContado + IngresoDiario + IngresoDiarioCheque; //Seria mas el egreso pero todavia no esta
                     celdaTotal.Text = TotalDia.ToString("N2", new CultureInfo("en-US"));
 
                     SaldoDia = TotalDia;
@@ -645,6 +740,20 @@ namespace Tecnocuisine.Formularios.Caja
                     SaldoDia = TotalDia - TotalEgresos;
                     celdaSaldo.Text = SaldoDia.ToString("N2", new CultureInfo("en-US"));
 
+                    int SaldoEsNegativoPrimeraColumna = SaldoNegativo(celdaSaldo.Text);
+
+                    if (SaldoEsNegativoPrimeraColumna == -1)
+                    {
+                        celdaSaldo.Font.Bold = true;
+                        celdaSaldo.ForeColor = System.Drawing.Color.Green;
+                    }
+
+                    else
+                    {
+                        celdaSaldo.Font.Bold = true;
+                        celdaSaldo.ForeColor = System.Drawing.Color.Red;
+                    }
+
                 }
                 FechaDesdeDateTime = FechaDesdeDateTime.AddDays(1);
 
@@ -658,9 +767,49 @@ namespace Tecnocuisine.Formularios.Caja
                     decimal.Parse(celdaArrastre.Text, NumberStyles.Currency, new CultureInfo("en-US")) -
                     decimal.Parse(celdaTotalEgresos.Text, NumberStyles.Currency, new CultureInfo("en-US"))).ToString
                     ("N2", new CultureInfo("en-US"));
+
+                    int SaldoEsNegativo = SaldoNegativo(celdaSaldo.Text);
+
+                    if (SaldoEsNegativo == -1)
+                    {
+                        celdaSaldo.Font.Bold = true;
+                        celdaSaldo.ForeColor = System.Drawing.Color.Green;
+                    }
+
+                    else
+                    {
+                        celdaSaldo.Font.Bold = true;
+                        celdaSaldo.ForeColor = System.Drawing.Color.Red;
+                    }
                 }
             }
         }
+
+        public int SaldoNegativo(string Saldo)
+        {
+
+            // Eliminamos los separadores de miles "," para que la cadena sea "-110005.00"
+            string numeroSinSeparadores = Saldo.Replace(",", "");
+
+            if (decimal.TryParse(numeroSinSeparadores, out decimal valorNumerico))
+            {
+                if (valorNumerico < 0)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            else
+            {
+                // Si la conversión falla, puedes manejar el error como prefieras,
+                // por ejemplo, lanzar una excepción, devolver un valor predeterminado, etc.
+                throw new ArgumentException("El formato del número no es válido.");
+            }
+        }
+
         public void CargarSaldoTabla(int Cont)
         {
 
@@ -739,6 +888,7 @@ namespace Tecnocuisine.Formularios.Caja
                 celType.Width = Unit.Pixel(150);
                 celType.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
                 celType.Font.Bold = true;
+                celType.ForeColor = System.Drawing.Color.Green;
                 tr.Cells.Add(celType);
 
                 for (int i = 0; i < Cont; i++)
@@ -769,20 +919,21 @@ namespace Tecnocuisine.Formularios.Caja
                 TableHeaderCell celType = new TableHeaderCell();
                 celType.Text = "Tipo";
                 celType.VerticalAlign = VerticalAlign.Middle;
-                celType.HorizontalAlign = HorizontalAlign.Left;
+                celType.HorizontalAlign = HorizontalAlign.Right; // Cambiado a HorizontalAlign.Left
                 celType.Width = Unit.Pixel(150);
                 celType.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
                 celType.Font.Bold = true;
+                celType.CssClass = "no-right-align"; // Agrega una clase personalizada
                 tr.Cells.Add(celType);
-
 
                 TableHeaderCell celAcreditaEl = new TableHeaderCell();
                 celAcreditaEl.Text = "Detalle";
                 celAcreditaEl.VerticalAlign = VerticalAlign.Middle;
-                celAcreditaEl.HorizontalAlign = HorizontalAlign.Left;
+                celAcreditaEl.HorizontalAlign = HorizontalAlign.Right; // Cambiado a HorizontalAlign.Left
                 celAcreditaEl.Width = Unit.Pixel(150);
                 celAcreditaEl.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
                 celAcreditaEl.Font.Bold = true;
+                celAcreditaEl.CssClass = "no-right-align"; // Agrega una clase personalizada
                 tr.Cells.Add(celAcreditaEl);
                 //Hasta arriba esta ok
 
@@ -794,7 +945,7 @@ namespace Tecnocuisine.Formularios.Caja
                     string FechaDesdeString = ConvertDateFormat(fechaDesde.ToString());
                     celFecha.Text = fechaDesde.ToString("dd/MM/yyyy"); //FechaDesdeString.ToString();
                     celFecha.VerticalAlign = VerticalAlign.Middle;
-                    celFecha.HorizontalAlign = HorizontalAlign.Left;
+                    celFecha.HorizontalAlign = HorizontalAlign.Right;
                     celFecha.Width = Unit.Pixel(150);
                     celFecha.Attributes.Add("style", "padding-bottom: 1px !important; padding-right: 10px;");
                     tr.Cells.Add(celFecha);
@@ -948,6 +1099,7 @@ namespace Tecnocuisine.Formularios.Caja
                     {
                         totalIngreso += Importe;
                     }
+                    IDEgresoIngreso = int.Parse(row["id"].ToString());
                     CargarInsumosPH2(tipo, Importe, concepto.descripcion);
                 }
 
@@ -1014,26 +1166,50 @@ namespace Tecnocuisine.Formularios.Caja
         {
             try
             {
+                int IDEgresoIngreso = 0;
+                IDEgresoIngreso = Convert.ToInt32(this.TxtIDEditar.Text);
                 string FechaD = txtFechaHoy.Text.Replace("-", "/");
                 string FechaH = txtFechaVencimiento.Text.Replace("-", "/");
 
-
-                CashFlow cashflow = new CashFlow();
-                cashflow.fecha = ConvertirFecha(txtDate.Text);
-                cashflow.Tipo = ddlOptionsTipo.SelectedValue;
-                cashflow.idConceptos = Convert.ToInt32(txtConceptos.Text.Split('-')[0]);
-                cashflow.Importe = FormatNumber(txtImporte.Text);
-
-
-                int i = controladorCashFlow.AgregarCashFlow(cashflow);
-                if (i > 0)
+                if (IDEgresoIngreso > 0)
                 {
-                    Response.Redirect("Cashflow.aspx?a=2&i=1&FechaD=" + FechaD + "&FechaH=" + FechaH + "&Op=0");
+                    Tecnocuisine_API.Entitys.CashFlow cashflowEditar = new Tecnocuisine_API.Entitys.CashFlow();
+                    cashflowEditar.id = IDEgresoIngreso;
+                    cashflowEditar.fecha = ConvertirFecha(txtDate.Text);
+                    cashflowEditar.Tipo = ddlOptionsTipo.SelectedValue;
+                    cashflowEditar.idConceptos = Convert.ToInt32(txtConceptos.Text.Split('-')[0]);
+                    cashflowEditar.Importe = FormatNumber(txtImporte.Text);
+                    int rtaEditar = controladorCashFlow.EditarCashFlow(cashflowEditar);
 
+                    if (rtaEditar != -1)
+                    {
+                        Response.Redirect("Cashflow.aspx?a=2&i=1&FechaD=" + FechaD + "&FechaH=" + FechaH + "&Op=0");
+                    }
+                    else
+                    {
+                        this.m.ShowToastr(this.Page, "Error al editar!", "Warning");
+                    }
                 }
                 else
                 {
-                    this.m.ShowToastr(this.Page, "Error al Agregar producto!", "Warning");
+                    CashFlow cashflow = new CashFlow();
+                    cashflow.fecha = ConvertirFecha(txtDate.Text);
+                    cashflow.Tipo = ddlOptionsTipo.SelectedValue;
+                    cashflow.idConceptos = Convert.ToInt32(txtConceptos.Text.Split('-')[0]);
+                    cashflow.Importe = FormatNumber(txtImporte.Text);
+                    cashflow.Estado = 1;
+
+
+                    int i = controladorCashFlow.AgregarCashFlow(cashflow);
+                    if (i > 0)
+                    {
+                        Response.Redirect("Cashflow.aspx?a=2&i=1&FechaD=" + FechaD + "&FechaH=" + FechaH + "&Op=0");
+
+                    }
+                    else
+                    {
+                        this.m.ShowToastr(this.Page, "Error al Agregar producto!", "Warning");
+                    }
                 }
             }
             catch (Exception ex)
@@ -1042,7 +1218,39 @@ namespace Tecnocuisine.Formularios.Caja
             }
         }
 
+        [WebMethod]
+        public static string RellenarCamposEditar(int idCashFlow)
+        {
+            try
+            {
+                Tecnocuisine_API.Controladores.ControladorCashFlow cCashFlow = new Tecnocuisine_API.Controladores.ControladorCashFlow();
+                Tecnocuisine_API.Entitys.CashFlow cashflow = new Tecnocuisine_API.Entitys.CashFlow();
+                cashflow = cCashFlow.ObtenerCashFlowId(idCashFlow);
+                Tecnocuisine_API.Controladores.ControladorConceptos controladorConceptos = new Tecnocuisine_API.Controladores.ControladorConceptos();
+                DataTable dt = controladorConceptos.ObtenerConceptosMasNumeroConceptoId((int)cashflow.idConceptos);
+                //decimal Importe = cashflow.Importe.;
+                var response = new
+                {
+                    Importe = cashflow.Importe.ToString("N2", new CultureInfo("en-US")),
+                    Tipo = cashflow.Tipo,
+                    Fecha = Convert.ToDateTime(cashflow.fecha).ToString("yyyy-MM-dd"),
+                    idConceptos = cashflow.idConceptos,
+                    //CashFlow = cashflow,
+                    Concepto = dt.Rows[0][0].ToString()
+                };
 
+                // Serializar el objeto cashflow a JSON
+                string cashflowJson = Newtonsoft.Json.JsonConvert.SerializeObject(response);
+
+                // Devolver el objeto cashflow serializado como respuesta
+                return cashflowJson;
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
         public void CargarInsumosPH2(string Tipo, decimal importe, string descripcion, string fechad = "", string fechah = "")
         {
             cont++;
@@ -1102,6 +1310,8 @@ namespace Tecnocuisine.Formularios.Caja
                     btnEditar.Style.Add("background-color", "transparent");
                     btnEditar.Attributes.Add("href", link);
                     btnEditar.Attributes.Add("target", "_blank");
+                    btnEditar.Attributes.Add("title", "Ver");
+                    btnEditar.Attributes.Add("data-toggle", "tooltip");
                     //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                     //btnDetalles.Attributes.Add("title data-original-title", "Editar");
                     btnEditar.Text = "<span><i style='color:black;' class='fa fa-search'></i></span>";
@@ -1116,15 +1326,33 @@ namespace Tecnocuisine.Formularios.Caja
                 {
 
                     TableCell celAction = new TableCell();
-                    LinkButton btnEditar = new LinkButton();
 
-
-                    btnEditar.CssClass = "btn btn-xs";
+                    HtmlGenericControl btnEditar = new HtmlGenericControl("a");
+                    btnEditar.Attributes.Add("title", "Editar");
+                    btnEditar.Attributes.Add("data-toggle", "tooltip");
+                    btnEditar.Attributes.Add("class", "btn btn-xs");
                     btnEditar.Style.Add("background-color", "transparent");
-                    //btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                    //btnDetalles.Attributes.Add("title data-original-title", "Editar");
-                    btnEditar.Text = "<span></span>";
+                    btnEditar.Style.Add("margin-right", "10px");
+                    //btnEliminar.Attributes.Add("title data-original-title", familia);
+                    //btnVerFamilia.Attributes.Add("title data-original-title", "Editar");
+                    btnEditar.ID = "btnEditar" + cont.ToString() + "";
+                    btnEditar.InnerHtml = "<span><i style='color:#428bca;' class='fa fa-pencil'></i></span>";
+                    btnEditar.Attributes.Add("OnClick", "AbrirModalEditarCashflow(" + IDEgresoIngreso + ");");
                     celAction.Controls.Add(btnEditar);
+
+                    HtmlGenericControl btnEliminar = new HtmlGenericControl("a");
+                    btnEliminar.Attributes.Add("title", "Eliminar");
+                    btnEliminar.Attributes.Add("data-toggle", "tooltip");
+                    btnEliminar.Attributes.Add("class", "btn btn-xs");
+                    btnEliminar.Style.Add("background-color", "transparent");
+                    btnEliminar.Style.Add("margin-right", "10px");
+                    //btnEliminar.Attributes.Add("title data-original-title", familia);
+                    //btnVerFamilia.Attributes.Add("title data-original-title", "Editar");
+                    btnEliminar.ID = "btnEliminar" + cont.ToString() + "";
+                    btnEliminar.InnerHtml = "<span><i style='color:#ed5565;' class='fa fa-trash'></i></span>";
+                    btnEliminar.Attributes.Add("OnClick", "AbrirModalEliminarCashflow(" + IDEgresoIngreso + ");");
+                    celAction.Controls.Add(btnEliminar);
+
                     celAction.Width = Unit.Percentage(10);
                     celAction.VerticalAlign = VerticalAlign.Middle;
                     celAction.HorizontalAlign = HorizontalAlign.Center;
@@ -1243,6 +1471,22 @@ namespace Tecnocuisine.Formularios.Caja
             }
         }
 
+        //Este funcion es el onclick del boton Eliminar
+        protected void LinkButton1_Click(object sender, EventArgs e)
+        {
+            int IDEgresoIngreso = Convert.ToInt32(this.txtIDIngresoEgreso.Text);
+            int RtaEliminar = controladorCashFlow.EliminarCashFlow(IDEgresoIngreso);
 
+            if (RtaEliminar != -1)
+            {
+                Response.Redirect("Cashflow.aspx?a=2&i=1&FechaD=" + FechaD + "&FechaH=" + FechaH + "&Op=0");
+            }
+            else
+            {
+                this.m.ShowToastr(this.Page, "Error al eliminar!", "Warning");
+            }
+
+            // Response.Redirect("Cashflow.aspx", false);
+        }
     }
 }

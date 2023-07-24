@@ -19,7 +19,6 @@
                 <div class="ibox-content">
                   <div style="margin-left: 0px; margin-right: 0px;" class="row">
                                                     <div class="col-md-10">
-
                                                         <div style="display: flex;">
                                                             <div class="input-group m-b">
                                                                 <div style="display: flex;">
@@ -34,9 +33,7 @@
                                                                         <label class="col-md-4" style="margin-top: 5px;">Desde</label>
                                                                     </div>
                                                                     <div class="col-md-8">
-
                                                                         <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy"  Style="margin-left: 0px; width: 100%;"></asp:TextBox>
-
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -46,38 +43,49 @@
                                                                         <label style="margin-top: 5px;" class="col-md-4">Hasta</label>
                                                                     </div>
                                                                     <div class="col-md-8">
-
                                                                         <asp:TextBox class="form-control" runat="server" type="date" ID="txtFechaVencimiento" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
-
                                                                     </div>
                                                                 </div>
                                                              </div>
                                                             <div class="input-group m-b">
-                                                                <div class="row">
+                                                              <div class="row">
                                                                     <div  class="col-md-2"  style="margin-right: 15px;">
-                                                                <label style="margin-top: 5px;" class="col-md-4">Cliente</label>
+                                                                        <label style="margin-top: 5px;" class="col-md-4">Cliente</label>
                                                                     </div>
-                                                                    <div class="col-md-8">
-                                                              
+                                                                 <div class="col-md-8">                                                            
                                                                     <datalist id="ListClientes" runat="server"></datalist>
-                                                                    <asp:TextBox name="txtProveedor" type="text" ID="txtCliente" runat="server" list="ContentPlaceHolder1_ListClientes" class="form-control" style="margin-left:15px;margin-bottom: 15px; width: 100%;"> </asp:TextBox>
-                                                                    <p id="ValivaCliente" class="text-danger text-hide">Tienes que ingresar un Cliente</p>
-                                                                </div>
-                                                                    
-                                                                </div>
+                                                                    <asp:TextBox name="txtProveedor" type="text" ID="txtCliente" runat="server" 
+                                                                        list="ContentPlaceHolder1_ListClientes" class="form-control" style="margin-left:15px;
+                                                                        margin-bottom: 15px; width: 100%;"> 
+                                                                    </asp:TextBox>
+                                                                    <p id="ValivaCliente" class="text-danger hide">Ingresar un Cliente</p>
+                                                                   <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server"
+                                                                        ErrorMessage="El campo es obligatorio" ControlToValidate="txtCliente"
+                                                                        ValidationGroup="grupoValidacion" SetFocusOnError="true" Font-Bold="true" ForeColor="Red">
+                                                                   </asp:RequiredFieldValidator>                                                                     
+                                                                </div>                                                                    
+                                                              </div>
                                                             </div>
                                                             <%--  <div class="input-group m-b" 30%>
                                                                 <a id="btnFiltrar" onclick="FiltrarVentas()" class="btn btn-primary"><i class="fa fa-paper-plane"></i>&nbsp;Filtrar </a>
 
                                                             </div>--%>
                                                         </div>
-
-
-
                                                     </div>
                                                     <div class="col-md-2" style="display: flex; flex-direction: row; align-items: center; justify-content: end;">
-                                                        <a id="btnFiltrar" onclick="FiltrarVentas()" class="btn btn-primary" style="margin-right: 15px;"><i class="fa fa-paper-plane"></i>&nbsp;Filtrar </a>
-                                                        </div>
+                                                        <%--<a id="btnFiltrar" onclick="FiltrarVentas()" class="btn btn-primary" style="margin-right: 15px;" ValidationGroup=""><i class="fa fa-paper-plane"></i>&nbsp;Filtrar </a>--%>
+                                                        <%-- <a id="btnFiltrar" onclick="FiltrarVentas()" class="btn btn-primary" style="margin-right: 15px;"
+                                                            ValidationGroup="grupoValidacion"><i class="fa fa-paper-plane"></i>&nbsp;Filtrar</a>--%>
+
+                                                       <%-- <asp:Button ID="btnFiltrar" runat="server" class="btn btn-primary" style="margin-right: 15px;"
+                                                            ValidationGroup="grupoValidacion" OnClientClick="FiltrarVentas(event)"/>      --%>  
+                                                        
+                                                    <asp:LinkButton ID="lbtnAgregar" runat="server" class="btn btn-primary" 
+                                                        style="margin-right: 15px;" OnClientClick="FiltrarVentas(event)" ValidationGroup="grupoValidacion">
+                                                        <span class="fa fa-paper-plane"></span> Filtrar
+                                                    </asp:LinkButton>
+                                                    </div>
+                                                </div>
                                                 </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
@@ -117,13 +125,13 @@
 
 
        
-    </div>
+   
 
   
         <style>
             #editable_length {
                 margin-left: 0px !important;
-}
+            }
         </style>
     <script type="text/javascript">
         function openModal() {
@@ -209,19 +217,16 @@
 
         }
 
-        function FiltrarVentas() {
+        function FiltrarVentas(e) {
+            e.preventDefault()
+            var textboxValue = document.getElementById('<%= txtCliente.ClientID %>').value;
             let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value.replaceAll("-", "/");
             let FechaH = document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value.replaceAll("-", "/");
-            let Clientes = document.getElementById("ContentPlaceHolder1_txtCliente").value
-            let proveedorValiva = document.getElementById("ValivaCliente");
-            if (Clientes == "-1") {
-                proveedorValiva.className = "text-danger"
-                return 0;
+            if (textboxValue.trim() !== '') {
+                window.location.href = "ChequesCobros.aspx?c=" + textboxValue.split("-")[0].trim() + "&FechaD=" + FechaD + "&FechaH=" + FechaH;
             } else {
-                proveedorValiva.className = "text-danger text-hide"
+                document.getElementById('ValivaCliente').classList.remove('hide')
             }
-
-            window.location.href = "ChequesCobros.aspx?c=" + Clientes.split("-")[0].trim() + "&FechaD=" + FechaD + "&FechaH=" + FechaH;
         }
     </script>
 

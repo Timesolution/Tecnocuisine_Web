@@ -145,7 +145,7 @@
         <style>
             #editable_length {
                 margin-left: 0px !important;
-}
+            }
         </style>
     <script>
         $(document).ready(function () {

@@ -251,9 +251,6 @@ namespace Tecnocuisine
             }
         }
 
-       
-
-    
         public void CargarInsumosPH2(Cheques cheque)
         {
 

@@ -34,6 +34,10 @@
                 border-left: 1px solid #ddd; /* Establece el borde izquierdo */
                 border-right: 1px solid #ddd; /* Establece el borde derecho */
             }
+
+        #editable_length {
+            margin-left: 0px !important;
+        }
     </style>
 
 
@@ -135,7 +139,7 @@
                                                                         <th style="text-align: left; width: 15%">Tipo</th>
                                                                         <th style="width: 35%">Detalle</th>
                                                                         <th style="text-align: right; width: 25%">Importe</th>
-                                                                        <th style="width: 10%"></th>
+                                                                        <th style="width: 20%"></th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -174,6 +178,12 @@
             </div>
         </div>
     </div>
+    <style>
+        #CashFlowDiario th:not(.no-right-align) {
+            text-align: right;
+        }
+    </style>
+
 
     <%-- Aca empieze el div del cashFlowDiario --%>
     <div class="ibox-content m-b-sm border-bottom" style="margin-top: 10px; padding-top: 0px;">
@@ -197,12 +207,13 @@
         </div>
     </div>
 
+
     <div id="modalAgregar" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">Agregar</h4>
+                    <h4 id="titleAdd" class="modal-title">Agregar</h4>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -237,7 +248,9 @@
                             <p id="ValivaImporte" class="text-danger text-hide">Tienes que ingresar un Importe</p>
                         </div>
                     </div>
-
+                    <div class="col-md-3">
+                        <asp:TextBox runat="server" ID="TxtIDEditar" Text="0" Style="display: none"></asp:TextBox>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <asp:LinkButton runat="server" ID="btnGuardarModal" disabled="disabled" class="buttonLoading btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
@@ -250,19 +263,48 @@
 
 
 
+    <div id="modalEliminar" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Eliminar</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5>
+                                    <asp:Label runat="server" ID="lblMensaje" Text="Esta seguro que desea eliminar Ingreso o Egreso?" Style="text-align: center"></asp:Label>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                    <asp:TextBox runat="server" ID="txtIDIngresoEgreso" Text="0" Style="display: none"></asp:TextBox>
+                </div>
+                <div class="modal-footer">
+                    <asp:LinkButton runat="server" ID="LinkButton1" class="buttonLoading btn btn-danger" OnClick="LinkButton1_Click"><i class="fa fa-check"></i>&nbsp;Eliminar </asp:LinkButton>
+                    <asp:HiddenField ID="HiddenField2" runat="server" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
     <script src="../Scripts/plugins/toastr/toastr.min.js"></script>
     <script src="/../Scripts/plugins/staps/jquery.steps.min.js"></script>
     <script src="../../js/plugins/datapicker/bootstrap-datepicker.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-    <style>
-        #editable_length {
-            margin-left: 0px !important;
-        }
-    </style>
+
     <script>
         $(document).ready(function () {
-            $("body").tooltip({ selector: '[data-toggle=tooltip]' });           
+            $("body").tooltip({ selector: '[data-toggle=tooltip]' });
             let fechad = document.getElementById("ContentPlaceHolder1_FechaDesde").value
             let fechah = document.getElementById("ContentPlaceHolder1_FechaHasta").value
 
@@ -450,7 +492,7 @@
             var fechaFormateada1 = (fechas.primerDia.getFullYear() + '/' + (fechas.primerDia.getMonth() + 1) + '/' + fechas.primerDia.getDate())
             var fechaFormateada2 = (fechas.ultimoDia.getFullYear() + '/' + (fechas.ultimoDia.getMonth() + 1) + '/' + fechas.ultimoDia.getDate())
 
-         
+
             document.getElementById("ContentPlaceHolder1_txtFechaHoy").value = formatearFechas(fechaFormateada1);
             document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value = formatearFechas(fechaFormateada2);;
 
@@ -471,6 +513,29 @@
             return numero;
         }
         function AbrirModalCashflow() {
+            document.getElementById("titleAdd").innerHTML = 'Agregar'
+            document.getElementById("<%=btnGuardarModal.ClientID%>").innerHTML = '<i class="fa fa-check"></i>&nbsp;Agregar'
+            let fecha = new Date();
+            let año = fecha.getFullYear();
+            let mes = (fecha.getMonth() + 1).toString().padStart(2, '0');  // El mes se cuenta desde 0, por eso se suma 1
+            let dia = fecha.getDate().toString().padStart(2, '0');
+            document.getElementById('<%= txtDate.ClientID %>').value = año + '-' + mes + '-' + dia;
+            document.getElementById('<%= txtImporte.ClientID %>').value = "";
+            document.getElementById('<%= ddlOptionsTipo.ClientID %>').selectedIndex = 0;        
+            document.getElementById('<%= txtConceptos.ClientID %>').value = "";
+            $("#modalAgregar").modal("show");
+        }
+
+        function AbrirModalEliminarCashflow(IDEgresoIngreso) {
+            document.getElementById('<%= txtIDIngresoEgreso.ClientID %>').value = IDEgresoIngreso;
+            $("#modalEliminar").modal("show");
+        }
+        //Esta funcion edito el cashflow 
+        function AbrirModalEditarCashflow(IDEgresoIngreso) {
+            document.getElementById("titleAdd").innerHTML = 'Modificar'
+            document.getElementById("<%=btnGuardarModal.ClientID%>").innerHTML = '<i class="fa fa-check"></i>&nbsp;Modificar'
+            document.getElementById('<%= TxtIDEditar.ClientID %>').value = IDEgresoIngreso;
+            RellenarCampoEditar(IDEgresoIngreso);
             $("#modalAgregar").modal("show");
         }
 
@@ -489,6 +554,31 @@
                 FormatearNumero2(input)
             }
             validarCashFlow();
+        }
+
+        //Esta funcion rellena los campos al editar
+        function RellenarCampoEditar(IDEgresoIngreso) {
+            fetch('Cashflow.aspx/RellenarCamposEditar', {
+                method: 'POST',
+                body: JSON.stringify({ idCashFlow: IDEgresoIngreso }),
+                headers: { 'Content-Type': 'application/json' },
+            })
+
+                .then(response => response.json())
+                .then(data => {
+                    // Asignar los valores del objeto cashflow a los textbox
+                    console.log(data.d)
+                    let cashFlowObject = JSON.parse(data.d);
+                    document.getElementById('<%= txtDate.ClientID %>').value = cashFlowObject.Fecha;
+                    document.getElementById('<%= txtImporte.ClientID %>').value = cashFlowObject.Importe;
+                    document.getElementById('<%= ddlOptionsTipo.ClientID %>').value = cashFlowObject.Tipo;
+                    document.getElementById('<%= txtConceptos.ClientID %>').value = cashFlowObject.Concepto;
+                    document.getElementById("ContentPlaceHolder1_btnGuardarModal").removeAttribute("disabled");
+                })
+                .catch(error => {
+                    // Manejo de errores...
+                    console.error(error);
+                });
         }
 
     </script>

@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="Imputar" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Imputar.aspx.cs" Inherits="Tecnocuisine.Caja.Imputar" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+  
     <div class="wrapper wrapper-content">
         <div class="ibox-content m-b-sm border-bottom" style="margin-top: 10px; padding-top: 0px;">
 
@@ -9,12 +10,12 @@
 
                 <div style="display: flex;">
                     <div style="display: flex; justify-content: flex-start">
-                        <h3 style="color:#1ab394;font-weight: bold;">Cliente </h3>
-                        <h3 style="font-weight: bold; margin-left:5px" id="ClienteSelec"></h3>
+                        <h3 style="color: #1ab394; font-weight: bold;">Cliente </h3>
+                        <h3 style="font-weight: bold; margin-left: 5px" id="ClienteSelec"></h3>
                     </div>
                     <div style="width: 70%; display: flex; justify-content: end;">
-                        <h3 style="color:#1ab394;font-weight: bold;">Recibo De Cobro N°</h3>
-                        <h3 style="font-weight: bold; margin-left:5px" id="ReciboCobroNumero"></h3>
+                        <h3 style="color: #1ab394; font-weight: bold;">Recibo De Cobro N°</h3>
+                        <h3 style="font-weight: bold; margin-left: 5px" id="ReciboCobroNumero"></h3>
                     </div>
                 </div>
 
@@ -129,9 +130,9 @@
                                                             <h4 style="margin-left: 5%">Fecha:</h4>
                                                         </div>
                                                         <div class="col-md-8">
-                                                           
-                                                                    <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" type="date" data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
-                                                               
+
+                                                            <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" type="date" data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+
                                                         </div>
                                                     </div>
 
@@ -139,10 +140,10 @@
                                                     <div>
 
                                                         <div class="col-md-4">
-                                                            <h4 style="margin-left: 5%;margin-top: 15px;">Importe:</h4>
+                                                            <h4 style="margin-left: 5%; margin-top: 15px;">Importe:</h4>
                                                         </div>
                                                         <div class="col-md-8">
-                                                            <asp:TextBox class="form-control" ID="txtImporteCheque" Style="text-align: right;margin-top: 15px;" onchange="ChangeCheque(this)" runat="server">
+                                                            <asp:TextBox class="form-control" ID="txtImporteCheque" Style="text-align: right; margin-top: 15px;" onchange="ChangeCheque(this)" runat="server">
                                                                     
                                                             </asp:TextBox>
 
@@ -239,8 +240,8 @@
                                                     <div class="col-md-8">
                                                         <div style="display: flex; justify-content: end;">
 
-                                                            <button class="btn btn-sm btn-primary" style="margin-right: 25px; margin-top: 15px;" data-toggle="tooltip" data-placement="top" data-original-title="Guardar"
-                                                                text="Guardar" validationgroup="AgregarEntregas" id="btnGuardarGuardarCheque" onclick="AgregarChequeATabla(event)" disabled="disabled">
+                                                            <button class="btn btn-sm btn-primary" style="margin-right: 25px; margin-top: 15px;" data-toggle="tooltip" data-placement="top" data-original-title="Guardar" disabled=""
+                                                                text="Guardar" validationgroup="AgregarEntregas" id="btnGuardarGuardarCheque" onclick="AgregarChequeATabla(event)">
                                                                 Guardar Cheque</button>
                                                         </div>
                                                     </div>
@@ -352,10 +353,6 @@
                                             <div class="col-lg-6" style="margin-bottom: 15px">
                                                 <div class="row">
 
-
-
-
-
                                                     <div id="DivTarjeta">
                                                         <div class="col-md-4" style="margin-top: 15px;">
                                                             <h4 style="margin-left: 5%">Entidad:</h4>
@@ -364,9 +361,6 @@
                                                             <asp:DropDownList ID="DropDownEntidadList" class="form-control" runat="server" onchange="BuscarTarjetasByEntidades(this)" />
                                                         </div>
                                                     </div>
-
-
-
 
                                                     <div id="DivTarjeta2">
                                                         <div class="col-md-4" style="margin-top: 15px;">
@@ -387,8 +381,6 @@
                                                             <asp:TextBox class="form-control" ID="txtImporteTarjeta" onchange="ChangeTarjeta(this)" runat="server">
                                                                     
                                                             </asp:TextBox>
-
-
                                                         </div>
                                                     </div>
                                                     <div>
@@ -401,9 +393,6 @@
                                                         <div class="col-md-8">
                                                         </div>
                                                     </div>
-
-
-
 
                                                 </div>
                                             </div>
@@ -645,7 +634,7 @@
             }
 
 
-         
+
 
 
 
@@ -664,12 +653,12 @@
             establecerDiaHoy();
             //var todayBtn = $('.datepicker').find('.today');
             //todayBtn.addEventListener('click', establecerDiaHoy);
-       
+
             preciofinal = document.getElementById("SumaFinal").value;
             document.getElementById("totalAingresar").innerText = "$ " + preciofinal;
             let cliente = document.getElementById("ContentPlaceHolder1_idClienteFinal").value.split("-")[1].trim();
             document.getElementById("ClienteSelec").innerText = cliente;
-            document.getElementById("ReciboCobroNumero").innerText =  document.getElementById("ContentPlaceHolder1_idNumeroCobro").value
+            document.getElementById("ReciboCobroNumero").innerText = document.getElementById("ContentPlaceHolder1_idNumeroCobro").value
 
         });
 
@@ -778,6 +767,17 @@
                 document.getElementById("btnGuardar").disabled = "disabled";
             }
         }
+
+        function FormatearNumero(input) {
+            let value = input.value
+            if (value != "" && !value.includes(",")) {
+                input.value = formatearNumero(Number(input.value));
+
+            } else {
+                input.value = formatearNumero(revertirNumero(value));
+            }
+        }
+
         function ChangeCheque(input) {
 
             if (input.value != "") {
@@ -837,15 +837,6 @@
             return numero;
         }
 
-        function FormatearNumero(input) {
-            let value = input.value
-            if (value != "" && !value.includes(",")) {
-                input.value = formatearNumero(Number(input.value));
-
-            } else {
-                input.value = formatearNumero(revertirNumero(value));
-            }
-        }
 
         function establecerDiaHoy() {
             var fechaActual = new Date();
@@ -869,11 +860,11 @@
 
             fechafinal = anio + '-' + mes + '-' + dia;
             document.getElementById("ContentPlaceHolder1_txtFechaHoy").value = fechafinal;
-          /*  document.getElementById("ContentPlaceHolder1_txtFechaHoy").datepicker('setDate', fechaFormateada);*/
+            /*  document.getElementById("ContentPlaceHolder1_txtFechaHoy").datepicker('setDate', fechaFormateada);*/
 
         }
 
-    
+
         function ActualizarPrecioFinal(textbox) {
             var totalImputar = 0;
             FormatearNumero(textbox);
@@ -1178,13 +1169,12 @@
             var filas = tabla.getElementsByTagName("tr");
 
 
-
             // Recorrer cada fila a partir del índice 1 (se salta la fila de encabezados)
             var listFacImputar = "";
             var listTarjeta = "";
             var listCheques = "";
             var totalefectivo = "";
-            for (var i = 1; i < filas.length-1; i++) {
+            for (var i = 1; i < filas.length - 1; i++) {
                 var celdas = filas[i].getElementsByTagName("td");
                 var id = celdas[0].innerText;
                 var importeRestar = celdas[3].getElementsByTagName("input")[0].value; // Obtener el valor del importe en la segunda celda
@@ -1194,7 +1184,7 @@
                     listFacImputar = id + "-" + importefinal;
 
                 } else {
-                    listFacImputar +="%" + id + "-" + importefinal;
+                    listFacImputar += "%" + id + "-" + importefinal;
 
                 }
 
@@ -1233,7 +1223,7 @@
                     var Cuenta = celdas[4].innerText;
                     var Cuit = celdas[5].innerText;
                     var Librador = celdas[6].innerText;
-                    var fecha = celdas[0].innerText.replaceAll("-","$");
+                    var fecha = celdas[0].innerText.replaceAll("-", "$");
                     if (listCheques == "") {
                         listCheques += importe + "/" + numero + "/" + idBanco.split("-")[0].trim() + "/" + Cuenta + "/" + Cuit + "/" + Librador + "/" + fecha;
                     } else {
@@ -1262,7 +1252,7 @@
                 for (var i = 1; i < filas2.length; i++) {
                     var celdas = filas2[i].getElementsByTagName("td");
                     var text = celdas[0].innerText;
-                    var importe = celda[1].innerText;
+                    var importe = celdas[1].innerText;
                     if (text.includes("Retenciones")) {
                         let palabras = text.split(" ");
 
@@ -1270,53 +1260,45 @@
                         if (palabras[0] === "Retenciones") {
                             // Unir las palabras a partir de la segunda palabra en adelante
                             let text2 = palabras.slice(1).join(" ");
-                        if (retenciones == "") {
-                            retenciones += text2 +"$"+ importe;
-                    } else {
-                            retenciones += "%" + text2 + "$" + importe;;
+                            if (retenciones == "") {
+                                retenciones += text2 + "$" + importe;
+                            } else {
+                                retenciones += "%" + text2 + "$" + importe;;
+                            }
                         }
-
                     }
-
                 }
 
 
+                $.ajax({
+                    method: "POST",
+                    url: "Imputar.aspx/ImputarFacturas",
+                    data: '{listFacturas: "' + listFacImputar
+                        + '" , ImporteCobro: "' + ingresadototal
+                        + '" , idCliente: "' + document.getElementById("ContentPlaceHolder1_idClienteFinal").value.split("-")[0].trim()
+                        + '" , listCheques: "' + listCheques
+                        + '" , listTarjetas: "' + listTarjeta
+                        + '" , totalefectivo: "' + totalefectivo
+                        + '"}',
+                    contentType: "application/json",
+                    dataType: "json",
+                    dataType: "json",
+                    async: false,
+                    error: (error) => {
+                        console.log(JSON.stringify(error));
+                        /* btn.disabled = false;*/
+                    },
+                    success: (response) => {
+                        if (response.d == "") {
+                            window.location.href = "Cobros.aspx?m=5";
+                        } else {
+                            toastr.info(response.d);
+                        }
+                    }
+                });
 
             }
-
-
-
-            $.ajax({
-                method: "POST",
-                url: "Imputar.aspx/ImputarFacturas",
-                data: '{listFacturas: "' + listFacImputar
-                    + '" , ImporteCobro: "' + ingresadototal
-                    + '" , idCliente: "' + document.getElementById("ContentPlaceHolder1_idClienteFinal").value.split("-")[0].trim()
-                    + '" , listCheques: "' + listCheques
-                    + '" , listTarjetas: "' + listTarjeta
-                    + '" , totalefectivo: "' + totalefectivo
-                    + '"}',
-                contentType: "application/json",
-                dataType: "json",
-                dataType: "json",
-                async: false,
-                error: (error) => {
-                    console.log(JSON.stringify(error));
-                   /* btn.disabled = false;*/
-                },
-                success: (response) => {
-                    if (response.d == "") {
-                        window.location.href = "Cobros.aspx?m=5";
-                    } else {
-                        toastr.info(response.d);
-                    }
-                }
-            });
-
-
-               
         }
-
     </script>
 
 </asp:Content>

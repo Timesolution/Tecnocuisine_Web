@@ -55,9 +55,6 @@ namespace Tecnocuisine.Caja
 
             if (!IsPostBack)
             {
-
-
-
             }
 
             if (idCliente != -1)
@@ -104,7 +101,7 @@ namespace Tecnocuisine.Caja
                     cc.fecha = ((DateTime)row["fecha"]);
                     cc.Descripcion = row["Descripcion"].ToString();
                     cc.Importe = Convert.ToDecimal(row["Importe"]);
-                    if (!row.IsNull("idClientes"))
+                    if (!row.IsNull("idCliente"))
                     { 
                         cc.idCliente = Convert.ToInt32(row["idCliente"]);
                     } else

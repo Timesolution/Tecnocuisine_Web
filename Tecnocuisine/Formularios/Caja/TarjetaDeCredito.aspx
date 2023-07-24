@@ -92,7 +92,7 @@
                         <div class="col-md-2">
                             <a id="btnFiltrar" onclick="FiltrarVentas()" class="btn btn-primary" style="margin-right: 15px; float: right;"><i class="fa fa-paper-plane"></i>&nbsp;Filtrar </a>
 
-<%--                            <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>--%>
+                            <%--<a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>--%>
                         </div>
                     </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
