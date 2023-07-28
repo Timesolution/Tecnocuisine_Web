@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="Imputar" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Imputar.aspx.cs" Inherits="Tecnocuisine.Caja.Imputar" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-  
+
     <div class="wrapper wrapper-content">
         <div class="ibox-content m-b-sm border-bottom" style="margin-top: 10px; padding-top: 0px;">
 
@@ -246,14 +246,11 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
 
                                             <table class="table table-striped table-bordered table-hover " id="editableCheques">
                                                 <thead>
                                                     <tr>
-
-
                                                         <th style="width: 7%">Fecha</th>
                                                         <th style="text-align: right; width: 10%">Importe</th>
                                                         <th style="text-align: left; width: 10%">Numero</th>
@@ -262,7 +259,6 @@
                                                         <th style="text-align: right; width: 10%">Cuit</th>
                                                         <th style="text-align: right; width: 10%">Librador</th>
                                                         <th style="width: 2%"></th>
-
                                                     </tr>
                                                 </thead>
                                                 <tbody id="IdTBODYCHEQUE">
