@@ -137,7 +137,7 @@ namespace Tecnocuisine.Formularios.Compras
         {
             try
             {
-                var TodasLasFac = controladorFacturas.ObtenerTodasFactura();
+                var TodasLasFac = controladorFacturas.ObtenerTodasFacturasConDescripcionRubro();
                 if (TodasLasFac.Count > 0)
                 {
                     decimal total = 0;
@@ -214,6 +214,21 @@ namespace Tecnocuisine.Formularios.Compras
                 celImporte.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;text-align: right;");
                 tr.Cells.Add(celImporte);
 
+                TableCell celRubro = new TableCell();
+                celRubro.Width = Unit.Percentage(10);
+                if (!(item.idRubro == null))
+                {
+                    celRubro.Text = item.Rubros.descripcion.ToString();
+                }
+
+                else { 
+                    celRubro.Text = "Sin rubro";
+                }
+                celRubro.VerticalAlign = VerticalAlign.Middle;
+                celRubro.HorizontalAlign = HorizontalAlign.Left;
+                celRubro.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;text-align: right;");
+                tr.Cells.Add(celRubro);
+
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
                 celAccion.Width = Unit.Percentage(3);
@@ -224,14 +239,15 @@ namespace Tecnocuisine.Formularios.Compras
 
                 //btnEliminar.Attributes.Add("href", "../Compras/CrearVenta.aspx?t=1&i=" + producto.id);
                 btnEliminar1.Text = "<span data-toggle=\"tooltip\" data-placement=\"top\" data-original-title=\"Ver Detalle Factura\"><i class='fa fa-search' style=\"color: black\"></i></span>";
-                btnEliminar1.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; background-color: transparent; padding-top: 12px;");
+                //btnEliminar1.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; background-color: transparent; padding-top: 12px;");
                 celAccion.Controls.Add(btnEliminar1);
 
                 LinkButton btnEliminar = new LinkButton();
                 btnEliminar.ID = "btnEliminar_" + item.id;
                 btnEliminar.CssClass = "btn  btn-xs";
-                btnEliminar.Text = "<a data-toggle=\"tooltip\" onclick =\"EliminarFac("+ item.id + ")\" data-placement=\"top\" data -original-title=\"Eliminar Producto\"><i style='color:black' class='fa fa-trash - o'></i></a>";
+                btnEliminar.Text = "<a data-toggle=\"tooltip\" onclick =\"EliminarFac("+ item.id + ")\" data-placement=\"top\" data -original-title=\"Eliminar Producto\"><i style='color:red' class='fa fa-trash - o'></i></a>";
                 btnEliminar.Style.Add("background-color", "transparent");
+                //btnEliminar.Style.Add("margin-top", "10px"); // Agrega 10 píxeles de margen superior al botón
                 celAccion.Controls.Add(btnEliminar);
 
 

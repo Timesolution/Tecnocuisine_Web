@@ -14,7 +14,7 @@
 
     <link href="/../css/bootstrap.min.css" rel="stylesheet" />
     <link href="/../font-awesome/css/font-awesome.css" rel="stylesheet" />
-    
+
     <link href="/../css/plugins/jsTree/style.min.css" rel="stylesheet" />
     <!-- Morris -->
     <link href="/../css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
@@ -157,22 +157,18 @@
                             <ul class="nav nav-second-level">
 
                                 <li>
-                                    <a style="color: white !important;" href="../..\Formularios\Ventas\Ventas.aspx">Ventas</a>
+                                    <a style="color: white !important;" href="../../Formularios/Maestros/Articulos.aspx">Articulos</a>
                                 </li>
                                 <li>
-                                    <a style="color: white !important;" href="../../Formularios/Maestros/Articulos.aspx">Articulos</a>
+                                    <a style="color: white !important;" href="../../Formularios/Ventas/CuentaCorriente.aspx">Cuenta Corriente</a>
 
                                 </li>
                                 <li>
                                     <a style="color: white !important;" href="../../Formularios/Maestros/Vendedores.aspx">Vendedores</a>
-
                                 </li>
-                                 <li>
-                                    <a style="color: white !important;" href="../../Formularios/Ventas/CuentaCorriente.aspx">Cuenta Corriente</a>
-
+                                <li>
+                                    <a style="color: white !important;" href="../..\Formularios\Ventas\Ventas.aspx">Ventas</a>
                                 </li>
-                                
-
                             </ul>
                         </li>
 
@@ -201,30 +197,29 @@
                                 <span class="fa arrow"></span>
                             </a>
                             <ul class="nav nav-second-level">
-                                <li><a style="color: white !important;" href="../../Formularios/Caja/Cashflow.aspx">Cashflow</a></li>
-
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/Contado.aspx">Caja</a></li>
                             </ul>
 
+                            <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/Cashflow.aspx">Cashflow</a></li>
+                            </ul>
 
-                              <ul class="nav nav-second-level">
+                            <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/ChequesCobros.aspx">Cheques</a></li>
+                            </ul>
+
+                            <ul class="nav nav-second-level">
                                 <li><a style="color: white !important;" href="../../Formularios/Caja/Cobros.aspx">Cobros</a></li>
-
                             </ul>
                             <ul class="nav nav-second-level">
                                 <li><a style="color: white !important;" href="../../Formularios/Caja/CobrosRealizados.aspx">Cobros Realizados</a></li>
-
                             </ul>
                             <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/EstadoDeResultado.aspx">Estado de resultado</a></li>
+                            </ul>
+
+                            <ul class="nav nav-second-level">
                                 <li><a style="color: white !important;" href="../../Formularios/Caja/TarjetaDeCredito.aspx">Tarjeta de Credito</a></li>
-
-                            </ul>
-                              <ul class="nav nav-second-level">
-                                <li><a style="color: white !important;" href="../../Formularios/Caja/Contado.aspx">Contado</a></li>
-
-                            </ul>
-                             <ul class="nav nav-second-level">
-                                <li><a style="color: white !important;" href="../../Formularios/Caja/ChequesCobros.aspx">Cheques</a></li>
-
                             </ul>
                         </li>
 
@@ -239,22 +234,18 @@
                                 <span class="fa arrow"></span>
                             </a>
                             <ul class="nav nav-second-level">
-                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Productos.aspx">Productos</a></li>
-                                <li><a style="color: white !important;">Ordenes de compra</a></li>
-                                <li><a style="color: white !important;" href="../..\Formularios\Compras\EntregasE.aspx">Recepcion de Compras</a></li>
-                                <li><a style="color: white !important;" href="../..\Formularios\Compras\ProveedoresP.aspx">Proveedores</a></li>
-                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Marcas.aspx">Marcas</a></li>
-                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Presentaciones.aspx">Presentaciones</a></li>
-                                <li><a style="color: white !important;" href="../../Formularios/Compras/FacturaCompras.aspx">Factura Compras</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Compras/CuentaCorriente.aspx">Cuenta Corriente</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Compras/FacturaCompras.aspx">Factura Compras</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Marcas.aspx">Marcas</a></li>
+                                <li><a style="color: white !important;">Ordenes de compra</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Compras/Pagos.aspx">Pagos</a></li>
-                                  <ul class="nav nav-second-level">
-                                <li><a style="color: white !important;" href="../../Formularios/Compras/PagosRealizados.aspx">Pagos Realizados</a></li>
-
-                            </ul>
-
-
-
+                                <ul class="nav nav-second-level">
+                                    <li><a style="color: white !important;" href="../../Formularios/Compras/PagosRealizados.aspx">Pagos Realizados</a></li>
+                                </ul>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Presentaciones.aspx">Presentaciones</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Productos.aspx">Productos</a></li>
+                                <li><a style="color: white !important;" href="../..\Formularios\Compras\ProveedoresP.aspx">Proveedores</a></li>
+                                <li><a style="color: white !important;" href="../..\Formularios\Compras\EntregasE.aspx">Recepcion de Compras</a></li>
                             </ul>
                         </li>
 
@@ -285,6 +276,9 @@
                             </a>
                             <ul class="nav nav-second-level">
                                 <li>
+                                    <a style="color: white !important;" href="../..\Formularios\Ventas\OrdenesDeProduccion.aspx">Ordenes de produccion </a>
+                                </li>
+                                <li>
                                     <a style="color: white !important;" href="../..\Formularios\Ventas\Produccion.aspx">Producción </a>
                                 </li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Recetas.aspx">Recetas</a></li>
@@ -307,30 +301,26 @@
                                     </ul>
                                 </li>
 
-                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Rubros.aspx">Rubros</a></li>
-                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Conceptos.aspx">Conceptos CashFlow</a></li>
-
-                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Unidades.aspx">Unidades de medida</a></li>
-                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Categorias.aspx">Categorias</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Atributos.aspx">Atributos</a></li>
-                                <li><a style="color: white !important;" href="../../Formularios/Maestros/InsumosF.aspx">Tipos de Atributos</a></li>
-                                <li><a style="color: white !important;" href="../../Formularios/Contabilidad/PlanDeCuentas.aspx">Plan de cuentas</a></li>
-                                 <li>
-                                    <a style="color: white !important;" href="../../Formularios/Maestros/Entidades.aspx">Entidades Tarjetas de Credito</a>
-
-                                </li>
-                                 <li>
-                                    <a style="color: white !important;" href="../../Formularios/Maestros/Tarjetas.aspx">Tarjetas</a>
-
-                                </li>
-                                 <li>
-                                    <a style="color: white !important;" href="../../Formularios/Administrador/EntidadesBancarias.aspx">Entidades Bancarias</a>
-
-                                </li>
-                                 <li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Categorias.aspx">Categorias</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Conceptos.aspx">Conceptos CashFlow</a></li>
+                                <li>
                                     <a style="color: white !important;" href="../../Formularios/Administrador/CuentasBancarias.aspx">Cuentas Bancarias</a>
-
                                 </li>
+                                <li>
+                                    <a style="color: white !important;" href="../../Formularios/Administrador/EntidadesBancarias.aspx">Entidades Bancarias</a>
+                                </li>
+                                <li>
+                                    <a style="color: white !important;" href="../../Formularios/Maestros/Entidades.aspx">Entidades Tarjetas de Credito</a>
+                                </li>
+                                <li><a style="color: white !important;" href="../../Formularios/Contabilidad/PlanDeCuentas.aspx">Plan de cuentas</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Rubros.aspx">Rubros</a></li>
+                                <li>
+                                    <a style="color: white !important;" href="../../Formularios/Maestros/Tarjetas.aspx">Tarjetas</a>
+                                </li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/InsumosF.aspx">Tipos de Atributos</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Unidades.aspx">Unidades de medida</a></li>
+
                                 <%--                                        <li><a style="color: white !important;" href="../../Formularios/Maestros/Grupos.aspx">Grupos</a></li>
                                         <li><a style="color: white !important;" href="../../Formularios/Maestros/Subgrupos.aspx">Subgrupos</a></li>--%>
                             </ul>
@@ -339,14 +329,7 @@
 
 
 
-                       <%-- CONFIGURACION--%>
-
-
-
-
-
-
-
+                        <%-- CONFIGURACION--%>
                         <li>
                             <a href="#">
                                 <i class="fa fa-gears text-white"></i>
@@ -354,18 +337,16 @@
                                 <span class="fa arrow"></span>
                             </a>
                             <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Alicuotas.aspx">Alicuotas IVA</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Administrador/Empresas.aspx">Empresa</a></li>
-                                <li><a style="color: white !important;" href="../../Formularios/Administrador/Sucursales.aspx">Sucursales</a></li>
-                                <li><a style="color: white !important;" href="../../Formularios/Administrador/Sectores.aspx">Sectores</a></li>
-                                <li><a style="color: white !important;" href="../../Formularios/Administrador/PuntosDeVenta.aspx">Puntos de Venta</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/EstadoClientes.aspx">Estados de clientes</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Administrador/Paises.aspx">Paises</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Administrador/PanelDeControl.aspx">Panel de Control</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Administrador/PuntosDeVenta.aspx">Puntos de Venta</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Administrador/Sectores.aspx">Sectores</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/SectorProductivo.aspx">Sector Productivo</a></li>
-                                <li><a style="color: white !important;" href="../../Formularios/Maestros/EstadoClientes.aspx">Estados de clientes</a></li>
-                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Alicuotas.aspx">Alicuotas IVA</a></li>
-                         <%--       <li><a style="color: white !important;" href="../../Formularios/Maestros/Clasificaciones.aspx">Clasificaciones</a></li>--%>
-
-
+                                <li><a style="color: white !important;" href="../../Formularios/Administrador/Sucursales.aspx">Sucursales</a></li>
+                                <%--       <li><a style="color: white !important;" href="../../Formularios/Maestros/Clasificaciones.aspx">Clasificaciones</a></li>--%>
                             </ul>
                         </li>
 

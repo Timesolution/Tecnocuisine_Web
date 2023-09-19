@@ -282,6 +282,7 @@
     <Content Include="Formularios\Administrador\EntidadesBancarias.aspx" />
     <Content Include="Formularios\Administrador\Paises.aspx" />
     <Content Include="Formularios\Administrador\PanelDeControl.aspx" />
+    <Content Include="Formularios\Administrador\Rubros.aspx" />
     <Content Include="Formularios\Administrador\Sectores.aspx" />
     <Content Include="Formularios\Administrador\PuntosDeVenta.aspx" />
     <Content Include="Formularios\Administrador\Sucursales.aspx" />
@@ -290,6 +291,7 @@
     <Content Include="Formularios\Caja\Cobros.aspx" />
     <Content Include="Formularios\Caja\CobrosRealizados.aspx" />
     <Content Include="Formularios\Caja\Contado.aspx" />
+    <Content Include="Formularios\Caja\EstadoDeResultado.aspx" />
     <Content Include="Formularios\Caja\Imputar.aspx" />
     <Content Include="Formularios\Caja\Retenciones.aspx" />
     <Content Include="Formularios\Caja\TarjetaDeCredito.aspx" />
@@ -336,6 +338,8 @@
     <Content Include="Formularios\Ventas\CuentaCorriente.aspx" />
     <Content Include="Formularios\Ventas\GenerarProduccion.aspx" />
     <Content Include="Formularios\Ventas\GenerarVenta.aspx" />
+    <Content Include="Formularios\Ventas\OrdenesDeProduccion.aspx" />
+    <Content Include="Formularios\Ventas\OrdenesDeProduccionABM.aspx" />
     <Content Include="Formularios\Ventas\Produccion.aspx" />
     <Content Include="Formularios\Ventas\ProduccionDetallada.aspx" />
     <Content Include="Formularios\Ventas\VentaDetallada.aspx" />
@@ -911,6 +915,13 @@
     <Compile Include="Formularios\Administrador\PanelDeControl.aspx.designer.cs">
       <DependentUpon>PanelDeControl.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Formularios\Administrador\Rubros.aspx.cs">
+      <DependentUpon>Rubros.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Administrador\Rubros.aspx.designer.cs">
+      <DependentUpon>Rubros.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Formularios\Administrador\Sectores.aspx.cs">
       <DependentUpon>Sectores.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -966,6 +977,13 @@
     </Compile>
     <Compile Include="Formularios\Caja\Contado.aspx.designer.cs">
       <DependentUpon>Contado.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Caja\EstadoDeResultado.aspx.cs">
+      <DependentUpon>EstadoDeResultado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Caja\EstadoDeResultado.aspx.designer.cs">
+      <DependentUpon>EstadoDeResultado.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Caja\Imputar.aspx.cs">
       <DependentUpon>Imputar.aspx</DependentUpon>
@@ -1288,6 +1306,20 @@
     </Compile>
     <Compile Include="Formularios\Ventas\GenerarVenta.aspx.designer.cs">
       <DependentUpon>GenerarVenta.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Ventas\OrdenesDeProduccion.aspx.cs">
+      <DependentUpon>OrdenesDeProduccion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Ventas\OrdenesDeProduccion.aspx.designer.cs">
+      <DependentUpon>OrdenesDeProduccion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Ventas\OrdenesDeProduccionABM.aspx.cs">
+      <DependentUpon>OrdenesDeProduccionABM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Ventas\OrdenesDeProduccionABM.aspx.designer.cs">
+      <DependentUpon>OrdenesDeProduccionABM.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Ventas\Produccion.aspx.cs">
       <DependentUpon>Produccion.aspx</DependentUpon>

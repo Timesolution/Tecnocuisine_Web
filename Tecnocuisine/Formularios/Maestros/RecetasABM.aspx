@@ -258,7 +258,7 @@
 
                                             <asp:TextBox ID="txtCantidad" Text="0" onkeydown="PasarAFactor(event)" onchange="CalcularCantBruta()" onkeypress="javascript:return validarNro(event)" Style="text-align: right" class="form-control money" runat="server" />
                                         </div>
-                                        <div class="col-md-2" style="text-align: center;">
+                                        <div class="col-md-1" style="text-align: center;">
                                             <label style="margin-bottom: auto;">Unidad Med.</label>
 
                                             <asp:TextBox ID="txtUnidadMed" disabled="disabled" Style="text-align: right" class="form-control" runat="server" />
@@ -266,7 +266,7 @@
                                         <div class="col-md-1" style="text-align: center;">
                                             <label style="margin-bottom: auto;">Factor</label>
 
-                                            <asp:TextBox ID="txtFactor" Text="1" onkeyUp="CalcularCantBruta()" onkeypress="agregarProductoPH()" Style="text-align: right" class="form-control" runat="server" />
+                                            <asp:TextBox ID="txtFactor" Text="1" onkeyUp="CalcularCantBruta()" Style="text-align: right" class="form-control" runat="server" />
                                         </div>
                                         <div class="col-md-1" style="text-align: center;">
                                             <label style="margin-bottom: auto;">Cant. Bruta</label>
@@ -278,7 +278,16 @@
 
                                             <asp:TextBox ID="txtCostoLimpio" disabled="disabled" onkeypress="javascript:return validarNro(event)" Style="text-align: right" class="form-control" runat="server" />
                                         </div>
-                                        <div class="col-md-1" style="width: 70px;margin-top: 1.7%;text-align: right;">
+                                        <div class="col-md-2" style="text-align: center; margin-top: 19px; margin-left: 19px;"">
+                                               <asp:DropDownList ID="ddlSector" runat="server"
+                                                     CssClass="chosen-select form-control"
+                                                     DataTextField="CountryName" DataValueField="CountryCode"
+                                                     Data-placeholder="Seleccione Rubro..." Width="100%">
+                                               <asp:ListItem Text="Select" Value=""></asp:ListItem>
+                                               </asp:DropDownList>
+                                            
+                                        </div>
+                                         <div style="float: right; margin-right: 10px; margin-top: 19px">
                                             <LinkButton ID="btnAgregarProducto" onclick="agregarProductoPH();" class="btn btn-primary dim required"><i style="color: white" class="fa fa-check"></i></LinkButton>
                                             <linkbutton id="btnEditarProducto" style="display:none" onclick="editarProductoPH();" class="btn btn-primary dim" data-toggle="tooltip" data-placement="top" title="Editar ingrediente"><i style="color: white" class="fa fa-pencil"></i></linkbutton>
                                             <%--<asp:LinkButton runat="server" ID="btnAgregarProducto"></asp:LinkButton>--%>
@@ -297,6 +306,8 @@
                                                 <th style="width: 10%">Unidad Medida</th>
                                                 <th style="width: 10%;text-align:right">Costo $</th>
                                                 <th style="width: 10%;text-align:right">Costo Total $</th>
+                                                <th style="width: 10%;text-align:right">Sector Productivo $</th>
+                                                <%--<th style="width: 10%;text-align:right">Sector productivo</th>--%>
                                                 <th style="width: 5%"></th>
                                             </tr>
                                         </thead>
@@ -394,7 +405,7 @@
                                     </div>
                                     <asp:HiddenField ID="hfPasos" runat="server" />
                                     <div class="row" style="margin-top: 2%; margin-left: 2%; text-align: right">
-                                                            <asp:LinkButton runat="server" ID="btnGuardar" style=" display:none" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                                        <asp:LinkButton runat="server" ID="btnGuardar" style=" display:none" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
                                         <linkbutton onclick="OrdenarTablaPasos()" class="btn btn-warning" ><i style="color: white" class="fa fa-refresh"></i>&nbsp; Ordenar</linkbutton>
                                         <linkbutton class="btn btn-primary" disabled><i style="color: white" class="fa fa-file-pdf-o"></i> &nbsp;Generar PDF</linkbutton>
                                     </div>
@@ -504,35 +515,25 @@
                     </div>
                 </div>
             </div>
+
+    
+
             <!-- Mainly scripts -->
             <script src="/../js/jquery-2.1.1.js"></script>
             <!-- Mainly scripts -->
-            <%--<script src="/../Scripts/jquery-3.4.1.js"></script>--%>
+         
             <script src="../../js/bootstrap.min.js"></script>
             <script src="../../Scripts/plugins/metisMenu/jquery.metisMenu.js"></script>
-           <%-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>--%>
+         
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.2.6/jquery.inputmask.bundle.min.js"></script>
 
-          <%--  <script src="../../Scripts/jquery.mask.js"></script>
-            <script src="../../Scripts/jquery.mask.min.js"></script>--%>
-            <%--<script src="../../Scripts/plugins/slimscroll/jquery.slimscroll.min.js"></script>--%>
-
-            <!-- Custom and plugin javascript -->
-
-            <%--<script src="../Scripts/plugins/pace/pace.min.js"></script>--%>
-<%--            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.8.0.js"></script>
-            <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.22/jquery-ui.js"></script>--%>
+    
             <!-- Steps -->
             <script src="/../Scripts/plugins/staps/jquery.steps.min.js"></script>
 
             <!-- Jquery Validate -->
             <script src="/../Scripts/plugins/validate/jquery.validate.min.js"></script>
 
-
-            <%--<script src="../../Scripts/plugins/iCheck/icheck.min.js"></script>--%>
-            <%--<script src="/../Scripts/plugins/summernote/summernote.min.js"></script>--%>
-
-            <%--<script src="../../Scripts/plugins/toastr/toastr.min.js"></script>--%>
 
             <script src="//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
             <link href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.css" rel="stylesheet" />
@@ -867,8 +868,23 @@
 
     <script src="/../js/plugins/pace/pace.min.js"></script>
 
-<script src="/../js/plugins/jsTree/jstree.min.js"></script>
+    <script src="/../js/plugins/jsTree/jstree.min.js"></script>
+        <!-- Chosen -->
+ <%--   <script src="/js/plugins/chosen/chosen.jquery.js"></script>--%>
 
+ <%--   <script src="/js/plugins/chosen/chosen.jquery.js"></script>
+    <script>
+        var config = {
+            '.chosen-select': {},
+            '.chosen-select-deselect': { allow_single_deselect: true },
+            '.chosen-select-no-single': { disable_search_threshold: 10 },
+            '.chosen-select-no-results': { no_results_text: 'Oops, nothing found!' },
+            '.chosen-select-width': { width: "95%" }
+        }
+        for (var selector in config) {
+            $(selector).chosen(config[selector]);
+        }
+    </script>--%>
 
     <script>
         function BuscarlistaProd() {
@@ -1446,7 +1462,7 @@
                                 $("#jstree_C" + id).jstree("close_node", "#RecetaC_LI_" + id);
                                 $("#jstree_UM" + id).jstree("close_node", "#RecetaUM_LI_" + id);
                                 $("#jstree_CS" + id).jstree("close_node", "#RecetaCS_LI_" + id);
-                                $("#jstree_CST" + id).jstree("close_node","#RecetaCST_LI_"+ id);
+                                $("#jstree_CST" + id).jstree("close_node", "#RecetaCST_LI_" + id);
                             })
                             .jstree({
                                 'core': {
@@ -1588,6 +1604,36 @@
             }
 
         });
+
+        //var config = {
+        //    '.chosen-select': {},
+        //    '.chosen-select-deselect': { allow_single_deselect: true },
+        //    '.chosen-select-no-single': { disable_search_threshold: 10 },
+        //    '.chosen-select-no-results': { no_results_text: 'Oops, nothing found!' },
+        //    '.chosen-select-width': { width: "95%" }
+        //}
+
+        //for (var selector in config) {
+        //    console.log('entre al for');
+        //    try {
+        //        console.log('entre al try');
+        //        $(selector).chosen("destroy");
+        //        $(selector).chosen(config[selector]);
+        //    } catch (e) {
+        //        console.log('algo salio mal');
+        //    }
+        //}
+
+        //var config = {
+        //    '.chosen-select': {},
+        //    '.chosen-select-deselect': { allow_single_deselect: true },
+        //    '.chosen-select-no-single': { disable_search_threshold: 10 },
+        //    '.chosen-select-no-results': { no_results_text: 'Oops, nothing found!' },
+        //    '.chosen-select-width': { width: "95%" }
+        //}
+        //for (var selector in config) {
+        //    $(selector).chosen(config[selector]);
+        //}
     </script>
 
     <script>         
@@ -1975,6 +2021,11 @@
             let costAux = parseFloat(costo.replace(',', '.'));
             let CantAux = parseFloat(cantidad);
             let costototal = 0;
+            let ddlSector = document.getElementById('<%= ddlSector.ClientID %>');
+            console.log(ddlSector)
+            let opcionSeleccionada = ddlSector.options[ddlSector.selectedIndex].text;
+            let ddlSectoridSectorProductivo = document.getElementById('<%= ddlSector.ClientID %>').value
+
 
             costototal = Math.round10(costAux * CantAux, -3);
             let auxCostoTotal = myFormat(costototal.toString());
@@ -1988,6 +2039,7 @@
             let listaUnidadesDesplegable = "";
             let listaCostosDesplegable = "";
             let listaCostototalDesplegable = "";
+            let listaDdlSectorProductivoDesplegable = "";
             if (tipo == "Receta") {
                 btnRec = "<a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent;\" class=\"btn  btn-xs \" onclick=\"javascript: return CargarmodalRecetaDetalle('" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "');\" >" +
                     "<i><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 576 512\" style=\"width: 15px; vertical-align: middle; \">" +
@@ -2001,12 +2053,15 @@
                 listaUnidadesDesplegable = "<td> <div id=\"jstree_UM" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaUM_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + unidad + "</li></ul></div></td>";
                 listaCostosDesplegable = "<td> <div id=\"jstree_CS" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaCS_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + costo + "</li></ul></div></td>";
                 listaCostototalDesplegable = "<td> <div id=\"jstree_CST" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaCST_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + auxCostoTotal + "</li></ul></div></td>";
+                listaDdlSectorProductivoDesplegable = "<td> <div id=\"jstree_SP" + ContentPlaceHolder1_ddlSector.value.split('-')[0].trim() + "\"> <ul><li id='RecetaSP_LI_" + ContentPlaceHolder1_ddlSector.value.split('-')[0].trim() + "' class=\"jstree-open\">" + opcionSeleccionada + "</li></ul></div></td>";
+
             } else {
                 listaDesplegable = "<td> " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
                 listaCantidadDesplegable = "<td style=\" text-align: right\"> " + myFormat(cantidad) + "</td>";
                 listaUnidadesDesplegable = "<td> " + unidad + "</td>";
                 listaCostosDesplegable = "<td style=\" text-align:right;\"> " + costo + "</td>";
                 listaCostototalDesplegable = "<td style=\" text-align:right;\"> " + auxCostoTotal + "</td>";
+                listaDdlSectorProductivoDesplegable = "<td style=\" text-align:right;\"> " + opcionSeleccionada + "</td>";
             }
             if (!document.getElementById('<%= idProductosRecetas.ClientID%>').value.includes(tipo + '_' + codigo)) {
                 $('#tableProductos').append(
@@ -2018,7 +2073,7 @@
                     listaUnidadesDesplegable +
                     listaCostosDesplegable +
                     listaCostototalDesplegable +
-
+                    listaDdlSectorProductivoDesplegable +
 
 
                     "<td style=\" text-align: center\">" +
@@ -2046,10 +2101,10 @@
                 document.getElementById('<%=txtKgBrutTotal.ClientID%>').value = myFormat(KgBrutoTotal);
 
                 if (document.getElementById('<%= idProductosRecetas.ClientID%>').value == "") {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0];
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "," + "idSectorProductivo_" + ddlSectoridSectorProductivo;
                 }
                 else {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += ";" + codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0];
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += ";" + codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "," + "idSectorProductivo_" + ddlSectoridSectorProductivo;
                 }
                 if (!document.getElementById('<%= txtRinde.ClientID%>').value == "") {
                     let rinde = parseFloat(document.getElementById('<%= txtRinde.ClientID%>').value);

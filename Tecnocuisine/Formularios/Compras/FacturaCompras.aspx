@@ -11,21 +11,22 @@
                 color: black;
                 text-decoration: none;
             }
-              #editable_length {
-                margin-left: 0px !important;
-}
-    </style>
-   <div class="wrapper wrapper-content">
-              <div class="ibox-content m-b-sm border-bottom" style="margin-top: 10px;padding-top: 0px;">
 
-                   <div class="p-xs">
-                        <div class="pull-left m-r-md">
-                            <i class="fa fa-dollar text-navy mid-icon"></i>
-                        </div>
-                         <h2 id="DivSaldo" style="font-weight: bold;">0.00</h2>
-                         <span id="ProveedorSelec">Proveedor no Seleccionado</span>
-                   </div>
-               </div>
+        #editable_length {
+            margin-left: 0px !important;
+        }
+    </style>
+    <div class="wrapper wrapper-content">
+        <div class="ibox-content m-b-sm border-bottom" style="margin-top: 10px; padding-top: 0px;">
+
+            <div class="p-xs">
+                <div class="pull-left m-r-md">
+                    <i class="fa fa-dollar text-navy mid-icon"></i>
+                </div>
+                <h2 id="DivSaldo" style="font-weight: bold;">0.00</h2>
+                <span id="ProveedorSelec">Proveedor no Seleccionado</span>
+            </div>
+        </div>
         <div class="container-fluid">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
@@ -65,8 +66,8 @@
 
                                                   </div>
                                                         </div>--%>
-                                                </div>
-                                                <table class="table table-striped table-bordered table-hover " id="editable">
+                                        </div>
+                                              <table class="table table-striped table-bordered table-hover " id="editable">
                                                     <thead>
                                                         <tr>
                                                             <th style=" text-align: right; width: 2%;">#</th>
@@ -75,6 +76,7 @@
 
                                                             <th style=" text-align: left; width: 4%;">Proveedor</th>
                                                             <th style="width: 5%; text-align: right;">Importe</th>
+                                                            <th style="width: 5%; text-align: right;">Rubro</th>
                                                             <th style="width: 2%";></th>
                                                     
                                                         </tr>
@@ -89,7 +91,7 @@
                         </datalist>
                                    <asp:HiddenField id="SaldoTotal" runat="server"></asp:HiddenField>
                         <asp:HiddenField id="AliasProveedor" runat="server"></asp:HiddenField>
-                         </ContentTemplate>
+                        </ContentTemplate>
 
                     </asp:UpdatePanel>
                 </div>
@@ -97,7 +99,7 @@
         </div>
     </div>
 
-        <div id="modalEliminar" class="modal" tabindex="-1" role="dialog">
+    <div id="modalEliminar" class="modal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
@@ -110,7 +112,7 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <button  id="btnEliminar" Text="Eliminar" class="btn btn-danger" onclick="EliminarFactura(event)" >Eliminar</button>
+                    <button id="btnEliminar" text="Eliminar" class="btn btn-danger" onclick="EliminarFactura(event)">Eliminar</button>
                     <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
                     <asp:HiddenField ID="idEliminar" runat="server" />
                 </div>
@@ -119,71 +121,71 @@
     </div>
 
 
-   <div id="modalBusqueda" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-                <div class="modal-dialog">
-                    <div class="modal-content">
+    <div id="modalBusqueda" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
 
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h4 class="modal-title">Busqueda</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div id="MainContent_UpdatePanel2">
-	
-
-                                    <div role="form" class="form-horizontal col-md-12">
-                                    
-                                            <label class="col-md-4">Desde</label>
-                                            <div class="col-md-6">
-                                                <div class="form-group" id="data_1">
-                                                <div class="input-group date">
-                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                    <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
-                                                </div>
-                                            </div>
-                                            </div>
-                                       
-                                        
-                                            <label class="col-md-4">Hasta</label>
-                                            <div class="col-md-6">
-                                            <div class="form-group" id="data_2">
-                                                    <div class="input-group date">
-                                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                        <asp:TextBox class="form-control" runat="server" ID="txtFechaVencimiento" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
-                                                    </div>
-                                                </div>
-                                            
-                                        </div>
-                                        
-                                            <label class="col-md-4">Buscar Proveedor</label>
-                                            <div class="col-md-6" style="padding: 0px;">
-                                                <input name="txtProveedor" type="text" id="txtProveedor" onchange="ValidarProveedor()" list="ContentPlaceHolder1_ListaProveedores" class="form-control" style="margin-left: 0px; margin-bottom:15px;">
-                                                 <p id="ValivaProveedor" class="text-danger text-hide">Tienes que ingresar un Proveedor</p>
-                                            </div>
-                                       
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Busqueda</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="MainContent_UpdatePanel2">
 
 
-                                        </div>
-                                      
-                                       
-                                     
-                                   
-                                
-                          </div>
+                        <div role="form" class="form-horizontal col-md-12">
+
+                            <label class="col-md-4">Desde</label>
+                            <div class="col-md-6">
+                                <div class="form-group" id="data_1">
+                                    <div class="input-group date">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <label class="col-md-4">Hasta</label>
+                            <div class="col-md-6">
+                                <div class="form-group" id="data_2">
+                                    <div class="input-group date">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        <asp:TextBox class="form-control" runat="server" ID="txtFechaVencimiento" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <label class="col-md-4">Buscar Proveedor</label>
+                            <div class="col-md-6" style="padding: 0px;">
+                                <input name="txtProveedor" type="text" id="txtProveedor" onchange="ValidarProveedor()" list="ContentPlaceHolder1_ListaProveedores" class="form-control" style="margin-left: 0px; margin-bottom: 15px;">
+                                <p id="ValivaProveedor" class="text-danger text-hide">Tienes que ingresar un Proveedor</p>
+                            </div>
+
+
+
                         </div>
 
 
-                       
-                        <div class="modal-footer" style="border-color: transparent;">
+
+
+
+                    </div>
+                </div>
+
+
+
+                <div class="modal-footer" style="border-color: transparent;">
                     <a id="btnFiltrar" onclick="FiltrarCuentaCorriente()" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;Filtrar </a>
                     <input type="hidden" name="ctl00$ContentPlaceHolder1$hiddenEditar" id="ContentPlaceHolder1_hiddenEditar">
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
                 </div>
-                      
-                    </div>
 
-                </div>
             </div>
+
+        </div>
+    </div>
 
 
 

@@ -29,7 +29,9 @@
                                         <div class="col-md-6">
                                             <datalist id="ListaNombreProd" runat="server">
                                             </datalist>
-                                            <asp:TextBox runat="server" ID="txtDescripcionProductos" onfocusout="handle(event)" list="ContentPlaceHolder1_ListaNombreProd" class="form-control" Style="margin-left: 15px; width: 95%" />
+                                            <asp:TextBox runat="server" ID="txtDescripcionProductos" onfocusout="handle(event)" 
+                                                list="ContentPlaceHolder1_ListaNombreProd" class="form-control" 
+                                                Style="margin-left: 15px; width: 95%" />
                                             <asp:HiddenField ID="Hiddentipo" runat="server" />
                                             <asp:HiddenField ID="HiddenUnidad" runat="server" />
                                         </div>

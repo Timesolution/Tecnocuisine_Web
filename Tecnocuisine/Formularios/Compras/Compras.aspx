@@ -26,7 +26,7 @@
                             <div class="row">
                                 <%-- Columna 1--%>
                                 <div class="col-lg-6">
-  <%--                          <div class="row">
+                                    <%--                          <div class="row">
                                         <div class="col-md-4">
                                             <label style="margin-left: 5%">Agregar Entrega</label>
                                         </div>
@@ -45,7 +45,6 @@
                                     </div>--%>
 
                                     <div class="row">
-
                                         <div class="col-md-4">
                                             <label style="margin-left: 5%">Fecha</label>
                                         </div>
@@ -107,9 +106,26 @@
                                                 <label>Proovedor</label>
                                             </div>
                                             <div class="col-md-8">
-                                                <asp:TextBox Style="width: 80%;" class="form-control" list="ContentPlaceHolder1_ListaProveedores" runat="server" ID="txtProveedor"></asp:TextBox>
+                                                <asp:TextBox Style="width: 80%;" class="form-control" 
+                                                    list="ContentPlaceHolder1_ListaProveedores" runat="server" ID="txtProveedor" 
+                                                    onchange="FuncionJs()"></asp:TextBox>
                                             </div>
                                         </div>
+
+                                        <div class="row" style="margin-top: 3%">
+                                            <div class="col-md-4">
+                                                <label>Rubro</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <asp:DropDownList ID="ddlRubro" runat="server"
+                                                    CssClass="chosen-select form-control"
+                                                    DataTextField="CountryName" DataValueField="CountryCode"
+                                                    Data-placeholder="Seleccione Rubro..." Width="100%">
+                                                    <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                </asp:DropDownList>
+                                            </div>
+                                        </div>
+
                                         <div class="row" style="margin-top: 3%">
                                             <div class="col-md-4">
                                                 <label>Numero Documento</label>
@@ -439,7 +455,8 @@
                                         <%--OBSERVACIONES--%>
                                     </div>
                                 </div>
-                                <button class="btn btn-sm btn-primary pull-right m-t-n-xs" style="margin-right: 55px; margin-bottom: 5px; margin-top: 5px;" data-toggle="tooltip" data-placement="top" data-original-title="Generar Facturacion"
+                                <button class="btn btn-sm btn-primary pull-right m-t-n-xs" 
+                                    style="margin-right: 55px; margin-bottom: 5px; margin-top: 5px;" data-toggle="tooltip" data-placement="top" data-original-title="Generar Facturacion"
                                     text="Confirmar Venta" validationgroup="AgregarEntregas" id="btnGuardar" onclick="GenerarFacturacion(event)">
                                     Generar Facturacion</button>
                             </div>
@@ -466,6 +483,21 @@
     <script src="../Scripts/plugins/toastr/toastr.min.js"></script>
     <script src="/../Scripts/plugins/staps/jquery.steps.min.js"></script>
     <script src="../../js/plugins/datapicker/bootstrap-datepicker.js"></script>
+        <!-- Chosen -->
+    <script src="/js/plugins/chosen/chosen.jquery.js"></script>
+
+    <script>
+        var config = {
+            '.chosen-select': {},
+            '.chosen-select-deselect': { allow_single_deselect: true },
+            '.chosen-select-no-single': { disable_search_threshold: 10 },
+            '.chosen-select-no-results': { no_results_text: 'Oops, nothing found!' },
+            '.chosen-select-width': { width: "95%" }
+        }
+        for (var selector in config) {
+            $(selector).chosen(config[selector]);
+        }
+    </script>
     <script>
         $(document).ready(function () {
             $("body").tooltip({ selector: '[data-toggle=tooltip]' });
@@ -494,6 +526,10 @@
             });
             establecerDiaHoy();
             establecer30Dias();
+
+        
+
+
         });
         function ChangeImpuestos() {
             const miCheckbox = document.getElementById("InputImpuestos");
@@ -532,6 +568,57 @@
             }
         }
 
+        function FuncionJs() {
+            const inputText = document.getElementById('<%= txtProveedor.ClientID %>').value;
+            const numeros = inputText.match(/\d+/g); // Encuentra todos los números en la cadena
+
+            if (numeros) {
+                const numerosConcatenados = numeros.join(''); // Concatena los números encontrados
+
+
+                //Fetch
+                fetch('Compras.aspx/GetRubroByIDProveedor', {
+                    method: 'POST',
+                    body: JSON.stringify({ idProveedor: numerosConcatenados }),
+                    headers: { 'Content-Type': 'application/json' },
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        let idRubro = JSON.parse(data.d)           
+                        document.getElementById('<%= ddlRubro.ClientID %>').value = idRubro
+                        cargarDdlRubro(idRubro);
+
+                    
+                })
+                       .catch(error => {
+                           // Manejo de errores aquí si es necesario
+                           console.error('Error:', error);
+                       });
+
+            }
+        }
+
+        function cargarDdlRubro(idRubro) {
+
+            const ddlRubro = document.getElementById("<%=ddlRubro.ClientID%>");
+
+            let opcionesSeleccionadas = idRubro.substring(0, idRubro.length).split(",");
+            $(ddlRubro).val(opcionesSeleccionadas).trigger("chosen:updated");
+
+            try {
+                $(ddlRubro).chosen("destroy");
+                $(ddlRubro).chosen({
+                    allow_single_deselect: true,
+                    disable_search_threshold: 10,
+                    no_results_text: 'Oops, nothing found!',
+                    width: "95%"
+                });
+            } catch (e) {
+                console.log('algo salio mal');
+            }
+        }
+        
+
         function establecer30Dias() {
             var fechaActual = new Date();
 
@@ -557,6 +644,7 @@
                         + '" , TipoDocumento: "' + document.getElementById("ContentPlaceHolder1_txtTipoDocumento").value
                         + '" , ImporteTotal: "' + document.getElementById("ContentPlaceHolder1_txtImporteTotal").value
                         + '" , Proveedor: "' + document.getElementById("ContentPlaceHolder1_txtProveedor").value
+                        + '" , idRubro: "' + document.getElementById("ContentPlaceHolder1_ddlRubro").value
                         + '" , NumeroFactura: "' + document.getElementById("input1").value + "-" + document.getElementById("input2").value
                         + '" , FechaVencimiento: "' + document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value.replace(".", ",")
                         + '"}',
@@ -641,7 +729,7 @@
                             default: window.location.href = "Compras.aspx?m=1"
 
                         }
-                        
+
                     },
                 });
             }

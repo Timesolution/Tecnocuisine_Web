@@ -1,8 +1,10 @@
 ﻿using Gestion_Api.Entitys;
 using Gestion_Api.Modelo;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
@@ -34,6 +36,7 @@ namespace Tecnocuisine.Formularios.Compras
         ControladorEntregas ControladorEntregas = new ControladorEntregas();
         ControladorReceta ControladorReceta = new ControladorReceta();
         ControladorMarca controladorMarca = new ControladorMarca();
+        ControladorRubros controladorRubros = new ControladorRubros();
         ControladorPresentacion controladorPresentacion1 = new ControladorPresentacion();
         ControladorTipoDocumento controladorTipoDocumento = new ControladorTipoDocumento();
         ControladorProveedores cp = new ControladorProveedores();
@@ -49,7 +52,7 @@ namespace Tecnocuisine.Formularios.Compras
 
                 this.Mensaje = Convert.ToInt32(Request.QueryString["m"]);
                 accion = Convert.ToInt32(Request.QueryString["a"]);
-
+                CargarRubrosDLL();
 
                 if (Request.QueryString["i"] != null)
                 {
@@ -74,6 +77,45 @@ namespace Tecnocuisine.Formularios.Compras
             ObtenerTipoDocumento();
             ObtenerTodosLosProveedores(); /*ListaEntregas ListaProveedores*/
             ObtenerTodasLasEntregas();
+        }
+
+        protected void CargarRubrosDLL()
+        {
+            try
+            {
+                DataTable dt = controladorRubros.GetAllRubrosDT();
+                DataRow drSeleccione = dt.NewRow();
+                drSeleccione["descripcion"] = "Seleccione...";
+                drSeleccione["id"] = -1;
+                dt.Rows.InsertAt(drSeleccione, 0);
+
+                // Ordenar los datos alfabéticamente por la descripción (ignorando la primera fila)
+                var sortedData = dt.AsEnumerable()
+                                   .Skip(1) // Ignorar la primera fila ("Seleccione...")
+                                   .OrderBy(row => row.Field<string>("descripcion"));
+
+                // Crear una nueva tabla con los elementos ordenados y el elemento inicial
+                DataTable sortedTable = dt.Clone();
+                sortedTable.Rows.Add(drSeleccione.ItemArray);
+                foreach (DataRow row in sortedData)
+                {
+                    sortedTable.ImportRow(row);
+                }
+
+                this.ddlRubro.DataSource = sortedTable;
+                this.ddlRubro.DataValueField = "id";
+                this.ddlRubro.DataTextField = "descripcion";
+
+                this.ddlRubro.DataBind();
+
+                this.ddlRubro.SelectedValue = "-1";
+
+            }
+            catch (Exception ex)
+            {
+
+
+            }
         }
 
         public void ObtenerTodosLosProveedores()
@@ -194,7 +236,7 @@ namespace Tecnocuisine.Formularios.Compras
         }
 
         [WebMethod]
-        public static int GenerarFactura(string CodigoEntregas, string FechaActual, string TipoDocumento, string ImporteTotal, string Proveedor, string NumeroFactura, string FechaVencimiento)
+        public static int GenerarFactura(string CodigoEntregas, string FechaActual, string TipoDocumento, string ImporteTotal, string Proveedor, string idRubro, string NumeroFactura, string FechaVencimiento)
         {
             try
             {
@@ -226,6 +268,7 @@ namespace Tecnocuisine.Formularios.Compras
                 facturas.ImporteTotal = Convert.ToDecimal(importetotalReplace.Replace(".", ","));
                 facturas.idProveedor = idProveedor;
                 facturas.NumeroFactura = NumeroFactura;
+                facturas.idRubro = int.Parse(idRubro);
                 bool Verificacion = cf.VerificarNumeroFactura(NumeroFactura, idProveedor);
                 if (Verificacion == false)
                 {
@@ -410,7 +453,31 @@ namespace Tecnocuisine.Formularios.Compras
             }
         }
 
+        [WebMethod]
+        public static string GetRubroByIDProveedor(int idProveedor)
+        {
+            try
+            {
+                //Gestor_Solution.Controladores.controladorCliente controladorCliente = new controladorCliente();
+                ControladorRubros controladorRubros = new ControladorRubros();
+                DataTable dtIdRubro = controladorRubros.getRubrosIDByIDProveedor(idProveedor);
 
+                string NumeroVoluntario = null;
+                NumeroVoluntario = dtIdRubro.Rows[0][0].ToString();
+
+                //if(NumeroVoluntario == null) {
+                //    return -1;
+                //}
+
+                NumeroVoluntario = JsonConvert.SerializeObject(NumeroVoluntario);
+                return NumeroVoluntario;
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
 
         public static decimal ConvertToDecimal(string valor, string formato = "0,000,000.00")
         {
