@@ -40,7 +40,8 @@
                                             <datalist id="ListaNombreCliente" runat="server">
                                             </datalist>
                                             <asp:TextBox ID="TxtClientes"
-                                                class="form-control num required" runat="server" list="ContentPlaceHolder1_ListaNombreCliente"
+                                                class="form-control num required" runat="server" 
+                                                list="ContentPlaceHolder1_ListaNombreCliente"
                                                 Style="margin-left: 0px; width: 100%;" />
                                         </div>
                                     </div>
@@ -190,8 +191,8 @@
                 ).draw();
             });
 
-            let tabla = document.getElementById("editable");
-            tabla.deleteRow(1);
+            //let tabla = document.getElementById("editable");
+            //tabla.deleteRow(1);
 
         });
 
@@ -239,7 +240,8 @@
 
 
             let ProductoDescripcionColumna = "<td> " + ProductoDescripcion + "</td>";
-            let CantidadColumna = "<td> " + Cantidad + "</td>"
+            //let CantidadColumna = "<td> " + Cantidad + "</td>"
+            let CantidadColumna = "<td style='text-align: right;'>" + Cantidad + "</td>";
             let btneliminarColumna = "<td> " + btneliminar + "</td>"
 
             let appendfinal = "<tr id =" + ID + ">" +

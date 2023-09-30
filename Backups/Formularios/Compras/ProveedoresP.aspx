@@ -24,7 +24,6 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2">
-
                                                         <a href="Proveedores.aspx" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
                                                     </div>
                                                 </div>
@@ -33,7 +32,7 @@
                                                         <tr>
 
                                                             <th style="max-width:100px">Codigo</th>
-                                                            <th >Nombre</th>
+                                                            <th>Nombre</th>
                                                             <th>Pais</th>
                                                             <th>Tipo</th>
                                                             <th>Numero</th>

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Tecnocuisine_API.Controladores;
+using Tecnocuisine_API.Entitys;
 
 namespace Tecnocuisine.Formularios.Maestros
 {
@@ -105,14 +107,19 @@ namespace Tecnocuisine.Formularios.Maestros
                 LinkButton btnDetalles = new LinkButton();
                 btnDetalles.CssClass = "btn btn-xs";
                 btnDetalles.Style.Add("background-color", "transparent");
-                //btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                //btnDetalles.Attributes.Add("title data-original-title", "Editar");
+                btnDetalles.Attributes.Add("data-toggle", "tooltip");
+                btnDetalles.Attributes.Add("data-placement", "top");
+                btnDetalles.Attributes.Add("href", "StockDetallado.aspx?t=1&i=" +producto.id);
+                btnDetalles.Attributes.Add(" data-original-title", "Visualizar Stock");
                 btnDetalles.ID = "btnSelecProducto_" + producto.id ;
                 btnDetalles.Text = "<span><i style='color:black;' class='fa fa-clipboard'></i></span>";
                 btnDetalles.Click += new EventHandler(this.RedirecProducto);
                 celAccion.Controls.Add(btnDetalles);
                 celAccion.Width = Unit.Percentage(25);
                 celAccion.Attributes.Add("style", "padding-bottom: 1px !important;");
+
+
+
                 tr.Cells.Add(celAccion);
 
                 phProductosyRecetas.Controls.Add(tr);
@@ -185,7 +192,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 tr.Cells.Add(celUM);
 
                 TableCell celCosto = new TableCell();
-                celCosto.Text = Receta.Costo.ToString().Replace(',', '.');
+                celCosto.Text = FormatearNumero((decimal)Receta.Costo);
                 celCosto.VerticalAlign = VerticalAlign.Middle;
                 celCosto.HorizontalAlign = HorizontalAlign.Left;
                 celCosto.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
@@ -195,9 +202,9 @@ namespace Tecnocuisine.Formularios.Maestros
                 TableCell celStock = new TableCell();
                 var stockR = controladorStockProducto.ObtenerStockReceta(Receta.id);
                 if (stockR != null)
-                    celStock.Text = stockR.stock.Value.ToString();
+                    celStock.Text = FormatearNumero(stockR.stock.Value);
                 else
-                    celStock.Text = "0";
+                    celStock.Text = "0.00";
 
                 //celStock.Text = stockR.stock.Value.ToString();
                 celStock.VerticalAlign = VerticalAlign.Middle;
@@ -210,25 +217,14 @@ namespace Tecnocuisine.Formularios.Maestros
                 LinkButton btnDetalles = new LinkButton();
                 btnDetalles.CssClass = "btn btn-xs";
                 btnDetalles.Style.Add("background-color", "transparent");
-                //btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                //btnDetalles.Attributes.Add("title data-original-title", "Editar");
+                btnDetalles.Attributes.Add("data-toggle", "tooltip");
+                btnDetalles.Attributes.Add("href", "StockDetallado.aspx?t=2&i=" + Receta.id);
+                btnDetalles.Attributes.Add("data-placement", "top");
+                btnDetalles.Attributes.Add(" data-original-title", "Visualizar Stock");
                 btnDetalles.ID = "btnSelecReceta_" + Receta.id + "_";
                 btnDetalles.Text = "<span><i style='color:black;' class='fa fa-clipboard'></i></span>";
                 btnDetalles.Click += new EventHandler(this.RedirecReceta);
                 celAccion.Controls.Add(btnDetalles);
-                //LinkButton btnDetalles = new LinkButton();
-                //btnDetalles.CssClass = "btn btn-primary btn-xs";
-                //HtmlGenericControl btnDetalles = new HtmlGenericControl("input");
-                //btnDetalles.Attributes.Add("class", "presentacion radio btn btn-primary btn-xs pull-right");
-                ////btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                //btnDetalles.Attributes.Add("onclick", "agregarReceta(this.id,'" + Receta.Costo.ToString().Replace(',', '.') + "'); return false;");
-                //btnDetalles.Attributes.Add("type", "checkbox");
-                //btnDetalles.ID = "btnSelecProd_" + Receta.id + "_" + Receta.descripcion + "_" + UnidadMedida;
-                ////btnDetalles.Text = "<span><i class='fa fa-check'></i></span>";
-                //celAccion.Controls.Add(btnDetalles);
-                //celAccion.Text = "-";
-                //celAccion.Width = Unit.Percentage(25);
-                //celAccion.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celAccion);
 
                 phProductosyRecetas.Controls.Add(tr);
@@ -269,6 +265,17 @@ namespace Tecnocuisine.Formularios.Maestros
             {
 
             }
+        }
+        decimal RevertirNumero(string numeroFormateado)
+        {
+            string numeroSinComas = numeroFormateado.Replace(",", "");
+            decimal numero = decimal.Parse(numeroSinComas, CultureInfo.InvariantCulture);
+            return numero;
+        }
+
+        string FormatearNumero(decimal numero)
+        {
+            return numero.ToString("N2", new CultureInfo("en-US"));
         }
     }
 }

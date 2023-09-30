@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Entregas.aspx.cs" Inherits="Tecnocuisine.Formularios.Compras.Entregas" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Entregas.aspx.cs" Inherits="Tecnocuisine.Formularios.Compras.Entregas" EnableEventValidation="false" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="wrapper wrapper-content animated fadeInRight">
@@ -15,7 +15,7 @@
                                         <label>Fecha de Entrega</label>
                                         <div class="input-group date">
                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                            <asp:TextBox  class="form-control" runat="server" ID="txtFechaEntrega" ></asp:TextBox>
+                                            <asp:TextBox class="form-control" runat="server" ID="txtFechaEntrega"></asp:TextBox>
                                             <%--<input type="text">--%>
                                         </div>
                                     </div>
@@ -23,22 +23,21 @@
                                         <label>Proveedor</label>
                                         <asp:TextBox runat="server" ID="txtProveedor" list="ContentPlaceHolder1_ListaNombreProveedores" class="form-control">
                                         </asp:TextBox>
-                                       <asp:RequiredFieldValidator Style="display: none" ID="rfvProveedor" runat="server" ErrorMessage="<h3>*</h3>" SetFocusOnError="false" ForeColor="Red" Font-Bold="true" ValidationGroup="AgregarEntregas" ControlToValidate="txtProveedor"></asp:RequiredFieldValidator>
-
-                                            <datalist id="ListaNombreProveedores" runat="server">
+                                        <asp:RequiredFieldValidator ID="rfvProveedor" runat="server" ErrorMessage="<h3>Tienes que Elegir un Proveedor para continuar</h3>" SetFocusOnError="false" ForeColor="Red" Font-Bold="true" ValidationGroup="AgregarEntregas" ControlToValidate="txtProveedor"></asp:RequiredFieldValidator>
+                                        <datalist id="ListaNombreProveedores" runat="server">
                                         </datalist>
-                                     
+
                                     </div>
                                     <div class="form-group">
                                         <label>Sector</label>
-                                        <asp:TextBox runat="server" ID="txtSector"  list="ContentPlaceHolder1_ListaNombreSectores" class="form-control">
+                                        <asp:TextBox runat="server" ID="txtSector" list="ContentPlaceHolder1_ListaNombreSectores" class="form-control">
                                         </asp:TextBox>
-                                                                               <asp:RequiredFieldValidator Style="display: none" ID="RequiredFieldValidator1" runat="server" ErrorMessage="<h3>*</h3>" SetFocusOnError="false" ForeColor="Red" Font-Bold="true" ValidationGroup="AgregarEntregas" ControlToValidate="txtSector"></asp:RequiredFieldValidator>
+                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="<h3>Tienes que Elegir un Sector para continuar</h3>" SetFocusOnError="false" ForeColor="Red" Font-Bold="true" ValidationGroup="AgregarEntregas" ControlToValidate="txtSector"></asp:RequiredFieldValidator>
 
-                                             <datalist id="ListaNombreSectores" runat="server">
+                                        <datalist id="ListaNombreSectores" runat="server">
                                         </datalist>
                                     </div>
-                                     
+
                                     <div class="form-group">
                                         <label>Observaciones</label>
                                         <asp:TextBox ID="txtObservaciones" TextMode="MultiLine" Rows="3" class="form-control" runat="server" />
@@ -48,78 +47,90 @@
                                 </div>
                             </div>
                             <div class="col-sm-8">
-                                                         
 
-                                    <div class="form-group" style="padding-right: 5px;">
-                                <%--<div class="col-md-6">--%>
+                                <div class="form-group" style="padding-right: 5px;">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>Entrega Numero:</label>
+                                        </div>
+                                        <div class="col-md-8" id="lblProdNum" runat="server">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="padding-right: 5px;">
+                                    <%--<div class="col-md-6">--%>
 
-                                   
-                                    <label >Ingredientes </label>
+
+                                    <label>Ingredientes </label>
 
                                     <div class="input-group" style="text-align: right;">
                                         <datalist id="ListaNombreProd" runat="server">
                                         </datalist>
 
-                                        <asp:TextBox ID="txtDescripcionProductos" onfocusout="handle(event)" list="ContentPlaceHolder1_ListaNombreProd" class="form-control" runat="server" />
+                                        <asp:TextBox ID="txtDescripcionProductos" onChange="ValidarProducto()" onfocusout="handle(event)" list="ContentPlaceHolder1_ListaNombreProd" class="form-control" runat="server" />
                                         <asp:HiddenField ID="Hiddentipo" runat="server" />
                                         <asp:HiddenField ID="HiddenUnidad" runat="server" />
                                         <asp:HiddenField ID="HiddenCosto" runat="server" />
 
                                         <span class="input-group-btn">
                                             <%--<asp:LinkButton runat="server" ID="btnProductos" class="btn btn-primary dim" data-toggle="modal" data-backdrop="static" data-target="#modalTabsProductos"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>--%>
-                                              <a class="btn btn-primary dim" data-toggle="modal" href="#modalTabsProductos" >
-                                            <i style="color: white" class="fa fa-plus"></i>
-                                        </a>
+                                            <a class="btn btn-primary dim" data-toggle="modal" href="#modalTabsProductos">
+                                                <i style="color: white" class="fa fa-plus" data-toggle="tooltip" data-placement="top" title data-original-title="Selecionar Ingrediente"></i>
+                                            </a>
                                         </span>
                                     </div>
-                                <%--</div>--%>
-                                         </div>
+                                    <p id="valivaProducto" class="text-danger text-hide">Tienes que agregar un producto</p>
+                                    <%--</div>--%>
+                                </div>
                                 <div class="form-group">
 
-                                <asp:HiddenField ID="idProducto" runat="server" />
-                                <div class="col-md-1" style=" padding-left: 0px;">
-                                    <label style="margin-bottom: auto;">Cantidad</label>
-
-                                    <asp:TextBox ID="txtCantidad" Text="0" onkeypress="javascript:return validarNro(event)" Style="text-align: right" class="form-control money" runat="server" />
-                                </div>
+                                    <asp:HiddenField ID="idProducto" runat="server" />
+                                    <div class="col-md-1" style="padding-left: 0px;">
+                                        <label style="margin-bottom: auto;">Cantidad</label>
+                                        <asp:TextBox ID="txtCantidad" onchange="ValidadCantidad()" Text="0" onkeypress="javascript:return validarNro(event)" Style="text-align: right;" class="form-control money" runat="server" />
                                     </div>
+                                </div>
                                 <div class="col-md-3" style="text-align: center;">
                                     <label style="margin-bottom: auto;">Presentacion</label>
 
                                     <%--<asp:TextBox ID="txtUnidadMed" disabled="disabled" Style="text-align: right" class="form-control" runat="server" />--%>
                                     <asp:DropDownList runat="server" ID="ddlPresentaciones" class="form-control"></asp:DropDownList>
                                 </div>
-                            <%-- MARCAS --%>
-                                     <div class="form-group col-md-2" >
-                                        <label style="margin-bottom: auto;">Marca</label>
-                                        <asp:DropDownList runat="server" ID="ddlMarca" class="form-control"></asp:DropDownList>
-                                       
+                                <%-- MARCAS --%>
+                                <div class="form-group col-md-2">
+                                    <label style="margin-bottom: auto;">Marca</label>
+                                    <asp:DropDownList runat="server" ID="ddlMarca" class="form-control"></asp:DropDownList>
+
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label style="margin-bottom: auto;">Lote</label>
+                                    <asp:TextBox runat="server" onChange="ValidadLote()" ID="txtLote" class="form-control"></asp:TextBox>
+
+                                </div>
+                                <div class="form-group col-md-3" id="data_2">
+                                    <label style="margin-bottom: auto;">vencimiento</label>
+                                    <div class="input-group date">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        <asp:TextBox onchange="ValidarDias()" class="form-control" runat="server" ID="txtFechaVencimiento"></asp:TextBox>
                                     </div>
-                                 <div class="form-group col-md-2" >
-                                        <label style="margin-bottom: auto;">Lote</label>
-                                        <asp:TextBox runat="server" ID="txtLote" class="form-control"></asp:TextBox>
-                                       
-                                    </div>
-                                    <div class="form-group col-md-2" id="data_2">
-                                        <label style="margin-bottom: auto;">vencimiento</label>
-                                        <div class="input-group date">
-                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                            <asp:TextBox  class="form-control" runat="server" ID="txtFechaVencimiento"></asp:TextBox>
-                                        </div>
-                                         <p  id="valiva" class="text-danger text-hide">La fecha de vencimiento no puede ser menor a 30 dias </p>
-                                        </div>
-                                <div class="col-md-1" style="margin-top: 19px;">
-                                    <linkbutton id="btnAgregarProducto" onclick="agregarProductoPH();" class="btn btn-primary dim required"><i style="color: white" class="fa fa-check"></i></linkbutton>
+                                    <p id="valiva" class="text-danger text-hide">La fecha de vencimiento no puede ser menor a 30 dias </p>
+                                </div>
+                                <div class="col-md-1" style="float: right; margin-right: 0px; margin-top: 18px;">
+                                    <linkbutton id="btnAgregarProducto" onclick="agregarProductoPH();" data-toggle="tooltip" data-placement="top"
+                                        data-original-title="Agregar Producto" class="btn btn-primary dim required">
+                                        <i style="color: white" class="fa fa-check"></i>
+                                    </linkbutton>
                                 </div>
 
                                 <asp:HiddenField runat="server" ID="idProductosRecetas" />
                                 <asp:HiddenField runat="server" ID="hiddenReceta" />
-                                <table class="table table-bordered table-hover" id="tableProductos" style="margin-top: 10%;max-width: 99%;">
+                                <table class="table table-bordered table-hover" id="tableProductos" style="margin-top: 10%; max-width: 99%;">
                                     <thead>
                                         <tr>
                                             <th style="width: 5%">Cod. Producto</th>
                                             <%--<th style="width: 10%">Tipo</th>--%>
-                                            <th style="width: 15%">Descripcion</th>
+                                            <th style="width: 10%">Descripcion</th>
+                                            <th style="width: 5%">Marca</th>
                                             <th style="width: 5%; text-align: right">Cantidad</th>
                                             <th style="width: 10%">Presentacion</th>
                                             <th style="width: 5%">Lote</th>
@@ -132,11 +143,12 @@
                                         <asp:PlaceHolder ID="phProductos" runat="server" />
                                     </tbody>
                                 </table>
-                                     <div>
+                                <div>
 
-                                            <%--<button class="btn btn-sm btn-primary pull-right m-t-n-xs" style="margin-right: 8px;" type="submit"><strong>Guardar</strong></button>--%>
-                                           <asp:Button class="btn btn-sm btn-primary pull-right m-t-n-xs" style="margin-right: 8px;" Text="Guardar" runat="server" ValidationGroup="AgregarEntregas" ID="btnGuardar" OnClick="btnGuardar_Click" />
-                                        </div>
+                                    <%--<button class="btn btn-sm btn-primary pull-right m-t-n-xs" style="margin-right: 8px;" type="submit"><strong>Guardar</strong></button>--%>
+                                    <asp:Button class="btn btn-sm btn-primary pull-right m-t-n-xs" Style="margin-right: 8px;" data-toggle="tooltip" data-placement="top" title data-original-title="Guardar"
+                                        Text="Guardar" runat="server" ValidationGroup="AgregarEntregas" ID="btnGuardar" OnClick="btnGuardar_Click" />
+                                </div>
                             </div>
 
                         </div>
@@ -262,6 +274,9 @@
     </div>
     <script src="../../js/plugins/datapicker/bootstrap-datepicker.js"></script>
     <script>
+        $(document).ready(function () {
+            $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+        });
         $('#data_1 .input-group.date').datepicker({
             todayBtn: "linked",
             keyboardNavigation: false,
@@ -295,20 +310,20 @@
                     agregarProducto(idOption, costo);
 
                     CargarOptionsDllPresentaciones(txtProd.split('-')[0].trim(), 1);
-                    CargarOptionDllMarcas();
+                    CargarOptionDllMarcas(txtProd.split('-')[0].trim(), 1);
                 }
                 else if (idOption.includes("c_r_")) {
                     agregarReceta(idOption, costo)
                     CargarOptionsDllPresentaciones(txtProd.split('-')[0].trim(), 2);
-                    CargarOptionDllMarcas();
+                    CargarOptionDllMarcas(txtProd.split('-')[0].trim(), 1);
                 }
             }
         }
-        function CargarOptionDllMarcas() {
+        function CargarOptionDllMarcas(id, tipo) {
             $.ajax({
                 method: "POST",
                 url: "Entregas.aspx/GetMarca",
-                data: '{}',
+                data: '{idProd: "' + id + '"}',
                 contentType: "application/json",
                 dataType: "json",
                 dataType: "json",
@@ -319,20 +334,20 @@
                 success: function (respuesta) {
                     //quito los options que pudiera tener previamente el combo
                     $("#<%=ddlMarca.ClientID%>").html("");
-                        //recorro cada item que devuelve el servicio web y lo aÃ±ado como un opcion
-                        if (respuesta.d.length > 0) {
-                            $.each(respuesta.d, function () {
-                                $("#<%=ddlMarca.ClientID%>").append($("<option></option>").attr("value", this.id).text(this.descripcion))
+                    //recorro cada item que devuelve el servicio web y lo aÃ±ado como un opcion
+                    if (respuesta.d.length > 0) {
+                        $.each(respuesta.d, function () {
+                            $("#<%=ddlMarca.ClientID%>").append($("<option></option>").attr("value", this.id).text(this.descripcion))
                         });
 
                     } else {
-                            $("#<%=ddlMarca.ClientID%>").append($("<option></option>").attr("value", 0).text("No Existen Marcas"))
-                        }
+                        $("#<%=ddlMarca.ClientID%>").append($("<option></option>").attr("value", 0).text("No Existen Marcas"))
                     }
-                });
+                }
+            });
 
-          }
-        function CargarOptionsDllPresentaciones(id,tipo) {
+        }
+        function CargarOptionsDllPresentaciones(id, tipo) {
             $.ajax({
                 method: "POST",
                 url: "Entregas.aspx/GetPresentaciones",
@@ -356,12 +371,12 @@
                     } else {
                         $("#<%=ddlPresentaciones.ClientID%>").append($("<option></option>").attr("value", 0).text("No tiene presentaciones asignadas"))
                     }
-                }   
+                }
             });
         }
 
 
-        function ComprobarFecha(date,DiaIngresado) {
+        function ComprobarFecha(date, DiaIngresado) {
             DiaIngresado = DiaIngresado.replaceAll("/", "-")
             DiaIngresado = DiaIngresado.split(['-']).reverse().join("-")
             let date1 = date
@@ -372,28 +387,43 @@
                 return dias = Math.round(diff / (1000 * 60 * 60 * 24));
             }
             else if (date2 != null && date2 < date1) {
-                return alert("La fecha final de la promoción debe ser mayor a la fecha inicial");
+                return false
             }
 
         }
 
         function agregarProductoPH() {
-            let today = new Date();
-            let DiasDiferencia = ComprobarFecha(today, document.getElementById('<%=txtFechaVencimiento.ClientID%>').value)
-            console.log(document.getElementById('<%=txtFechaVencimiento.ClientID%>').value, 'VALOR ACTUAL')
+            let ValDias = ValidarDias();
+            if (ValDias == false) {
 
-            if (DiasDiferencia < 30) {
-                document.getElementById('valiva').className = 'text-danger'
                 return false
             }
-            document.getElementById('valiva').className = 'text-danger text-hide'
+
+            let prod = document.getElementById('<%=txtDescripcionProductos.ClientID%>')
+            if (prod.value.length < 1) {
+                document.getElementById('valivaProducto').className = 'text-danger'
+            }
+            let cant = document.getElementById('<%=txtCantidad.ClientID%>')
+            if (cant.value <= 0) {
+                cant.style.border = "1px solid red";
+                return false
+            }
+            let lot = document.getElementById('<%=txtLote.ClientID%>')
+            if (lot.value.length < 1) {
+                lot.style.border = "1px solid red";
+                return false
+            }
+
+
+            lot.style.border = "1px solid #e5e6e7";
+            cant.style.border = "1px solid #e5e6e7";
             var codigo = ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0];
             var cantidad = ContentPlaceHolder1_txtCantidad.value.replace(',', '');
             var tipo = ContentPlaceHolder1_Hiddentipo.value;
             ContentPlaceHolder1_HiddenUnidad.value = document.getElementById('ContentPlaceHolder1_ddlPresentaciones').selectedOptions[0].text;
 
             let unidad = ContentPlaceHolder1_HiddenUnidad.value;
-           
+
             //costototal = costototal.toString().replace('.', ',');
             let btnRec = "";
             let styleCorrect = "";
@@ -401,39 +431,42 @@
             let listaCantidadDesplegable = "";
             let listaUnidadesDesplegable = "";
 
-            
-                listaDesplegable = "<td> " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
-                listaCantidadDesplegable = "<td style=\" text-align: right\"> " + myFormat(cantidad) + "</td>";
-                listaUnidadesDesplegable = "<td> " + unidad + "</td>";
-            
-            if (!document.getElementById('<%= idProductosRecetas.ClientID%>').value.includes(tipo + '_' + codigo+"," + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value)) {
+
+            listaDesplegable = "<td> " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
+            listaCantidadDesplegable = "<td style=\" text-align: right\"> " + myFormat(cantidad) + "</td>";
+            listaUnidadesDesplegable = "<td> " + unidad + "</td>";
+            marca = "<td> " + document.getElementById('<%=ddlMarca.ClientID%>').selectedOptions[0].text + "</td>";
+            idMarca = document.getElementById('<%=ddlMarca.ClientID%>').value.trim()
+
+            if (!document.getElementById('<%= idProductosRecetas.ClientID%>').value.includes(tipo + '_' + codigo + "," + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value)) {
                 $('#tableProductos').append(
                     "<tr id=" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value.trim() + ">" +
-                      "<td style=\" text-align: right\"> " + codigo + "</td>" +
-                      listaDesplegable +
-                      listaCantidadDesplegable +
-                      //"<td ondblclick=\"CargarmodalRecetaDetalle('" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0]+"')\" > " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>" +
-                      listaUnidadesDesplegable +
-                      "<td style=\" text-align: center\"> " + document.getElementById('<%=txtLote.ClientID%>').value + "</td>" +
-                      "<td style=\" text-align: center\"> " + document.getElementById('<%=txtFechaVencimiento.ClientID%>').value + "</td>" +
+                    "<td style=\" text-align: right\"> " + codigo + "</td>" +
+                    listaDesplegable +
+                    marca +
+                    listaCantidadDesplegable +
+                    //"<td ondblclick=\"CargarmodalRecetaDetalle('" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0]+"')\" > " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>" +
+                    listaUnidadesDesplegable +
+                    "<td style=\" text-align: center\"> " + document.getElementById('<%=txtLote.ClientID%>').value + "</td>" +
+                    "<td style=\" text-align: center\"> " + document.getElementById('<%=txtFechaVencimiento.ClientID%>').value + "</td>" +
 
 
                     "<td style=\" text-align: center\">" +
                     " <a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent; " + styleCorrect + "\" class=\"btn  btn-xs \" onclick=\"javascript: return borrarProd('" + tipo + "_" + codigo.trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "');\" >" +
-                      "<i class=\"fa fa-trash - o\" style=\"color: black\"></i> </a> " +
-                      btnRec
-                      + "</td > " +
-                      "</tr>"
-                  );
+                    "<i class=\"fa fa-trash - o\" style=\"color: black\"></i> </a> " +
+                    btnRec
+                    + "</td > " +
+                    "</tr>"
+                );
                 if (document.getElementById('<%= idProductosRecetas.ClientID%>').value == "") {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value+ "," + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value;
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += (codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value).replaceAll(".",",");
                 }
                 else {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += ";" + codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value+ "," + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value;
-                     }
-                 
-                  ContentPlaceHolder1_txtDescripcionProductos.value = "";
-                  ContentPlaceHolder1_txtCantidad.value = "0";
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += (";" + codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value).replaceAll(".", ",");;
+                }
+
+                ContentPlaceHolder1_txtDescripcionProductos.value = "";
+                ContentPlaceHolder1_txtCantidad.value = "0";
                 $("#<%=ddlPresentaciones.ClientID%>").html("");
 
                   //document.getElementById('<%--<%=txtUnidadMed.ClientID%>--%>').value = "";
@@ -462,38 +495,38 @@
             //ContentPlaceHolder1_txtUnidadMed.value = clickedId.split('_')[4];
             ContentPlaceHolder1_HiddenCosto.value = costo;
 
-             $('input[type=search]').val('');// Clear Search input.
-             document.querySelector('#txtBusquedaIngredientes').value = ''
+            $('input[type=search]').val('');// Clear Search input.
+            document.querySelector('#txtBusquedaIngredientes').value = ''
 
-             $('#modalTabsProductos').modal('hide');
-             document.getElementById('<%=txtCantidad.ClientID%>').value = '';
-             document.getElementById('<%=txtCantidad.ClientID%>').focus();
-         }
+            $('#modalTabsProductos').modal('hide');
+            document.getElementById('<%=txtCantidad.ClientID%>').value = '';
+            document.getElementById('<%=txtCantidad.ClientID%>').focus();
+        }
         function borrarProd(idprod) {
             event.preventDefault();
 
-                $('#' + idprod).remove();
-                var productos = ContentPlaceHolder1_idProductosRecetas.value.split(';');
-                var nuevosProductos = "";
-                for (var x = 0; x < productos.length; x++) {
-                    if (productos[x] != "") {
-                        if (!productos[x].includes(idprod)) {
-                            nuevosProductos += productos[x] + ";";
-                        }
-                        else {
-                            /* var productoAEliminar = productos[x].split(',')[2];*/
-                            //ContentPlaceHolder1_txtPesoBruto.value = parseFloat(ContentPlaceHolder1_txtPesoBruto.value) - parseFloat(productoAEliminar);
-                            //if (ContentPlaceHolder1_txtRinde.value != "") {
-                            //    ContentPlaceHolder1_txtCoeficiente.value = (parseFloat(ContentPlaceHolder1_txtPesoBruto.value) / parseFloat(ContentPlaceHolder1_txtRinde.value)).toFixed(2);
-                            //    ContentPlaceHolder1_hiddenCoeficiente.value = ContentPlaceHolder1_txtCoeficiente.value;
+            $('#' + idprod).remove();
+            var productos = ContentPlaceHolder1_idProductosRecetas.value.split(';');
+            var nuevosProductos = "";
+            for (var x = 0; x < productos.length; x++) {
+                if (productos[x] != "") {
+                    if (!productos[x].includes(idprod)) {
+                        nuevosProductos += productos[x] + ";";
+                    }
+                    else {
+                        /* var productoAEliminar = productos[x].split(',')[2];*/
+                        //ContentPlaceHolder1_txtPesoBruto.value = parseFloat(ContentPlaceHolder1_txtPesoBruto.value) - parseFloat(productoAEliminar);
+                        //if (ContentPlaceHolder1_txtRinde.value != "") {
+                        //    ContentPlaceHolder1_txtCoeficiente.value = (parseFloat(ContentPlaceHolder1_txtPesoBruto.value) / parseFloat(ContentPlaceHolder1_txtRinde.value)).toFixed(2);
+                        //    ContentPlaceHolder1_hiddenCoeficiente.value = ContentPlaceHolder1_txtCoeficiente.value;
 
-                            //}
-                        }
+                        //}
                     }
                 }
-                ContentPlaceHolder1_idProductosRecetas.value = nuevosProductos;
+            }
+            ContentPlaceHolder1_idProductosRecetas.value = nuevosProductos;
 
-         }
+        }
     </script>
     <script>
         function validarNro(e) {
@@ -565,6 +598,34 @@
             //const cleaned = str.replace(/[^\d,]/g, '').replace(",", ".")
             return Number(str).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 })
         }
+        function ValidadCantidad() {
+            let cant = document.getElementById('<%=txtCantidad.ClientID%>')
+            cant.style.border = "1px solid #e5e6e7";
+        }
+        function ValidadLote() {
+            let lot = document.getElementById('<%=txtLote.ClientID%>')
+            lot.style.border = "1px solid #e5e6e7";
+        }
+        function ValidarProducto() {
+            document.getElementById('valivaProducto').className = 'text-danger text-hide'
+        }
+        function ValidarDias() {
+            let today = new Date();
+            let DiasDiferencia = ComprobarFecha(today, document.getElementById('<%=txtFechaVencimiento.ClientID%>').value)
+            if (DiasDiferencia == false) {
+                document.getElementById('valiva').className = 'text-danger'
+                return false
+            } else {
+
+                if (DiasDiferencia < 30) {
+                    document.getElementById('valiva').className = 'text-danger'
+                    return false
+                } else {
+                    document.getElementById('valiva').className = 'text-danger text-hide'
+                    return true
+                }
+            }
+        }
     </script>
-   
+
 </asp:Content>

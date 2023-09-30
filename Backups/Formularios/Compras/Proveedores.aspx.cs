@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gestor_Solution.Controladores;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace Tecnocuisine.Formularios.Compras
     public partial class Proveedores : System.Web.UI.Page
     {
         ControladorPaises ControladorPaises = new ControladorPaises();
+        ControladorRubros controladorRubros = new ControladorRubros();
         ControladorProveedores ControladorProveedores = new ControladorProveedores();
         Mensaje m = new Mensaje();
         int accion;
@@ -25,6 +27,7 @@ namespace Tecnocuisine.Formularios.Compras
             {
 
                 CargarPaisesDLL();
+                CargarRubrosDLL();
 
                 if (accion == 2)
                 {
@@ -45,6 +48,7 @@ namespace Tecnocuisine.Formularios.Compras
                 txtNumero.Text = proveedor.Numero;
                 txtRazonSocial.Text = proveedor.RazonSocial;
                 ddlPais.SelectedValue = proveedor.IdPais.ToString();
+                ddlRubro.SelectedValue = proveedor.idRubro.ToString();
                 ddlEstado.SelectedValue = proveedor.estado.ToString();
             }
             catch (Exception ex)
@@ -53,6 +57,7 @@ namespace Tecnocuisine.Formularios.Compras
                 throw;
             }
         }
+
 
         private void CargarPaisesDLL()
         {
@@ -78,18 +83,57 @@ namespace Tecnocuisine.Formularios.Compras
             catch (Exception ex)
             {
 
-             
+
             }
         }
 
-       
+
+        protected void CargarRubrosDLL()
+        {
+            try
+            {
+                DataTable dt = controladorRubros.GetAllRubrosDT();
+                DataRow drSeleccione = dt.NewRow();
+                drSeleccione["descripcion"] = "Seleccione...";
+                drSeleccione["id"] = -1;
+                dt.Rows.InsertAt(drSeleccione, 0);
+
+                // Ordenar los datos alfabéticamente por la descripción (ignorando la primera fila)
+                var sortedData = dt.AsEnumerable()
+                                   .Skip(1) // Ignorar la primera fila ("Seleccione...")
+                                   .OrderBy(row => row.Field<string>("descripcion"));
+
+                // Crear una nueva tabla con los elementos ordenados y el elemento inicial
+                DataTable sortedTable = dt.Clone();
+                sortedTable.Rows.Add(drSeleccione.ItemArray);
+                foreach (DataRow row in sortedData)
+                {
+                    sortedTable.ImportRow(row);
+                }
+
+                this.ddlRubro.DataSource = sortedTable;
+                this.ddlRubro.DataValueField = "id";
+                this.ddlRubro.DataTextField = "descripcion";
+
+                this.ddlRubro.DataBind();
+
+                this.ddlRubro.SelectedValue = "-1";
+
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+        }
+
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
             try
             {
                 if (IsValid)
                 {
-                        Tecnocuisine_API.Entitys.Proveedores nuevoProveedor = new Tecnocuisine_API.Entitys.Proveedores();
+                    Tecnocuisine_API.Entitys.Proveedores nuevoProveedor = new Tecnocuisine_API.Entitys.Proveedores();
                     if (accion != 2)
                     {
 
@@ -99,6 +143,7 @@ namespace Tecnocuisine.Formularios.Compras
                         nuevoProveedor.Numero = txtNumero.Text;
                         nuevoProveedor.IdPais = Convert.ToInt32(ddlPais.SelectedValue);
                         nuevoProveedor.estado = Convert.ToInt32(ddlEstado.SelectedValue);
+                        nuevoProveedor.idRubro = Convert.ToInt32(ddlRubro.SelectedValue);
                         int i = ControladorProveedores.AgregarNuevoProveedor(nuevoProveedor);
                         if (i > 0)
                         {
@@ -118,6 +163,7 @@ namespace Tecnocuisine.Formularios.Compras
                         nuevoProveedor.RazonSocial = txtRazonSocial.Text;
                         nuevoProveedor.Numero = txtNumero.Text;
                         nuevoProveedor.IdPais = Convert.ToInt32(ddlPais.SelectedValue);
+                        nuevoProveedor.idRubro = Convert.ToInt32(ddlRubro.SelectedValue);
                         nuevoProveedor.estado = Convert.ToInt32(ddlEstado.SelectedValue);
 
                         int i = ControladorProveedores.EditarProveedor(nuevoProveedor);
@@ -138,12 +184,12 @@ namespace Tecnocuisine.Formularios.Compras
                 {
                     m.ShowToastr(Page, "Alguno de los datos esta incompleto", "Advertencia", "warning");
                 }
-                
+
             }
             catch (Exception ex)
             {
 
-                
+
             }
         }
 
@@ -153,9 +199,9 @@ namespace Tecnocuisine.Formularios.Compras
             {
 
                 txtCodigo.Text = "";
-                txtRazonSocial.Text="";
-                txtAlias.Text="";
-                txtNumero.Text="";
+                txtRazonSocial.Text = "";
+                txtAlias.Text = "";
+                txtNumero.Text = "";
             }
             catch (Exception ex)
             {

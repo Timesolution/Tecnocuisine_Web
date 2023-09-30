@@ -1,9 +1,10 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="StockProductosYRecetas.aspx.cs" Inherits="Tecnocuisine.Formularios.Maestros.StockProductosYRecetas" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-     <div class="wrapper wrapper-content">
+    <div class="wrapper wrapper-content">
         <div class="container-fluid">
             <div class="ibox float-e-margins">
-                <div >
+                <div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
 
@@ -24,20 +25,21 @@
                                                     </div>
                                                     <div class="col-md-2">
 
-                                                        <a href="Entregas.aspx" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                                                        <a href="../Compras/Entregas.aspx" class="btn btn-primary dim" data-toggle="tooltip" data-placement="top"
+                                                            data-original-title="Agregar Nueva Entrega" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
                                                     </div>
                                                 </div>
                                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                                     <thead>
                                                         <tr>
 
-                                                            <th style="max-width:100px">cod.Producto</th>
-                                                            <th >Producto/Receta </th>
+                                                            <th style="max-width: 100px">cod.Producto</th>
+                                                            <th>Producto/Receta </th>
                                                             <th>U. Medida</th>
                                                             <th>Costo</th>
                                                             <th>Stock</th>
-                                                            
-                                                            <th style="max-width:100px"></th>
+
+                                                            <th style="max-width: 100px"></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -74,9 +76,10 @@
             </div>
         </div>
     </div>
-     <script>
-        $(document).ready(function () {
+    <script>
 
+        $(document).ready(function () {
+            $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 
 
             $('.dataTables-example').dataTable({

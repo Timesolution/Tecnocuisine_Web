@@ -228,7 +228,6 @@ namespace Tecnocuisine.Caja
 
 
 
-
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
                 celAccion.Width = Unit.Percentage(3);

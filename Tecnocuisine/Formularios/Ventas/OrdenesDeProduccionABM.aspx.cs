@@ -9,6 +9,7 @@ using Tecnocuisine_API.Controladores;
 using System.Text.RegularExpressions;
 using Tecnocuisine_API.Entitys;
 using System.Web.UI.HtmlControls;
+using System.Xml.Linq;
 
 namespace Tecnocuisine.Formularios.Ventas
 {
@@ -24,24 +25,122 @@ namespace Tecnocuisine.Formularios.Ventas
                 ObtenerClientes();
                 txtFechaHoy.Text = DateTime.Now.ToString("dd/MM/yyyy");
 
+                if (Request.QueryString["Accion"] != null)
+                {
+                    if (int.Parse(Request.QueryString["Accion"]) == 2)
+                    {
+
+                        if (Request.QueryString["id"] != null)
+                        {
+                            int idOrdenDeProduccion = int.Parse(Request.QueryString["id"]);
+                            precargarOrdenDeProduccion(idOrdenDeProduccion);
+                        }
+
+                    }
+
+                }
+
+                else
+                {
+                    CargarCodigoOrdenCompra();
+                }
+
+
             }
 
-            CargarCodigoOrdenCompra();
 
         }
 
 
+        private void precargarOrdenDeProduccion(int idOrdenDeProduccion)
+        {
+            ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
+            ordenesDeProduccion ordenesDeProduccion = cOrdenDeProduccion.GetOneOrdenesDeProduccionById(idOrdenDeProduccion);
+            txtFechaHoy.Text = Convert.ToDateTime(ordenesDeProduccion.fechaEntrega).ToString("dd/MM/yyyy");
+            lblOPNumero.Text = ordenesDeProduccion.OPNumero;
+            TxtClientes.Text = ordenesDeProduccion.idCliente.ToString() + " - " + ordenesDeProduccion.Clientes.alias + " - " + "Cliente";
+
+            precargarRecetasDeLaOrden(idOrdenDeProduccion);
+
+        }
+
+        public void precargarRecetasDeLaOrden(int idOrdenDeProduccion)
+        {
+            ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
+            List<ordenesXRecetas> listaRecetasXOrden = cOrdenDeProduccion.GetAllRecetasXOrdenProduccionByidOrdenDeProduccion(idOrdenDeProduccion);
+
+            foreach (var RecetaXOrden in listaRecetasXOrden)
+            {
+                CargarOrdendesProduccionenPH(RecetaXOrden);
+            }
+
+        }
+
+
+
+        private void CargarOrdendesProduccionenPH(ordenesXRecetas RecetaXOrden)
+        {
+            try
+            {
+                TableRow tr = new TableRow();
+                tr.ID = RecetaXOrden.id.ToString();
+
+
+                TableCell celProducto = new TableCell();
+                celProducto.Text = RecetaXOrden.Producto.ToString();
+                celProducto.VerticalAlign = VerticalAlign.Middle;
+                tr.Cells.Add(celProducto);
+
+
+                TableCell celCantidad = new TableCell();
+                celCantidad.Text = RecetaXOrden.cantidad.ToString();
+                celCantidad.VerticalAlign = VerticalAlign.Middle;
+                celCantidad.Attributes.Add("style", "text-align: right;");
+                tr.Cells.Add(celCantidad);
+
+
+                TableCell celAccion = new TableCell();
+
+                Literal l2 = new Literal();
+                l2.Text = "&nbsp";
+                celAccion.Controls.Add(l2);
+
+                LinkButton btnEliminar = new LinkButton();
+                btnEliminar.ID = "btnEliminarReceta_" + RecetaXOrden.id;
+                btnEliminar.CssClass = "btn btn-xs";
+                btnEliminar.Style.Add("background-color", "transparent");
+                btnEliminar.Attributes.Add("data-toggle", "modal");
+                btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
+                btnEliminar.Text = "<span><i style='color:black' class='fa fa-trash - o'></i></span>";
+                //btnEliminar.OnClientClick = "abrirdialog(" + RecetaXOrden.id + ");";
+                btnEliminar.Attributes.Add("onclick", "borrarDocumentoSelect('ContentPlaceHolder1_" + RecetaXOrden.id.ToString() + "');");
+                celAccion.Controls.Add(btnEliminar);
+
+                tr.Cells.Add(celAccion);
+                phRubroRecaudacionMensual.Controls.Add(tr);
+
+
+                //DatosProductos.Text += "ID=" + RecetaXOrden.idReceta.ToString() + " - " + RecetaXOrden.Producto + " - " + "Receta" + "," + RecetaXOrden.cantidad + ";";
+            //document.getElementById('<%= DatosProductos.ClientID%>').value += "ID=" + ID + "," + ProductoDescripcion + "," + Cantidad + ";"
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
         private void CargarCodigoOrdenCompra()
         {
             try
             {
-                ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();   
+                ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
                 var listaOrdeneProduccion = cOrdenDeProduccion.GetAllOrdenesDeProduccion();
 
                 string fac1;
                 if (listaOrdeneProduccion.Count == 0)
                 {
-                    lblOPNumero.Text = "#000001"; 
+                    lblOPNumero.Text = "#000001";
                 }
                 else
                 {
@@ -51,7 +150,7 @@ namespace Tecnocuisine.Formularios.Ventas
 
                     lblOPNumero.Text = "#" + fac1;
 
-                  
+
                 }
             }
             catch (Exception ex)
@@ -89,13 +188,13 @@ namespace Tecnocuisine.Formularios.Ventas
 
                 foreach (var cliente in clientes)
                 {
-                   
+
 
                     builder.Append(String.Format("<option value='{0}' id='c_r_" + cliente.id + "_" + cliente.alias + "_" + cliente.cuit + "'>", cliente.id + " - " + cliente.alias + " - " + "Cliente"));
-                   
+
                 }
 
-                
+
 
                 ListaNombreCliente.InnerHtml = builder.ToString();
 
@@ -148,7 +247,7 @@ namespace Tecnocuisine.Formularios.Ventas
                     }
                 }
 
-              
+
 
                 ListaNombreProd.InnerHtml = builder.ToString();
 
@@ -214,7 +313,7 @@ namespace Tecnocuisine.Formularios.Ventas
                     Regex regex = new Regex(@"\d+");
 
 
-                    
+
                     // Buscar coincidencias en la cadena
                     Match match = regex.Match(TercerElemento);
                     int Cantidad = int.Parse(match.Value);

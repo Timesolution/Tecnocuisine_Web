@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Tecnocuisine.Modelos;
 using Tecnocuisine_API.Controladores;
@@ -62,6 +64,8 @@ namespace Tecnocuisine.Formularios.Compras
                 TableCell celFechaEntrega = new TableCell();
                 celFechaEntrega.Text = "<span> "+ entrega.fechaEntrega.ToString("yyyyMMdd")+"</span>"+ entrega.fechaEntrega.ToString("dd/MM/yyyy");
                 celFechaEntrega.VerticalAlign = VerticalAlign.Middle;
+                //celFechaEntrega.Attributes.Add("style", " text-align: center");
+                //celfechaentrega.attributes.add("style", "vertical-align:middle");
                 tr.Cells.Add(celFechaEntrega);
 
                 TableCell celAlias = new TableCell();
@@ -75,11 +79,31 @@ namespace Tecnocuisine.Formularios.Compras
                 tr.Cells.Add(celSectorProd);
 
                 TableCell celObservaciones = new TableCell();
-                celObservaciones.Text = entrega.Observaciones;
+                celObservaciones.Text = entrega.CodigoEntrega;
                 celObservaciones.VerticalAlign = VerticalAlign.Middle;
                 tr.Cells.Add(celObservaciones);
+                string efacturado = "";
+                switch (entrega.EstadoFacturado)
+                {
+                    case true:
+                        efacturado = "Entrega Facturada";
+                        break;
+                    case false:
+                        efacturado = "Entrega NO Facturada";
+                        break;
+                    case null:
+                        efacturado = "Entrega NO Facturada";
+                        break;
+                     default:
+                        efacturado = "Entrega NO Facturada";
+                        break;
+                }
+                TableCell celEstadoFacturado = new TableCell();
+                celEstadoFacturado.Text = efacturado;
+                celEstadoFacturado.VerticalAlign = VerticalAlign.Middle;
+                tr.Cells.Add(celEstadoFacturado);
 
-                
+
 
                 TableCell celAction = new TableCell();
                 LinkButton btnEditar = new LinkButton();
@@ -89,31 +113,18 @@ namespace Tecnocuisine.Formularios.Compras
                 btnEditar.Style.Add("background-color", "transparent");
                 //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                 //btnDetalles.Attributes.Add("title data-original-title", "Editar");
-                btnEditar.Text = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
-                btnEditar.Click += new EventHandler(this.editarEntrega);
+                btnEditar.Text = "<i class='fa fa-search' style=\"color: black\"></i>";
+                btnEditar.Attributes.Add("style", "background-color: transparent;");
+                btnEditar.Attributes.Add("href", "EntregaDetallada.aspx?i=" + entrega.id);
                 celAction.Controls.Add(btnEditar);
+                celAction.Attributes.Add("style", "vertical-align: middle;");
+
+                HtmlInputCheckBox chkEditar = new HtmlInputCheckBox();
+                chkEditar.ID = "ChkEdit_" + entrega.id.ToString();
+                chkEditar.Attributes.Add("class", "chkEdit");
+                celAction.Controls.Add(chkEditar);
 
 
-                Literal l = new Literal();
-                l.Text = "&nbsp";
-                celAction.Controls.Add(l);
-
-
-                LinkButton btnEliminar = new LinkButton();
-                btnEliminar.ID = "btnEliminar_" + entrega.id;
-
-
-                btnEliminar.OnClientClick = "abrirdialog(" + entrega.id + ");";
-                btnEliminar.CssClass = "btn btn-xs";
-                btnEliminar.Style.Add("background-color", "transparent");
-                //btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                //btnDetalles.Attributes.Add("title data-original-title", "Editar");
-                btnEliminar.Text = "<span><i style='color:black;' class='fa fa-trash'></i></span>";
-                //btnEliminar.Click += new EventHandler(this.EliminarProveedor);
-                celAction.Controls.Add(btnEliminar);
-                celAction.Width = Unit.Percentage(10);
-                celAction.VerticalAlign = VerticalAlign.Middle;
-                celAction.HorizontalAlign = HorizontalAlign.Center;
                 tr.Cells.Add(celAction);
 
                 phEntregas.Controls.Add(tr);

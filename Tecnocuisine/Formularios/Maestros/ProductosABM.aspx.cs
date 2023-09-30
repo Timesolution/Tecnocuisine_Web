@@ -21,6 +21,7 @@ using Gestion_Api.Modelo;
 using System.Web.Services.Description;
 using System.Text.RegularExpressions;
 
+
 namespace Tecnocuisine.Formularios.Maestros
 {
     public partial class ProductosABM : System.Web.UI.Page
@@ -1315,18 +1316,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 }
 
 
-                //if (txtDesperdicio.Text == "")
-                //{
-                //    Receta.desperdicio = null;
-                //    Receta.merma = null;
-                //}
-                //else
-                //{
-                //    Receta.desperdicio = Convert.ToDecimal(txtDesperdicio.Text.Replace('.', ','));
-                //    Receta.merma = Convert.ToDecimal(txtMerma.Text.Replace('.', ','));
-                //}
-
-                //Receta.presentacion = Convert.ToInt32(ListPresentaciones.SelectedValue);
+       
 
                 int resultado = controladorReceta.EditarReceta(Receta);
 
@@ -1357,14 +1347,35 @@ namespace Tecnocuisine.Formularios.Maestros
                                     }
                                 }
                             }
+
+                            int tiempoParte = 1;
+                            foreach (string elemento in producto)
+                            {
+                                Match match = Regex.Match(elemento, @"Tiempo_(\d+)");
+
+                                if (match.Success)
+                                {
+                                    // Si se encuentra una coincidencia, extrae el número y almacénalo en la variable
+                                    string numeroStr = match.Groups[1].Value;
+                                    if (int.TryParse(numeroStr, out int numero))
+                                    {
+                                        tiempoParte = numero;
+                                        break; // Rompe el bucle una vez que se encuentra el número
+                                    }
+
+                                }
+                            }
+
+
                             if (producto[1] == "Producto")
                             {
                                 Recetas_Producto productoNuevo = new Recetas_Producto();
                                 productoNuevo.idReceta = Receta.id;
                                 productoNuevo.idProducto = Convert.ToInt32(producto[0]);
-                                productoNuevo.cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);     
+                                productoNuevo.cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
                                 //productoNuevo.idSectorProductivo = Convert.ToInt32(1);
                                 productoNuevo.idSectorProductivo = numeroEncontrado;
+                                productoNuevo.Tiempo = tiempoParte;
 
                                 controladorReceta.AgregarReceta_Producto(productoNuevo);
                             }
@@ -1389,11 +1400,34 @@ namespace Tecnocuisine.Formularios.Maestros
                                     }
                                 }
 
+
+                                int tiempoParteRecetes_Recetas = 1;
+                                foreach (string elemento in producto)
+                                {
+                                    Match match = Regex.Match(elemento, @"Tiempo_(\d+)");
+
+                                    if (match.Success)
+                                    {
+                                        // Si se encuentra una coincidencia, extrae el número y almacénalo en la variable
+                                        string numeroStr = match.Groups[1].Value;
+                                        if (int.TryParse(numeroStr, out int numero))
+                                        {
+                                            tiempoParteRecetes_Recetas = numero;
+                                            break; // Rompe el bucle una vez que se encuentra el número
+                                        }
+
+                                    }
+                                }
+
+
+
+
                                 Recetas_Receta recetaNueva = new Recetas_Receta();
                                 recetaNueva.idReceta = Receta.id;
                                 recetaNueva.idRecetaIngrediente = Convert.ToInt32(producto[0]);
                                 recetaNueva.cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
-                                recetaNueva.idSectorProductivo = idSectorProductivo;    
+                                recetaNueva.idSectorProductivo = idSectorProductivo;
+                                recetaNueva.Tiempo = tiempoParteRecetes_Recetas;
                                 controladorReceta.AgregarReceta_Receta(recetaNueva);
                             }
                         }

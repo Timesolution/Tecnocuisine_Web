@@ -11,6 +11,7 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Tecnocuisine.Formularios.Maestros;
 using Tecnocuisine.Modelos;
 using Tecnocuisine_API.Controladores;
 using Tecnocuisine_API.Entitys;
@@ -50,7 +51,7 @@ namespace Tecnocuisine
 
                 CargarUnidadesMedida();
                 CargarAlicuotasIVA();
-               
+
                 cargarNestedListAtributos();
                 if (accion == 2)
                 {
@@ -139,7 +140,7 @@ namespace Tecnocuisine
             Gestion_Api.Controladores.controladorArticulo controladorProducto = new Gestion_Api.Controladores.controladorArticulo();
             var gruposList = controladorProducto.obtenerSubGrupoByGrupo(id);
             string grupos = "";
-            foreach(var item in gruposList)
+            foreach (var item in gruposList)
             {
                 grupos += item.id + "," + item.descripcion + ";";
             }
@@ -345,6 +346,7 @@ namespace Tecnocuisine
 
                     foreach (var item in productos)
                     {
+
                         CargarProductosPH(item);
 
                     }
@@ -436,6 +438,7 @@ namespace Tecnocuisine
             try
             {
 
+
                 //fila
                 TableRow tr = new TableRow();
                 tr.ID = producto.id.ToString();
@@ -477,13 +480,26 @@ namespace Tecnocuisine
                             descripcionAtributos += " - " + atributo.descripcion;
                     }
                 }
-                TableCell celAtributos = new TableCell();
-                celAtributos.Text = descripcionAtributos;
-                celAtributos.Width = Unit.Percentage(25);
-                celAtributos.VerticalAlign = VerticalAlign.Middle;
-                celAtributos.HorizontalAlign = HorizontalAlign.Left;
-                celAtributos.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celAtributos);
+                if (descripcionAtributos == null || descripcionAtributos.Trim() == "")
+                {
+                    TableCell celAtributos2 = new TableCell();
+                    celAtributos2.Text = "No Existe Atributos";
+                    celAtributos2.Width = Unit.Percentage(25);
+                    celAtributos2.VerticalAlign = VerticalAlign.Middle;
+                    celAtributos2.HorizontalAlign = HorizontalAlign.Left;
+                    celAtributos2.Attributes.Add("style", "padding-bottom: 1px !important;");
+                    tr.Cells.Add(celAtributos2);
+                }
+                else
+                {
+                    TableCell celAtributos = new TableCell();
+                    celAtributos.Text = descripcionAtributos;
+                    celAtributos.Width = Unit.Percentage(25);
+                    celAtributos.VerticalAlign = VerticalAlign.Middle;
+                    celAtributos.HorizontalAlign = HorizontalAlign.Left;
+                    celAtributos.Attributes.Add("style", "padding-bottom: 1px !important;");
+                    tr.Cells.Add(celAtributos);
+                }
 
                 TableCell celUnidad = new TableCell();
                 celUnidad.Text = producto.Unidades.descripcion;
@@ -493,11 +509,12 @@ namespace Tecnocuisine
                 tr.Cells.Add(celUnidad);
 
                 TableCell celCosto = new TableCell();
-                celCosto.Text = producto.costo.ToString().Replace(',','.');
+                celCosto.Text = FormatearNumero(producto.costo);
                 celCosto.VerticalAlign = VerticalAlign.Middle;
                 celCosto.HorizontalAlign = HorizontalAlign.Right;
-                celCosto.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celCosto.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
                 tr.Cells.Add(celCosto);
+
 
                 ControladorPresentacion controladorPresentacion = new ControladorPresentacion();
                 string descripcionPresentacion = "";
@@ -506,26 +523,66 @@ namespace Tecnocuisine
                     foreach (Productos_Presentacion item in producto.Productos_Presentacion)
                     {
                         Tecnocuisine_API.Entitys.Presentaciones presentacion = controladorPresentacion.ObtenerPresentacionId(item.idPresentacion);
-                        if (descripcionPresentacion == "")
-                            descripcionPresentacion = presentacion.descripcion;
-                        else
-                            descripcionPresentacion += " - " + presentacion.descripcion;
+                        if (presentacion != null)
+                        {
+                            if (descripcionPresentacion == "")
+                            {
+                                descripcionPresentacion = presentacion.descripcion;
+                            }
+                            else
+                            {
+
+                                descripcionPresentacion += " - " + presentacion.descripcion;
+                            }
+                        }
                     }
                 }
                 TableCell celPresentacion = new TableCell();
-                celPresentacion.Text = descripcionPresentacion;
+                celPresentacion.Text = descripcionPresentacion.Length > 1 ? descripcionPresentacion : "No Existen Presentaciones"; 
                 celPresentacion.Width = Unit.Percentage(12);
                 celPresentacion.VerticalAlign = VerticalAlign.Middle;
                 celPresentacion.HorizontalAlign = HorizontalAlign.Left;
                 celPresentacion.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celPresentacion);
 
+                ControladorMarca controladorMarca = new ControladorMarca();
+                string descripcionMarca = "";
+                if (producto.Marca_Productos != null)
+                {
+                    foreach (Marca_Productos item in producto.Marca_Productos)
+                    {
+                        Tecnocuisine_API.Entitys.Articulos_Marcas marca = controladorMarca.ObtenerMarcaId((int)item.id_marca);
+                        if (marca != null)
+                        {
+                            if (descripcionMarca == "")
+                            {
+                                descripcionMarca = marca.descripcion;
+                            }
+                            else
+                            {
+
+                                descripcionMarca += " - " + marca.descripcion;
+                            }
+                        }
+                    }
+                }
+
+                TableCell celMarcas = new TableCell();
+                celMarcas.Text = descripcionMarca.Length > 1 ? descripcionMarca : "No Existe Marcas" ;
+                celMarcas.Width = Unit.Percentage(12);
+                celMarcas.VerticalAlign = VerticalAlign.Middle;
+                celMarcas.HorizontalAlign = HorizontalAlign.Left;
+                celMarcas.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celMarcas);
+
+
                 TableCell celAlicuota = new TableCell();
-                celAlicuota.Text = producto.Alicuotas_IVA.porcentaje.ToString().Replace(',','.') + "%";
+                celAlicuota.Text = producto.Alicuotas_IVA.porcentaje.ToString().Replace(',', '.') + "%";
                 celAlicuota.VerticalAlign = VerticalAlign.Middle;
                 celAlicuota.HorizontalAlign = HorizontalAlign.Left;
-                celAlicuota.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celAlicuota.Attributes.Add("style", "padding-bottom: 1px !important;text-align: right;");
                 tr.Cells.Add(celAlicuota);
+
 
 
 
@@ -535,11 +592,14 @@ namespace Tecnocuisine
                 celAccion.Width = Unit.Percentage(9);
                 LinkButton btnDetalles = new LinkButton();
                 btnDetalles.CssClass = "btn btn-xs";
-                btnDetalles.Style.Add("background-color","transparent");
+                btnDetalles.Style.Add("background-color", "transparent");
                 //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                 //btnDetalles.Attributes.Add("title data-original-title", "Editar");
                 btnDetalles.ID = "btnSelec_" + producto.id + "_";
                 btnDetalles.Text = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
+                btnDetalles.Attributes.Add("data-toggle", "tooltip");
+                btnDetalles.Attributes.Add("data-placement", "top");
+                btnDetalles.Attributes.Add(" data-original-title", "Editar Producto");
                 btnDetalles.Click += new EventHandler(this.editarProducto);
                 celAccion.Controls.Add(btnDetalles);
 
@@ -552,10 +612,10 @@ namespace Tecnocuisine
                 btnStock.CssClass = "btn btn-xs";
                 btnStock.Style.Add("background-color", "transparent");
                 btnStock.Attributes.Add("data-toggle", "tooltip");
-                btnStock.Attributes.Add("title data-original-title", "Stock");
+                btnStock.Attributes.Add("data-placement", "top");
+                btnStock.Attributes.Add(" data-original-title", "Visualizar Stock");
                 btnStock.Text = "<span><i style='color:black' class='fa fa-list-alt'></i></span>";
-
-                btnStock.PostBackUrl = "Stock.aspx?articulo=" + producto.id + "&fd=" + DateTime.Today.AddDays(-7).ToString("dd/MM/yyyy") + "&fh=" + DateTime.Today.ToString("dd/MM/yyyy");
+                btnStock.PostBackUrl = "StockDetallado.aspx?t=1&i="+producto.id;
                 celAccion.Controls.Add(btnStock);
 
                 Literal l3 = new Literal();
@@ -567,7 +627,7 @@ namespace Tecnocuisine
                 btnEliminar.CssClass = "btn  btn-xs";
                 btnEliminar.Attributes.Add("data-toggle", "modal");
                 btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                btnEliminar.Text = "<span><i style='color:black' class='fa fa-trash - o'></i></span>";
+                btnEliminar.Text = "<span data-toggle=\"tooltip\" data-placement=\"top\" data-original-title=\"Eliminar Producto\"><i style='color:black' class='fa fa-trash - o'></i></span>";
                 btnEliminar.Style.Add("background-color", "transparent");
 
                 btnEliminar.OnClientClick = "abrirdialog(" + producto.id + ");";
@@ -581,7 +641,7 @@ namespace Tecnocuisine
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine(ex.Message);
             }
 
         }
@@ -749,23 +809,23 @@ namespace Tecnocuisine
                 artCat.Articulo = i;
                 artCat.ApareceLista = 1;
 
-               int a = contArtEnt.agregarApareceLista(artCat);
+                int a = contArtEnt.agregarApareceLista(artCat);
             }
             //traspaso temporal para el siguiente
             //int idart=0;
-           
-                if (i > 0)
-                {
-                    //agrego la marca
-                    Articulos_Marca am = new Articulos_Marca();
-                    am.idArticulo = i;
-                    am.idMarca = Convert.ToInt64(1);
-                    am.TipoDistribucion = Convert.ToInt32(1);
-                    //this.controlador.agregarArticuloMarca(i, Convert.ToInt32(this.DropListMarca.SelectedValue));
-                    i = this.contArtEnt.agregarMarca(am);
-                    i = 1;
-                }
-            
+
+            if (i > 0)
+            {
+                //agrego la marca
+                Articulos_Marca am = new Articulos_Marca();
+                am.idArticulo = i;
+                am.idMarca = Convert.ToInt64(1);
+                am.TipoDistribucion = Convert.ToInt32(1);
+                //this.controlador.agregarArticuloMarca(i, Convert.ToInt32(this.DropListMarca.SelectedValue));
+                i = this.contArtEnt.agregarMarca(am);
+                i = 1;
+            }
+
         }
 
         public void EditarProducto()
@@ -1113,8 +1173,18 @@ namespace Tecnocuisine
 
 
         }
+        decimal RevertirNumero(string numeroFormateado)
+        {
+            string numeroSinComas = numeroFormateado.Replace(",", "");
+            decimal numero = decimal.Parse(numeroSinComas, CultureInfo.InvariantCulture);
+            return numero;
+        }
 
-     
+        string FormatearNumero(decimal numero)
+        {
+            return numero.ToString("N2", new CultureInfo("en-US"));
+        }
+
 
     }
 }

@@ -603,40 +603,19 @@ namespace Tecnocuisine.Formularios.Maestros
                 celFamilia.VerticalAlign = VerticalAlign.Middle;
                 celFamilia.HorizontalAlign = HorizontalAlign.Left;
                 celFamilia.Width = Unit.Percentage(5);
-                //celFamilia.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celFamilia);
-                //agrego fila a tabla
                 TableCell celAccion = new TableCell();
 
-                //LinkButton btnDetalles = new LinkButton();
-                //btnDetalles.CssClass = "btn btn-primary btn-xs";
-                //HtmlGenericControl btnVerFamilia = new HtmlGenericControl("a");
-                //btnVerFamilia.Attributes.Add( "class", "btn btn-xs");
-                //btnVerFamilia.Style.Add("background-color", "transparent");
-                //btnVerFamilia.Style.Add("margin-right", "10px");
-                ////btnVerFamilia.Attributes.Add("title data-original-title", familia);
-                ////btnVerFamilia.Attributes.Add("data-toggle", "modal");
-                ////btnVerFamilia.Attributes.Add("title data-original-title", "Editar");
-                //btnVerFamilia.ID = "btnSelec_" + categoria.id + "_";
-                //btnVerFamilia.InnerHtml = "<span><i style='color:black;' class='fa fa-search'></i></span>";
-                //btnVerFamilia.Attributes.Add("OnClick", "MostrarModalFamilia(\'" + familia + "\')");
-                //celAccion.Controls.Add(btnVerFamilia);
+             
 
                 HtmlGenericControl btnDetalles = new HtmlGenericControl("input");
                 btnDetalles.Attributes.Add("class", "presentacion radio btn btn-primary btn-xs");
-                //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                 btnDetalles.Attributes.Add("onclick", "agregarCategoria(this.id); return false;");
                 btnDetalles.Attributes.Add("type", "checkbox");
                 btnDetalles.ID = "btnSelecProd_" + categoria.id + "_" + categoria.descripcion;
-                //btnDetalles.Text = "<span><i class='fa fa-check'></i></span>";
                 celAccion.Controls.Add(btnDetalles);
 
                 //agrego fila a tabla
-
-
-
-
-
                 celAccion.Width = Unit.Percentage(5);
                 celAccion.Attributes.Add("style", "padding-bottom: 1px !important;text-align:right");
                 tr.Cells.Add(celAccion);
@@ -1023,16 +1002,28 @@ namespace Tecnocuisine.Formularios.Maestros
                 celSectorProductivo.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
                 tr.Cells.Add(celSectorProductivo);
 
+
+                TableCell celTiempo = new TableCell();
+
+                if (!(prodRec.FirstOrDefault().Tiempo is null))
+                {
+
+                    celTiempo.Text = prodRec.FirstOrDefault().Tiempo.ToString();
+                }
+
+                else
+                {
+                    celTiempo.Text = " ";
+                }
+
+                celTiempo.VerticalAlign = VerticalAlign.Middle;
+                celTiempo.HorizontalAlign = HorizontalAlign.Left;
+                celTiempo.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
+                tr.Cells.Add(celTiempo);
+
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
-                //LinkButton btnEditDetalles = new LinkButton();
-                //btnEditDetalles.CssClass = "btn btn-xs";
-                //btnEditDetalles.Attributes.Add("data-toggle", "tooltip");
-                //btnEditDetalles.Text = "<span><i style=\"color: black\" class='fa fa-pencil'></i></span>";
-                //btnEditDetalles.Attributes.Add("class", "btn  btn-xs");
-                //btnEditDetalles.Attributes.Add("style", "padding: 0% 5% 2% 5.5%;background-color: transparent;");
-                //btnEditDetalles.Attributes.Add("onclick", "EditarProd('ContentPlaceHolder1_Producto_" + producto.id.ToString() + "');");
-                //celAccion.Controls.Add(btnEditDetalles);
+       
                 if (bloqueados != 1)
                 {
                     LinkButton btnDetalles = new LinkButton();
@@ -1051,7 +1042,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 phProductos.Controls.Add(tr);
 
-                idProductosRecetas.Value += producto.id.ToString() + " ,Producto," + prodRec.FirstOrDefault().cantidad.ToString().Replace(',', '.') + ", ContentPlaceHolder1_Producto_" + producto.id.ToString() + "," + "idSectorProductivo_" + prodRec.FirstOrDefault().SectorProductivo.id + ";";
+                idProductosRecetas.Value += producto.id.ToString() + " ,Producto," + prodRec.FirstOrDefault().cantidad.ToString().Replace(',', '.') + ", ContentPlaceHolder1_Producto_" + producto.id.ToString() + "," + "idSectorProductivo_" + prodRec.FirstOrDefault().SectorProductivo.id + "," + "Tiempo_" + prodRec.FirstOrDefault().Tiempo + ";";
 
             }
             catch (Exception ex)
@@ -1334,22 +1325,29 @@ namespace Tecnocuisine.Formularios.Maestros
                 tr.Cells.Add(celSectorProductivo);
 
 
+                TableCell celTiempo = new TableCell();
+
+                if (!(Receta.Tiempo is null))
+                {
+
+                    celTiempo.Text = Receta.Tiempo.ToString();
+                }
+
+                else
+                {
+                    celTiempo.Text = " ";
+                }
+
+                celTiempo.VerticalAlign = VerticalAlign.Middle;
+                celTiempo.HorizontalAlign = HorizontalAlign.Left;
+                celTiempo.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
+                tr.Cells.Add(celTiempo);
+
+
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
 
 
-
-
-                //LinkButton btnEditDetalles = new LinkButton();
-                //btnEditDetalles.CssClass = "btn btn-xs";
-
-                //btnEditDetalles.Attributes.Add("data-toggle", "tooltip");
-
-                //btnEditDetalles.Text = "<span><i style=\"color: black\" class='fa fa-pencil'></i></span>";
-                //btnEditDetalles.Attributes.Add("class", "btn  btn-xs");
-                //btnEditDetalles.Attributes.Add("style", "padding: 0% 5% 2% 5.5%;background-color: transparent;");
-                //btnEditDetalles.Attributes.Add("onclick", "EditarProd('ContentPlaceHolder1_Receta_" + Receta.Recetas.id.ToString() + "');");
-                //celAccion.Controls.Add(btnEditDetalles);
                 if (bloqueados != 1)
                 {
                     LinkButton btnDetalles = new LinkButton();
@@ -1370,7 +1368,8 @@ namespace Tecnocuisine.Formularios.Maestros
                 phProductos.Controls.Add(tr);
 
                 //idProductosRecetas.Value += RecetaingredienteI.id.ToString() + " ,Receta," + Receta.cantidad.ToString().Replace(',', '.') + ", ContentPlaceHolder1_Receta_" + RecetaingredienteI.id.ToString() + ";";
-                idProductosRecetas.Value += RecetaingredienteI.id.ToString() + " ,Receta," + Receta.cantidad.ToString().Replace(',', '.') + ", ContentPlaceHolder1_Receta_" + RecetaingredienteI.id.ToString() + "idSectorProductivoRecetas_recetas_" + Receta.idSectorProductivo + ";";
+                
+                idProductosRecetas.Value += RecetaingredienteI.id.ToString() + " ,Receta," + Receta.cantidad.ToString().Replace(',', '.') + ", ContentPlaceHolder1_Receta_" + RecetaingredienteI.id.ToString() + "idSectorProductivoRecetas_recetas_" + Receta.idSectorProductivo + "," + "Tiempo_" + Receta.Tiempo + ";";
 
 
             }

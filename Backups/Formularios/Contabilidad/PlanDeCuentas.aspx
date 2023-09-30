@@ -9,6 +9,9 @@
         .drag_enabled {
             pointer-events: all;
         }
+        .float-e-margins .btn {
+    margin-bottom: 0px !important;
+}
     </style>
 
     <div class="wrapper wrapper-content">
@@ -30,12 +33,29 @@
 
                                 <div class="wrapper wrapper-content  animated fadeInRight">
                                     <div class="row">
-                                        <div class="col-md-4">
-                                            <div id="nestable-menu">
-                                                <button type="button" data-action="expand-all" class="btn btn-white btn-sm">Expandir todos</button>
-                                                <button type="button" data-action="collapse-all" class="btn btn-white btn-sm">Collapsar todos</button>
-                                                <linkbutton type="button" data-toggle="modal" href="#modalAgregar" onclick="vaciarFormulario();" class="btn btn-success">Nuevo&nbsp;<i style="color: white" class="fa fa-plus"></i></linkbutton>
+                                        <div class="col-md-10">
+                                            <div id="nestable-menu" style="margin: 0px 0 20px 0;">
+                                                <div style="display: flex">
+
+                                                    <button type="button" style="margin-right: 15px;margin-left: 10px" data-action="expand-all" class="btn btn-white btn-sm">
+                                                        <i data-toggle="tooltip" data-placement="top" data-original-title="Expandir" data-action="expand-all" class="fa fa-folder-open" style="font-size: 15px;"></i>
+                                                    </button>
+                                                    <button type="button" style="margin-right: 15px" data-action="collapse-all" class="btn btn-white btn-sm">
+                                                        <i data-toggle="tooltip" data-placement="top" data-original-title="Contraer" data-action="collapse-all" class="fa fa-folder" style="font-size: 15px;"></i>
+                                                    </button>
+                                                    <div class="input-group" style="width: 90%;">
+                                                        <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                                                        <input type="text" id="txtBusqueda" onchange="Handle()" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                                                    </div>
+                                                </div>
                                             </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <linkbutton type="button" data-toggle="modal" href="#modalAgregar" onclick="vaciarFormulario();" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+                                                data-original-title="Crear Nuevo Plan" style="margin-right: 3%; float: right;">
+                                                <i class='fa fa-plus'></i>
+                                            </linkbutton>
+
                                         </div>
                                     </div>
                                     <div class="row">
@@ -190,6 +210,57 @@
 
 
     <script>           
+       function Handle() {
+                buscarEnLista();
+        };
+
+        function buscarEnLista() {
+            console.log("ENTRE")
+            // Obtener el texto de búsqueda y los elementos de la lista
+            var searchText = $('#txtBusqueda').val().toLowerCase();
+            var listItems = $('#ContentPlaceHolder1_main').find('li');
+            console.log(searchText, listItems)
+            // Filtrar elementos que coinciden con la búsqueda
+            var filteredItems = listItems.filter(function () {
+                console.log("ENTRE2")
+                return $(this).text().toLowerCase().indexOf(searchText) > -1;
+            });
+
+            // Mostrar elementos que coinciden y ocultar los demás
+            listItems.hide();
+            filteredItems.show().parents('li').show();
+
+            // Contraer y expandir los elementos según los resultados de la búsqueda
+            if (searchText === '') {
+                $('#nestable').nestable('collapseAll');
+            } else if (filteredItems.length > 0) {
+                $('#nestable').nestable('expandAll');
+            } else {
+                $('#nestable').nestable('collapseAll');
+            }
+        }
+
+
+
+
+
+
+
+        function buscarEnLista2() {
+            var searchText = $('#txtBusqueda').val().toLowerCase();
+            var listItems = $('#main').find('li');
+
+
+            // Filtrar elementos que coinciden con la búsqueda
+            var filteredItems = listItems.filter(function () {
+                return $(this).text().toLowerCase().indexOf(searchText) > -1;
+            });
+
+            // Expandir elementos que coinciden y contraer los demás
+            listItems.not(filteredItems).hide();
+            filteredItems.show().parents('li').show();
+            $('#nestable').nestable('expandAll');
+        }
         function abrirdialog() {
             $('#modalconfirmacion2').modal('show');
         }
@@ -229,6 +300,7 @@
 
     <script>
         $(document).ready(function () {
+            $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 
             var updateOutput = function (e) {
                 var list = e.length ? e : $(e.target),

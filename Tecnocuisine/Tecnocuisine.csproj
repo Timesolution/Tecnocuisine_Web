@@ -160,7 +160,7 @@
     </Reference>
     <Reference Include="Tecnocuisine_API, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Api\Tecnocuisine_API\bin\Debug\Tecnocuisine_API.dll</HintPath>
+      <HintPath>..\..\Tecnocuisine Api\Tecnocuisine_API\bin\Debug\Tecnocuisine_API.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -335,6 +335,7 @@
     <Content Include="Formularios\Maestros\Productos.aspx" />
     <Content Include="Formularios\Maestros\Unidades.aspx" />
     <Content Include="Formularios\Maestros\InsumosF.aspx" />
+    <Content Include="Formularios\Ventas\CronogramaProduccion.aspx" />
     <Content Include="Formularios\Ventas\CuentaCorriente.aspx" />
     <Content Include="Formularios\Ventas\GenerarProduccion.aspx" />
     <Content Include="Formularios\Ventas\GenerarVenta.aspx" />
@@ -1285,6 +1286,13 @@
     </Compile>
     <Compile Include="Formularios\Maestros\InsumosF.aspx.designer.cs">
       <DependentUpon>InsumosF.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Ventas\CronogramaProduccion.aspx.cs">
+      <DependentUpon>CronogramaProduccion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Ventas\CronogramaProduccion.aspx.designer.cs">
+      <DependentUpon>CronogramaProduccion.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Ventas\CuentaCorriente.aspx.cs">
       <DependentUpon>CuentaCorriente.aspx</DependentUpon>

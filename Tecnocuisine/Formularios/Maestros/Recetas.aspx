@@ -5,7 +5,7 @@
     <div class="wrapper wrapper-content">
         <div class="container-fluid">
             <div class="ibox float-e-margins">
-              <%--  <div class="ibox-title">
+                <%--  <div class="ibox-title">
                     <h5>Recetas</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
@@ -28,25 +28,26 @@
                                                 <div style="margin-left: 0px; margin-right: 0px;" class="row">
                                                     <div class="col-md-10">
 
-                                                    <div class="input-group m-b">
-                                                    <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                                                        <div class="input-group m-b">
+                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                                                        </div>
 
 
-                                                    <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width:90%" />
-                                                </div> 
                                                     </div>
+                                                    <%-- <div class="btn-group" style="margin-right: 5px">--%>
+                                                
                                                     <div class="col-md-2">
-
-                                                    <a href="RecetasABM.aspx" class="btn btn-primary dim" style="margin-right:1%;float:right"><i class='fa fa-plus'></i></a>
+                                                        <a href="RecetasABM.aspx" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                                     <thead>
                                                         <tr>
-                                                            <th style="width:10%">#</th>
-                                                            <th style="width:77%">Descripcion</th>
-                                                            <th style="width:13%"></th>
+                                                            <th style="width: 10%">#</th>
+                                                            <th style="width: 77%">Descripcion</th>
+                                                            <th style="width: 13%"></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -63,65 +64,65 @@
         </div>
     </div>
 
-    <div id="modalTabsProductos" class="modal" style="z-index:2000;" tabindex="-1" role="dialog">
+    <div id="modalTabsProductos" class="modal" style="z-index: 2000;" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
-                 <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel blank-panel">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel blank-panel">
 
-                        <div class="panel-heading">
-                            <div class="panel-title m-b-md"></div>
-                            <div class="panel-options">
+                            <div class="panel-heading">
+                                <div class="panel-title m-b-md"></div>
+                                <div class="panel-options">
 
-                                <ul class="nav nav-tabs">
-                                    <li class="active"><a data-toggle="tab" href="#tab-1">Productos</a></li>
-                                    <li class=""><a data-toggle="tab" href="#tab-2">Recetas</a></li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="panel-body">
-
-                            <div class="tab-content">
-                                <div id="tab-1" class="tab-pane active">
-                                    <table class="table table-bordered table-hover" id="editable2">
-                        <thead>
-                            <tr>
-                                <th style="width: 10%">Cod. Producto</th>
-                                <th style="width: 20%">Descripcion</th>
-                                <th style="width: 10%"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <asp:PlaceHolder ID="phProductosAgregar" runat="server" />
-                        </tbody>
-                    </table>
-                                </div>
-
-                                <div id="tab-2" class="tab-pane">
-                                    <table class="table table-bordered table-hover" id="editable3">
-                        <thead>
-                            <tr>
-                                <th style="width: 10%">Cod. Receta</th>
-                                <th style="width: 20%">Descripcion</th>
-                                <th style="width: 10%"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <asp:PlaceHolder ID="phRecetasModal" runat="server" />
-                        </tbody>
-                    </table>
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a data-toggle="tab" href="#tab-1">Productos</a></li>
+                                        <li class=""><a data-toggle="tab" href="#tab-2">Recetas</a></li>
+                                    </ul>
                                 </div>
                             </div>
 
-                        </div>
+                            <div class="panel-body">
 
+                                <div class="tab-content">
+                                    <div id="tab-1" class="tab-pane active">
+                                        <table class="table table-bordered table-hover" id="editable2">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 10%">Cod. Producto</th>
+                                                    <th style="width: 20%">Descripcion</th>
+                                                    <th style="width: 10%"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <asp:PlaceHolder ID="phProductosAgregar" runat="server" />
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div id="tab-2" class="tab-pane">
+                                        <table class="table table-bordered table-hover" id="editable3">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 10%">Cod. Receta</th>
+                                                    <th style="width: 20%">Descripcion</th>
+                                                    <th style="width: 10%"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <asp:PlaceHolder ID="phRecetasModal" runat="server" />
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
                     </div>
-                </div>
 
-                
-            </div>
+
+                </div>
             </div>
         </div>
     </div>
@@ -150,7 +151,7 @@
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Atributo</label>
                         <div class="col-sm-7">
-                            <asp:TextBox ID="txtDescripcionAtributo"  disabled="disabled" class="form-control" runat="server" />
+                            <asp:TextBox ID="txtDescripcionAtributo" disabled="disabled" class="form-control" runat="server" />
                             <asp:HiddenField ID="idAtributo" runat="server" />
 
                         </div>
@@ -161,8 +162,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <asp:HiddenField id="hiddenidReceta" runat="server"/>
-                    <asp:LinkButton runat="server" ID="btnAgregar" class="buttonLoading btn btn-primary" style="margin-bottom: 0px !important;" OnClick="btnAgregar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <asp:HiddenField ID="hiddenidReceta" runat="server" />
+                    <asp:LinkButton runat="server" ID="btnAgregar" class="buttonLoading btn btn-primary" Style="margin-bottom: 0px !important;" OnClick="btnAgregar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
 
                 </div>
@@ -170,7 +171,7 @@
         </div>
     </div>
 
-        <div id="modalAtributo" class="modal" tabindex="-2" role="dialog">
+    <div id="modalAtributo" class="modal" tabindex="-2" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
@@ -284,7 +285,7 @@
         </div>
     </div>
 
-    <div id="modalAgregar" class="modal" style="z-index:1999;"  tabindex="-1" role="dialog">
+    <div id="modalAgregar" class="modal" style="z-index: 1999;" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
@@ -301,38 +302,38 @@
 
 
                     </div>
-                     <div class="row" style="margin-top: 2%;margin-left: 15%">
+                    <div class="row" style="margin-top: 2%; margin-left: 15%">
                         <label class="col-sm-2 control-label editable">Peso Bruto</label>
                         <div class="col-md-6">
-                            <asp:TextBox ID="txtPesoBruto" style="margin-left:6.5%;text-align:right" disabled="disabled" class="form-control" runat="server" />
-                            <asp:HiddenField runat="server" ID="hiddenPeso"/>
+                            <asp:TextBox ID="txtPesoBruto" Style="margin-left: 6.5%; text-align: right" disabled="disabled" class="form-control" runat="server" />
+                            <asp:HiddenField runat="server" ID="hiddenPeso" />
                         </div>
                     </div>
-                    <div class="row" style="margin-top: 2%;margin-left: 15%">
+                    <div class="row" style="margin-top: 2%; margin-left: 15%">
                         <label class="col-sm-2 control-label editable">Rinde</label>
                         <div class="col-md-6">
-                            <asp:TextBox style="margin-left:6.5% ; text-align:right;"  ID="txtRinde"   class="form-control" runat="server" />
+                            <asp:TextBox Style="margin-left: 6.5%; text-align: right;" ID="txtRinde" class="form-control" runat="server" />
                         </div>
                     </div>
-                   <div class="row" style="margin-top: 2%;margin-left: 15%">
+                    <div class="row" style="margin-top: 2%; margin-left: 15%">
                         <label class="col-sm-2 control-label editable">Merma</label>
                         <div class="col-md-6">
-                            <asp:TextBox ID="txtMerma" style="margin-left:6.5%;text-align:right"  class="form-control" runat="server" />
+                            <asp:TextBox ID="txtMerma" Style="margin-left: 6.5%; text-align: right" class="form-control" runat="server" />
                         </div>
 
                     </div>
-                    <div class="row" style="margin-top: 2%;margin-left: 15%">
+                    <div class="row" style="margin-top: 2%; margin-left: 15%">
                         <label class="col-sm-2 control-label editable">Desperdicio</label>
                         <div class="col-md-6">
-                            <asp:TextBox ID="txtDesperdicio" style="margin-left:6.5%;text-align:right" class="form-control" runat="server" />
+                            <asp:TextBox ID="txtDesperdicio" Style="margin-left: 6.5%; text-align: right" class="form-control" runat="server" />
                         </div>
 
                     </div>
-                    <div class="row" style="margin-top: 2%;margin-left: 15%">
+                    <div class="row" style="margin-top: 2%; margin-left: 15%">
                         <label class="col-sm-2 control-label editable">Coeficiente</label>
                         <div class="col-md-6">
-                            <asp:TextBox ID="txtCoeficiente" style="margin-left:6.5%;text-align:right" disabled="disabled" class="form-control" runat="server" />
-                            <asp:HiddenField runat="server" ID="hiddenCoeficiente"/>
+                            <asp:TextBox ID="txtCoeficiente" Style="margin-left: 6.5%; text-align: right" disabled="disabled" class="form-control" runat="server" />
+                            <asp:HiddenField runat="server" ID="hiddenCoeficiente" />
                         </div>
 
                     </div>
@@ -346,22 +347,22 @@
                         </div>
 
                         <div class="col-sm-2">
-                            <linkButton  ID="btnProductos" class="btn btn-primary dim" data-toggle="modal" href="#modalTabsProductos"><i style="color: white"  class="fa fa-plus"></i></linkButton>
+                            <linkbutton id="btnProductos" class="btn btn-primary dim" data-toggle="modal" href="#modalTabsProductos"><i style="color: white" class="fa fa-plus"></i></linkbutton>
                         </div>
 
                     </div>
                     <div class="row" style="margin-top: 2%; margin-bottom: 2%;">
                         <label class="col-sm-2 control-label editable">Cantidad</label>
                         <div class="col-sm-7">
-                            <asp:TextBox ID="txtCantidad" style="text-align:right" class="form-control" runat="server" />
+                            <asp:TextBox ID="txtCantidad" Style="text-align: right" class="form-control" runat="server" />
                         </div>
-                         <div class="col-sm-2">
-                            <linkButton  ID="btnAgregarProducto" onclick="agregarProductoPH();" class="btn btn-primary dim" ><i style="color: white"   class="fa fa-check"></i></linkButton>
+                        <div class="col-sm-2">
+                            <linkbutton id="btnAgregarProducto" onclick="agregarProductoPH();" class="btn btn-primary dim"><i style="color: white" class="fa fa-check"></i></linkbutton>
                         </div>
                     </div>
-                    
-                    
-                    <table class="table table-bordered table-hover"  id="tableProductos">
+
+
+                    <table class="table table-bordered table-hover" id="tableProductos">
                         <thead>
                             <tr>
                                 <th style="width: 10%">Cod. Producto</th>
@@ -371,7 +372,7 @@
                                 <th style="width: 10%"></th>
                             </tr>
                         </thead>
-                        <tbody> 
+                        <tbody>
                             <asp:PlaceHolder ID="phProductos" runat="server" />
                         </tbody>
                     </table>
@@ -380,7 +381,7 @@
                 </div>
 
                 <div class="modal-footer" style="margin-top: 7%">
-                    <asp:LinkButton runat="server" ID="btnGuardar" style="margin-bottom: 0px !important;" class="buttonLoading btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <asp:LinkButton runat="server" ID="btnGuardar" Style="margin-bottom: 0px !important;" class="buttonLoading btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
                     <asp:HiddenField runat="server" ID="idProductosRecetas" />
                     <asp:HiddenField runat="server" ID="hiddenReceta" />
@@ -393,7 +394,71 @@
 
 
 
+    <div id="modalBusqueda" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
 
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Busqueda</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="MainContent_UpdatePanel2">
+
+
+                        <div role="form" class="form-horizontal col-md-12">
+
+                            <label class="col-md-4">Desde</label>
+                            <div class="col-md-6">
+                                <div class="form-group" id="data_1">
+                                    <div class="input-group date">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <label class="col-md-4">Hasta</label>
+                            <div class="col-md-6">
+                                <div class="form-group" id="data_2">
+                                    <div class="input-group date">
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                        <asp:TextBox class="form-control" runat="server" ID="txtFechaVencimiento" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <label class="col-md-4">Buscar Proveedor</label>
+                            <div class="col-md-6" style="padding: 0px;">
+                                <input name="txtProveedor" type="text" id="txtProveedor" onchange="ValidarProveedor()" list="ContentPlaceHolder1_ListaProveedores" class="form-control" style="margin-left: 0px; margin-bottom: 15px;">
+                                <p id="ValivaProveedor" class="text-danger text-hide">Tienes que ingresar un Proveedor</p>
+                            </div>
+
+
+
+                        </div>
+
+
+
+
+
+                    </div>
+                </div>
+
+
+
+                <div class="modal-footer" style="border-color: transparent;">
+                    <a id="btnFiltrar" onclick="FiltrarCuentaCorriente()" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;Filtrar </a>
+                    <input type="hidden" name="ctl00$ContentPlaceHolder1$hiddenEditar" id="ContentPlaceHolder1_hiddenEditar">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
 
 
 
@@ -410,75 +475,75 @@
         }
     </script>
 
-     <script>           
-         function openModalAtributos() {
-             $('#modalAgregarAtributo').modal('show');
-         }
-     </script>
+    <script>           
+        function openModalAtributos() {
+            $('#modalAgregarAtributo').modal('show');
+        }
+    </script>
 
 
 
 
-        <script>
-            function cargarProductos() {
-                var hiddenReceta = document.getElementById('ContentPlaceHolder1_hiddenReceta');
-                $.ajax({
-                    method: "POST",
-                    url: "Recetas.aspx/GetIngredientes",
-                    data: '{id: "' + hiddenReceta.value + '" }',
-                    contentType: "application/json",
-                    dataType: 'json',
-                    error: (error) => {
-                        console.log(JSON.stringify(error));
-                        //$.msgbox("No se pudo cargar la tabla", { type: "error" });
-                    },
-                    success: successAgregarColumnasIngredientes
-                });
+    <script>
+        function cargarProductos() {
+            var hiddenReceta = document.getElementById('ContentPlaceHolder1_hiddenReceta');
+            $.ajax({
+                method: "POST",
+                url: "Recetas.aspx/GetIngredientes",
+                data: '{id: "' + hiddenReceta.value + '" }',
+                contentType: "application/json",
+                dataType: 'json',
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                    //$.msgbox("No se pudo cargar la tabla", { type: "error" });
+                },
+                success: successAgregarColumnasIngredientes
+            });
 
-                function successAgregarColumnasIngredientes(response) {
-                    var ingredientes = JSON.parse(response.d).split(';');
+            function successAgregarColumnasIngredientes(response) {
+                var ingredientes = JSON.parse(response.d).split(';');
 
-                    for (var x = 0; x < ingredientes.length; x++) {
-                        if (ingredientes[x] != "") {
-                            var ingrediente = ingredientes[x].split(',');
-                            var codigo = ingrediente[0];
-                            var tipo = ingrediente[1];
-                            var descripcion = ingrediente[3];
+                for (var x = 0; x < ingredientes.length; x++) {
+                    if (ingredientes[x] != "") {
+                        var ingrediente = ingredientes[x].split(',');
+                        var codigo = ingrediente[0];
+                        var tipo = ingrediente[1];
+                        var descripcion = ingrediente[3];
 
-                            var cantidad = ingrediente[2];
-                            $('#tableProductos').append(
-                                "<tr id=" + tipo + "_" + codigo + ">" +
-                                "<td style=\" text-align: right\"> " + codigo + "</td>" +
-                                "<td> " + tipo + "</td>" +
-                                "<td> " + descripcion + "</td>" +
-                                "<td style=\" text-align: right\"> " + cantidad + "</td>" +
-                                "<td style=\" text-align: center\"> <a style=\"padding: 0% 5% 2% 5.5%;\" class=\"btn btn-danger \" onclick=\"javascript: return borrarProd('" + tipo + "_" + codigo + "');\" >" +
-                                "<i class=\"fa fa-trash - o\"></i> </a> " +
-                                "</td > " +
-                                "</tr>"
-                            );
+                        var cantidad = ingrediente[2];
+                        $('#tableProductos').append(
+                            "<tr id=" + tipo + "_" + codigo + ">" +
+                            "<td style=\" text-align: right\"> " + codigo + "</td>" +
+                            "<td> " + tipo + "</td>" +
+                            "<td> " + descripcion + "</td>" +
+                            "<td style=\" text-align: right\"> " + cantidad + "</td>" +
+                            "<td style=\" text-align: center\"> <a style=\"padding: 0% 5% 2% 5.5%;\" class=\"btn btn-danger \" onclick=\"javascript: return borrarProd('" + tipo + "_" + codigo + "');\" >" +
+                            "<i class=\"fa fa-trash - o\"></i> </a> " +
+                            "</td > " +
+                            "</tr>"
+                        );
 
-                            if (document.getElementById('<%= idProductosRecetas.ClientID%>').value == "") {
-                                document.getElementById('<%= idProductosRecetas.ClientID%>').value += codigo + "," + tipo + "," + cantidad + "," + tipo + "_" + codigo;
-                            }
-                            else {
-                                document.getElementById('<%= idProductosRecetas.ClientID%>').value += ";" + codigo + "," + tipo + "," + cantidad + "," + tipo + "_" + codigo;
-                            }
-                            if (ContentPlaceHolder1_txtPesoBruto.value != "") {
-                                ContentPlaceHolder1_txtPesoBruto.value = parseFloat(ContentPlaceHolder1_txtPesoBruto.value) + parseFloat(cantidad);
-                            }
-                            else {
-                                ContentPlaceHolder1_txtPesoBruto.value = 0;
-                                ContentPlaceHolder1_txtPesoBruto.value = parseFloat(ContentPlaceHolder1_txtPesoBruto.value) + parseFloat(cantidad);
-                            }
-                            ContentPlaceHolder1_hiddenPeso.value = ContentPlaceHolder1_txtPesoBruto.value;
+                        if (document.getElementById('<%= idProductosRecetas.ClientID%>').value == "") {
+                            document.getElementById('<%= idProductosRecetas.ClientID%>').value += codigo + "," + tipo + "," + cantidad + "," + tipo + "_" + codigo;
                         }
+                        else {
+                            document.getElementById('<%= idProductosRecetas.ClientID%>').value += ";" + codigo + "," + tipo + "," + cantidad + "," + tipo + "_" + codigo;
+                        }
+                        if (ContentPlaceHolder1_txtPesoBruto.value != "") {
+                            ContentPlaceHolder1_txtPesoBruto.value = parseFloat(ContentPlaceHolder1_txtPesoBruto.value) + parseFloat(cantidad);
+                        }
+                        else {
+                            ContentPlaceHolder1_txtPesoBruto.value = 0;
+                            ContentPlaceHolder1_txtPesoBruto.value = parseFloat(ContentPlaceHolder1_txtPesoBruto.value) + parseFloat(cantidad);
+                        }
+                        ContentPlaceHolder1_hiddenPeso.value = ContentPlaceHolder1_txtPesoBruto.value;
                     }
-                    $('#modalAgregar').modal('show');
                 }
+                $('#modalAgregar').modal('show');
             }
+        }
 
-        </script>
+    </script>
 
 
 
@@ -505,7 +570,7 @@
                     document.getElementById('<%= idProductosRecetas.ClientID%>').value += codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0];
                 }
                 else {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += ";" + codigo + "," + tipo + "," + cantidad + "," +  ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0];
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += ";" + codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0];
                 }
                 if (ContentPlaceHolder1_txtPesoBruto.value != "") {
                     ContentPlaceHolder1_txtPesoBruto.value = parseFloat(ContentPlaceHolder1_txtPesoBruto.value) + parseFloat(cantidad);
@@ -587,7 +652,7 @@
 
                 }
                 else {
-                    window.location.replace(location.protocol + '//' + location.host + location.pathname + '?a=3&i='+obj.split(',')[1]);
+                    window.location.replace(location.protocol + '//' + location.host + location.pathname + '?a=3&i=' + obj.split(',')[1]);
                 }
             }
         }
@@ -748,12 +813,12 @@
             //button.setAttribute("onclick", "vaciarFormulario()");
             //button.setAttribute("data-toggle", "modal");
             button.setAttribute("class", "btn");
-            
+
             button.innerHTML = "<i style='color: black' class='fa fa-plus'></i>";
             div.prepend(button);
             var filter = $("#editable_filter");
             filter[0].id = 'editable_filter2';
-            var filter = $("#editable_length").css('display','none');
+            var filter = $("#editable_length").css('display', 'none');
             filter[0].id = 'editable_length2';
 
             $('.dataTables_filter').hide();
@@ -763,14 +828,14 @@
                 ).draw();
             });
 
-         
+
             //document.getElementById('editable_length2').children[0].remove();
         });
     </script>
     <script>
         $(document).ready(function () {
 
-          
+
             $("#ContentPlaceHolder1_txtRinde").on('change paste', function () {
                 if (ContentPlaceHolder1_txtRinde.value == "") {
                     $("#ContentPlaceHolder1_txtMerma").removeAttr('disabled')
@@ -780,11 +845,11 @@
                     $("#ContentPlaceHolder1_txtMerma").attr("disabled", "disabled");
                     $("#ContentPlaceHolder1_txtDesperdicio").attr("disabled", "disabled");
                 }
-              
+
                 if (ContentPlaceHolder1_txtPesoBruto.value != "") {
                     ContentPlaceHolder1_txtCoeficiente.value = (parseFloat(ContentPlaceHolder1_txtPesoBruto.value) / parseFloat(ContentPlaceHolder1_txtRinde.value)).toFixed(2)
                     ContentPlaceHolder1_hiddenCoeficiente.value = ContentPlaceHolder1_txtCoeficiente.value;
-                    
+
                 }
             });
 
@@ -859,20 +924,20 @@
     </script>
 
 
-<script type="text/javascript">
-    function agregarAtributos() {
-        var checkboxes = $('#ContentPlaceHolder1_main').find(':checkbox');
-        var selectedcheckboxes = '';
-        for (var i = 0; i < checkboxes.length; i++) { if (checkboxes[i].checked) { selectedcheckboxes += ',' + checkboxes[i].id.split('_')[2] } }
-        var hiddenAtributo = document.getElementById('ContentPlaceHolder1_idAtributo');
-        hiddenAtributo.value = selectedcheckboxes;
-        
-        var txrDescripcion = document.getElementById('ContentPlaceHolder1_txtDescripcionAtributo');
-        txrDescripcion.value = selectedcheckboxes.replace(/^,/, "");;
-        $('#modalAtributo').modal('hide');
-        return false;
-    }
-</script>
+    <script type="text/javascript">
+        function agregarAtributos() {
+            var checkboxes = $('#ContentPlaceHolder1_main').find(':checkbox');
+            var selectedcheckboxes = '';
+            for (var i = 0; i < checkboxes.length; i++) { if (checkboxes[i].checked) { selectedcheckboxes += ',' + checkboxes[i].id.split('_')[2] } }
+            var hiddenAtributo = document.getElementById('ContentPlaceHolder1_idAtributo');
+            hiddenAtributo.value = selectedcheckboxes;
+
+            var txrDescripcion = document.getElementById('ContentPlaceHolder1_txtDescripcionAtributo');
+            txrDescripcion.value = selectedcheckboxes.replace(/^,/, "");;
+            $('#modalAtributo').modal('hide');
+            return false;
+        }
+    </script>
 
 
 </asp:Content>

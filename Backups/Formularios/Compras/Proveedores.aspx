@@ -32,7 +32,7 @@
                                                         <div class="col-sm-4">
                                                             <asp:TextBox runat="server" ID="txtCodigo" onfocusout="Validar(this.id)" placeholder="Ingrese Codigo" class="form-control"></asp:TextBox>
                                                             <label id="ValidadorCodigo" style="display: none">*Required Field</label>
-                                                            <asp:RequiredFieldValidator Style="display: none" ID="rfvCodigo" runat="server" ErrorMessage="<h3>*</h3>" SetFocusOnError="false" ForeColor="Red" Font-Bold="true" ValidationGroup="AgregarProveedor" ControlToValidate="txtCodigo"></asp:RequiredFieldValidator>
+                                                            <%--<asp:RequiredFieldValidator Style="display: none" ID="rfvCodigo" runat="server" ErrorMessage="<h3>*</h3>" SetFocusOnError="false" ForeColor="Red" Font-Bold="true" ValidationGroup="AgregarProveedor" ControlToValidate="txtCodigo"></asp:RequiredFieldValidator>--%>
                                                         </div>
                                                     </div>
                                                     <div class="hr-line-dashed"></div>
@@ -41,8 +41,7 @@
 
                                                         <div class="col-sm-4">
                                                             <asp:TextBox placeholder="Ingrese Razon social" class="form-control" runat="server" ID="txtRazonSocial"></asp:TextBox>
-                                                            <asp:RequiredFieldValidator Style="display: none" ID="RequiredFieldValidator1" runat="server" ErrorMessage="<h3>*</h3>" SetFocusOnError="false" ForeColor="Red" Font-Bold="true" ValidationGroup="AgregarProveedor" ControlToValidate="txtRazonSocial"></asp:RequiredFieldValidator>
-
+                                                            <%--<asp:RequiredFieldValidator Style="display: none" ID="RequiredFieldValidator1" runat="server" ErrorMessage="<h3>*</h3>" SetFocusOnError="false" ForeColor="Red" Font-Bold="true" ValidationGroup="AgregarProveedor" ControlToValidate="txtRazonSocial"></asp:RequiredFieldValidator>--%>
                                                         </div>
                                                     </div>
                                                     <div class="hr-line-dashed"></div>
@@ -51,9 +50,11 @@
 
                                                         <div class="col-sm-4">
                                                             <asp:TextBox placeholder="Ingrese Alias" class="form-control" runat="server" ID="txtAlias"></asp:TextBox>
-                                                            <asp:RequiredFieldValidator Style="display: none" ID="RequiredFieldValidator2" runat="server" ErrorMessage="<h3>*</h3>" SetFocusOnError="false" ForeColor="Red" Font-Bold="true" ValidationGroup="AgregarProveedor" ControlToValidate="txtAlias"></asp:RequiredFieldValidator>
-
-                                                            <%--<input type="text" placeholder="Ingrese Alias" class="form-control">--%>
+                                                    <%--        <asp:RequiredFieldValidator Style="display: none" 
+                                                                ID="RequiredFieldValidator5" runat="server" ErrorMessage="<h3>*</h3>" 
+                                                                SetFocusOnError="false" ForeColor="Red" Font-Bold="true" 
+                                                                ValidationGroup="AgregarProveedor" 
+                                                                ControlToValidate="txtRazonSocial"></asp:RequiredFieldValidator>--%>
                                                         </div>
                                                     </div>
                                                     <div class="hr-line-dashed"></div>
@@ -69,7 +70,11 @@
                                                         <option>Estados Unidos</option>
                                                         <option>Mexico</option>
                                                     </select>--%>
-                                                            <asp:RequiredFieldValidator Style="display: none" ID="RequiredFieldValidator3" runat="server" InitialValue="-1" ErrorMessage="<h3>*</h3>" SetFocusOnError="false" ForeColor="Red" Font-Bold="true" ValidationGroup="AgregarProveedor" ControlToValidate="ddlPais"></asp:RequiredFieldValidator>
+                                                   <%--         <asp:RequiredFieldValidator Style="display: none" ID="RequiredFieldValidator3"
+                                                                runat="server" InitialValue="-1" ErrorMessage="<h3>*</h3>"
+                                                                SetFocusOnError="false" ForeColor="Red" Font-Bold="true"
+                                                                ValidationGroup="AgregarProveedor" ControlToValidate="ddlPais">
+                                                            </asp:RequiredFieldValidator>--%>
 
                                                         </div>
                                                     </div>
@@ -80,12 +85,38 @@
 
                                                         <div class="col-sm-4">
                                                             <asp:TextBox placeholder="Ingrese numero" class="form-control" runat="server" ID="txtNumero"></asp:TextBox>
-                                                            <asp:RequiredFieldValidator Style="display: none" ID="RequiredFieldValidator4" runat="server" ErrorMessage="<h3>*</h3>" SetFocusOnError="false" ForeColor="Red" Font-Bold="true" ValidationGroup="AgregarProveedor" ControlToValidate="txtNumero"></asp:RequiredFieldValidator>
+                                                            <%--<asp:RequiredFieldValidator Style="display: none" ID="RequiredFieldValidator4" runat="server" ErrorMessage="<h3>*</h3>" SetFocusOnError="false" ForeColor="Red" Font-Bold="true" ValidationGroup="AgregarProveedor" ControlToValidate="txtNumero"></asp:RequiredFieldValidator>--%>
 
                                                         </div>
                                                     </div>
-                                                    <div class="hr-line-dashed"></div>
+                                                    <%--       <div class="hr-line-dashed"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">Rubro</label>
+                                                        <div class="col-sm-4">
+                                                            <asp:DropDownList ID="ddlRubro" runat="server" class="form-control"></asp:DropDownList>
+                                                            <asp:RequiredFieldValidator Style="display: none" ID="RequiredFieldValidator2"
+                                                                runat="server" InitialValue="-1" ErrorMessage="<h3>*</h3>"
+                                                                SetFocusOnError="false" ForeColor="Red" Font-Bold="true"
+                                                                ValidationGroup="AgregarProveedor" ControlToValidate="ddlRubro">
+                                                            </asp:RequiredFieldValidator>
+                                                        </div>
+                                                    </div>--%>
 
+                                                    <div class="hr-line-dashed"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">Rubro</label>
+                                                        <div class="col-sm-4">
+                                                            <asp:DropDownList ID="ddlRubro" runat="server"
+                                                                CssClass="chosen-select form-control"
+                                                                DataTextField="CountryName" DataValueField="CountryCode"
+                                                                Data-placeholder="Seleccione Rubro..." Width="100%">
+                                                                <asp:ListItem Text="Select" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="hr-line-dashed"></div>
                                                     <div class="form-group">
                                                         <label class="col-sm-2 control-label">Estado</label>
 
@@ -101,7 +132,8 @@
                                             </asp:UpdatePanel>
 
                                             <div class="col-sm-4 col-sm-offset-2">
-                                                <asp:Button class="btn btn-primary" Text="Guardar" runat="server" ID="btnGuardar" ValidationGroup="AgregarProveedor" OnClick="btnGuardar_Click" />
+                                                <asp:Button class="btn btn-primary" Text="Guardar" runat="server"
+                                                    ID="btnGuardar" ValidationGroup="AgregarProveedor" OnClick="btnGuardar_Click" />
                                                 <%--<button class="btn btn-primary" type="submit">Guardar</button>--%>
                                                 <a class="btn btn-danger" href="ProveedoresP.aspx">Cancelar</a>
                                             </div>
@@ -136,7 +168,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-white" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
-                                <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="buttonLoading btn btn-danger" OnClick="btnSi_Click" />
+                                <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="buttonLoading btn btn-danger" />
                                 <asp:HiddenField ID="hiddenID" runat="server" />
                             </div>
                         </div>
@@ -145,6 +177,21 @@
             </div>
         </div>
     </div>
+
+    <!-- Chosen -->
+    <script src="/js/plugins/chosen/chosen.jquery.js"></script>
+    <script>
+        var config = {
+            '.chosen-select': {},
+            '.chosen-select-deselect': { allow_single_deselect: true },
+            '.chosen-select-no-single': { disable_search_threshold: 10 },
+            '.chosen-select-no-results': { no_results_text: 'Oops, nothing found!' },
+            '.chosen-select-width': { width: "95%" }
+        }
+        for (var selector in config) {
+            $(selector).chosen(config[selector]);
+        }
+    </script>
     <script>
         function Validar(id) {
             let element = document.getElementById(id).value;
