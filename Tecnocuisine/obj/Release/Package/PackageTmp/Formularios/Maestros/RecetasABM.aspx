@@ -229,14 +229,13 @@
                                     </div>
 
                                     <div class="well"style="margin-top:1%;margin-right: -15px;margin-left: -15px;">
-                                    <div class="row" style="margin-top: 0.5%; margin-bottom: 2%">
+                                    <div class="row" style="margin-bottom: 2%">
                                         <div class="col-md-4">
                                           
                                             <label  style="margin-left:5px;margin-bottom: 0px;"> Ingredientes </label>
                                              
                                             <div class="input-group" style="text-align: right;">
                                                 <datalist id="ListaNombreProd" runat="server">
-
                                                 </datalist>
                                                
                                                 <asp:TextBox ID="txtDescripcionProductos" onfocusout="handle(event)" list="ContentPlaceHolder1_ListaNombreProd" class="form-control" runat="server"/>
@@ -249,7 +248,7 @@
                                         <asp:HiddenField ID="idProducto" runat="server" />
 
                                      
-                                        <div class="col-md-1" style="text-align: center;">
+                                   <%--     <div class="col-md-1" style="text-align: center;">
                                             <label style="margin-bottom: auto;">Cantidad</label>
 
                                             <asp:TextBox ID="txtCantidad" Text="0" onkeydown="PasarAFactor(event)" onchange="CalcularCantBruta()" onkeypress="javascript:return validarNro(event)" Style="text-align: right" class="form-control money" runat="server" />
@@ -258,7 +257,7 @@
                                             <label style="margin-bottom: auto;">Unidad Med.</label>
 
                                             <asp:TextBox ID="txtUnidadMed" disabled="disabled" Style="text-align: right" class="form-control" runat="server" />
-                                        </div>
+                                        </div>--%>
                                         <div class="col-md-1" style="text-align: center;">
                                             <label style="margin-bottom: auto;">Factor</label>
 
@@ -296,13 +295,29 @@
                                         </div>
 
                                     </div>
+
+                                    <%-- Aca empieza la segunda row --%>
+
+                                    <div class="row" style="margin-bottom: 2%">
+                                             <div class="col-md-1" style="text-align: center;">
+                                         <label style="margin-bottom: auto;">Cantidad</label>
+
+                                         <asp:TextBox ID="txtCantidad" Text="0" onkeydown="PasarAFactor(event)" onchange="CalcularCantBruta()" onkeypress="javascript:return validarNro(event)" Style="text-align: right" class="form-control money" runat="server" />
+                                     </div>
+                                     <div class="col-md-1" style="text-align: center;">
+                                         <label style="margin-bottom: auto;">Unidad Med.</label>
+
+                                         <asp:TextBox ID="txtUnidadMed" disabled="disabled" Style="text-align: right" class="form-control" runat="server" />
+                                     </div>
+                                    </div>
+                                    
+
                                     <asp:HiddenField runat="server" ID="idProductosRecetas" />
                                     <asp:HiddenField runat="server" ID="hiddenReceta" />
                                     <table class="table table-bordered table-hover" id="tableProductos">
                                         <thead>
                                             <tr>
                                                 <th style="width: 5%">Cod. Producto</th>
-                                                <%--<th style="width: 10%">Tipo</th>--%>
                                                 <th style="width: 15%">Descripcion</th>
                                                 <th style="width: 10%; text-align:right">Cantidad</th>
                                                 <th style="width: 10%">Unidad Medida</th>
@@ -310,7 +325,6 @@
                                                 <th style="width: 10%;text-align:right">Costo Total $</th>
                                                 <th style="width: 10%;text-align:right">Sector Productivo</th>
                                                 <th style="width: 10%;text-align:right">Tiempo</th>
-                                                <%--<th style="width: 10%;text-align:right">Sector productivo</th>--%>
                                                 <th style="width: 5%"></th>
                                             </tr>
                                         </thead>
@@ -925,7 +939,8 @@
         function handle(e) {
 
 
-            //let x = ContentPlaceHolder1_txtDescripcionProductos.value = clickedId.split('_')[1];
+            //let x = 
+            .value = clickedId.split('_')[1];
             let txtProd = document.getElementById('ContentPlaceHolder1_txtDescripcionProductos').value
             if (txtProd.includes(' - ')) {
 

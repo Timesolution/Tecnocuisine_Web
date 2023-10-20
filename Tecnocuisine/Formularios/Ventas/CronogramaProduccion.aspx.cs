@@ -6,66 +6,176 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Tecnocuisine_API.Controladores;
+using Tecnocuisine_API.Entitys;
 
 namespace Tecnocuisine.Formularios.Ventas
 {
     public partial class CronogramaProduccion : System.Web.UI.Page
     {
         public DataTable dt;
+        public DataTable dtOrdenDeProduccionRecetas_recetas;
         public DataTable dtCantidadRecetasPorCadaOrden;
-        public DataTable dtSinDuplicados = new DataTable();
+        //Esta datatable contiene una combinacion de los ingredientes normales
+        //y las recetas que se usan como ingredientes
+        public DataTable dtCombined;
+        public DateTime fechaOrdenDeProduccion;
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            string idsQueryString = Request.QueryString["ids"];
-
-            ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
-            dt = cOrdenDeProduccion.GetAllIngredientesOrdenesProduccion(idsQueryString);
-
-            dtCantidadRecetasPorCadaOrden = cOrdenDeProduccion.GetAllCantidadProductosGroupByProductoColumn(idsQueryString);
+            try
+            {
 
 
-            //DataTable dtSinDuplicados = new DataTable();
+                string idsQueryString = Request.QueryString["ids"];
+                int Nivel = 1;
+                ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
+                //dt = cOrdenDeProduccion.GetAllIngredientesOrdenesProduccion(idsQueryString);
 
-            // Agregar las mismas columnas a la nueva DataTable
-            //foreach (DataColumn col in dt.Columns)
+                dt = cOrdenDeProduccion.GetAllIngredientesOrdenesProduccionGroupBySector(idsQueryString);
+                dtOrdenDeProduccionRecetas_recetas = cOrdenDeProduccion.GetAllIngredientesRecetasOrdenesProduccionGroupBySector(idsQueryString);
+
+                fechaOrdenDeProduccion = obtenerFechaOrden(idsQueryString);
+                dtCombined = dt.Clone();
+                Nivel++;
+                ObtenerProductoDeLasRecetas(dtOrdenDeProduccionRecetas_recetas, Nivel);
+                DataTable dtRecetas = ObtenerRecetasDeLasRecetas(dtOrdenDeProduccionRecetas_recetas, Nivel);
+
+                while (dtRecetas != null && dtRecetas.Rows.Count != 0)
+                {
+                    Nivel++;
+                    ObtenerProductoDeLasRecetas(dtRecetas, Nivel);
+                    dtRecetas = ObtenerRecetasDeLasRecetas(dtRecetas, Nivel);
+                }
+
+                //dtCombined = dt.Clone();
+                // Combina los datos de ambas DataTables
+                dtCombined.Merge(dt);
+                dtCombined.Merge(dtOrdenDeProduccionRecetas_recetas);
+
+                // Ordena la DataTable combinada por la columna "Fecha" de mayor a menor
+                //dtCombined.DefaultView.Sort = "SectorProductivo ASC";
+                dtCombined.DefaultView.Sort = "SectorProductivo ASC, DiasMasNivel DESC";
+                dtCombined = dtCombined.DefaultView.ToTable();
+
+                dt = dtCombined;
+
+                dtCantidadRecetasPorCadaOrden = cOrdenDeProduccion.GetAllCantidadProductosGroupByProductoColumn(idsQueryString);
+
+                obtenerOPNumeros(idsQueryString);
+            }
+            catch (Exception ex)
+            {
+            }
+
+
+            //if (dt2 != null)
             //{
-            //    dtSinDuplicados.Columns.Add(col.ColumnName, col.DataType);
+            //    ObtenerProductoDeLasRecetas(dt2);
+            //    //Aca tendria que obtener las recetas de las recetas 
+            //    ObtenerRecetasDeLasRecetas(dt2);
+
             //}
 
-            //// Utilizar LINQ para filtrar las filas sin duplicados
-            //var filasSinDuplicados = dt.AsEnumerable()
-            //    .GroupBy(row => new
-            //    {
-            //        Descripcion = row.Field<string>("descripcion1"),
-            //        Tiempo = row.Field<int>("Tiempo")
-            //    })
-            //    .Select(group => group.First());
 
-            //// Agregar las filas sin duplicados a la nueva DataTable
-            //foreach (var fila in filasSinDuplicados)
-            //{
-            //    dtSinDuplicados.ImportRow(fila);
-            //}
-
-
-            //var resultado = dtSinDuplicados.AsEnumerable()
-            //.GroupBy(row => row.Field<string>("Producto"))
-            //.Select(group => new
-            //{
-            //    Producto = group.Key,
-            //    CantidadTotal = group.Sum(row => row.Field<int>("Cantidad"))
-            //});
-
-
-            MostrarIDSDeOrdenesDeProduccion();
         }
 
-        public void MostrarIDSDeOrdenesDeProduccion()
+
+        public DateTime obtenerFechaOrden(string idOrdenDeProduccion)
         {
-            string idsQueryString = Request.QueryString["ids"];
-            idsQueryString = idsQueryString.TrimStart(',');
-            lblIdsQueryString.Text = idsQueryString;
+            ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
+            DataTable fechaOrdenProduccion = cOrdenDeProduccion.getFechaEntregaOrdenProduccion(idOrdenDeProduccion);
+
+            DateTime FechaOrdenDeProduccion = Convert.ToDateTime(fechaOrdenProduccion.Rows[0][0]);
+            return FechaOrdenDeProduccion;
+        }
+
+        public void ObtenerProductoDeLasRecetas(DataTable dtRecetas, int Nivel)
+        {
+            try
+            {
+                foreach (DataRow dr in dtRecetas.Rows)
+                {
+                    int idReceta = obterneridRecetaByDescripcion(dr["ProductoOReceta"].ToString());
+                    DataTable productosDeLaReceta = ObtenerProductosPorIdReceta(idReceta, Nivel);
+
+                    if (productosDeLaReceta != null)
+                    {
+                        dtCombined.Merge(productosDeLaReceta);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+
+        }
+
+
+        public DataTable ObtenerRecetasDeLasRecetas(DataTable dtRecetas, int Nivel)
+        {
+            DataTable RecetasDeLaReceta = null;
+
+            foreach (DataRow dr in dtRecetas.Rows)
+            {
+                int idReceta = obterneridRecetaByDescripcion(dr["ProductoOReceta"].ToString());
+                RecetasDeLaReceta = ObtenerRecetasPorIdReceta(idReceta, Nivel);
+
+                if (RecetasDeLaReceta != null)
+                {
+                    dtCombined.Merge(RecetasDeLaReceta);
+                }
+
+                //Aca tengo que poner el codigo
+                //ObtenerProductoDeLasRecetas(RecetasDeLaReceta);
+                //ObtenerRecetasDeLasRecetas(RecetasDeLaReceta);
+            }
+
+            return RecetasDeLaReceta;
+        }
+
+        public int obterneridRecetaByDescripcion(string Descripcion)
+        {
+            ControladorReceta cReceta = new ControladorReceta();
+            DataTable dtidReceta = cReceta.obtenerIdRecetaByDescripcionReceta(Descripcion);
+
+
+            int idReceta = 0;
+            idReceta = Convert.ToInt32(dtidReceta.Rows[0][0]);
+            return idReceta;
+        }
+
+        public DataTable ObtenerProductosPorIdReceta(int idReceta, int Nivel)
+        {
+            ControladorReceta cReceta = new ControladorReceta();
+            DataTable dtProductos = cReceta.ObtenerProductosPorIdReceta(idReceta, Nivel);
+            return dtProductos;
+        }
+
+
+        public DataTable ObtenerRecetasPorIdReceta(int idReceta, int Nivel)
+        {
+            ControladorReceta cReceta = new ControladorReceta();
+            DataTable dtRecetas = cReceta.ObtenerRecetaPorIdReceta(idReceta, Nivel);
+            return dtRecetas;
+        }
+
+
+        //Esta funcion busca y obtiene todos los numeros de produccion en base a sus id
+        public void obtenerOPNumeros(string idsQueryString)
+        {
+            ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
+            DataTable dt = cOrdenDeProduccion.GetallOPNumeros(idsQueryString);
+
+            string OPNumeros = string.Empty;
+            OPNumeros = dt.Rows[0][0].ToString();
+            MostrarOPNumeros(OPNumeros);
+        }
+        public void MostrarOPNumeros(string OPNumeros)
+        {
+            //string idsQueryString = Request.QueryString["ids"];
+            OPNumeros = OPNumeros.TrimStart(',');
+            lblIdsQueryString.Text = OPNumeros;
         }
     }
 }

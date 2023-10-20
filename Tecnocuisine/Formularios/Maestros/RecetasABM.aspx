@@ -302,7 +302,6 @@
                                         <thead>
                                             <tr>
                                                 <th style="width: 5%">Cod. Producto</th>
-                                                <%--<th style="width: 10%">Tipo</th>--%>
                                                 <th style="width: 15%">Descripcion</th>
                                                 <th style="width: 10%; text-align:right">Cantidad</th>
                                                 <th style="width: 10%">Unidad Medida</th>
@@ -310,7 +309,6 @@
                                                 <th style="width: 10%;text-align:right">Costo Total $</th>
                                                 <th style="width: 10%;text-align:right">Sector Productivo</th>
                                                 <th style="width: 10%;text-align:right">Tiempo</th>
-                                                <%--<th style="width: 10%;text-align:right">Sector productivo</th>--%>
                                                 <th style="width: 5%"></th>
                                             </tr>
                                         </thead>

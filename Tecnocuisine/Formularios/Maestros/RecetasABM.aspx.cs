@@ -1298,17 +1298,6 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 TableCell celSectorProductivo = new TableCell();
 
-                //if (!(prodRec.FirstOrDefault().SectorProductivo.descripcion is null || prodRec.FirstOrDefault().SectorProductivo.descripcion == ""))
-                //{
-
-                //    celSectorProductivo.Text = prodRec.FirstOrDefault().SectorProductivo.descripcion;
-                //}
-
-                //else
-                //{
-                //    celSectorProductivo.Text = " ";
-                //}
-
 
                 if (secProductivo.descripcion is null || secProductivo.descripcion == "" || secProductivo is null)
                 {
@@ -1339,7 +1328,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 }
 
                 celTiempo.VerticalAlign = VerticalAlign.Middle;
-                celTiempo.HorizontalAlign = HorizontalAlign.Left;
+                celTiempo.HorizontalAlign = HorizontalAlign.Right;
                 celTiempo.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
                 tr.Cells.Add(celTiempo);
 

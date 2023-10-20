@@ -337,10 +337,13 @@
     <Content Include="Formularios\Maestros\InsumosF.aspx" />
     <Content Include="Formularios\Ventas\CronogramaProduccion.aspx" />
     <Content Include="Formularios\Ventas\CuentaCorriente.aspx" />
+    <Content Include="Formularios\Ventas\DetalleIngrediente.aspx" />
+    <Content Include="Formularios\Ventas\DetalleIngredientes.aspx" />
     <Content Include="Formularios\Ventas\GenerarProduccion.aspx" />
     <Content Include="Formularios\Ventas\GenerarVenta.aspx" />
     <Content Include="Formularios\Ventas\OrdenesDeProduccion.aspx" />
     <Content Include="Formularios\Ventas\OrdenesDeProduccionABM.aspx" />
+    <Content Include="Formularios\Ventas\Pre-Produccion.aspx" />
     <Content Include="Formularios\Ventas\Produccion.aspx" />
     <Content Include="Formularios\Ventas\ProduccionDetallada.aspx" />
     <Content Include="Formularios\Ventas\VentaDetallada.aspx" />
@@ -1301,6 +1304,20 @@
     <Compile Include="Formularios\Ventas\CuentaCorriente.aspx.designer.cs">
       <DependentUpon>CuentaCorriente.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Formularios\Ventas\DetalleIngrediente.aspx.cs">
+      <DependentUpon>DetalleIngrediente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Ventas\DetalleIngrediente.aspx.designer.cs">
+      <DependentUpon>DetalleIngrediente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Ventas\DetalleIngredientes.aspx.cs">
+      <DependentUpon>DetalleIngredientes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Ventas\DetalleIngredientes.aspx.designer.cs">
+      <DependentUpon>DetalleIngredientes.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Formularios\Ventas\GenerarProduccion.aspx.cs">
       <DependentUpon>GenerarProduccion.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1328,6 +1345,13 @@
     </Compile>
     <Compile Include="Formularios\Ventas\OrdenesDeProduccionABM.aspx.designer.cs">
       <DependentUpon>OrdenesDeProduccionABM.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Ventas\Pre-Produccion.aspx.cs">
+      <DependentUpon>Pre-Produccion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Ventas\Pre-Produccion.aspx.designer.cs">
+      <DependentUpon>Pre-Produccion.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Ventas\Produccion.aspx.cs">
       <DependentUpon>Produccion.aspx</DependentUpon>

@@ -65,7 +65,8 @@
                                                 <div class="form-group">
                                                     <label>Codigo *</label>
                                                     <%--<input id="ProdDescripcion" onchange="ActualizarLabels()" name="ProdDescripcion" type="text" class="form-control required" />--%>
-                                                    <asp:TextBox ID="txtCodigo" class="form-control required" Style="width: 30%" runat="server" />
+                                                    <asp:TextBox ID="txtCodigo" class="form-control required" 
+                                                        Style="width: 30%" runat="server" />
 
                                                 </div>
                                                 <div class="form-group">
@@ -209,12 +210,7 @@
                                                             </span>
                                                         </div>
                                                     
-                                                
-                                            <%--<asp:DropDownList ID="ddlCalculos" runat="server" class="form-control">
-                                                <asp:ListItem Value="-1" Text="Tipo Calculo"> </asp:ListItem>
-                                                <asp:ListItem Value="1" Text="PPP"></asp:ListItem>
-                                                <asp:ListItem Value="2" Text="Ultima Compra"></asp:ListItem>
-                                            </asp:DropDownList>--%>
+                                        
                                         </div>
                                            <div class="col-sm-2"></div>
                                         <div class="col-md-1" style="text-align: center;">
@@ -233,14 +229,13 @@
                                     </div>
 
                                     <div class="well"style="margin-top:1%;margin-right: -15px;margin-left: -15px;">
-                                    <div class="row" style="margin-top: 0.5%; margin-bottom: 2%">
+                                    <div class="row" style="margin-bottom: 2%">
                                         <div class="col-md-4">
                                           
                                             <label  style="margin-left:5px;margin-bottom: 0px;"> Ingredientes </label>
                                              
                                             <div class="input-group" style="text-align: right;">
                                                 <datalist id="ListaNombreProd" runat="server">
-
                                                 </datalist>
                                                
                                                 <asp:TextBox ID="txtDescripcionProductos" onfocusout="handle(event)" list="ContentPlaceHolder1_ListaNombreProd" class="form-control" runat="server"/>
@@ -275,18 +270,24 @@
                                         </div>
                                         <div class="col-md-1" style="text-align: center;">
                                             <label style="margin-bottom: auto; vertical-align: middle">$ Kg limpio</label>
-
-                                            <asp:TextBox ID="txtCostoLimpio" disabled="disabled" onkeypress="javascript:return validarNro(event)" Style="text-align: right" class="form-control" runat="server" />
+                                            <asp:TextBox ID="txtCostoLimpio" disabled="disabled" 
+                                                onkeypress="javascript:return validarNro(event)" 
+                                                Style="text-align: right" class="form-control" runat="server" />
                                         </div>
-                                        <div class="col-md-2" style="text-align: center; margin-top: 19px; margin-left: 19px;"">
+                                        <div class="col-md-2" style="text-align: center; padding-left:2px; padding-right:2px">
+                                            <label style="margin-bottom: auto; vertical-align: middle">Sector productivo</label>
                                                <asp:DropDownList ID="ddlSector" runat="server"
                                                      CssClass="chosen-select form-control"
                                                      DataTextField="CountryName" DataValueField="CountryCode"
                                                      Data-placeholder="Seleccione Rubro..." Width="100%">
                                                <asp:ListItem Text="Select" Value=""></asp:ListItem>
-                                               </asp:DropDownList>
-                                            
+                                               </asp:DropDownList>                                            
                                         </div>
+                                            <div class="col-md-1" style="text-align: center;">
+                                             <label id="TiempoPreparacion" style="margin-bottom:0px">Tiempo</label>
+                                               <asp:TextBox Text="0" Style="text-align: right;" ID="TiempoDePreparacion"  
+                                                    class="form-control" runat="server" />
+                                             </div>
                                          <div style="float: right; margin-right: 10px; margin-top: 19px">
                                             <LinkButton ID="btnAgregarProducto" onclick="agregarProductoPH();" class="btn btn-primary dim required"><i style="color: white" class="fa fa-check"></i></LinkButton>
                                             <linkbutton id="btnEditarProducto" style="display:none" onclick="editarProductoPH();" class="btn btn-primary dim" data-toggle="tooltip" data-placement="top" title="Editar ingrediente"><i style="color: white" class="fa fa-pencil"></i></linkbutton>
@@ -300,14 +301,13 @@
                                         <thead>
                                             <tr>
                                                 <th style="width: 5%">Cod. Producto</th>
-                                                <%--<th style="width: 10%">Tipo</th>--%>
                                                 <th style="width: 15%">Descripcion</th>
                                                 <th style="width: 10%; text-align:right">Cantidad</th>
                                                 <th style="width: 10%">Unidad Medida</th>
                                                 <th style="width: 10%;text-align:right">Costo $</th>
                                                 <th style="width: 10%;text-align:right">Costo Total $</th>
-                                                <th style="width: 10%;text-align:right">Sector Productivo $</th>
-                                                <%--<th style="width: 10%;text-align:right">Sector productivo</th>--%>
+                                                <th style="width: 10%;text-align:right">Sector Productivo</th>
+                                                <th style="width: 10%;text-align:right">Tiempo</th>
                                                 <th style="width: 5%"></th>
                                             </tr>
                                         </thead>
@@ -922,7 +922,8 @@
         function handle(e) {
 
 
-            //let x = ContentPlaceHolder1_txtDescripcionProductos.value = clickedId.split('_')[1];
+            //let x = 
+            .value = clickedId.split('_')[1];
             let txtProd = document.getElementById('ContentPlaceHolder1_txtDescripcionProductos').value
             if (txtProd.includes(' - ')) {
 
@@ -2022,7 +2023,8 @@
             let CantAux = parseFloat(cantidad);
             let costototal = 0;
             let ddlSector = document.getElementById('<%= ddlSector.ClientID %>');
-            console.log(ddlSector)
+            let Tiempo = document.getElementById('<%= TiempoDePreparacion.ClientID %>').value;
+            //console.log(ddlSector)
             let opcionSeleccionada = ddlSector.options[ddlSector.selectedIndex].text;
             let ddlSectoridSectorProductivo = document.getElementById('<%= ddlSector.ClientID %>').value
 
@@ -2040,6 +2042,7 @@
             let listaCostosDesplegable = "";
             let listaCostototalDesplegable = "";
             let listaDdlSectorProductivoDesplegable = "";
+            let ListaTiempo = "";
             if (tipo == "Receta") {
                 btnRec = "<a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent;\" class=\"btn  btn-xs \" onclick=\"javascript: return CargarmodalRecetaDetalle('" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "');\" >" +
                     "<i><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 576 512\" style=\"width: 15px; vertical-align: middle; \">" +
@@ -2054,6 +2057,7 @@
                 listaCostosDesplegable = "<td> <div id=\"jstree_CS" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaCS_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + costo + "</li></ul></div></td>";
                 listaCostototalDesplegable = "<td> <div id=\"jstree_CST" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaCST_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + auxCostoTotal + "</li></ul></div></td>";
                 listaDdlSectorProductivoDesplegable = "<td> <div id=\"jstree_SP" + ContentPlaceHolder1_ddlSector.value.split('-')[0].trim() + "\"> <ul><li id='RecetaSP_LI_" + ContentPlaceHolder1_ddlSector.value.split('-')[0].trim() + "' class=\"jstree-open\">" + opcionSeleccionada + "</li></ul></div></td>";
+                ListaTiempo = "<td> <div id=\"jstree_T" + ContentPlaceHolder1_TiempoDePreparacion.value.split('-')[0].trim() + "\"> <ul><li id='RecetaT_LI_" + ContentPlaceHolder1_TiempoDePreparacion.value.split('-')[0].trim() + "' class=\"jstree-open\">" + Tiempo + "</li></ul></div></td>";
 
             } else {
                 listaDesplegable = "<td> " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
@@ -2062,6 +2066,8 @@
                 listaCostosDesplegable = "<td style=\" text-align:right;\"> " + costo + "</td>";
                 listaCostototalDesplegable = "<td style=\" text-align:right;\"> " + auxCostoTotal + "</td>";
                 listaDdlSectorProductivoDesplegable = "<td style=\" text-align:right;\"> " + opcionSeleccionada + "</td>";
+                ListaTiempo = "<td style=\" text-align:right;\"> " + Tiempo + "</td>";
+
             }
             if (!document.getElementById('<%= idProductosRecetas.ClientID%>').value.includes(tipo + '_' + codigo)) {
                 $('#tableProductos').append(
@@ -2074,6 +2080,7 @@
                     listaCostosDesplegable +
                     listaCostototalDesplegable +
                     listaDdlSectorProductivoDesplegable +
+                    ListaTiempo +
 
 
                     "<td style=\" text-align: center\">" +
@@ -2101,10 +2108,10 @@
                 document.getElementById('<%=txtKgBrutTotal.ClientID%>').value = myFormat(KgBrutoTotal);
 
                 if (document.getElementById('<%= idProductosRecetas.ClientID%>').value == "") {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "," + "idSectorProductivo_" + ddlSectoridSectorProductivo;
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "," + "idSectorProductivo_" + ddlSectoridSectorProductivo + "," + "Tiempo_" + Tiempo;
                 }
                 else {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += ";" + codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "," + "idSectorProductivo_" + ddlSectoridSectorProductivo;
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += ";" + codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "," + "idSectorProductivo_" + ddlSectoridSectorProductivo + "," + "Tiempo_" + Tiempo;
                 }
                 if (!document.getElementById('<%= txtRinde.ClientID%>').value == "") {
                     let rinde = parseFloat(document.getElementById('<%= txtRinde.ClientID%>').value);

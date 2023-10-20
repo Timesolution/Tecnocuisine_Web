@@ -4,7 +4,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 
-
+    <%-- Este es el primer widget en el que se muestra el numero de orden de produccion --%>
     <div class="row" style="padding-left: 14px; padding-right: 14px">
         <!-- Utiliza col-lg-8 para la parte izquierda -->
         <div class="ibox-content m-b-sm border-bottom">
@@ -32,35 +32,38 @@
             </div>
         </div>
     </div>
+    <%-- Aca termina el primer widget --%>
 
 
 
-
+    <%-- De aca en adelante, se van a generar widgets de manera dinamica --%>
+    <%-- Este va a ser el primer widget que se cree --%>
     <%
-        int PrimerVuelta = 0;
-        int TiempoActual = 0;
-        DateTime fechaActual = DateTime.MinValue;
+        int PrimerVuelta = 0; //Esta variable la uso como bandera para saber si estoy en la primera vuelta del foreach
+
+        string SectorActual = null;
         int widgetCount = 0; // Variable para contar widgets
         int SegundoWiggetEnAdelante = 0; // Variable para contar widgets
+
+        //Este foreach recorre una datatable que tiene productos ordenados por sector productivo, y va a crear un
+        //widget por cada sector distinto
         foreach (System.Data.DataRow dr in dt.Rows)
         {
             widgetCount++; // Incrementa el contador de widgets
             bool isCollapsed = widgetCount > 0;
             if (PrimerVuelta == 0)
             {
-                //TiempoActual = int.Parse(dr["Tiempo"].ToString());
-                fechaActual = Convert.ToDateTime(dr["Fecha"].ToString());
+                SectorActual = dr["SectorProductivo"].ToString().ToUpper();
                 PrimerVuelta++;
 
     %>
 
-
+    <%-- A partir de aca en adelante va a crear widgets de manera dinamica --%>
     <div class="row">
         <div class="col-lg-12">
-            <%--<div class="ibox float-e-margins">--%>
             <div class="ibox float-e-margins" id="widget<%= SegundoWiggetEnAdelante %>" data-collapsed="<%= isCollapsed.ToString().ToLower() %>">
                 <div class="ibox-title">
-                    <h5><%= Convert.ToDateTime(dr["Fecha"]).ToString("dd/MM/yyyy") %></h5>
+                    <h5><%= dr["SectorProductivo"].ToString().ToUpper() %></h5>
 
                     <div class="ibox-tools">
                         <a class="collapse-link">
@@ -80,44 +83,124 @@
                         </a>
                     </div>
 
-
-
-
                 </div>
+
                 <div class="ibox-content">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <table class="table table-striped table-bordered table-hover " id="editable">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 25%;">Sector Productivo</th>
-                                        <%--<th style="width: 15%; text-align: right;"">Cantidad</th>--%>
-                                        <%--<th style="width: 25%;">Receta</th>--%>
-                                        <th style="width: 20%">Producto</th>
-                                        <th style="width: 10%; text-align: right;">Cantidad</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                    <table class="table table-hover no-margins table-bordered">
+                        <thead>
+                            <tr>
+                                <%-- Este for crea las columnas de la cabecera --%>
+                                <%for (int i = 6; i > 0; i--)
+                                    {%>
+                                <%DateTime fecha = fechaOrdenDeProduccion.AddDays(-i); %>
+                                <td><strong><%= fecha.ToString("dd/MM/yyyy") %></strong></td>
+                                <%  } %>
+                                <%-- Esta es la ultima columna de la cabecera, y ademas es la fecha de la orden de produccion --%>
+                                <td><strong><%= fechaOrdenDeProduccion.ToString("dd/MM/yyyy") %></strong></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%
+                                List<int> listaDeNumeros = new List<int>();
+                                int DiasActual = -1;
+                                int Flag = 0;
+                                int countRows = 0;
+                                int CantidadDeDiasPorgrupo = 0;
+                            %>
+                            <%
+                                foreach (System.Data.DataRow dataRow in dt.Rows)
+                                {
+                                    if (dataRow["SectorProductivo"].ToString().ToUpper() == SectorActual)
+                                    {
+                                        countRows++;
+                                    }
+                                    listaDeNumeros.Add(countRows);
+                                }
+                            %>
+                            <%
+                                listaDeNumeros.Sort((a, b) => -a.CompareTo(b));
+                                int CantFilas = listaDeNumeros.Count > 0 ? listaDeNumeros[0] : 0;
+                                string[,] matriz = new string[CantFilas, 7];
+                                for (int i = 0; i < CantFilas; i++)
+                                {
+                                    for (int j = 0; j < 7; j++)
+                                    {
+                                        matriz[i, j] = "-"; // Inicializa cada posición con un espacio en blanco
+                                    }
+                                }
+                            %>
+                            <%
+                                int filas = 0;
+                                int DiasAct = -1;
+                                int Bandera = 0;
+                                foreach (System.Data.DataRow dataRow in dt.Rows)
+                                {
 
-                                    <%foreach (System.Data.DataRow dtr in dt.Rows)
+                                    if (dataRow["SectorProductivo"].ToString() == SectorActual)
+                                    {
+                                        if (Bandera == 0)
                                         {
-                                            if (Convert.ToDateTime(dtr["Fecha"].ToString()) == fechaActual)
-                                            {%>
-                                    <tr>
-                                        <td><%= dtr["SectorProductivo"].ToString() %></td>
-                                        <%--<td style="text-align: right;">0</td>--%>
-                                        <td><%= dtr["Producto"].ToString() %></td>
-                                        <%--<td><%= dtr["descripcion1"].ToString() %></td>--%>
-                                        <td style="text-align: right;"><%= dtr["Kilogramos"].ToString() %></td>
-                                    </tr>
+                                            Bandera++;
+                                            DiasAct = Convert.ToInt32(dataRow["DiasMasNivel"].ToString());
+                                            matriz[filas, 6 - Convert.ToInt32(dataRow["DiasMasNivel"].ToString())] =  dataRow["ProductoOReceta"].ToString() + ";" + dataRow["Descripcion"].ToString() + ";" + dataRow["id"].ToString();
+                                        }
 
-                                    <%}%>
-                                    <% } %>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                                        else
+                                        {
+                                            if (Convert.ToInt32(dataRow["DiasMasNivel"].ToString()) != DiasAct)
+                                            {
+                                                DiasAct = Convert.ToInt32(dataRow["DiasMasNivel"].ToString());
+                                                filas = 0;
+                                            }
+                                            else
+                                            {
+                                                filas++;
+                                            }
+                                            matriz[filas, 6 - Convert.ToInt32(dataRow["DiasMasNivel"].ToString())] =  dataRow["ProductoOReceta"].ToString() + ";" + dataRow["Descripcion"].ToString() + ";" + dataRow["id"].ToString();
+                                        }
+
+
+                                    }
+                                }
+                            %>
+                            <% 
+                                int filasMatriz = matriz.GetLength(0);
+                                int ColumnasMatriz = matriz.GetLength(1);
+
+                                for (int fila = 0; fila < filasMatriz; fila++)
+                                {%>
+                            <tr>
+                                <%  for (int columna = 0; columna < ColumnasMatriz; columna++)
+                                    {%>
+                                <% string valor = matriz[fila, columna];%>
+                                <% 
+                                    string[] partes = valor.Split(';'); // Dividir el valor en dos partes
+                                    string productoOReceta = partes[0]; // Guardar la primera parte
+                                %>
+                                <td><%= productoOReceta%>
+                                    <%if (productoOReceta != "-")
+                                        {
+                                            string segundaParte = partes[1];
+                                            string id = partes[2];
+                                            if (segundaParte == "Receta")
+                                            {
+                                    %>
+                                    <a href="GenerarProduccion.aspx" target="_blank" style="float: right; margin-left: 10px;" title="Produccion">
+                                        <i class="fa fa-utensils" style="color: black"></i></a>
+                                    <% }%>
+                                    <a href="/Formularios/Maestros/StockDetallado.aspx?t=1&i=<%=id %>" target="_blank" style="float: right; margin-left: 10px;" title="Ver stock">
+                                        <%--<a href="/Formularios/Maestros/Productos.aspx?t=1&i="+producto.id" target="_blank" style="float: right;" title="Ver stock">--%>
+                                        <i style="color: black" class="fa fa-list-alt"></i></a>
+
+                                    <%} %>
+                                </td>
+                                <%}%>
+                            </tr>
+                            <%}%>
+                        </tbody>
+                    </table>
                 </div>
+
             </div>
         </div>
     </div>
@@ -128,9 +211,9 @@
         }
 
 
-        if (Convert.ToDateTime(dr["Fecha"].ToString()) != fechaActual)
+        if (dr["SectorProductivo"].ToString().ToUpper() != SectorActual)
         {
-            fechaActual = Convert.ToDateTime(dr["Fecha"].ToString());
+            SectorActual = dr["SectorProductivo"].ToString().ToUpper();
 
     %>
 
@@ -140,8 +223,7 @@
             <div class="ibox float-e-margins" id="widget<%= widgetCount %>" data-collapsed="<%= isCollapsed.ToString().ToLower() %>">
                 <!-- Agregar la clase "collapsed" aquí -->
                 <div class="ibox-title">
-                    <%--<h5><%= Convert.ToDateTime(dr["fechaEntrega"]).AddDays(-TiempoActual).ToString("dd/MM/yyyy") %></h5>--%>
-                    <h5><%= Convert.ToDateTime(dr["Fecha"]).ToString("dd/MM/yyyy") %></h5>
+                    <h5><%= dr["SectorProductivo"].ToString().ToUpper() %></h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-down"></i>
@@ -162,37 +244,132 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <table class="table table-striped table-bordered table-hover " id="editable2">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 25%;">Sector Productivo</th>
-                                        <%--<th style="width: 15%; text-align: right;"">Cantidad</th>--%>
-                                        <th style="width: 25%">Producto</th>
-                                        <th style="width: 10%; text-align: right;">Cantidad</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <%foreach (System.Data.DataRow dtr in dt.Rows)
-                                        {
-                                            if (Convert.ToDateTime(dtr["Fecha"].ToString()) == fechaActual)
-                                            {%>
-                                    <tr>
-                                        <td><%= dtr["SectorProductivo"].ToString() %></td>
-                                        <%--<td style="text-align: right;">0</td>--%>
-                                        <%--<td><%= //dtr["descripcion"].ToString() %></td>--%>
-                                        <td><%= dtr["Producto"].ToString() %></td>
-                                        <td style="text-align: right;"><%= dtr["Kilogramos"].ToString() %></td>
-                                    </tr>
+                    <table class="table table-hover no-margins table-bordered">
+                        <thead>
+                            <tr>
 
-                                    <%}%>
-                                    <% } %>
-                                    <%--<asp:PlaceHolder ID="phRubroRecaudacionMensual" runat="server"></asp:PlaceHolder>--%>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                                <%for (int i = 6; i > 0; i--)
+                                    {%>
+                                <%DateTime fecha = fechaOrdenDeProduccion.AddDays(-i); %>
+                                <td><strong><%= fecha.ToString("dd/MM/yyyy") %></strong></td>
+                                <%  } %>
+                                <td><strong><%= fechaOrdenDeProduccion.ToString("dd/MM/yyyy") %></strong></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%List<int> listaDeNumeros = new List<int>(); %>
+
+                            <%int DiasActual = -1; %>
+                            <%int Flag = 0; %>
+                            <%int countRows = 0; %>
+                            <%int CantidadDeDiasPorgrupo = 0; %>
+
+                            <%foreach (System.Data.DataRow dataRow in dt.Rows)
+                                {
+                                    if (dataRow["SectorProductivo"].ToString().ToUpper() == SectorActual)
+                                    {
+                                        countRows++;
+                                    }
+                                }
+
+                                listaDeNumeros.Add(countRows);
+
+                            %>
+
+                            <%listaDeNumeros.Sort((a, b) => -a.CompareTo(b)); %>
+
+                            <%int CantFilas = listaDeNumeros.Count > 0 ? listaDeNumeros[0] : 0; %>
+
+                            <%string[,] matriz = new string[CantFilas, 7]; %>
+                            <%for (int i = 0; i < CantFilas; i++)
+                                {
+                                    for (int j = 0; j < 7; j++)
+                                    {
+                                        matriz[i, j] = "-"; // Inicializa cada posición con un espacio en blanco
+                                    }
+                                } %>
+
+
+                            <%  
+                                int filas = 0;
+                                int DiasAct = -1;
+                                int Bandera = 0;
+
+                                foreach (System.Data.DataRow dataRow in dt.Rows)
+                                {
+
+                                    if (dataRow["SectorProductivo"].ToString().ToUpper() == SectorActual)
+                                    {
+                                        if (Bandera == 0)
+                                        {
+                                            Bandera++;
+                                            DiasAct = Convert.ToInt32(dataRow["DiasMasNivel"].ToString());
+                                            matriz[filas, 6 - Convert.ToInt32(dataRow["DiasMasNivel"].ToString())] =  dataRow["ProductoOReceta"].ToString() + ";" + dataRow["Descripcion"].ToString() + ";" + dataRow["id"].ToString();
+                                            
+                                        }
+
+                                        else
+                                        {
+                                            if (Convert.ToInt32(dataRow["DiasMasNivel"].ToString()) != DiasAct)
+                                            {
+                                                DiasAct = Convert.ToInt32(dataRow["DiasMasNivel"].ToString());
+                                                filas = 0;
+                                            }
+                                            else
+                                            {
+                                                filas++;
+                                            }
+                                            matriz[filas, 6 - Convert.ToInt32(dataRow["DiasMasNivel"].ToString())] =  dataRow["ProductoOReceta"].ToString() + ";" + dataRow["Descripcion"].ToString() + ";" + dataRow["id"].ToString();
+
+
+                                        }
+
+
+                                    }
+                                }
+
+                            %>
+
+                            <% 
+                                int filasMatriz = matriz.GetLength(0);
+                                int ColumnasMatriz = matriz.GetLength(1);
+
+                                for (int fila = 0; fila < filasMatriz; fila++)
+                                {%>
+                            <tr>
+                                <%  for (int columna = 0; columna < ColumnasMatriz; columna++)
+                                    {%>
+                                <% string valor = matriz[fila, columna];%>
+                                <% 
+                                    string[] partes = valor.Split(';'); // Dividir el valor en dos partes
+                                    string productoOReceta = partes[0]; // Guardar la primera parte
+                                %>
+                                <td><%= productoOReceta%>
+                                    <%if (productoOReceta != "-")
+                                        {
+                                            string segundaParte = partes[1];
+                                            string id = partes[2];
+                                            if (segundaParte == "Receta")
+                                            {
+                                    %>
+                                    <%--<a href="GenerarProduccion.aspx" target="_blank">Click aquí</a>--%>
+                                    <a href="GenerarProduccion.aspx" target="_blank" style="float: right; margin-left: 10px;" title="Produccion">
+                                        <i class="fa fa-utensils" style="color: black"></i></a>
+                                    <% }%>
+                                    <a href="/Formularios/Maestros/StockDetallado.aspx?t=1&i=<%=id %>" target="_blank" style="float: right; margin-left: 10px;" title="Ver stock">
+                                        <i style="color: black" class="fa fa-list-alt"></i></a>
+
+                                    <%} %>
+                                </td>
+                                <%}
+                                %>
+                            </tr>
+
+                            <%}
+
+                            %>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -206,6 +383,11 @@
 
 
         } %>
+
+
+
+
+
 
     <script>
         $(document).ready(function () {
@@ -233,20 +415,7 @@
 
             $("#editable_filter").css('display', 'none');
 
-            //oTable.$('td').editable('../example_ajax.php', {
-            //    "callback": function (sValue, y) {
-            //        var aPos = oTable.fnGetPosition(this);
-            //        oTable.fnUpdate(sValue, aPos[0], aPos[1]);
-            //    },
-            //    "submitdata": function (value, settings) {
-            //        return {
-            //            "row_id": this.parentNode.getAttribute('id'),
-            //            "column": oTable.fnGetPosition(this)[2]
-            //        };
-            //    },
-            //    "width": "90%",
-            //    "height": "100%"
-            //});
+     
 
         });
 

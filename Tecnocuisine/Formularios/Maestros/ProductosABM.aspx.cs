@@ -31,7 +31,7 @@ namespace Tecnocuisine.Formularios.Maestros
         ControladorStock controladorStock = new ControladorStock();
         ControladorCategoria cc = new ControladorCategoria();
         ControladorReceta cr = new ControladorReceta();
-        
+
 
         Gestion_Api.Controladores.controladorArticulo controladorArticulo = new Gestion_Api.Controladores.controladorArticulo();
         Gestion_Api.Controladores.ControladorArticulosEntity contArtEnt = new Gestion_Api.Controladores.ControladorArticulosEntity();
@@ -89,7 +89,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 var listRubros = cr.ObtenerTodosRubros();
                 CargarOptionsRubros(listRubros);
-               
+
 
 
 
@@ -511,7 +511,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 producto.alicuota = Convert.ToInt32(ListAlicuota.SelectedValue);
                 producto.estado = 1;
                 //producto.presentacion = Convert.ToInt32(ListPresentaciones.SelectedValue);
-              
+
                 int resultado = controladorProducto.EditarProducto(producto);
 
                 if (resultado > 0)
@@ -577,7 +577,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 if (resultado > 0)
                 {
-                    return "Rubro Agregado con Exito ;" + resultado ;
+                    return "Rubro Agregado con Exito ;" + resultado;
                 }
                 else
                 {
@@ -640,7 +640,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 }
                 else
                 {
-                return "";
+                    return "";
                 }
             }
             catch (Exception)
@@ -653,7 +653,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
 
         [WebMethod]
-        public static void GuardarProducto(string descripcion, string Categoria, string Atributos, string Costo, string IVA, string Unidad, string Presentacion, string Marca, bool cbxGestion,string Rubro, string img)
+        public static void GuardarProducto(string descripcion, string Categoria, string Atributos, string Costo, string IVA, string Unidad, string Presentacion, string Marca, bool cbxGestion, string Rubro, string img)
         {
             try
             {
@@ -666,7 +666,8 @@ namespace Tecnocuisine.Formularios.Maestros
                 if (Rubro == "")
                 {
                     producto.idRubro = 1;
-                } else
+                }
+                else
                 {
                     producto.idRubro = Convert.ToInt32(Rubro);
                 }
@@ -976,13 +977,13 @@ namespace Tecnocuisine.Formularios.Maestros
             {
                 ControladorProducto controladorProducto = new ControladorProducto();
                 ControladorReceta cr = new ControladorReceta();
-                foreach(var item in ListRP)
+                foreach (var item in ListRP)
                 {
-                  decimal costoActualizado = Convert.ToDecimal(Costo.Replace(".", ","));
+                    decimal costoActualizado = Convert.ToDecimal(Costo.Replace(".", ","));
                     if (item.Productos.costo != costoActualizado)
                     {
-                       decimal CostoViejo = (decimal)item.Recetas.Costo;
-                       decimal costoNuevo = (CostoViejo - item.Productos.costo) + costoActualizado;
+                        decimal CostoViejo = (decimal)item.Recetas.Costo;
+                        decimal costoNuevo = (CostoViejo - item.Productos.costo) + costoActualizado;
                         Tecnocuisine_API.Entitys.Recetas receta = new Tecnocuisine_API.Entitys.Recetas();
                         receta.id = item.Recetas.id;
                         receta.descripcion = item.Recetas.descripcion;
@@ -1081,6 +1082,55 @@ namespace Tecnocuisine.Formularios.Maestros
                         {
                             string[] producto = pr.Split(',');
                             int ultimaPosicion = producto.Length - 1;
+
+
+                            //-----------------------------------------------------------------------------------------------------
+
+                            int numeroEncontrado = -1;
+                            foreach (string elemento in producto)
+                            {
+                                // Utiliza una expresión regular para buscar el patrón "idSectorProductivo_" seguido de un número
+                                Match match = Regex.Match(elemento, @"idSectorProductivo_(\d+)");
+
+                                if (match.Success)
+                                {
+                                    // Si se encuentra una coincidencia, extrae el número y almacénalo en la variable
+                                    string numeroStr = match.Groups[1].Value;
+                                    if (int.TryParse(numeroStr, out int numero))
+                                    {
+                                        numeroEncontrado = numero;
+                                        break; // Rompe el bucle una vez que se encuentra el número
+                                    }
+                                }
+                            }
+
+
+                            //-----------------------------------------------------------------------------------------
+
+
+                            int tiempoParte = 1;
+                            foreach (string elemento in producto)
+                            {
+                                Match match = Regex.Match(elemento, @"Tiempo_(\d+)");
+
+                                if (match.Success)
+                                {
+                                    // Si se encuentra una coincidencia, extrae el número y almacénalo en la variable
+                                    string numeroStr = match.Groups[1].Value;
+                                    if (int.TryParse(numeroStr, out int numero))
+                                    {
+                                        tiempoParte = numero;
+                                        break; // Rompe el bucle una vez que se encuentra el número
+                                    }
+
+                                }
+                            }
+
+
+                            //-----------------------------------------------------------------------------------------
+
+
+
                             if (producto[1] == "Producto")
                             {
                                 Recetas_Producto productoNuevo = new Recetas_Producto();
@@ -1088,17 +1138,69 @@ namespace Tecnocuisine.Formularios.Maestros
                                 productoNuevo.idProducto = Convert.ToInt32(producto[0]);
                                 idProducto = productoNuevo.idProducto;
                                 productoNuevo.cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
-                               // productoNuevo.idSectorProductivo = Convert.ToInt32(producto[ultimaPosicion]);
+                                productoNuevo.idSectorProductivo = numeroEncontrado;
+                                productoNuevo.Tiempo = tiempoParte;
+
+                                // productoNuevo.idSectorProductivo = Convert.ToInt32(producto[ultimaPosicion]);
 
                                 controladorReceta.AgregarReceta_Producto(productoNuevo);
                             }
                             else
                             {
+                                int idSectorProductivo = 1;
+                                foreach (string elemento in producto)
+                                {
+                                    // Utiliza una expresión regular para buscar el patrón "idSectorProductivo_" seguido de un número
+                                    //Match match = Regex.Match(elemento, @"idSectorProductivoRecetas_recetas_(\d+)");
+                                    Match match = Regex.Match(elemento, @"idSectorProductivo_(\d+)");
+
+                                    if (match.Success)
+                                    {
+                                        // Si se encuentra una coincidencia, extrae el número y almacénalo en la variable
+                                        string numeroStr = match.Groups[1].Value;
+                                        if (int.TryParse(numeroStr, out int numero))
+                                        {
+                                            idSectorProductivo = numero;
+                                            break; // Rompe el bucle una vez que se encuentra el número
+                                        }
+                                    }
+                                }
+
+
+                                int tiempoParteRecetes_Recetas = 1;
+                                foreach (string elemento in producto)
+                                {
+                                    Match match = Regex.Match(elemento, @"Tiempo_(\d+)");
+
+                                    if (match.Success)
+                                    {
+                                        // Si se encuentra una coincidencia, extrae el número y almacénalo en la variable
+                                        string numeroStr = match.Groups[1].Value;
+                                        if (int.TryParse(numeroStr, out int numero))
+                                        {
+                                            tiempoParteRecetes_Recetas = numero;
+                                            break; // Rompe el bucle una vez que se encuentra el número
+                                        }
+
+                                    }
+                                }
+
+
+                                //Recetas_Receta recetaNueva = new Recetas_Receta();
+                                //recetaNueva.idReceta = resultado;
+                                //recetaNueva.idRecetaIngrediente = Convert.ToInt32(producto[0]);
+                                //recetaNueva.cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
+                                //controladorReceta.AgregarReceta_Receta(recetaNueva);
+
+
                                 Recetas_Receta recetaNueva = new Recetas_Receta();
-                                recetaNueva.idReceta = resultado;
+                                recetaNueva.idReceta = Receta.id;
                                 recetaNueva.idRecetaIngrediente = Convert.ToInt32(producto[0]);
                                 recetaNueva.cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
+                                recetaNueva.idSectorProductivo = idSectorProductivo;
+                                recetaNueva.Tiempo = tiempoParteRecetes_Recetas;
                                 controladorReceta.AgregarReceta_Receta(recetaNueva);
+
                             }
                         }
                     }
@@ -1316,7 +1418,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 }
 
 
-       
+
 
                 int resultado = controladorReceta.EditarReceta(Receta);
 
@@ -1386,7 +1488,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                 {
                                     // Utiliza una expresión regular para buscar el patrón "idSectorProductivo_" seguido de un número
                                     //Match match = Regex.Match(elemento, @"idSectorProductivoRecetas_recetas_(\d+)");
-                                    Match match = Regex.Match(elemento, @"idSectorProductivoRecetas_recetas_(\d+)");
+                                    Match match = Regex.Match(elemento, @"idSectorProductivo_(\d+)");
 
                                     if (match.Success)
                                     {
@@ -1558,6 +1660,8 @@ namespace Tecnocuisine.Formularios.Maestros
             }
 
         }
+
+
         [WebMethod]
         public static void GuardarProducto2(string id)
         {

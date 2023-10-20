@@ -98,28 +98,7 @@ namespace Tecnocuisine.Formularios.Ventas
                     celEstado.HorizontalAlign = HorizontalAlign.Left;
                     celEstado.Attributes.Add("style", "padding-bottom: 1px !important;");
                     tr.Cells.Add(celEstado);
-
-
-                    //TableCell celAccion = new TableCell();
-                    //LinkButton btnDetalles = new LinkButton();
-                    //btnDetalles.CssClass = "btn btn-primary btn-xs";
-                    //btnDetalles.ID = "btnSelecRec_" + dr["id"].ToString();
-                    //btnDetalles.Text = "<span><i class='fa fa-check'></i></span>";
-                    //celAccion.Controls.Add(btnDetalles);
-
-
-
-                    //CheckBox chkSeleccionar = new CheckBox();
-                    //chkSeleccionar.CssClass = "tu-clase-css"; // Puedes establecer una clase CSS si lo deseas
-                    //chkSeleccionar.ID = "chkSeleccionar_" + Receta.id + "_" + Receta.descripcion;
-                    //chkSeleccionar.Checked = true; // Si quieres que el checkbox esté marcado inicialmente
-                    //celAccion.Controls.Add(chkSeleccionar);
-
-                    //celAccion.Attributes.Add("style", "padding-bottom: 1px !important;");
-
-
-
-                    //tr.Cells.Add(celAccion);
+         
                     phOrdenesProduccion.Controls.Add(tr);
 
                 }
@@ -177,7 +156,6 @@ namespace Tecnocuisine.Formularios.Ventas
             try
             {
                 ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
-                //var ListaProv = ControladorProveedores.ObtenerProveedoresAll();
                 var ListaOrdPro = cOrdenDeProduccion.GetAllOrdenesDeProduccion();
                 foreach (var ordenProd in ListaOrdPro)
                 {
@@ -222,10 +200,8 @@ namespace Tecnocuisine.Formularios.Ventas
 
                 TableCell celAccion = new TableCell();
                 CheckBox chkSeleccionar = new CheckBox();
-                //chkSeleccionar.CssClass = "tu-clase-css"; // Puedes establecer una clase CSS si lo deseas
                 chkSeleccionar.ID = "chkSeleccionar_" + ordenProd.id;
                 chkSeleccionar.Attributes.Add("onchange", "javascript:return guardarIdOrdenDeProduccion(" + ordenProd.id + ");");
-                //chkSeleccionar.Checked = true; // Si quieres que el checkbox esté marcado inicialmente
                 celAccion.Controls.Add(chkSeleccionar);
 
 
@@ -237,13 +213,10 @@ namespace Tecnocuisine.Formularios.Ventas
                 LinkButton btnDetalles = new LinkButton();
                 btnDetalles.CssClass = "btn btn-xs";
                 btnDetalles.Style.Add("background-color", "transparent");
-                //btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                //btnDetalles.Attributes.Add("title data-original-title", "Editar");
                 btnDetalles.ID = "btnSelecReceta_" + ordenProd.id + "_";
                 btnDetalles.Text = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
                 btnDetalles.PostBackUrl = "OrdenesDeProduccionABM.aspx?Accion=2&id=" + ordenProd.id;
 
-                //btnDetalles.Click += new EventHandler(this.editarReceta);
                 celAccion.Controls.Add(btnDetalles);
 
 

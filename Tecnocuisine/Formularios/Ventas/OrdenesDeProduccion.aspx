@@ -47,19 +47,15 @@
                                                 </table>
 
                                                 <asp:TextBox runat="server" ID="IDsOrdenesDeProduccion" Text="" Style="display: none"></asp:TextBox>
+
                                                 <a href="CronogramaProduccion.aspx" class="btn btn-primary dim" target="_blank"
-                                                    id="cronogramaProduccionURL" style="margin-right: 1%; float: right">Generar cronograma de produccion</a>
-
-
+                                                    id="cronogramaProduccionURL" style="margin-right: 1%; float: right">Cronograma Produccion</a>
+                                                <a href="DetalleIngrediente.aspx" class="btn btn-primary dim" target="_blank"
+                                                    id="detalleIngredienteURL" style="margin-right: 1%; float: right">Detalle Ingredientes</a>
                                             </div>
                                         </div>
                                         <datalist id="ListaProveedores" runat="server">
                                         </datalist>
-                                        <%--  <div style="margin-left: 0px; margin-right: 0px;" class="row">
-                                            <div class="col-md-2" style="display: flex; flex-direction: row; align-items: center; justify-content: end;">
-                                                <a href="OrdenesDeProduccionABM.aspx" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
-                                            </div>
-                                        </div>--%>
                                     </div>
                                 </div>
                             </div>
@@ -288,7 +284,9 @@
             }
 
             var enlace = document.getElementById("cronogramaProduccionURL");
+            var enlace2 = document.getElementById("detalleIngredienteURL");
             enlace.href = "CronogramaProduccion.aspx?ids=" + encodeURIComponent(document.getElementById('<%= IDsOrdenesDeProduccion.ClientID %>').value);
+            enlace2.href = "DetalleIngrediente.aspx?ids=" + encodeURIComponent(document.getElementById('<%= IDsOrdenesDeProduccion.ClientID %>').value);
             //IDsOrdenesDeProduccion
         }
 
