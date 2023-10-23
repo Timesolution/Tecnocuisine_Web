@@ -29,8 +29,8 @@
                                         <div class="col-md-6">
                                             <datalist id="ListaNombreProd" runat="server">
                                             </datalist>
-                                            <asp:TextBox runat="server" ID="txtDescripcionProductos" onfocusout="handle(event)" 
-                                                list="ContentPlaceHolder1_ListaNombreProd" class="form-control" 
+                                            <asp:TextBox runat="server" ID="txtDescripcionProductos" onfocusout="handle(event)"
+                                                list="ContentPlaceHolder1_ListaNombreProd" class="form-control"
                                                 Style="margin-left: 15px; width: 95%" />
                                             <asp:HiddenField ID="Hiddentipo" runat="server" />
                                             <asp:HiddenField ID="HiddenUnidad" runat="server" />
@@ -251,27 +251,27 @@
                         <div class="col-md-4">
                             <div style="display: flex">
 
-                               <h4 class="modal-title">Producto para intercambiar: </h4>
+                                <h4 class="modal-title">Producto para intercambiar: </h4>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div style="display: flex">
-                                   <h4 id="DescricionProductoACambiar"></h4>
+                                <h4 id="DescricionProductoACambiar"></h4>
                             </div>
                         </div>
 
 
-               
 
-                         <div class="col-md-4">
+
+                        <div class="col-md-4">
                             <div style="display: flex">
 
-                               <h4 class="modal-title">Cantidad Utilizada: </h4>
+                                <h4 class="modal-title">Cantidad Utilizada: </h4>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div style="display: flex">
-                                   <h4 id="CantidadUtilizadaProdOriginal" ></h4>
+                                <h4 id="CantidadUtilizadaProdOriginal"></h4>
                             </div>
                         </div>
 
@@ -610,7 +610,7 @@
                         </div>
                         <div class="col-md-6">
                             <div style="display: flex">
-                                <h4 id="DescricionProductoCosto" ></h4>
+                                <h4 id="DescricionProductoCosto"></h4>
                             </div>
                         </div>
 
@@ -873,7 +873,35 @@
             }
             $("#form").find("a[href='#finish']").hide();
 
+            let url = new URL(window.location.href);
 
+            let PPro = url.searchParams.get('PPro');
+
+            // Obtener el valor del parámetro 'PR'
+            let PR = url.searchParams.get('PR');
+
+            // Obtener el valor del parámetro 'C'
+            let C = url.searchParams.get('C');
+
+
+            let ID = url.searchParams.get('i');
+
+            if(PR != null)
+            {
+               
+ 
+                 let DescripcionProducto = document.getElementById('<%=txtDescripcionProductos.ClientID%>').value = PR;
+                 document.getElementById('<%=txtDescripcionProductos.ClientID%>').value = ID + " - " + PR + " - " + "Receta";
+
+                 handle();
+                 C = C.replace(',', '.');
+                 document.getElementById('<%=NCantidad.ClientID%>').value = C;
+
+                 ChangeTableCantidad();
+                 //idReceta.ToString() + " - " + DescripcionReceta + " - " + "Receta";
+            }
+
+           
 
         });
 

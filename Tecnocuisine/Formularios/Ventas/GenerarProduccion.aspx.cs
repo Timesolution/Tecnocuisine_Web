@@ -54,13 +54,13 @@ namespace Tecnocuisine.Formularios.Ventas
 
                 }
 
-                if (PPro == 2)
-                {
-                    string DescripcionReceta = Request.QueryString["PR"].ToString();
-                    string Cantidad = Request.QueryString["C"].ToString();
+                //if (PPro == 2)
+                //{
+                //    string DescripcionReceta = Request.QueryString["PR"].ToString();
+                //    string Cantidad = Request.QueryString["C"].ToString();
 
-                    PrecargarProductosYRecetas(DescripcionReceta, Cantidad);
-                }
+                //    PrecargarProductosYRecetas(DescripcionReceta, Cantidad);
+                //}
 
                 if (Mensaje == 1)
                 {
@@ -85,11 +85,15 @@ namespace Tecnocuisine.Formularios.Ventas
             //txtDescripcionProductos.Focus();   
             //NCantidad.Text = Cantidad;
 
-            string script = "handle();"; // Llama a la función handle sin argumentos
+            string script = "handle(); ChangeTableCantidad()"; // Llama a la función handle sin argumentos
 
             // Registra el script en la página para que se ejecute en el cliente
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "CallHandleFunction", script, true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "CallHandleFunction; ", script, true);
             NCantidad.Text = Cantidad.Replace(",", ".");
+
+
+            // Registra el script en la página para que se ejecute en el cliente
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "CallChangeTableCantidadFunction", script2, true);
 
             //// Aquí puedes generar el código JavaScript para activar la función handle
             //string script = "handle();"; // Llama a la función handle sin argumentos

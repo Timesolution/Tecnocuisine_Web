@@ -142,7 +142,7 @@
                                         {
                                             Bandera++;
                                             DiasAct = Convert.ToInt32(dataRow["DiasMasNivel"].ToString());
-                                            matriz[filas, 6 - Convert.ToInt32(dataRow["DiasMasNivel"].ToString())] =  dataRow["ProductoOReceta"].ToString() + ";" + dataRow["Descripcion"].ToString() + ";" + dataRow["id"].ToString();
+                                            matriz[filas, 6 - Convert.ToInt32(dataRow["DiasMasNivel"].ToString())] =  dataRow["ProductoOReceta"].ToString() + ";" + dataRow["Descripcion"].ToString() + ";" + dataRow["id"].ToString() + ";" + dataRow["Cantidad"].ToString();
                                         }
 
                                         else
@@ -156,7 +156,7 @@
                                             {
                                                 filas++;
                                             }
-                                            matriz[filas, 6 - Convert.ToInt32(dataRow["DiasMasNivel"].ToString())] =  dataRow["ProductoOReceta"].ToString() + ";" + dataRow["Descripcion"].ToString() + ";" + dataRow["id"].ToString();
+                                            matriz[filas, 6 - Convert.ToInt32(dataRow["DiasMasNivel"].ToString())] =  dataRow["ProductoOReceta"].ToString() + ";" + dataRow["Descripcion"].ToString() + ";" + dataRow["id"].ToString() + ";" + dataRow["Cantidad"].ToString();
                                         }
 
 
@@ -304,8 +304,8 @@
                                         {
                                             Bandera++;
                                             DiasAct = Convert.ToInt32(dataRow["DiasMasNivel"].ToString());
-                                            matriz[filas, 6 - Convert.ToInt32(dataRow["DiasMasNivel"].ToString())] =  dataRow["ProductoOReceta"].ToString() + ";" + dataRow["Descripcion"].ToString() + ";" + dataRow["id"].ToString();
-                                            
+                                            matriz[filas, 6 - Convert.ToInt32(dataRow["DiasMasNivel"].ToString())] =  dataRow["ProductoOReceta"].ToString() + ";" + dataRow["Descripcion"].ToString() + ";" + dataRow["id"].ToString() + ";" + dataRow["Cantidad"].ToString();
+
                                         }
 
                                         else
@@ -319,7 +319,7 @@
                                             {
                                                 filas++;
                                             }
-                                            matriz[filas, 6 - Convert.ToInt32(dataRow["DiasMasNivel"].ToString())] =  dataRow["ProductoOReceta"].ToString() + ";" + dataRow["Descripcion"].ToString() + ";" + dataRow["id"].ToString();
+                                            matriz[filas, 6 - Convert.ToInt32(dataRow["DiasMasNivel"].ToString())] = dataRow["ProductoOReceta"].ToString() + ";" + dataRow["Descripcion"].ToString() + ";" + dataRow["id"].ToString() + ";" + dataRow["Cantidad"].ToString();
 
 
                                         }
@@ -351,9 +351,10 @@
                                             string id = partes[2];
                                             if (segundaParte == "Receta")
                                             {
+                                                string Cantidad = partes[3];
                                     %>
                                     <%--<a href="GenerarProduccion.aspx" target="_blank">Click aquí</a>--%>
-                                    <a href="GenerarProduccion.aspx" target="_blank" style="float: right; margin-left: 10px;" title="Produccion">
+                                    <a href="GenerarProduccion.aspx?PPro=2&PR=<%=productoOReceta %>&C=<%=Cantidad %>&i=<%=id %>" target="_blank" style="float: right; margin-left: 10px;" title="Produccion">
                                         <i class="fa fa-utensils" style="color: black"></i></a>
                                     <% }%>
                                     <a href="/Formularios/Maestros/StockDetallado.aspx?t=1&i=<%=id %>" target="_blank" style="float: right; margin-left: 10px;" title="Ver stock">
