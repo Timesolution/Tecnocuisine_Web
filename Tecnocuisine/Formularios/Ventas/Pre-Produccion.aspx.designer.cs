@@ -69,6 +69,15 @@ namespace Tecnocuisine.Formularios.Ventas
         protected global::System.Web.UI.WebControls.HiddenField FechaHasta;
 
         /// <summary>
+        /// Control ddlSectorSelecionado.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField ddlSectorSelecionado;
+
+        /// <summary>
         /// Control phIngredientesFiltrados.
         /// </summary>
         /// <remarks>
@@ -78,12 +87,39 @@ namespace Tecnocuisine.Formularios.Ventas
         protected global::System.Web.UI.WebControls.PlaceHolder phIngredientesFiltrados;
 
         /// <summary>
-        /// Control DetalleIngredientes.
+        /// Control detalleRecetas.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton DetalleIngredientes;
+        protected global::System.Web.UI.WebControls.HiddenField detalleRecetas;
+
+        /// <summary>
+        /// Control LinkButton1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton LinkButton1;
+
+        /// <summary>
+        /// Control btnRecepcionSectores.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnRecepcionSectores;
+
+        /// <summary>
+        /// Control phTablaProductos.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder phTablaProductos;
     }
 }

@@ -38,14 +38,14 @@
                                                         <a href="Entregas.aspx" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
                                                     </div>
                                                 </div>
-                                                <table class="table table-striped table-bordered table-hover " id="editable">
+                                                <table class="table-striped table-bordered table-hover " id="editable" style="width:100%">
                                                     <thead>
                                                         <tr>
 
                                                             <th style="max-width: 100px">Fecha Entrega</th>
                                                             <th>PROVEEDOR </th>
                                                             <th>Sector</th>
-                                                            <th>Codigo Entrega</th>
+                                                            <th>Código Entrega</th>
                                                             <th> Estado Facturado</th>
                                                             <th style="max-width: 100px"></th>
                                                         </tr>

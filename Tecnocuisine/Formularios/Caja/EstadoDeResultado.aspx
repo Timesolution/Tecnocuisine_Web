@@ -19,7 +19,7 @@
                                                         <div class="input-group m-b">
                                                             <div style="display: flex;">
                                                                 <span class="input-group-addon" style="padding-right: 15%;"><i style='color: black;' class='fa fa-search'></i></span>
-                                                                <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 100%" />
+                                                                <input type="text" id="txtBusqueda" placeholder="Búsqueda..." class="form-control" style="width: 100%" />
                                                             </div>
                                                         </div>
                                                         <div class="input-group m-b row">
@@ -33,6 +33,12 @@
 
                                                                 </div>
                                                             </div>
+                                                            <div>
+                                                                <p id="validaFechaDesde" style="margin-left: 30px"
+                                                                    class="text-danger text hide">
+                                                                    *la fecha debe ser menor a hasta
+                                                                </p>
+                                                            </div>
                                                         </div>
                                                         <div class="input-group m-b">
                                                             <div class="row">
@@ -40,37 +46,50 @@
                                                                     <label style="margin-top: 5px;" class="col-md-4">Hasta</label>
                                                                 </div>
                                                                 <div class="col-md-8">
-                                                                    <asp:TextBox class="form-control" runat="server" type="date" ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                                    <asp:TextBox class="form-control" runat="server" type="date" ID="txtFechaVencimiento"
+                                                                        data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div>
+                                                                <p id="validaFechaHasta" style="margin-left: 16px"
+                                                                    class="text-danger text hide">
+                                                                    *la fecha debe ser mayor a desde
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="input-group m-b" style="margin-left: 15px;">
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <a id="btnFiltrar" onclick="FiltrarVentas()" class="btn btn-primary" style="margin-right: 15px;" title="Filtrar">
+                                                                        <i class="fa fa-paper-plane"></i>&nbsp;Filtrar </a>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-2" style="display: flex; flex-direction: row; align-items: center; justify-content: end;">
-                                                    <a id="btnFiltrar" onclick="FiltrarVentas()" class="btn btn-primary" style="margin-right: 15px;"><i class="fa fa-paper-plane"></i>&nbsp;Filtrar </a>
 
-                                                    <a onclick="AbrirModalCashflow()" class="btn btn-primary dim" data-toggle="tooltip" data-placement="top"
-                                                        data-original-title="Agregar Nueva Entrega" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
-                                                </div>
 
                                                 <div class="col-lg-12" style="background-color: white">
                                                     <div class="row">
-                                                        <div class="col-lg-6">
-                                                            <table class="table table-striped table-bordered table-hover " id="editable">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <%--<th style="text-align: left; width: 15%">Tipo</th>--%>
-                                                                        <th style="width: 35%">Tipo rubro</th>
-                                                                        <th style="text-align: right; width: 25%">Importe</th>
-                                                                        <th style="text-align: right; width: 20%">Real</th>
-                                                                        <th style="text-align: right; width: 20%">Plan</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <asp:PlaceHolder ID="phRubroRecaudacionMensual" runat="server"></asp:PlaceHolder>
-                                                                </tbody>
-                                                            </table>
+                                                        <div class="col-lg-12">
+                                                            <div class="table-responsive">
+                                                                <table class="table table-striped table-bordered table-hover " id="editable">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th style="width: 35%">Rubro</th>
+                                                                            <th style="text-align: right; width: 25%">Importe</th>
+                                                                            <th style="text-align: right; width: 20%">Real</th>
+                                                                            <th style="text-align: right; width: 20%">Plan</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <asp:PlaceHolder ID="phRubroRecaudacionMensual" runat="server"></asp:PlaceHolder>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
                                                         </div>
 
                                                         <div class="col-lg-6">
@@ -204,9 +223,46 @@
         }
 
         function FiltrarVentas() {
+
+            let i = validarForm();
+            if(i == false){
+                return false;
+            }
+
             let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value.replaceAll("-", "/");
             let FechaH = document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value.replaceAll("-", "/");
             window.location.href = "EstadoDeResultado.aspx?FechaD=" + FechaD + "&FechaH=" + FechaH;
+        }
+
+        function validarForm()
+        {
+            let formValido = true
+            let FechaDesde = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value.replaceAll("-", "/");
+            let FechaHasta = document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value.replaceAll("-", "/");
+     
+            // Convertir las fechas a objetos Date
+            let dateDesde = new Date(FechaDesde);
+            let dateHasta = new Date(FechaHasta);
+     
+            if (dateHasta < dateDesde) 
+            {
+                formValido = false;
+                document.getElementById('validaFechaHasta').className = 'text-danger'
+            }
+            else{
+                 document.getElementById('validaFechaHasta').className = "text-danger text-hide"
+            }
+
+            if (dateDesde > dateHasta) 
+            {
+                formValido = false;
+                document.getElementById('validaFechaDesde').className = 'text-danger'
+            }
+            else{
+                 document.getElementById('validaFechaDesde').className = "text-danger text-hide"
+            }
+     
+            return formValido;
         }
 
     </script>

@@ -64,8 +64,10 @@
                                                 <h5 style="margin-left: 5%">Cantidad a Producir:</h5>
                                             </div>
                                             <div class="col-md-8">
-                                                <asp:TextBox runat="server" onChange="ChangeTableCantidad()" ID="NCantidad" type="number" class="form-control" Style="margin-left: 15px; width: 70%;" />
+                                                <asp:TextBox runat="server" onChange="ChangeTableCantidad()" 
+                                                    ID="NCantidad" type="number" class="form-control" Style="margin-left: 15px; width: 70%;" />
                                             </div>
+
                                         </div>
                                         <div class="row" style="margin-top: 2%">
                                             <div class="col-md-4">
@@ -882,7 +884,7 @@
 
             // Obtener el valor del parámetro 'C'
             let C = url.searchParams.get('C');
-
+                
 
             let ID = url.searchParams.get('i');
 

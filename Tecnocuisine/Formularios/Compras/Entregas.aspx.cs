@@ -32,10 +32,12 @@ namespace Tecnocuisine.Formularios.Compras
         Mensaje m = new Mensaje();
         int accion;
         int id;
+        int idSectorProductivo = -1;
         protected void Page_Load(object sender, EventArgs e)
         {
             accion = Convert.ToInt32(Request.QueryString["a"]);
             id = Convert.ToInt32(Request.QueryString["i"]);
+            //idSectorProductivo = Convert.ToInt32(Request.QueryString["idS"]);
             if (!IsPostBack)
             {
                 ObtenerRecetas();
@@ -50,8 +52,13 @@ namespace Tecnocuisine.Formularios.Compras
                 {
                     CargarEntregaEdit();
                 }
+
+                if (idSectorProductivo != -1)
+                {
+
+                }
             }
-                    CargarNumeroVenta();
+            CargarNumeroVenta();
         }
 
         private void CargarNumeroVenta()
@@ -119,7 +126,7 @@ namespace Tecnocuisine.Formularios.Compras
             catch (Exception ex)
             {
 
-                
+
             }
         }
 
@@ -169,7 +176,7 @@ namespace Tecnocuisine.Formularios.Compras
                 tr.Cells.Add(celDescripcion);
 
                 TableCell celCantidad = new TableCell();
-                celCantidad.Text = p.Cantidad.ToString("N",culture);
+                celCantidad.Text = p.Cantidad.ToString("N", culture);
                 celCantidad.VerticalAlign = VerticalAlign.Middle;
                 celCantidad.HorizontalAlign = HorizontalAlign.Left;
                 celCantidad.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
@@ -267,7 +274,7 @@ namespace Tecnocuisine.Formularios.Compras
                 //celUM.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celUM);
 
-                
+
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
                 //LinkButton btnEditDetalles = new LinkButton();
@@ -278,16 +285,16 @@ namespace Tecnocuisine.Formularios.Compras
                 //btnEditDetalles.Attributes.Add("style", "padding: 0% 5% 2% 5.5%;background-color: transparent;");
                 //btnEditDetalles.Attributes.Add("onclick", "EditarProd('ContentPlaceHolder1_Producto_" + producto.id.ToString() + "');");
                 //celAccion.Controls.Add(btnEditDetalles);
-                
-                    LinkButton btnDetalles = new LinkButton();
-                    btnDetalles.CssClass = "btn btn-xs";
-                    btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                    btnDetalles.Text = "<span><i style=\"color: black\" class='fa fa-trash'></i></span>";
-                    btnDetalles.Attributes.Add("class", "btn  btn-xs");
-                    btnDetalles.Attributes.Add("style", "padding: 0% 5% 2% 5.5%;background-color: transparent;");
-                    btnDetalles.Attributes.Add("onclick", "borrarProd('ContentPlaceHolder1_Receta_" + recetas.Recetas.id.ToString() + "');");
-                    celAccion.Controls.Add(btnDetalles);
-                
+
+                LinkButton btnDetalles = new LinkButton();
+                btnDetalles.CssClass = "btn btn-xs";
+                btnDetalles.Attributes.Add("data-toggle", "tooltip");
+                btnDetalles.Text = "<span><i style=\"color: black\" class='fa fa-trash'></i></span>";
+                btnDetalles.Attributes.Add("class", "btn  btn-xs");
+                btnDetalles.Attributes.Add("style", "padding: 0% 5% 2% 5.5%;background-color: transparent;");
+                btnDetalles.Attributes.Add("onclick", "borrarProd('ContentPlaceHolder1_Receta_" + recetas.Recetas.id.ToString() + "');");
+                celAccion.Controls.Add(btnDetalles);
+
 
                 celAccion.Width = Unit.Percentage(25);
                 celAccion.Attributes.Add("style", " text-align: center");
@@ -452,7 +459,7 @@ namespace Tecnocuisine.Formularios.Compras
                 foreach (var prov in listaProv)
                 {
 
-                    builder.Append(String.Format("<option value='{0}' id='Prov_" + prov.Id+ "'>", prov.Id + " - " + prov.RazonSocial));
+                    builder.Append(String.Format("<option value='{0}' id='Prov_" + prov.Id + "'>", prov.Id + " - " + prov.RazonSocial));
                 }
 
                 //for (int i = 0; i < table.Rows.Count; i++)
@@ -477,7 +484,7 @@ namespace Tecnocuisine.Formularios.Compras
             catch (Exception ex)
             {
 
-                
+
             }
         }
 
@@ -490,7 +497,7 @@ namespace Tecnocuisine.Formularios.Compras
 
                 foreach (var sector in sectorProductivoslista)
                 {
-                   
+
                     builder.Append(String.Format("<option value='{0}' id='sector_" + sector.id + "'>", sector.id + " - " + sector.descripcion));
                 }
 
@@ -622,7 +629,7 @@ namespace Tecnocuisine.Formularios.Compras
 
                 if (IsValid)
                 {
-                    
+
 
                     string fecha = txtFechaEntrega.Text;
                     string ingredientes = idProductosRecetas.Value;
@@ -674,7 +681,7 @@ namespace Tecnocuisine.Formularios.Compras
                                     string Cantidad = producto[3];
                                     string Presentaciones = producto[5];
                                     string LoteEnviado = producto[6];
-                                   
+
                                     if (producto[1] == "Producto")
                                     {
                                         Entregas_Productos productoNuevo = new Entregas_Productos();
@@ -688,7 +695,7 @@ namespace Tecnocuisine.Formularios.Compras
                                         productoNuevo.FechaVencimiento = txtFechaVencimiento.Text;
                                         productoNuevo.idMarca = Convert.ToInt32(id_Marca);
                                         productoNuevo.Cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
-                                        ControladorEntregas.AgregarEntrega_Producto(productoNuevo,newEntrega.idSector, LoteEnviado, txtFechaEntrega.Text,Convert.ToInt32(producto[4]));
+                                        ControladorEntregas.AgregarEntrega_Producto(productoNuevo, newEntrega.idSector, LoteEnviado, txtFechaEntrega.Text, Convert.ToInt32(producto[4]));
                                     }
                                     else
                                     {
@@ -743,7 +750,7 @@ namespace Tecnocuisine.Formularios.Compras
                                         productoNuevo.FechaVencimiento = txtFechaVencimiento.Text;
                                         productoNuevo.idMarca = Convert.ToInt32(id_Marca);
                                         productoNuevo.Cantidad = Convert.ToDecimal(Cantidad);
-                                        ControladorEntregas.AgregarEntrega_Producto(productoNuevo, newEntrega.idSector, LoteEnviado, txtFechaVencimiento.Text,Convert.ToInt32(Presentaciones));
+                                        ControladorEntregas.AgregarEntrega_Producto(productoNuevo, newEntrega.idSector, LoteEnviado, txtFechaVencimiento.Text, Convert.ToInt32(Presentaciones));
                                     }
                                     else
                                     {
@@ -786,9 +793,9 @@ namespace Tecnocuisine.Formularios.Compras
             var result2 = value2.ToString("D" + decimalLength.ToString());
             return result2;
         }
-        public void AgregarNuevoProductoVenta(string prod,int idsector,string fecha)
+        public void AgregarNuevoProductoVenta(string prod, int idsector, string fecha)
         {
-           Tecnocuisine_API.Entitys.ProductoVentas newProductoVentas = new Tecnocuisine_API.Entitys.ProductoVentas();
+            Tecnocuisine_API.Entitys.ProductoVentas newProductoVentas = new Tecnocuisine_API.Entitys.ProductoVentas();
             ControladorProductoVenta controladorProductoVenta = new ControladorProductoVenta();
             newProductoVentas.idSector = idsector;
             string[] producto = prod.Split(',');
@@ -804,7 +811,7 @@ namespace Tecnocuisine.Formularios.Compras
             newProductoVentas.Stock = Convert.ToInt32(Cantidad);
             newProductoVentas.Lote = LoteEnviado;
             newProductoVentas.FechaVencimiento = Convert.ToDateTime(fecha);
-           controladorProductoVenta.AgregarProductosVentas(newProductoVentas);
+            controladorProductoVenta.AgregarProductosVentas(newProductoVentas);
         }
 
 
@@ -825,11 +832,11 @@ namespace Tecnocuisine.Formularios.Compras
             }
         }
         [WebMethod]
-        public static List<PresentacionClass> GetPresentaciones( int idProd, int tipo)
+        public static List<PresentacionClass> GetPresentaciones(int idProd, int tipo)
         {
             try
             {
-                if(tipo == 1)
+                if (tipo == 1)
                 {
 
                     ControladorPresentacion controladorPresentacion = new ControladorPresentacion();
@@ -855,7 +862,7 @@ namespace Tecnocuisine.Formularios.Compras
                     //return resultadoJSON;
                     return listaFInal.ToList();
                 }
-                else if(tipo ==2)
+                else if (tipo == 2)
                 {
                     ControladorReceta controladorReceta = new ControladorReceta();
                     var lista = controladorReceta.ObtenerPresentacionByIdReceta(idProd);
@@ -913,7 +920,7 @@ namespace Tecnocuisine.Formularios.Compras
                 }
                 else
                 {
-                return new List<PresentacionClass>();
+                    return new List<PresentacionClass>();
                 }
             }
             catch (Exception)
@@ -924,8 +931,8 @@ namespace Tecnocuisine.Formularios.Compras
         }
         public class PresentacionClass
         {
-           public int id { get; set; }
-           public string descripcion { get; set; }
+            public int id { get; set; }
+            public string descripcion { get; set; }
         }
     }
 }

@@ -81,7 +81,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
         }
 
-
+        //Esta funcion carga los sectores producitvos en la ddl de sectores productivos
         protected void CargarSectoresProductivodDDL()
         {
             try
@@ -925,6 +925,8 @@ namespace Tecnocuisine.Formularios.Maestros
             }
 
         }
+
+        //Esta funcion se encarga de precargar los productos de la receta 
         public void CargarProductosPH2(Tecnocuisine_API.Entitys.Productos producto)
         {
 
@@ -948,7 +950,6 @@ namespace Tecnocuisine.Formularios.Maestros
                 celDescripcion.Text = producto.descripcion;
                 celDescripcion.VerticalAlign = VerticalAlign.Middle;
                 celDescripcion.HorizontalAlign = HorizontalAlign.Left;
-                //celDescripcion.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celDescripcion);
 
                 TableCell celCantidad = new TableCell();
@@ -966,7 +967,6 @@ namespace Tecnocuisine.Formularios.Maestros
                 celUM.Text = UnidadMedida;
                 celUM.VerticalAlign = VerticalAlign.Middle;
                 celUM.HorizontalAlign = HorizontalAlign.Left;
-                //celUM.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celUM);
 
                 TableCell celCosto = new TableCell();
@@ -1231,6 +1231,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
         }
 
+        //Esta funcion se encarga de precargar las recetas que se usan como ingredientes para la receta
         public void CargarRecetasPHModal2(Tecnocuisine_API.Entitys.Recetas_Receta Receta)
         {
 
@@ -1347,7 +1348,8 @@ namespace Tecnocuisine.Formularios.Maestros
                     btnDetalles.Text = "<span><i style=\"color: black\" class='fa fa-trash'></i></span>";
                     btnDetalles.Attributes.Add("class", "btn  btn-xs");
                     btnDetalles.Attributes.Add("style", "padding: 0% 5% 2% 5.5%;background-color: transparent;");
-                    btnDetalles.Attributes.Add("onclick", "borrarProd('ContentPlaceHolder1_Receta_" + Receta.Recetas.id.ToString() + "');");
+                    //btnDetalles.Attributes.Add("onclick", "borrarProd('ContentPlaceHolder1_Receta_" + Receta.Recetas.id.ToString() + "');");
+                    btnDetalles.Attributes.Add("onclick", "borrarProd('ContentPlaceHolder1_Receta_" + RecetaingredienteI.id + "');");
                     celAccion.Controls.Add(btnDetalles);
 
                     celAccion.Width = Unit.Percentage(25);

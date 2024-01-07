@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using Tecnocuisine_API.Entitys;
 using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
+using System.Web.Services;
 
 namespace Tecnocuisine.Formularios.Ventas
 {
@@ -25,26 +26,24 @@ namespace Tecnocuisine.Formularios.Ventas
                 ObtenerClientes();
                 txtFechaHoy.Text = DateTime.Now.ToString("dd/MM/yyyy");
 
-                if (Request.QueryString["Accion"] != null)
+
+                if (int.Parse(Request.QueryString["Accion"]) == 2)
                 {
-                    if (int.Parse(Request.QueryString["Accion"]) == 2)
+
+                    if (Request.QueryString["id"] != null)
                     {
-
-                        if (Request.QueryString["id"] != null)
-                        {
-                            int idOrdenDeProduccion = int.Parse(Request.QueryString["id"]);
-                            precargarOrdenDeProduccion(idOrdenDeProduccion);
-                        }
-
+                        int idOrdenDeProduccion = int.Parse(Request.QueryString["id"]);
+                        precargarOrdenDeProduccion(idOrdenDeProduccion);
                     }
 
                 }
+
+
 
                 else
                 {
                     CargarCodigoOrdenCompra();
                 }
-
 
             }
 
@@ -55,10 +54,10 @@ namespace Tecnocuisine.Formularios.Ventas
         private void precargarOrdenDeProduccion(int idOrdenDeProduccion)
         {
             ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
-            ordenesDeProduccion ordenesDeProduccion = cOrdenDeProduccion.GetOneOrdenesDeProduccionById(idOrdenDeProduccion);
-            txtFechaHoy.Text = Convert.ToDateTime(ordenesDeProduccion.fechaEntrega).ToString("dd/MM/yyyy");
-            lblOPNumero.Text = ordenesDeProduccion.OPNumero;
-            TxtClientes.Text = ordenesDeProduccion.idCliente.ToString() + " - " + ordenesDeProduccion.Clientes.alias + " - " + "Cliente";
+            ordenesDeProduccion ordeneDeProduccion = cOrdenDeProduccion.GetOneOrdenesDeProduccionById(idOrdenDeProduccion);
+            txtFechaHoy.Text = Convert.ToDateTime(ordeneDeProduccion.fechaEntrega).ToString("dd/MM/yyyy");
+            lblOPNumero.Text = ordeneDeProduccion.OPNumero;
+            TxtClientes.Text = ordeneDeProduccion.idCliente.ToString() + " - " + ordeneDeProduccion.Clientes.alias + " - " + "Cliente";
 
             precargarRecetasDeLaOrden(idOrdenDeProduccion);
 
@@ -83,11 +82,11 @@ namespace Tecnocuisine.Formularios.Ventas
             try
             {
                 TableRow tr = new TableRow();
-                tr.ID = RecetaXOrden.id.ToString();
+                tr.ID = RecetaXOrden.idReceta.ToString();
 
 
                 TableCell celProducto = new TableCell();
-                celProducto.Text = RecetaXOrden.Producto.ToString();
+                celProducto.Text = RecetaXOrden.idReceta + " - " + RecetaXOrden.Producto.ToString() + " - " + "Receta";
                 celProducto.VerticalAlign = VerticalAlign.Middle;
                 tr.Cells.Add(celProducto);
 
@@ -111,17 +110,18 @@ namespace Tecnocuisine.Formularios.Ventas
                 btnEliminar.Style.Add("background-color", "transparent");
                 btnEliminar.Attributes.Add("data-toggle", "modal");
                 btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                btnEliminar.Text = "<span><i style='color:black' class='fa fa-trash - o'></i></span>";
-                //btnEliminar.OnClientClick = "abrirdialog(" + RecetaXOrden.id + ");";
-                btnEliminar.Attributes.Add("onclick", "borrarDocumentoSelect('ContentPlaceHolder1_" + RecetaXOrden.id.ToString() + "');");
+                btnEliminar.Text = "<span title='Eliminar'><i class='fa fa-trash-o' style='color: #FF0000;'></i></span>";
+                btnEliminar.Attributes.Add("onclick", "borrarDocumentoSelect('ContentPlaceHolder1_" + RecetaXOrden.idReceta.ToString() + "');");
                 celAccion.Controls.Add(btnEliminar);
 
+
+
                 tr.Cells.Add(celAccion);
-                phRubroRecaudacionMensual.Controls.Add(tr);
+                phRecetasOrdenProduccion.Controls.Add(tr);
 
 
-                //DatosProductos.Text += "ID=" + RecetaXOrden.idReceta.ToString() + " - " + RecetaXOrden.Producto + " - " + "Receta" + "," + RecetaXOrden.cantidad + ";";
-            //document.getElementById('<%= DatosProductos.ClientID%>').value += "ID=" + ID + "," + ProductoDescripcion + "," + Cantidad + ";"
+                DatosProductos.Text += "ID=" + RecetaXOrden.idReceta.ToString() + " - " + RecetaXOrden.Producto + " - " + "Receta" + "," + RecetaXOrden.cantidad + ";";
+                //document.getElementById('<%= DatosProductos.ClientID%>').value += "ID=" + ID + "," + ProductoDescripcion + "," + Cantidad + ";"
 
 
             }
@@ -135,7 +135,7 @@ namespace Tecnocuisine.Formularios.Ventas
             try
             {
                 ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
-                var listaOrdeneProduccion = cOrdenDeProduccion.GetAllOrdenesDeProduccion();
+                var listaOrdeneProduccion = cOrdenDeProduccion.GetAllOP();
 
                 string fac1;
                 if (listaOrdeneProduccion.Count == 0)
@@ -257,15 +257,164 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
 
-        protected void btnGuardarOrdenDeCompra_Click(object sender, EventArgs e)
+        //protected void btnGuardarOrdenDeCompra_Click(object sender, EventArgs e)
+        //{
+
+        //    //Si esto da verdadero, quiere decir que se esta editando
+        //    if (Request.QueryString["Accion"] != null)
+        //    {
+        //        if (int.Parse(Request.QueryString["Accion"]) == 2)
+        //        {
+
+
+        //            //Esta primera parte del codigo se encarga de darle una baja logica a todas las recetas de la orden
+        //            int idOrdenDeProduccion = Convert.ToInt32(Request.QueryString["id"].ToString());
+        //            Tecnocuisine_API.Controladores.ControladorOrdenesxRecetas cOrdenesxRecetas = new Tecnocuisine_API.Controladores.ControladorOrdenesxRecetas();
+        //            cOrdenesxRecetas.bajaLogicaOrdenesXRecetasByIdOrdenDeProduccion(idOrdenDeProduccion);
+
+
+        //            //Esta segunda parte se encarga de guardan en la base todas las recetas de la orden
+        //            string recetasDeLaOrden = DatosProductos.Text; //Esta variable contiene todas las recetas de la orden separadas por ;
+        //            string[] Recetas_de_la_orden = recetasDeLaOrden.Split(';'); //Separa cada receta separada por ; y guarda cada una en un elemento de un array 
+
+        //            //Guarda cada elemento del array en una lista para poder recorrerla en un foreach
+        //            List<string> listaCadenas = Recetas_de_la_orden.ToList();
+
+
+        //            // Recorre la lista receta a receta y las va guardando una por una en la base
+        //            foreach (string cadena in listaCadenas)
+        //            {
+        //                // Dividir la cadena en partes usando '-' como delimitador
+        //                string[] elementos = cadena.Split('-');
+
+        //                if (elementos.Length >= 2)
+        //                {
+        //                    string primerElemento = elementos[0].Trim(); //Obtiene la primera parte vector elementos, la cual es ID=N
+        //                    Match id = Regex.Match(primerElemento, @"ID=(\d+)");
+        //                    int idReceta = int.Parse(id.Groups[1].Value); //Obtiene el id de la receta y lo guarda en esta variable
+        //                    string RecetaDescripcion = elementos[1].Trim(); //Obtiene la descripcion de la receta y la guarda en esta variable
+        //                    string TercerElemento = elementos[2].Trim(); //Guarda la cadena Receta,N es decir guarda la cadena Receta y separada por , la cantidad
+        //                    // Definir una expresión regular para buscar números en la cadena
+        //                    Regex regex = new Regex(@"\d+");
+        //                    // Buscar coincidencias en la cadena
+        //                    Match match = regex.Match(TercerElemento);
+        //                    int Cantidad = int.Parse(match.Value);
+
+
+        //                    //Esta parte se encarga de guardar la receta de la orden en la base de datos
+        //                    ordenesXRecetas ordenesXRecetas = new ordenesXRecetas();
+        //                    ordenesXRecetas.idReceta = idReceta;
+        //                    ordenesXRecetas.idOrdenDeProduccion = idOrdenDeProduccion;
+        //                    ordenesXRecetas.Estado = true;
+        //                    ordenesXRecetas.cantidad = Cantidad;
+        //                    ordenesXRecetas.Producto = RecetaDescripcion;
+        //                    cOrdenesxRecetas.AgregarOrdenesxRecetas(ordenesXRecetas);
+        //                    DatosProductos.Text = "";
+
+        //                }
+
+        //            }
+
+        //            Response.Redirect("OrdenesDeProduccion.aspx", false);
+
+        //        }
+
+
+
+
+        //    }
+
+        //    else
+        //    {
+
+        //        //Si esto da false quiere decir que se esta agregando
+
+        //        Tecnocuisine_API.Entitys.ordenesDeProduccion ordDeProduccion = new Tecnocuisine_API.Entitys.ordenesDeProduccion();
+        //        ordDeProduccion.OPNumero = lblOPNumero.Text;
+        //        ordDeProduccion.fechaEntrega = Convert.ToDateTime(fechaEntrega.Text.ToString());
+
+        //        //string clienteTexto = TxtClientes.Text;
+        //        string clienteTexto = Cliente.Text;
+        //        int numeroCliente;
+        //        string[] partes = clienteTexto.Split('-');
+        //        if (partes.Length >= 2)
+        //        {
+        //            if (int.TryParse(partes[0].Trim(), out numeroCliente))
+        //            {
+        //                // Ahora tienes el número del cliente en la variable numeroCliente
+        //                // Puedes usarlo en tu código
+        //                ordDeProduccion.idCliente = numeroCliente;
+        //            }
+        //        }
+        //        ordDeProduccion.Estado = true;
+        //        ordDeProduccion.estadoDeLaOrden = 2;
+        //        ControladorOrdenDeProduccion controladorOrdenDeProduccion = new ControladorOrdenDeProduccion();
+        //        int idOrdenDeProduccion = controladorOrdenDeProduccion.AgregarOrdenDeProduccion(ordDeProduccion);
+        //        ControladorOrdenesxRecetas cOrdenesxRecetas = new ControladorOrdenesxRecetas();
+        //        //cOrdenesxRecetas.AgregarOrdenesxRecetas()
+
+        //        string texto = DatosProductos.Text;
+        //        string[] cadenas = texto.Split(';'); // Divide el texto en cadenas usando ';' como delimitador
+
+        //        // Ahora 'cadenas' es un arreglo que contiene las cadenas separadas por ';'
+
+        //        // Si quieres almacenarlas en una lista, puedes hacerlo así:
+        //        List<string> listaCadenas = cadenas.ToList();
+
+        //        // Puedes recorrer la lista o el arreglo para trabajar con cada cadena individualmente:
+        //        foreach (string cadena in listaCadenas)
+        //        {
+        //            // Dividir la cadena en partes usando '-' como delimitador
+        //            string[] elementos = cadena.Split('-');
+
+        //            if (elementos.Length >= 2)
+        //            {
+        //                // elementos[0] contiene el primer número (7)
+        //                string primerElemento = elementos[0].Trim();
+        //                Match id = Regex.Match(primerElemento, @"ID=(\d+)");
+        //                int idReceta = int.Parse(id.Groups[1].Value); //Obtiene el id de la receta y lo guarda en esta variable
+        //                string RecetaDescripcion = elementos[1].Trim(); //Obtiene la descripcion de la receta y la guarda en esta variable
+        //                string TercerElemento = elementos[2].Trim(); //Guarda la cadena Receta,N es decir guarda la cadena Receta y separada por , la cantidad                                                                     // Definir una expresión regular para buscar números en la cadena
+        //                Regex regex = new Regex(@"\d+");
+        //                // Buscar coincidencias en la cadena
+        //                Match match = regex.Match(TercerElemento);
+        //                int Cantidad = int.Parse(match.Value);
+
+
+
+        //                //Esta parte se encarga de guardar la receta de la orden en la base de datos
+        //                ordenesXRecetas ordenesXRecetas = new ordenesXRecetas();
+        //                ordenesXRecetas.idReceta = idReceta;
+        //                ordenesXRecetas.idOrdenDeProduccion = idOrdenDeProduccion;
+        //                ordenesXRecetas.Estado = true;
+        //                ordenesXRecetas.cantidad = Cantidad;
+        //                ordenesXRecetas.Producto = RecetaDescripcion;
+        //                cOrdenesxRecetas.AgregarOrdenesxRecetas(ordenesXRecetas);
+        //                DatosProductos.Text = "";
+
+        //            }
+        //        }
+
+        //        Response.Redirect("OrdenesDeProduccion.aspx", false);
+        //    }
+        //}
+
+
+
+
+        [WebMethod]
+        public static int btnGuardarOrdenDeCompra_Click(string OrdenNumero, string fechaEntrega, string Cliente, string DatosProductos)
         {
 
+
+            //Si esto da false quiere decir que se esta agregando
+
             Tecnocuisine_API.Entitys.ordenesDeProduccion ordDeProduccion = new Tecnocuisine_API.Entitys.ordenesDeProduccion();
-            ordDeProduccion.OPNumero = lblOPNumero.Text;
-            ordDeProduccion.fechaEntrega = Convert.ToDateTime(fechaEntrega.Text.ToString());
+            ordDeProduccion.OPNumero = OrdenNumero;
+            ordDeProduccion.fechaEntrega = Convert.ToDateTime(fechaEntrega);
 
             //string clienteTexto = TxtClientes.Text;
-            string clienteTexto = Cliente.Text;
+            string clienteTexto = Cliente;
             int numeroCliente;
             string[] partes = clienteTexto.Split('-');
             if (partes.Length >= 2)
@@ -278,12 +427,12 @@ namespace Tecnocuisine.Formularios.Ventas
                 }
             }
             ordDeProduccion.Estado = true;
+            ordDeProduccion.estadoDeLaOrden = 2;
             ControladorOrdenDeProduccion controladorOrdenDeProduccion = new ControladorOrdenDeProduccion();
             int idOrdenDeProduccion = controladorOrdenDeProduccion.AgregarOrdenDeProduccion(ordDeProduccion);
             ControladorOrdenesxRecetas cOrdenesxRecetas = new ControladorOrdenesxRecetas();
-            //cOrdenesxRecetas.AgregarOrdenesxRecetas()
 
-            string texto = DatosProductos.Text;
+            string texto = DatosProductos;
             string[] cadenas = texto.Split(';'); // Divide el texto en cadenas usando ';' como delimitador
 
             // Ahora 'cadenas' es un arreglo que contiene las cadenas separadas por ';'
@@ -301,36 +450,173 @@ namespace Tecnocuisine.Formularios.Ventas
                 {
                     // elementos[0] contiene el primer número (7)
                     string primerElemento = elementos[0].Trim();
-                    int comaIndex = primerElemento.IndexOf(",");
-                    string[] partesDelPrimerElemento = primerElemento.Split(',');
-                    string numeroDespuesDeLaComa = partesDelPrimerElemento[1].Trim();
-                    int numero = int.Parse(numeroDespuesDeLaComa);
-                    string Producto = elementos[1].Trim();
-                    string TercerElemento = elementos[2].Trim();
-
-                    int idReceta = Convert.ToInt32(numero);
-                    // Definir una expresión regular para buscar números en la cadena
+                    Match id = Regex.Match(primerElemento, @"ID=(\d+)");
+                    int idReceta = int.Parse(id.Groups[1].Value); //Obtiene el id de la receta y lo guarda en esta variable
+                    string RecetaDescripcion = elementos[1].Trim(); //Obtiene la descripcion de la receta y la guarda en esta variable
+                    string TercerElemento = elementos[2].Trim(); //Guarda la cadena Receta,N es decir guarda la cadena Receta y separada por , la cantidad                                                                     // Definir una expresión regular para buscar números en la cadena
                     Regex regex = new Regex(@"\d+");
-
-
-
                     // Buscar coincidencias en la cadena
                     Match match = regex.Match(TercerElemento);
                     int Cantidad = int.Parse(match.Value);
+
+
+
+                    //Esta parte se encarga de guardar la receta de la orden en la base de datos
                     ordenesXRecetas ordenesXRecetas = new ordenesXRecetas();
                     ordenesXRecetas.idReceta = idReceta;
                     ordenesXRecetas.idOrdenDeProduccion = idOrdenDeProduccion;
                     ordenesXRecetas.Estado = true;
                     ordenesXRecetas.cantidad = Cantidad;
-                    ordenesXRecetas.Producto = Producto;
+                    ordenesXRecetas.Producto = RecetaDescripcion;
                     cOrdenesxRecetas.AgregarOrdenesxRecetas(ordenesXRecetas);
-                    DatosProductos.Text = "";
+                    //DatosProductos.Text = "";
 
                 }
             }
 
-            Response.Redirect("OrdenesDeProduccion.aspx", false);
+            //Response.Redirect("OrdenesDeProduccion.aspx", false);
+            return 1;
 
         }
+
+
+        //[WebMethod]
+        //public static void editarOrden()
+        //{
+
+
+        //    //Esta primera parte del codigo se encarga de darle una baja logica a todas las recetas de la orden
+        //    int idOrdenDeProduccion = Convert.ToInt32(Request.QueryString["id"].ToString());
+        //    Tecnocuisine_API.Controladores.ControladorOrdenesxRecetas cOrdenesxRecetas = new Tecnocuisine_API.Controladores.ControladorOrdenesxRecetas();
+        //    cOrdenesxRecetas.bajaLogicaOrdenesXRecetasByIdOrdenDeProduccion(idOrdenDeProduccion);
+
+
+        //    //Esta segunda parte se encarga de guardan en la base todas las recetas de la orden
+        //    string recetasDeLaOrden = DatosProductos.Text; //Esta variable contiene todas las recetas de la orden separadas por ;
+        //    string[] Recetas_de_la_orden = recetasDeLaOrden.Split(';'); //Separa cada receta separada por ; y guarda cada una en un elemento de un array 
+
+        //    //Guarda cada elemento del array en una lista para poder recorrerla en un foreach
+        //    List<string> listaCadenas = Recetas_de_la_orden.ToList();
+
+
+        //    // Recorre la lista receta a receta y las va guardando una por una en la base
+        //    foreach (string cadena in listaCadenas)
+        //    {
+        //        // Dividir la cadena en partes usando '-' como delimitador
+        //        string[] elementos = cadena.Split('-');
+
+        //        if (elementos.Length >= 2)
+        //        {
+        //            string primerElemento = elementos[0].Trim(); //Obtiene la primera parte vector elementos, la cual es ID=N
+        //            Match id = Regex.Match(primerElemento, @"ID=(\d+)");
+        //            int idReceta = int.Parse(id.Groups[1].Value); //Obtiene el id de la receta y lo guarda en esta variable
+        //            string RecetaDescripcion = elementos[1].Trim(); //Obtiene la descripcion de la receta y la guarda en esta variable
+        //            string TercerElemento = elementos[2].Trim(); //Guarda la cadena Receta,N es decir guarda la cadena Receta y separada por , la cantidad
+        //                                                         // Definir una expresión regular para buscar números en la cadena
+        //            Regex regex = new Regex(@"\d+");
+        //            // Buscar coincidencias en la cadena
+        //            Match match = regex.Match(TercerElemento);
+        //            int Cantidad = int.Parse(match.Value);
+
+
+        //            //Esta parte se encarga de guardar la receta de la orden en la base de datos
+        //            ordenesXRecetas ordenesXRecetas = new ordenesXRecetas();
+        //            ordenesXRecetas.idReceta = idReceta;
+        //            ordenesXRecetas.idOrdenDeProduccion = idOrdenDeProduccion;
+        //            ordenesXRecetas.Estado = true;
+        //            ordenesXRecetas.cantidad = Cantidad;
+        //            ordenesXRecetas.Producto = RecetaDescripcion;
+        //            cOrdenesxRecetas.AgregarOrdenesxRecetas(ordenesXRecetas);
+        //            DatosProductos.Text = "";
+
+        //        }
+
+        //    }
+
+
+
+
+
+
+
+
+
+
+
+        //    else
+        //    {
+
+        //        //Si esto da false quiere decir que se esta agregando
+
+        //        Tecnocuisine_API.Entitys.ordenesDeProduccion ordDeProduccion = new Tecnocuisine_API.Entitys.ordenesDeProduccion();
+        //        ordDeProduccion.OPNumero = lblOPNumero.Text;
+        //        ordDeProduccion.fechaEntrega = Convert.ToDateTime(fechaEntrega.Text.ToString());
+
+        //        //string clienteTexto = TxtClientes.Text;
+        //        string clienteTexto = Cliente.Text;
+        //        int numeroCliente;
+        //        string[] partes = clienteTexto.Split('-');
+        //        if (partes.Length >= 2)
+        //        {
+        //            if (int.TryParse(partes[0].Trim(), out numeroCliente))
+        //            {
+        //                // Ahora tienes el número del cliente en la variable numeroCliente
+        //                // Puedes usarlo en tu código
+        //                ordDeProduccion.idCliente = numeroCliente;
+        //            }
+        //        }
+        //        ordDeProduccion.Estado = true;
+        //        ordDeProduccion.estadoDeLaOrden = 2;
+        //        ControladorOrdenDeProduccion controladorOrdenDeProduccion = new ControladorOrdenDeProduccion();
+        //        int idOrdenDeProduccion = controladorOrdenDeProduccion.AgregarOrdenDeProduccion(ordDeProduccion);
+        //        ControladorOrdenesxRecetas cOrdenesxRecetas = new ControladorOrdenesxRecetas();
+        //        //cOrdenesxRecetas.AgregarOrdenesxRecetas()
+
+        //        string texto = DatosProductos.Text;
+        //        string[] cadenas = texto.Split(';'); // Divide el texto en cadenas usando ';' como delimitador
+
+        //        // Ahora 'cadenas' es un arreglo que contiene las cadenas separadas por ';'
+
+        //        // Si quieres almacenarlas en una lista, puedes hacerlo así:
+        //        List<string> listaCadenas = cadenas.ToList();
+
+        //        // Puedes recorrer la lista o el arreglo para trabajar con cada cadena individualmente:
+        //        foreach (string cadena in listaCadenas)
+        //        {
+        //            // Dividir la cadena en partes usando '-' como delimitador
+        //            string[] elementos = cadena.Split('-');
+
+        //            if (elementos.Length >= 2)
+        //            {
+        //                // elementos[0] contiene el primer número (7)
+        //                string primerElemento = elementos[0].Trim();
+        //                Match id = Regex.Match(primerElemento, @"ID=(\d+)");
+        //                int idReceta = int.Parse(id.Groups[1].Value); //Obtiene el id de la receta y lo guarda en esta variable
+        //                string RecetaDescripcion = elementos[1].Trim(); //Obtiene la descripcion de la receta y la guarda en esta variable
+        //                string TercerElemento = elementos[2].Trim(); //Guarda la cadena Receta,N es decir guarda la cadena Receta y separada por , la cantidad                                                                     // Definir una expresión regular para buscar números en la cadena
+        //                Regex regex = new Regex(@"\d+");
+        //                // Buscar coincidencias en la cadena
+        //                Match match = regex.Match(TercerElemento);
+        //                int Cantidad = int.Parse(match.Value);
+
+
+
+        //                //Esta parte se encarga de guardar la receta de la orden en la base de datos
+        //                ordenesXRecetas ordenesXRecetas = new ordenesXRecetas();
+        //                ordenesXRecetas.idReceta = idReceta;
+        //                ordenesXRecetas.idOrdenDeProduccion = idOrdenDeProduccion;
+        //                ordenesXRecetas.Estado = true;
+        //                ordenesXRecetas.cantidad = Cantidad;
+        //                ordenesXRecetas.Producto = RecetaDescripcion;
+        //                cOrdenesxRecetas.AgregarOrdenesxRecetas(ordenesXRecetas);
+        //                DatosProductos.Text = "";
+
+        //            }
+        //        }
+
+        //        Response.Redirect("OrdenesDeProduccion.aspx", false);
+        //    }
+        //}
+
     }
 }

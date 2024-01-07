@@ -232,22 +232,22 @@ namespace Tecnocuisine.Formularios.Compras
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
                 celAccion.Width = Unit.Percentage(3);
+                //Alguien le puse de nombre eliminar1 pero este boton es el boton de la lupa, para ver detalles 
                 LinkButton btnEliminar1 = new LinkButton();
                 btnEliminar1.CssClass = "btn  btn-xs";
                 btnEliminar1.Attributes.Add("data-toggle", "modal");
                 btnEliminar1.Attributes.Add("href", "#" + item.id);
-
-                //btnEliminar.Attributes.Add("href", "../Compras/CrearVenta.aspx?t=1&i=" + producto.id);
                 btnEliminar1.Text = "<span data-toggle=\"tooltip\" data-placement=\"top\" data-original-title=\"Ver Detalle Factura\"><i class='fa fa-search' style=\"color: black\"></i></span>";
-                //btnEliminar1.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; background-color: transparent; padding-top: 12px;");
                 celAccion.Controls.Add(btnEliminar1);
 
+                //Este es el boton eliminar
                 LinkButton btnEliminar = new LinkButton();
                 btnEliminar.ID = "btnEliminar_" + item.id;
                 btnEliminar.CssClass = "btn  btn-xs";
-                btnEliminar.Text = "<a data-toggle=\"tooltip\" onclick =\"EliminarFac("+ item.id + ")\" data-placement=\"top\" data -original-title=\"Eliminar Producto\"><i style='color:red' class='fa fa-trash - o'></i></a>";
+                //btnEliminar.Text = "<a data-toggle=\"tooltip\" onclick =\"EliminarFac("+ item.id + ")\" data-placement=\"top\" data -original-title=\"Eliminar Producto\"><i style='color:red' class='fa fa-trash - o'></i></a>";
+                btnEliminar.Text = $"<a data-toggle=\"tooltip\" data-placement=\"top\" title=\"Eliminar\" onclick=\"EliminarFac({item.id})\"><i style='color:red' class='fa fa-trash'></i></a>";
                 btnEliminar.Style.Add("background-color", "transparent");
-                //btnEliminar.Style.Add("margin-top", "10px"); // Agrega 10 píxeles de margen superior al botón
+                btnEliminar.Style.Add("background-color", "transparent");
                 celAccion.Controls.Add(btnEliminar);
 
 

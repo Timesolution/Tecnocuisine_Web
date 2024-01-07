@@ -25,8 +25,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2">
-
-                                                        <a href="../Ventas/GenerarProduccion.aspx" class="btn btn-primary dim" data-toggle="tooltip" data-placement="top" data-original-title="Agregar Nueva Produccion" style="margin-right: 1%; float: right"><i class="fa fa-plus"></i></a>
+                                                        <a href="../Ventas/GenerarProduccion.aspx" class="btn btn-primary dim" data-toggle="tooltip" data-placement="bottom" data-original-title="Agregar Nueva Produccion" style="margin-right: 1%; float: right"><i class="fa fa-plus"></i></a>
+                                                        <%--<a href="../Ventas/GenerarProduccion.aspx" class="btn btn-primary dim" data-toggle="tooltip" data-placement="top" data-original-title="Agregar Nueva Produccion" style="margin-right: 1%; float: right"><i class="fa fa-plus"></i></a>--%>
                                                     </div>
                                                 </div>
                                                 <table class="table table-striped table-bordered table-hover " id="editable">

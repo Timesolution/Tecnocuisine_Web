@@ -96,13 +96,13 @@ namespace Tecnocuisine.Formularios.Ventas
         protected global::System.Web.UI.WebControls.TextBox NCantidad;
 
         /// <summary>
-        /// Control phRubroRecaudacionMensual.
+        /// Control phRecetasOrdenProduccion.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phRubroRecaudacionMensual;
+        protected global::System.Web.UI.WebControls.PlaceHolder phRecetasOrdenProduccion;
 
         /// <summary>
         /// Control btnGuardarOrdenDeCompra.

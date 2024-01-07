@@ -13,32 +13,86 @@
                                     <div class="col-lg-12">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-content">
-                                                <div style="margin-left: 0px; margin-right: 0px;" class="row">
-                                                    <div class="col-md-10">
-                                                        <div class="input-group m-b">
-                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                                                <%--class="row"--%>
+                                                <div style="margin-left: 0px; margin-right: 0px;">
+                                                    <div style="display: flex">
+                                                        <div style="width: 35%; margin-left: 1rem">
+                                                            <div class="input-group m-b">
+                                                                <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                                                                <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                                                            </div>
                                                         </div>
+                                                        <label style="margin-left: -40px; margin-top: 5px">Desde</label>
+                                                        <div>
+                                                            <%--    <div class="form-group" id="data_1">
+                                                                <div style="margin-left: 8px" class="input-group date">
+                                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                                    <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                                </div>
+                                                            </div>--%>
+
+                                                            <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy"
+                                                                data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;">
+                                                            </asp:TextBox>
+
+                                                        </div>
+                                                        <label style="margin-top: 5px; margin-left: 10px">Hasta</label>
+                                                        <div>
+                                                            <%--   <div class="form-group" id="data_2">
+                                                                <div style="margin-left: 8px" class="input-group date">
+                                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                                    <asp:TextBox class="form-control" runat="server" ID="txtFechaVencimiento"
+                                                                        Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                                </div>
+                                                            </div>--%>
+                                                            <asp:TextBox class="form-control" runat="server" type="date"
+                                                                ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy"
+                                                                Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+
+                                                        </div>
+                                                        <a id="btnfiltrar" onclick="filtrarordenesproduccion()" class="btn btn-primary" title="filtrar" style="margin-left: 23%; margin-right: 10px; height: 32px">
+                                                            <i class="fa fa-check"></i>&nbsp;filtrar
+                                                        </a>
+
+                                                        <a href="OrdenesDeProduccionABM.aspx?Accion=1" class="buttonLoading btn btn-primary" style="height: 32px" title="Agregar orden"><i class='fa fa-plus'></i></a>
+
                                                     </div>
 
 
-                                                    <div class="col-md-2" style="display: flex; flex-direction: row; align-items: center; justify-content: end;">
-                                                        <div class="btn-group" style="margin-right: 5px">
-                                                            <linkbutton type="button" data-toggle="modal" href="#modalBusqueda" class="btn btn-success">Filtrar&nbsp;<i style="color: white" class="fa fa-filter"></i></linkbutton>
-                                                        </div>
-                                                        <a href="OrdenesDeProduccionABM.aspx" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
 
+                                                    <div style="display: flex">
+                                                        <label style="margin-top: 6px; margin-left: 10px">Cliente</label>
+                                                        <div style="width: 17%; margin-left: 10px">
+                                                            <div class="form-group" id="data_3">
+                                                                <datalist id="ListaNombreCliente" runat="server">
+                                                                </datalist>
+                                                                <asp:TextBox class="form-control" runat="server" ID="TxtClientes"
+                                                                    Style="margin-left: 0px; width: 100%;"
+                                                                    list="ContentPlaceHolder1_ListaNombreCliente"></asp:TextBox>
+                                                            </div>
+                                                        </div>
+                                                        <label style="margin-top: 6px; margin-left: 10px; margin-right: 10px">Estado</label>
+                                                        <datalist id="ListaEstados" runat="server">
+                                                        </datalist>
+                                                        <asp:TextBox class="form-control" runat="server" ID="txtEstados"
+                                                            Style="margin-left: 0px; width: 15%;"
+                                                            list="ContentPlaceHolder1_ListaEstados"></asp:TextBox>
+                                                        <div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2" style="display: flex; flex-direction: row; align-items: center; justify-content: end;">
                                                     </div>
                                                 </div>
 
-                                                <table class="table table-striped table-bordered table-hover " id="editable">
+                                                <table class="table-striped table-bordered table-hover" style="width: 100%" id="editable">
                                                     <thead>
-                                                        <tr>
-                                                            <th style="width: 5%;">Orden numero</th>
-                                                            <th style="width: 5%;">Cliente</th>
-                                                            <th style="text-align: left; width: 4%;">Fecha entrega</th>
-                                                            <th style="width: 5%; text-align: left;">Estado</th>
-                                                            <th style="width: 5%">Acciones</th>
+                                                        <tr style="height: 20px">
+                                                            <th id="nOrdenTabla" style="width: 5%; margin-top: 20px; height: 10px; padding-left: 4px">Nº Orden</th>
+                                                            <th id="clienteTabla" style="width: 5%; margin-top: 20px; padding-left: 4px">Cliente</th>
+                                                            <th id="fechaEntregaTabla" style="text-align: left; width: 4%; margin-top: 20px; padding-left: 4px">Fecha entrega</th>
+                                                            <th id="estadoTabla" style="width: 5%; text-align: left; margin-top: 20px; padding-left: 4px">Estado</th>
+                                                            <th id="accionesTabla" style="width: 5%; margin-top: 20px; padding-left: 4px">Acciones</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -46,12 +100,28 @@
                                                     </tbody>
                                                 </table>
 
+                                                <%--                                                <style>
+                                                    #accionesTabla{
+                                                        color: red;
+                                                    }
+                                                    @media screen and (max-width: 1230px) {
+                                                        #editable{
+                                                            width: 80%;
+                                                        }
+                                                        #accionesTabla {
+                                                            width: 20px;
+                                                        }
+                                                    }                                                 
+                                                </style>--%>
+
                                                 <asp:TextBox runat="server" ID="IDsOrdenesDeProduccion" Text="" Style="display: none"></asp:TextBox>
 
                                                 <a href="CronogramaProduccion.aspx" class="btn btn-primary dim" target="_blank"
-                                                    id="cronogramaProduccionURL" style="margin-right: 1%; float: right">Cronograma Produccion</a>
+                                                    id="cronogramaProduccionURL" style="margin-right: 1%; float: right"
+                                                    title="Cronograma Producción">Cronograma Produccion</a>
                                                 <a href="DetalleIngrediente.aspx" class="btn btn-primary dim" target="_blank"
-                                                    id="detalleIngredienteURL" style="margin-right: 1%; float: right">Detalle Ingredientes</a>
+                                                    id="detalleIngredienteURL" style="margin-right: 1%; float: right"
+                                                    title="Detalle Ingredientes">Detalle Ingredientes</a>
                                             </div>
                                         </div>
                                         <datalist id="ListaProveedores" runat="server">
@@ -80,43 +150,6 @@
 
 
                         <div role="form" class="form-horizontal col-md-12">
-
-                            <label class="col-md-4">Desde</label>
-                            <div class="col-md-6">
-                                <div class="form-group" id="data_1">
-                                    <div class="input-group date">
-                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <label class="col-md-4">Hasta</label>
-                            <div class="col-md-6">
-                                <div class="form-group" id="data_2">
-                                    <div class="input-group date">
-                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <asp:TextBox class="form-control" runat="server" ID="txtFechaVencimiento"
-                                            Style="margin-left: 0px; width: 100%;"></asp:TextBox>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <label class="col-md-4">Cliente</label>
-                            <div class="col-md-6">
-                                <div class="form-group" id="data_3">
-                                    <%--<div class="input-group date">--%>
-                                    <%--<span class="input-group-addon"><i class="fa fa-calendar"></i></span>--%>
-                                    <datalist id="ListaNombreCliente" runat="server">
-                                    </datalist>
-                                    <asp:TextBox class="form-control" runat="server" ID="TxtClientes"
-                                        Style="margin-left: 0px; width: 100%;" list="ContentPlaceHolder1_ListaNombreCliente"></asp:TextBox>
-                                    <%--</div>--%>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
                 </div>
@@ -124,9 +157,9 @@
 
 
                 <div class="modal-footer" style="border-color: transparent;">
-                    <a id="btnFiltrar" onclick="FiltrarOrdenesProduccion()" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;Filtrar </a>
+
                     <input type="hidden" name="ctl00$ContentPlaceHolder1$hiddenEditar" id="ContentPlaceHolder1_hiddenEditar">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" title="Cancelar"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
                 </div>
 
             </div>
@@ -149,7 +182,6 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <%--<asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="btn btn-danger" OnClick="btnSi_Click" />--%>
                     <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="btn btn-danger" OnClick="btnSi_Click" />
                     <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
                     <asp:HiddenField ID="hiddenID" runat="server" />
@@ -159,16 +191,12 @@
     </div>
 
 
-    <%--<script src="../Scripts/plugins/toastr/toastr.min.js"></script>--%>
-    <script src="/../Scripts/plugins/staps/jquery.steps.min.js"></script>
-    <script src="../../js/plugins/datapicker/bootstrap-datepicker.js"></script>
+
 
 
     <script>
         $(document).ready(function () {
             $("body").tooltip({ selector: '[data-toggle=tooltip]' });
-
-
 
             var oTable = $('#editable').dataTable({
                 "bLengthChange": false,
@@ -200,45 +228,126 @@
                 ).draw();
             });
 
-            establecerDiaHoy();
-
+             establecerDiaHoy();
+             //establecerFechaActual():
         });
 
+        function cambiarEstado()
+        {
 
-        function FiltrarOrdenesProduccion() {
+               let idOrdenDeProduccion = document.getElementById('<%= IDsOrdenesDeProduccion.ClientID %>').value
+                
+
+               fetch('OrdenesDeProduccion.aspx/cambiarEstadoDeLaOrdenSeleccionada', {
+               method: 'POST',
+               body: JSON.stringify({idOrdenDeProduccion: idOrdenDeProduccion}),
+               headers: { 'Content-Type': 'application/json' }
+                  })
+                   .then(response => response.json())
+                   .then(data => {
+
+                      
+
+                          
+                    window.location.href = "OrdenesDeProduccion.aspx";
+
+                   })
+                   .catch(error => {
+                       console.error('Error:', error);
+                   });
+        }
+
+        function establecerFechaActual(){
+        
+            // Obtén la fecha actual
+            var fechaActual = new Date();
+
+            // Formatea la fecha como "dd/mm/yyyy"
+            var dd = String(fechaActual.getDate()).padStart(2, '0');
+            var mm = String(fechaActual.getMonth() + 1).padStart(2, '0'); // Los meses son indexados desde 0
+            var yyyy = fechaActual.getFullYear();
+
+            var fechaFormateada = dd + '/' + mm + '/' + yyyy;
+
+            // Establece la fecha formateada en los campos de entrada
+            document.getElementById("ContentPlaceHolder1_txtFechaHoy").value = fechaFormateada;
+            document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value = fechaFormateada;
+
+        }
+
+
+        function establecerDiaHoy() {
+        var fechas = obtenerRangoFechas();
+        // Convertir la fecha en un formato legible para el DatePicker   
+        var fechaFormateada1 = (fechas.primerDia.getFullYear() + '/' + (fechas.primerDia.getMonth() + 1) + '/' + fechas.diaActual.getDate())
+        var fechaFormateada2 = (fechas.ultimoDia.getFullYear() + '/' + (fechas.ultimoDia.getMonth() + 1) + '/' + fechas.diaActual.getDate())
+
+
+        document.getElementById("ContentPlaceHolder1_txtFechaHoy").value = formatearFechas(fechaFormateada1);
+        document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value = formatearFechas(fechaFormateada2);;
+
+    }
+
+         function obtenerRangoFechas() {
+         var fechaActual = new Date(); // Obtiene la fecha actual
+         let diaActual = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate());
+         var primerDiaMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), 1); // Primer día del mes actual
+         var ultimoDiaMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth() + 1, 0); // Último día del mes actual
+
+         return {
+             primerDia: primerDiaMes,
+             ultimoDia: ultimoDiaMes, 
+             diaActual: diaActual
+         };
+     }
+
+
+         function formatearFechas(fecha) {
+
+         var partes = fecha.split('/');
+         var dia = partes[2];
+         var mes = partes[1];
+         var anio = partes[0];
+
+         if (dia < 10) {
+             dia = '0' + dia;
+         }
+
+         if (mes < 10) {
+             mes = '0' + mes;
+         }
+
+         return fechafinal = anio + '-' + mes + '-' + dia;
+
+     }
+
+         function establecerFechasSeleccionadas() {
+         let fechad = document.getElementById("ContentPlaceHolder1_FechaDesde").value
+         let fehcah = document.getElementById("ContentPlaceHolder1_FechaHasta").value
+
+         fechad = fechad.replaceAll("/", "-");
+         fehcah = fehcah.replaceAll("/", "-");
+
+         document.getElementById("ContentPlaceHolder1_txtFechaHoy").value = fechad;
+         document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value = fehcah
+     }
+
+        function filtrarordenesproduccion() {
             let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value
             let FechaH = document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value
             let Cliente = document.getElementById("ContentPlaceHolder1_TxtClientes").value
             let numeroEncontrado = Cliente.match(/^\d+/);
             let IdCliente = parseInt(numeroEncontrado[0], 10)
 
-            //console.log(numero);
+            let estado = document.getElementById("ContentPlaceHolder1_txtEstados").value
+            let numeroEstado = estado.match(/^\d+/);
+            let idEstado = parseInt(numeroEstado[0], 10)
 
-            //let Proveedor = document.getElementById("txtProveedor").value
-            //let proveedorValiva = document.getElementById("ValivaProveedor");
-            //if (Proveedor == "") {
-            //    proveedorValiva.className = "text-danger"
-            //    return
-            //} else {
-            //    proveedorValiva.className = "text-danger text-hide"
-            //}
-
-            window.location.href = "OrdenesDeProduccion.aspx?c=" + IdCliente + "&FechaD=" + FechaD + "&FechaH=" + FechaH;
+            window.location.href = "OrdenesDeProduccion.aspx?c=" + IdCliente + "&FechaD=" + FechaD + "&FechaH=" + FechaH + "&Estado=" + idEstado;
         }
 
 
-        function establecerDiaHoy() {
-            var fechaActual = new Date();
-
-            // Convertir la fecha en un formato legible para el DatePicker   
-            var fechaFormateada = (fechaActual.getDate() + 1) + '/' + fechaActual.getMonth() + '/' + fechaActual.getFullYear();
-
-            // Establecer la fecha actual como valor predeterminado del DatePicker 
-            $('#ContentPlaceHolder1_txtFechaHoy').datepicker('setDate', fechaFormateada);
-            $('#ContentPlaceHolder1_txtFechaVencimiento').datepicker('setDate', fechaFormateada);
-
-        }
-
+   
         function abrirdialog(valor) {
             document.getElementById('<%= hiddenID.ClientID %>').value = valor;
             $('#modalconfirmacion2').modal('show');

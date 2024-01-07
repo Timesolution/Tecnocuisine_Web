@@ -229,13 +229,14 @@
                                     </div>
 
                                     <div class="well"style="margin-top:1%;margin-right: -15px;margin-left: -15px;">
-                                    <div class="row" style="margin-bottom: 2%">
+                                    <div class="row" style="margin-top: 0.5%; margin-bottom: 2%">
                                         <div class="col-md-4">
                                           
                                             <label  style="margin-left:5px;margin-bottom: 0px;"> Ingredientes </label>
                                              
                                             <div class="input-group" style="text-align: right;">
                                                 <datalist id="ListaNombreProd" runat="server">
+
                                                 </datalist>
                                                
                                                 <asp:TextBox ID="txtDescripcionProductos" onfocusout="handle(event)" list="ContentPlaceHolder1_ListaNombreProd" class="form-control" runat="server"/>
@@ -248,7 +249,7 @@
                                         <asp:HiddenField ID="idProducto" runat="server" />
 
                                      
-                                   <%--     <div class="col-md-1" style="text-align: center;">
+                                        <div class="col-md-1" style="text-align: center;">
                                             <label style="margin-bottom: auto;">Cantidad</label>
 
                                             <asp:TextBox ID="txtCantidad" Text="0" onkeydown="PasarAFactor(event)" onchange="CalcularCantBruta()" onkeypress="javascript:return validarNro(event)" Style="text-align: right" class="form-control money" runat="server" />
@@ -257,7 +258,7 @@
                                             <label style="margin-bottom: auto;">Unidad Med.</label>
 
                                             <asp:TextBox ID="txtUnidadMed" disabled="disabled" Style="text-align: right" class="form-control" runat="server" />
-                                        </div>--%>
+                                        </div>
                                         <div class="col-md-1" style="text-align: center;">
                                             <label style="margin-bottom: auto;">Factor</label>
 
@@ -291,27 +292,9 @@
                                          <div style="float: right; margin-right: 10px; margin-top: 19px">
                                             <LinkButton ID="btnAgregarProducto" onclick="agregarProductoPH();" class="btn btn-primary dim required"><i style="color: white" class="fa fa-check"></i></LinkButton>
                                             <linkbutton id="btnEditarProducto" style="display:none" onclick="editarProductoPH();" class="btn btn-primary dim" data-toggle="tooltip" data-placement="top" title="Editar ingrediente"><i style="color: white" class="fa fa-pencil"></i></linkbutton>
-                                            <%--<asp:LinkButton runat="server" ID="btnAgregarProducto"></asp:LinkButton>--%>
                                         </div>
 
                                     </div>
-
-                                    <%-- Aca empieza la segunda row --%>
-
-                                    <div class="row" style="margin-bottom: 2%">
-                                             <div class="col-md-1" style="text-align: center;">
-                                         <label style="margin-bottom: auto;">Cantidad</label>
-
-                                         <asp:TextBox ID="txtCantidad" Text="0" onkeydown="PasarAFactor(event)" onchange="CalcularCantBruta()" onkeypress="javascript:return validarNro(event)" Style="text-align: right" class="form-control money" runat="server" />
-                                     </div>
-                                     <div class="col-md-1" style="text-align: center;">
-                                         <label style="margin-bottom: auto;">Unidad Med.</label>
-
-                                         <asp:TextBox ID="txtUnidadMed" disabled="disabled" Style="text-align: right" class="form-control" runat="server" />
-                                     </div>
-                                    </div>
-                                    
-
                                     <asp:HiddenField runat="server" ID="idProductosRecetas" />
                                     <asp:HiddenField runat="server" ID="hiddenReceta" />
                                     <table class="table table-bordered table-hover" id="tableProductos">
@@ -939,8 +922,7 @@
         function handle(e) {
 
 
-            //let x = 
-            .value = clickedId.split('_')[1];
+            //let x = ContentPlaceHolder1_txtDescripcionProductos.value = clickedId.split('_')[1];
             let txtProd = document.getElementById('ContentPlaceHolder1_txtDescripcionProductos').value
             if (txtProd.includes(' - ')) {
 
@@ -1161,8 +1143,8 @@
 
                         /* alert("esta en onfinished!");*/
 
-                       <%-- document.getElementById('<%= btnGuardar%>').click()--%>
-
+                            //Este ajax se ejecuta cuando se esta guardando la receta por primera vez, lo que que hace es guardar la recetas
+                            //con todos los datos de la receta y ademas guarda todos los productos de la receta
                             $.ajax({
                                 method: "POST",
                                 url: "ProductosABM.aspx/GuardarReceta2",
@@ -1208,6 +1190,9 @@
                             if (pair[0] == "i")
                                 idReceta = pair[1];
                         }
+
+                        //Este ajax se ejecuta cuando se esta editardo la receta, lo que hace es guardar la recetas
+                        //con todos los datos de la receta y ademas guarda todos los productos de la receta
                         $.ajax({
                             method: "POST",
                             url: "ProductosABM.aspx/EditarReceta2",
@@ -2029,6 +2014,7 @@
             document.getElementById('btnEditarProducto').style.display = null
 
         }
+        //Esta funcion agrega un registro a la tabla de productos de la receta
         function agregarProductoPH() {
             var codigo = ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0];
             var cantidad = ContentPlaceHolder1_txtCantidad.value.replace(',', '');
@@ -2041,7 +2027,6 @@
             let costototal = 0;
             let ddlSector = document.getElementById('<%= ddlSector.ClientID %>');
             let Tiempo = document.getElementById('<%= TiempoDePreparacion.ClientID %>').value;
-            //console.log(ddlSector)
             let opcionSeleccionada = ddlSector.options[ddlSector.selectedIndex].text;
             let ddlSectoridSectorProductivo = document.getElementById('<%= ddlSector.ClientID %>').value
 
@@ -2060,6 +2045,7 @@
             let listaCostototalDesplegable = "";
             let listaDdlSectorProductivoDesplegable = "";
             let ListaTiempo = "";
+            //Si lo que se esta agregando a la tabla de productos es una receta entra a este if 
             if (tipo == "Receta") {
                 btnRec = "<a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent;\" class=\"btn  btn-xs \" onclick=\"javascript: return CargarmodalRecetaDetalle('" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "');\" >" +
                     "<i><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 576 512\" style=\"width: 15px; vertical-align: middle; \">" +
@@ -2068,6 +2054,7 @@
 
                     "</i>  </a> ";
                 styleCorrect = "";
+                //Crea cada columna del registro que se esta agregando, pero como es una receta a cada columna le agrega un desplegable, que muestra los ingredientes, cantidades y demas datos de la receta, todo en desplegables
                 listaDesplegable = "<td> <div id=\"jstree" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaLI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</li></ul></div></td>";
                 listaCantidadDesplegable = "<td> <div id=\"jstree_C" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaC_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + myFormat(cantidad) + "</li></ul></div></td>";
                 listaUnidadesDesplegable = "<td> <div id=\"jstree_UM" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaUM_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + unidad + "</li></ul></div></td>";
@@ -2076,7 +2063,10 @@
                 listaDdlSectorProductivoDesplegable = "<td> <div id=\"jstree_SP" + ContentPlaceHolder1_ddlSector.value.split('-')[0].trim() + "\"> <ul><li id='RecetaSP_LI_" + ContentPlaceHolder1_ddlSector.value.split('-')[0].trim() + "' class=\"jstree-open\">" + opcionSeleccionada + "</li></ul></div></td>";
                 ListaTiempo = "<td> <div id=\"jstree_T" + ContentPlaceHolder1_TiempoDePreparacion.value.split('-')[0].trim() + "\"> <ul><li id='RecetaT_LI_" + ContentPlaceHolder1_TiempoDePreparacion.value.split('-')[0].trim() + "' class=\"jstree-open\">" + Tiempo + "</li></ul></div></td>";
 
-            } else {
+            } 
+            //Si es un producto, entonces viene por el else
+            else {
+                //Aca simplemente agrega cada producto sin desplegables
                 listaDesplegable = "<td> " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
                 listaCantidadDesplegable = "<td style=\" text-align: right\"> " + myFormat(cantidad) + "</td>";
                 listaUnidadesDesplegable = "<td> " + unidad + "</td>";
@@ -2087,19 +2077,19 @@
 
             }
             if (!document.getElementById('<%= idProductosRecetas.ClientID%>').value.includes(tipo + '_' + codigo)) {
+                //Agrega un registro a la tabla de productos 
                 $('#tableProductos').append(
                     "<tr id=" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "\">" +
                     "<td style=\" text-align: right\"> " + codigo + "</td>" +
                     listaDesplegable +
                     listaCantidadDesplegable +
-                    //"<td ondblclick=\"CargarmodalRecetaDetalle('" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0]+"')\" > " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>" +
                     listaUnidadesDesplegable +
                     listaCostosDesplegable +
                     listaCostototalDesplegable +
                     listaDdlSectorProductivoDesplegable +
                     ListaTiempo +
 
-
+                    //Crea el boton eliminar de cada producto en la tabla, dicho boton tiene tiene un onclick al cual le pasa dos parametros
                     "<td style=\" text-align: center\">" +
                     " <a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent; " + styleCorrect + "\" class=\"btn  btn-xs \" onclick=\"javascript: return borrarProd('" + tipo + "_" + codigo + "');\" >" +
                     "<i class=\"fa fa-trash - o\" style=\"color: black\"></i> </a> " +
@@ -2111,7 +2101,7 @@
                 CostoTotalFinal = CostoTotalFinal.replace(',', '');
                 CostoTotalFinal = parseFloat(CostoTotalFinal);
                 let aux;
-
+                //Aca obtine el costo total del producto o receta agregado a la tabla y se lo acumula al costo total de la receta
                 aux = costototal;
                 CostoTotalFinal += parseFloat(aux);
                 let CostoTotalFinalAux = CostoTotalFinal.toString();
@@ -2119,7 +2109,8 @@
                     CostoTotalFinalAux += ".00";
                 document.getElementById('<%=txtCostoTotal.ClientID%>').value = myFormat(CostoTotalFinalAux);
 
-
+                //Aca obtiene el kg br total y le acumula los kg br total del 
+                //ingrediente o receta que se haya agregado a la tabla
                 let KgBrutoTotal = parseFloat(document.getElementById('<%=txtKgBrutTotal.ClientID%>').value);
                 KgBrutoTotal += CantAux;
                 document.getElementById('<%=txtKgBrutTotal.ClientID%>').value = myFormat(KgBrutoTotal);
@@ -2157,11 +2148,7 @@
 
                     setTimeout(ObtenerListaIntegradoraDetalleCostosTotalReceta(ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim(), myFormat(cantidad)), 25);
 
-                    //;
-                    //;
-                    //;
-                    //
-                    //
+                    
 
                 }
                 ContentPlaceHolder1_txtDescripcionProductos.value = "";
@@ -2783,8 +2770,12 @@
             /*  document.querySelector('#txtBusquedaSector').value = '';*/
             $('#modalSectores').modal('hide');
         }
+
+        //Esta funcion se encarga de borrar el producto de la receta
         function borrarProd(idprod) {
             event.preventDefault();
+            //Evalua si el elemento que se esta eliminando de la receta es un producto o una receta usada como ingrediente
+            //si es un producto entra aca
             if (idprod.includes("Producto")) {
                 let precio = document.getElementById(idprod.trim()).children[5].innerHTML;
                 precio = parseFloat(precio.replace(',', ''));
@@ -2827,12 +2818,14 @@
                     }
                 }
 
-                $('#' + idprod).remove();
-                var productos = ContentPlaceHolder1_idProductosRecetas.value.split(';');
-                var nuevosProductos = "";
+                $('#' + idprod).remove(); //Elimina la fila seleccionada de la tabla 
+                var productos = ContentPlaceHolder1_idProductosRecetas.value.split(';'); //Obtiene todos los productos de la cadena de texto separada por ; y los guarda en la variable
+                var nuevosProductos = ""; //En esta variable se van almacenar los productos actuales en la tabla de la receta separados por ;
                 for (var x = 0; x < productos.length; x++) {
                     if (productos[x] != "") {
                         if (!productos[x].includes(idprod)) {
+                            //guarda los productos actuales que hay en la tabla de la receta separados por ;, de esta forma quita de la cadena de productos 
+                            //aquellos que fueron eliminados
                             nuevosProductos += productos[x] + ";";
                         }
                         else {
@@ -2846,8 +2839,11 @@
                         }
                     }
                 }
+                //Actualiza la cadena de texto de productos que tenia todos los productos separados por ;, y en su lugar le asigna la cadena de productos actual
                 ContentPlaceHolder1_idProductosRecetas.value = nuevosProductos;
-            } else {
+            }
+            //Si es una receta entra aca
+            else {
                 let numId = idprod.split('_')[1].trim();
                 if (numId.includes("Receta")) {
                     numId = idprod.split('_')[2].trim();
@@ -2893,12 +2889,14 @@
                     }
                 }
 
-                $('#' + idprod).remove();
-                var productos = ContentPlaceHolder1_idProductosRecetas.value.split(';');
-                var nuevosProductos = "";
+                $('#' + idprod).remove(); //Elimina la fila seleccionada de la tabla 
+                var productos = ContentPlaceHolder1_idProductosRecetas.value.split(';'); //Obtiene todos los productos de la cadena de texto separada por ; y los guarda en la variable
+                var nuevosProductos = ""; //En esta variable se van almacenar los productos actuales en la tabla de la receta separados por ;
                 for (var x = 0; x < productos.length; x++) {
                     if (productos[x] != "") {
                         if (!productos[x].includes(idprod)) {
+                             //guarda los productos actuales que hay en la tabla de la receta separados por ;, de esta forma quita de la cadena de productos 
+                             //aquellos que fueron eliminados
                             nuevosProductos += productos[x] + ";";
                         }
                         else {
@@ -2912,8 +2910,9 @@
                         }
                     }
                 }
-                ContentPlaceHolder1_idProductosRecetas.value = nuevosProductos;
 
+                //Actualiza la cadena de texto de productos que tenia todos los productos separados por ;, y en su lugar le asigna la cadena de productos actual
+                ContentPlaceHolder1_idProductosRecetas.value = nuevosProductos;
             }
 
         }

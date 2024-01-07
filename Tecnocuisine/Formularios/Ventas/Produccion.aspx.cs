@@ -223,7 +223,7 @@ namespace Tecnocuisine.Formularios.Ventas
         {
             try
             {
-                int valor = 0;
+                int valor = 1;
                 string permisos = Session["Login_Permisos"] as string;
                 string[] listPermisos = permisos.Split(';');
 

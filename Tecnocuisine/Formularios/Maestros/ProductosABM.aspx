@@ -69,10 +69,12 @@
                                                 <div class="row">
                                                     <div class="col-md-4">
 
-                                                        <label>Descripcion *</label>
+                                                        <label>Descripción *</label>
                                                     </div>
                                                     <div class="col-md-8">
-                                                        <asp:TextBox ID="ProdDescripcion" onchange="ActualizarLabels()" runat="server" class="form-control required"></asp:TextBox>
+                                                        <asp:TextBox ID="ProdDescripcion" runat="server" class="form-control required"
+                                                            pattern="[a-zA-Z0-9-]+" title="Solo se permiten letras, números y el guion -"></asp:TextBox>
+
                                                         <%--<input id="ProdDescripcion" onchange="ActualizarLabels()" name="ProdDescripcion" type="text" class="form-control required" />--%>
                                                         <p id="ValivaDescripcion" class="text-danger text-hide">Tienes que ingresar una Descripcion</p>
                                                     </div>
@@ -223,9 +225,9 @@
                                             <div class="row">
                                                 <label class="col-sm-4 control-label editable">Costo</label>
                                                 <div class="col-sm-8">
-                                                    <div class="input-group"> 
+                                                    <div class="input-group">
                                                         <span class="input-group-addon">$</span><asp:TextBox ID="txtCosto" onchange="ActualizarLabelCosto('valiva')" onkeypress="javascript:return validarNro(event)" class="form-control num required" runat="server" Style="text-align: right;" />
-                                                        
+
                                                     </div>
                                                     <p id="ValivaCosto" class="text-danger text-hide">Tienes que ingresar un costo.</p>
                                                 </div>

@@ -93,7 +93,7 @@
                                                             <div class="input-group m-b">
                                                                 <div style="display: flex;">
                                                                     <span class="input-group-addon" style="padding-right: 15%;"><i style='color: black;' class='fa fa-search'></i></span>
-                                                                    <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 100%" />
+                                                                    <input type="text" id="txtBusqueda" placeholder="Búsqueda..." class="form-control" style="width: 100%" />
                                                                 </div>
                                                             </div>
 
@@ -133,19 +133,21 @@
                                                 <div class="col-lg-12" style="background-color: white">
                                                     <div class="row">
                                                         <div class="col-lg-6">
-                                                            <table class="table table-striped table-bordered table-hover " id="editable">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th style="text-align: left; width: 15%">Tipo</th>
-                                                                        <th style="width: 35%">Detalle</th>
-                                                                        <th style="text-align: right; width: 25%">Importe</th>
-                                                                        <th style="width: 20%"></th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <asp:PlaceHolder ID="phProductosyRecetas" runat="server"></asp:PlaceHolder>
-                                                                </tbody>
-                                                            </table>
+                                                            <div class="table-responsive">
+                                                                <table class="table table-striped table-bordered table-hover " id="editable">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th style="text-align: left; width: 15%">Tipo</th>
+                                                                            <th style="width: 35%">Detalle</th>
+                                                                            <th style="text-align: right; width: 25%">Importe</th>
+                                                                            <th style="width: 20%"></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <asp:PlaceHolder ID="phProductosyRecetas" runat="server"></asp:PlaceHolder>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
                                                         </div>
 
                                                         <div class="col-lg-6">

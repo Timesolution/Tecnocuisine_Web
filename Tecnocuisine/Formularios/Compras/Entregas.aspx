@@ -88,6 +88,10 @@
                                     <div class="col-md-1" style="padding-left: 0px;">
                                         <label style="margin-bottom: auto;">Cantidad</label>
                                         <asp:TextBox ID="txtCantidad" onchange="ValidadCantidad()" Text="0" onkeypress="javascript:return validarNro(event)" Style="text-align: right;" class="form-control money" runat="server" />
+                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="<h3>Tienes que Elegir una cantidad para continuar</h3>"
+                                             SetFocusOnError="false" ForeColor="Red" Font-Bold="true"
+                                             ValidationGroup="AgregarProductos" ControlToValidate="txtCantidad">
+                                         </asp:RequiredFieldValidator>
                                     </div>
                                 </div>
                                 <div class="col-md-3" style="text-align: center;">
@@ -108,7 +112,7 @@
 
                                 </div>
                                 <div class="form-group col-md-3" id="data_2">
-                                    <label style="margin-bottom: auto;">vencimiento</label>
+                                    <label style="margin-bottom: auto;">Vencimiento</label>
                                     <div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                         <asp:TextBox onchange="ValidarDias()" class="form-control" runat="server" ID="txtFechaVencimiento"></asp:TextBox>
@@ -117,7 +121,7 @@
                                 </div>
                                 <div class="col-md-1" style="float: right; margin-right: 0px; margin-top: 18px;">
                                     <linkbutton id="btnAgregarProducto" onclick="agregarProductoPH();" data-toggle="tooltip" data-placement="top"
-                                        data-original-title="Agregar Producto" class="btn btn-primary dim required">
+                                        data-original-title="Agregar Producto" class="btn btn-primary dim required" ValidationGroup="AgregarProductos">
                                         <i style="color: white" class="fa fa-check"></i>
                                     </linkbutton>
                                 </div>
@@ -128,7 +132,6 @@
                                     <thead>
                                         <tr>
                                             <th style="width: 5%">Cod. Producto</th>
-                                            <%--<th style="width: 10%">Tipo</th>--%>
                                             <th style="width: 10%">Descripcion</th>
                                             <th style="width: 5%">Marca</th>
                                             <th style="width: 5%; text-align: right">Cantidad</th>
@@ -145,8 +148,8 @@
                                 </table>
                                 <div>
 
-                                    <%--<button class="btn btn-sm btn-primary pull-right m-t-n-xs" style="margin-right: 8px;" type="submit"><strong>Guardar</strong></button>--%>
-                                    <asp:Button class="btn btn-sm btn-primary pull-right m-t-n-xs" Style="margin-right: 8px;" data-toggle="tooltip" data-placement="top" title data-original-title="Guardar"
+                                    <asp:Button class="btn btn-sm btn-primary pull-right m-t-n-xs" Style="margin-right: 8px;" data-toggle="tooltip"
+                                        data-placement="top" title data-original-title="Guardar"
                                         Text="Guardar" runat="server" ValidationGroup="AgregarEntregas" ID="btnGuardar" OnClick="btnGuardar_Click" />
                                 </div>
                             </div>
@@ -276,6 +279,23 @@
     <script>
         $(document).ready(function () {
             $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+
+
+            let url = new URL(window.location.href);
+            let idIngrediente = ""; 
+            let inngredienteReceta = "";
+            let sectorDescripcion = "";
+            let idSector = "";
+            idIngrediente = url.searchParams.get('idP'); 
+            inngredienteReceta = url.searchParams.get('Desc'); 
+            sectorDescripcion = url.searchParams.get('SP'); 
+            idSector = url.searchParams.get('idS'); 
+            if(idIngrediente != null){
+                document.getElementById('<%=txtDescripcionProductos.ClientID%>').value = idIngrediente + " - " + inngredienteReceta; 
+                 handle();
+                document.getElementById('<%=txtSector.ClientID%>').value = idSector + " - " + sectorDescripcion; 
+            }
+
         });
         $('#data_1 .input-group.date').datepicker({
             todayBtn: "linked",

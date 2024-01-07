@@ -9,32 +9,32 @@
 
                 <div class="ibox-content">
                     <div style="margin-left: 0px; margin-right: 0px;" class="row">
-                                                    <div class="col-md-10">
+                        <div class="col-md-10">
 
-                                                        <div class="input-group m-b">
-                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                            <div class="input-group m-b">
+                                <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
 
 
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
+                                <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
 
-                                                        <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
-                                                    </div>
-                                                </div>
+                            <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                        </div>
+                    </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
-                            <div class="table-responsive"  >
-                                <table class="table table-striped table-bordered table-hover " id="editable" >
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover " id="editable">
                                     <thead>
                                         <tr>
                                             <th style="width: 10%">Codigo</th>
-                                            <th style="width:20%">Razon Social</th>
-                                            <th style="width:20%">Alias</th>
-                                            <th style="width:10%">IVA</th>
-                                            <th style="width:10%">Forma Pago</th>
-                                            <th style="width:5%"></th>
+                                            <th style="width: 20%">Razon Social</th>
+                                            <th style="width: 20%">Alias</th>
+                                            <th style="width: 10%">IVA</th>
+                                            <th style="width: 10%">Forma Pago</th>
+                                            <th style="width: 5%"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -49,26 +49,25 @@
                 </div>
             </div>
         </div>
+    </div>
 
 
-
-        <div id="modalConfirmacion2" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Confirmar eliminacion</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            Esta seguro que lo desea eliminar?
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="buttonLoading btn btn-danger" OnClick="btnSi_Click" />
-                        <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
-                        <asp:HiddenField ID="hiddenID" runat="server" />
-                    </div>
+    <div id="modalConfirmacion2" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Confirmar eliminacion</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Esta seguro que lo desea eliminar?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <asp:Button runat="server" ID="was" Text="Eliminar" class="buttonLoading btn btn-danger" OnClick="btnSi_Click" />
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                    <asp:HiddenField ID="asd" runat="server" />
                 </div>
             </div>
         </div>
@@ -85,31 +84,31 @@
                     <div class="row">
                         <label class="col-sm-2 control-label editable">Codigo</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtCodigo" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtCodigo" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Razon Social</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtRazonSocial" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtRazonSocial" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">CUIT</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtCuit" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtCuit" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Alias</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtAlias" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtAlias" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">IVA</label>
                         <div class="col-sm-8">
-                            <asp:DropDownList ID="ListRegimen" style="margin-left: 3%;" class="form-control m-b" runat="server">
+                            <asp:DropDownList ID="ListRegimen" Style="margin-left: 3%;" class="form-control m-b" runat="server">
                             </asp:DropDownList>
                         </div>
 
@@ -117,15 +116,15 @@
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Forma de Pago</label>
                         <div class="col-sm-8">
-                            <asp:DropDownList ID="ListFormaPago" style="margin-left: 3%;" class="form-control m-b" runat="server">
+                            <asp:DropDownList ID="ListFormaPago" Style="margin-left: 3%;" class="form-control m-b" runat="server">
                             </asp:DropDownList>
                         </div>
 
                     </div>
-                     <div class="row" style="margin-top: 2%">
+                    <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Vendedor</label>
                         <div class="col-sm-8">
-                            <asp:DropDownList ID="ListVendedor" style="margin-left: 3%;" class="form-control m-b" runat="server">
+                            <asp:DropDownList ID="ListVendedor" Style="margin-left: 3%;" class="form-control m-b" runat="server">
                             </asp:DropDownList>
                         </div>
 
@@ -133,26 +132,26 @@
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Vencimiento FC</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtVencimientoFC" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtVencimientoFC" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Saldo Maximo</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtSaldoMax" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtSaldoMax" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Estado</label>
                         <div class="col-sm-8">
-                            <asp:DropDownList ID="ListEstado" style="margin-left: 3%;" class="form-control m-b" runat="server">
+                            <asp:DropDownList ID="ListEstado" Style="margin-left: 3%;" class="form-control m-b" runat="server">
                             </asp:DropDownList>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Observaciones</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtObservaciones" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtObservaciones" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
                         </div>
                     </div>
                 </div>
@@ -160,8 +159,30 @@
                     <asp:LinkButton runat="server" ID="btnGuardar" class="buttonLoading btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
                     <asp:HiddenField ID="hiddenEditar" runat="server" />
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
+
+
+    <div id="modalEliminar" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Confirmar eliminacion</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Esta seguro que lo desea eliminar?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="buttonLoading btn btn-danger" OnClick="btnSi_Click" />
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                    <asp:HiddenField ID="hiddenID" runat="server" />
                 </div>
             </div>
         </div>
@@ -170,7 +191,7 @@
     <script>           
         function abrirdialog(valor) {
             document.getElementById('<%= hiddenID.ClientID %>').value = valor;
-            $('#modalconfirmacion2').modal('show');
+            $('#modalEliminar').modal('show');
         }
     </script>
     <script type="text/javascript">
@@ -265,7 +286,7 @@
             });
         });
     </script>
-     <script src="/../Scripts/autoNumeric/autoNumeric.js"></script>
+    <script src="/../Scripts/autoNumeric/autoNumeric.js"></script>
     <script>
 
         $(document).ready(function () {
@@ -276,4 +297,4 @@
 
     </script>
 
-    </asp:Content>
+</asp:Content>

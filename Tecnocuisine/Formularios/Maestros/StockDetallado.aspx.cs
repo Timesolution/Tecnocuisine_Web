@@ -96,6 +96,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     var listStockLotes = controladorStockRecetas.ObtenerStockLotesRecetaByIdReceta(id);
                     var listStockMarcas = controladorStockRecetas.ObtenerStockMarcasRecetasByIdReceta(id);
                     var receta = ControladorReceta.ObtenerRecetaId(id);
+
                     NombreProd.Value = receta.descripcion;
                     if (ListStockTotal != null)
                     {

@@ -1016,7 +1016,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
             }
         }
-
+        //Este WebMethod guarda la receta con todos sus datos y todos su productos, cuando se esta creando por primera vez
         [WebMethod]
         public static string GuardarReceta2(string descripcion, string codigo, string Categoria, string Sector, string Atributos, string Unidad,
             string Tipo, string rinde, string prVenta, string idProductosRecetas, string BrutoT, string CostoT, string BrutoU, string CostoU,
@@ -1028,7 +1028,8 @@ namespace Tecnocuisine.Formularios.Maestros
                 ControladorProducto controladorProducto = new ControladorProducto();
                 ControladorAtributo controladorAtributo = new ControladorAtributo();
                 Tecnocuisine_API.Entitys.Recetas Receta = new Tecnocuisine_API.Entitys.Recetas();
-
+                
+                //Esta parte se encarga de guardar los datos de la receta, es decir la primera parte de la receta
                 Receta.descripcion = descripcion;
                 Receta.Codigo = codigo;
                 Receta.categoria = Convert.ToInt32(Categoria.Trim().Split('-')[0]);
@@ -1047,7 +1048,6 @@ namespace Tecnocuisine.Formularios.Maestros
                 //Receta.sector -- falta agregar
 
                 Receta.estado = 1;
-                //Receta.coeficiente = Convert.ToDecimal(hiddenCoeficiente.Value.Replace('.', ','));
                 if (rinde == "")
                 {
                     Receta.rinde = null;
@@ -1070,7 +1070,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 //Receta.presentacion = Convert.ToInt32(ListPresentaciones.SelectedValue);
 
-                int resultado = controladorReceta.AgregarReceta(Receta);
+                int resultado = controladorReceta.AgregarReceta(Receta); //Guarda los datos de la primera parte de la receta
 
                 if (resultado > 0)
                 {
@@ -1130,7 +1130,7 @@ namespace Tecnocuisine.Formularios.Maestros
                             //-----------------------------------------------------------------------------------------
 
 
-
+                            //Esta parte pregunta si elemento de es un producto o receta usada como ingrediente
                             if (producto[1] == "Producto")
                             {
                                 Recetas_Producto productoNuevo = new Recetas_Producto();
@@ -1141,17 +1141,15 @@ namespace Tecnocuisine.Formularios.Maestros
                                 productoNuevo.idSectorProductivo = numeroEncontrado;
                                 productoNuevo.Tiempo = tiempoParte;
 
-                                // productoNuevo.idSectorProductivo = Convert.ToInt32(producto[ultimaPosicion]);
 
                                 controladorReceta.AgregarReceta_Producto(productoNuevo);
                             }
+                            //Si es falsa la condicion, quiere decir que es una receta usada como ingrediente
                             else
                             {
                                 int idSectorProductivo = 1;
                                 foreach (string elemento in producto)
                                 {
-                                    // Utiliza una expresión regular para buscar el patrón "idSectorProductivo_" seguido de un número
-                                    //Match match = Regex.Match(elemento, @"idSectorProductivoRecetas_recetas_(\d+)");
                                     Match match = Regex.Match(elemento, @"idSectorProductivo_(\d+)");
 
                                     if (match.Success)
@@ -1185,14 +1183,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                     }
                                 }
 
-
-                                //Recetas_Receta recetaNueva = new Recetas_Receta();
-                                //recetaNueva.idReceta = resultado;
-                                //recetaNueva.idRecetaIngrediente = Convert.ToInt32(producto[0]);
-                                //recetaNueva.cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
-                                //controladorReceta.AgregarReceta_Receta(recetaNueva);
-
-
+                                //Guarda la receta usada como ingrediente
                                 Recetas_Receta recetaNueva = new Recetas_Receta();
                                 recetaNueva.idReceta = Receta.id;
                                 recetaNueva.idRecetaIngrediente = Convert.ToInt32(producto[0]);
@@ -1376,6 +1367,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
         }
 
+        //Esra funcion se ejecuta cuando se edita una receta ya existente
         [WebMethod]
         public static void EditarReceta2(string descripcion, string codigo, string Categoria, string Sector, string Atributos, string Unidad,
            string Tipo, string rinde, string prVenta, string idProductosRecetas, string BrutoT, string CostoT, string BrutoU, string CostoU,
@@ -1383,6 +1375,7 @@ namespace Tecnocuisine.Formularios.Maestros
         {
             try
             {
+                //Esta parte guarda todos los datos de la primera parte de la receta 
                 ControladorReceta controladorReceta = new ControladorReceta();
                 ControladorProducto controladorProducto = new ControladorProducto();
                 ControladorAtributo controladorAtributo = new ControladorAtributo();
@@ -1420,10 +1413,13 @@ namespace Tecnocuisine.Formularios.Maestros
 
 
 
-                int resultado = controladorReceta.EditarReceta(Receta);
+                int resultado = controladorReceta.EditarReceta(Receta); //Edita los datos de la primera parte de la receta
 
+                //Si los datos de la primera parte de la receta se puedieron editar entonces entrea al if
                 if (resultado > 0)
                 {
+                    //Elimina todos los productos y tambien las recetas usadas como ingrediente que pertenezcan a la receta
+                    //Esto lo hace porque los va a agregar nuevamente, es como si los pisara
                     controladorReceta.EliminarIngredientes(Receta.id);
                     string[] items = idProductosRecetas.Split(';');
                     foreach (var pr in items)
@@ -1468,9 +1464,10 @@ namespace Tecnocuisine.Formularios.Maestros
                                 }
                             }
 
-
+                            //Valida si el elemento es producto o una receta usada como ingrediente
                             if (producto[1] == "Producto")
                             {
+                                //obtiene los datos del producto
                                 Recetas_Producto productoNuevo = new Recetas_Producto();
                                 productoNuevo.idReceta = Receta.id;
                                 productoNuevo.idProducto = Convert.ToInt32(producto[0]);
@@ -1478,9 +1475,10 @@ namespace Tecnocuisine.Formularios.Maestros
                                 //productoNuevo.idSectorProductivo = Convert.ToInt32(1);
                                 productoNuevo.idSectorProductivo = numeroEncontrado;
                                 productoNuevo.Tiempo = tiempoParte;
-
+                                //Guarda el producto
                                 controladorReceta.AgregarReceta_Producto(productoNuevo);
                             }
+                            //Si viene por aca quiere decir es una receta usada como ingrediente y no un producto
                             else
                             {
                                 int idSectorProductivo = 1;
@@ -1523,13 +1521,14 @@ namespace Tecnocuisine.Formularios.Maestros
 
 
 
-
+                                //Obtiene los datos de la receta
                                 Recetas_Receta recetaNueva = new Recetas_Receta();
                                 recetaNueva.idReceta = Receta.id;
                                 recetaNueva.idRecetaIngrediente = Convert.ToInt32(producto[0]);
                                 recetaNueva.cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
                                 recetaNueva.idSectorProductivo = idSectorProductivo;
                                 recetaNueva.Tiempo = tiempoParteRecetes_Recetas;
+                                //Guarda la receta usada como ingrediente
                                 controladorReceta.AgregarReceta_Receta(recetaNueva);
                             }
                         }
