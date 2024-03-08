@@ -1,4 +1,5 @@
-﻿using Gestion_Api.Controladores;
+﻿using Antlr.Runtime.Misc;
+using Gestion_Api.Controladores;
 using Gestion_Api.Entitys;
 using Gestion_Api.Modelo;
 using Gestor_Solution.Modelo;
@@ -42,11 +43,11 @@ namespace Tecnocuisine.Compras
 
             if (Request.QueryString["FechaD"] != null)
             {
-            this.FechaD = (Request.QueryString["FechaD"]).ToString();
+                this.FechaD = (Request.QueryString["FechaD"]).ToString();
                 this.idProveedor = Convert.ToInt32(Request.QueryString["p"]);
                 this.FechaH = (Request.QueryString["FechaH"]).ToString();
             }
-          
+
 
             if (!IsPostBack)
             {
@@ -61,33 +62,40 @@ namespace Tecnocuisine.Compras
             }
             ObtenerTodosLosProveedores();
         }
-        public void FiltrarCuentaCorriente(int idProveedor, string FechaD, string FechaH) {
+        public void FiltrarCuentaCorriente(int idProveedor, string FechaD, string FechaH)
+        {
             try
             {
                 Tecnocuisine_API.Entitys.Proveedores provedor = cp.ObtenerProveedorByID(idProveedor);
                 AliasProveedor.Value = provedor != null ? provedor.Alias : "Todos";
-            string FechaDesde = ConvertDateFormat(FechaD);
-            string FechaHasta = ConvertDateFormat(FechaH);
-            var dt = controladorCuentaCorriente.FiltrarCuentaCorriente(FechaD, FechaH, idProveedor);
-            decimal total = 0;
-            foreach (DataRow row in dt.Rows)
-            {
-                Tecnocuisine_API.Entitys.CuentaCorriente cc = new Tecnocuisine_API.Entitys.CuentaCorriente();
-                cc.id = Convert.ToInt32(row["id"]);
+                string FechaDesde = ConvertDateFormat(FechaD);
+                string FechaHasta = ConvertDateFormat(FechaH);
+
+                this.FechaDesde.Value = this.FechaD;
+                this.FechaHasta.Value = this.FechaH;
+                //this.ddlCliente.Value = this.idProveedor.ToString();
+
+                var dt = controladorCuentaCorriente.FiltrarCuentaCorriente(FechaD, FechaH, idProveedor);
+                decimal total = 0;
+                foreach (DataRow row in dt.Rows)
+                {
+                    Tecnocuisine_API.Entitys.CuentaCorriente cc = new Tecnocuisine_API.Entitys.CuentaCorriente();
+                    cc.id = Convert.ToInt32(row["id"]);
                     cc.fecha = ((DateTime)row["fecha"]);
                     cc.fechaVTO = ((DateTime)row["fechaVTO"]);
-                cc.Descripcion = (row["Descripcion"]).ToString();
-                cc.Debe = Convert.ToDecimal(row["Debe"]);
-                cc.Haber = Convert.ToDecimal(row["Haber"]);
+                    cc.Descripcion = (row["Descripcion"]).ToString();
+                    cc.Debe = Convert.ToDecimal(row["Debe"]);
+                    cc.Haber = Convert.ToDecimal(row["Haber"]);
                     cc.Saldo = Convert.ToDecimal(row["Saldo"]);
-                total += (decimal)(cc.Debe - cc.Haber);
-                
-                        RellenarTabla(cc);
-               
+                    total += (decimal)(cc.Debe - cc.Haber);
 
-            }
+                    RellenarTabla(cc);
+
+
+                }
                 SaldoTotal.Value = FormatearNumero(total);
-            } catch(Exception ex) { }
+            }
+            catch (Exception ex) { }
         }
 
 
@@ -101,7 +109,7 @@ namespace Tecnocuisine.Compras
 
                 //Celdas
                 TableCell celNumero = new TableCell();
-                celNumero.Text =  cc.id.ToString();
+                celNumero.Text = cc.id.ToString();
                 celNumero.Width = Unit.Percentage(5);
                 celNumero.VerticalAlign = VerticalAlign.Middle;
                 celNumero.HorizontalAlign = HorizontalAlign.Right;
@@ -127,7 +135,7 @@ namespace Tecnocuisine.Compras
 
 
                 TableCell NumProduc = new TableCell();
-                NumProduc.Text =  FormatearNumero((decimal)cc.Debe);
+                NumProduc.Text = FormatearNumero((decimal)cc.Debe);
                 NumProduc.VerticalAlign = VerticalAlign.Middle;
                 NumProduc.HorizontalAlign = HorizontalAlign.Left;
                 NumProduc.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;text-align: right;");
@@ -135,7 +143,7 @@ namespace Tecnocuisine.Compras
 
                 TableCell celImporte = new TableCell();
                 celImporte.Width = Unit.Percentage(10);
-                celImporte.Text =  FormatearNumero((decimal)cc.Haber);
+                celImporte.Text = FormatearNumero((decimal)cc.Haber);
                 celImporte.VerticalAlign = VerticalAlign.Middle;
                 celImporte.HorizontalAlign = HorizontalAlign.Left;
                 celImporte.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;text-align: right;");
@@ -143,7 +151,7 @@ namespace Tecnocuisine.Compras
 
                 TableCell celImporteSaldo = new TableCell();
                 celImporteSaldo.Width = Unit.Percentage(10);
-                celImporteSaldo.Text =  cc.Saldo != null ? FormatearNumero((decimal)cc.Saldo) : "Error";
+                celImporteSaldo.Text = cc.Saldo != null ? FormatearNumero((decimal)cc.Saldo) : "Error";
                 celImporteSaldo.VerticalAlign = VerticalAlign.Middle;
                 celImporteSaldo.HorizontalAlign = HorizontalAlign.Left;
                 celImporteSaldo.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;text-align: right;");
@@ -171,7 +179,7 @@ namespace Tecnocuisine.Compras
 
                 phCuentaCorriente.Controls.Add(tr);
             }
-            catch(Exception ex) { }
+            catch (Exception ex) { }
         }
 
         private string ConvertDateFormat(string fecha)

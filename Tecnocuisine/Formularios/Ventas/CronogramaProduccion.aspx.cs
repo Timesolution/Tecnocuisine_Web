@@ -44,9 +44,9 @@ namespace Tecnocuisine.Formularios.Ventas
                 Nivel++;
 
                 //Esta funcion obtiene las productos de nivel 2 en adelante de las ordenes de produccion
-                ObtenerProductoDeLasRecetas(dt, Nivel);
+                ObtenerProductoDeLasRecetas(dtCombined, Nivel);
                 //Esta funcion obtiene las productos de nivel 2 en adelante de las ordenes de produccion
-                DataTable dtRecetas = ObtenerRecetasDeLasRecetas(dt, Nivel);
+                DataTable dtRecetas = ObtenerRecetasDeLasRecetas(dtCombined, Nivel);
 
                 //Aca lo que hace es obtener todos los productos y recetas de todos los niveles que tienen todas las recetas 
                 //De las ordenes de produccion seleccionadas
@@ -137,7 +137,7 @@ namespace Tecnocuisine.Formularios.Ventas
 
                     if (RecetasDeLaReceta != null)
                     {
-                        dtCombined.Merge(RecetasDeLaReceta);
+                        dt.Merge(RecetasDeLaReceta);
                     }
                 }
 

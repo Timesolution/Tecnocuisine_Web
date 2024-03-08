@@ -137,11 +137,7 @@ namespace Tecnocuisine.Formularios.Administrador
                 btnEditar.Style.Add("background-color", "transparent");
                 btnEditar.Attributes.Add("href", "#");
                 btnEditar.Attributes.Add("onclick", "abrirdialog2('" + p.id + "','" + p.idEntidadBancaria + "','" + p.CuentaNumero + "','" + p.Descripcion + "');");
-                //btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                //btnDetalles.Attributes.Add("title data-original-title", "Editar");
-                //btnEditar.OnClientClick = "abrirdialog2(" + p.id +","+p.CuentaNumero + "," + p.Descripcion + ");";
-                //btnEditar.Text = "<a onclick=\"abrirdialog2(\""+p.id +"\",\""+p.CuentaNumero + "\",\"" + p.Descripcion+ "\")><span><i style='color:black;' class='fa fa-pencil'></i></span></a>";
-                btnEditar.Text = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
+                btnEditar.Text = "<span><i style='color:black;' class='fa fa-pencil' title='Editar cuenta bancaria'></i></span>";
                 celAction.Controls.Add(btnEditar);
 
                 Literal l = new Literal();
@@ -156,10 +152,7 @@ namespace Tecnocuisine.Formularios.Administrador
                 btnEliminar.OnClientClick = "abrirdialog(" + p.id + ");";
                 btnEliminar.CssClass = "btn btn-xs";
                 btnEliminar.Style.Add("background-color", "transparent");
-                //btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                //btnDetalles.Attributes.Add("title data-original-title", "Editar");
-                btnEliminar.Text = "<span><i style='color:black;' class='fa fa-trash'></i></span>";
-                //btnDetalles.Click += new EventHandler(this.editarReceta);
+                btnEliminar.Text = "<span><i style='color:red;' class='fa fa-trash' title='Eliminar'></i></span>";
                 celAction.Controls.Add(btnEliminar);
                 celAction.Width = Unit.Percentage(10);
                 celAction.VerticalAlign = VerticalAlign.Middle;

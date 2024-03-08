@@ -13,14 +13,13 @@
 
                             <div class="input-group m-b">
                                 <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
-
-
                                 <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
                             </div>
                         </div>
                         <div class="col-md-2">
 
-                            <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                            <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" title="Agregar tarjeta"
+                                class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
                         </div>
                     </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
@@ -32,7 +31,7 @@
                                             <th style="width: 20%">#</th>
                                             <th style="width: 20%">Nombre</th>
                                             <th style="width: 20%">Entidad</th>
-                                            <th style="width: 20%">Acredita en (Dias)</th>
+                                            <th style="width: 20%; text-align:right">Acredita en (Dias)</th>
                                             <th style="width: 20%"></th>
                                         </tr>
                                     </thead>
@@ -160,7 +159,7 @@
                             </div>
                             <label class="col-sm-4 control-label editable">Acredita en (Dias)</label>
                             <div class="col-sm-4">
-                                 <asp:TextBox ID="txtAcreditaEnEdit" type="number" class="form-control" runat="server" />
+                                 <asp:TextBox ID="txtAcreditaEnEdit" type="number" class="form-control" runat="server" min="1" />
                             </div>
                         </div>
 

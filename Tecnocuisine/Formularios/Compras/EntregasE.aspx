@@ -23,9 +23,7 @@
 
                                                         <div class="input-group m-b">
                                                             <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
-
-
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                                                            <input type="text" id="txtBusqueda" placeholder="Búsqueda..." class="form-control" style="width: 90%" />
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2" style="display: flex; flex-direction: row; align-items: center; justify-content: end;">
@@ -35,7 +33,9 @@
                                                                 <li><a class="dropdown-item" onclick="ValidarOptionSelected(event)">Facturar entrega</a></li>
                                                             </ul>
                                                         </div>
-                                                        <a href="Entregas.aspx" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                                                        <a href="Entregas.aspx" class="btn btn-primary dim" title="Agregar entrega"
+                                                            style="margin-right: 1%; float: right"><i class='fa fa-plus'></i>
+                                                        </a>
                                                     </div>
                                                 </div>
                                                 <table class="table-striped table-bordered table-hover " id="editable" style="width:100%">

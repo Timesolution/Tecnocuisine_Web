@@ -15,8 +15,8 @@
             display: none;
         }
 
-        .hideBar{
-            display:none;
+        .hideBar {
+            display: none;
         }
     </style>
 
@@ -27,21 +27,23 @@
                 <div class="ibox nestable float-e-margins" style="padding: 1.5%">
 
                     <div class="ibox-content">
-                                                 <div style="margin-left: 0px; margin-right: 0px;" class="row">
-                                                    <div class="col-md-10">
+                        <div style="margin-left: 0px; margin-right: 0px;"
+                            class="row">
+                            <div class="col-md-10">
 
-                                                        <div class="input-group m-b">
-                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                                <div class="input-group m-b">
+                                    <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
 
 
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
+                                    <input type="text" id="txtBusqueda" placeholder="Búsqueda..." class="form-control" style="width: 90%" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
 
-                                                        <a onclick="ModalAgregar()" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
-                                                    </div>
-                                                </div>
+                                <a onclick="ModalAgregar()" class="btn btn-primary dim" title="Agregar punto de venta"
+                                    style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                            </div>
+                        </div>
                         <asp:UpdatePanel ID="updatePanel1" runat="server">
                             <ContentTemplate>
 
@@ -65,7 +67,7 @@
                                             <asp:PlaceHolder ID="PuntoDeVentaPH" runat="server"></asp:PlaceHolder>
                                         </tbody>
                                     </table>
-   
+
                                 </div>
                             </ContentTemplate>
                         </asp:UpdatePanel>
@@ -105,11 +107,11 @@
                     <div class="row m-b">
                         <label class="col-md-4">Punto de Venta</label>
                         <div class="col-md-8">
-                            <input id="txtPuntoDeVenta" class="form-control" onchange="valPuntoDeVenta()" disabled="disabled"/>
+                            <input id="txtPuntoDeVenta" class="form-control" onchange="valPuntoDeVenta()" disabled="disabled" />
                             <p id="valPuntoDeVenta" class="valid hideValid">*Completar Punto de Venta</p>
                         </div>
                     </div>
-                    
+
                     <div class="row m-b">
                         <label class="col-md-4">Forma de Facturar</label>
                         <div class="col-md-8">
@@ -138,7 +140,7 @@
                             <p id="valMonedaFacturacion" class="hideValid">*Seleccione Moneda Facturacion</p>
                         </div>
                     </div>
-                    
+
                     <div class="row m-b">
                         <label class="col-md-4">Retiene Ganancias</label>
                         <div class="col-md-8">
@@ -161,7 +163,7 @@
                             <p id="valRetieneIngresosBrutos" class="hideValid">*Seleccione Retiene Ingresos Brutos</p>
                         </div>
                     </div>
-                    
+
                     <div class="row m-b">
                         <label class="col-md-4">Nombre de Fantasia</label>
                         <div class="col-md-8">
@@ -449,6 +451,22 @@
         }
 
         function ModalAgregar() {
+
+            //Esta parte limpia los inputs
+            document.getElementById('ddlSucursal').value = "0";
+            document.getElementById('ddlEmpresa').value = "0";
+            document.getElementById('txtPuntoDeVenta').value = "";
+            document.getElementById('ddlFormaDeFacturar').value = "0";
+            document.getElementById('ddlMonedaFacturacion').value = "0";
+            document.getElementById('ddlRetieneGanancias').value = "-1";
+            document.getElementById('ddlRetieneIngresosBrutos').value = "-1";
+            document.getElementById('txtNombre').value = "";
+            document.getElementById('txtDir').value = "";
+            document.getElementById('txtCAIRemito').value = "";
+            document.getElementById('txtCAIVencimiento').value = "dd/mm/aaaa";
+            
+
+
             document.getElementById('btnAgregar').removeAttribute('disabled')
             document.getElementById('btnAgregar').className = 'btn btn-primary'
             document.getElementById('btnModificar').className = 'hideBtn'
@@ -716,7 +734,7 @@
             }
         }
     </script>
-            <script>
+    <script>
                 $(document).ready(function () {
 
 
@@ -784,5 +802,5 @@
                         ).draw();
                     });
                 });
-            </script>
+    </script>
 </asp:Content>

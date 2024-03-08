@@ -8,30 +8,29 @@
             <div class="ibox float-e-margins">
 
                 <div class="ibox-content">
-                   <div style="margin-left: 0px; margin-right: 0px;" class="row">
-                                                    <div class="col-md-10">
+                    <div style="margin-left: 0px; margin-right: 0px;" class="row">
+                        <div class="col-md-10">
 
-                                                        <div class="input-group m-b">
-                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
-
-
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-
-                                                        <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
-                                                    </div>
-                                                </div>
+                            <div class="input-group m-b">
+                                <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                                <input type="text" id="txtBusqueda" placeholder="Búsqueda..." class="form-control" style="width: 90%" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" title="Agregar estado"
+                                class="btn btn-primary dim" onclick="vaciarInputs()"
+                                style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                        </div>
+                    </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
-                            <div class="table-responsive"  >
+                            <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                     <thead>
                                         <tr>
-                                            <th style="width:20%">#</th>
-                                            <th style="width:40%">Descripcion</th>
-                                            <th style="width:30%"></th>
+                                            <th style="width: 20%">#</th>
+                                            <th style="width: 40%">Descripcion</th>
+                                            <th style="width: 30%"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -39,9 +38,7 @@
                                     </tbody>
                                 </table>
                             </div>
-
                         </ContentTemplate>
-
                     </asp:UpdatePanel>
                 </div>
             </div>
@@ -103,6 +100,11 @@
             document.getElementById('<%= hiddenID.ClientID %>').value = valor;
             $('#modalconfirmacion2').modal('show');
         }
+
+
+        function vaciarInputs(){
+            document.getElementById('<%= txtDescripcionEstado.ClientID %>').value = "";
+        }
     </script>
 
     <script type="text/javascript">
@@ -159,14 +161,9 @@
             parent.style = 'display:none';
             var div = document.getElementById('editable_filter');
             var button = document.createElement('a');
-            /* button.id = "btnAgregar";*/
             button.style.float = "right";
             button.style.marginRight = "1%";
-            //button.setAttribute("type", "button");
             button.setAttribute("href", "ProductosABM.aspx");
-            //button.setAttribute("href", "#modalAgregar");
-            //button.setAttribute("onclick", "vaciarFormulario()");
-            //button.setAttribute("data-toggle", "modal");
             button.setAttribute("class", "btn");
 
             button.innerHTML = "<i style='color: black' class='fa fa-plus'></i>";
@@ -174,8 +171,6 @@
             var filter = $("#editable_filter");
             filter[0].id = 'editable_filter2';
 
-            //var filter = $("#editable_length");
-            //filter[0].id = 'editable_length2';
 
 
             $('#txtBusqueda').on('keyup', function () {

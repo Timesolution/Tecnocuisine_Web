@@ -130,14 +130,12 @@
                                                         <tr>
                                                             <th style=" text-align: right; width: 2%;">#</th>
                                                             <th  style="width: 2%;">Fecha</th>
-                                                            <th style=" text-align: left; width: 8%;">Descripcion</th>
+                                                            <th style=" text-align: left; width: 8%;">Descripción</th>
                                                             <th style="width: 3%; text-align: right;">Debe</th>
                                                             <th style="width: 3%; text-align: right;">Haber</th>
                                                             <th style="width: 3%; text-align: right;">Saldo</th>
-
                                                             <th style="width: 2%";></th>
 
-                                                    
                                                         </tr>
                                                     </thead>
                                                     <tbody>

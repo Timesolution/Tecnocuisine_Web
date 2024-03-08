@@ -13,14 +13,13 @@
 
                             <div class="input-group m-b">
                                 <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
-
-
-                                <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                                <input type="text" id="txtBusqueda" placeholder="Búsqueda..." class="form-control" style="width: 90%" />
                             </div>
                         </div>
                         <div class="col-md-2">
-
-                            <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                            <a data-toggle="modal" data-backdrop="static" title="Agregar cliente" onclick="vaciarInputs()"
+                                data-target="#modalAgregar" class="btn btn-primary dim"
+                                style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
                         </div>
                     </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
@@ -29,11 +28,11 @@
                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                     <thead>
                                         <tr>
-                                            <th style="width: 10%">Codigo</th>
+                                            <th style="width: 10%">Código</th>
                                             <th style="width: 20%">Razon Social</th>
                                             <th style="width: 20%">Alias</th>
                                             <th style="width: 10%">IVA</th>
-                                            <th style="width: 10%">Forma Pago</th>
+                                            <th style="width: 10%">Forma De Pago</th>
                                             <th style="width: 5%"></th>
                                         </tr>
                                     </thead>
@@ -192,6 +191,20 @@
         function abrirdialog(valor) {
             document.getElementById('<%= hiddenID.ClientID %>').value = valor;
             $('#modalEliminar').modal('show');
+        }
+
+        function vaciarInputs(){
+            document.getElementById('<%= txtCodigo.ClientID %>').value = "";
+            document.getElementById('<%= txtRazonSocial.ClientID %>').value = "";
+            document.getElementById('<%= txtCuit.ClientID %>').value = "";
+            document.getElementById('<%= txtAlias.ClientID %>').value = "";
+            document.getElementById('<%= ListRegimen.ClientID %>').value = "-1";
+            document.getElementById('<%= ListFormaPago.ClientID %>').value = "-1";
+            document.getElementById('<%= ListVendedor.ClientID %>').value = "-1";
+            document.getElementById('<%= txtVencimientoFC.ClientID %>').value = "";
+            document.getElementById('<%= txtSaldoMax.ClientID %>').value = "";
+            document.getElementById('<%= ListEstado.ClientID %>').value = "-1";
+            document.getElementById('<%= txtObservaciones.ClientID %>').value = "";
         }
     </script>
     <script type="text/javascript">

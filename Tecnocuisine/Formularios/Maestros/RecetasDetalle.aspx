@@ -17,24 +17,9 @@
                     <div class="ibox-content">
                         <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                             <ContentTemplate>
-                                <%--<div class="table-responsive"  >
-                                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Descripcion</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <asp:PlaceHolder ID="phInsumos" runat="server"></asp:PlaceHolder>
-                                        </tbody>
-                                    </table>
-                                </div>--%>
                                 <div class="panel-heading">
                                     <div class="panel-title m-b-md"></div>
                                     <div class="panel-options">
-
                                         <ul class="nav nav-tabs">
                                             <li class="active"><a data-toggle="tab" href="#tab-1">Receta</a></li>
                                             <li class=""><a data-toggle="tab" href="#tab-2">Preparacion/Proceso</a></li>

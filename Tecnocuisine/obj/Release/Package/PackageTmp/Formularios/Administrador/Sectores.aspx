@@ -34,7 +34,8 @@
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <a onclick="ModalAgregar()" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                                <a onclick="ModalAgregar()" class="btn btn-primary dim" 
+                                    style="margin-right: 1%; float: right"><i class='fa fa-plus' title="Agregar Sector"></i></a>
                             </div>
                         </div>
                         <asp:UpdatePanel ID="UpdatePanel2" runat="server">
@@ -237,6 +238,12 @@
         }
 
         function ModalAgregar() {
+
+            //Esta parte vacia los inputs
+             document.getElementById('txtNombre').value = "";
+             document.getElementById('ddlEmpresa').value = "0";
+
+
             document.getElementById('btnAgregar').removeAttribute('disabled')
             document.getElementById('btnAgregar').className = 'btn btn-primary'
             document.getElementById('btnModificar').className = 'hideBtn'

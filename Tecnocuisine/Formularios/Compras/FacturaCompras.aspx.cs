@@ -42,6 +42,8 @@ namespace Tecnocuisine.Formularios.Compras
         string FechaH = "";
         protected void Page_Load(object sender, EventArgs e)
         {
+            ObtenerTodasLasFacturas();
+            ObtenerTodosLosProveedores();
             if (Request.QueryString["FechaD"] != null)
             {
                 this.FechaD = (Request.QueryString["FechaD"]).ToString();
@@ -58,8 +60,7 @@ namespace Tecnocuisine.Formularios.Compras
             {
                 FiltrarCuentaCorriente(this.idProveedor, this.FechaD, this.FechaH);
             }
-            ObtenerTodasLasFacturas();
-            ObtenerTodosLosProveedores();
+          
         }
 
 
@@ -99,23 +100,22 @@ namespace Tecnocuisine.Formularios.Compras
                 AliasProveedor.Value = provedor.Alias;
                 string FechaDesde = ConvertirFecha(FechaD);
                 string FechaHasta = ConvertirFecha(FechaH);
-                var dt = controladorFacturas.FiltrarFacturas(FechaD, FechaH, idProveedor);
+                //var dt = controladorFacturas.FiltrarFacturas(FechaD, FechaH, idProveedor);
+                var listF = controladorFacturas.obtenerFacturasByFechasYProveedor(FechaD, FechaH);
                 decimal total = 0;
-                foreach (DataRow row in dt.Rows)
+                phProductos.Controls.Clear();   
+                foreach (var f in listF)
                 {
-                    Tecnocuisine_API.Entitys.Facturas f = new Tecnocuisine_API.Entitys.Facturas();
-                    f.id = Convert.ToInt32(row["id"]);
-                    f.FechaEmitido = ((DateTime)row["FechaEmitido"]);
-                    f.FechaVencimiento = ((DateTime)row["FechaVencimiento"]);
-                    f.TipoDocumentoID = Convert.ToInt32(row["TipoDocumentoID"]);
-                    f.ImporteTotal = Convert.ToDecimal(row["ImporteTotal"]);
-                    f.NumeroFactura = (row["Haber"]).ToString();
-                    f.idProveedor = Convert.ToInt32(row["idProveedor"]);
-
+                    //Tecnocuisine_API.Entitys.Facturas f = new Tecnocuisine_API.Entitys.Facturas();
+                    //f.id = Convert.ToInt32(row["id"]);
+                    //f.FechaEmitido = ((DateTime)row["FechaEmitido"]);
+                    //f.FechaVencimiento = ((DateTime)row["FechaVencimiento"]);
+                    //f.TipoDocumentoID = Convert.ToInt32(row["TipoDocumentoID"]);
+                    //f.ImporteTotal = Convert.ToDecimal(row["ImporteTotal"]);
+                    //f.NumeroFactura = (row["NumeroFactura"]).ToString();
+                    //f.idProveedor = Convert.ToInt32(row["idProveedor"]);
                     total += (decimal)(f.ImporteTotal);
-
                     CargarFacturasPH(f);
-
 
                 }
                 SaldoTotal.Value = FormatearNumero(total);

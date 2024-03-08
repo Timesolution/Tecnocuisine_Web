@@ -111,9 +111,7 @@ namespace Tecnocuisine.Formularios.Compras
 
                 btnEditar.CssClass = "btn btn-xs";
                 btnEditar.Style.Add("background-color", "transparent");
-                //btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                //btnDetalles.Attributes.Add("title data-original-title", "Editar");
-                btnEditar.Text = "<i class='fa fa-search' style=\"color: black\"></i>";
+                btnEditar.Text = "<i class='fa fa-search' style=\"color: black\" title='Ver entrega'></i>";
                 btnEditar.Attributes.Add("style", "background-color: transparent;");
                 btnEditar.Attributes.Add("href", "EntregaDetallada.aspx?i=" + entrega.id);
                 celAction.Controls.Add(btnEditar);

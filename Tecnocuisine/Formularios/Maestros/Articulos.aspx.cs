@@ -436,7 +436,7 @@ namespace Tecnocuisine
                 articulo.costo = Convert.ToDecimal(txtCosto.Text);
                 articulo.precioVenta = Convert.ToDecimal(txtPrecioVenta.Text);
                 articulo.grupo = Convert.ToInt32(ListGrupo.SelectedValue);
-                articulo.subgrupo = 1;
+                articulo.subgrupo = 5;
                 //articulo.subgrupo = Convert.ToInt32(ListSubgrupo.SelectedValue);
                 articulo.marca = Convert.ToInt32(ListMarca.SelectedValue);
                 articulo.categoria = Convert.ToInt32(ListCategoria.SelectedValue);

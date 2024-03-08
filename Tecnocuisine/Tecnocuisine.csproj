@@ -343,6 +343,7 @@
     <Content Include="Formularios\Ventas\GenerarVenta.aspx" />
     <Content Include="Formularios\Ventas\OrdenesDeProduccion.aspx" />
     <Content Include="Formularios\Ventas\OrdenesDeProduccionABM.aspx" />
+    <Content Include="Formularios\Ventas\PedidosOrdenes.aspx" />
     <Content Include="Formularios\Ventas\Pre-Produccion.aspx" />
     <Content Include="Formularios\Ventas\Produccion.aspx" />
     <Content Include="Formularios\Ventas\ProduccionDetallada.aspx" />
@@ -1345,6 +1346,13 @@
     </Compile>
     <Compile Include="Formularios\Ventas\OrdenesDeProduccionABM.aspx.designer.cs">
       <DependentUpon>OrdenesDeProduccionABM.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Ventas\PedidosOrdenes.aspx.cs">
+      <DependentUpon>PedidosOrdenes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Ventas\PedidosOrdenes.aspx.designer.cs">
+      <DependentUpon>PedidosOrdenes.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Ventas\Pre-Produccion.aspx.cs">
       <DependentUpon>Pre-Produccion.aspx</DependentUpon>

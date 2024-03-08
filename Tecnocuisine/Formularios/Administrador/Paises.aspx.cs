@@ -113,9 +113,7 @@ namespace Tecnocuisine.Formularios.Administrador
 
                 btnEditar.CssClass = "btn btn-xs";
                 btnEditar.Style.Add("background-color", "transparent");
-                //btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                //btnDetalles.Attributes.Add("title data-original-title", "Editar");
-                btnEditar.Text = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
+                btnEditar.Text = "<span><i style='color:black;' class='fa fa-pencil' title='Editar pais'></i></span>";
                 btnEditar.Click += new EventHandler(this.editarPais);
                 celAction.Controls.Add(btnEditar);
 
@@ -132,10 +130,7 @@ namespace Tecnocuisine.Formularios.Administrador
                 btnEliminar.OnClientClick = "abrirdialog(" + p.id + ");";
                 btnEliminar.CssClass = "btn btn-xs";
                 btnEliminar.Style.Add("background-color", "transparent");
-                //btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                //btnDetalles.Attributes.Add("title data-original-title", "Editar");
-                btnEliminar.Text = "<span><i style='color:black;' class='fa fa-trash'></i></span>";
-                //btnDetalles.Click += new EventHandler(this.editarReceta);
+                btnEliminar.Text = "<span><i style='color:red;' class='fa fa-trash' title='Eliminar pais'></i></span>";
                 celAction.Controls.Add(btnEliminar);
                 celAction.Width = Unit.Percentage(10);
                 celAction.VerticalAlign = VerticalAlign.Middle;

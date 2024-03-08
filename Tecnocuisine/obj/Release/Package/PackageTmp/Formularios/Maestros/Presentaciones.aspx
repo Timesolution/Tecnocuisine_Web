@@ -9,30 +9,33 @@
 
                 <div class="ibox-content">
                     <div style="margin-left: 0px; margin-right: 0px;" class="row">
-                                                    <div class="col-md-10">
+                        <div class="col-md-10">
 
-                                                        <div class="input-group m-b">
-                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                            <div class="input-group m-b">
+                                <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
 
 
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
+                                <input type="text" id="txtBusqueda" placeholder="Búsqueda..."
+                                    class="form-control" style="width: 90%" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
 
-                                                        <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
-                                                    </div>
-                                                </div>
+                            <a data-toggle="modal" data-backdrop="static" title="Agregar presentacion" onclick="vaciarInputs()"
+                                data-target="#modalAgregar" class="btn btn-primary dim"
+                                style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                        </div>
+                    </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
-                            <div class="table-responsive"  >
-                                <table class="table table-striped table-bordered table-hover " id="editable" >
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover " id="editable">
 
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Descripcion</th>
-                                            <th>Cantidad</th>
+                                            <th>Descripción</th>
+                                            <th style="text-align:right">Cantidad</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -52,26 +55,26 @@
 
     </div>
 
-        <div id="modalConfirmacion2" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Confirmar eliminacion</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            Esta seguro que lo desea eliminar?
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="buttonLoading btn btn-danger" OnClick="btnSi_Click" />
-                        <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
-                        <asp:HiddenField ID="hiddenID" runat="server" />
-                    </div>
+    <div id="modalConfirmacion2" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Confirmar eliminacion</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Esta seguro que lo desea eliminar?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="buttonLoading btn btn-danger" OnClick="btnSi_Click" />
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                    <asp:HiddenField ID="hiddenID" runat="server" />
                 </div>
             </div>
         </div>
+    </div>
 
     <div id="modalAgregar" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-sm">
@@ -82,7 +85,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                       <div class="col-sm-1">
+                        <div class="col-sm-1">
                             <label style="color: red;" class="danger">*</label>
                         </div>
                         <label class="col-sm-2 control-label editable">Descripción</label>
@@ -91,7 +94,7 @@
 
                         </div>
                     </div>
-                  
+
 
                     <div class="form-group" style="padding-top: 7%">
                         <div class="col-sm-1">
@@ -118,6 +121,14 @@
         function abrirdialog(valor) {
             document.getElementById('<%= hiddenID.ClientID %>').value = valor;
             $('#modalconfirmacion2').modal('show');
+        }
+
+
+
+        function vaciarInputs(){
+            document.getElementById('<%= txtDescripcionPresentacion.ClientID %>').value = "";
+            document.getElementById('<%= txtCantidadPresentacion.ClientID %>').value = "";
+            
         }
     </script>
     <script type="text/javascript">
@@ -201,7 +212,7 @@
             });
         });
     </script>
-     <script src="/../Scripts/autoNumeric/autoNumeric.js"></script>
+    <script src="/../Scripts/autoNumeric/autoNumeric.js"></script>
     <script>
 
         $(document).ready(function () {

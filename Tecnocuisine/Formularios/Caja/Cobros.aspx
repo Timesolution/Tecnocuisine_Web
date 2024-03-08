@@ -93,7 +93,8 @@
                                                         <div class="row">
                                                             <div class="col-md-" style="margin-right: 15px;">
                                                                   <div style="display: flex; gap:15px">
-                                                             <a type="button" data-toggle="modal" onclick="FiltrarCuentaCorriente()" class="btn btn-success">Filtrar&nbsp;<i style="color:white;" class="fa fa-filter"></i></a>
+                                                             <a type="button" data-toggle="modal" onclick="FiltrarCuentaCorriente()" 
+                                                                 class="btn btn-success">Filtrar&nbsp;<i style="color:white;" class="fa fa-filter"></i></a>
                                                              <a class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" data-original-title="CALCULA FC A CANCELAR" onclick="AbrirModal()" text="Agregar" id="Button1">
                                                             <i style="color: white;padding: 2px;font-size: 18px;" class="fa fa-dollar"></i>
                                                         </a>

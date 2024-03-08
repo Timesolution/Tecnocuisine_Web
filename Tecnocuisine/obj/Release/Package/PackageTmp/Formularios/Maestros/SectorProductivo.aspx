@@ -6,34 +6,37 @@
         <div class="container-fluid">
 
             <div class="ibox float-e-margins">
-              
 
-                <div class="ibox-content" >
+
+                <div class="ibox-content">
                     <div style="margin-left: 0px; margin-right: 0px;" class="row">
-                                                    <div class="col-md-10">
+                        <div class="col-md-10">
 
-                                                    <div class="input-group m-b">
-                                                    <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                            <div class="input-group m-b">
+                                <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
 
 
-                                                    <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width:90%" />
-                                                </div> 
-                                                    </div>
-                                                    <div class="col-md-2">
+                                <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
 
-                                                        <linkbutton id="btnAgregar" href="#modalAgregar" onclick="vaciarFormulario()" data-toggle="modal" class="btn btn-primary dim" style="margin-right:1%;float:right" ><i class='fa fa-plus'></i></linkbutton>
-                                                    </div>
-                                                </div>
+                            <linkbutton id="btnAgregar" href="#modalAgregar" onclick="vaciarFormulario()"
+                                data-toggle="modal" class="btn btn-primary dim" style="margin-right: 1%; float: right">
+                                <i class='fa fa-plus' data-toggle="tooltip" data-placement="top" title="Agregar sector productivo"></i>
+                            </linkbutton>
+                        </div>
+                    </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
-                            <div class="table-responsive"  >
-                                <table class="table table-striped table-bordered table-hover " id="editable" >
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover " id="editable">
 
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th style="text-align: right">Codigo</th>
                                             <th>Sector</th>
-                                            <th>Descripcion</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -78,8 +81,8 @@
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
-                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h2 class="modal-title">Agreguemos tu nuevo sector
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h2 class="modal-title">Agreguemos tu nuevo sector
                         <span>
                             <%--<i style='color:black;' class='fa fa-search'></i>--%>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" style="width: 50px; vertical-align: middle; margin-left: 25px;">
@@ -87,11 +90,11 @@
                             </svg>
 
                         </span>
-                        </h2>
+                    </h2>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                       <div class="col-sm-1">
+                        <div class="col-sm-1">
                             <label style="color: red;" class="danger">*</label>
                         </div>
                         <label class="col-sm-2 control-label editable">Codigo</label>
@@ -100,7 +103,7 @@
 
                         </div>
                     </div>
-                  
+
 
                     <div class="form-group" style="padding-top: 7%">
                         <div class="col-sm-1">
@@ -109,7 +112,6 @@
                         <label class="col-sm-2 control-label editable">Descripcion</label>
                         <div class="col-sm-9">
                             <asp:TextBox ID="txtDescripcionSector" class="form-control" runat="server" />
-
                         </div>
                     </div>
                 </div>
@@ -134,8 +136,10 @@
             $('#modalAgregar').modal('show');
         }
         function vaciarFormulario() {
-            ContentPlaceHolder1_txtDescripcionClasificacion.value = "";
-            ContentPlaceHolder1_txtCantidadClasificacion.value = "";
+            //ContentPlaceHolder1_txtDescripcionClasificacion.value = "";
+            //ContentPlaceHolder1_txtCantidadClasificacion.value = "";
+            ContentPlaceHolder1_txtDescripcionSector.value = "";
+            ContentPlaceHolder1_txtCodigoSector.value = "";
             ContentPlaceHolder1_hiddenEditar.value = "";
             window.history.pushState('', 'SectorProductivo', location.protocol + '//' + location.host + location.pathname);
 
@@ -149,6 +153,13 @@
                 "tableTools": {
                     "sSwfPath": "js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
                 }
+            });
+
+            //Este codigo pertenece al filtro dinamico
+            $('#txtBusqueda').on('keyup', function () {
+                $('#editable').DataTable().search(
+                this.value
+                ).draw();
             });
 
             /* Init DataTables */

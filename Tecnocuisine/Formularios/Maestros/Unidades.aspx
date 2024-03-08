@@ -9,28 +9,27 @@
 
                 <div class="ibox-content">
                     <div style="margin-left: 0px; margin-right: 0px;" class="row">
-                                                    <div class="col-md-10">
+                        <div class="col-md-10">
 
-                                                        <div class="input-group m-b">
-                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                            <div class="input-group m-b">
+                                <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                                <input type="text" id="txtBusqueda" placeholder="Búsqueda..." class="form-control" style="width: 90%" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
 
-
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-
-                                                        <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
-                                                    </div>
-                                                </div>
+                            <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" title="Agregar unidad" onclick="vaciarInputs()"
+                                class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                        </div>
+                    </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
-                            <div class="table-responsive"  >
+                            <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Descripcion</th>
+                                            <th>Descripción</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -76,7 +75,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">Agregar</h4>
+                    <h4 class="modal-title">Agregar Unidad</h4>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -185,6 +184,12 @@
                 ).draw();
             });
         });
+
+
+        function vaciarInputs(){
+             document.getElementById('<%= txtDescripcionUnidad.ClientID %>').value = "";
+        }
+
     </script>
 
 </asp:Content>

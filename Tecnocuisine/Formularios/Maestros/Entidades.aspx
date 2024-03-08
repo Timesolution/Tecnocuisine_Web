@@ -8,29 +8,28 @@
             <div class="ibox float-e-margins">
 
                 <div class="ibox-content">
-       <div style="margin-left: 0px; margin-right: 0px;" class="row">
-                                                    <div class="col-md-10">
+                    <div style="margin-left: 0px; margin-right: 0px;" class="row">
+                        <div class="col-md-10">
 
-                                                        <div class="input-group m-b">
-                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                            <div class="input-group m-b">
+                                <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                                <input type="text" id="txtBusqueda" placeholder="Búsqueda..." class="form-control" style="width: 90%" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
 
-
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-
-                                                        <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
-                                                    </div>
-                                                </div>
+                            <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" title="Agregar entidad"
+                                style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                        </div>
+                    </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
-                            <div class="table-responsive"  >
+                            <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                     <thead>
                                         <tr>
                                             <th style="width: 20%">#</th>
-                                            <th style="width: 40%">Descripcion</th>
+                                            <th style="width: 40%">Descripción</th>
                                             <th style="width: 30%"></th>
                                         </tr>
                                     </thead>
@@ -100,35 +99,35 @@
         </div>
     </div>
 
-            <div id="modalEditar" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Agregar</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-sm-1">
-                                <label style="color: red;" class="danger">*</label>
-                            </div>
-                            <label class="col-sm-2 control-label editable">Descripción</label>
-                            <div class="col-sm-8">
-                                <asp:TextBox ID="txtDescripcion" class="form-control" runat="server" />
+    <div id="modalEditar" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Agregar</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <label style="color: red;" class="danger">*</label>
+                        </div>
+                        <label class="col-sm-2 control-label editable">Descripción</label>
+                        <div class="col-sm-8">
+                            <asp:TextBox ID="txtDescripcion" class="form-control" runat="server" />
 
-                            </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <asp:LinkButton runat="server" ID="LinkButton1" class="buttonLoading btn btn-primary" OnClientClick="CargarHiddenEdit()" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
-                        <asp:HiddenField ID="HiddenField1" runat="server" />
-                        <button type="button" class="btn btn-danger" onclick="CancelarEdit(event)" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+                </div>
+                <div class="modal-footer">
+                    <asp:LinkButton runat="server" ID="LinkButton1" class="buttonLoading btn btn-primary" OnClientClick="CargarHiddenEdit()" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <asp:HiddenField ID="HiddenField1" runat="server" />
+                    <button type="button" class="btn btn-danger" onclick="CancelarEdit(event)" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
 
 
-                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
 
 

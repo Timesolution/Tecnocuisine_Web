@@ -23,7 +23,7 @@
                                                             <div class="input-group m-b">
                                                                 <div style="display: flex;">
                                                                     <span class="input-group-addon" style="padding-right: 15%;"><i style='color: black;' class='fa fa-search'></i></span>
-                                                                    <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 100%" />
+                                                                    <input type="text" id="txtBusqueda" placeholder="Búsqueda..." class="form-control" style="width: 100%" />
                                                                 </div>
                                                             </div>
                                                            
@@ -43,7 +43,15 @@
                                                                         <label style="margin-top: 5px;" class="col-md-4">Hasta</label>
                                                                     </div>
                                                                     <div class="col-md-8">
-                                                                        <asp:TextBox class="form-control" runat="server" type="date" ID="txtFechaVencimiento" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                                        <asp:TextBox class="form-control" runat="server" 
+                                                                            type="date" ID="txtFechaVencimiento" 
+                                                                            Style="margin-left: 0px; width: 100%;">
+                                                                        </asp:TextBox>
+                                                                          <div>
+                                                                              <p id="validaFechaHasta" class="text-danger text-hide">
+                                                                                  * La fecha debe ser mayor a desde 
+                                                                              </p>
+                                                                          </div>
                                                                     </div>
                                                                 </div>
                                                              </div>
@@ -59,10 +67,10 @@
                                                                         margin-bottom: 15px; width: 100%;"> 
                                                                     </asp:TextBox>
                                                                     <p id="ValivaCliente" class="text-danger hide">Ingresar un Cliente</p>
-                                                                   <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server"
+                                                                 <%--  <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server"
                                                                         ErrorMessage="El campo es obligatorio" ControlToValidate="txtCliente"
                                                                         ValidationGroup="grupoValidacion" SetFocusOnError="true" Font-Bold="true" ForeColor="Red">
-                                                                   </asp:RequiredFieldValidator>                                                                     
+                                                                   </asp:RequiredFieldValidator>  --%>                                                                   
                                                                 </div>                                                                    
                                                               </div>
                                                             </div>
@@ -94,9 +102,9 @@
                                     <thead>
                                         <tr>
                                             <th style="width: 2%">#</th>
-                                            <th style="width: 5%">fecha</th>
+                                            <th style="width: 5%">Fecha</th>
                                             <th style="width: 5%">Cliente</th>
-                                            <th style="width: 10%">Descripcion</th>
+                                            <th style="width: 10%">Descripción</th>
                                             <th style="width: 5%">NºCheque</th>
                                             <th style="width: 15%">Banco</th>
                                             <th style="width: 5%">Cuenta</th>
@@ -217,16 +225,42 @@
 
         }
 
+
+         function validarFecha(){
+            let formValido = false;
+            let fechaDesde = document.getElementById("<%=txtFechaHoy.ClientID%>").value;
+            let fechaHasta = document.getElementById("<%=txtFechaVencimiento.ClientID%>").value;
+        
+            let fechaHastaValiva = document.getElementById("validaFechaHasta");
+            if(fechaHasta < fechaDesde){
+                fechaHastaValiva.className = "text-danger"
+                formValido = false;
+            }
+            else{
+                fechaHastaValiva.className = "text-danger text-hide"
+                formValido = true;
+            }
+            return formValido
+         }
+
         function FiltrarVentas(e) {
             e.preventDefault()
             var textboxValue = document.getElementById('<%= txtCliente.ClientID %>').value;
             let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value.replaceAll("-", "/");
             let FechaH = document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value.replaceAll("-", "/");
+            
+            
+            let formValido = validarFecha();
+            if(formValido == false){
+                return;
+            }
+
             if (textboxValue.trim() !== '') {
                 window.location.href = "ChequesCobros.aspx?c=" + textboxValue.split("-")[0].trim() + "&FechaD=" + FechaD + "&FechaH=" + FechaH;
             } else {
                 document.getElementById('ValivaCliente').classList.remove('hide')
             }
+
         }
     </script>
 

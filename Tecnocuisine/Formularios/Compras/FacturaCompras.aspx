@@ -45,7 +45,7 @@
                                                             <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
 
 
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                                                            <input type="text" id="txtBusqueda" placeholder="Búsqueda..." class="form-control" style="width: 90%" />
                                                         </div>
                                                     </div>
                                                    <div class="col-md-2" style="display: flex; flex-direction: row; align-items: center; justify-content: end;">
@@ -249,6 +249,12 @@
 
 
             $("#editable_filter").css('display', 'none');
+
+            var rPorPagina = document.getElementById('editable_length');
+
+            if (rPorPagina) {
+                rPorPagina.style.display = 'none';
+            }
 
             $('#txtBusqueda').on('keyup', function () {
                 $('#editable').DataTable().search(

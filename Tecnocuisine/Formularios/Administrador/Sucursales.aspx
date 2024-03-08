@@ -15,8 +15,8 @@
             display: none;
         }
 
-        .hideBar{
-            display:none;
+        .hideBar {
+            display: none;
         }
     </style>
 
@@ -28,49 +28,51 @@
                 <div class="ibox nestable float-e-margins" style="padding: 1.5%">
 
                     <div class="ibox-content">
-                         <div style="margin-left: 0px; margin-right: 0px;" class="row">
-                                                    <div class="col-md-10">
+                        <div style="margin-left: 0px; margin-right: 0px;" class="row">
+                            <div class="col-md-10">
 
-                                                        <div class="input-group m-b">
-                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                                <div class="input-group m-b">
+                                    <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
 
 
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
+                                    <input type="text" id="txtBusqueda" placeholder="Búsqueda..." class="form-control" style="width: 90%" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
 
-                                                        <a onclick="ModalAgregar()" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
-                                                    </div>
-                                                </div>
+                                <a onclick="ModalAgregar()" class="btn btn-primary dim"
+                                    style="margin-right: 1%; float: right"><i class='fa fa-plus' title="Agregar sucursales"></i>
+                                </a>
+                            </div>
+                        </div>
                         <asp:UpdatePanel ID="updatePanel1" runat="server">
                             <ContentTemplate>
 
-                       <div class="">
-                            <table class="table table-striped table-bordered table-hover" id="editable">
-                                <thead>
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Direccion</th>
-                                        <th>Estado</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="phSucursales">
-                                    <asp:PlaceHolder ID="phSucursalesPH" runat ="server" ></asp:PlaceHolder>
-                                </tbody>
-                            </table>
-                           
-                        </div>
+                                <div class="">
+                                    <table class="table table-striped table-bordered table-hover" id="editable">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Dirección</th>
+                                                <th>Estado</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="phSucursales">
+                                            <asp:PlaceHolder ID="phSucursalesPH" runat="server"></asp:PlaceHolder>
+                                        </tbody>
+                                    </table>
+
+                                </div>
 
                             </ContentTemplate>
                         </asp:UpdatePanel>
                     </div>
                 </div>
-            
+
+            </div>
         </div>
     </div>
-</div>
     <div id="modalABM" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
@@ -392,7 +394,7 @@
             document.getElementById('txtDir').value = ''
         }
     </script>
-        <script>
+    <script>
             $(document).ready(function () {
 
 
@@ -460,5 +462,5 @@
                     ).draw();
                 });
             });
-        </script>
+    </script>
 </asp:Content>

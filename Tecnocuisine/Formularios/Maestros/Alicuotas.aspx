@@ -8,29 +8,30 @@
             <div class="ibox float-e-margins">
 
                 <div class="ibox-content">
-                     <div style="margin-left: 0px; margin-right: 0px;" class="row">
-                                                    <div class="col-md-10">
+                    <div style="margin-left: 0px; margin-right: 0px;" class="row">
+                        <div class="col-md-10">
 
-                                                        <div class="input-group m-b">
-                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                            <div class="input-group m-b">
+                                <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
 
 
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-
-                                                        <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
-                                                    </div>
-                                                </div>
+                                <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <a data-toggle="modal" data-backdrop="static" onclick="vaciarInputs()"
+                                data-target="#modalAgregar" title="Agregar Alicuota" 
+                                class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                        </div>
+                    </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
-                            <div class="table-responsive"  >
-                                <table class="table table-striped table-bordered table-hover " id="editable" >
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover " id="editable">
                                     <thead>
                                         <tr>
                                             <th style="width: 20%">#</th>
-                                            <th style="width: 40%">Porcentaje</th>
+                                            <th style="width: 40%; text-align:right">Porcentaje</th>
                                             <th style="width: 30%"></th>
                                         </tr>
                                     </thead>
@@ -87,7 +88,8 @@
                         <div class="col-sm-8">
                             <div class="input-group m-b">
                                 <asp:TextBox ID="txtPorcentajeAlicuota" class="form-control" runat="server"></asp:TextBox>
-                                <span class="input-group-addon">%</span></div>
+                                <span class="input-group-addon">%</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -106,6 +108,11 @@
         function abrirdialog(valor) {
             document.getElementById('<%= hiddenID.ClientID %>').value = valor;
             $('#modalconfirmacion2').modal('show');
+        }
+
+
+        function vaciarInputs(){
+            document.getElementById('<%= txtPorcentajeAlicuota.ClientID %>').value = "";
         }
     </script>
     <script type="text/javascript">
@@ -202,7 +209,7 @@
             });
         });
     </script>
-     <script src="/../Scripts/autoNumeric/autoNumeric.js"></script>
+    <script src="/../Scripts/autoNumeric/autoNumeric.js"></script>
     <script>
 
         $(document).ready(function () {

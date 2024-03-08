@@ -18,7 +18,6 @@
                         <div class="col-lg-6">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <%--<h2 style="margin-left: 5%;font-weight: bold;" id="TipoFactura">Factura A:</h2>--%>
                                 </div>
                                 <div class="col-md-8">
                                     <div style="display: flex;">
@@ -70,7 +69,9 @@
                                         <div class="col-md-8">
                                             <datalist id="ListaNombreProd" runat="server">
                                             </datalist>
-                                            <asp:TextBox runat="server" ID="txtDescripcionProductos" onfocusout="handle(event)" list="ContentPlaceHolder1_ListaNombreProd" class="form-control" Style="margin-left: 15px; width: 70%" />
+                                            <asp:TextBox runat="server" ID="txtDescripcionProductos" 
+                                                onfocusout="handle(event)" list="ContentPlaceHolder1_ListaNombreProd" 
+                                                class="form-control" Style="margin-left: 15px; width: 70%" />
                                             <asp:HiddenField ID="Hiddentipo" runat="server" />
                                             <asp:HiddenField ID="HiddenUnidad" runat="server" />
                                         </div>

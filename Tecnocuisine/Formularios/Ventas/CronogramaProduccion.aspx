@@ -31,10 +31,10 @@
                     <div class="pull-left m-r-md">
                         <i class="fa fa-cutlery text-navy mid-icon"></i>
                     </div>
-                    <%foreach (System.Data.DataRow dtCantidadXProducto in dtCantidadRecetasPorCadaOrden.Rows)
+<%--                    <%foreach (System.Data.DataRow dtCantidadXProducto in dtCantidadRecetasPorCadaOrden.Rows)
                         {%>
                     <h4><%= dtCantidadXProducto["Producto"].ToString() %> :  <%= dtCantidadXProducto["cantidad"].ToString() %></h4>
-                    <% } %>
+                    <% } %>--%>
                 </div>
             </div>
         </div>

@@ -2,10 +2,10 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
              <style>
-            #editable_length {
-                margin-left: 0px !important;
-}
-        </style>
+                 #editable_length {
+                     margin-left: 0px !important;
+                 }
+             </style>
     <div class="wrapper wrapper-content">
         <div class="ibox-content m-b-sm border-bottom" style="margin-top: 10px; padding-top: 0px;">
             <div class="p-xs">
@@ -28,7 +28,8 @@
                                 <div class="input-group m-b" style="width: 30%">
                                     <div style="display: flex;">
                                         <span class="input-group-addon" style="padding-right: 15%;"><i style='color: black;' class='fa fa-search'></i></span>
-                                        <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 100%" />
+                                        <input type="text" id="txtBusqueda" placeholder="Búsqueda..." class="form-control" style="width: 100%" />
+                                    
                                     </div>
                                 </div>
 
@@ -52,7 +53,11 @@
                                                                     <div class="col-md-8">
 
                                                                         <asp:TextBox class="form-control" runat="server" type="date" ID="txtFechaVencimiento" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
-
+                                                                           <div>
+                                                                           <p id="validaFechaHasta" class="text-danger text-hide">
+                                                                               * La fecha debe ser mayor a desde 
+                                                                           </p>
+                                                                       </div>
                                                                     </div>
                                                         </div>
                                                     </div>
@@ -68,15 +73,13 @@
 
                                  <div class="input-group m-b" style="width: 30%; margin-left: 20px">
 
-                                    <label style="margin-left: 15px; margin-top: 5px;" class="col-md-4">Opciones</label>
+                                    <label style="margin-left: 15px; margin-top: 5px;" class="col-md-5">Opciones de filtrado</label>
                                     <div class="col-md-6">
                                         <datalist id="Datalist1" runat="server"></datalist>
                                         <asp:DropDownList name="txtOpcionBusqueda" type="text" ID="txtOpcionBusqueda" runat="server" class="form-control" style="margin-left: 0px; margin-bottom: 15px; width: 140%;">
                                         <asp:ListItem Text="Busqueda por Acreditacion" Value="0"></asp:ListItem>
                                         <asp:ListItem Text="Busqueda por Fecha" Value="1"></asp:ListItem>
                                         </asp:DropDownList>
-
-                                       
                                     </div>
                                 </div>
 
@@ -90,7 +93,9 @@
 
                         </div>
                         <div class="col-md-2">
-                            <a id="btnFiltrar" onclick="FiltrarVentas()" class="btn btn-primary" style="margin-right: 15px; float: right;"><i class="fa fa-paper-plane"></i>&nbsp;Filtrar </a>
+                            <a id="btnFiltrar" onclick="FiltrarVentas()" 
+                                class="btn btn-primary" title="Filtrar"
+                                style="margin-right: 15px; float: right;"><i class="fa fa-paper-plane"></i>&nbsp;Filtrar </a>
 
                             <%--<a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>--%>
                         </div>
@@ -101,10 +106,10 @@
                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                     <thead>
                                         <tr>
-                                            <th style="width: 2%">#</th>
+                                            <th style="width: %">#</th>
                                             <th style="width: 10%">Entidad</th>
                                             <th style="width: 8%">Fecha</th>
-                                            <th style="width: 15%">Descripcion</th>
+                                            <th style="width: 15%">Descripción</th>
                                             <th style="width: 10%">Cliente</th>
                                             <th style="width: 7%">Acredita en</th>
                                             <th style="width: 7%">Acredita el</th>
@@ -123,14 +128,13 @@
                         </ContentTemplate>
 
                     </asp:UpdatePanel>
+                     <asp:HiddenField ID="FechaDesde" runat="server"></asp:HiddenField>
+                     <asp:HiddenField ID="FechaHasta" runat="server"></asp:HiddenField>
+                     <asp:HiddenField ID="ddlEntidad" runat="server"></asp:HiddenField>
+                     <asp:HiddenField ID="ddlOpciones" runat="server"></asp:HiddenField>
                 </div>
             </div>
         </div>
-
-    
-
-
-       
     </div>
 
   
@@ -149,6 +153,19 @@
 
     <script>
         $(document).ready(function () {
+
+            let fechad = document.getElementById("ContentPlaceHolder1_FechaDesde").value
+            let fechah = document.getElementById("ContentPlaceHolder1_FechaHasta").value
+
+             if (fechad != "" && fechah != "") {
+
+                 establecerFechasSeleccionadas();
+                 establecerEntidadSeleccionada();
+                 establecerOpcionSeleccionada();
+             }
+             else{
+                establecerDiaHoy();
+             }
 
             //$('#data_1 .input-group.date').datepicker({
             //    todayBtn: "linked",
@@ -176,7 +193,6 @@
             if (prov != "") {
                 document.getElementById("ClienteSelec").innerText = prov;
             }
-            establecerDiaHoy();
             var oTable = $('#editable').dataTable({
                 "bLengthChange": false,
                 "pageLength": 100, // Establece la cantidad predeterminada de registros por página
@@ -208,6 +224,18 @@
             });
         });
 
+
+        function establecerEntidadSeleccionada(){
+            let ddlEntidad = document.getElementById("ContentPlaceHolder1_ddlEntidad").value
+            document.getElementById("ContentPlaceHolder1_txtEntidad").value = ddlEntidad;
+            
+        }
+
+       function establecerOpcionSeleccionada(){
+           let ddlOpciones = document.getElementById("ContentPlaceHolder1_ddlOpciones").value
+           document.getElementById("ContentPlaceHolder1_txtOpcionBusqueda").value = ddlOpciones;
+       }
+
         function establecerDiaHoy() {
             var fechaActual = new Date();
             // Convertir la fecha en un formato legible para el DatePicker   
@@ -235,12 +263,29 @@
 
         }
 
+         function establecerFechasSeleccionadas() {
+             let fechad = document.getElementById("ContentPlaceHolder1_FechaDesde").value
+             let fehcah = document.getElementById("ContentPlaceHolder1_FechaHasta").value
+
+             fechad = fechad.replaceAll("/", "-");
+             fehcah = fehcah.replaceAll("/", "-");
+
+             document.getElementById("ContentPlaceHolder1_txtFechaHoy").value = fechad;
+             document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value = fehcah
+         }
+
         function FiltrarVentas() {
             let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value.replaceAll("-", "/");
             let FechaH = document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value.replaceAll("-", "/");
             let Opcion = document.getElementById("ContentPlaceHolder1_txtOpcionBusqueda").value;
             let Clientes = document.getElementById("ContentPlaceHolder1_txtEntidad").value
             let proveedorValiva = document.getElementById("ValivaCliente");
+
+            let formValido = validarFecha();
+            if(formValido == false){
+                return;
+            }
+
             if (Clientes == "-1") {
                 proveedorValiva.className = "text-danger"
                 return 0;
@@ -250,6 +295,24 @@
 
             window.location.href = "TarjetaDeCredito.aspx?c=" + Clientes.split("-")[0].trim() + "&FechaD=" + FechaD + "&FechaH=" + FechaH + "&Op=" + Opcion;
         }
+
+      function validarFecha(){
+         let formValido = false;
+         let fechaDesde = document.getElementById("<%=txtFechaHoy.ClientID%>").value;
+         let fechaHasta = document.getElementById("<%=txtFechaVencimiento.ClientID%>").value;
+ 
+         let fechaHastaValiva = document.getElementById("validaFechaHasta");
+         if(fechaHasta < fechaDesde){
+             fechaHastaValiva.className = "text-danger"
+             formValido = false;
+         }
+         else{
+             fechaHastaValiva.className = "text-danger text-hide"
+             formValido = true;
+         }
+         return formValido
+      }
+
     </script>
 
 </asp:Content>

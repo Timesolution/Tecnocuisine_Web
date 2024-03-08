@@ -9,31 +9,33 @@
 
                 <div class="ibox-content">
                     <div style="margin-left: 0px; margin-right: 0px;" class="row">
-                                                    <div class="col-md-10">
+                        <div class="col-md-10">
 
-                                                        <div class="input-group m-b">
-                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                            <div class="input-group m-b">
+                                <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
 
 
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-
-                                                        <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
-                                                    </div>
-                                                </div>
+                                <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <a data-toggle="modal" data-backdrop="static" onclick="vaciarInputs()"
+                                data-target="#modalAgregar" title="Agregar vendedor"
+                                class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i>
+                            </a>
+                        </div>
+                    </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
-                            <div class="table-responsive"  >
-                                <table class="table table-striped table-bordered table-hover " id="editable" >
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover " id="editable">
                                     <thead>
                                         <tr>
-                                            <th style="width: 10%">Legajo</th>
-                                            <th style="width:20%">Nombre Completo</th>
-                                            <th style="width:10%">Documento</th>
-                                            <th style="width:20%">Datos</th>
-                                            <th style="width:5%"></th>
+                                            <th style="width: 10%; text-align: right">Legajo</th>
+                                            <th style="width: 20%">Nombre Completo</th>
+                                            <th style="width: 10%; text-align: right">DNI</th>
+                                            <th style="width: 20%">Datos</th>
+                                            <th style="width: 5%"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -84,41 +86,51 @@
                     <div class="row">
                         <label class="col-sm-2 control-label editable">Legajo</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtLegajo" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtLegajo" Style="margin-left: 3%;"
+                                class="form-control" runat="server"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                            </asp:TextBox>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Nombre</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtNombre" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtNombre" Style="margin-left: 3%;"
+                                class="form-control" runat="server"
+                                oninput="this.value = this.value.replace(/[^a-zA-Z]/g, '');">
+                            </asp:TextBox>
                         </div>
                     </div>
-                     <div class="row" style="margin-top: 2%">
+                    <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Apellido</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtApellido" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtApellido" Style="margin-left: 3%;" 
+                                class="form-control" runat="server"
+                                oninput="this.value = this.value.replace(/[^a-zA-Z]/g, '');">
+                            </asp:TextBox>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">DNI</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtDNI" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtDNI" Style="margin-left: 3%;" class="form-control" runat="server" oninput="this.value = this.value.replace(/[^0-9]/g, '');"></asp:TextBox>
+                            <%--<asp:TextBox ID="txtDNI" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>--%>
                         </div>
                     </div>
-               
+
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Datos</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtDatos" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtDatos" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <asp:LinkButton runat="server" ID="btnGuardar" class="buttonLoading btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <asp:LinkButton runat="server" ID="btnGuardar"
+                        class="buttonLoading btn btn-primary"
+                        OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
                     <asp:HiddenField ID="hiddenEditar" runat="server" />
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
-
-
                 </div>
             </div>
         </div>
@@ -142,6 +154,14 @@
             ContentPlaceHolder1_txtDNI.value = "";
             ContentPlaceHolder1_txtDatos.value = "";
             window.history.pushState('', 'Alicuotas', location.protocol + '//' + location.host + location.pathname);
+        }
+
+        function vaciarInputs(){
+            document.getElementById('<%= txtLegajo.ClientID %>').value = "";
+            document.getElementById('<%= txtNombre.ClientID %>').value = "";
+            document.getElementById('<%= txtApellido.ClientID %>').value = "";
+            document.getElementById('<%= txtDNI.ClientID %>').value = "";
+            document.getElementById('<%= txtDatos.ClientID %>').value = "";
         }
     </script>
     <script>
@@ -213,4 +233,4 @@
             });
         });
     </script>
-    </asp:Content>
+</asp:Content>

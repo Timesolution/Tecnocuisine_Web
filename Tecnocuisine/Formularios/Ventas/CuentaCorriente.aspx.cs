@@ -46,7 +46,7 @@ namespace Tecnocuisine.Ventas
 
             if (Request.QueryString["FechaD"] != null)
             {
-            this.FechaD = (Request.QueryString["FechaD"]).ToString();
+                this.FechaD = (Request.QueryString["FechaD"]).ToString();
                 this.idCliente = Convert.ToInt32(Request.QueryString["p"]);
                 this.FechaH = (Request.QueryString["FechaH"]).ToString();
             }

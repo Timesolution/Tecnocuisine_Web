@@ -20,22 +20,23 @@
                                                             <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
 
 
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                                                            <input type="text" id="txtBusqueda" placeholder="Búsqueda..." class="form-control" style="width: 90%" />
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2">
-
-                                                        <a data-toggle="modal" data-backdrop="static" data-target="#ModalNuevoPais" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                                                        <a data-toggle="modal" data-backdrop="static" title="Agregar Cuenta bancaria"
+                                                            data-target="#ModalNuevoPais" class="btn btn-primary dim"
+                                                            style="margin-right: 1%; float: right"><i class='fa fa-plus'></i>
+                                                        </a>
                                                     </div>
                                                 </div>
                                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                                     <thead>
                                                         <tr>
-
-                                                            <th style="width:30%">Entidad Bancaria</th>
-                                                            <th style="width:30%">Numero de Cuenta</th>
-                                                            <th style="width:30%">Descripcion</th>
-                                                            <th style="width:10%"></th>
+                                                            <th style="width: 30%">Entidad Bancaria</th>
+                                                            <th style="width: 30%">Numero de Cuenta</th>
+                                                            <th style="width: 30%">Descripción</th>
+                                                            <th style="width: 10%"></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -50,121 +51,121 @@
                 </div>
             </div>
         </div>
-    <div id="ModalNuevoPais" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h2 class="modal-title">Agregar Cuenta Bancaria
-                        <span >
-                          
+        <div id="ModalNuevoPais" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h2 class="modal-title">Agregar Cuenta Bancaria
+                        <span>
+
                             <i class="fa fa-globe"></i>
                         </span>
-                    </h2>
-                </div>
-                <div class="modal-body">
+                        </h2>
+                    </div>
+                    <div class="modal-body">
 
-                    <div class="row">
-                        <div class="col-lg-12">
-                           
-                               
-                                
-                                    <div class="row">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail2" class="sr-only">Entidad Bancaria</label>
-                                            <asp:DropDownList  id="txtEntidadBancaria" runat="server" class="form-control"></asp:DropDownList>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputPassword2" class="sr-only">Numero/Cuenta</label>
-                                            <asp:TextBox runat="server" ID="txtNumeroCuenta" placeholder="Cuenta Numero" class="form-control"></asp:TextBox>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputPassword2" class="sr-only">Descripcion</label>
-                                            <asp:TextBox runat="server" ID="txtDescripcion" placeholder="Descripcion" class="form-control"></asp:TextBox>
-                                        </div>
-                                      <asp:Button class="btn btn-primary" Text="Registrar" runat="server" id="btnAgregar" OnClick="btnAgregar_Click"/>
-                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                        <div class="row">
+                            <div class="col-lg-12">
 
+
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail2" class="sr-only">Entidad Bancaria</label>
+                                        <asp:DropDownList ID="txtEntidadBancaria" runat="server" class="form-control"></asp:DropDownList>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword2" class="sr-only">Numero/Cuenta</label>
+                                        <asp:TextBox runat="server" ID="txtNumeroCuenta" placeholder="Cuenta Numero" class="form-control"></asp:TextBox>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword2" class="sr-only">Descripcion</label>
+                                        <asp:TextBox runat="server" ID="txtDescripcion" placeholder="Descripcion" class="form-control"></asp:TextBox>
+                                    </div>
+                                    <asp:Button class="btn btn-primary" Text="Registrar" runat="server" ID="btnAgregar" OnClick="btnAgregar_Click" />
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+
                                 </div>
-                            
-                        
-                       
+                            </div>
+
+
+
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-     <div id="modalConfirmacion2" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">Confirmar eliminacion</h4>
-                </div>
-                <div class="modal-body">
-                    <p>
-                        Esta seguro que lo desea eliminar?
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-white" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
-                    <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="buttonLoading btn btn-danger" OnClick="btnSi_Click" />
-                    <asp:HiddenField ID="hiddenID" runat="server" />
-                    <asp:HiddenField ID="Editar" runat="server" />
+        <div id="modalConfirmacion2" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Confirmar eliminacion</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            Esta seguro que lo desea eliminar?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+                        <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="buttonLoading btn btn-danger" OnClick="btnSi_Click" />
+                        <asp:HiddenField ID="hiddenID" runat="server" />
+                        <asp:HiddenField ID="Editar" runat="server" />
 
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-     <div id="ModalEditar" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h2 class="modal-title">Agregar Cuenta Bancaria
-                        <span >
-                          
-                            <i class="fa fa-globe"></i>
-                        </span>
-                    </h2>
-                </div>
-                <div class="modal-body">
-
-                    <div class="row">
-                        <div class="col-lg-12">
-                           
-                               
-                                
-                                    <div class="row">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail2" class="sr-only">Entidad Bancaria</label>
-                                            <asp:DropDownList  id="DropDownListEditar" runat="server" class="form-control"></asp:DropDownList>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputPassword2" class="sr-only">Numero/Cuenta</label>
-                                            <asp:TextBox runat="server" ID="txtNumeroEditar" placeholder="Cuenta Numero" class="form-control"></asp:TextBox>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputPassword2" class="sr-only">Descripcion</label>
-                                            <asp:TextBox runat="server" ID="txtDescripcionEditar" placeholder="Descripcion" class="form-control"></asp:TextBox>
-                                        </div>
-                                      <asp:Button class="btn btn-primary" Text="Registrar" runat="server" id="Button1" OnClick="btnEditar_Click"/>
-                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-
-                                    </div>
-                                </div>
-                            
-                        
-                       
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
+
+        <div id="ModalEditar" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h2 class="modal-title">Agregar Cuenta Bancaria
+                        <span>
+
+                            <i class="fa fa-globe"></i>
+                        </span>
+                        </h2>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-lg-12">
+
+
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail2" class="sr-only">Entidad Bancaria</label>
+                                        <asp:DropDownList ID="DropDownListEditar" runat="server" class="form-control"></asp:DropDownList>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword2" class="sr-only">Numero/Cuenta</label>
+                                        <asp:TextBox runat="server" ID="txtNumeroEditar" placeholder="Cuenta Numero" class="form-control"></asp:TextBox>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword2" class="sr-only">Descripcion</label>
+                                        <asp:TextBox runat="server" ID="txtDescripcionEditar" placeholder="Descripcion" class="form-control"></asp:TextBox>
+                                    </div>
+                                    <asp:Button class="btn btn-primary" Text="Registrar" runat="server" ID="Button1" OnClick="btnEditar_Click" />
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 
@@ -229,23 +230,15 @@
             parent.style = 'display:none';
             var div = document.getElementById('editable_filter');
             var button = document.createElement('a');
-            /* button.id = "btnAgregar";*/
             button.style.float = "right";
             button.style.marginRight = "1%";
-            //button.setAttribute("type", "button");
             button.setAttribute("href", "ProductosABM.aspx");
-            //button.setAttribute("href", "#modalAgregar");
-            //button.setAttribute("onclick", "vaciarFormulario()");
-            //button.setAttribute("data-toggle", "modal");
             button.setAttribute("class", "btn");
 
             button.innerHTML = "<i style='color: black' class='fa fa-plus'></i>";
             div.prepend(button);
             var filter = $("#editable_filter");
             filter[0].id = 'editable_filter2';
-
-            //var filter = $("#editable_length");
-            //filter[0].id = 'editable_length2';
 
 
             $('#txtBusqueda').on('keyup', function () {

@@ -18,24 +18,22 @@
 
                                                         <div class="input-group m-b">
                                                             <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
-
-
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                                                            <input type="text" id="txtBusqueda" placeholder="Búsqueda..." class="form-control" style="width: 90%" />
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2">
-
-                                                        <a data-toggle="modal" data-backdrop="static" data-target="#ModalNuevoPais" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                                                        <a data-toggle="modal" data-backdrop="static" title="Agregar entidad bancaria"
+                                                            data-target="#ModalNuevoPais" onclick="vaciarInputs()"
+                                                            class="btn btn-primary dim"
+                                                            style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
                                                     </div>
                                                 </div>
                                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                                     <thead>
                                                         <tr>
-
-                                                            <th style="width:40%">Codigo</th>
-                                                            <th style="width:40%" >Nombre</th>
-
-                                                            <th style="width:20%"></th>
+                                                            <th style="width: 40%">Codigo</th>
+                                                            <th style="width: 40%">Nombre</th>
+                                                            <th style="width: 20%"></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -59,8 +57,8 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                     <h2 class="modal-title">Entidades Bancarias
-                        <span >
-                          
+                        <span>
+
                             <i class="fa fa-globe"></i>
                         </span>
                     </h2>
@@ -69,33 +67,30 @@
 
                     <div class="row">
                         <div class="col-lg-12">
-                           
-                               
-                                
-                                    <div class="row">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail2" class="sr-only">Codigo</label>
-                                            <asp:TextBox placeholder="Codigo Bancario" id="txtCodigo" runat="server" class="form-control"></asp:TextBox>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="sr-only">Entidades Bancarias</label>
-                                            <asp:TextBox runat="server" placeholder="Entidad Bancaria" id="txtNombre" class="form-control"></asp:TextBox>
-                                        </div>
-                                      <asp:Button class="btn btn-primary" Text="Registrar" runat="server" id="btnAgregar" OnClick="btnAgregar_Click"/>
-                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-
-                                    </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail2" class="sr-only">Código</label>
+                                    <asp:TextBox placeholder="Codigo Bancario" ID="txtCodigo" runat="server" class="form-control"></asp:TextBox>
                                 </div>
-                            
-                        
-                       
+                                <div class="form-group">
+                                    <label class="sr-only">Entidades Bancarias</label>
+                                    <asp:TextBox runat="server" placeholder="Entidad Bancaria" ID="txtNombre" class="form-control"></asp:TextBox>
+                                </div>
+                                <asp:Button class="btn btn-primary" Text="Registrar" runat="server" ID="btnAgregar" OnClick="btnAgregar_Click" />
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+
+                            </div>
+                        </div>
+
+
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-     <div id="modalConfirmacion2" class="modal fade" role="dialog">
+    <div id="modalConfirmacion2" class="modal fade" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
@@ -103,8 +98,7 @@
                     <h3 class="modal-title">Confirmar eliminacion</h3>
                 </div>
                 <div class="modal-body">
-                    <h4>
-                        Esta seguro que lo desea eliminar?
+                    <h4>Esta seguro que lo desea eliminar?
                     </h4>
                 </div>
                 <div class="modal-footer">
@@ -209,6 +203,11 @@
         function abrirdialog(id) {
             $('#modalConfirmacion2').modal('show');
             document.getElementById('<%=hiddenID.ClientID%>').value = id;
+        }
+
+        function vaciarInputs(){
+            document.getElementById('<%=txtCodigo.ClientID%>').value = "";
+            document.getElementById('<%=txtNombre.ClientID%>').value = "";
         }
     </script>
 </asp:Content>

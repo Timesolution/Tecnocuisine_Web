@@ -15,105 +15,66 @@
             display: none;
         }
 
-        .hideBar{
-            display:none;
+        .hideBar {
+            display: none;
         }
 
         #editable span {
             display: none;
         }
-   
     </style>
-<%--    <div class="wrapper wrapper-content">
-        <div class="row animated fadeInRight">
-            <div class="container-fluid-nestable">
-                <div class="ibox nestable float-e-margins" style="padding: 1.5%;">
-                    <div class="ibox-title">
-                        <h5>Herramientas</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-                        <div class="row m-l m-r">
-                            <div class="col-md-12 text-right ">
-                                <a onclick="vaciarInputs();ModalAgregar()" data-toggle="tooltip" data-placement="top" title="Agregar" class="btn btn-primary"><i class="fa fa-plus"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>--%>
+
 
     <div class="wrapper wrapper-content">
         <div class="row animated fadeInRight">
             <div class="container-fluid-nestable">
 
                 <div class="ibox nestable float-e-margins" style="padding: 1.5%">
-<%--                    <div class="ibox-title">
-                        <h5>Empresas</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                        </div>
-                    </div>--%>
+
                     <div class="ibox-content">
-                    <div style="margin-left: 0px; margin-right: 0px;" class="row">
-                                                    <div class="col-md-10">
+                        <div style="margin-left: 0px; margin-right: 0px;" class="row">
+                            <div class="col-md-10">
 
-                                                        <div class="input-group m-b">
-                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
-
-
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-
-                                                        <a onclick="ModalAgregar()" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
-                                                    </div>
-                                                </div>
-                        <asp:UpdatePanel ID="UpdatePanel2" runat="server">
-
-                        <ContentTemplate>
+                                <div class="input-group m-b">
+                                    <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
 
 
-                        <div class="">
-                            <table class="table table-striped table-bordered table-hover" id="editable">
-                                <thead>
-                                    <tr>
-                                        <th>Razon Social</th>
-                                        <th>Cuit</th>
-                                        <th>Ingresos Brutos</th>
-                                        <th>Fecha de Inicio</th>
-                                        <th>Condicion IVA</th>
-                                        <th>Direccion</th>
-                                        <th>Alias</th>
-                                        <th>CBU</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="phEmpresas">
-                                     <asp:PlaceHolder ID="phEmpresas2" runat="server"></asp:PlaceHolder>
-                                </tbody>
-                            </table>
-                          <%--  <div id="Progressbars" class="progress progress-striped active">
-                                <div style="width: 100%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="75" role="progressbar" class="progress-bar progress-bar-danger">
-                                    <span class="sr-only">100% Complete (success)</span>
+                                    <input type="text" id="txtBusqueda" placeholder="Búsqueda..." class="form-control" style="width: 90%" />
                                 </div>
-                            </div>--%>
+                            </div>
+                            <div class="col-md-2">
+
+                                <a onclick="ModalAgregar()" class="btn btn-primary dim" title="Agregar empresa"
+                                    style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                            </div>
                         </div>
-                        </ContentTemplate>
+                        <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                            <ContentTemplate>
+                                <div class="">
+                                    <table class="table table-striped table-bordered table-hover" id="editable">
+                                        <thead>
+                                            <tr>
+                                                <th>Razon Social</th>
+                                                <th>Cuit</th>
+                                                <th>Ingresos Brutos</th>
+                                                <th>Fecha de Inicio</th>
+                                                <th>Condicion IVA</th>
+                                                <th>Direccion</th>
+                                                <th>Alias</th>
+                                                <th>CBU</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="phEmpresas">
+                                            <asp:PlaceHolder ID="phEmpresas2" runat="server"></asp:PlaceHolder>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </ContentTemplate>
                         </asp:UpdatePanel>
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 

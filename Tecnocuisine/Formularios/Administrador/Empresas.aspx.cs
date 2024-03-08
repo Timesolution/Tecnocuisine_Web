@@ -121,25 +121,11 @@ namespace Tecnocuisine.Formularios.Administrador
 
                 HtmlGenericControl btnEditar = new HtmlGenericControl("a");
                 btnEditar.Attributes.Add("class", "btn btn-xs");
-                btnEditar.Style.Add("background-color", "transparent");
+                //btnEditar.Style.Add("background-color", "transparent");
                 btnEditar.Style.Add("margin-right", "10px");
-                //btnEditar.Attributes.Add("title data-original-title", familia);
-                //btnEditar.Attributes.Add("data-toggle", "modal");
-                //btnEditar.Attributes.Add("title data-original-title", "Editar");
                 btnEditar.InnerHtml = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
                 btnEditar.Attributes.Add("OnClick", "vaciarInputs();ModalModificar('" + empresa.Id + "','" + empresa.Razon_Social + "','" + empresa.Cuit + "','" + empresa.Ingresos_Brutos + "','" + empresa.Condicion_IVA + "','" + empresa.Direccion + "','" + empresa.Alias + "','" + empresa.CBU + "'); ");
                 celAction.Controls.Add(btnEditar);
-
-                //LinkButton btnEditar = new LinkButton();
-                ////btnEditar.ID = "BtnEdit_" + empresa.id.ToString() + "_";
-                //btnEditar.OnClientClick = 
-                //btnEditar.CssClass = "btn btn-xs";
-                //btnEditar.Style.Add("background-color", "transparent");
-                ////btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                ////btnDetalles.Attributes.Add("title data-original-title", "Editar");
-                //btnEditar.Text = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
-
-                //celAction.Controls.Add(btnEditar);
 
 
                 Literal l = new Literal();
@@ -147,14 +133,10 @@ namespace Tecnocuisine.Formularios.Administrador
                 celAction.Controls.Add(l);
 
 
-
                 HtmlGenericControl btnEliminar = new HtmlGenericControl("a");
                 btnEliminar.Attributes.Add("class", "btn btn-xs");
-                btnEliminar.Style.Add("background-color", "transparent");
-                btnEliminar.Style.Add("margin-right", "10px");
-                //btnEliminar.Attributes.Add("title data-original-title", familia);
-                //btnEliminar.Attributes.Add("data-toggle", "modal");
-                //btnEliminar.Attributes.Add("title data-original-title", "Editar");
+                //btnEliminar.Style.Add("background-color", "transparent");
+                //btnEliminar.Style.Add("margin-right", "10px");
                 btnEliminar.InnerHtml = "<span><i style='color:black;' class='fa fa-trash'></i></span>";
                 btnEliminar.Attributes.Add("OnClick", "ModalConfirmacion(" + empresa.Id + ");");
 

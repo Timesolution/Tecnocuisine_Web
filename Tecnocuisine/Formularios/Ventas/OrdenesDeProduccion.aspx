@@ -24,12 +24,7 @@
                                                         </div>
                                                         <label style="margin-left: -40px; margin-top: 5px">Desde</label>
                                                         <div>
-                                                            <%--    <div class="form-group" id="data_1">
-                                                                <div style="margin-left: 8px" class="input-group date">
-                                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                                    <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
-                                                                </div>
-                                                            </div>--%>
+                                                         
 
                                                             <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy"
                                                                 data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;">
@@ -38,13 +33,7 @@
                                                         </div>
                                                         <label style="margin-top: 5px; margin-left: 10px">Hasta</label>
                                                         <div>
-                                                            <%--   <div class="form-group" id="data_2">
-                                                                <div style="margin-left: 8px" class="input-group date">
-                                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                                    <asp:TextBox class="form-control" runat="server" ID="txtFechaVencimiento"
-                                                                        Style="margin-left: 0px; width: 100%;"></asp:TextBox>
-                                                                </div>
-                                                            </div>--%>
+                                                       
                                                             <asp:TextBox class="form-control" runat="server" type="date"
                                                                 ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy"
                                                                 Style="margin-left: 0px; width: 100%;"></asp:TextBox>
@@ -100,19 +89,7 @@
                                                     </tbody>
                                                 </table>
 
-                                                <%--                                                <style>
-                                                    #accionesTabla{
-                                                        color: red;
-                                                    }
-                                                    @media screen and (max-width: 1230px) {
-                                                        #editable{
-                                                            width: 80%;
-                                                        }
-                                                        #accionesTabla {
-                                                            width: 20px;
-                                                        }
-                                                    }                                                 
-                                                </style>--%>
+                                          
 
                                                 <asp:TextBox runat="server" ID="IDsOrdenesDeProduccion" Text="" Style="display: none"></asp:TextBox>
 
@@ -147,17 +124,13 @@
                 </div>
                 <div class="modal-body">
                     <div id="MainContent_UpdatePanel2">
-
-
                         <div role="form" class="form-horizontal col-md-12">
                         </div>
                     </div>
                 </div>
 
 
-
                 <div class="modal-footer" style="border-color: transparent;">
-
                     <input type="hidden" name="ctl00$ContentPlaceHolder1$hiddenEditar" id="ContentPlaceHolder1_hiddenEditar">
                     <button type="button" class="btn btn-danger" data-dismiss="modal" title="Cancelar"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
                 </div>
@@ -198,11 +171,11 @@
         $(document).ready(function () {
             $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 
-            var oTable = $('#editable').dataTable({
-                "bLengthChange": false,
-                "pageLength": 100, // Establece la cantidad predeterminada de registros por página
-                "lengthMenu": [25, 50, 87, 100], // Opciones de cantidad de registros por página
-            });
+       //     var oTable = $('#editable').dataTable({
+       //         "bLengthChange": false,
+       //         "pageLength": 100, // Establece la cantidad predeterminada de registros por página
+       //         "lengthMenu": [25, 50, 87, 100], // Opciones de cantidad de registros por página
+       //     });
 
             oTable.$('td').editable('../example_ajax.php', {
                 "callback": function (sValue, y) {
@@ -277,16 +250,16 @@
 
 
         function establecerDiaHoy() {
-        var fechas = obtenerRangoFechas();
-        // Convertir la fecha en un formato legible para el DatePicker   
-        var fechaFormateada1 = (fechas.primerDia.getFullYear() + '/' + (fechas.primerDia.getMonth() + 1) + '/' + fechas.diaActual.getDate())
-        var fechaFormateada2 = (fechas.ultimoDia.getFullYear() + '/' + (fechas.ultimoDia.getMonth() + 1) + '/' + fechas.diaActual.getDate())
+            var fechas = obtenerRangoFechas();
+            // Convertir la fecha en un formato legible para el DatePicker   
+            var fechaFormateada1 = (fechas.primerDia.getFullYear() + '/' + (fechas.primerDia.getMonth() + 1) + '/' + fechas.diaActual.getDate())
+            var fechaFormateada2 = (fechas.ultimoDia.getFullYear() + '/' + (fechas.ultimoDia.getMonth() + 1) + '/' + fechas.diaActual.getDate())
 
 
-        document.getElementById("ContentPlaceHolder1_txtFechaHoy").value = formatearFechas(fechaFormateada1);
-        document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value = formatearFechas(fechaFormateada2);;
+            document.getElementById("ContentPlaceHolder1_txtFechaHoy").value = formatearFechas(fechaFormateada1);
+            document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value = formatearFechas(fechaFormateada2);;
 
-    }
+        }
 
          function obtenerRangoFechas() {
          var fechaActual = new Date(); // Obtiene la fecha actual

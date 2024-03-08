@@ -9,32 +9,32 @@
 
                 <div class="ibox-content">
                     <div style="margin-left: 0px; margin-right: 0px;" class="row">
-                                                    <div class="col-md-10">
+                        <div class="col-md-10">
 
-                                                        <div class="input-group m-b">
-                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                            <div class="input-group m-b">
+                                <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
 
 
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
+                                <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
 
-                                                        <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
-                                                    </div>
-                                                </div>
+                            <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                        </div>
+                    </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
-                            <div class="table-responsive"  >
-                                <table class="table table-striped table-bordered table-hover " id="editable" >
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover " id="editable">
                                     <thead>
                                         <tr>
                                             <th style="width: 10%">Codigo</th>
-                                            <th style="width:30%">Descripcion</th>
-                                            <th style="width:15%">Grupo</th>
-                                            <th style="width:10%">Ultima Actualizacion</th>
-                                            <th style="width:8%">Precio Venta</th>
-                                            <th style="width:5%"></th>
+                                            <th style="width: 30%">Descripcion</th>
+                                            <th style="width: 15%">Grupo</th>
+                                            <th style="width: 10%">Ultima Actualizacion</th>
+                                            <th style="width: 8%">Precio Venta</th>
+                                            <th style="width: 5%"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -85,26 +85,26 @@
                     <div class="row">
                         <label class="col-sm-2 control-label editable">Codigo</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtCodigo" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtCodigo" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Codigo Barra</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtCodigoBarra" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtCodigoBarra" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Descripcion</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtDescripcion" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtDescripcion" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
                         </div>
                     </div>
-                   
+
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Marca</label>
                         <div class="col-sm-8">
-                            <asp:DropDownList ID="ListMarca" style="margin-left: 3%;" class="form-control m-b" runat="server">
+                            <asp:DropDownList ID="ListMarca" Style="margin-left: 3%;" class="form-control m-b" runat="server">
                             </asp:DropDownList>
                         </div>
 
@@ -112,12 +112,12 @@
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Grupo</label>
                         <div class="col-sm-8">
-                            <asp:DropDownList ID="ListGrupo" style="margin-left: 3%;"  class="form-control m-b" runat="server">
+                            <asp:DropDownList ID="ListGrupo" Style="margin-left: 3%;" class="form-control m-b" runat="server">
                             </asp:DropDownList>
                         </div>
 
                     </div>
-                 <%--    <div class="row" style="margin-top: 2%">
+                    <%--    <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">SubGrupo</label>
                         <div class="col-sm-8">
                             <asp:DropDownList ID="ListSubgrupo" style="margin-left: 3%;" class="form-control m-b" runat="server">
@@ -126,18 +126,18 @@
                         </div>
 
                     </div>--%>
-                     <div class="row" style="margin-top: 2%">
+                    <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Categoria</label>
                         <div class="col-sm-8">
-                            <asp:DropDownList ID="ListCategoria" style="margin-left: 3%;" class="form-control m-b" runat="server">
+                            <asp:DropDownList ID="ListCategoria" Style="margin-left: 3%;" class="form-control m-b" runat="server">
                             </asp:DropDownList>
                         </div>
 
                     </div>
-                     <div class="row" style="margin-top: 2%">
+                    <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">IVA</label>
                         <div class="col-sm-8">
-                            <asp:DropDownList ID="ListAlicuotas" style="margin-left: 3%;" class="form-control m-b" runat="server">
+                            <asp:DropDownList ID="ListAlicuotas" Style="margin-left: 3%;" class="form-control m-b" runat="server">
                             </asp:DropDownList>
                         </div>
 
@@ -145,38 +145,38 @@
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Costo FC</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtCosto" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtCosto" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Precio de venta</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtPrecioVenta" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtPrecioVenta" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Fecha alta</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtFechaAlta" style="margin-left: 3%;" disabled="disabled" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtFechaAlta" Style="margin-left: 3%;" disabled="disabled" class="form-control" runat="server"></asp:TextBox>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Fecha actualizacion</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtFechaActualizacion" disabled="disabled" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtFechaActualizacion" disabled="disabled" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Fecha modificacion</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtFechaModificacion" style="margin-left: 3%;" disabled="disabled" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtFechaModificacion" Style="margin-left: 3%;" disabled="disabled" class="form-control" runat="server"></asp:TextBox>
                         </div>
                     </div>
-                    
+
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Observaciones</label>
                         <div class="col-sm-8">
-                            <asp:TextBox ID="txtObservaciones" style="margin-left: 3%;" class="form-control" runat="server" ></asp:TextBox>
+                            <asp:TextBox ID="txtObservaciones" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
                         </div>
                     </div>
                 </div>
@@ -190,7 +190,7 @@
             </div>
         </div>
     </div>
-<%--    <script>
+    <%--    <script>
         $(document).ready(function () {  
             $(document).on('change', "#ContentPlaceHolder1_ListGrupo", function () {
                 var idGrupo = document.getElementById('ContentPlaceHolder1_ListGrupo');
@@ -330,7 +330,7 @@
             });
         });
     </script>
-     <script src="/../Scripts/autoNumeric/autoNumeric.js"></script>
+    <script src="/../Scripts/autoNumeric/autoNumeric.js"></script>
     <script>
 
         $(document).ready(function () {
@@ -340,4 +340,4 @@
             $('#ContentPlaceHolder1_txtPrecioVenta').autoNumeric('init', { vMin: '0.00', vMax: '99999999999.99', aSign: '', aSep: ',', aPad: false, mDec: '2', aDec: '.', aForm: false })
         })
     </script>
-    </asp:Content>
+</asp:Content>

@@ -219,7 +219,7 @@
                             </ul>
 
                             <ul class="nav nav-second-level">
-                                <li><a style="color: white !important;" href="../../Formularios/Caja/TarjetaDeCredito.aspx">Tarjeta de Credito</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/TarjetaDeCredito.aspx">Tarjeta de Crédito</a></li>
                             </ul>
                         </li>
 
@@ -285,6 +285,9 @@
                                     <a style="color: white !important;" href="../..\Formularios\Ventas\Produccion.aspx">Producción </a>
                                 </li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Recetas.aspx">Recetas</a></li>
+                                <li>
+                                    <a style="color: white !important;" href="../../Formularios/Ventas/PedidosOrdenes.aspx">Pedidos</a>
+                                </li>
                             </ul>
                         </li>
 
@@ -324,8 +327,8 @@
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/InsumosF.aspx">Tipos de Atributos</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Unidades.aspx">Unidades de medida</a></li>
 
-                                <%--                                        <li><a style="color: white !important;" href="../../Formularios/Maestros/Grupos.aspx">Grupos</a></li>
-                                        <li><a style="color: white !important;" href="../../Formularios/Maestros/Subgrupos.aspx">Subgrupos</a></li>--%>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Grupos.aspx">Grupos</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Subgrupos.aspx">Subgrupos</a></li>
                             </ul>
                         </li>
 
@@ -341,9 +344,9 @@
                             </a>
                             <ul class="nav nav-second-level">
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Alicuotas.aspx">Alicuotas IVA</a></li>
-                                <li><a style="color: white !important;" href="../../Formularios/Administrador/Empresas.aspx">Empresa</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Administrador/Empresas.aspx">Empresas</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/EstadoClientes.aspx">Estados de clientes</a></li>
-                                <li><a style="color: white !important;" href="../../Formularios/Administrador/Paises.aspx">Paises</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Administrador/Paises.aspx">Países</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Administrador/PanelDeControl.aspx">Panel de Control</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Administrador/PuntosDeVenta.aspx">Puntos de Venta</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Administrador/Sectores.aspx">Sectores</a></li>

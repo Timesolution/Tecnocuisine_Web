@@ -40,7 +40,7 @@
                                                             <div class="input-group m-b">
                                                                 <div style="display: flex;">
                                                                     <span class="input-group-addon" style="padding-right: 15%;"><i style='color: black;' class='fa fa-search'></i></span>
-                                                                    <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 100%" />
+                                                                    <input type="text" id="txtBusqueda" placeholder="Búsqueda..." class="form-control" style="width: 100%" />
                                                                 </div>
                                                             </div>
                                                            
@@ -63,7 +63,13 @@
                                                                     </div>
                                                                     <div class="col-md-8">
 
-                                                                        <asp:TextBox class="form-control" runat="server" type="date" ID="txtFechaVencimiento" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                                        <asp:TextBox class="form-control" runat="server" type="date" ID="txtFechaVencimiento"
+                                                                            Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                                        <div>
+                                                                            <p id="validaFechaHasta" class="text-danger text-hide">
+                                                                                * La fecha debe ser mayor a desde 
+                                                                            </p>
+                                                                        </div>
 
                                                                     </div>
                                                                 </div>
@@ -82,10 +88,7 @@
                                                                     
                                                                 </div>
                                                             </div>
-                                                            <%--  <div class="input-group m-b" 30%>
-                                                                <a id="btnFiltrar" onclick="FiltrarVentas()" class="btn btn-primary"><i class="fa fa-paper-plane"></i>&nbsp;Filtrar </a>
-
-                                                            </div>--%>
+                                                     
                                                         </div>
 
 
@@ -220,6 +223,12 @@
                 proveedorValiva.className = "text-danger text-hide"
             }
 
+            let formValido = validarFecha();
+            if(formValido == false){
+                return;
+            }
+         
+
             window.location.href = "Contado.aspx?p=" + Proveedor.split("-")[0].trim() + "&FechaD=" + FechaD + "&FechaH=" + FechaH;
         }
         function ValidarProveedor() {
@@ -231,13 +240,27 @@
                 proveedorValiva.className = "text-danger text-hide"
             }
         }
+
+         function validarFecha(){
+            let formValido = false;
+            let fechaDesde = document.getElementById("<%=txtFechaHoy.ClientID%>").value;
+            let fechaHasta = document.getElementById("<%=txtFechaVencimiento.ClientID%>").value;
+
+            let fechaHastaValiva = document.getElementById("validaFechaHasta");
+            if(fechaHasta < fechaDesde){
+                fechaHastaValiva.className = "text-danger"
+                formValido = false;
+            }
+            else{
+                fechaHastaValiva.className = "text-danger text-hide"
+                formValido = true;
+            }
+            return formValido
+         }
+
         function establecerDiaHoy() {
             var fechaActual = new Date();
-            // Convertir la fecha en un formato legible para el DatePicker   
             var fechaFormateada = (fechaActual.getFullYear() + '/' + (fechaActual.getMonth() + 1) + '/' + fechaActual.getDate())
-            // Establecer la fecha actual como valor predeterminado del DatePicker 
-            //$('#ContentPlaceHolder1_txtFechaHoy').datepicker('setDate', fechaFormateada);
-            //$('#ContentPlaceHolder1_txtFechaHoy').datepicker('todayBtn', true);
             var partes = fechaFormateada.split('/');
             var dia = partes[2];
             var mes = partes[1];

@@ -117,6 +117,7 @@ namespace Tecnocuisine.Compras
 
                 }
                 SaldoTotal.Value = FormatearNumero(total);
+
             }
             catch (Exception ex) { }
         }

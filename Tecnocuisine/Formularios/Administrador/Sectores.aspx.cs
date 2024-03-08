@@ -64,10 +64,7 @@ namespace Tecnocuisine.Formularios.Administrador
                 btnEditar.Attributes.Add("class", "btn btn-xs");
                 btnEditar.Style.Add("background-color", "transparent");
                 btnEditar.Style.Add("margin-right", "10px");
-                //btnEditar.Attributes.Add("title data-original-title", familia);
-                //btnEditar.Attributes.Add("data-toggle", "modal");
-                //btnEditar.Attributes.Add("title data-original-title", "Editar");
-                btnEditar.InnerHtml = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
+                btnEditar.InnerHtml = "<span><i style='color:black;' class='fa fa-pencil' title='Editar'></i></span>";
                 btnEditar.Attributes.Add("OnClick", "vaciarInputs();ModalModificar('" + sector.id + "','" + sector.nombre + "','" + sector.id_emp + "'); ");
                 celAction.Controls.Add(btnEditar);
 
@@ -80,10 +77,7 @@ namespace Tecnocuisine.Formularios.Administrador
                 btnEliminar.Attributes.Add("class", "btn btn-xs");
                 btnEliminar.Style.Add("background-color", "transparent");
                 btnEliminar.Style.Add("margin-right", "10px");
-                //btnEliminar.Attributes.Add("title data-original-title", familia);
-                //btnEliminar.Attributes.Add("data-toggle", "modal");
-                //btnEliminar.Attributes.Add("title data-original-title", "Editar");
-                btnEliminar.InnerHtml = "<span><i style='color:black;' class='fa fa-trash'></i></span>";
+                btnEliminar.InnerHtml = "<span><i style='color:red;' class='fa fa-trash' title='Eliminar'></i></span>";
                 btnEliminar.Attributes.Add("OnClick", "ModalConfirmacion(" + sector.id + ");");
 
 

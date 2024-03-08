@@ -107,6 +107,11 @@ namespace Tecnocuisine
             {
                 Tecnocuisine_API.Entitys.Entidades clientes = controladorEntidad.ObtenerEntidadPorID(idCli);
                 AliasCliente.Value = clientes == null ? "Todos" : clientes.descripcion;
+
+                this.FechaDesde.Value = this.FechaD;
+                this.FechaHasta.Value = this.FechaH;
+                this.ddlEntidad.Value = idCli.ToString();
+                this.ddlOpciones.Value = option.ToString();
                 string FechaDesde = ConvertDateFormat(FechaD);
                 string FechaHasta = ConvertDateFormat(FechaH);
                 var dt = controladorTarjetaDeCreditoVenta.FiltrarCuentaCorrienteVentas(FechaD, FechaH, idCli, option);
@@ -458,7 +463,7 @@ namespace Tecnocuisine
                 //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                 //btnDetalles.Attributes.Add("title data-original-title", "Editar");
                 btnDetalles.ID = "btnSelec_" + insumo.id + "_";
-                btnDetalles.Text = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
+                btnDetalles.Text = "<span><i style='color:black;' class='fa fa-pencil' title='Editar tarjeta'></i></span>";
                 btnDetalles.Click += new EventHandler(this.editarInsumo);
                 celAccion.Controls.Add(btnDetalles);
 
@@ -472,7 +477,7 @@ namespace Tecnocuisine
                 btnEliminar.Style.Add("background-color", "transparent");
                 btnEliminar.Attributes.Add("data-toggle", "modal");
                 btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                btnEliminar.Text = "<span><i style='color:black' class='fa fa-trash - o'></i></span>";
+                btnEliminar.Text = "<span><i style='color:red' class='fa fa-trash - o' title='Eliminar'></i></span>";
                 btnEliminar.OnClientClick = "abrirdialog(" + insumo.id + ");";
                 celAccion.Controls.Add(btnEliminar);
 

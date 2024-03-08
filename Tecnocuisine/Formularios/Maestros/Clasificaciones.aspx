@@ -6,28 +6,28 @@
         <div class="container-fluid">
 
             <div class="ibox float-e-margins">
-               
+
 
                 <div class="ibox-content">
-                     <div style="margin-left: 0px; margin-right: 0px;" class="row">
-                                                    <div class="col-md-10">
+                    <div style="margin-left: 0px; margin-right: 0px;" class="row">
+                        <div class="col-md-10">
 
-                                                        <div class="input-group m-b">
-                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                            <div class="input-group m-b">
+                                <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
 
 
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
+                                <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
 
-                                                        <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
-                                                    </div>
-                                                </div>
+                            <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                        </div>
+                    </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
-                            <div class="table-responsive"  >
-                                <table class="table table-striped table-bordered table-hover " id="editable" >
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover " id="editable">
 
                                     <thead>
                                         <tr>
@@ -83,7 +83,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                       <div class="col-sm-1">
+                        <div class="col-sm-1">
                             <label style="color: red;" class="danger">*</label>
                         </div>
                         <label class="col-sm-2 control-label editable">Codigo</label>
@@ -92,7 +92,7 @@
 
                         </div>
                     </div>
-                  
+
 
                     <div class="form-group" style="padding-top: 7%">
                         <div class="col-sm-1">

@@ -175,10 +175,8 @@ namespace Tecnocuisine
                 LinkButton btnDetalles = new LinkButton();
                 btnDetalles.CssClass = "btn btn-xs";
                 btnDetalles.Style.Add("background-color", "transparent");
-                //btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                //btnDetalles.Attributes.Add("title data-original-title", "Editar");
                 btnDetalles.ID = "btnSelec_" + rubro.id + "_";
-                btnDetalles.Text = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
+                btnDetalles.Text = "<span><i style='color:black;' class='fa fa-pencil' title='Editar rubro'></i></span>";
                 btnDetalles.Click += new EventHandler(this.editarPresentacion);
                 celAccion.Controls.Add(btnDetalles);
 
@@ -192,7 +190,7 @@ namespace Tecnocuisine
                 btnEliminar.Style.Add("background-color", "transparent");
                 btnEliminar.Attributes.Add("data-toggle", "modal");
                 btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                btnEliminar.Text = "<span><i style='color:black' class='fa fa-trash - o'></i></span>";
+                btnEliminar.Text = "<span><i style='color:red' class='fa fa-trash - o' title='Eliminar'></i></span>";
                 btnEliminar.OnClientClick = "abrirdialog(" + rubro.id + ");";
                 celAccion.Controls.Add(btnEliminar);
 

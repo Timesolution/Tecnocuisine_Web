@@ -72,8 +72,12 @@
                                                         <label>Descripción *</label>
                                                     </div>
                                                     <div class="col-md-8">
-                                                        <asp:TextBox ID="ProdDescripcion" runat="server" class="form-control required"
-                                                            pattern="[a-zA-Z0-9-]+" title="Solo se permiten letras, números y el guion -"></asp:TextBox>
+                                                       <%-- <asp:TextBox ID="ProdDescripcion" runat="server" class="form-control required" 
+                                                            pattern="[a-zA-Z0-9-]+" title="Solo se permiten letras, números y el guion -" ></asp:TextBox>--%>
+
+                                                         <asp:TextBox ID="ProdDescripcion" runat="server" class="form-control required" 
+                                                         title="Solo se permiten letras, números y el guion -" onchange="ActualizarLabels()"></asp:TextBox>
+
 
                                                         <%--<input id="ProdDescripcion" onchange="ActualizarLabels()" name="ProdDescripcion" type="text" class="form-control required" />--%>
                                                         <p id="ValivaDescripcion" class="text-danger text-hide">Tienes que ingresar una Descripcion</p>

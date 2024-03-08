@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" EnableEventValidation="false" CodeBehind="CobrosRealizados.aspx.cs" Inherits="Tecnocuisine.Formularios.Caja.CobrosRealizados" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    
+
     <div class="wrapper wrapper-content">
         <div class="ibox-content m-b-sm border-bottom" style="margin-top: 10px; padding-top: 0px;">
             <div class="p-xs">
@@ -33,15 +33,15 @@
                                                                     <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 100%" />
                                                                 </div>
                                                             </div>
-                                                           
-                                                           <div class="input-group m-b row">
+
+                                                            <div class="input-group m-b row">
                                                                 <div class="row">
                                                                     <div class="col-md-2" style="margin-left: 15px; margin-right: 15px;">
                                                                         <label class="col-md-4" style="margin-top: 5px;">Desde</label>
                                                                     </div>
                                                                     <div class="col-md-8">
 
-                                                                        <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy"  Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                                        <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
 
                                                                     </div>
                                                                 </div>
@@ -52,25 +52,28 @@
                                                                         <label style="margin-top: 5px;" class="col-md-4">Hasta</label>
                                                                     </div>
                                                                     <div class="col-md-8">
-
                                                                         <asp:TextBox class="form-control" runat="server" type="date" ID="txtFechaVencimiento" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
-
+                                                                        <div>
+                                                                            <p id="validaFechaHasta" class="text-danger text-hide">
+                                                                                * La fecha debe ser mayor a desde 
+                                                                            </p>
+                                                                        </div>
                                                                     </div>
-                                                        </div>
-                                                    </div>
+                                                                </div>
+                                                            </div>
 
                                                             <div class="input-group m-b">
                                                                 <div class="row">
-                                                                    <div  class="col-md-2"  style="margin-right: 15px;">
-                                                                <label style="margin-top: 5px;" class="col-md-4">Cliente</label>
+                                                                    <div class="col-md-2" style="margin-right: 15px;">
+                                                                        <label style="margin-top: 5px;" class="col-md-4">Cliente</label>
                                                                     </div>
                                                                     <div class="col-md-8">
-                                                              
-                                                                    <datalist id="ListClientes" runat="server"></datalist>
-                                                                    <input name="txtProveedor" type="text" id="txtCliente" list="ContentPlaceHolder1_ListClientes" class="form-control" style="margin-left:15px;margin-bottom: 15px; width: 100%;">
-                                                                    <p id="ValivaCliente" class="text-danger text-hide">Tienes que ingresar un Cliente</p>
-                                                                </div>
-                                                                    
+
+                                                                        <datalist id="ListClientes" runat="server"></datalist>
+                                                                        <input name="txtProveedor" type="text" id="txtCliente" list="ContentPlaceHolder1_ListClientes" class="form-control" style="margin-left: 15px; margin-bottom: 15px; width: 100%;">
+                                                                        <p id="ValivaCliente" class="text-danger text-hide">Tienes que ingresar un Cliente</p>
+                                                                    </div>
+
                                                                 </div>
                                                             </div>
                                                             <%--  <div class="input-group m-b" 30%>
@@ -93,7 +96,7 @@
                                                     <thead>
                                                         <tr>
 
-                                                            <th style="text-align: right; width: 2%">ID</th>
+                                                            <th style="text-align: right; width: 2%">#</th>
                                                             <th style="width: 7%">Fecha</th>
                                                             <th style="text-align: left; width: 10%">Cliente</th>
                                                             <th style="text-align: right; width: 5%">Recibo N°</th>
@@ -186,11 +189,11 @@
     <script src="../Scripts/plugins/toastr/toastr.min.js"></script>
     <script src="/../Scripts/plugins/staps/jquery.steps.min.js"></script>
     <script src="../../js/plugins/datapicker/bootstrap-datepicker.js"></script>
-     <style>
-            #editable_length {
-                margin-left: 0px !important;
-}
-        </style>
+    <style>
+        #editable_length {
+            margin-left: 0px !important;
+        }
+    </style>
     <script>
         $(document).ready(function () {
             $("body").tooltip({ selector: '[data-toggle=tooltip]' });
@@ -260,6 +263,12 @@
             let FechaH = document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value.replaceAll("-","/")
             let Cliente = document.getElementById("txtCliente").value
             let ClienteValiva = document.getElementById("ValivaCliente");
+
+            let formValido = validarFecha();
+            if(formValido == false){
+                return;
+            }
+
             if (Cliente == "") {
                 ClienteValiva.className = "text-danger"
                 return
@@ -301,6 +310,9 @@
             let FechaH = document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value
             let Clientes = document.getElementById("txtProveedor").value
             let proveedorValiva = document.getElementById("ValivaCliente");
+
+         
+
             if (Clientes == "") {
                 proveedorValiva.className = "text-danger"
                 return
@@ -310,6 +322,24 @@
 
             window.location.href = "Ventas.aspx?c=" + Clientes.split("-")[0].trim() + "&FechaD=" + FechaD + "&FechaH=" + FechaH;
         }
+
+
+       function validarFecha(){
+          let formValido = false;
+          let fechaDesde = document.getElementById("<%=txtFechaHoy.ClientID%>").value;
+          let fechaHasta = document.getElementById("<%=txtFechaVencimiento.ClientID%>").value;
+  
+          let fechaHastaValiva = document.getElementById("validaFechaHasta");
+          if(fechaHasta < fechaDesde){
+              fechaHastaValiva.className = "text-danger"
+              formValido = false;
+          }
+          else{
+              fechaHastaValiva.className = "text-danger text-hide"
+              formValido = true;
+          }
+          return formValido
+       }
     </script>
 </asp:Content>
 
