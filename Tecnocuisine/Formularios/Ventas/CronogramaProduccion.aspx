@@ -31,10 +31,6 @@
                     <div class="pull-left m-r-md">
                         <i class="fa fa-cutlery text-navy mid-icon"></i>
                     </div>
-<%--                    <%foreach (System.Data.DataRow dtCantidadXProducto in dtCantidadRecetasPorCadaOrden.Rows)
-                        {%>
-                    <h4><%= dtCantidadXProducto["Producto"].ToString() %> :  <%= dtCantidadXProducto["cantidad"].ToString() %></h4>
-                    <% } %>--%>
                 </div>
             </div>
         </div>
@@ -44,34 +40,13 @@
 
 
     <%-- De aca en adelante, se van a generar widgets de manera dinamica --%>
-    <%-- Este va a ser el primer widget que se cree --%>
-    <%
-        int PrimerVuelta = 0; //Esta variable la uso como bandera para saber si estoy en la primera vuelta del foreach
-
-        string SectorActual = null;
-        int widgetCount = 0; // Variable para contar widgets
-        int SegundoWiggetEnAdelante = 0; // Variable para contar widgets
-
-        //Este foreach recorre una datatable que tiene productos ordenados por sector productivo, y va a crear un
-        //widget por cada sector distinto
-        foreach (System.Data.DataRow dr in dt.Rows)
-        {
-            widgetCount++; // Incrementa el contador de widgets
-            bool isCollapsed = widgetCount > 0;
-            if (PrimerVuelta == 0)
-            {
-                SectorActual = dr["SectorProductivo"].ToString().ToUpper();
-                PrimerVuelta++;
-
-    %>
-
-    <%-- A partir de aca en adelante va a crear widgets de manera dinamica --%>
+    <% foreach (var kvp in sectorTables)
+        {%>
     <div class="row">
         <div class="col-lg-12">
-            <div class="ibox float-e-margins" id="widget<%= SegundoWiggetEnAdelante %>" data-collapsed="<%= isCollapsed.ToString().ToLower() %>">
+            <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5><%= dr["SectorProductivo"].ToString().ToUpper() %></h5>
-
+                    <h5><%= kvp.Key.ToString()%></h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -86,121 +61,78 @@
 
                 </div>
 
-                <div class="ibox-content">
-                    <table class="table table-hover no-margins table-bordered">
+                <div class="ibox-content" style="display: none;">
+                    <table class="table table-hover table-bordered" style="padding-left: 10px">
                         <thead>
                             <tr>
-                                <%-- Este for crea las columnas de la cabecera --%>
-                                <%for (int i = 6; i > 0; i--)
-                                    {%>
-                                <%DateTime fecha = fechaOrdenDeProduccion.AddDays(-i); %>
-                                <td><strong><%= fecha.ToString("dd/MM/yyyy") %></strong></td>
-                                <%  } %>
-                                <%-- Esta es la ultima columna de la cabecera, y ademas es la fecha de la orden de produccion --%>
-                                <td><strong><%= fechaOrdenDeProduccion.ToString("dd/MM/yyyy") %></strong></td>
+                                <%foreach (System.Data.DataRow col in kvp.Value.DefaultView.Table.Rows)
+                                {%>
+                                <%fechasHead.Add(col["fechaProducto"].ToString()); %>
+                                <%} %>
+                                <%foreach (var item in fechasHead)
+                                {%>
+                                <td><%=item.ToString() %></td>
+                                <%} %>
                             </tr>
                         </thead>
                         <tbody>
-                            <%
-                                List<int> listaDeNumeros = new List<int>();
-                                int DiasActual = -1;
-                                int Flag = 0;
-                                int countRows = 0;
-                                int CantidadDeDiasPorgrupo = 0;
-                            %>
-                            <%
-                                foreach (System.Data.DataRow dataRow in dt.Rows)
-                                {
-                                    if (dataRow["SectorProductivo"].ToString().ToUpper() == SectorActual)
-                                    {
-                                        countRows++;
-                                    }
-                                    listaDeNumeros.Add(countRows);
-                                }
-                            %>
-                            <%
-                                listaDeNumeros.Sort((a, b) => -a.CompareTo(b));
-                                int CantFilas = listaDeNumeros.Count > 0 ? listaDeNumeros[0] : 0;
-                                string[,] matriz = new string[CantFilas, 7];
-                                for (int i = 0; i < CantFilas; i++)
-                                {
-                                    for (int j = 0; j < 7; j++)
-                                    {
-                                        matriz[i, j] = "-"; // Inicializa cada posición con un espacio en blanco
-                                    }
-                                }
-                            %>
-                            <%
-                                int filas = 0;
-                                int DiasAct = -1;
-                                int Bandera = 0;
-                                foreach (System.Data.DataRow dataRow in dt.Rows)
-                                {
+                            <% sectorTablesGroupByFechas = new Dictionary<string, System.Data.DataTable>();%>
+                            <%foreach (System.Data.DataRow col1 in kvp.Value.DefaultView.Table.Rows)
+                              { 
+                                    string sector = col1["fechaProducto"].ToString();
 
-                                    if (dataRow["SectorProductivo"].ToString() == SectorActual)
-                                    {
-                                        if (Bandera == 0)
+                                        if (!sectorTablesGroupByFechas.ContainsKey(sector))
                                         {
-                                            Bandera++;
-                                            DiasAct = Convert.ToInt32(dataRow["DiasMasNivel"].ToString());
-                                            matriz[filas, 6 - Convert.ToInt32(dataRow["DiasMasNivel"].ToString())] = dataRow["ProductoOReceta"].ToString() + ";" + dataRow["Descripcion"].ToString() + ";" + dataRow["id"].ToString() + ";" + dataRow["Cantidad"].ToString() + ";" + dataRow["Nivel"].ToString() + ";" + dataRow["DiasMasNivel"].ToString() + ";" + dataRow["descripcionReceta"].ToString() + ";" + dataRow["idReceta"].ToString();
-                                            
+                                            System.Data.DataTable newTable = dtGlobal.Clone();
+                                            newTable.TableName = sector;
+                                            sectorTablesGroupByFechas.Add(sector, newTable);
                                         }
 
-                                        else
-                                        {
-                                            if (Convert.ToInt32(dataRow["DiasMasNivel"].ToString()) != DiasAct)
-                                            {
-                                                DiasAct = Convert.ToInt32(dataRow["DiasMasNivel"].ToString());
-                                                filas = 0;
-                                            }
-                                            else
-                                            {
-                                                filas++;
-                                            }
-                                            matriz[filas, 6 - Convert.ToInt32(dataRow["DiasMasNivel"].ToString())] = dataRow["ProductoOReceta"].ToString() + ";" + dataRow["Descripcion"].ToString() + ";" + dataRow["id"].ToString() + ";" + dataRow["Cantidad"].ToString() + ";" + dataRow["Nivel"].ToString() + ";" + dataRow["DiasMasNivel"].ToString() + ";" + dataRow["descripcionReceta"].ToString() + ";" + dataRow["idReceta"].ToString();
-                                            
-                                        }
+                                        sectorTablesGroupByFechas[sector].ImportRow(col1);
+                                }%>
+
+                            <%cantMax = 0;%>
+                            <%foreach (var key in sectorTablesGroupByFechas)
+                                           {
+                                               if (key.Value.Rows.Count > cantMax) {
+                                                   cantMax = key.Value.Rows.Count;
+                                               }
+                                           }%>
 
 
-                                    }
-                                }
-                            %>
-                            <% 
-                                int filasMatriz = matriz.GetLength(0);
-                                int ColumnasMatriz = matriz.GetLength(1);
-
-                                for (int fila = 0; fila < filasMatriz; fila++)
+                            <%for (int i = 0; i < cantMax; i++)
                                 {%>
                             <tr>
-                                <%  for (int columna = 0; columna < ColumnasMatriz; columna++)
-                                    {%>
-                                <% string valor = matriz[fila, columna];%>
-                                <% 
-                                    string[] partes = valor.Split(';'); // Dividir el valor en dos partes
-                                    string productoOReceta = partes[0]; // Guardar la primera parte
-                                %>
-                                <td><%= productoOReceta%>
-                                    <%if (productoOReceta != "-")
-                                        {
-                                            string segundaParte = partes[1];
-                                            string id = partes[2];
-                                            if (segundaParte == "Receta")
-                                            {
-                                    %>
-                                    <a href="GenerarProduccion.aspx" target="_blank" style="float: right; margin-left: 10px;"
-                                        title="Produccion">
-                                        <i class="fa fa-cutlery" style="color: black"></i></a>
-                                    <% }%>
-                                    <a href="/Formularios/Maestros/StockDetallado.aspx?t=1&i=<%=id %>" target="_blank" style="float: right; margin-left: 10px;"
-                                        title="Ver stock">
-                                        <i style="color: black" class="fa fa-list-alt"></i></a>
-
-                                    <%} %>
+                                <%foreach (var item in fechasHead)
+                                        {%>
+                                <td>
+                                    <%foreach (var key2 in sectorTablesGroupByFechas)
+                                                {%>
+                                    <%if (key2.Key == item) {
+                                       if (key2.Value.Rows.Count >= i+1) { 
+                                           object obj = key2.Value.Rows[i]["descripcion"]; %>
+                                    <%if (key2.Value.Rows[i]["ingredienteOreceta"].ToString() == "Receta") {%>
+                                    <button id="btnVerIngredientes" type="button" class="icon-button" style="float: right; margin-left: 10px;"
+                                        title="Ver ingredientes" onclick="verIngredientes('<%=key2.Value.Rows[i]["idProductoOReceta"].ToString()%>')">
+                                        <i class="fa fa-list"></i>
+                                    </button>
+                                    <%}%>
+                                    <button id="btn" type="button" class="icon-button" style="float: right; margin-left: 10px;"
+                                        title="OrigenDestino" onclick="verOrigenYDestino('<%=key2.Value.Rows[i]["descripcion"].ToString()%>', 
+                                                '<%=key2.Value.Rows[i]["cantidad"].ToString()%>', '<%=key2.Value.Rows[i]["sectorProductivo"].ToString()%>', 
+                                                '<%=key2.Value.Rows[i]["Column1"].ToString()%>', '<%=key2.Value.Rows[i]["CantidadPadre"].ToString()%>', 
+                                                '<%=key2.Value.Rows[i]["sectorPadre"].ToString()%>')">
+                                        <i class="fa fa-exchange"></i>
+                                    </button>
+                                    <%= obj.ToString()%>
+                                    <%}%>
+                                    <%}%>
+                                    <%}%>
                                 </td>
                                 <%}%>
                             </tr>
                             <%}%>
+                            <%fechasHead.Clear();%>
                         </tbody>
                     </table>
                 </div>
@@ -208,204 +140,17 @@
             </div>
         </div>
     </div>
-
-
-    <%
-
-        }
-
-
-        if (dr["SectorProductivo"].ToString().ToUpper() != SectorActual)
-        {
-            SectorActual = dr["SectorProductivo"].ToString().ToUpper();
-
-    %>
-
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins" id="widget<%= widgetCount %>" data-collapsed="<%= isCollapsed.ToString().ToLower() %>">
-                <!-- Agregar la clase "collapsed" aquí -->
-                <div class="ibox-title">
-                    <h5><%= dr["SectorProductivo"].ToString().ToUpper() %></h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-down"></i>
-                            <!-- Usar el ícono hacia abajo por defecto -->
-                        </a>
-                        <ul class="dropdown-menu dropdown-user">
-                            <li><a href="#">Config option 1</a>
-                            </li>
-                            <li><a href="#">Config option 2</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="ibox-content">
-                    <table class="table table-hover no-margins table-bordered">
-                        <thead>
-                            <tr>
-
-                                <%for (int i = 6; i > 0; i--)
-                                    {%>
-                                <%DateTime fecha = fechaOrdenDeProduccion.AddDays(-i); %>
-                                <td><strong><%= fecha.ToString("dd/MM/yyyy") %></strong></td>
-                                <%  } %>
-                                <td><strong><%= fechaOrdenDeProduccion.ToString("dd/MM/yyyy") %></strong></td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <%List<int> listaDeNumeros = new List<int>(); %>
-
-                            <%int DiasActual = -1; %>
-                            <%int Flag = 0; %>
-                            <%int countRows = 0; %>
-                            <%int CantidadDeDiasPorgrupo = 0; %>
-
-                            <%foreach (System.Data.DataRow dataRow in dt.Rows)
-                                {
-                                    if (dataRow["SectorProductivo"].ToString().ToUpper() == SectorActual)
-                                    {
-                                        countRows++;
-                                    }
-                                }
-
-                                listaDeNumeros.Add(countRows);
-
-                            %>
-
-                            <%listaDeNumeros.Sort((a, b) => -a.CompareTo(b)); %>
-
-                            <%int CantFilas = listaDeNumeros.Count > 0 ? listaDeNumeros[0] : 0; %>
-
-                            <%string[,] matriz = new string[CantFilas, 7]; %>
-                            <%for (int i = 0; i < CantFilas; i++)
-                                {
-                                    for (int j = 0; j < 7; j++)
-                                    {
-                                        matriz[i, j] = "-"; // Inicializa cada posición con un espacio en blanco
-                                    }
-                                } %>
-
-
-                            <%  
-                                int filas = 0;
-                                int DiasAct = -1;
-                                int Bandera = 0;
-
-                                foreach (System.Data.DataRow dataRow in dt.Rows)
-                                {
-
-                                    if (dataRow["SectorProductivo"].ToString().ToUpper() == SectorActual)
-                                    {
-                                        if (Bandera == 0)
-                                        {
-                                            Bandera++;
-                                            DiasAct = Convert.ToInt32(dataRow["DiasMasNivel"].ToString());
-                                            matriz[filas, 6 - Convert.ToInt32(dataRow["DiasMasNivel"].ToString())] = dataRow["ProductoOReceta"].ToString() + ";" + dataRow["Descripcion"].ToString() + ";" + dataRow["id"].ToString() + ";" + dataRow["Cantidad"].ToString() + ";" + dataRow["Nivel"].ToString() + ";" + dataRow["DiasMasNivel"].ToString() + ";" + dataRow["descripcionReceta"].ToString() + ";" + dataRow["idReceta"].ToString();
-                                            
-                                        }
-
-                                        else
-                                        {
-                                            if (Convert.ToInt32(dataRow["DiasMasNivel"].ToString()) != DiasAct)
-                                            {
-                                                DiasAct = Convert.ToInt32(dataRow["DiasMasNivel"].ToString());
-                                                filas = 0;
-                                            }
-                                            else
-                                            {
-                                                filas++;
-                                            }
-                                            matriz[filas, 6 - Convert.ToInt32(dataRow["DiasMasNivel"].ToString())] = dataRow["ProductoOReceta"].ToString() + ";" + dataRow["Descripcion"].ToString() + ";" + dataRow["id"].ToString() + ";" + dataRow["Cantidad"].ToString() + ";" + dataRow["Nivel"].ToString() + ";" + dataRow["DiasMasNivel"].ToString() + ";" + dataRow["descripcionReceta"].ToString() + ";" + dataRow["idReceta"].ToString();
-
-
-                                        }
-
-
-                                    }
-                                }
-
-                            %>
-
-                            <% 
-                                int filasMatriz = matriz.GetLength(0);
-                                int ColumnasMatriz = matriz.GetLength(1);
-
-                                for (int fila = 0; fila < filasMatriz; fila++)
-                                {%>
-                            <tr>
-                                <%  for (int columna = 0; columna < ColumnasMatriz; columna++)
-                                    {%>
-                                <% string valor = matriz[fila, columna];%>
-                                <% 
-                                    string[] partes = valor.Split(';'); // Dividir el valor en dos partes
-                                    string productoOReceta = partes[0]; // Guardar la primera parte
-                                %>
-                                <td><%= productoOReceta%>
-                                    <%if (productoOReceta != "-")
-                                        {
-                                            string segundaParte = partes[1];
-                                            string id = partes[2];
-                                            if (segundaParte == "Receta")
-                                            {
-                                                string Cantidad = partes[3];
-                                                string Nivel = partes[4];
-                                                string DiasMasNivel = partes[5];
-                                                string descripcionReceta = partes[6];
-                                                string idReceta = partes[7];
-                                    %>
-                                    <a href="GenerarProduccion.aspx?PPro=2&PR=<%=productoOReceta %>&C=<%=Cantidad %>&i=<%=id %>"
-                                        target="_blank" style="float: right; margin-left: 10px;"
-                                        title="Produccion">
-                                        <i class="fa fa-cutlery" style="color: black"></i></a>
+    <% }%>
 
 
 
-                                    <button id="Recepcion" type="button" class="icon-button" style="float: right; margin-left: 10px;"
-                                        title="Recepción" onclick="MostrarRecepcion('<%=Cantidad %>', <%=id %>, <%=Nivel %>, <%=DiasMasNivel %>, '<%=descripcionReceta %>', <%=idReceta %>, <%=dt %>)">
-                                        <i class="fa fa-exchange"></i>
-                                    </button>
 
 
-
-                                    <% }%>
-                                    <a href="/Formularios/Maestros/StockDetallado.aspx?t=1&i=<%=id %>"
-                                        target="_blank" style="float: right; margin-left: 10px;"
-                                        title="Ver stock">
-                                        <i style="color: black" class="fa fa-list-alt"></i></a>
-
-                                    <%} %>
-                                </td>
-                                <%}
-                                %>
-                            </tr>
-
-                            <%}
-
-                            %>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    <%
-            }
-
-
-
-        } %>
-
-
-    <asp:LinkButton runat="server" ID="btnCancelar" class="btn btn-primary dim" style="float:right; margin-left:1%" Text="Cancelar" 
-       OnClick="btnCancelar_Click">
+    <asp:LinkButton runat="server" ID="btnCancelar" class="btn btn-primary dim" Style="float: right; margin-left: 1%" Text="Cancelar"
+        OnClick="btnCancelar_Click">
     </asp:LinkButton>
 
-    <asp:LinkButton runat="server" ID="btnProducir" class="btn btn-primary dim" style="float:right" Text="A producir" OnClientClick="Producir(); 
+    <asp:LinkButton runat="server" ID="btnProducir" class="btn btn-primary dim" Style="float: right" Text="A producir" OnClientClick="Producir(); 
         return false;">
     </asp:LinkButton>
 
@@ -502,6 +247,149 @@
     </div>
 
 
+
+
+    <div id="modalOrigenDestino" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog" style="width: 40%; height: 50%;">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Origen/Destino</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="MainContent_UpdatePanel6">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="ibox float-e-margins">
+                                    <!-- Agregar la clase "collapsed" aquí -->
+                                    <div class="ibox-title">
+                                        <h5>Origen</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-down"></i>
+                                                <!-- Usar el ícono hacia abajo por defecto -->
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-user">
+                                                <li><a href="#">Config option 1</a>
+                                                </li>
+                                                <li><a href="#">Config option 2</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <table class="table table-hover no-margins table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <td><strong>Sector Productivo</strong></td>
+                                                    <td><strong>Producto</strong></td>
+                                                    <td class="text-right"><strong>Cantidad</strong></td>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tableOrigen">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="ibox float-e-margins">
+                                    <!-- Agregar la clase "collapsed" aquí -->
+                                    <div class="ibox-title">
+                                        <h5>Destino</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-down"></i>
+                                                <!-- Usar el ícono hacia abajo por defecto -->
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-user">
+                                                <li><a href="#">Config option 1</a>
+                                                </li>
+                                                <li><a href="#">Config option 2</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <table class="table table-hover no-margins table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <td><strong>Sector Productivo</strong></td>
+                                                    <td><strong>Receta</strong></td>
+                                                    <td class="text-right"><strong>Cantidad</strong></td>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tablaDestino">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="modalVerIngredientesReceta" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog" style="width: 40%; height: 50%;">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Ingredientes</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="MainContent_UpdatePanel4">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="ibox float-e-margins">
+                                    <!-- Agregar la clase "collapsed" aquí -->
+                                    <div class="ibox-title">
+                                        <h5>Ingredientes de la receta</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-down"></i>
+                                                <!-- Usar el ícono hacia abajo por defecto -->
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-user">
+                                                <li><a href="#">Config option 1</a>
+                                                </li>
+                                                <li><a href="#">Config option 2</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <table class="table table-hover no-margins table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <td><strong>Producto</strong></td>
+                                                    <td><strong>Sector Productivo</strong></td>
+                                                    <td class="text-right"><strong>Cantidad</strong></td>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tableIngredientres">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         $(document).ready(function () {
 
@@ -542,7 +430,41 @@
             $content.slideToggle();
         }
 
+        function verIngredientes(idReceta){
+            console.log(idReceta)
+            fetch('CronogramaProduccion.aspx/getIngredientesRecetaByid', {
+            method: 'POST',
+            body: JSON.stringify({idReceta: idReceta}),
+            headers: { 'Content-Type': 'application/json' },
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.d)
+                document.getElementById('tableIngredientres').innerHTML = "";
+                const ingredientesArray = data.d.split(';').filter(Boolean);
+                ingredientesArray.forEach(ingredientes => {
 
+                    const campos = ingredientes.split(',').filter(Boolean);
+                    const descripcion = campos[0];
+                    const sectorProductivo = campos[1];
+                    const cantidad = campos[2];
+
+                    let plantillaIngredientes = `
+                    <tr>
+                        <td>${descripcion}</td>
+                        <td>${sectorProductivo}</td>
+                        <td style="text-align: right;">${cantidad}</td>
+                    </tr>
+                   `;
+                    document.getElementById('tableIngredientres').innerHTML += plantillaIngredientes;
+                    $('#modalVerIngredientesReceta').modal('show');
+                });
+            })
+            .catch(error => {
+                // Manejo de errores aquí si es necesario
+                console.error('Error:', error);
+            });
+          }
 
 
         function MostrarRecepcion(cantidad, id, nivel, DiasMasNivel, descripcionReceta, idReceta, dt) {
@@ -602,8 +524,6 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-
-                        
                          const tablaEntrega = document.getElementById('tablaEntrega');
                          const [sectorProductivo, cantidad] = data.d.split(';');
                          let plantillaReceta = `
@@ -695,6 +615,32 @@
                   // Manejo de errores aquí si es necesario
                   console.error('Error:', error);
               });
+            }
+
+
+            function verOrigenYDestino(ProductoOrigen, cantidadOrigen, SectorOrigen, productoPadre, cantidadPadre, sectorPadre){
+                
+                   document.getElementById('tableOrigen').innerHTML = "";
+                   let plantillaIngredientesOrigen = `
+                   <tr>
+                       <td>${ProductoOrigen}</td>
+                       <td>${SectorOrigen}</td>
+                       <td style="text-align: right;">${cantidadOrigen}</td>
+                   </tr>
+                  `;
+                   document.getElementById('tableOrigen').innerHTML += plantillaIngredientesOrigen;
+
+
+                   document.getElementById('tablaDestino').innerHTML = "";
+                   let plantillaIngredientesDestino = `
+                    <tr>
+                        <td>${productoPadre}</td>
+                        <td>${sectorPadre}</td>
+                        <td style="text-align: right;">${cantidadPadre}</td>
+                    </tr>
+                   `;
+                    document.getElementById('tablaDestino').innerHTML += plantillaIngredientesDestino;
+                   $('#modalOrigenDestino').modal('show');
             }
 
     </script>
