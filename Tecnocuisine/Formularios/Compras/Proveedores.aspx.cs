@@ -142,7 +142,8 @@ namespace Tecnocuisine.Formularios.Compras
                         nuevoProveedor.RazonSocial = txtRazonSocial.Text;
                         nuevoProveedor.Numero = txtNumero.Text;
                         nuevoProveedor.IdPais = Convert.ToInt32(ddlPais.SelectedValue);
-                        nuevoProveedor.estado = Convert.ToInt32(ddlEstado.SelectedValue);
+                        nuevoProveedor.estado = 1;
+                        nuevoProveedor.activo = Convert.ToInt32(ddlEstado.SelectedValue);
                         nuevoProveedor.idRubro = Convert.ToInt32(ddlRubro.SelectedValue);
                         int i = ControladorProveedores.AgregarNuevoProveedor(nuevoProveedor);
                         if (i > 0)
@@ -164,7 +165,8 @@ namespace Tecnocuisine.Formularios.Compras
                         nuevoProveedor.Numero = txtNumero.Text;
                         nuevoProveedor.IdPais = Convert.ToInt32(ddlPais.SelectedValue);
                         nuevoProveedor.idRubro = Convert.ToInt32(ddlRubro.SelectedValue);
-                        nuevoProveedor.estado = Convert.ToInt32(ddlEstado.SelectedValue);
+                        nuevoProveedor.estado = 1;
+                        nuevoProveedor.activo = Convert.ToInt32(ddlEstado.SelectedValue);
 
                         int i = ControladorProveedores.EditarProveedor(nuevoProveedor);
 

@@ -6,31 +6,32 @@
         <div class="container-fluid">
 
             <div class="ibox float-e-margins">
-              
+
                 <div class="ibox-content">
                     <div style="margin-left: 0px; margin-right: 0px;" class="row">
-                                                    <div class="col-md-10">
+                        <div class="col-md-10">
 
-                                                        <div class="input-group m-b">
-                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                            <div class="input-group m-b">
+                                <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
 
+                                <input type="text" id="txtBusqueda" placeholder="Búsqueda..." class="form-control" style="width: 90%" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
 
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-
-                                                        <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
-                                                    </div>
-                                                </div>
+                            <a data-toggle="modal" data-backdrop="static" title="Agregar Subgrupo"
+                                onclick="vaciarFormulario(); openModalAgregar()"
+                                class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                        </div>
+                    </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
-                            <div class="table-responsive"  >
+                            <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Descripcion</th>
+                                            <th>Descripción</th>
                                             <th>Grupo</th>
                                             <th></th>
                                         </tr>
@@ -84,14 +85,15 @@
                         <label class="col-sm-2 control-label editable">Descripción</label>
                         <div class="col-sm-8">
                             <asp:TextBox ID="txtDescripcionSubGrupo" class="form-control" runat="server" />
-
+                            <p id="valDescripción" class="hideValid">*El campo descripcion no puede ir vacio</p>
                         </div>
                     </div>
-                     <div class="row" style="margin-top: 2%">
+                    <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Grupo</label>
                         <div class="col-sm-8">
-                            <asp:DropDownList ID="ListGrupo"  class="form-control m-b" runat="server">
+                            <asp:DropDownList ID="ListGrupo" class="form-control m-b" runat="server">
                             </asp:DropDownList>
+                            <p id="valGrupo" class="hideValid">*El campo Grupo no puede ir vacio</p>
                         </div>
 
                     </div>
@@ -193,5 +195,17 @@
             });
         });
     </script>
+    <script>
+        function openModalAgregar() {
+            $('#modalAgregar .modal-title').text('Agregar Subgrupo');
+            document.getElementById('<%= btnGuardar.ClientID %>').innerHTML = '<i class="fa fa-check"></i>&nbsp;Agregar';
+            $('#modalAgregar').modal('show');
+        }
 
+        function openModal() {
+            $('#modalAgregar .modal-title').text('Editar Subgrupo');
+            document.getElementById('<%= btnGuardar.ClientID %>').innerHTML = '<i class="fa fa-check"></i>&nbsp;Editar';
+            $('#modalAgregar').modal('show');
+        }
+    </script>
 </asp:Content>

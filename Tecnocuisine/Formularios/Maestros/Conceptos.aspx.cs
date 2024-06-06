@@ -15,7 +15,6 @@ namespace Maestros
     public partial class Conceptos : Page 
     {
         Mensaje m = new Mensaje();
-        ControladorRubros controladorRubros = new ControladorRubros();
         ControladorConceptos controladorConceptos = new ControladorConceptos();
         int accion;
         int idRubro;
@@ -126,11 +125,12 @@ namespace Maestros
         {
             try
             {
-                var presentacion = controladorRubros.ObtenerRubrosId(this.idRubro);
-                if (presentacion != null)
+
+                var concepto = controladorConceptos.ObtenerConceptosId(this.idRubro);
+                if (concepto != null)
                 {
-                    hiddenEditar.Value = presentacion.id.ToString();
-                    txtDescripcionPresentacion.Text = presentacion.descripcion;
+                    hiddenEditar.Value = concepto.id.ToString();
+                    txtDescripcionPresentacion.Text = concepto.descripcion;
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
 
 
@@ -178,6 +178,7 @@ namespace Maestros
                 btnDetalles.Style.Add("background-color", "transparent");
                 //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                 //btnDetalles.Attributes.Add("title data-original-title", "Editar");
+                btnDetalles.Attributes.Add("title", "Editar concepto");
                 btnDetalles.ID = "btnSelec_" + rubro.id + "_";
                 btnDetalles.Text = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
                 btnDetalles.Click += new EventHandler(this.editarPresentacion);
@@ -192,8 +193,9 @@ namespace Maestros
                 btnEliminar.CssClass = "btn btn-xs";
                 btnEliminar.Style.Add("background-color", "transparent");
                 btnEliminar.Attributes.Add("data-toggle", "modal");
+                btnEliminar.Attributes.Add("title", "Eliminar concepto");
                 btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                btnEliminar.Text = "<span><i style='color:black' class='fa fa-trash - o'></i></span>";
+                btnEliminar.Text = "<span><i style='color:red' class='fa fa-trash - o'></i></span>";
                 btnEliminar.OnClientClick = "abrirdialog(" + rubro.id + ");";
                 celAccion.Controls.Add(btnEliminar);
 
@@ -270,7 +272,7 @@ namespace Maestros
 
                 int resultado = controladorConceptos.AgregarConceptos(rubro);
 
-                if (resultado > 0)
+                if (resultado != -1)
                 {
                     Response.Redirect("Conceptos.aspx?m=1");
                 }

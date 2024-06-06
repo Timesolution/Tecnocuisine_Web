@@ -153,6 +153,13 @@
 
     <script type="text/javascript">
         function openModal() {
+            $('#modalAgregar .modal-title').text('Editar entidad de tarjeta');
+            document.getElementById('<%= btnGuardar.ClientID %>').innerHTML = '<i class="fa fa-check"></i>&nbsp;Editar';
+            $('#modalAgregar').modal('show');
+        }
+        function openModalAgregar() {
+            $('#modalAgregar .modal-title').text('Agregar entidad de tarjeta');
+            document.getElementById('<%= btnGuardar.ClientID %>').innerHTML = '<i class="fa fa-check"></i>&nbsp;Agregar';
             $('#modalAgregar').modal('show');
         }
         function vaciarFormulario() {

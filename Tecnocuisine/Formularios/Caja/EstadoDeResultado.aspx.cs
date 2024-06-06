@@ -17,6 +17,7 @@ namespace Tecnocuisine.Formularios.Caja
         string FechaH = "";
         protected void Page_Load(object sender, EventArgs e)
         {
+            VerificarLogin();
             if (Request.QueryString["FechaD"] != null)
             {
                 this.FechaD = (Request.QueryString["FechaD"]).ToString();
@@ -27,6 +28,50 @@ namespace Tecnocuisine.Formularios.Caja
             if (FechaD != "")
             {
                 FiltrarVentas(this.FechaD, this.FechaH);
+            }
+        }
+
+
+        private void VerificarLogin()
+        {
+            try
+            {
+                if (Session["User"] == null)
+                {
+                    Response.Redirect("../../Usuario/Login.aspx");
+                }
+                else
+                {
+                    if (this.verificarAcceso() != 1)
+                    {
+                        Response.Redirect("/Default.aspx?m=1", false);
+                    }
+                }
+            }
+            catch
+            {
+                Response.Redirect("../../Account/Login.aspx");
+            }
+        }
+
+        private int verificarAcceso()
+        {
+            try
+            {
+                int valor = 1;
+                string permisos = Session["Login_Permisos"] as string;
+                string[] listPermisos = permisos.Split(';');
+
+                string permiso = listPermisos.Where(x => x == "215").FirstOrDefault();
+
+                if (!string.IsNullOrEmpty(permiso))
+                    valor = 1;
+
+                return valor;
+            }
+            catch
+            {
+                return -1;
             }
         }
 

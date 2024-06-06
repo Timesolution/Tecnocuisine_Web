@@ -203,6 +203,7 @@ namespace Tecnocuisine
                 //btnDetalles.Attributes.Add("title data-original-title", "Editar");
                 btnDetalles.ID = "btnSelec_" + grupo.id + "_";
                 btnDetalles.Text = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
+                btnDetalles.Attributes.Add("title", "Editar");
                 btnDetalles.Click += new EventHandler(this.editarSubgrupo);
                 celAccion.Controls.Add(btnDetalles);
 
@@ -215,10 +216,13 @@ namespace Tecnocuisine
                 btnEliminar.CssClass = "btn btn-xs";
                 btnEliminar.Style.Add("background-color", "transparent");
                 btnEliminar.Attributes.Add("data-toggle", "modal");
+                btnEliminar.Attributes.Add("data-toggle", "modal");
                 btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                btnEliminar.Text = "<span><i style='color:black' class='fa fa-trash - o'></i></span>";
+                btnEliminar.Text = "<span><i style='color:red' class='fa fa-trash-o'></i></span>";
                 btnEliminar.OnClientClick = "abrirdialog(" + grupo.id + ");";
+                btnEliminar.Attributes.Add("title", "Eliminar"); 
                 celAccion.Controls.Add(btnEliminar);
+
 
                 celAccion.Width = Unit.Percentage(25);
                 celAccion.Attributes.Add("style", "padding-bottom: 1px !important;");

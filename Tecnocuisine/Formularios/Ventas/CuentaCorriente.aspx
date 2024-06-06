@@ -11,17 +11,19 @@
                 color: black;
                 text-decoration: none;
             }
-              #editable_length {
-                margin-left: 0px !important;
-}
+
+        #editable_length {
+            margin-left: 0px !important;
+        }
     </style>
    <div class="wrapper wrapper-content">
-       <div class="ibox-content m-b-sm border-bottom" style="margin-top: 10px;padding-top: 0px;">
+       <div class="ibox-content m-b-sm border-bottom" style="        margin-top: 10px;
+        padding-top: 0px;">
                             <div class="p-xs">
                                 <div class="pull-left m-r-md">
                                     <i class="fa fa-dollar text-navy mid-icon"></i>
                                 </div>
-                                <h2 id="DivSaldo" style="font-weight: bold;">0.00</h2>
+                                <h2 id="DivSaldo" style="        font-weight: bold;">0.00</h2>
                                 <span id="ClienteSelec">Cliente no Seleccionado</span>
                             </div>
                         </div>
@@ -36,27 +38,30 @@
                                     <div class="col-lg-12">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-content">
-                                               <div style="margin-left: 0px; margin-right: 0px;" class="row">
+                                               <div style="        margin-left: 0px;
+        margin-right: 0px;" class="row">
                                                     <div class="col-md-10">
 
-                                                        <div style="display: flex;">
+                                                        <div style="        display: flex;">
                                                             <div class="input-group m-b">
-                                                                <div style="display: flex;">
-                                                                    <span class="input-group-addon" style="padding-right: 15%;"><i style='color: black;' class='fa fa-search'></i></span>
-                                                                    <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 100%" />
+                                                                <div style="        display: flex;">
+                                                                    <span class="input-group-addon" style="        padding-right: 15%;"><i style='        color: black;' class='fa fa-search'></i></span>
+                                                                    <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="        width: 100%" />
                                                                 </div>
                                                             </div>
                                                            
                                                             <div class="input-group m-b row">
                                                                 <div class="row">
-                                                                    <div class="col-md-2"  style="margin-left: 15px;margin-right: 15px;">
-                                                                        <label class="col-md-4" style="margin-top: 5px;">Desde</label>
+                                                                    <div class="col-md-2"  style="        margin-left: 15px;
+        margin-right: 15px;">
+                                                                        <label class="col-md-4" style="        margin-top: 5px;">Desde</label>
                                                                     </div>
                                                                     <div class="col-md-8">
                                                                         <div class="form-group" id="data_1">
                                                                             <div class="input-group date">
                                                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                                                <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                                                <asp:TextBox class="form-control" runat="server" ID="txtFechaHoy" data-date-format="dd/mm/yyyy" Style="        margin-left: 0px;
+        width: 100%;"></asp:TextBox>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -64,14 +69,16 @@
                                                             </div>
                                                             <div class="input-group m-b">
                                                                 <div class="row">
-                                                                    <div  class="col-md-2"  style="margin-right: 15px;">
-                                                                        <label style="margin-left: 15px; margin-top: 5px;" class="col-md-4">Hasta</label>
+                                                                    <div  class="col-md-2"  style="        margin-right: 15px;">
+                                                                        <label style="        margin-left: 15px;
+        margin-top: 5px;" class="col-md-4">Hasta</label>
                                                                     </div>
                                                                     <div class="col-md-8">
-                                                                        <div class="form-group" id="data_2" style="margin-left: 15px;">
+                                                                        <div class="form-group" id="data_2" style="        margin-left: 15px;">
                                                                             <div class="input-group date">
                                                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                                                <asp:TextBox class="form-control" runat="server" ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                                                <asp:TextBox class="form-control" runat="server" ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy" Style="        margin-left: 0px;
+        width: 100%;"></asp:TextBox>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -79,13 +86,15 @@
                                                             </div>
                                                             <div class="input-group m-b">
                                                                 <div class="row">
-                                                                    <div  class="col-md-2"  style="margin-right: 15px;">
-                                                                <label style="margin-top: 5px;" class="col-md-4">Cliente</label>
+                                                                    <div  class="col-md-2"  style="        margin-right: 15px;">
+                                                                <label style="        margin-top: 5px;" class="col-md-4">Cliente</label>
                                                                     </div>
                                                                     <div class="col-md-8">
                                                               
                                                                    
-                                                                    <input name="txtProveedor" type="text" id="txtProveedor" list="ContentPlaceHolder1_ListaProveedores" class="form-control" style="margin-left:15px;margin-bottom: 15px; width: 100%;">
+                                                                    <input name="txtProveedor" type="text" id="txtProveedor" list="ContentPlaceHolder1_ListaProveedores" class="form-control" style="        margin-left: 15px;
+        margin-bottom: 15px;
+        width: 100%;">
                                                                     <p id="ValivaCliente" class="text-danger text-hide">Tienes que ingresar un Cliente</p>
                                                                 </div>
                                                                     
@@ -100,32 +109,24 @@
 
 
                                                     </div>
-                                                    <div class="col-md-2" style="display: flex; flex-direction: row; align-items: center; justify-content: end;">
+                                                    <div class="col-md-2" style="display: flex"; flex-direction: row; align-items: center;justify-content: end;">
                                                         <a id="btnFiltrar"onclick="FiltrarCuentaCorriente()" class="btn btn-primary" style="margin-right: 15px;"><i class="fa fa-paper-plane"></i>&nbsp;Filtrar </a>
 
                     
                                                     </div>
                                                 </div>
 
-                                      <%--          <div class="col-md-12">
-                                                    <div style="display:flex; flex-direction: row; justify-content:center; align-items: center;" id="DivSaldo">
-                                                        <h4 style="margin-right: 15px;">Saldo:</h4>
-                                                    </div>
-
-                                                </div>--%>
-                                                <table class="table table-striped table-bordered table-hover " id="editable">
+                 
+                                                <table class="table table-striped table-bordered table-hover" id="editable">
                                                     <thead>
                                                         <tr>
-                                                            <th style=" text-align: right; width: 2%;">#</th>
+                                                            <th style="text-align: right; width: 2%;">#</th>
                                                             <th  style="width: 2%;">Fecha</th>
-                                                            <th style=" text-align: left; width: 8%;">Descripcion</th>
+                                                            <th style="text-align: left; width: 8%;">Descripcion</th>
                                                             <th style="width: 3%; text-align: right;">Debe</th>
                                                             <th style="width: 3%; text-align: right;">Haber</th>
                                                             <th style="width: 3%; text-align: right;">Saldo</th>
-
                                                             <th style="width: 2%";></th>
-
-                                                    
                                                         </tr>
                                                     </thead>
                                                     <tbody>

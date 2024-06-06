@@ -17,10 +17,11 @@ namespace Tecnocuisine.Formularios.Administrador
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            VerificarLogin();
+            cargarEmpresasBackEnd();
             if (!IsPostBack)
             {
             }
-                cargarEmpresasBackEnd();
         }
 
         [WebMethod]
@@ -70,6 +71,51 @@ namespace Tecnocuisine.Formularios.Administrador
             }
         }
 
+        private void VerificarLogin()
+        {
+            try
+            {
+                if (Session["User"] == null)
+                {
+                    Response.Redirect("../../Usuario/Login.aspx");
+                }
+                else
+                {
+                    if (this.verificarAcceso() != 1)
+                    {
+                        Response.Redirect("/Default.aspx?m=1", false);
+                    }
+                }
+            }
+            catch
+            {
+                Response.Redirect("../../Account/Login.aspx");
+            }
+        }
+
+
+        private int verificarAcceso()
+        {
+            try
+            {
+                int valor = 1;
+                string permisos = Session["Login_Permisos"] as string;
+                string[] listPermisos = permisos.Split(';');
+
+                string permiso = listPermisos.Where(x => x == "215").FirstOrDefault();
+
+                if (!string.IsNullOrEmpty(permiso))
+                    valor = 1;
+
+                return valor;
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+
+
         private void CargarEmpresaPH(Empresa empresa)
         {
             try
@@ -92,7 +138,7 @@ namespace Tecnocuisine.Formularios.Administrador
                 celIIBB.VerticalAlign = VerticalAlign.Middle;
                 tr.Cells.Add(celIIBB);
 
-                TableCell celFechaInicio = new TableCell(); 
+                TableCell celFechaInicio = new TableCell();
                 celFechaInicio.Text = "<span> " + empresa.Fecha_inicio.Value.ToString("yyyyMMdd") + "</span>" + empresa.Fecha_inicio.Value.ToString("dd/MM/yyyy");
                 celFechaInicio.VerticalAlign = VerticalAlign.Middle;
                 tr.Cells.Add(celFechaInicio);
@@ -121,9 +167,9 @@ namespace Tecnocuisine.Formularios.Administrador
 
                 HtmlGenericControl btnEditar = new HtmlGenericControl("a");
                 btnEditar.Attributes.Add("class", "btn btn-xs");
-                //btnEditar.Style.Add("background-color", "transparent");
+                btnEditar.Attributes.Add("title", "Editar empresa");
                 btnEditar.Style.Add("margin-right", "10px");
-                btnEditar.InnerHtml = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
+                btnEditar.InnerHtml = "<i style='color:black;' class='fa fa-pencil'></i>";
                 btnEditar.Attributes.Add("OnClick", "vaciarInputs();ModalModificar('" + empresa.Id + "','" + empresa.Razon_Social + "','" + empresa.Cuit + "','" + empresa.Ingresos_Brutos + "','" + empresa.Condicion_IVA + "','" + empresa.Direccion + "','" + empresa.Alias + "','" + empresa.CBU + "'); ");
                 celAction.Controls.Add(btnEditar);
 
@@ -135,9 +181,8 @@ namespace Tecnocuisine.Formularios.Administrador
 
                 HtmlGenericControl btnEliminar = new HtmlGenericControl("a");
                 btnEliminar.Attributes.Add("class", "btn btn-xs");
-                //btnEliminar.Style.Add("background-color", "transparent");
-                //btnEliminar.Style.Add("margin-right", "10px");
-                btnEliminar.InnerHtml = "<span><i style='color:black;' class='fa fa-trash'></i></span>";
+                btnEditar.Attributes.Add("title", "Eliminar empresa");
+                btnEliminar.InnerHtml = "<i style='color:red;' class='fa fa-trash'></i>";
                 btnEliminar.Attributes.Add("OnClick", "ModalConfirmacion(" + empresa.Id + ");");
 
                 celAction.Controls.Add(btnEliminar);
@@ -172,6 +217,7 @@ namespace Tecnocuisine.Formularios.Administrador
                         "\"Id\":\"" + item.Id + "\"," +
                         "\"FechaInicio\":\"" + item.Fecha_inicio + "\"," +
                         "\"Razon_Social\":\"" + item.Razon_Social + "\"," +
+                        "\"Cuit\":\"" + item.Cuit + "\"," +
                         "\"Ingresos_Brutos\":\"" + item.Ingresos_Brutos + "\"," +
                         "\"Fecha_inicio\":\"" + item.Fecha_inicio?.ToString("dd/MM/yyyy") + "\"," +
                         "\"idCondicion_IVA\":\"" + item.Condicion_IVA + "\"," +
@@ -209,6 +255,7 @@ namespace Tecnocuisine.Formularios.Administrador
 
                     Empresa emp = new Empresa();
                     emp.Razon_Social = razonSocial;
+                    emp.Cuit = cuit;
                     emp.Fecha_inicio = DateTime.Now;
                     emp.Ingresos_Brutos = ingBrutos;
                     emp.Fecha_inicio = DateTime.Now;
@@ -246,6 +293,7 @@ namespace Tecnocuisine.Formularios.Administrador
                     Empresa emp = new Empresa();
                     emp.Id = Convert.ToInt32(id);
                     emp.Razon_Social = razonSocial;
+                    emp.Cuit = cuit;
                     //emp.Fecha_inicio = Convert.ToDateTime( FechaInicio);
                     emp.Ingresos_Brutos = ingBrutos;
                     emp.Fecha_inicio = DateTime.Now;
@@ -270,7 +318,7 @@ namespace Tecnocuisine.Formularios.Administrador
                 return null;
             }
         }
-        
+
         [WebMethod]
         public static string RemoveEmpresa(string id)
         {

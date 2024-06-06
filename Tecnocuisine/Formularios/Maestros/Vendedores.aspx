@@ -114,7 +114,6 @@
                         <label class="col-sm-2 control-label editable">DNI</label>
                         <div class="col-sm-8">
                             <asp:TextBox ID="txtDNI" Style="margin-left: 3%;" class="form-control" runat="server" oninput="this.value = this.value.replace(/[^0-9]/g, '');"></asp:TextBox>
-                            <%--<asp:TextBox ID="txtDNI" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>--%>
                         </div>
                     </div>
 

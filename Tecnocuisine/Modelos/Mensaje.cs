@@ -24,5 +24,24 @@ namespace Tecnocuisine.Modelos
 
             }
         }
+
+
+
+        public void ShowToastrWarning(Page page, string message, string title, string type = "warning")
+        {
+            try
+            {
+                string options = "toastr.options = { ";
+                options += " positionClass: 'toast-bottom-right', ";
+                options += "}; ";
+
+                page.ClientScript.RegisterStartupScript(page.GetType(), "toastr_message",
+                      options + "toastr." + type.ToLower() + "('" + message + "', '" + title + "');", addScriptTags: true);
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 }

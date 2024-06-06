@@ -19,8 +19,8 @@
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <a data-toggle="modal" data-backdrop="static" onclick="vaciarInputs()"
-                                data-target="#modalAgregar" title="Agregar Alicuota" 
+                            <a data-toggle="modal" data-backdrop="static" onclick="vaciarInputs(); openModalAgregar()"
+                                title="Agregar Alicuota"
                                 class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                                     <thead>
                                         <tr>
                                             <th style="width: 20%">#</th>
-                                            <th style="width: 40%; text-align:right">Porcentaje</th>
+                                            <th style="width: 40%; text-align: right">Porcentaje</th>
                                             <th style="width: 30%"></th>
                                         </tr>
                                     </thead>
@@ -77,7 +77,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">Agregar</h4>
+                    <h4 class="modal-title">Agregar Alícuota IVA</h4>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -117,12 +117,21 @@
     </script>
     <script type="text/javascript">
         function openModal() {
+            $('#modalAgregar .modal-title').text('Editar Alícuota IVA');
+            document.getElementById('<%= btnGuardar.ClientID %>').innerHTML = '<i class="fa fa-check"></i>&nbsp;Editar';
             $('#modalAgregar').modal('show');
         }
         function vaciarFormulario() {
             ContentPlaceHolder1_txtPorcentajeAlicuota.value = "";
             ContentPlaceHolder1_hiddenEditar.value = "";
             window.history.pushState('', 'Alicuotas', location.protocol + '//' + location.host + location.pathname);
+        }
+    </script>
+    <script>
+        function openModalAgregar() {
+            $('#modalAgregar .modal-title').text('Agregar Alícuota IVA');
+            document.getElementById('<%= btnGuardar.ClientID %>').innerHTML = '<i class="fa fa-check"></i>&nbsp;Agregar';
+            $('#modalAgregar').modal('show');
         }
     </script>
     <script>

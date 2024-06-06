@@ -54,12 +54,12 @@
                                     <table class="table table-striped table-bordered table-hover" id="editable">
                                         <thead>
                                             <tr>
-                                                <th>Razon Social</th>
-                                                <th>Cuit</th>
+                                                <th>Razón Social</th>
+                                                <th>CUIT</th>
                                                 <th>Ingresos Brutos</th>
                                                 <th>Fecha de Inicio</th>
-                                                <th>Condicion IVA</th>
-                                                <th>Direccion</th>
+                                                <th>Condición IVA</th>
+                                                <th>Dirección</th>
                                                 <th>Alias</th>
                                                 <th>CBU</th>
                                                 <th></th>
@@ -87,16 +87,16 @@
                 </div>
                 <div class="modal-body">
                     <div class="row m-b">
-                        <label class="col-md-3">Razon social</label>
+                        <label class="col-md-3">Razón social</label>
                         <div class="col-md-9">
                             <input id="txtRazonSocial" class="form-control" onchange="valRazonSocial()" />
                             <p id="valRazonSocial" class="valid hideValid">*Completar Razon Social</p>
                         </div>
                     </div>
                     <div class="row m-b">
-                        <label class="col-md-3">Cuit</label>
+                        <label class="col-md-3">CUIT</label>
                         <div class="col-md-9">
-                            <input id="txtCuit" class="form-control" type="number" onchange="valCuit()" />
+                            <input id="txtCuit" class="form-control" type="text" inputmode="numeric" onchange="valCuit()" />
                             <p id="valCuit" class="hideValid">*Completar Cuit</p>
                         </div>
                     </div>
@@ -108,7 +108,7 @@
                         </div>
                     </div>
                     <div class="row m-b">
-                        <label class="col-md-3">Condicion IVA</label>
+                        <label class="col-md-3">Condición IVA</label>
                         <div class="col-md-9">
                             <select class="form-control" id="ddlCondIVA" onchange="valCondIVA()">
                                 <option value="0">Seleccione</option>
@@ -117,7 +117,7 @@
                         </div>
                     </div>
                     <div class="row m-b">
-                        <label class="col-md-3">Direccion</label>
+                        <label class="col-md-3">Dirección</label>
                         <div class="col-md-9">
                             <input id="txtDir" class="form-control" onchange="valDir()" />
                             <p id="valDir" class="hideValid">*Completar Direccion</p>
@@ -201,7 +201,8 @@
         }
 
         function CargarEmpresas() {
-
+            let ph = document.getElementById('<%=phEmpresas2.ClientID%>')
+            console.log(ph + "Place")
             $.ajax({
                 method: "POST",
                 url: "Empresas.aspx/CargarEmpresas",
@@ -230,12 +231,14 @@
                                                 <td>${element.Alias}</td>
                                                 <td>${element.CBU}</td>
                                                 <td>
-                                                    <a class="btn btn-success" onclick="vaciarInputs();ModalModificar('${element.Id}','${element.Razon_Social}','${element.Cuit}','${element.Ingresos_Brutos}','${element.idCondicion_IVA}','${element.Direccion}','${element.Alias}','${element.CBU}')"><i class="fa fa-pencil"></i></a>
-                                                    <a class="btn btn-danger" onclick="ModalConfirmacion('${element.Id}')"><i class="fa fa-trash"></i></a>
+                                                    <a class="btn btn-xs" style="background-color: transparent; margin-right: 10px;" onclick="vaciarInputs();ModalModificar('${element.Id}','${element.Razon_Social}','${element.Cuit}','${element.Ingresos_Brutos}','${element.idCondicion_IVA}','${element.Direccion}','${element.Alias}','${element.CBU}')"><i style="color: black;" class="fa fa-pencil"></i></a>
+                                                    <a class="btn btn-xs" style="background-color: transparent; margin-right: 10px;" onclick="ModalConfirmacion('${element.Id}')"><i style="color: red;" class="fa fa-trash"></i></a>
                                                 </td>
                                             </tr>`
+
+
                         })
-                        document.getElementById('Progressbars').className ='hideBar'
+                        //document.getElementById('Progressbars').className ='hideBar'
                         document.getElementById('phEmpresas').innerHTML = phEmpresas
                     }
                 }
@@ -293,12 +296,25 @@
         }
 
         function ModalAgregar() {
+            vaciarInputs();
+            limpiarMensajes(); //esta funcion limpia los mensajes en rojo cuando no se llena un campo
             document.getElementById('btnAgregar').removeAttribute('disabled')
             document.getElementById('btnAgregar').className = 'btn btn-primary'
             document.getElementById('btnModificar').className = 'hideBtn'
             document.getElementById('titleModal').innerHTML = 'Agregar'
             $('#modalABM').modal('show')
         }
+
+        function limpiarMensajes(){
+            document.getElementById('valRazonSocial').className = 'hideValid';
+            document.getElementById('valCuit').className = 'hideValid';
+            document.getElementById('valIngBrutos').className = 'hideValid';
+            document.getElementById('valCondIVA').className = 'hideValid';
+            document.getElementById('valDir').className = 'hideValid';
+            document.getElementById('valAlias').className = 'hideValid';
+            document.getElementById('valCBU').className = 'hideValid';
+        }
+
 
         function ModalModificar(id, rS, cuit, iB, cIVA, dir, alias, cbu) {
             document.getElementById('btnModificar').removeAttribute('disabled')
@@ -556,6 +572,39 @@
                     this.value
                 ).draw();
             });
+
+            validarCuitSoloNumerosGuion();
+            validarIngresosBrutosNumerosPuntoYComa();
+            validarCbuSoloNumerosGuion();
         });
     </script>
+    <script>
+        function validarCuitSoloNumerosGuion(){
+            document.getElementById('txtCuit').addEventListener('keydown', function(event) {
+                if (!/[0-9]/.test(event.key) && !event.ctrlKey && event.key.length === 1) {
+                    event.preventDefault();
+                }
+            });
+        
+        }
+
+        function validarIngresosBrutosNumerosPuntoYComa() {
+            document.getElementById('txtIngBrutos').addEventListener('keydown', function(event) {
+                if (!/[0-9.,]/.test(event.key) && !event.ctrlKey && event.key.length === 1) {
+                    event.preventDefault();
+                }
+            });
+        }
+
+        function validarCbuSoloNumerosGuion() {
+            document.getElementById('txtCBU').addEventListener('keydown', function(event) {
+                if (!/[0-9]/.test(event.key) && !event.ctrlKey && event.key.length === 1) {
+                    event.preventDefault();
+                }
+            });
+        }
+
+
+    </script>
+
 </asp:Content>

@@ -37,7 +37,24 @@
     </div>
     <%-- Aca termina el primer widget --%>
 
+    <%foreach (var keyFecha in sectorTables)
+        {
+            foreach (System.Data.DataRow col3 in keyFecha.Value.DefaultView.Table.Rows)
+            {
+                fechasHead.Add(col3["fechaProducto"].ToString());
+            }
+        } %>
 
+
+    <%
+        List<string> fechasOrdenadasList = fechasHead.ToList();
+        fechasOrdenadasList.Sort((x, y) => DateTime.Parse(x).CompareTo(DateTime.Parse(y)));
+        fechasHead.Clear();
+        foreach (var fecha in fechasOrdenadasList)
+        {
+            fechasHead.Add(fecha);
+        }
+    %>
 
     <%-- De aca en adelante, se van a generar widgets de manera dinamica --%>
     <% foreach (var kvp in sectorTables)
@@ -65,66 +82,92 @@
                     <table class="table table-hover table-bordered" style="padding-left: 10px">
                         <thead>
                             <tr>
-                                <%foreach (System.Data.DataRow col in kvp.Value.DefaultView.Table.Rows)
-                                {%>
-                                <%fechasHead.Add(col["fechaProducto"].ToString()); %>
-                                <%} %>
                                 <%foreach (var item in fechasHead)
-                                {%>
-                                <td><%=item.ToString() %></td>
+                                    {%>
+                                <td><strong><%=item.ToString() %></strong></td>
                                 <%} %>
                             </tr>
                         </thead>
                         <tbody>
                             <% sectorTablesGroupByFechas = new Dictionary<string, System.Data.DataTable>();%>
                             <%foreach (System.Data.DataRow col1 in kvp.Value.DefaultView.Table.Rows)
-                              { 
+                                {
                                     string sector = col1["fechaProducto"].ToString();
 
-                                        if (!sectorTablesGroupByFechas.ContainsKey(sector))
-                                        {
-                                            System.Data.DataTable newTable = dtGlobal.Clone();
-                                            newTable.TableName = sector;
-                                            sectorTablesGroupByFechas.Add(sector, newTable);
-                                        }
+                                    if (!sectorTablesGroupByFechas.ContainsKey(sector))
+                                    {
+                                        System.Data.DataTable newTable = dtGlobal.Clone();
+                                        newTable.TableName = sector;
+                                        sectorTablesGroupByFechas.Add(sector, newTable);
+                                    }
 
-                                        sectorTablesGroupByFechas[sector].ImportRow(col1);
+                                    sectorTablesGroupByFechas[sector].ImportRow(col1);
                                 }%>
 
                             <%cantMax = 0;%>
                             <%foreach (var key in sectorTablesGroupByFechas)
-                                           {
-                                               if (key.Value.Rows.Count > cantMax) {
-                                                   cantMax = key.Value.Rows.Count;
-                                               }
-                                           }%>
+                                {
+                                    if (key.Value.Rows.Count > cantMax)
+                                    {
+                                        cantMax = key.Value.Rows.Count;
+                                    }
+                                }%>
 
 
                             <%for (int i = 0; i < cantMax; i++)
                                 {%>
                             <tr>
                                 <%foreach (var item in fechasHead)
-                                        {%>
+                                    {%>
                                 <td>
                                     <%foreach (var key2 in sectorTablesGroupByFechas)
-                                                {%>
-                                    <%if (key2.Key == item) {
-                                       if (key2.Value.Rows.Count >= i+1) { 
-                                           object obj = key2.Value.Rows[i]["descripcion"]; %>
-                                    <%if (key2.Value.Rows[i]["ingredienteOreceta"].ToString() == "Receta") {%>
+                                        {%>
+                                    <%if (key2.Key == item)
+                                        {
+                                            if (key2.Value.Rows.Count >= i + 1)
+                                            {
+                                                object obj = key2.Value.Rows[i]["descripcion"];                                    %>
+                                    <%= obj.ToString()%>
+                                    <%decimal cant = 0;%>
+                                    <%if (key2.Value.Rows[i]["cantidad"].ToString().Contains(";"))
+                                        {
+                                            string cantidad = key2.Value.Rows[i]["cantidad"].ToString();
+                                            string[] partes = cantidad.Split(';');
+                                            for (int j = 0; j < partes.Length; j++)
+                                            {
+                                                //cant += decimal.Parse(partes[j]);
+                                                decimal value;
+                                                if (decimal.TryParse(partes[j], System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.InvariantCulture, out value))
+                                                {
+                                                    cant += value;
+                                                }
+                                            }
+
+                                        }%>
+                                   <strong style="text-align: right; display: inline-block;"><%= cant %></strong>
+                                    <%if (key2.Value.Rows[i]["ingredienteOreceta"].ToString() == "Receta")
+                                        {%>
                                     <button id="btnVerIngredientes" type="button" class="icon-button" style="float: right; margin-left: 10px;"
                                         title="Ver ingredientes" onclick="verIngredientes('<%=key2.Value.Rows[i]["idProductoOReceta"].ToString()%>')">
-                                        <i class="fa fa-list"></i>
+                                        <i class="fa fa-cutlery" style="float: right;"></i>
                                     </button>
-                                    <%}%>
+                                    <%} %>
+
                                     <button id="btn" type="button" class="icon-button" style="float: right; margin-left: 10px;"
                                         title="OrigenDestino" onclick="verOrigenYDestino('<%=key2.Value.Rows[i]["descripcion"].ToString()%>', 
-                                                '<%=key2.Value.Rows[i]["cantidad"].ToString()%>', '<%=key2.Value.Rows[i]["sectorProductivo"].ToString()%>', 
-                                                '<%=key2.Value.Rows[i]["Column1"].ToString()%>', '<%=key2.Value.Rows[i]["CantidadPadre"].ToString()%>', 
-                                                '<%=key2.Value.Rows[i]["sectorPadre"].ToString()%>')">
+                                        '<%=key2.Value.Rows[i]["cantidad"].ToString()%>', '<%=key2.Value.Rows[i]["sectorProductivo"].ToString()%>', 
+                                        '<%=key2.Value.Rows[i]["Column1"].ToString()%>', '<%=key2.Value.Rows[i]["CantidadPadre"].ToString()%>', 
+                                        '<%=key2.Value.Rows[i]["sectorPadre"].ToString()%>', '<%=key2.Value.Rows[i]["OPNumero"].ToString() %>',
+                                        '<%=key2.Value.Rows[i]["RazonSocial"].ToString() %>' )">
                                         <i class="fa fa-exchange"></i>
                                     </button>
-                                    <%= obj.ToString()%>
+
+
+                                    <a href="/Formularios/Maestros/StockDetallado.aspx?t=1&i=<%=key2.Value.Rows[i]["idProductoOReceta"].ToString()%>"
+                                        target="_blank" style="float: right; margin-left: 10px;"
+                                        title="Ver stock">
+                                        <i style="color: black" class="fa fa-list-alt"></i>
+                                    </a>
                                     <%}%>
                                     <%}%>
                                     <%}%>
@@ -132,7 +175,6 @@
                                 <%}%>
                             </tr>
                             <%}%>
-                            <%fechasHead.Clear();%>
                         </tbody>
                     </table>
                 </div>
@@ -150,7 +192,8 @@
         OnClick="btnCancelar_Click">
     </asp:LinkButton>
 
-    <asp:LinkButton runat="server" ID="btnProducir" class="btn btn-primary dim" Style="float: right" Text="A producir" OnClientClick="Producir(); 
+    <asp:LinkButton runat="server" ID="btnProducir" 
+        class="btn btn-primary dim" Style="float: right" Text="A producir" OnClientClick="Producir(); 
         return false;">
     </asp:LinkButton>
 
@@ -250,7 +293,7 @@
 
 
     <div id="modalOrigenDestino" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog" style="width: 40%; height: 50%;">
+        <div class="modal-dialog" style="width: 60%; height: 60%;">
             <div class="modal-content">
 
                 <div class="modal-header">
@@ -285,47 +328,13 @@
                                                     <td><strong>Sector Productivo</strong></td>
                                                     <td><strong>Producto</strong></td>
                                                     <td class="text-right"><strong>Cantidad</strong></td>
+                                                    <td><strong>Producto Destino</strong></td>
+                                                    <td><strong>SectorDestino</strong></td>
+                                                    <td><strong>Orden destino</strong></td>
+                                                    <td><strong>Cliente destino</strong></td>
                                                 </tr>
                                             </thead>
                                             <tbody id="tableOrigen">
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="ibox float-e-margins">
-                                    <!-- Agregar la clase "collapsed" aquí -->
-                                    <div class="ibox-title">
-                                        <h5>Destino</h5>
-                                        <div class="ibox-tools">
-                                            <a class="collapse-link">
-                                                <i class="fa fa-chevron-down"></i>
-                                                <!-- Usar el ícono hacia abajo por defecto -->
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-user">
-                                                <li><a href="#">Config option 1</a>
-                                                </li>
-                                                <li><a href="#">Config option 2</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="ibox-content">
-                                        <table class="table table-hover no-margins table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <td><strong>Sector Productivo</strong></td>
-                                                    <td><strong>Receta</strong></td>
-                                                    <td class="text-right"><strong>Cantidad</strong></td>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="tablaDestino">
                                             </tbody>
                                         </table>
                                     </div>
@@ -569,7 +578,7 @@
 
                 fetch('CronogramaProduccion.aspx/cambiarEstadoDeLaOrden', {
                 method: 'POST',
-                body: JSON.stringify({id: id, estadoOrden: estadoOrden}),
+                body: JSON.stringify({}),
                 headers: { 'Content-Type': 'application/json' },
                 })
                 .then(response => response.json())
@@ -583,23 +592,17 @@
               }
 
             function Producir(){
-                  //let url = window.location.href;
                   const valores = window.location.search;
-                 // console.log(valores);
 
-                  //Creamos la instancia
                   const urlParams = new URLSearchParams(valores);
-                 // console.log(urlParams);
 
                   let id = urlParams.get('ids');
-                  //console.log(id);
 
 
                    if (id && id.endsWith(',')) {
                         id = id.slice(0, -1);
                     }
 
-                 // console.log(id);
                   let estadoOrden = 1;
                   fetch('CronogramaProduccion.aspx/cambiarEstadoDeLaOrden', {
                   method: 'POST',
@@ -608,38 +611,57 @@
               })
               .then(response => response.json())
               .then(data => {
-                         
                    window.location.href = "OrdenesDeProduccion.aspx"
               })
               .catch(error => {
-                  // Manejo de errores aquí si es necesario
                   console.error('Error:', error);
               });
             }
 
 
-            function verOrigenYDestino(ProductoOrigen, cantidadOrigen, SectorOrigen, productoPadre, cantidadPadre, sectorPadre){
+            function verOrigenYDestino(ProductoOrigen, cantidadOrigen, SectorOrigen, productoPadre, cantidadPadre, sectorPadre, OPNumero, razonSocial){
                 
-                   document.getElementById('tableOrigen').innerHTML = "";
-                   let plantillaIngredientesOrigen = `
-                   <tr>
-                       <td>${ProductoOrigen}</td>
-                       <td>${SectorOrigen}</td>
-                       <td style="text-align: right;">${cantidadOrigen}</td>
-                   </tr>
-                  `;
-                   document.getElementById('tableOrigen').innerHTML += plantillaIngredientesOrigen;
+                document.getElementById('tableOrigen').innerHTML = "";
+                   if(productoPadre.includes(";")){
 
-
-                   document.getElementById('tablaDestino').innerHTML = "";
-                   let plantillaIngredientesDestino = `
+                    const arrayProductosDestino = productoPadre.split(";");
+                    const arrayOPNumero = OPNumero.split(";");
+                    const arrayCantidadOrigen = cantidadOrigen.split(";");
+                    const arrayrazonSocial = razonSocial.split(";");
+                    
+                    arrayProductosDestino.forEach((producto, index) => {
+                    const orden = arrayOPNumero[index] || '';
+                    const cantidadOrigenActual = arrayCantidadOrigen[index] || '';
+                    const razonSocialActual = arrayrazonSocial[index] || '';
+                    let plantillaIngredientesOrigenDestino = `
                     <tr>
-                        <td>${productoPadre}</td>
+                        <td>${SectorOrigen}</td>
+                        <td>${ProductoOrigen}</td>
+                        <td style="text-align: right;">${cantidadOrigenActual}</td>
+                        <td>${producto}</td>
                         <td>${sectorPadre}</td>
-                        <td style="text-align: right;">${cantidadPadre}</td>
+                        <td>${orden}</td>
+                        <td>${razonSocialActual}</td>
                     </tr>
-                   `;
-                    document.getElementById('tablaDestino').innerHTML += plantillaIngredientesDestino;
+                    `;
+                    document.getElementById('tableOrigen').innerHTML += plantillaIngredientesOrigenDestino;
+                    });
+                   }
+                   else{
+                      let plantillaIngredientesOrigenDestino = `
+                       <tr>
+                           <td>${SectorOrigen}</td>
+                           <td>${ProductoOrigen}</td>
+                           <td style="text-align: right;">${cantidadOrigen}</td>
+                           <td>${productoPadre}</td>
+                           <td>${sectorPadre}</td>
+                           <td>${OPNumero}</td>
+                           <td>${razonSocial}</td>
+                       </tr>
+                       `;
+                       document.getElementById('tableOrigen').innerHTML += plantillaIngredientesOrigenDestino;
+                   
+                   }
                    $('#modalOrigenDestino').modal('show');
             }
 

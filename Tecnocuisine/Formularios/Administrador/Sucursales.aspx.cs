@@ -15,8 +15,54 @@ namespace Tecnocuisine.Formularios.Administrador
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack){
+            VerificarLogin();
+            if (!IsPostBack)
+            {
                 CargarSucursalesBackEnd();
+            }
+        }
+
+
+        private void VerificarLogin()
+        {
+            try
+            {
+                if (Session["User"] == null)
+                {
+                    Response.Redirect("../../Usuario/Login.aspx");
+                }
+                else
+                {
+                    if (this.verificarAcceso() != 1)
+                    {
+                        Response.Redirect("/Default.aspx?m=1", false);
+                    }
+                }
+            }
+            catch
+            {
+                Response.Redirect("../../Account/Login.aspx");
+            }
+        }
+
+        private int verificarAcceso()
+        {
+            try
+            {
+                int valor = 1;
+                string permisos = Session["Login_Permisos"] as string;
+                string[] listPermisos = permisos.Split(';');
+
+                string permiso = listPermisos.Where(x => x == "215").FirstOrDefault();
+
+                if (!string.IsNullOrEmpty(permiso))
+                    valor = 1;
+
+                return valor;
+            }
+            catch
+            {
+                return -1;
             }
         }
 
@@ -42,41 +88,41 @@ namespace Tecnocuisine.Formularios.Administrador
 
         private void CargarSucursalPH(sucursales s)
         {
-            
-                try
-                {
-                    TableRow tr = new TableRow();
-                    tr.ID = s.id.ToString();
 
-                    TableCell celDescripcion = new TableCell();
-                    celDescripcion.Text = s.nombre;
-                    celDescripcion.VerticalAlign = VerticalAlign.Middle;
-                    tr.Cells.Add(celDescripcion);
+            try
+            {
+                TableRow tr = new TableRow();
+                tr.ID = s.id.ToString();
 
-                    TableCell celDireccion = new TableCell();
-                    celDireccion.Text = s.direccion;
-                    celDireccion.VerticalAlign = VerticalAlign.Middle;
-                    tr.Cells.Add(celDireccion);
+                TableCell celDescripcion = new TableCell();
+                celDescripcion.Text = s.nombre;
+                celDescripcion.VerticalAlign = VerticalAlign.Middle;
+                tr.Cells.Add(celDescripcion);
 
-                    TableCell celEstado = new TableCell();
-                    celEstado.Text = s.estado.ToString();
-                    celEstado.VerticalAlign = VerticalAlign.Middle;
-                    tr.Cells.Add(celEstado);
+                TableCell celDireccion = new TableCell();
+                celDireccion.Text = s.direccion;
+                celDireccion.VerticalAlign = VerticalAlign.Middle;
+                tr.Cells.Add(celDireccion);
+
+                //TableCell celEstado = new TableCell();
+                //celEstado.Text = s.estado.ToString();
+                //celEstado.VerticalAlign = VerticalAlign.Middle;
+                //tr.Cells.Add(celEstado);
 
 
-                    TableCell celAction = new TableCell();
+                TableCell celAction = new TableCell();
 
-                    HtmlGenericControl btnEditar = new HtmlGenericControl("a");
-                    btnEditar.Attributes.Add("class", "btn btn-xs");
-                    btnEditar.Style.Add("background-color", "transparent");
-                    btnEditar.Style.Add("margin-right", "10px");
-                    btnEditar.InnerHtml = "<span><i style='color:black;' class='fa fa-pencil' title='Editar sucursal'></i></span>";
-                    btnEditar.Attributes.Add("OnClick", "vaciarInputs();ModalModificar('" + s.id + "','" + s.nombre + "','" + s.id_emp + "','" + s.direccion + "'); ");
-                    celAction.Controls.Add(btnEditar);
+                HtmlGenericControl btnEditar = new HtmlGenericControl("a");
+                btnEditar.Attributes.Add("class", "btn btn-xs");
+                btnEditar.Style.Add("background-color", "transparent");
+                btnEditar.Style.Add("margin-right", "10px");
+                btnEditar.InnerHtml = "<span><i style='color:black;' class='fa fa-pencil' title='Editar sucursal'></i></span>";
+                btnEditar.Attributes.Add("OnClick", "vaciarInputs();ModalModificar('" + s.id + "','" + s.nombre + "','" + s.id_emp + "','" + s.direccion + "'); ");
+                celAction.Controls.Add(btnEditar);
 
-                    Literal l = new Literal();
-                    l.Text = "&nbsp";
-                    celAction.Controls.Add(l);
+                Literal l = new Literal();
+                l.Text = "&nbsp";
+                celAction.Controls.Add(l);
 
 
                 HtmlGenericControl btnEliminar = new HtmlGenericControl("a");
@@ -87,17 +133,17 @@ namespace Tecnocuisine.Formularios.Administrador
                 btnEliminar.Attributes.Add("OnClick", "ModalConfirmacion(" + s.id + ");");
                 celAction.Controls.Add(btnEliminar);
 
-                    celAction.Width = Unit.Percentage(10);
-                    celAction.VerticalAlign = VerticalAlign.Middle;
-                    celAction.HorizontalAlign = HorizontalAlign.Center;
-                    tr.Cells.Add(celAction);
+                celAction.Width = Unit.Percentage(10);
+                celAction.VerticalAlign = VerticalAlign.Middle;
+                celAction.HorizontalAlign = HorizontalAlign.Center;
+                tr.Cells.Add(celAction);
 
-                    phSucursalesPH.Controls.Add(tr);
-                }
-                catch (Exception ex)
-                {
+                phSucursalesPH.Controls.Add(tr);
+            }
+            catch (Exception ex)
+            {
 
-                }
+            }
         }
 
         [WebMethod]
@@ -146,12 +192,12 @@ namespace Tecnocuisine.Formularios.Administrador
                         "\"Id\":\"" + item.id + "\"," +
                         "\"nombre\":\"" + item.nombre + "\"," +
                         "\"Direccion\":\"" + item.direccion + "\"," +
-                        "\"Empresa\":\"" + item.id_emp + "\"," +
-                        "\"Estado\":\"" + item.estado + "\"" +
+                        //"\"Empresa\":\"" + item.id_emp + "\"," +
+                        "\"Empresa\":\"" + item.id_emp + "\"" +
                         "},";
 
                 }
-                suc = suc.Remove(suc.Length - 1)+"]";
+                suc = suc.Remove(suc.Length - 1) + "]";
 
                 if (sucursales.Count == 0)
                 {
@@ -184,8 +230,6 @@ namespace Tecnocuisine.Formularios.Administrador
 
                     var i = contSucursal.AddSucursales(suc);
 
-                    //JavaScriptSerializer javaScript = new JavaScriptSerializer();
-                    //string resultadoJSON = javaScript.Serialize(empresas);
                     return i;
                 }
                 else

@@ -125,7 +125,7 @@
                         </div>
                     </div>
                     <div class="row m-b">
-                        <label class="col-md-4">Moneda Facturacion</label>
+                        <label class="col-md-4">Moneda Facturación</label>
                         <div class="col-md-8">
                             <select class="form-control" id="ddlMonedaFacturacion" onchange="valMonedaFacturacion()">
                                 <option value="0">Seleccione</option>
@@ -172,7 +172,7 @@
                         </div>
                     </div>
                     <div class="row m-b">
-                        <label class="col-md-4">Direccion</label>
+                        <label class="col-md-4">Dirección</label>
                         <div class="col-md-8">
                             <input id="txtDir" class="form-control" onchange="valDir()" />
                             <p id="valDir" class="hideValid">*Completar Direccion</p>
@@ -370,15 +370,15 @@
                                                 <td>${element.Direccion}</td>
                                                 <td>${element.Empresa}</td>
                                                 <td>
-                                                    <a class="btn btn-success" onclick="vaciarInputs();ModalModificar('${element.Id}','${element.nombre}','${element.Empresa}','${element.Direccion}','${element.puntoDeVenta}','${element.formaDeFacturar}','${element.retieneIngresosBrutos}','${element.retieneGanancias}','${element.CAIRemito}','${element.CAIVencimiento}','${element.monedaFacturacion}','${element.idSuc}')"><i class="fa fa-pencil"></i></a>
-                                                    <a class="btn btn-danger" onclick="ModalConfirmacion('${element.Id}')"><i class="fa fa-trash"></i></a>
+                                                    <a class="btn btn-xs" style="background-color: transparent; margin-right: 10px" onclick="vaciarInputs();ModalModificar('${element.Id}','${element.nombre}','${element.Empresa}','${element.Direccion}','${element.puntoDeVenta}','${element.formaDeFacturar}','${element.retieneIngresosBrutos}','${element.retieneGanancias}','${element.CAIRemito}','${element.CAIVencimiento}','${element.monedaFacturacion}','${element.idSuc}')"><i style="color: black;" class="fa fa-pencil"></i></a>
+                                                    <a class="btn btn-xs" style="background-color: transparent; margin-right: 10px;" onclick="ModalConfirmacion('${element.Id}')"><i style="color: red;" class="fa fa-trash"></i></a>
                                                 </td>
                                             </tr>`
                         })
-                        document.getElementById('Progressbars').className = 'hideBar'
+                        //document.getElementById('Progressbars').className = 'hideBar'
                         document.getElementById('phPtsDeVta').innerHTML = phPtsDeVta
                     } else {
-                        document.getElementById('Progressbars').className = 'hideBar'
+                        //document.getElementById('Progressbars').className = 'hideBar'
                         document.getElementById('phPtsDeVta').innerHTML = ""
                     }
                 }
@@ -735,72 +735,72 @@
         }
     </script>
     <script>
-                $(document).ready(function () {
+          $(document).ready(function () {
 
 
-                    $('.dataTables-example').dataTable({
-                        responsive: true,
-                        "dom": 'T<"clear">lfrtip',
-                        "tableTools": {
-                            "sSwfPath": "js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
-                        }
-                    });
-                    /* Init DataTables */
-                    var oTable = $('#editable').dataTable();
+              $('.dataTables-example').dataTable({
+                    responsive: true,
+                    ordering: false, 
+                    "dom": 'T<"clear">lfrtip',
+                    "tableTools": {
+                        "sSwfPath": "js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
+                    }
+              });
+           //   var oTable = $('#editable').dataTable();
 
 
-                    /* Apply the jEditable handlers to the table */
-                    oTable.$('td').editable('../example_ajax.php', {
-                        "callback": function (sValue, y) {
-                            var aPos = oTable.fnGetPosition(this);
-                            oTable.fnUpdate(sValue, aPos[0], aPos[1]);
-                        },
-                        "submitdata": function (value, settings) {
-                            return {
-                                "row_id": this.parentNode.getAttribute('id'),
-                                "column": oTable.fnGetPosition(this)[2]
-                            };
-                        },
-
-                        "width": "90%",
-                        "height": "100%",
-                        "pageLength": 25
-                    });
-
-
-                    $("#editable_filter").appendTo("#editable_length");
-
-                    $("#editable_filter").css('display', 'none');
-                    $("#editable_filter").css('padding-left', '5%');
-                    var parent = $("#editable_length")[0].parentNode;
-                    parent.className = 'col-sm-12';
-                    parent.style = 'display:none';
-                    var div = document.getElementById('editable_filter');
-                    var button = document.createElement('a');
-                    /* button.id = "btnAgregar";*/
-                    button.style.float = "right";
-                    button.style.marginRight = "1%";
-                    //button.setAttribute("type", "button");
-                    button.setAttribute("href", "ProductosABM.aspx");
-                    //button.setAttribute("href", "#modalAgregar");
-                    //button.setAttribute("onclick", "vaciarFormulario()");
-                    //button.setAttribute("data-toggle", "modal");
-                    button.setAttribute("class", "btn");
-
-                    button.innerHTML = "<i style='color: black' class='fa fa-plus'></i>";
-                    div.prepend(button);
-                    var filter = $("#editable_filter");
-                    filter[0].id = 'editable_filter2';
-
-                    //var filter = $("#editable_length");
-                    //filter[0].id = 'editable_length2';
+              /* Apply the jEditable handlers to the table */
+             // oTable.$('td').editable('../example_ajax.php', {
+             //     "callback": function (sValue, y) {
+             //         var aPos = oTable.fnGetPosition(this);
+             //         oTable.fnUpdate(sValue, aPos[0], aPos[1]);
+             //     },
+             //     "submitdata": function (value, settings) {
+             //         return {
+             //             "row_id": this.parentNode.getAttribute('id'),
+             //             "column": oTable.fnGetPosition(this)[2]
+             //         };
+             //     },
+             //
+             //     "width": "90%",
+             //     "height": "100%",
+             //     "pageLength": 25
+             // });
 
 
-                    $('#txtBusqueda').on('keyup', function () {
-                        $('#editable').DataTable().search(
-                            this.value
-                        ).draw();
-                    });
-                });
+              $("#editable_filter").appendTo("#editable_length");
+
+              $("#editable_filter").css('display', 'none');
+              $("#editable_filter").css('padding-left', '5%');
+             // var parent = $("#editable_length")[0].parentNode;
+              parent.className = 'col-sm-12';
+              parent.style = 'display:none';
+              var div = document.getElementById('editable_filter');
+              var button = document.createElement('a');
+              /* button.id = "btnAgregar";*/
+              button.style.float = "right";
+              button.style.marginRight = "1%";
+              //button.setAttribute("type", "button");
+              button.setAttribute("href", "ProductosABM.aspx");
+              //button.setAttribute("href", "#modalAgregar");
+              //button.setAttribute("onclick", "vaciarFormulario()");
+              //button.setAttribute("data-toggle", "modal");
+              button.setAttribute("class", "btn");
+
+              button.innerHTML = "<i style='color: black' class='fa fa-plus'></i>";
+              //div.prepend(button);
+              var filter = $("#editable_filter");
+             // filter[0].id = 'editable_filter2';
+
+              //var filter = $("#editable_length");
+              //filter[0].id = 'editable_length2';
+
+
+              $('#txtBusqueda').on('keyup', function () {
+                  $('#editable').DataTable().search(
+                      this.value
+                  ).draw();
+              });
+          });
     </script>
 </asp:Content>

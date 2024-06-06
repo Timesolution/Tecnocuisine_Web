@@ -54,8 +54,7 @@
                                             <tr>
                                                 <th>Nombre</th>
                                                 <th>Dirección</th>
-                                                <th>Estado</th>
-                                                <th></th>
+                                                <th>Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody id="phSucursales">
@@ -89,7 +88,7 @@
                         </div>
                     </div>
                     <div class="row m-b">
-                        <label class="col-md-3">Direccion</label>
+                        <label class="col-md-3">Dirección</label>
                         <div class="col-md-9">
                             <input id="txtDir" class="form-control" onchange="valDir()" />
                             <p id="valDir" class="hideValid">*Completar Direccion</p>
@@ -189,17 +188,20 @@
                             phSucursales += ` <tr>
                                                 <td>${element.nombre}</td>
                                                 <td>${element.Direccion}</td>
-                                                <td>${element.Estado}</td>
                                                 <td>
-                                                    <a class="btn btn-success" onclick="vaciarInputs();ModalModificar('${element.Id}','${element.nombre}','${element.Empresa}','${element.Direccion}')"><i class="fa fa-pencil"></i></a>
-                                                    <a class="btn btn-danger" onclick="ModalConfirmacion('${element.Id}')"><i class="fa fa-trash"></i></a>
+                                                    <a class="btn btn-xs" style="background-color: transparent; margin-right: 10px;" onclick="vaciarInputs();ModalModificar('${element.Id}','${element.nombre}','${element.Empresa}','${element.Direccion}')">
+                                                        <span><i style="color: black;" class="fa fa-pencil" title="Editar sucursal"></i></span>
+                                                    </a>
+                                                    <a class="btn btn-xs" style="background-color: transparent; margin-right: 10px;" onclick="ModalConfirmacion('${element.Id}')">
+                                                        <span><i style="color: red;" class="fa fa-trash" title="Eliminar sucursal"></i></span>
+                                                    </a>
                                                 </td>
                                             </tr>`
                         })
-                        document.getElementById('Progressbars').className = 'hideBar'
+                        //document.getElementById('Progressbars').className = 'hideBar'
                         document.getElementById('phSucursales').innerHTML = phSucursales
                     } else {
-                        document.getElementById('Progressbars').className = 'hideBar'
+                        //document.getElementById('Progressbars').className = 'hideBar'
                         document.getElementById('phSucursales').innerHTML = ""
                     }
                 }
@@ -242,10 +244,18 @@
                             toastr.success('Se agrego correctamente la Empresa!', 'Felicitaciones')
                             CargarSucursales()
                             $('#modalABM').modal('hide')
-                        } else {
-                            toastr.warning('No se pudo agregar la Empresa!', 'Atencion')
+                        } 
+                        if (res == '0') {
+                            toastr.warning('Ya existe una empresa con ese nombre!', 'Atencion')
                             document.getElementById('btnAgregar').removeAttribute('disabled')
-                        }
+                            $('#modalABM').modal('hide')
+                        } 
+                        
+                        if (res == '-1') {
+                            toastr.warning('No se pudo agregar la empresa!', 'Atencion')
+                            document.getElementById('btnAgregar').removeAttribute('disabled')
+                        } 
+
 
                     }
                 });
@@ -306,11 +316,11 @@
                         let res = respuesta.d
 
                         if (res == '1') {
-                            toastr.success('Se modifico correctamente la Empresa!', 'Felicitaciones')
+                            toastr.success('Se modifico correctamente la Sucursal!', 'Felicitaciones')
                             CargarSucursales()
                             $('#modalABM').modal('hide')
                         } else {
-                            toastr.warning('No se pudo modificar la Empresa!', 'Atencion')
+                            toastr.warning('No se pudo modificar la Sucursal!', 'Atencion')
                             document.getElementById('btnModificar').removeAttribute('disabled')
                         }
 

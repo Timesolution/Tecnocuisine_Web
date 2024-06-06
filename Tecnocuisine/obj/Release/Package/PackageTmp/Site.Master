@@ -157,7 +157,7 @@
                             <ul class="nav nav-second-level">
 
                                 <li>
-                                    <a style="color: white !important;" href="../../Formularios/Maestros/Articulos.aspx">Articulos</a>
+                                    <a style="color: white !important;" href="../../Formularios/Maestros/Articulos.aspx">Artículos</a>
                                 </li>
                                 <li>
                                     <a style="color: white !important;" href="../../Formularios/Ventas/CuentaCorriente.aspx">Cuenta Corriente</a>
@@ -198,27 +198,17 @@
                             </a>
                             <ul class="nav nav-second-level">
                                 <li><a style="color: white !important;" href="../../Formularios/Caja/Contado.aspx">Caja</a></li>
-                            </ul>
 
-                            <ul class="nav nav-second-level">
                                 <li><a style="color: white !important;" href="../../Formularios/Caja/Cashflow.aspx">Cashflow</a></li>
-                            </ul>
 
-                            <ul class="nav nav-second-level">
                                 <li><a style="color: white !important;" href="../../Formularios/Caja/ChequesCobros.aspx">Cheques</a></li>
-                            </ul>
 
-                            <ul class="nav nav-second-level">
                                 <li><a style="color: white !important;" href="../../Formularios/Caja/Cobros.aspx">Cobros</a></li>
-                            </ul>
-                            <ul class="nav nav-second-level">
-                                <li><a style="color: white !important;" href="../../Formularios/Caja/CobrosRealizados.aspx">Cobros Realizados</a></li>
-                            </ul>
-                            <ul class="nav nav-second-level">
-                                <li><a style="color: white !important;" href="../../Formularios/Caja/EstadoDeResultado.aspx">Estado de resultado</a></li>
-                            </ul>
 
-                            <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/CobrosRealizados.aspx">Cobros Realizados</a></li>
+
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/EstadoDeResultado.aspx">Estado de resultado</a></li>
+
                                 <li><a style="color: white !important;" href="../../Formularios/Caja/TarjetaDeCredito.aspx">Tarjeta de Crédito</a></li>
                             </ul>
                         </li>
@@ -239,9 +229,7 @@
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Marcas.aspx">Marcas</a></li>
                                 <li><a style="color: white !important;">Ordenes de compra</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Compras/Pagos.aspx">Pagos</a></li>
-                                <ul class="nav nav-second-level">
-                                    <li><a style="color: white !important;" href="../../Formularios/Compras/PagosRealizados.aspx">Pagos Realizados</a></li>
-                                </ul>
+                                <li><a style="color: white !important;" href="../../Formularios/Compras/PagosRealizados.aspx">Pagos Realizados</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Presentaciones.aspx">Presentaciones</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Productos.aspx">Productos</a></li>
                                 <li><a style="color: white !important;" href="../..\Formularios\Compras\ProveedoresP.aspx">Proveedores</a></li>

@@ -133,7 +133,8 @@
                                             <h4 style="margin-left: 5%">Tarjeta:</h4>
                                         </div>
                                         <div class="col-md-8">
-                                            <asp:DropDownList ID="DropDownListTarjetaCredito" runat="server" class="form-control" Style="margin-left: 15px; width: 70%">
+                                            <asp:DropDownList ID="DropDownListTarjetaCredito" runat="server" 
+                                                class="form-control" Style="margin-left: 15px; width: 70%">
                                             </asp:DropDownList>
                                         </div>
                                     </div>

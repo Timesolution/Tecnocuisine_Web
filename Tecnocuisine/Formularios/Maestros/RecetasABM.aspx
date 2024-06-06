@@ -66,13 +66,14 @@
                                                     <label>Codigo *</label>
                                                     <%--<input id="ProdDescripcion" onchange="ActualizarLabels()" name="ProdDescripcion" type="text" class="form-control required" />--%>
                                                     <asp:TextBox ID="txtCodigo" class="form-control required" 
-                                                        Style="width: 30%" runat="server" />
+                                                        Style="width: 30%" runat="server" MaxLength="50" oninput="this.value = this.value.replace(/[^A-Za-z0-9\s]/g, '');"/>
+
 
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Recetas *</label>
                                                     <%--<input id="ProdDescripcion" onchange="ActualizarLabels()" name="ProdDescripcion" type="text" class="form-control required" />--%>
-                                                    <asp:TextBox ID="txtDescripcionReceta" Style="max-width: 500px;"
+                                                    <asp:TextBox ID="txtDescripcionReceta" Style="max-width: 500px;" MaxLength="100"
                                                         onchange="ActualizarLabels()" class="form-control required" runat="server" />
                                                     <asp:HiddenField ID="Hiddentipo" runat="server" />
                                                     <asp:HiddenField ID="HiddenUnidad" runat="server" />
@@ -307,8 +308,8 @@
                                                 <th style="width: 10%;text-align:right">Costo $</th>
                                                 <th style="width: 10%;text-align:right">Costo Total $</th>
                                                 <th style="width: 10%;text-align:right">Sector Productivo</th>
-                                                <th style="width: 10%;text-align:right">Tiempo</th>
-                                                <th style="width: 5%"></th>
+                                                <th style="width: 10%;text-align:right">Tiempo(dias)</th>
+                                                <th style="width: 5%">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody>

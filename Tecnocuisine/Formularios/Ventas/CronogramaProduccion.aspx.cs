@@ -1,9 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using Gestion_Api.Controladores.APP;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.DynamicData;
@@ -53,27 +57,27 @@ namespace Tecnocuisine.Formularios.Ventas
                 foreach (DataRow dr in dtCopia.Rows)
                 {
                     DataTable dtingredietesNivel1 = obtenerIngredientesReceta(Convert.ToInt32(dr["id"].ToString()), dr["OPNumero"].ToString(), dr["Producto"].ToString(), Convert.ToInt32(dr["idReceta"].ToString()),
-                        dr["cantidad"].ToString(), dr["fechaEntrega"].ToString(), dr["descripcion1"].ToString());
+                        dr["cantidad"].ToString(), dr["fechaEntrega"].ToString(), Convert.ToInt32(dr["id5"].ToString()), dr["descripcion1"].ToString(), dr["razonSocial"].ToString());
                     //aca tengo que obtener el set de datos necesito 
                     DataTable dtSubRecetas = obtenerSubRecetasOrdenes(Convert.ToInt32(dr["id"].ToString()), dr["OPNumero"].ToString(), dr["Producto"].ToString(), Convert.ToInt32(dr["idReceta"].ToString()),
-                          dr["cantidad"].ToString(), dr["fechaEntrega"].ToString(), dr["descripcion1"].ToString());
+                          dr["cantidad"].ToString(), dr["fechaEntrega"].ToString(), Convert.ToInt32(dr["id5"].ToString()), dr["descripcion1"].ToString(), dr["razonSocial"].ToString());
 
 
                     foreach (DataRow drNivel1 in dtSubRecetas.Rows)
                     {
                         DataTable dtingredietesNivel2 = obtenerIngredientesReceta(Convert.ToInt32(drNivel1["idOrdenProduccion"].ToString()), drNivel1["OPNumero"].ToString(), drNivel1["descripcion"].ToString(), Convert.ToInt32(drNivel1["idProductoOReceta"].ToString()),
-                        drNivel1["cantidad"].ToString(), drNivel1["FechaEntregaOrden"].ToString(), drNivel1["sectorProductivo"].ToString());
+                        drNivel1["cantidad"].ToString(), drNivel1["FechaEntregaOrden"].ToString(), Convert.ToInt32(drNivel1["idSector"].ToString()), drNivel1["sectorProductivo"].ToString(), dr["razonSocial"].ToString());
 
                         DataTable dtSubrecetasNivel2 = obtenerSubRecetasOrdenes(Convert.ToInt32(drNivel1["idOrdenProduccion"].ToString()), drNivel1["OPNumero"].ToString(), drNivel1["descripcion"].ToString(), Convert.ToInt32(drNivel1["idProductoOReceta"].ToString()),
-                        drNivel1["cantidad"].ToString(), drNivel1["FechaEntregaOrden"].ToString(), drNivel1["sectorProductivo"].ToString());
+                        drNivel1["cantidad"].ToString(), drNivel1["FechaEntregaOrden"].ToString(), Convert.ToInt32(drNivel1["idSector"].ToString()), drNivel1["sectorProductivo"].ToString(), dr["razonSocial"].ToString());
 
                         foreach (DataRow drNivel2 in dtSubrecetasNivel2.Rows)
                         {
                             DataTable dtingredietesNivel3 = obtenerIngredientesReceta(Convert.ToInt32(drNivel2["idOrdenProduccion"].ToString()), drNivel2["OPNumero"].ToString(), drNivel2["descripcion"].ToString(), Convert.ToInt32(drNivel2["idProductoOReceta"].ToString()),
-                            drNivel2["cantidad"].ToString(), drNivel2["FechaEntregaOrden"].ToString(), drNivel2["sectorProductivo"].ToString());
+                            drNivel2["cantidad"].ToString(), drNivel2["FechaEntregaOrden"].ToString(), Convert.ToInt32(drNivel2["idSector"].ToString()), drNivel2["sectorProductivo"].ToString(), dr["razonSocial"].ToString());
 
                             DataTable dtSubrecetasNivel3 = obtenerSubRecetasOrdenes(Convert.ToInt32(drNivel2["idOrdenProduccion"].ToString()), drNivel2["OPNumero"].ToString(), drNivel2["descripcion"].ToString(), Convert.ToInt32(drNivel2["idProductoOReceta"].ToString()),
-                            drNivel2["cantidad"].ToString(), drNivel2["FechaEntregaOrden"].ToString(), drNivel2["sectorProductivo"].ToString());
+                            drNivel2["cantidad"].ToString(), drNivel2["FechaEntregaOrden"].ToString(), Convert.ToInt32(drNivel2["idSector"].ToString()), drNivel2["sectorProductivo"].ToString(), dr["razonSocial"].ToString());
                         }
                     }
                 }
@@ -92,7 +96,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 // Asignar la vista ordenada de nuevo a la DataTable
                 dtGlobal = dv.ToTable();
                 //Esta funcion obtiene las fechas de entrega de todas las ordenes de produccion
-
+                Session["DatosOrdenesSeleccionas"] = dtGlobal;
 
                 separarSectoresEnTablas();
 
@@ -127,19 +131,61 @@ namespace Tecnocuisine.Formularios.Ventas
                 sectorTables[sector].ImportRow(row);
             }
 
-
-
-
-            DataTable cocinaCalienteTable = sectorTables["COCINA CALIENTE"];
-            DataTable carniceriaTable = sectorTables["CARNICERIA"];
-            DataTable verduleriaTable = sectorTables["VERDULERIA"];
-            DataTable ALMACENTable = sectorTables["ALMACEN"];
-
-
+            fusionarFilas();
 
         }
 
+        public void fusionarFilas()
+        {
+            foreach (var kvp in sectorTables)
+            {
+                DataColumn nuevaColumna = new DataColumn("index", typeof(int));
+                nuevaColumna.DefaultValue = 0;
+                kvp.Value.Columns.Add(nuevaColumna);
 
+                DataColumn nuevaColumna2 = new DataColumn("delete", typeof(int));
+                nuevaColumna2.DefaultValue = 0;
+                kvp.Value.Columns.Add(nuevaColumna2);
+
+                int cont = 0;
+                kvp.Value.Columns["idOrdenProduccion"].DataType = typeof(string);
+                // int rowIndex = kvp.Value.IndexOf(col);
+                List<DataRow> filasParaEliminar = new List<DataRow>();
+
+                foreach (DataRow col in kvp.Value.DefaultView.Table.Rows)
+                {
+                    cont++;
+                    col["index"] = cont;
+
+                    foreach (DataRow row in kvp.Value.DefaultView.Table.Rows)
+                    {
+                        if (Convert.ToInt32((col["index"])) != Convert.ToInt32(row["index"]))
+                        {
+
+                            if (col["descripcion"].ToString() == row["descripcion"].ToString() && col["fechaProducto"].ToString() == row["fechaProducto"].ToString() && col["delete"].ToString() == "0")
+                            {
+                                col["idOrdenProduccion"] = col["idOrdenProduccion"] + ";" + row["idOrdenProduccion"];
+                                col["OPNumero"] = col["OPNumero"] + ";" + row["OPNumero"];
+                                col["cantidad"] = col["cantidad"] + ";" + row["cantidad"];
+                                col["column1"] = col["column1"] + ";" + row["column1"];
+                                col["sectorPadre"] = col["sectorPadre"] + ";" + row["sectorPadre"];
+                                col["RazonSocial"] = col["RazonSocial"] + ";" + row["RazonSocial"];
+                                row["delete"] = 1;
+                                filasParaEliminar.Add(row);
+                            }
+                        }
+                    }
+                }
+
+
+                foreach (DataRow fila in filasParaEliminar)
+                {
+                    kvp.Value.Rows.Remove(fila);
+                }
+            }
+
+
+        }
 
         public string GenerarHTMLWidget()
         {
@@ -173,19 +219,13 @@ namespace Tecnocuisine.Formularios.Ventas
         }
 
 
-        public void obtenerIngredientesReceta()
-        {
-            ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
 
-        }
-
-
-        public DataTable obtenerSubRecetasOrdenes(int id, string OPNumero, string Producto, int idReceta, string cantidad, string fechaEntrega, string sectorPadre)
+        public DataTable obtenerSubRecetasOrdenes(int id, string OPNumero, string Producto, int idReceta, string cantidad, string fechaEntrega, int idSector, string sectorPadre, string RazonSocialCliente)
         {
             try
             {
                 ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
-                DataTable dt = cOrdenDeProduccion.getRecipesFromRecipes(id, OPNumero, Producto, idReceta, cantidad, fechaEntrega, sectorPadre);
+                DataTable dt = cOrdenDeProduccion.getRecipesFromRecipes(id, OPNumero, Producto, idReceta, cantidad, fechaEntrega, idSector, sectorPadre, RazonSocialCliente);
                 dtGlobal.Merge(dt);
                 return dt;
 
@@ -198,12 +238,12 @@ namespace Tecnocuisine.Formularios.Ventas
         }
 
 
-        public DataTable obtenerIngredientesReceta(int id, string OPNumero, string Producto, int idReceta, string cantidad, string fechaEntrega, string SectorPadre)
+        public DataTable obtenerIngredientesReceta(int id, string OPNumero, string Producto, int idReceta, string cantidad, string fechaEntrega, int idSector, string SectorPadre, string RazonSocialCliente)
         {
             try
             {
                 ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
-                DataTable dt = cOrdenDeProduccion.getIngredientsRecipes(id, OPNumero, Producto, idReceta, cantidad, fechaEntrega, SectorPadre);
+                DataTable dt = cOrdenDeProduccion.getIngredientsRecipes(id, OPNumero, Producto, idReceta, cantidad, fechaEntrega, idSector, SectorPadre, RazonSocialCliente);
                 dtGlobal.Merge(dt);
                 return dt;
 
@@ -215,12 +255,7 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
 
-        //public void cambiarEstadoDeLaOrdenSeleccionada()
-        //{
-        //    ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
-        //    string idOrdenDeProduccion = Request.QueryString["ids"];
-        //    cOrdenDeProduccion.cambiarEstadoOrden(idOrdenDeProduccion);
-        //}
+
 
         public DateTime obtenerFechaOrden(string idOrdenDeProduccion)
         {
@@ -389,14 +424,250 @@ namespace Tecnocuisine.Formularios.Ventas
 
 
         [WebMethod]
-        public static int cambiarEstadoDeLaOrden(string id, int estadoOrden)
+        //public static int cambiarEstadoDeLaOrden(string id, int estadoOrden)
+        public static int cambiarEstadoDeLaOrden()
         {
-            ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
-            cOrdenDeProduccion.cambiarEstadoOrden(id, estadoOrden);
+            try
+            {
 
-            return 1;
+                //ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
+                //cOrdenDeProduccion.cambiarEstadoOrden(id, estadoOrden);
+
+                DataTable dt = HttpContext.Current.Session["DatosOrdenesSeleccionas"] as DataTable;
+                Dictionary<string, DataTable> dtDiccionario = new Dictionary<string, DataTable>();
+                Dictionary<string, DataTable> sumaCantidadProductos = new Dictionary<string, DataTable>();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    string sector = row["sectorPadre"].ToString();
+                    string sectorOrigen = row["sectorProductivo"].ToString();
+                    string fechaProducto = row["fechaProducto"].ToString();
+
+                    string clave = $"{sector}_{sectorOrigen}_{fechaProducto}";
+
+                    if (!dtDiccionario.ContainsKey(clave))
+                    {
+                        DataTable newTable = dt.Clone();
+                        newTable.TableName = clave;
+                        dtDiccionario.Add(clave, newTable);
+                    }
+
+                    dtDiccionario[clave].ImportRow(row);
+                }
+
+
+
+                //sumaCantidadProductos = sumarCantidadAgrupadaPorProducto(dt);
+
+                //controladorDatosTransferencias cDatosTransferencias = new controladorDatosTransferencias();
+                //foreach (var key in sumaCantidadProductos)
+                //{
+                //    datosTransferencias datosTransferencias = new datosTransferencias();
+                //    var row = key.Value.DefaultView.Table.Rows[0];
+                //    datosTransferencias.sectorOrigen = row[12].ToString();
+                //    datosTransferencias.sectorDestino = row[7].ToString();
+                //    datosTransferencias.producto = row[9].ToString();
+                //    datosTransferencias.cantidad = 0;
+                //    datosTransferencias.estado = 1;
+                //    foreach (DataRow column in key.Value.DefaultView.Table.Rows)
+                //    {
+                //        datosTransferencias.cantidad += decimal.Parse(row[10].ToString(), CultureInfo.InvariantCulture);
+                //    }
+
+                //    cDatosTransferencias.addDatosTrasferencias(datosTransferencias);
+
+                //}
+
+                ControladorTransferencia cTransferencia = new ControladorTransferencia();
+                controladorPedidosTranferencia cPedidosTranferencia = new controladorPedidosTranferencia();
+
+                foreach (var kvp in dtDiccionario)
+                {
+                    Transferencia transferencia = new Transferencia();
+                    string[] partesClave = kvp.Key.Split('_');
+                    string origenString = partesClave[1];
+                    string destinoString = partesClave[0];
+                    string fechaString = partesClave[2];
+
+
+                    transferencia.fecha = Convert.ToDateTime(fechaString);
+                    transferencia.origen = origenString;
+                    transferencia.destino = destinoString;
+                    transferencia.estadoTransferencia = 2;
+
+                    ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
+                    var listaTransferencias = cTransferencia.getListTransferencias();
+
+                    string fac1 = "";
+                    if (listaTransferencias.Count != 0)
+                    {
+                        string codigo = (listaTransferencias.Count + 1).ToString();
+                        fac1 = cOrdenDeProduccion.GenerarCodigoPedido(codigo);
+                        transferencia.orden = "#" + fac1;
+                    }
+                    else
+                    {
+                        transferencia.orden = "#000001";
+                    }
+
+                    transferencia.estato = 1;
+
+
+
+                    int id = cTransferencia.addTransferencia(transferencia);
+
+                    if (id != -1)
+                    {
+
+                        Dictionary<string, DataTable> sumaCantidadPorGrupo = new Dictionary<string, DataTable>();
+
+                        foreach (DataRow col1 in kvp.Value.DefaultView.Table.Rows)
+                        {
+
+
+                            PedidosInternos pedidosInternos = new PedidosInternos();
+                            pedidosInternos.sectorOrigen = col1["sectorProductivo"].ToString();
+                            pedidosInternos.productoOrigen = col1["descripcion"].ToString();
+                            pedidosInternos.cantidadOrigen = col1["cantidad"].ToString();
+                            pedidosInternos.ProductoDestinodestino = col1["Column1"].ToString();
+                            pedidosInternos.SectorDestinodestino = col1["sectorPadre"].ToString();
+                            pedidosInternos.orden = col1["OPNumero"].ToString();
+                            pedidosInternos.cliente = col1["RazonSocial"].ToString();
+                            pedidosInternos.idTransferencia = id;
+                            pedidosInternos.CantidadAConfirmar = col1["cantidad"].ToString();
+                            pedidosInternos.estado = 1;
+                            cPedidosTranferencia.addPedidosInternos(pedidosInternos);
+
+
+                            string key = $"{col1["sectorProductivo"]}-{col1["descripcion"]}";
+
+                            if (!sumaCantidadPorGrupo.ContainsKey(key))
+                            {
+                                DataTable newTable = kvp.Value.Clone(); // Clonamos la estructura de la tabla original
+                                sumaCantidadPorGrupo[key] = newTable;
+                            }
+
+
+                            sumaCantidadPorGrupo[key].ImportRow(col1);
+                        }
+
+
+                        //aca quiero convertirlo en una datatable
+                        controladorDatosTransferencias cDatosTransferencias = new controladorDatosTransferencias();   
+                        foreach (var key in sumaCantidadPorGrupo)
+                        {
+                            datosTransferencias datosTransferencias = new datosTransferencias();
+                            foreach (DataRow col1 in key.Value.DefaultView.Table.Rows)
+                            {
+                                datosTransferencias.sectorOrigen = col1["sectorProductivo"].ToString();
+                                datosTransferencias.sectorDestino = col1["sectorPadre"].ToString();
+                                datosTransferencias.producto = col1["descripcion"].ToString();
+                                datosTransferencias.cantidad += Convert.ToDecimal(col1["cantidad"].ToString());
+                                datosTransferencias.cantidadConfirmada += Convert.ToDecimal(col1["cantidad"].ToString());
+                                datosTransferencias.idTransferencia = id;
+                                datosTransferencias.estado = true;
+
+                            }
+                            cDatosTransferencias.addDatosTrasferencias(datosTransferencias);
+
+                        }
+
+
+                        //sumaCantidadProductos = sumarCantidadAgrupadaPorProducto(dt);
+
+                        //controladorDatosTransferencias cDatosTransferencias = new controladorDatosTransferencias();
+                        //foreach (var key in sumaCantidadProductos)
+                        //{
+                        //    datosTransferencias datosTransferencias = new datosTransferencias();
+                        //    var row = key.Value.DefaultView.Table.Rows[0];
+                        //    datosTransferencias.sectorOrigen = row[12].ToString();
+                        //    datosTransferencias.sectorDestino = row[7].ToString();
+                        //    datosTransferencias.producto = row[9].ToString();
+                        //    datosTransferencias.cantidad = 0;
+                        //    datosTransferencias.estado = 1;
+                        //    foreach (DataRow column in key.Value.DefaultView.Table.Rows)
+                        //    {
+                        //        datosTransferencias.cantidad += decimal.Parse(row[10].ToString(), CultureInfo.InvariantCulture);
+                        //    }
+
+                        //    cDatosTransferencias.addDatosTrasferencias(datosTransferencias);
+
+                        //}
+
+
+
+                    }
+
+                }
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
         }
 
+        public static Dictionary<string, DataTable> sumarCantidadAgrupadaPorProducto(DataTable dt)
+        {
+            Dictionary<string, DataTable> dtDiccionario = new Dictionary<string, DataTable>();
+            foreach (DataRow row in dt.Rows)
+            {
+                string descripcionProducto = row["descripcion"].ToString();
+                //string sectorOrigen = row["sectorProductivo"].ToString();
+                //string fechaProducto = row["fechaProducto"].ToString();
+
+                string clave = $"{descripcionProducto}";
+
+                if (!dtDiccionario.ContainsKey(clave))
+                {
+                    DataTable newTable = dt.Clone();
+                    newTable.TableName = clave;
+                    dtDiccionario.Add(clave, newTable);
+                }
+
+                dtDiccionario[clave].ImportRow(row);
+            }
+
+            return dtDiccionario;
+        }
+
+        public static void saveDatosTransferencia(Dictionary<string, decimal> sumaCantidadPorGrupo, int idTransferencia)
+        {
+            datosTransferencias datosTransferencias = new datosTransferencias();
+            controladorDatosTransferencias cDatosTransferencias = new controladorDatosTransferencias();
+
+
+
+            //foreach (var kvp in sumaCantidadPorGrupo)
+            //{
+            //    string[] partes = kvp.Key.Split('_');
+            //    string sectorOrigen = partes[0];
+            //    string sectorDestino = partes[1];
+            //    string producto = partes[2];
+            //    decimal cantidad = kvp.Value;
+            //    int estado = 1;
+
+            //    datosTransferencias.sectorOrigen = sectorOrigen;
+            //    datosTransferencias.sectorDestino = sectorDestino;
+            //    datosTransferencias.cantidad = cantidad;
+            //    datosTransferencias.producto = producto;
+            //    datosTransferencias.estado = estado;
+            //    datosTransferencias.idTransferencia = idTransferencia;
+
+            //    int id = cDatosTransferencias.addDatosTrasferencias(datosTransferencias);
+            //    //saveDetalleDatosTransferencias(datosTransferencias, id);
+
+            //}
+        }
+
+        public static void saveDetalleDatosTransferencias(datosTransferencias datosTransferencias, int id)
+        {
+            controladorPedidosTranferencia cPedidosTranferencia = new controladorPedidosTranferencia();
+            // cPedidosTranferencia.addPedidosInternos(pedidosInternos);
+
+
+
+        }
 
 
         [WebMethod]

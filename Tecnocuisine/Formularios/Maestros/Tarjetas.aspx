@@ -31,7 +31,7 @@
                                             <th style="width: 20%">#</th>
                                             <th style="width: 20%">Nombre</th>
                                             <th style="width: 20%">Entidad</th>
-                                            <th style="width: 20%; text-align:right">Acredita en (Dias)</th>
+                                            <th style="width: 20%; text-align: right">Acredita en (Dias)</th>
                                             <th style="width: 20%"></th>
                                         </tr>
                                     </thead>
@@ -49,82 +49,7 @@
         </div>
     </div>
 
-        <div id="modalAgregar" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Agregar</h4>
-                    </div>
-                    <div class="modal-body">
-
-                        <div class="row">
-                            <div class="col-sm-1">
-                                <label style="color: red;" class="danger">*</label>
-                            </div>
-                            <label class="col-sm-4 control-label editable">Entidad</label>
-                            <div class="col-sm-4">
-                                <asp:DropDownList ID="DropDownEntidadList" class="form-control" runat="server" />
-                            </div>
-                        </div>
-                        <div class="row" style="margin-top:15px;">
-                            <div class="col-sm-1">
-                                <label style="color: red;" class="danger">*</label>
-                            </div>
-                            <label class="col-sm-4 control-label editable">Nombre Tarjeta</label>
-                            <div class="col-sm-4">
-                                <asp:TextBox ID="txtDescripcionInsumo" class="form-control" runat="server" />
-
-                            </div>
-                        </div>
-
-                        <div class="row" style="margin-top:15px;">
-                            <div class="col-sm-1">
-                                <label style="color: red;" class="danger">*</label>
-                            </div>
-                            <label class="col-sm-4 control-label editable">Acredita en (Dias)</label>
-                            <div class="col-sm-4">
-                                 <asp:TextBox ID="txtAcreditaEnDias" type="number" class="form-control" runat="server" />
-                            </div>
-                        </div>
-
-
-                    </div>
-                    <div class="modal-footer">
-                        <asp:LinkButton runat="server" ID="btnGuardar" class="buttonLoading btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
-                        <asp:HiddenField ID="hiddenEditar" runat="server" />
-                        <asp:HiddenField ID="hiddenValueDropDown" runat="server" />
-                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div id="modalConfirmacion2" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title">Confirmar eliminacion</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            Esta seguro que lo desea eliminar?
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
-                        <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="buttonLoading btn btn-danger" OnClick="btnSi_Click" />
-                        <asp:HiddenField ID="hiddenID" runat="server" />
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    <div id="modalEditar" class="modal fade" tabindex="-1" role="dialog">
+    <div id="modalAgregar" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
@@ -132,40 +57,117 @@
                     <h4 class="modal-title">Agregar</h4>
                 </div>
                 <div class="modal-body">
-                        <div class="row">
-                            <div class="col-sm-1">
-                                <label style="color: red;" class="danger">*</label>
-                            </div>
-                            <label class="col-sm-4 control-label editable">Entidad</label>
-                            <div class="col-sm-4">
-                                <asp:DropDownList ID="DropDownListEdit" class="form-control" runat="server" />
-                            </div>
-                        </div>
-                 <div class="row" style="margin-top:15px;">
-                            <div class="col-sm-1">
-                                <label style="color: red;" class="danger">*</label>
-                            </div>
-                            <label class="col-sm-4 control-label editable">Nombre Tarjeta</label>
-                            <div class="col-sm-4">
-                                <asp:TextBox ID="txtNombreTarjetaEditar" class="form-control" runat="server" />
 
-                            </div>
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <label style="color: red;" class="danger">*</label>
                         </div>
-
-
-                        <div class="row" style="margin-top:15px;">
-                            <div class="col-sm-1">
-                                <label style="color: red;" class="danger">*</label>
-                            </div>
-                            <label class="col-sm-4 control-label editable">Acredita en (Dias)</label>
-                            <div class="col-sm-4">
-                                 <asp:TextBox ID="txtAcreditaEnEdit" type="number" class="form-control" runat="server" min="1" />
-                            </div>
+                        <label class="col-sm-4 control-label editable">Entidad</label>
+                        <div class="col-sm-4">
+                            <asp:DropDownList ID="DropDownEntidadList" class="form-control" runat="server" />
                         </div>
+                    </div>
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-sm-1">
+                            <label style="color: red;" class="danger">*</label>
+                        </div>
+                        <label class="col-sm-4 control-label editable">Nombre Tarjeta</label>
+                        <div class="col-sm-4">
+                            <asp:TextBox ID="txtDescripcionInsumo" class="form-control" runat="server" />
+
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-sm-1">
+                            <label style="color: red;" class="danger">*</label>
+                        </div>
+                        <label class="col-sm-4 control-label editable">Acredita en (Dias)</label>
+                        <div class="col-sm-4">
+                            <asp:TextBox ID="txtAcreditaEnDias" type="number" class="form-control" 
+                             runat="server" min="0" />
+                        </div>
+                    </div>
+
 
                 </div>
                 <div class="modal-footer">
-                    <asp:LinkButton runat="server" ID="LinkButton1" class="buttonLoading btn btn-primary" OnClientClick="CargarHiddenEdit()" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <asp:LinkButton runat="server" ID="btnGuardar" class="buttonLoading btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <asp:HiddenField ID="hiddenEditar" runat="server" />
+                    <asp:HiddenField ID="hiddenValueDropDown" runat="server" />
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="modalConfirmacion2" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Confirmar eliminacion</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Esta seguro que lo desea eliminar?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                    <asp:Button runat="server" ID="btnEliminar" Text="Eliminar" class="buttonLoading btn btn-danger" OnClick="btnSi_Click" />
+                    <asp:HiddenField ID="hiddenID" runat="server" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalEditar" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Editar</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <label style="color: red;" class="danger">*</label>
+                        </div>
+                        <label class="col-sm-4 control-label editable">Entidad</label>
+                        <div class="col-sm-4">
+                            <asp:DropDownList ID="DropDownListEdit" class="form-control" runat="server" />
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-sm-1">
+                            <label style="color: red;" class="danger">*</label>
+                        </div>
+                        <label class="col-sm-4 control-label editable">Nombre Tarjeta</label>
+                        <div class="col-sm-4">
+                            <asp:TextBox ID="txtNombreTarjetaEditar" class="form-control" runat="server" />
+
+                        </div>
+                    </div>
+
+
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col-sm-1">
+                            <label style="color: red;" class="danger">*</label>
+                        </div>
+                        <label class="col-sm-4 control-label editable">Acredita en (Dias)</label>
+                        <div class="col-sm-4">
+                            <asp:TextBox ID="txtAcreditaEnEdit" type="number" class="form-control" runat="server" min="0" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <asp:LinkButton runat="server" ID="LinkButton1" class="buttonLoading btn btn-primary" 
+                     OnClientClick="CargarHiddenEdit()" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Editar </asp:LinkButton>
                     <asp:HiddenField ID="HiddenField1" runat="server" />
                     <button type="button" class="btn btn-danger" onclick="CancelarEdit(event)" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
 
@@ -259,14 +261,9 @@
             parent.style = 'display:none';
             var div = document.getElementById('editable_filter');
             var button = document.createElement('a');
-            /* button.id = "btnAgregar";*/
             button.style.float = "right";
             button.style.marginRight = "1%";
-            //button.setAttribute("type", "button");
             button.setAttribute("href", "ProductosABM.aspx");
-            //button.setAttribute("href", "#modalAgregar");
-            //button.setAttribute("onclick", "vaciarFormulario()");
-            //button.setAttribute("data-toggle", "modal");
             button.setAttribute("class", "btn");
 
             button.innerHTML = "<i style='color: black' class='fa fa-plus'></i>";
@@ -274,8 +271,6 @@
             var filter = $("#editable_filter");
             filter[0].id = 'editable_filter2';
 
-            //var filter = $("#editable_length");
-            //filter[0].id = 'editable_length2';
 
 
             $('#txtBusqueda').on('keyup', function () {
@@ -283,7 +278,24 @@
                     this.value
                 ).draw();
             });
+
+            validarTxtAcreditaEnDias();
         });
+    </script>
+    <script>
+        function validarTxtAcreditaEnDias() {
+            document.getElementById('<%=txtAcreditaEnDias.ClientID%>').addEventListener('keydown', function(event) {
+                if (!/[0-9]/.test(event.key) && !event.ctrlKey && event.key.length === 1) {
+                    event.preventDefault();
+                }
+            });
+
+            document.getElementById('<%=txtAcreditaEnEdit.ClientID%>').addEventListener('keydown', function(event) {
+                if (!/[0-9]/.test(event.key) && !event.ctrlKey && event.key.length === 1) {
+                    event.preventDefault();
+                }
+            });
+        }
     </script>
 
 </asp:Content>

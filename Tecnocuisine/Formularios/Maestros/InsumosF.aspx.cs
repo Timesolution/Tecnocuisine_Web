@@ -1,7 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
+using System.Web.Script.Serialization;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Tecnocuisine.Modelos;
@@ -29,13 +33,13 @@ namespace Tecnocuisine
             if (!IsPostBack)
             {
 
-              
+                string toastrValue = Session["toastrAtributos"] as string;
                 if (accion == 2)
                 {
                     CargarInsumo();
                 }
 
-                if(Mensaje == 1)
+                if (Mensaje == 1)
                 {
                     this.m.ShowToastr(this.Page, "Proceso concluido con Exito!", "Exito");
                 }
@@ -46,6 +50,30 @@ namespace Tecnocuisine
                 else if (Mensaje == 3)
                 {
                     this.m.ShowToastr(this.Page, "Proceso concluido con Exito!", "Exito");
+                }
+
+                if (toastrValue == "1")
+                {
+                    this.m.ShowToastr(this.Page, "Tipo atributo agregado con exito!", "Exito");
+                    Session["toastrAtributos"] = null;
+                }
+
+                //if (toastrValue == "2")
+                //{
+                //    this.m.ShowToastr(this.Page, "Tipo atributo modificado con exito!", "Exito");
+                //    Session["toastrAtributos"] = null;
+                //}
+
+                if (toastrValue == "3")
+                {
+                    this.m.ShowToastr(this.Page, "Tipo atributo modificado con exito!", "Exito");
+                    Session["toastrAtributos"] = null;
+                }
+
+                if (toastrValue == "4")
+                {
+                    this.m.ShowToastr(this.Page, "Tipo atributo eliminado con exito!", "Exito");
+                    Session["toastrAtributos"] = null;
                 }
 
             }
@@ -174,11 +202,12 @@ namespace Tecnocuisine
                 LinkButton btnDetalles = new LinkButton();
                 btnDetalles.CssClass = "btn btn-xs";
                 btnDetalles.Style.Add("background-color", "transparent");
-                //btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                //btnDetalles.Attributes.Add("title data-original-title", "Editar");
+                btnDetalles.Attributes.Add("data-toggle", "modal");
+                btnDetalles.Attributes.Add("title", "Editar");
+                btnDetalles.Attributes.Add("href", "#openModalEditar");
                 btnDetalles.ID = "btnSelec_" + insumo.id_insumo + "_";
                 btnDetalles.Text = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
-                btnDetalles.Click += new EventHandler(this.editarInsumo);
+                btnDetalles.OnClientClick = "openModalEditar(" + insumo.id_insumo + ");";
                 celAccion.Controls.Add(btnDetalles);
 
                 Literal l2 = new Literal();
@@ -190,8 +219,9 @@ namespace Tecnocuisine
                 btnEliminar.CssClass = "btn btn-xs";
                 btnEliminar.Style.Add("background-color", "transparent");
                 btnEliminar.Attributes.Add("data-toggle", "modal");
+                btnEliminar.Attributes.Add("title", "Eliminar");
                 btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                btnEliminar.Text = "<span><i style='color:black' class='fa fa-trash - o'></i></span>";
+                btnEliminar.Text = "<span><i style='color:red' class='fa fa-trash - o'></i></span>";
                 btnEliminar.OnClientClick = "abrirdialog(" + insumo.id_insumo + ");";
                 celAccion.Controls.Add(btnEliminar);
 
@@ -266,20 +296,29 @@ namespace Tecnocuisine
                 insumo.Descripcion = txtDescripcionInsumo.Text;
                 insumo.Estado = 1;
 
-                int resultado = controladorInsumo.AgregarInsumo(insumo);
-
-                if (resultado > 0)
+                int existeNombre = controladorInsumo.validarSiExisteNombre(insumo);
+                if (existeNombre == 0)
                 {
-                    Response.Redirect("InsumosF.aspx?m=1");
+                    int resultado = controladorInsumo.AgregarInsumo(insumo);
+                    if (resultado > 0)
+                    {
+                        Session["toastrAtributos"] = "1";
+                        Response.Redirect("InsumosF.aspx");
+                    }
+                    else
+                    {
+                        this.m.ShowToastr(this.Page, "No se pudo agregar el insumo", "warning");
+                    }
                 }
                 else
                 {
-                    this.m.ShowToastr(this.Page, "No se pudo agregar el insumo", "warning");
+                    this.m.ShowToastr(this.Page, "Ya existe un tipo de atributo con ese nombre", "warning");
                 }
+
             }
             catch (Exception ex)
             {
-
+                this.m.ShowToastr(this.Page, "No se pudo agregar el insumo", "warning");
             }
 
         }
@@ -297,7 +336,8 @@ namespace Tecnocuisine
 
                 if (resultado > 0)
                 {
-                    Response.Redirect("InsumosF.aspx?m=2");
+                    Session["toastrAtributos"] = "2";
+                    Response.Redirect("InsumosF.aspx");
 
                 }
                 else
@@ -321,7 +361,8 @@ namespace Tecnocuisine
 
                 if (resultado > 0)
                 {
-                    Response.Redirect("InsumosF.aspx?m=3");
+                    Session["toastrAtributos"] = "4";
+                    Response.Redirect("InsumosF.aspx");
                 }
                 else
                 {
@@ -333,6 +374,108 @@ namespace Tecnocuisine
 
             }
         }
+
+
+
+        [WebMethod]
+        public static string getInsumoById(int idInsumo)
+        {
+            try
+            {
+                ControladorInsumo CInsumo = new ControladorInsumo();
+                DataTable dt = CInsumo.ObtenerInsumoByIdDT(idInsumo);
+
+
+                //string jsonBody = JsonConvert.SerializeObject(insumo);
+
+                //JavaScriptSerializer serializer = new JavaScriptSerializer();
+                //string jsonInsumo = serializer.Serialize(insumo);
+
+                string insumoString = "";
+                foreach (DataRow dr in dt.Rows)
+                {
+
+                    insumoString += dr["id_insumo"].ToString()
+                    + "," + dr["Descripcion"].ToString()
+                    + "," + dr["Estado"].ToString();
+
+                }
+
+                return insumoString;
+                //return jsonBody;
+            }
+
+            catch
+            {
+                return null;
+            }
+        }
         #endregion
+
+        [WebMethod]
+        public static string CargarInsumos()
+        {
+            try
+            {
+                ControladorInsumo controladorInsumo = new ControladorInsumo();
+                var insumos = controladorInsumo.ObtenerTodosInsumos();
+
+                string ins = "[";
+                foreach (var item in insumos)
+                {
+                    ins += "{" +
+                        "\"Id\":\"" + item.id_insumo + "\"," +
+                        "\"Descripcion\":\"" + item.Descripcion + "\"" +
+                        "},";
+
+                }
+                ins = ins.Remove(ins.Length - 1) + "]";
+
+                if (insumos.Count == 0)
+                {
+                    ins = "[]";
+                }
+                //JavaScriptSerializer javaScript = new JavaScriptSerializer();
+                //string resultadoJSON = javaScript.Serialize(empresas);
+                return ins;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        [WebMethod]
+        public static string editarInsumo(int idInsumo, string Descripcion)
+        {
+            try
+            {
+                ControladorInsumo CInsumo = new ControladorInsumo();
+                //DataTable dt = CInsumo.ObtenerInsumoByIdDT(idInsumo);
+
+
+
+                Insumos insumo = new Insumos();
+                insumo.id_insumo = idInsumo;
+                insumo.Descripcion = Descripcion;
+                insumo.Estado = 1;
+
+                int r = CInsumo.EditarInsumo(insumo);
+                if (r > 0)
+                {
+                    HttpContext.Current.Session["toastrAtributos"] = "3";
+                    return "3";
+                }
+                else
+                {
+                    return "4";
+                }
+            }
+
+            catch
+            {
+                return "-1";
+            }
+        }
     }
 }

@@ -20,23 +20,24 @@
                                                             <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
 
 
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                                                            <input type="text" id="txtBusqueda" placeholder="Búsqueda..." class="form-control" style="width: 90%" />
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <a href="Proveedores.aspx" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                                                        <a href="Proveedores.aspx" class="btn btn-primary dim" title="Agregar proveedor"
+                                                            style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
                                                     </div>
                                                 </div>
                                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                                     <thead>
                                                         <tr>
 
-                                                            <th style="max-width:100px">Codigo</th>
+                                                            <th style="max-width: 100px">Código</th>
                                                             <th>Nombre</th>
-                                                            <th>Pais</th>
+                                                            <th>País</th>
                                                             <th>Tipo</th>
-                                                            <th>Numero</th>
-                                                            <th style="max-width:100px"></th>
+                                                            <th>Número</th>
+                                                            <th style="max-width: 100px"></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -60,8 +61,8 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                     <h2 class="modal-title">Pais y Tipo de documento
-                        <span >
-                          
+                        <span>
+
                             <i class="fa fa-globe"></i>
                         </span>
                     </h2>
@@ -70,33 +71,33 @@
 
                     <div class="row">
                         <div class="col-lg-12">
-                           
-                               
-                                
-                                    <div class="row">
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail2" class="sr-only">Email address</label>
-                                            <asp:TextBox placeholder="Pais de procedencia" id="txtPais" runat="server" class="form-control"></asp:TextBox>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputPassword2" class="sr-only">Password</label>
-                                            <asp:TextBox runat="server" placeholder="Tipo documento" id="txtTipoDoc" class="form-control"></asp:TextBox>
-                                        </div>
-                                      <%--<asp:Button class="btn btn-primary" Text="Registrar" runat="server" id="btnAgregar" OnClick="btnAgregar_Click"/>--%>
-                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
 
-                                    </div>
+
+
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail2" class="sr-only">Email address</label>
+                                    <asp:TextBox placeholder="Pais de procedencia" ID="txtPais" runat="server" class="form-control"></asp:TextBox>
                                 </div>
-                            
-                        
-                       
+                                <div class="form-group">
+                                    <label for="exampleInputPassword2" class="sr-only">Password</label>
+                                    <asp:TextBox runat="server" placeholder="Tipo documento" ID="txtTipoDoc" class="form-control"></asp:TextBox>
+                                </div>
+                                <%--<asp:Button class="btn btn-primary" Text="Registrar" runat="server" id="btnAgregar" OnClick="btnAgregar_Click"/>--%>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+
+                            </div>
+                        </div>
+
+
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-     <div id="modalConfirmacion2" class="modal" role="dialog">
+    <div id="modalConfirmacion2" class="modal" role="dialog">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
@@ -110,7 +111,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
-                    <asp:Button runat="server" ID="btnEliminar" OnClick="btnSi_Click" Text="Eliminar" class="buttonLoading btn btn-danger"  />
+                    <asp:Button runat="server" ID="btnEliminar" OnClick="btnSi_Click" Text="Eliminar" class="buttonLoading btn btn-danger" />
                     <asp:HiddenField ID="hiddenID" runat="server" />
                 </div>
             </div>

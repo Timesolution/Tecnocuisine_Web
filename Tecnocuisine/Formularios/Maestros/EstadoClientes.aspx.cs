@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Tecnocuisine.Modelos;
@@ -25,28 +26,27 @@ namespace Tecnocuisine
             this.Mensaje = Convert.ToInt32(Request.QueryString["m"]);
             this.accion = Convert.ToInt32(Request.QueryString["a"]);
             this.idEstado = Convert.ToInt32(Request.QueryString["i"]);
+            string toastrValue = Session["toastrEstadoClientes"] as string;
 
             if (!IsPostBack)
             {
 
                 VerificarLogin();
-                if (accion == 2)
+
+
+                if (toastrValue == "1")
                 {
-                    CargarEstado();
+                    this.m.ShowToastr(this.Page, "Estado de cliente agregado con Exito!", "Exito");
+                    Session["toastrEstadoClientes"] = null;
                 }
 
-                if(Mensaje == 1)
+
+                if (toastrValue == "3")
                 {
-                    this.m.ShowToastr(this.Page, "Proceso concluido con Exito!", "Exito");
+                    this.m.ShowToastr(this.Page, "Estado de cliente editado con Exito!", "Exito");
+                    Session["toastrEstadoClientes"] = null;
                 }
-                else if (Mensaje == 2)
-                {
-                    this.m.ShowToastr(this.Page, "Proceso concluido con Exito!", "Exito");
-                }
-                else if (Mensaje == 3)
-                {
-                    this.m.ShowToastr(this.Page, "Proceso concluido con Exito!", "Exito");
-                }
+
 
             }
 
@@ -171,12 +171,28 @@ namespace Tecnocuisine
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
                 LinkButton btnDetalles = new LinkButton();
+                btnDetalles.ID = "btnSelec_" + estado.id + "_";
                 btnDetalles.CssClass = "btn btn-xs";
                 btnDetalles.Style.Add("background-color", "transparent");
-                btnDetalles.ID = "btnSelec_" + estado.id + "_";
+                btnDetalles.Attributes.Add("href", "#modalEditar");
                 btnDetalles.Text = "<span><i style='color:black;' class='fa fa-pencil' title='Editar estado'></i></span>";
-                btnDetalles.Click += new EventHandler(this.editarEstado);
+                //btnDetalles.Click += new EventHandler(this.editarEstado);
+                btnDetalles.Attributes.Add("onclick", "openModalEditar('" + estado.id + "');");
                 celAccion.Controls.Add(btnDetalles);
+
+
+
+
+                //TableCell celAccion = new TableCell();
+                //LinkButton btnDetalles = new LinkButton();
+                //btnDetalles.ID = "btnSelec_" + Sector.id + "_";
+                //btnDetalles.CssClass = "btn btn-xs";
+                //btnDetalles.Style.Add("background-color", "transparent");
+                //btnDetalles.Attributes.Add("href", "#modalAgregar");
+                //btnDetalles.Text = "<span><i style='color:black;' class='fa fa-pencil' title='Editar'></i></span>";
+                //btnDetalles.Attributes.Add("onclick", "openModalEditar('" + Sector.id + "');");
+                //celAccion.Controls.Add(btnDetalles);
+
 
                 Literal l2 = new Literal();
                 l2.Text = "&nbsp";
@@ -225,14 +241,14 @@ namespace Tecnocuisine
         {
             try
             {
-                if (this.hiddenEditar.Value != "")
-                {
-                    EditarEstado();
-                }
-                else
-                {
-                    GuardarEstado();
-                }
+                //if (this.hiddenEditar.Value != "")
+                //{
+                //EditarEstado();
+                //}
+                //else
+                //{
+                GuardarEstado();
+                //}
 
             }
             catch (Exception ex)
@@ -267,7 +283,8 @@ namespace Tecnocuisine
 
                 if (resultado > 0)
                 {
-                    Response.Redirect("EstadoClientes.aspx?m=1");
+                    Session["toastrEstadoClientes"] = "1";
+                    Response.Redirect("EstadoClientes.aspx");
                 }
                 else
                 {
@@ -306,6 +323,83 @@ namespace Tecnocuisine
             catch (Exception ex)
             {
 
+            }
+        }
+
+
+        [WebMethod]
+        public static int EditarEstadoClientes(string descripcionEstadoClientes, int idEstadoCliente)
+        {
+            try
+            {
+
+                ControladorCliente cCliente = new ControladorCliente();
+                Clientes_Estados clientes_Estados = new Clientes_Estados();
+                clientes_Estados.id = idEstadoCliente;
+                clientes_Estados.descripcion = descripcionEstadoClientes;
+                clientes_Estados.estado = 1;
+
+                int existeEstado = cCliente.validarSiExisteDescripcion(clientes_Estados);
+
+
+                if (existeEstado == 0)
+                {
+
+                    int resultado = cCliente.EditarEstado(clientes_Estados);
+
+                    if (resultado > 0)
+                    {
+                        HttpContext.Current.Session["toastrEstadoClientes"] = "3";
+                        return 1;
+                    }
+                    else
+                    {
+                        return -1;
+                    }
+
+                }
+
+
+                else
+                {
+                    return 0;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
+
+
+        [WebMethod]
+        public static string precargarCampos(string idEstado)
+        {
+            try
+            {
+                ControladorCliente cCliente = new ControladorCliente();
+                var estadoCliente = cCliente.ObtenerEstadoId(Convert.ToInt32(idEstado));
+
+                string estado = "[";
+
+                estado += "{" +
+                        "\"Id\":\"" + estadoCliente.id + "\"," +
+                        "\"Descripcion\":\"" + estadoCliente.descripcion + "\"" +
+                        "},";
+
+                estado = estado.Remove(estado.Length - 1) + "]";
+
+                //if (sector.Count == 0)
+                //{
+                //    sec = "[]";
+                //}
+                return estado;
+            }
+            catch (Exception ex)
+            {
+                return null;
             }
         }
 

@@ -174,6 +174,10 @@ namespace Tecnocuisine.Formularios.Compras
                 }
                 string FechaDesde = ConvertirFecha(FechaD);
                 string FechaHasta = ConvertirFecha(FechaH);
+
+                this.FechaDesde.Value = this.FechaD;
+                this.FechaHasta.Value = this.FechaH;
+
                 var dt = controladorPagoRealizados.FiltrarPagosRealizados(FechaD, FechaH, idCli);
                 decimal total = 0;
                 foreach (DataRow row in dt.Rows)
@@ -345,7 +349,7 @@ namespace Tecnocuisine.Formularios.Compras
 
                 btnEditar.CssClass = "btn btn-xs";
                 btnEditar.Style.Add("background-color", "transparent");
-                btnEditar.Attributes.Add("href", "VentaDetallada.aspx?t=1&i=" + cobro.id);
+                btnEditar.Attributes.Add("href", "../../Formularios/Ventas/VentaDetallada.aspx?t=1&i=" + cobro.id);
                 //btnDetalles.Attributes.Add("data-toggle", "tooltip");
                 //btnDetalles.Attributes.Add("title data-original-title", "Editar");
                 btnEditar.Text = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";

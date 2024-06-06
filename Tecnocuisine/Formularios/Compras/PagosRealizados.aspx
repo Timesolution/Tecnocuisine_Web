@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="Pagos Realizados" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" EnableEventValidation="false" CodeBehind="PagosRealizados.aspx.cs" Inherits="Tecnocuisine.Formularios.Compras.PagosRealizados" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    
+
     <div class="wrapper wrapper-content">
         <div class="ibox-content m-b-sm border-bottom" style="margin-top: 10px; padding-top: 0px;">
             <div class="p-xs">
@@ -30,18 +30,18 @@
                                                             <div class="input-group m-b">
                                                                 <div style="display: flex;">
                                                                     <span class="input-group-addon" style="padding-right: 15%;"><i style='color: black;' class='fa fa-search'></i></span>
-                                                                    <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 100%" />
+                                                                    <input type="text" id="txtBusqueda" placeholder="Búsqueda..." class="form-control" style="width: 100%" />
                                                                 </div>
                                                             </div>
-                                                           
-                                                           <div class="input-group m-b row">
+
+                                                            <div class="input-group m-b row">
                                                                 <div class="row">
                                                                     <div class="col-md-2" style="margin-left: 15px; margin-right: 15px;">
                                                                         <label class="col-md-4" style="margin-top: 5px;">Desde</label>
                                                                     </div>
                                                                     <div class="col-md-8">
 
-                                                                        <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy"  Style="margin-left: 0px; width: 100%;"></asp:TextBox>
+                                                                        <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
 
                                                                     </div>
                                                                 </div>
@@ -56,30 +56,24 @@
                                                                         <asp:TextBox class="form-control" runat="server" type="date" ID="txtFechaVencimiento" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
 
                                                                     </div>
-                                                        </div>
-                                                    </div>
+                                                                </div>
+                                                            </div>
 
                                                             <div class="input-group m-b">
                                                                 <div class="row">
-                                                                    <div  class="col-md-2"  style="margin-right: 15px;">
-                                                                <label style="margin-top: 5px;" class="col-md-4">Cliente</label>
+                                                                    <div class="col-md-2" style="margin-right: 15px;">
+                                                                        <label style="margin-top: 5px;" class="col-md-4">Cliente</label>
                                                                     </div>
                                                                     <div class="col-md-8">
-                                                              
-                                                                    <datalist id="ListProveedores" runat="server"></datalist>
-                                                                    <input name="txtProveedor" type="text" id="txtCliente" list="ContentPlaceHolder1_ListProveedores" class="form-control" style="margin-left:15px;margin-bottom: 15px; width: 100%;">
-                                                                    <p id="ValivaCliente" class="text-danger text-hide">Tienes que ingresar un Cliente</p>
-                                                                </div>
-                                                                    
+
+                                                                        <datalist id="ListProveedores" runat="server"></datalist>
+                                                                        <input name="txtProveedor" type="text" id="txtCliente" list="ContentPlaceHolder1_ListProveedores" class="form-control" style="margin-left: 15px; margin-bottom: 15px; width: 100%;">
+                                                                        <p id="ValivaCliente" class="text-danger text-hide">Tienes que ingresar un Cliente</p>
+                                                                    </div>
+
                                                                 </div>
                                                             </div>
-                                                            <%--  <div class="input-group m-b" 30%>
-                                                                <a id="btnFiltrar" onclick="FiltrarVentas()" class="btn btn-primary"><i class="fa fa-paper-plane"></i>&nbsp;Filtrar </a>
-
-                                                            </div>--%>
                                                         </div>
-
-
 
                                                     </div>
                                                     <div class="col-md-2" style="display: flex; flex-direction: row; align-items: center; justify-content: end;">
@@ -93,7 +87,7 @@
                                                     <thead>
                                                         <tr>
 
-                                                            <th style="text-align: right; width: 2%">ID</th>
+                                                            <th style="text-align: right; width: 2%"># ID</th>
                                                             <th style="width: 7%">Fecha</th>
                                                             <th style="text-align: left; width: 10%">Cliente</th>
                                                             <th style="text-align: right; width: 5%">Recibo N°</th>
@@ -109,6 +103,8 @@
                                         </div>
                                         <asp:HiddenField ID="SaldoTotal" runat="server"></asp:HiddenField>
                                         <asp:HiddenField ID="AliasCliente" runat="server"></asp:HiddenField>
+                                        <asp:HiddenField ID="FechaDesde" runat="server"></asp:HiddenField>
+                                        <asp:HiddenField ID="FechaHasta" runat="server"></asp:HiddenField>
                         </ContentTemplate>
 
                     </asp:UpdatePanel>
@@ -183,34 +179,29 @@
 
         </div>
     </div>--%>
-    <script src="../Scripts/plugins/toastr/toastr.min.js"></script>
+    <%--<script src="../Scripts/plugins/toastr/toastr.min.js"></script>--%>
     <script src="/../Scripts/plugins/staps/jquery.steps.min.js"></script>
     <script src="../../js/plugins/datapicker/bootstrap-datepicker.js"></script>
-     <style>
-            #editable_length {
-                margin-left: 0px !important;
-}
-        </style>
+    <style>
+        #editable_length {
+            margin-left: 0px !important;
+        }
+    </style>
     <script>
         $(document).ready(function () {
             $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 
-            //$('#data_1 .input-group.date').datepicker({
-            //    todayBtn: "linked",
-            //    keyboardNavigation: false,
-            //    forceParse: false,
-            //    calendarWeeks: true,
-            //    autoclose: true,
-            //    format: 'dd/mm/yyyy'
-            //});
-            //$('#data_2 .input-group.date').datepicker({
-            //    todayBtn: "linked",
-            //    keyboardNavigation: false,
-            //    forceParse: false,
-            //    calendarWeeks: true,
-            //    autoclose: true,
-            //    format: 'dd/mm/yyyy'
-            //});
+            let fechad = document.getElementById("ContentPlaceHolder1_FechaDesde").value
+            let fechah = document.getElementById("ContentPlaceHolder1_FechaHasta").value
+            console.log(fechah + " " + fechad);
+            if (fechad != "" && fechah != "") {
+
+                establecerFechasSeleccionadas();
+            } else {
+
+                establecerDiaHoy();
+            }
+
             saldo = document.getElementById("ContentPlaceHolder1_SaldoTotal").value;
             prov = document.getElementById("ContentPlaceHolder1_AliasCliente").value;
             if (saldo != "") {
@@ -221,7 +212,7 @@
             if (prov != "") {
                 document.getElementById("ClienteSelec").innerText = prov;
             }
-            establecerDiaHoy();
+            
 
             var oTable = $('#editable').dataTable({
                 "bLengthChange": false,
@@ -270,14 +261,32 @@
             window.location.href = "PagosRealizados.aspx?p=" + Cliente.split("-")[0].trim() + "&FechaD=" + FechaD + "&FechaH=" + FechaH;
         }
 
-        function establecerDiaHoy() {
-            var fechaActual = new Date();
-            // Convertir la fecha en un formato legible para el DatePicker   
-            var fechaFormateada = (fechaActual.getFullYear() + '/' + (fechaActual.getMonth() + 1) + '/' + fechaActual.getDate())
-            // Establecer la fecha actual como valor predeterminado del DatePicker 
-            //$('#ContentPlaceHolder1_txtFechaHoy').datepicker('setDate', fechaFormateada);
-            //$('#ContentPlaceHolder1_txtFechaHoy').datepicker('todayBtn', true);
-            var partes = fechaFormateada.split('/');
+         function obtenerRangoFechas() {
+            var fechaActual = new Date(); // Obtiene la fecha actual
+            var primerDiaMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), 1); // Primer día del mes actual
+            var ultimoDiaMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth() + 1, 0); // Último día del mes actual
+
+            return {
+                primerDia: primerDiaMes,
+                ultimoDia: ultimoDiaMes
+            };
+        }
+
+         function establecerFechasSeleccionadas() {
+            let fechad = document.getElementById("ContentPlaceHolder1_FechaDesde").value
+            let fehcah = document.getElementById("ContentPlaceHolder1_FechaHasta").value
+
+            fechad = fechad.replaceAll("/", "-");
+            fehcah = fehcah.replaceAll("/", "-");
+
+            document.getElementById("ContentPlaceHolder1_txtFechaHoy").value = fechad;
+            document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value = fehcah
+        }
+
+
+         function formatearFechas(fecha) {
+
+            var partes = fecha.split('/');
             var dia = partes[2];
             var mes = partes[1];
             var anio = partes[0];
@@ -290,12 +299,23 @@
                 mes = '0' + mes;
             }
 
-            fechafinal = anio + '-' + mes + '-' + dia;
-
-            document.getElementById("ContentPlaceHolder1_txtFechaHoy").value = fechafinal;
-            document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value = fechafinal;
+            return fechafinal = anio + '-' + mes + '-' + dia;
 
         }
+
+        function establecerDiaHoy() {
+            var fechas = obtenerRangoFechas();
+            // Convertir la fecha en un formato legible para el DatePicker   
+            var fechaFormateada1 = (fechas.primerDia.getFullYear() + '/' + (fechas.primerDia.getMonth() + 1) + '/' + fechas.primerDia.getDate())
+            var fechaFormateada2 = (fechas.ultimoDia.getFullYear() + '/' + (fechas.ultimoDia.getMonth() + 1) + '/' + fechas.ultimoDia.getDate())
+
+
+            document.getElementById("ContentPlaceHolder1_txtFechaHoy").value = formatearFechas(fechaFormateada1);
+            document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value = formatearFechas(fechaFormateada2);;
+
+        }
+
+
         function FiltrarVentas() {
             let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value
             let FechaH = document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value

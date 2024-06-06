@@ -606,7 +606,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 tr.Cells.Add(celFamilia);
                 TableCell celAccion = new TableCell();
 
-             
+
 
                 HtmlGenericControl btnDetalles = new HtmlGenericControl("input");
                 btnDetalles.Attributes.Add("class", "presentacion radio btn btn-primary btn-xs");
@@ -1023,17 +1023,28 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
-       
+
                 if (bloqueados != 1)
                 {
                     LinkButton btnDetalles = new LinkButton();
                     btnDetalles.CssClass = "btn btn-xs";
                     btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                    btnDetalles.Text = "<span><i style=\"color: black\" class='fa fa-trash'></i></span>";
-                    btnDetalles.Attributes.Add("class", "btn  btn-xs");
-                    btnDetalles.Attributes.Add("style", "padding: 0% 5% 2% 5.5%;background-color: transparent;");
+
+                    // Cambiar el color del icono a rojo
+                    btnDetalles.Text = "<span><i style=\"color: red\" class='fa fa-trash'></i></span>";
+
+                    btnDetalles.Attributes.Add("class", "btn btn-xs");
+                    btnDetalles.Attributes.Add("style", "padding: 0% 5% 2% 5.5%; background-color: transparent;");
                     btnDetalles.Attributes.Add("onclick", "borrarProd('ContentPlaceHolder1_Producto_" + producto.id.ToString() + "');");
                     celAccion.Controls.Add(btnDetalles);
+
+                    celAccion.Width = Unit.Percentage(25);
+                    // Alinear contenido a la izquierda
+                    celAccion.Attributes.Add("style", "text-align: left");
+                    tr.Cells.Add(celAccion);
+
+
+
                 }
 
                 celAccion.Width = Unit.Percentage(25);
@@ -1342,24 +1353,26 @@ namespace Tecnocuisine.Formularios.Maestros
                 {
                     LinkButton btnDetalles = new LinkButton();
                     btnDetalles.CssClass = "btn btn-xs";
-
                     btnDetalles.Attributes.Add("data-toggle", "tooltip");
 
-                    btnDetalles.Text = "<span><i style=\"color: black\" class='fa fa-trash'></i></span>";
+                    // Cambiar el color del icono a rojo
+                    btnDetalles.Text = "<span><i style=\"color: red\" class='fa fa-trash'></i></span>";
+
                     btnDetalles.Attributes.Add("class", "btn  btn-xs");
                     btnDetalles.Attributes.Add("style", "padding: 0% 5% 2% 5.5%;background-color: transparent;");
-                    //btnDetalles.Attributes.Add("onclick", "borrarProd('ContentPlaceHolder1_Receta_" + Receta.Recetas.id.ToString() + "');");
+                    // btnDetalles.Attributes.Add("onclick", "borrarProd('ContentPlaceHolder1_Receta_" + Receta.Recetas.id.ToString() + "');");
                     btnDetalles.Attributes.Add("onclick", "borrarProd('ContentPlaceHolder1_Receta_" + RecetaingredienteI.id + "');");
                     celAccion.Controls.Add(btnDetalles);
 
                     celAccion.Width = Unit.Percentage(25);
-                    celAccion.Attributes.Add("style", " text-align: center");
+                    celAccion.Attributes.Add("style", "text-align: center");
                     tr.Cells.Add(celAccion);
+
                 }
                 phProductos.Controls.Add(tr);
 
                 //idProductosRecetas.Value += RecetaingredienteI.id.ToString() + " ,Receta," + Receta.cantidad.ToString().Replace(',', '.') + ", ContentPlaceHolder1_Receta_" + RecetaingredienteI.id.ToString() + ";";
-                
+
                 idProductosRecetas.Value += RecetaingredienteI.id.ToString() + " ,Receta," + Receta.cantidad.ToString().Replace(',', '.') + ", ContentPlaceHolder1_Receta_" + RecetaingredienteI.id.ToString() + "idSectorProductivoRecetas_recetas_" + Receta.idSectorProductivo + "," + "Tiempo_" + Receta.Tiempo + ";";
 
 

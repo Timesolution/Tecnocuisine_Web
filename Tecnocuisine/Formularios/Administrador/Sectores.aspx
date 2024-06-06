@@ -30,7 +30,7 @@
                             <div class="col-md-10">
                                 <div class="input-group m-b">
                                     <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
-                                    <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                                    <input type="text" id="txtBusqueda" placeholder="Búsqueda..." class="form-control" style="width: 90%" />
                                 </div>
                             </div>
                             <div class="col-md-2">
@@ -45,7 +45,6 @@
                                         <thead>
                                             <tr>
                                                 <th>Nombre</th>
-                                                <th>Estado</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -53,11 +52,7 @@
                                             <asp:PlaceHolder runat="server" ID="SectoresPH"></asp:PlaceHolder>
                                         </tbody>
                                     </table>
-                                    <%-- <div id="Progressbars" class="progress progress-striped active">
-                                <div style="width: 100%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="75" role="progressbar" class="progress-bar progress-bar-danger">
-                                    <span class="sr-only">100% Complete (success)</span>
-                                </div>
-                            </div>--%>
+           
                                 </div>
                             </ContentTemplate>
                         </asp:UpdatePanel>
@@ -175,17 +170,16 @@
 
                             phSectores += ` <tr>
                                                 <td>${element.nombre}</td>
-                                                <td>${element.Estado}</td>
                                                 <td>
-                                                    <a class="btn btn-success" onclick="vaciarInputs();ModalModificar('${element.Id}','${element.nombre}','${element.Empresa}')"><i class="fa fa-pencil"></i></a>
-                                                    <a class="btn btn-danger" onclick="ModalConfirmacion('${element.Id}')"><i class="fa fa-trash"></i></a>
+                                                    <a class="btn btn-xs" style="background-color: transparent; margin-right: 10px" onclick="vaciarInputs();ModalModificar('${element.Id}','${element.nombre}','${element.Empresa}')"><i style="color: black;" class="fa fa-pencil"></i></a>
+                                                    <a class="btn btn-xs" style="background-color: transparent; margin-right: 10px;" onclick="ModalConfirmacion('${element.Id}')"><i style="color: red;" class="fa fa-trash"></i></a>
                                                 </td>
                                             </tr>`
                         })
-                        document.getElementById('Progressbars').className = 'hideBar'
+                        //document.getElementById('Progressbars').className = 'hideBar'
                         document.getElementById('phSectores').innerHTML = phSectores
                     } else {
-                        document.getElementById('Progressbars').className = 'hideBar'
+                        //document.getElementById('Progressbars').className = 'hideBar'
                         document.getElementById('phSectores').innerHTML = ""
                     }
                 }
@@ -199,7 +193,6 @@
                 rta = false
             }
 
-            console.log(rta)
             return rta
         }
 
@@ -220,17 +213,23 @@
                         console.log(JSON.stringify(error));
                     },
                     success: (respuesta) => {
-                        console.log(respuesta.d)
                         let res = respuesta.d
 
                         if (res == '1') {
                             toastr.success('Se agrego correctamente el sector!', 'Felicitaciones')
                             CargarSectores()
                             $('#modalABM').modal('hide')
-                        } else {
-                            toastr.warning('No se pudo agregar el sector!', 'Atencion')
+                        } 
+
+                        if (res == '-1') {
+                            toastr.warning('Ya existe un sector con ese nombre!', 'Atencion')
                             document.getElementById('btnAgregar').removeAttribute('disabled')
-                        }
+                            $('#modalABM').modal('hide')
+                        } 
+                     //   else {
+                     //       toastr.warning('No se pudo agregar el sector!', 'Atencion')
+                     //       document.getElementById('btnAgregar').removeAttribute('disabled')
+                     //   }
 
                     }
                 });
@@ -287,20 +286,34 @@
                     contentType: "application/json",
                     dataType: 'json',
                     error: (error) => {
+                        toastr.warning('No se pudo modificar la Empresa!', 'Atencion')
+                        document.getElementById('btnModificar').removeAttribute('disabled');
                         console.log(JSON.stringify(error));
                     },
                     success: (respuesta) => {
-                        console.log(respuesta.d)
                         let res = respuesta.d
 
                         if (res == '1') {
                             toastr.success('Se modifico correctamente la Empresa!', 'Felicitaciones')
                             CargarSectores()
                             $('#modalABM').modal('hide')
-                        } else {
-                            toastr.warning('No se pudo modificar la Empresa!', 'Atencion')
-                            document.getElementById('btnModificar').removeAttribute('disabled')
-                        }
+                        } 
+                        if (res == '-1') {
+                            toastr.warning('Ya existe un sector con ese nombre!', 'Atencion')
+                            document.getElementById('btnAgregar').removeAttribute('disabled')
+                            $('#modalABM').modal('hide')
+                        } 
+
+                      //  if (res == '0') {
+                      //      toastr.success('Se modifico correctamente la Empresa!', 'Felicitaciones')
+                      //      CargarSectores()
+                      //      $('#modalABM').modal('hide')
+                      //  } 
+                      //
+                      //  else {
+                      //      toastr.warning('No se pudo modificar la Empresa!', 'Atencion')
+                      //      document.getElementById('btnModificar').removeAttribute('disabled')
+                      //  }
 
                     }
                 });
@@ -376,16 +389,15 @@
 
             $('.dataTables-example').dataTable({
                 responsive: true,
+                ordering: false, 
                 "dom": 'T<"clear">lfrtip',
                 "tableTools": {
                     "sSwfPath": "js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
                 }
             });
-            /* Init DataTables */
             var oTable = $('#editable').dataTable();
 
 
-            /* Apply the jEditable handlers to the table */
             oTable.$('td').editable('../example_ajax.php', {
                 "callback": function (sValue, y) {
                     var aPos = oTable.fnGetPosition(this);
@@ -413,14 +425,9 @@
             parent.style = 'display:none';
             var div = document.getElementById('editable_filter');
             var button = document.createElement('a');
-            /* button.id = "btnAgregar";*/
             button.style.float = "right";
             button.style.marginRight = "1%";
-            //button.setAttribute("type", "button");
             button.setAttribute("href", "ProductosABM.aspx");
-            //button.setAttribute("href", "#modalAgregar");
-            //button.setAttribute("onclick", "vaciarFormulario()");
-            //button.setAttribute("data-toggle", "modal");
             button.setAttribute("class", "btn");
 
             button.innerHTML = "<i style='color: black' class='fa fa-plus'></i>";
@@ -428,8 +435,7 @@
             var filter = $("#editable_filter");
             filter[0].id = 'editable_filter2';
 
-            //var filter = $("#editable_length");
-            //filter[0].id = 'editable_length2';
+    
 
 
             $('#txtBusqueda').on('keyup', function () {
@@ -437,6 +443,17 @@
                     this.value
                 ).draw();
             });
+
+            validarSoloLetrasYNumeros();
         });
     </script>
+     <script>
+         function validarSoloLetrasYNumeros() {
+             document.getElementById('txtNombre').addEventListener('keydown', function(event) {
+                 if (!/^[a-zA-Z0-9]*$/.test(event.key) && !event.ctrlKey && event.key.length === 1) {
+                     event.preventDefault();
+                 }
+             });
+         }
+     </script>
 </asp:Content>

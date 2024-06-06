@@ -19,9 +19,10 @@
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <a data-toggle="modal" data-backdrop="static" onclick="vaciarInputs()"
-                                data-target="#modalAgregar" title="Agregar rubro"
-                                class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                            <a data-toggle="modal" data-backdrop="static" onclick="vaciarFormulario(); openModalAgregar()"
+                                title="Agregar rubro"
+                                class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i>
+                            </a>
                         </div>
                     </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
@@ -93,7 +94,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <asp:LinkButton runat="server" ID="btnGuardar" class="buttonLoading btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
+                    <asp:LinkButton runat="server" ID="btnGuardar" class="buttonLoading btn btn-primary" 
+                        OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
                     <asp:HiddenField ID="hiddenEditar" runat="server" />
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
                 </div>
@@ -108,13 +110,22 @@
             $('#modalconfirmacion2').modal('show');
         }
     </script>
+    <script>
+        function openModalAgregar() {
+            $('#modalAgregar .modal-title').text('Agregar Rubro');
+            document.getElementById('<%= btnGuardar.ClientID %>').innerHTML = '<i class="fa fa-check"></i>&nbsp;Agregar';
+            $('#modalAgregar').modal('show');
+        }
+    </script>
     <script type="text/javascript">
         function openModal() {
+            $('#modalAgregar .modal-title').text('Editar Rubro');
+            document.getElementById('<%= btnGuardar.ClientID %>').innerHTML = '<i class="fa fa-check"></i>&nbsp;Editar';
             $('#modalAgregar').modal('show');
         }
         function vaciarFormulario() {
             ContentPlaceHolder1_txtDescripcionPresentacion.value = "";
-            ContentPlaceHolder1_txtCantidadPresentacion.value = "";
+           // ContentPlaceHolder1_txtCantidadPresentacion.value = "";
             ContentPlaceHolder1_hiddenEditar.value = "";
             window.history.pushState('', 'Presentaciones', location.protocol + '//' + location.host + location.pathname);
 

@@ -184,6 +184,8 @@ namespace Tecnocuisine.Formularios.Ventas
                 {
                 AliasCliente.Value = clientes.alias;
                 }
+                this.FechaDesde.Value = this.FechaD;
+                this.FechaHasta.Value = this.FechaH;
                 string FechaDesde = ConvertirFecha(FechaD);
                 string FechaHasta = ConvertirFecha(FechaH);
                 var dt = controladorVentas.FiltrarVentas(FechaD, FechaH, idCli);

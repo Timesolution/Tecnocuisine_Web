@@ -15,12 +15,15 @@
                                 <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
 
 
-                                <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                                <input type="text" id="txtBusqueda" placeholder="Búsqueda..." class="form-control" style="width: 90%" />
                             </div>
                         </div>
                         <div class="col-md-2">
 
-                            <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                            <a data-toggle="modal" data-backdrop="static" onclick="openModalAgregar(); vaciarFormulario()" title="Agregar articulo"
+                                class="btn btn-primary dim"
+                                style="margin-right: 1%; float: right"><i class='fa fa-plus'></i>
+                            </a>
                         </div>
                     </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
@@ -29,10 +32,10 @@
                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                     <thead>
                                         <tr>
-                                            <th style="width: 10%">Codigo</th>
-                                            <th style="width: 30%">Descripcion</th>
+                                            <th style="width: 10%">Código</th>
+                                            <th style="width: 30%">Descripción</th>
                                             <th style="width: 15%">Grupo</th>
-                                            <th style="width: 10%">Ultima Actualizacion</th>
+                                            <th style="width: 10%">Última Actualización</th>
                                             <th style="width: 8%">Precio Venta</th>
                                             <th style="width: 5%"></th>
                                         </tr>
@@ -83,19 +86,19 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <label class="col-sm-2 control-label editable">Codigo</label>
+                        <label class="col-sm-2 control-label editable">Código</label>
                         <div class="col-sm-8">
                             <asp:TextBox ID="txtCodigo" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <label class="col-sm-2 control-label editable">Codigo Barra</label>
+                        <label class="col-sm-2 control-label editable">Código Barra</label>
                         <div class="col-sm-8">
                             <asp:TextBox ID="txtCodigoBarra" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <label class="col-sm-2 control-label editable">Descripcion</label>
+                        <label class="col-sm-2 control-label editable">Descripción</label>
                         <div class="col-sm-8">
                             <asp:TextBox ID="txtDescripcion" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
                         </div>
@@ -127,7 +130,7 @@
 
                     </div>--%>
                     <div class="row" style="margin-top: 2%">
-                        <label class="col-sm-2 control-label editable">Categoria</label>
+                        <label class="col-sm-2 control-label editable">Categoría</label>
                         <div class="col-sm-8">
                             <asp:DropDownList ID="ListCategoria" Style="margin-left: 3%;" class="form-control m-b" runat="server">
                             </asp:DropDownList>
@@ -161,13 +164,13 @@
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <label class="col-sm-2 control-label editable">Fecha actualizacion</label>
+                        <label class="col-sm-2 control-label editable">Fecha actualización</label>
                         <div class="col-sm-8">
                             <asp:TextBox ID="txtFechaActualizacion" disabled="disabled" Style="margin-left: 3%;" class="form-control" runat="server"></asp:TextBox>
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2%">
-                        <label class="col-sm-2 control-label editable">Fecha modificacion</label>
+                        <label class="col-sm-2 control-label editable">Fecha modificación</label>
                         <div class="col-sm-8">
                             <asp:TextBox ID="txtFechaModificacion" Style="margin-left: 3%;" disabled="disabled" class="form-control" runat="server"></asp:TextBox>
                         </div>
@@ -231,6 +234,13 @@
     </script>
     <script type="text/javascript">
         function openModal() {
+            $('#modalAgregar .modal-title').text('Editar conceptos');
+            document.getElementById('<%= btnGuardar.ClientID %>').innerHTML = '<i class="fa fa-check"></i>&nbsp;Editar';
+            $('#modalAgregar').modal('show');
+        }
+        function openModalAgregar() {
+            $('#modalAgregar .modal-title').text('Agregar conceptos');
+            document.getElementById('<%= btnGuardar.ClientID %>').innerHTML = '<i class="fa fa-check"></i>&nbsp;Agregar';
             $('#modalAgregar').modal('show');
         }
         function vaciarFormulario() {

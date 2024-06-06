@@ -243,6 +243,7 @@
                             <p id="ValivaConceptos" class="text-danger text-hide">Tienes que ingresar un Concepto valido</p>
                         </div>
                     </div>
+
                     <div class="row" style="margin-top: 2%">
                         <label class="col-sm-2 control-label editable">Importe</label>
                         <div class="col-sm-8">

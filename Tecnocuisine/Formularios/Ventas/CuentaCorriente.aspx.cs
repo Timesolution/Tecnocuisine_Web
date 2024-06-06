@@ -151,7 +151,7 @@ namespace Tecnocuisine.Ventas
             {
                 ControladorUnidad cu = new ControladorUnidad();
                 var builder = new System.Text.StringBuilder();
-                builder.Append("<option value='0-Todos'>0 - Todos</option>");
+                builder.Append("<option value='0 - Todos'></option>");
                 foreach (var cli in clientes)
                 {
                     builder.Append(String.Format("<option value='{0}' id='c_r_" + cli.id + "_" + cli.alias + "_" + cli.cuit + "'>", cli.id + " - " + cli.alias));

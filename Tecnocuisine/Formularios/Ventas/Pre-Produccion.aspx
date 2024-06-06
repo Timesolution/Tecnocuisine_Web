@@ -6,301 +6,306 @@
 
     <%-- ACA EMPIEZA EL CONTAINER --%>
     <div class="container-fluid">
-        <div class="ibox float-e-margins">
-            <div>
-                <asp:UpdatePanel ID="UpdatePanel2" runat="server">
-                    <ContentTemplate>
-                        <div class="wrapper wrapper-content animated fadeInRight">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="ibox float-e-margins">
-                                        <div class="ibox-content">
-                                            <div style="margin-left: 0px; margin-right: 0px;"
-                                                class="row">
-                                                <%--<div style="display: flex;">--%>
-                                                <%--<div class="input-group m-b">--%>
-                                                <div class="row">
-                                                    <%-- Label de la ddl --%>
-                                                    <div class="col-md-1" style="margin-left: 15px; margin-right: 15px;">
-                                                        <label class="col-sm-2 control-label">Sector</label>
-                                                    </div>
-                                                    <%-- Ddl sectores --%>
-                                                    <div class="col-md-2">
-                                                        <asp:DropDownList ID="ddlSector" runat="server"
-                                                            CssClass="chosen-select form-control"
-                                                            DataTextField="CountryName" DataValueField="CountryCode"
-                                                            Data-placeholder="Seleccione Rubro..." Width="100%">
-                                                            <asp:ListItem Text="Select" Value=""></asp:ListItem>
-                                                        </asp:DropDownList>
-                                                    </div>
-                                                    <%-- Label desde --%>
-                                                    <div class="col-md-1" style="margin-left: 15px; margin-right: 15px;">
-                                                        <label class="col-md-4" style="margin-top: 5px;">Desde</label>
-                                                    </div>
-                                                    <%-- DatePicker desde --%>
-                                                    <div class="col-md-2">
-                                                        <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy"
-                                                            data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;">
-                                                        </asp:TextBox>
-                                                    </div>
-                                                    <%-- Label hasta --%>
-                                                    <div class="col-md-1" style="margin-right: 15px;">
-                                                        <label style="margin-top: 5px;" class="col-md-4">Hasta</label>
-                                                    </div>
-                                                    <%-- DatePicker hasta --%>
-                                                    <div class="col-md-2">
-                                                        <asp:TextBox class="form-control" runat="server" type="date" ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
-                                                    </div>
-                                                    <%-- Boton Filtrar --%>
-                                                    <div class="col-md-2">
-                                                        <a id="btnFiltrar" onclick="FiltrarIngredientesDeOrdenesDeProduccion()" class="btn btn-primary pull-right" style="margin-right: 15px;"><i class="fa fa-paper-plane"></i>&nbsp;Filtrar </a>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="widget stacked">
+                    <div class="stat">
+                        <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                            <ContentTemplate>
+                                <div class="wrapper wrapper-content animated fadeInRight">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="ibox float-e-margins">
+                                                <div class="ibox-content">
+                                                    <div style="margin-left: 0px; margin-right: 0px;"
+                                                        class="row">
+                                                        <div class="row" style="display: flex">
+                                                            <%-- Label de la ddl --%>
+                                                            <div class="col-md-1" style="margin-left: 15px; margin-right: 15px;">
+                                                                <label class="col-sm-2 control-label">Sector</label>
+                                                            </div>
+                                                            <%-- Ddl sectores --%>
+                                                            <div class="col-md-2">
+                                                                <asp:DropDownList ID="ddlSector" runat="server"
+                                                                    CssClass="chosen-select form-control"
+                                                                    DataTextField="CountryName" DataValueField="CountryCode"
+                                                                    Data-placeholder="Seleccione Rubro..." Width="100%">
+                                                                    <asp:ListItem Text="Select" Value=""></asp:ListItem>
+                                                                </asp:DropDownList>
+                                                            </div>
+                                                            <%-- boton ayer --%>
+                                                            <a id="btnAyer" onclick="filtrartTransferenciasAyer()" class="btn btn-default"
+                                                                title="filtrar ayer" style="height: 32px; margin-left: 10px">Ayer
+                                                            </a>
+                                                            <%-- boton hoy --%>
+                                                            <a id="btnHoy" onclick="filtrartTransferenciasHoy()" class="btn btn-default"
+                                                                title="filtrar hoy" style="height: 32px; margin-left: 10px">Hoy
+                                                            </a>
+                                                            <a id="btnMañana" onclick="filtrartTransferenciasMañana()" class="btn btn-default"
+                                                                title="filtrar hoy" style="height: 32px; margin-left: 10px">Mañana
+                                                            </a>
+                                                            <a id="btnPasado" onclick="filtrartTransferenciasPasado()" class="btn btn-default"
+                                                                title="filtrar hoy" style="height: 32px; margin-left: 10px">Pasado 
+                                                            </a>
+
+                                                            <label style="margin-left: 40px; margin-top: 5px">Desde</label>
+                                                            <div>
+                                                                <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy"
+                                                                    data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;">
+                                                                </asp:TextBox>
+                                                            </div>
+                                                            <label style="margin-top: 5px; margin-left: 10px">Hasta</label>
+                                                            <div>
+                                                                <asp:TextBox class="form-control" runat="server" type="date"
+                                                                    ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy"
+                                                                    Style="margin-left: 0px; width: 100%;">
+                                                                </asp:TextBox>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <asp:Button ID="btnSector" runat="server" class="btn btn-primary pull-right" OnClientClick="filtrarSectorOrigen(); return false" />
+                                                            </div>
+
+                                                            <%-- Boton Filtrar --%>
+                                                            <div class="col-md-2">
+                                                                <a id="btnFiltrar" onclick="FiltrarIngredientesDeOrdenesDeProduccion()" class="btn btn-primary pull-right" style="margin-right: 15px;"><i class="fa fa-paper-plane"></i>&nbsp;Filtrar </a>
+                                                            </div>
+                                                        </div>
+                                                        <%-- Fin de la row --%>
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-md-1" style="margin-left: 20px; margin-top: 10px">
-                                                        <label style="">Envio</label>
-                                                    </div>
-                                                    <div class="col-md-1" style="margin-top: 10px">
-                                                        <asp:CheckBox ID="checkboxEnvio" runat="server" />
-                                                    </div>
-                                                    <div class="col-md-1" style="margin-top: 10px">
-                                                        <label>Recepcion</label>
-                                                    </div>
-                                                    <div class="col-md-1" style="margin-top: 10px">
-                                                        <asp:CheckBox ID="checkboxRecepcion" runat="server" />
-                                                    </div>
-                                                </div>
-                                                <%-- Fin de la row --%>
+                                                <%--</div>--%>
+                                                <%--</div>--%>
                                             </div>
                                         </div>
-                                        <%--</div>--%>
-                                        <%--</div>--%>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <asp:HiddenField ID="FechaDesde" runat="server"></asp:HiddenField>
-                        <asp:HiddenField ID="FechaHasta" runat="server"></asp:HiddenField>
-                        <asp:HiddenField ID="ddlSectorSelecionado" runat="server"></asp:HiddenField>
-                        </div>
-                    </ContentTemplate>
-                </asp:UpdatePanel>
+                                </div>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+    <div class="widget-content">
+        <div class="bs-example">
+            <ul id="myTab" class="nav nav-tabs">
+                <li class="active"><a href="#Recepcion" data-toggle="tab" id="linkDetalle">Recepcion</a></li>
+                <li class=""><a href="#Produccion" data-toggle="tab" runat="server" id="linkImg">Produccion</a></li>
+                <li class=""><a href="#Envio" runat="server" id="linkArticulosSucursales" data-toggle="tab">Envio</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane fade active in" id="Recepcion">
+            <asp:UpdatePanel ID="UpdatePanel1" UpdateMode="Always" runat="server">
+                <ContentTemplate>
+                    <div id="validation-form" role="form" class="form-horizontal col-md-10">
+                        <div class="row" style="margin-top: 20px">
+                            <div class="col-lg-12">
+                                <table class="table table-striped table-bordered table-hover " id="tableRecepcion">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 15%">Sector Destino</th>
+                                            <th style="width: 15%">Numero</th>
+                                            <th style="width: 15%">Fecha</th>
+                                            <th style="width: 15%">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <asp:PlaceHolder ID="phRecepcion" runat="server"></asp:PlaceHolder>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </ContentTemplate>
+                <Triggers>
+                </Triggers>
+            </asp:UpdatePanel>
+        </div>
+        <div class="tab-pane fade" id="Produccion">
+            <asp:UpdatePanel ID="UpdatePanel3" UpdateMode="Always" runat="server">
+                <ContentTemplate>
+                    <div id="validation-form" role="form" class="form-horizontal col-md-10">
+                        <fieldset>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-lg-12">
+                                    <table class="table table-striped table-bordered table-hover " id="tableProduccion">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 15%">Campo1</th>
+                                                <th style="width: 15%">Campo2</th>
+                                                <th style="width: 15%">Campo3</th>
+                                                <th style="width: 15%">Campo4</th>
+                                                <th style="width: 15%">Campo5</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <asp:PlaceHolder ID="PlaceHolder5" runat="server"></asp:PlaceHolder>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                </ContentTemplate>
+                <Triggers>
+                </Triggers>
+            </asp:UpdatePanel>
+        </div>
+        <div class="tab-pane fade" id="Envio">
+            <asp:UpdatePanel ID="UpdatePanel4" UpdateMode="Always" runat="server">
+                <ContentTemplate>
+                    <div id="validation-form1" role="form" class="form-horizontal col-md-10">
+                        <fieldset>
+                            <div class="row" style="margin-top: 20px">
+                                <div class="col-lg-12">
+                                    <table class="table table-striped table-bordered table-hover " id="tableEnvios">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 15%">Sector Origen</th>
+                                                <th style="width: 15%">Sector Destino</th>
+                                                <%--<th style="width: 15%">Producto</th>--%>
+                                                <%--<th style="width: 15%">Confirmada</th>--%>
+                                                <%--<th style="width: 15%">Enviada</th>--%>
+                                                <th style="width: 15%">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="detallesTransferenciasConfirmadas">
+                                            <asp:PlaceHolder ID="phEnvio" runat="server"></asp:PlaceHolder>
+                                        </tbody>
+                                    </table>
+                                    <asp:LinkButton ID="btnEnviar" runat="server" Text="Enviar"> 
+
+                                    </asp:LinkButton>
+                                    <asp:HiddenField ID="FechaDesde" runat="server"></asp:HiddenField>
+                                    <asp:HiddenField ID="FechaHasta" runat="server"></asp:HiddenField>
+                                    <asp:HiddenField ID="ddlSectorSelecionado" runat="server"></asp:HiddenField>
+                                    <asp:HiddenField ID="ddlSectorSelecionadoValue" runat="server"></asp:HiddenField>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                </ContentTemplate>
+                <Triggers>
+                </Triggers>
+            </asp:UpdatePanel>
+        </div>
+    </div>
     <div class="row" style="padding-left: 14px; padding-right: 14px">
         <!-- Utiliza col-lg-8 para la parte izquierda -->
-        <div class="col-lg-7">
+        <%-- <div class="col-lg-4">
             <div class="ibox-content m-b-sm border-bottom">
                 <div class="col-lg-12" style="background-color: white">
-
-
-                    <a id="btnDesmarcarTodo" onclick="unCheckAll()" class="btn btn-primary pull-right"
-                        style="margin-right: 15px;">Desmarcar todo</a>
-
-                    <a id="btnMarcarTodo" onclick="CheckAll()" class="btn btn-primary pull-right"
-                        style="margin-right: 15px;">Marcar todo</a>
-
-
+                    <div>
+                        <h3><strong>Recepcion</strong></h3>
+                    </div>
                     <div class="row">
                         <div class="col-lg-12">
-                            <table class="table table-striped table-bordered table-hover " id="editable">
+                            <table class="table table-striped table-bordered table-hover " id="tableRecepcion">
                                 <thead>
                                     <tr>
-                                        <th style="width: 17%">Fecha</th>
-                                        <th style="width: 32%">Receta</th>
-                                        <th style="text-align: right; width: 14%">Cantidad</th>
-                                        <th style="width: 16%">Estado</th>
-                                        <th style="width: 15%">Acciones</th>
+                                        <th style="width: 15%">Campo1</th>
+                                        <th style="width: 15%">Campo2</th>
+                                        <th style="width: 15%">Campo3</th>
+                                        <th style="width: 15%">Campo4</th>
+                                        <th style="width: 15%">Campo5</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <asp:PlaceHolder ID="phIngredientesFiltrados" runat="server"></asp:PlaceHolder>
+                                    <asp:PlaceHolder ID="PlaceHolder3" runat="server"></asp:PlaceHolder>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-
-
-                    <asp:HiddenField runat="server" ID="detalleRecetas" />
                 </div>
             </div>
-        </div>
+        </div>--%>
 
         <%-- Termina el primer wigget --%>
 
         <%-- Empieza el segundo widget --%>
 
-        <div class="col-lg-5">
+        <%-- <div class="col-lg-4">
             <div class="ibox-content m-b-sm border-bottom">
                 <div class="col-lg-12" style="background-color: white">
-
-                    <%--<a id="btnAccion" onclick="" class="btn btn-primary pull-right" style="margin-right: 15px;">Accion</a>--%>
-
-                    <%--     <a id="btnRecepcionSectores" href="#recepcionSectores" class="btn btn-primary pull-right" 
-                style="margin-right: 15px;">Recepcion sectores</a>--%>
-
-
-
-                    <asp:LinkButton ID="LinkButton1" runat="server" class="btn btn-primary pull-right"
-                        Style="margin-right: 15px;"
-                        OnClientClick="DetalleIngredientes_Click(); return false">Actualizar</asp:LinkButton>
-
-
-                    <asp:LinkButton ID="btnRecepcionSectores" runat="server" class="btn btn-primary pull-right"
-                        Style="margin-right: 15px;"
-                        OnClientClick="abrirModalRecepcionSector(); return false">Recepcion sectores</asp:LinkButton>
-
-
+                    <div>
+                        <h3><strong>Produccion</strong></h3>
+                    </div>
                     <div class="row">
                         <div class="col-lg-12">
-                            <table class="table table-bordered table-hover" id="tableProductos" style="margin-top: 2%; max-width: 99%;">
+                            <table class="table table-striped table-bordered table-hover " id="tableProduccion">
                                 <thead>
                                     <tr>
-                                        <th style="width: 1%; text-align: right;">#</th>
-                                        <th style="width: 5%">Insumo/Receta</th>
-                                        <th style="width: 2%; text-align: right;">Cant. Necesaria</th>
-                                        <th style="width: 2%; text-align: right;">Costo Unitario</th>
-                                        <th style="width: 2%; text-align: right;">Stock</th>
-                                        <th style="width: 2%; text-align: left;">Unidad de Med.</th>
-                                        <th style="width: 5%; text-align: center;"
-                                            hidden="hidden">
-                                            <div class="row">
-                                                Unidad Real
-
-     
-                                            </div>
-
-
-                                        </th>
-                                        <th style="width: 2%; text-align: right;"
-                                            hidden="hidden">Costo total</th>
-
-                                        <th style="width: 1%; text-align: left;"></th>
+                                        <th style="width: 15%">Campo1</th>
+                                        <th style="width: 15%">Campo2</th>
+                                        <th style="width: 15%">Campo3</th>
+                                        <th style="width: 15%">Campo4</th>
+                                        <th style="width: 15%">Campo5</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tableProductosBody">
-                                    <asp:PlaceHolder ID="phTablaProductos" runat="server"></asp:PlaceHolder>
+                                <tbody>
+                                    <asp:PlaceHolder ID="PlaceHolder2" runat="server"></asp:PlaceHolder>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-
-
                 </div>
             </div>
-        </div>
-    </div>
+        </div>--%>
 
-
-
-
-    <div id="modalIngredientes" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog" style="width: 40%; height: 50%;">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">Recepción/Entrega</h4>
-                </div>
-                <div class="modal-body">
-                    <div id="MainContent_UpdatePanel2">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="ibox float-e-margins">
-                                    <!-- Agregar la clase "collapsed" aquí -->
-                                    <div class="ibox-title">
-                                        <h5>Recepción</h5>
-                                        <div class="ibox-tools">
-                                            <a class="collapse-link">
-                                                <i class="fa fa-chevron-down"></i>
-                                                <!-- Usar el ícono hacia abajo por defecto -->
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-user">
-                                                <li><a href="#">Config option 1</a>
-                                                </li>
-                                                <li><a href="#">Config option 2</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="ibox-content">
-                                        <table class="table table-hover no-margins table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <td><strong>Ingredientes</strong></td>
-                                                    <td class="text-right"><strong>Cantidad</strong></td>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="tablaRecepcion">
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="ibox float-e-margins">
-                                    <!-- Agregar la clase "collapsed" aquí -->
-                                    <div class="ibox-title">
-                                        <h5>Entrega</h5>
-                                        <div class="ibox-tools">
-                                            <a class="collapse-link">
-                                                <i class="fa fa-chevron-down"></i>
-                                                <!-- Usar el ícono hacia abajo por defecto -->
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-user">
-                                                <li><a href="#">Config option 1</a>
-                                                </li>
-                                                <li><a href="#">Config option 2</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="ibox-content">
-                                        <table class="table table-hover no-margins table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <td><strong>Sector Productivo</strong></td>
-                                                    <td><strong>Receta</strong></td>
-                                                    <td class="text-right"><strong>Cantidad</strong></td>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="tablaEntrega">
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
+        <%--  <div class="col-lg-4">
+            <div class="ibox-content m-b-sm border-bottom">
+                <div class="col-lg-12" style="background-color: white">
+                    <div>
+                        <h3><strong>Envios</strong></h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <table class="table table-striped table-bordered table-hover " id="tableEnvios">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 15%">Campo1</th>
+                                        <th style="width: 15%">Campo2</th>
+                                        <th style="width: 15%">Campo3</th>
+                                        <th style="width: 15%">Campo4</th>
+                                        <th style="width: 15%">Campo5</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <asp:PlaceHolder ID="PlaceHolder1" runat="server"></asp:PlaceHolder>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>--%>
     </div>
 
 
-    <div id="modalRecepcionEntrega" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog" style="width: 40%; height: 50%;">
+    <%-- ModalDetalleRemitosInternos --%>
+    <div id="modalDetalleRemitoInterno" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog" style="width: 60%; height: 60%;">
             <div class="modal-content">
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">Recepción/Entrega</h4>
+                    <h4 class="modal-title">Recepcion</h4>
                 </div>
                 <div class="modal-body">
-                    <div id="MainContent_UpdatePanel3">
+                    <div id="MainContent_UpdatePanel8">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="ibox float-e-margins">
                                     <!-- Agregar la clase "collapsed" aquí -->
                                     <div class="ibox-title">
-                                        <h5>Recepción</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-down"></i>
@@ -315,55 +320,35 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <table class="table table-hover no-margins table-bordered">
+                                        <table class="table table-hover no-margins table-bordered" id="DetalleRemitosInternos">
                                             <thead>
                                                 <tr>
-                                                    <td><strong>Sector Productivo</strong></td>
+                                                    <%--                                                    <td><strong>Sector Origen</strong></td>
+                                                    <td><strong>Sector Destino</strong></td>--%>
                                                     <td><strong>Producto</strong></td>
-                                                    <td class="text-right"><strong>Cantidad</strong></td>
+                                                    <%--<td class="text-right"><strong>Cantidad</strong></td>--%>
+                                                    <%--<td class="text-right"><strong>Cantidad confirmada</strong></td>--%>
+                                                    <td class="text-right"><strong>Cantidad enviada</strong></td>
+                                                    <td class="text-right"><strong>Cantidad Recepcionada</strong></td>
                                                 </tr>
                                             </thead>
-                                            <tbody id="tablaRecepcionDerecha">
+                                            <tbody id="tableDetalleRemitosInternos">
                                             </tbody>
                                         </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
 
-
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="ibox float-e-margins">
-                                    <!-- Agregar la clase "collapsed" aquí -->
-                                    <div class="ibox-title">
-                                        <h5>Entrega</h5>
-                                        <div class="ibox-tools">
-                                            <a class="collapse-link">
-                                                <i class="fa fa-chevron-down"></i>
-                                                <!-- Usar el ícono hacia abajo por defecto -->
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-user">
-                                                <li><a href="#">Config option 1</a>
-                                                </li>
-                                                <li><a href="#">Config option 2</a>
-                                                </li>
-                                            </ul>
+                                        <div style="text-align: right; margin-top: 10px">
+                                                  <asp:Button ID="Button2" runat="server"
+                                                OnClientClick="" class="btn btn-primary"
+                                                title="Enviar" Text="Recepcionar" />
                                         </div>
-                                    </div>
-                                    <div class="ibox-content">
-                                        <table class="table table-hover no-margins table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <td><strong>Sector Productivo</strong></td>
-                                                    <td><strong>Receta</strong></td>
-                                                    <td class="text-right"><strong>Cantidad</strong></td>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="tablaEntregaDerecha">
-                                            </tbody>
-                                        </table>
+                                        <asp:HiddenField ID="HiddenField6" runat="server" />
+                                        <asp:HiddenField ID="HiddenField7" Value="" runat="server" />
+                                        <asp:HiddenField ID="HiddenField8" Value="" runat="server" />
+                                        <asp:HiddenField ID="HiddenField9" Value="" runat="server" />
+                                        <%-- Este HiddenField guarda el id y lo cantidad de los datos 
+                                        de las transferencias--%>
+                                        <asp:HiddenField ID="HiddenField10" Value="" runat="server" />
                                     </div>
                                 </div>
                             </div>
@@ -376,185 +361,66 @@
 
 
 
-    <div id="modalEnvioRecetas" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog" style="width: 40%; height: 50%;">
+    <div id="modalDetallePedidos" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog" style="width: 60%; height: 60%;">
             <div class="modal-content">
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">Envio Recetas</h4>
-                </div>
-                <div class="modal-body">
-                    <div id="MainContent_UpdatePanel4">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="ibox float-e-margins">
-                                    <!-- Agregar la clase "collapsed" aquí -->
-                                    <div class="ibox-title">
-                                        <h5>Envio</h5>
-                                        <div class="ibox-tools">
-                                            <a class="collapse-link">
-                                                <i class="fa fa-chevron-down"></i>
-                                                <!-- Usar el ícono hacia abajo por defecto -->
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-user">
-                                                <li><a href="#">Config option 1</a>
-                                                </li>
-                                                <li><a href="#">Config option 2</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="ibox-content">
-                                        <table class="table table-hover no-margins table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <td><strong>Sector Productivo</strong></td>
-                                                    <td><strong>Producto</strong></td>
-                                                    <td class="text-right"><strong>Cantidad</strong></td>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="tablaEnvioReceta">
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <%-- Aca empieza el modal RwcepcionPorSectores --%>
-
-
-    <div id="recepcionSectores" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog" style="width: 55%; height: 65%;">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">Recepción/Entrega</h4>
-                </div>
-                <div class="modal-body">
-                    <div id="MainContent_UpdatePanel6">
-
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="ibox float-e-margins">
-                                    <!-- Agregar la clase "collapsed" aquí -->
-                                    <div class="ibox-title">
-                                        <h5>Recepción</h5>
-                                        <div class="ibox-tools">
-                                            <a class="collapse-link">
-                                                <i class="fa fa-chevron-down"></i>
-                                                <!-- Usar el ícono hacia abajo por defecto -->
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-user">
-                                                <li><a href="#">Config option 1</a>
-                                                </li>
-                                                <li><a href="#">Config option 2</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="ibox-content">
-
-                                        <div style="width: 35%; margin-left: 1rem">
-                                            <div class="input-group m-b">
-                                                <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
-                                                <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
-                                            </div>
-                                        </div>
-
-                                        <table class="table table-hover no-margins table-bordered" id="idTablaRecepcionSector">
-                                            <thead>
-                                                <tr>
-                                                    <td style="hidden"><strong>#</strong></td>
-                                                    <td><strong>Insumo/Receta</strong></td>
-                                                    <td class="text-right"><strong>Cant. Necesaria</strong></td>
-                                                    <td class="text-right"><strong>Costo Unitario</strong></td>
-                                                    <td class="text-right"><strong>Unidad de Med.</strong></td>
-                                                    <td class="text-right"><strong>Sector Productivo</strong></td>
-                                                    <td class="text-right"><strong>Cantidad a prod</strong></td>
-                                                    <td><strong>Acciones</strong></td>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="tablaRecepcionSector">
-                                            </tbody>
-                                        </table>
-
-                                        <div>
-                                            <asp:LinkButton ID="btnRecepcionar" runat="server" OnClientClick="recepcionar(); return false"
-                                                class="btn btn-primary pull-right">recepcionar</asp:LinkButton>
-                                        </div>
-                                        <asp:HiddenField ID="cantInsumoSeleccionado" Value="" runat="server" />
-                                        <asp:HiddenField ID="idIgredienteSeleccionado" Value="" runat="server" />
-                                        <asp:HiddenField ID="ingredienteARecepcionar" Value="" runat="server" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div id="stockSector" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog" style="width: 55%; height: 65%;">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <div style="display: flex">
-                        <h4 class="modal-title">Stock sector</h4>
-                        <h4 id="cantNeceseria" class="modal-title" style="margin-left: 450px"></h4>
-                    </div>
+                    <h4 class="modal-title">Origen/Destino</h4>
                 </div>
                 <div class="modal-body">
                     <div id="MainContent_UpdatePanel7">
-
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="ibox float-e-margins">
-                                    <div class="ibox-content">
-                                        <table class="table table-hover no-margins table-bordered" id="tableSectores">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width: 10%">#</th>
-                                                    <th>Sector</th>
-                                                    <th>Unidad</th>
-                                                    <th style="text-align: end">Stock</th>
-                                                    <th style="text-align: right">Transferencia</th>
-                                                    <th style="text-align: right; display: none;">idReceta</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="tbobyStockSectores">
-                                            </tbody>
-                                        </table>
-                                        <div style="margin-right: 15px; margin-top: 10px; display: flex; float: right">
-                                            <p id="validarTransferencia" style="margin-right: 10px; margin-top: 10px;"
-                                                class="text-danger text-hide">
-                                                *La transferencia debe ser igual a la cantidad ingresada
-                                            </p>
-
-                                            <asp:LinkButton ID="btnAceptarTransferencia"
-                                                OnClientClick="SumarTranferencia(); return false"
-                                                runat="server" class="btn btn-primary">Aceptar</asp:LinkButton>
-                                        </div>
-                                        <div>
+                                    <!-- Agregar la clase "collapsed" aquí -->
+                                    <div class="ibox-title">
+                                        <h5>Origen</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-down"></i>
+                                                <!-- Usar el ícono hacia abajo por defecto -->
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-user">
+                                                <li><a href="#">Config option 1</a>
+                                                </li>
+                                                <li><a href="#">Config option 2</a>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
-                                    <asp:HiddenField ID="idVerStockButton" runat="server" />
-                                    <asp:HiddenField ID="stockSectoresProductos" runat="server" />
-                                    <asp:HiddenField ID="stockSectoresProductosEditar" runat="server" />
+                                    <div class="ibox-content">
+                                        <table class="table table-hover no-margins table-bordered" id="tablePedidos">
+                                            <thead>
+                                                <tr>
+                                                    <td><strong>Sector Origen</strong></td>
+                                                    <td><strong>Sector Destino</strong></td>
+                                                    <td><strong>Producto</strong></td>
+                                                    <td class="text-right"><strong>Cantidad</strong></td>
+                                                    <td class="text-right"><strong>Cantidad confirmada</strong></td>
+                                                    <td class="text-right"><strong>Cantidad enviada</strong></td>
+                                                    <%--<td class="text-right"><strong>Acciones</strong></td>--%>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tableDetallePedidos">
+                                            </tbody>
+                                        </table>
+
+
+                                        <div style="text-align: right; margin-top: 10px">
+                                            <asp:Button ID="Button1" runat="server"
+                                                OnClientClick="guardarDatosTransferencia(); return false" class="btn btn-primary"
+                                                title="Enviar" Text="Enviar" />
+                                        </div>
+                                        <asp:HiddenField ID="idTransferencia" runat="server" />
+                                        <asp:HiddenField ID="transferencias" Value="" runat="server" />
+                                        <asp:HiddenField ID="idsPedidos" Value="" runat="server" />
+                                        <asp:HiddenField ID="cantidadesDatosTransferencias" Value="" runat="server" />
+                                        <%-- Este HiddenField guarda el id y lo cantidad de los datos 
+                                            de las transferencias--%>
+                                        <asp:HiddenField ID="datosTransferencias" Value="" runat="server" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -563,6 +429,84 @@
             </div>
         </div>
     </div>
+
+
+    <div id="modalDetalleDatosTransferencia" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog" style="width: 60%; height: 60%;">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Origen/Destino</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="MainContent_UpdatePanel7">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="ibox float-e-margins">
+                                    <!-- Agregar la clase "collapsed" aquí -->
+                                    <div class="ibox-title">
+                                        <h5>Origen</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-down"></i>
+                                                <!-- Usar el ícono hacia abajo por defecto -->
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-user">
+                                                <li><a href="#">Config option 1</a>
+                                                </li>
+                                                <li><a href="#">Config option 2</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <table class="table table-hover no-margins table-bordered" id="tablePedidos2">
+                                            <thead>
+                                                <tr>
+                                                    <td><strong>Sector Productivo</strong></td>
+                                                    <td><strong>Producto</strong></td>
+                                                    <td class="text-right"><strong>Cantidad</strong></td>
+                                                    <td class="text-right"><strong>Confirmada</strong></td>
+                                                    <td><strong>Producto Destino</strong></td>
+                                                    <td><strong>SectorDestino</strong></td>
+                                                    <td><strong>Orden destino</strong></td>
+                                                    <td><strong>Cliente destino</strong></td>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tableDetalleDatosTransferencia">
+                                            </tbody>
+                                        </table>
+
+                                        <%--    <div style="text-align: right; margin-top:10px">
+                                <asp:Button ID="btnConfirmar" runat="server" 
+                                    OnClick="btnConfirmar_Click" class="btn btn-primary" 
+                                    title="Confirmar" Text="Confirmar"
+                                 />
+                            </div>  --%>
+                                        <%--     <div style="text-align: right; margin-top: 10px">
+                                            <asp:Button ID="Button2" runat="server"
+                                                OnClientClick="guardarDatosTransferencia(); return false" class="btn btn-primary"
+                                                title="Guardar" Text="Guardar" />
+                                        </div>--%>
+                                        <asp:HiddenField ID="HiddenField1" runat="server" />
+                                        <asp:HiddenField ID="HiddenField2" Value="" runat="server" />
+                                        <asp:HiddenField ID="HiddenField3" Value="" runat="server" />
+                                        <asp:HiddenField ID="HiddenField4" Value="" runat="server" />
+                                        <%-- Este HiddenField guarda el id y lo cantidad de los datos 
+                                        de las transferencias--%>
+                                        <asp:HiddenField ID="HiddenField5" Value="" runat="server" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
     <script src="/../Scripts/plugins/staps/jquery.steps.min.js"></script>
     <script src="../../js/plugins/datapicker/bootstrap-datepicker.js"></script>
@@ -583,111 +527,62 @@
 
 
 
-    <script>
-           function recepcionar(){
-              let stockSectores = document.getElementById('<%= stockSectoresProductos.ClientID %>').value
-              transferirStockAjax(stockSectores)
-           }
-    </script>
+
 
     <script>
-           function SumarTranferencia() {
+             function guardarDatosTransferencia(){
+         
 
-                    let transferenciaTotal = 0;
-                    for (var i = 1; i < document.getElementById('tableSectores').rows.length; i++) {
+                var rows = document.querySelectorAll('#tableDetallePedidos tr');
+                var tableData = [];
 
-
-                        let celdaTransferencia = document.getElementById('tableSectores').rows[i].cells[4].querySelector('input');
-                        let valorCelda = parseFloat(celdaTransferencia.value) || 0;
-                        transferenciaTotal += valorCelda;
+                rows.forEach(function(row) {
+                    var cells = row.getElementsByTagName('td');
+                    if (cells.length > 0) {
+                        var rowData = {
+                            SectorOrigen: cells[0].textContent.trim(),
+                            SectorDestino: cells[1].textContent.trim(),
+                            Producto: cells[2].textContent.trim(),
+                            Cantidad: cells[3].textContent.trim(),
+                            CantidadConfirmada: cells[4].textContent.trim(),
+                            cantidadEnviada: cells[5].getElementsByTagName('input')[0].value.trim()
+                        };
+                        tableData.push(rowData);
                     }
-                        
-                    let idBtnVerStock = document.getElementById('<%= idVerStockButton.ClientID %>').value
-                    let btnVerStockSector = document.getElementById(idBtnVerStock);
-                    let estiloComputado = window.getComputedStyle(btnVerStockSector);
-                    let colorBoton = estiloComputado.getPropertyValue('color')
-                    let cantSelecionada = document.getElementById("<%= cantInsumoSeleccionado.ClientID %>").value;
-                    document.getElementById('<%= stockSectoresProductosEditar.ClientID %>').value = ""
-                    
-                        if(cantSelecionada == transferenciaTotal){
+                });
+               //
+                var data = {
+                    tableData: tableData
+                };
 
-                            document.getElementById('validarTransferencia').className = 'text-danger text-hide'
-
-                            let stockSectores = "";
-                            let nuevaCadena = "";
-                            for (var i = 1; i < document.getElementById('tableSectores').rows.length; i++) {
-
-
-                                let celdaId = document.getElementById('tableSectores').rows[i].cells[0].innerText
-                                let celdaSector = document.getElementById('tableSectores').rows[i].cells[1].innerText
-                                let celdaUnidad = document.getElementById('tableSectores').rows[i].cells[2].innerText
-                                let celdaStock = document.getElementById('tableSectores').rows[i].cells[3].innerText
-                                let celdaTransferencia = document.getElementById('tableSectores').rows[i].cells[4].querySelector('input').value;
-                                let celdaidIngrediente = document.getElementById('tableSectores').rows[i].cells[5].innerText
-                                let stockSectoresEditar = "";
-                                
-                                if(celdaTransferencia == ""){
-                                   celdaTransferencia = "0" 
-                                }
-
-                    
-                                //Aca se define si esta editando o agregando por primera vez
-                                if(colorBoton != "rgb(0, 128, 0)"){
-                                    document.getElementById('<%= stockSectoresProductos.ClientID %>').value += celdaId + "," + celdaSector + "," + celdaUnidad + "," + celdaStock +"," + celdaTransferencia + "," + celdaidIngrediente + ";"
-                                }
-                                else{
-                                      stockSectoresEditar = document.getElementById('<%= stockSectoresProductosEditar.ClientID %>').value += celdaId + "," + celdaSector + "," + celdaUnidad + "," + celdaStock + "," + celdaTransferencia + "," + celdaidIngrediente + ";";
-                                }
-                            }
-
-
-                                //Aca es donde empieza el editar
-                                if(colorBoton == "rgb(0, 128, 0)"){
-                                    let stockSectoresGlobal = document.getElementById('<%= stockSectoresProductos.ClientID %>').value;
-                                    let stockSectoresGlobalSplit = stockSectoresGlobal.split(";").filter(Boolean);;
-                                         stockSectoresGlobalSplit.forEach(stock => {
-                                             let stockSectoresGlobalSplitComa = stock.split(",")
-                                             let id = stockSectoresGlobalSplitComa[0]
-                                             let stockSectoresEditar = document.getElementById('<%= stockSectoresProductosEditar.ClientID %>').value;
-                                             let existe = false;
-                                             let stockSectoresEditarSplit = stockSectoresEditar.split(";").filter(Boolean);;
-                                             stockSectoresEditarSplit.forEach(stockEditar => {
-                                                let stockSectoresEditarSplitComa = stockEditar.split(",")
-
-                                                let idEditar = stockSectoresEditarSplitComa[0];
-                                                let sectorEditar = stockSectoresEditarSplitComa[1];
-                                                let unidadEditar = stockSectoresEditarSplitComa[2];
-                                                let stockEditar2 = stockSectoresEditarSplitComa[3];
-                                                let transferenciaEditar = stockSectoresEditarSplitComa[4];
-                                                let idIngredienteEditar = stockSectoresEditarSplitComa[5];
-
-                                                if(id == idEditar){
-                                                   nuevaCadena += idEditar + "," + sectorEditar + "," + unidadEditar + "," + stockEditar2 + "," + transferenciaEditar + "," + idIngredienteEditar + ";";
-                                                   existe = true
-                                                }
-                                
-                                             })
-
-                                             if(existe == false){
-                                                nuevaCadena += celdaId + "," + celdaSector + "," + celdaUnidad + "," + celdaStock + "," + celdaTransferencia + "," + celdaidIngrediente + ";";
-                                             }
-                                          
-                                         })
-                                         document.getElementById('<%= stockSectoresProductos.ClientID %>').value = nuevaCadena;
-
-                                }
-                        document.getElementById(idBtnVerStock).style.color = "green";
-                        $('#stockSector').modal('hide');
-
-                      }
-                      else{
-                          document.getElementById('validarTransferencia').className = 'text-danger';
-                      }
+             
+                  $.ajax({
+                  method: "POST",
+                  url: "Pre-Produccion.aspx/guardarDatosTransferencia",
+                  data: JSON.stringify(data),
+                  contentType: "application/json",
+                  dataType: "json",
+                  error: function(error) {
+                      toastr.error("La transferencia no pudo ser confirmada.", "Error");
+                  },
+                  success: function(response) {
               
-            }
-    </script>
+                   if(response.d > 0){
+                        let r = response.d;
+                        toastr.success("Transferencia confirmada con exito!", "Exito");
+                        window.open('ImpresionRemitos.aspx?r=' + r, '_blank');
+                    }
+                      else{
+                         toastr.error("La transferencia no pudo ser confirmada.", "Error");
+              
+                      }
+                  }
+               });
 
-    <script>
+
+           }
+
+
            function abrirModalRecepcionSector(){
                  
                  cargarRecepcionAgrupadaPorSector()
@@ -700,265 +595,105 @@
                 return sectorProductivo;
            }
 
-           function transferirStockAjax(stockSectores){
-                  
-                   let idSectorProductivo = obteneridSectorProductivoUrl();
-                   let ingredientesARecepcionar = obtenerIngredientesARecepcionar()
+           //Esta funcion se para poder filtrar todos los datos de las transferencias, cuyo campo origen sea igual al 
+           //texto de la ddl seleccionada
+           function filtrarSectorOrigen(){
 
+                let ddlSector = document.getElementById('<%=ddlSector.ClientID%>');
+                let sector = ddlSector.options[ddlSector.selectedIndex].text;
 
-                   $.ajax({
-                   method: "POST",
-                   url: "Pre-Produccion.aspx/updateStockSector",
-                   data: JSON.stringify({ stockSectores: stockSectores, idSectorProductivo: idSectorProductivo, ingredientesARecepcionar: ingredientesARecepcionar }),
-                   contentType: "application/json",
-                   dataType: "json",
-                   async: false,
-                   error: (error) => {
-                       console.log(JSON.stringify(error));
-                   },
-                   success: (data) => {
-                      document.getElementById('<%= stockSectoresProductos.ClientID %>').value = "";
-                      document.getElementById('<%= ingredienteARecepcionar.ClientID %>').value = "";
-                      $('#recepcionSectores').modal('hide');
-                      toastr.success("guardado con exito!", "Exito")
-                   }
-               });
-           
+                let ddlSectorValue = document.getElementById('<%=ddlSector.ClientID%>').value;
+                //la o en la url es de origen
+                window.location.href="Pre-produccion.aspx?O=" + sector + "&OV=" + ddlSectorValue;
            }
 
-
-           function obtenerIngredientesARecepcionar(){
-
-                  let ingredientesARecepcionar = "";
-                  for (var i = 1; i < document.getElementById('idTablaRecepcionSector').rows.length; i++) {
-
-                     let id = document.getElementById('idTablaRecepcionSector').rows[i].cells[0].innerText
-                     let insumo = document.getElementById('idTablaRecepcionSector').rows[i].cells[1].innerText
-                     let cantNesesaria = document.getElementById('idTablaRecepcionSector').rows[i].cells[2].innerText
-                     let costoUnitario = document.getElementById('idTablaRecepcionSector').rows[i].cells[3].innerText
-                     let unidadMedida = document.getElementById('idTablaRecepcionSector').rows[i].cells[4].innerText
-                     let sectorProductivo = document.getElementById('idTablaRecepcionSector').rows[i].cells[5].innerText
-                     let cantAPro = document.getElementById('idTablaRecepcionSector').rows[i].cells[6].querySelector('input').value;
-                     //let segundoBotonValue = document.getElementById('idTablaRecepcionSector').rows[i].cells[7].getElementsByTagName('input')[1];
-                     let segundoBoton = document.getElementById('idTablaRecepcionSector').rows[i].cells[7].querySelector('button');
-
-                     let estiloComputado = window.getComputedStyle(segundoBoton);
-                     let colorBoton = estiloComputado.getPropertyValue('color')
-
-                     if(colorBoton == "rgb(0, 128, 0)"){
-                        ingredientesARecepcionar = document.getElementById('<%= ingredienteARecepcionar.ClientID %>').value += id + "," + cantAPro + "," + sectorProductivo + ";"
-                     }
-                     else{
-                     }
-
-                }
-
-                return ingredientesARecepcionar;
-           
-           }
-
-
-           function precargarTransferencia(idIngrediente){
-                let sectoresTranferencia = document.getElementById('<%= stockSectoresProductos.ClientID %>').value
-                      let sectoresTranf = sectoresTranferencia.split(';').filter(Boolean); 
-                      let nuevaCadena = "";
-                       sectoresTranf.forEach(stock => {
-                       const stockSectores = stock.split(',');
-
-                       let id = stockSectores[0];
-                       let Sector = stockSectores[1];
-                       let unidad = stockSectores[2];
-                       let stockSector = stockSectores[3];
-                       let cantTransferir = stockSectores[4];
-                       let ingredienteId = stockSectores[5];
+           function verDetalleTranferencia(idTransferencia, productoDescripcion) {
+               console.log(idTransferencia)
+               console.log(productoDescripcion)
+                
+                $.ajax({
+                  method: "POST",
+                  url: "Pre-produccion.aspx/verDetallesPedidos",
+                  data: JSON.stringify({ idTransferencia: idTransferencia, productoDescripcion: productoDescripcion }),
+                  contentType: "application/json",
+                  dataType: "json",
+                  error: function(error) {
+                      console.log("Error");
+                  },
+                  success: function(data) {
+                      const arraydetalleTransferencia = data.d.split(";").filter(Boolean);
+                      document.getElementById('tableDetallePedidos').innerHTML = "";
+                      document.getElementById('<%= idTransferencia.ClientID %>').value = idTransferencia;
+                      let cont = 0;
+                      document.getElementById('<%= idsPedidos.ClientID %>').value = "";
+                      document.getElementById('<%= datosTransferencias.ClientID %>').value = "";
+                      let estado = false;
+                      arraydetalleTransferencia.forEach(function(detalleTransferencia) {
+                          cont++;
+                          let cantidadAConfirmar = "";
+                          const partesDetalle = detalleTransferencia.split(",").filter(Boolean);
+                          document.getElementById('<%= idsPedidos.ClientID %>').value += partesDetalle[0] + ",";
+                          document.getElementById('<%= datosTransferencias.ClientID %>').value += partesDetalle[0] + "," + partesDetalle[12] + ";";
+                          const SectorOrigen = partesDetalle[1];
+                          const ProductoOrigen = partesDetalle[2];
+                          const cantidadOrigen = partesDetalle[3];
+                          const estadoTransferencia = partesDetalle[10];
+                          const cantEnviada = partesDetalle[12];
 
 
-                       if(ingredienteId == idIngrediente){
-                          nuevaCadena += id + "," + Sector + "," + unidad + "," + stockSector + "," + cantTransferir + "," + ingredienteId + ";"
-                       }
 
-                      });
-
-                      if(nuevaCadena != ""){
-                          let sectoresFiltrados = nuevaCadena.split(';').filter(Boolean); 
-                          document.getElementById('tbobyStockSectores').innerHTML = "";
-                          sectoresFiltrados.forEach(stck => {
-                          const stockSectoresFiltrados = stck.split(',');
-
-                          let id = stockSectoresFiltrados[0];
-                          let Sector = stockSectoresFiltrados[1];
-                          let unidad = stockSectoresFiltrados[2];
-                          let stock = stockSectoresFiltrados[3];
-                          let cantTransferir = stockSectoresFiltrados[4];
-                          let ingredienteId = stockSectoresFiltrados[5];
-
-
-                          let transferencia = "";
-                          if(cantTransferir == "0"){
-                            cantTransferir = "";
+                          if(estadoTransferencia == "Confirmado" || estadoTransferencia == "A confirmar") 
+                          {
+                             cantidadAConfirmar = "<input id=\"" + "cantEnviada_" + cont + "\" style=\"width: 100%; text-align: right;\" placeholder=\"Cantidad\" value=\"" + partesDetalle[12] + "\" oninput=\"validarTextBox(this);\" />";
+                             estado = false;
                           }
-                          transferencia = `<input style="width: 100%; text-align: right;" placeholder="Ingrese el stock" value="${cantTransferir}" />`;
 
-                              let plantillaStock = `
-                               <tr>
-                                   <td>${id}</td>
-                                   <td>${Sector}</td>
-                                   <td style="text-align: left;">${unidad}</td>
-                                   <td style="text-align: right;">${stock}</td>
-                                   <td style="text-align: right;">${transferencia}</td>
-                                   <td style="text-align: right; display: none">${ingredienteId}</td>
-                               </tr>
-                           `;
-                           document.getElementById('tbobyStockSectores').innerHTML += plantillaStock;
-                         
-  
-                         });
+                          else
+                          {
+                             cantidadAConfirmar = "<input id=\"cantEnviada_" + cont + "\" style=\"width: 100%; text-align: right;\" placeholder=\"Cantidad\" value=\"" + partesDetalle[12] + "\" disabled />";
+                             estado = true;
+                          }
+                          const productoDestino = partesDetalle[4];
+                          const sectorDestino = partesDetalle[5];
+                          const orden = partesDetalle[6];
+                          const razonSocialActual = partesDetalle[7];
 
-                         return 1
-                              
-                      }
-                      else{
-                            return 0
-                      }
-           }
 
-           function verStockSector(idIngrediente, idCantRecepcionar, idBotonVerStock){
 
-               //Esta funcion se ejecuta el boton al que se le hace click ya esta en verde
-               let rta = precargarTransferencia(idIngrediente);
 
-               if(rta != 1){
-                    let cantidadARecepcionar = document.getElementById(idCantRecepcionar).value;
-                    document.getElementById("<%= cantInsumoSeleccionado.ClientID %>").value = cantidadARecepcionar;
-                    document.getElementById("cantNeceseria").textContent = "Cantidad necesaria: " + cantidadARecepcionar;
-                    document.getElementById('<%= idVerStockButton.ClientID %>').value = idBotonVerStock
+                          let plantillaDetalleTransferencia = `
+                              <tr>
+                                  <td>${SectorOrigen}</td>
+                                  <td>${ProductoOrigen}</td>
+                                  <td style="text-align: right;">${partesDetalle[11]}</td>
+                                  <td style="text-align: right;">${cantidadAConfirmar}</td>
+                                  <td>${productoDestino}</td>
+                                  <td>${sectorDestino}</td>
+                                  <td>${orden}</td>
+                                  <td>${razonSocialActual}</td>
+                              </tr>
+                          `;
 
-                    let url = new URL(window.location.href);
-                    let idSectorProductivo = url.searchParams.get('SP');
-       
 
-                          $.ajax({
-                             method: "POST",
-                             url: "Pre-Produccion.aspx/getStockSector",
-                             data: JSON.stringify({ idIngrediente: idIngrediente, idSectorProductivo: idSectorProductivo}),
-                             contentType: "application/json",
-                             dataType: "json",
-                             async: false,
-                             error: (error) => {
-                                 console.log(JSON.stringify(error));
-                             },
-                             success: (data) => {
-                                  document.getElementById('tbobyStockSectores').innerHTML = "";
-                                  const stockSectores = data.d.split(';').filter(Boolean); 
-                                     stockSectores.forEach(stock => {
-                                            const stockSectores = stock.split(',');
+                          document.getElementById('tableDetallePedidos').innerHTML += plantillaDetalleTransferencia;
 
-                                            const sector = stockSectores[0];
-                                            const unidad = stockSectores[1];
-                                            const stockSector = stockSectores[2];
-                                            const id = stockSectores[3];
-                                            let transferencia = "";
-                                            transferencia = "<input style=\"width: 100%; text-align: right;\" placeholder=\"Ingrese el stock\" value=\"\" />";
-                                                let plantillaStock = `
-                                                 <tr>
-                                                     <td>${id}</td>
-                                                     <td>${sector}</td>
-                                                     <td style="text-align: left;">${unidad}</td>
-                                                     <td style="text-align: right;">${stockSector}</td>
-                                                     <td style="text-align: right;">${transferencia}</td>
-                                                     <td style="text-align: right; display: none;">${idIngrediente}</td>
-                                                 </tr>
-                                             `;
-                                             document.getElementById('tbobyStockSectores').innerHTML += plantillaStock;
-                                    });
-                             }
-                         });
-                      $('#stockSector').modal('show');   
+                });
+                 $("#modalDetallePedidos").modal("show")
                }
-               else{
-                    $('#stockSector').modal('show'); 
-               }
+            });
            }
 
-           function cargarRecepcionAgrupadaPorSector(){
-                
-                let hiddenFieldValue = document.getElementById("<%= detalleRecetas.ClientID %>").value;
-                let hiddenFieldValueArray = hiddenFieldValue.split(";").filter(Boolean);
-                let idsRecetas = "";
-                document.getElementById('<%= stockSectoresProductosEditar.ClientID %>').value = ""; 
-                document.getElementById('<%= stockSectoresProductos.ClientID %>').value = ""; 
-                
-
-                hiddenFieldValueArray.forEach(producto => {
-                     const ingredienteData = producto.split(',');
-                      let idReceta = ingredienteData[1];
-                      idsRecetas += idReceta + ",";
-                  });
-
-                      $.ajax({
-                      method: "POST",
-                      url: "Pre-Produccion.aspx/getRecepcionEntregaAgrupadoPorSector",
-                      data: '{idsRecetas: "' + idsRecetas + '"}',
-                      contentType: "application/json",
-                      dataType: "json",
-                      dataType: "json",
-                      async: false,
-                      error: (error) => {
-                          console.log(JSON.stringify(error));
-                      },
-                      success: (data) => {
-                           const ingredientesArray = data.d.split(';').filter(Boolean); 
-                           document.getElementById('tablaRecepcionSector').innerHTML = "";
-                           let cont = 0
-                           ingredientesArray.forEach(producto => {
-                               const ingredienteData = producto.split(',');
-
-
-                                   const ingredienteId = ingredienteData[0];
-                                   const ingredienteNombre = ingredienteData[1];
-                                   const Cantidad = ingredienteData[2];
-                                   const unidadMedida = ingredienteData[3];
-                                   const costo = ingredienteData[4];
-                                   const SectorProductivo = ingredienteData[5];
-                                   const idSector = ingredienteData[6];
-                                   let cantidadaProducir = "";
-                                   let faRecepcion = "";
-                                   let faCheckbox = "";
-
-                                   
-                                    
-                                   cantidadProducir = "<input  id=\"" + "cantAproducir_" + cont + "\" style=\"width: 100%; text-align: right;\" placeholder=\"Ingresa la cantidad real que utilizaste\" value=\"" + Cantidad + "\" />";
-
-
-                                   var faCombined = "<div>" +
-                                                      '<input id="RecepcionCheckbox" type="checkbox" class="icon-button" style="margin-left: 5px; color: black; border: none;" title="Recepción" onchange="cargarInsumo()">' +
-                                                        "<button id=\"" + "verStock_" + cont + "\" type=\"button\" class=\"icon-button\" style=\"margin-left: 5px; color: black; border: none;\" title=\"Ver stock\" onclick=\"verStockSector('" + ingredienteId + "', '" + "cantAproducir_" + cont + "', '" + "verStock_" + cont + "')\"><i class=\"fa fa-clipboard\"></i></button>" +
-                                                    "</div>";
-                                       cont++;
-                                       let plantillaIngredientes = `
-                                        <tr>
-                                            <td>${ingredienteId}</td>
-                                            <td>${ingredienteNombre}</td>
-                                            <td style="text-align: right;">${Cantidad}</td>
-                                            <td style="text-align: right;">${costo}</td>
-                                            <td style="text-align: right;">${unidadMedida}</td>
-                                            <td style="text-align: right;">${SectorProductivo}</td>
-                                            <td style="text-align: right;">${cantidadProducir}</td>
-                                            <td>${faCombined}</td>
-                                        </tr>
-                                    `;
-                                    document.getElementById('tablaRecepcionSector').innerHTML += plantillaIngredientes;
-
-
-                           });
-
-                          //AgregarATabla(respuesta.d);
-                          //document.getElementById("ContentPlaceHolder1_StockAlteradoFinal").textContent = "";
-                          /*  PedirStockTotal(id);*/
-             
-                      }
-                  });
+      
+           function guardarDetallesTransferenciasConfirmadas(){
+           
+         //    for (var i = 0; i < document.getElementById('DetallesTransferenciasConfirmadas').rows.length; i++) {
+         //       let cantidad = document.getElementById('DetallesTransferenciasConfirmadas').rows[i].cells[3].querySelector('input').value;
+         //       
+         //
+         //    }
+           
            }
+
 
     </script>
 
@@ -1181,17 +916,6 @@
             document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value = fehcah
         }
 
-        function establecerDiaHoy() {
-            var fechas = obtenerRangoFechas();
-            // Convertir la fecha en un formato legible xpara el DatePicker   
-            var fechaFormateada1 = (fechas.primerDia.getFullYear() + '/' + (fechas.primerDia.getMonth() + 1) + '/' + fechas.primerDia.getDate())
-            var fechaFormateada2 = (fechas.ultimoDia.getFullYear() + '/' + (fechas.ultimoDia.getMonth() + 1) + '/' + fechas.ultimoDia.getDate())
-
-
-            document.getElementById("ContentPlaceHolder1_txtFechaHoy").value = formatearFechas(fechaFormateada1);
-            document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value = formatearFechas(fechaFormateada2);;
-
-        }
 
 
        function verEnvio(idsRecetas) {
@@ -1236,24 +960,7 @@
         } // Cierre de la función verEnvio
 
 
-        function DetalleIngredientes_Click(){
-        
-            let hiddenFieldValue = document.getElementById("<%= detalleRecetas.ClientID %>").value;
-            let elementos = hiddenFieldValue.split(";");
-            let idsRecetas = "";
-            elementos.forEach(producto => {
-                const productoData = producto.split(',');
-                if (productoData[0].trim() !== "") {
 
-                    let idCheckbox = productoData[0];
-                    let idReceta = productoData[1];
-                    idsRecetas += idReceta + ",";
-
-                }
-             });
-             CargarTablaReceta(idsRecetas)
-
-        }
 
 
         function cargarIngredienteEnvio(id, descripcion, cantidad, idCheckBox){
@@ -1319,6 +1026,18 @@
                  }
             
              
+        }
+
+
+        function establecerDiaHoy() {
+              var fechas = obtenerRangoFechas();
+              var fechaFormateada1 = (fechas.primerDia.getFullYear() + '/' + (fechas.primerDia.getMonth() + 1) + '/' + fechas.diaActual.getDate())
+              var fechaFormateada2 = (fechas.ultimoDia.getFullYear() + '/' + (fechas.ultimoDia.getMonth() + 1) + '/' + fechas.diaActual.getDate())
+
+
+              document.getElementById("ContentPlaceHolder1_txtFechaHoy").value = formatearFechas(fechaFormateada1);
+              document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value = formatearFechas(fechaFormateada2);;
+
         }
 
 
@@ -1457,93 +1176,23 @@
         }
 
 
-        function obtenerRangoFechas() {
-            var fechaActual = new Date(); // Obtiene la fecha actual
-            var primerDiaMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), 1); // Primer día del mes actual
-            var ultimoDiaMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth() + 1, 0); // Último día del mes actual
+           function obtenerRangoFechas() {
+              var fechaActual = new Date(); 
+              let diaActual = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate());
+              var primerDiaMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), 1); 
+              var ultimoDiaMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth() + 1, 0); 
 
-            return {
-                primerDia: primerDiaMes,
-                ultimoDia: ultimoDiaMes
-            };
-        }
-
-
-        function FiltrarIngredientesDeOrdenesDeProduccion() {
-            let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value.replaceAll("-", "/");
-            let FechaH = document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value.replaceAll("-", "/");
-            /*let SectorProducivo = document.getElementById("ContentPlaceHolder1_ddlSector");*/
-
-            // Obtener el DropDownList
-            let ddlSector = document.getElementById("ContentPlaceHolder1_ddlSector");
-
-            // Obtener el texto de la opción seleccionada
-            let idSectorProductivo = ddlSector.value;
+              return {
+                  primerDia: primerDiaMes,
+                  ultimoDia: ultimoDiaMes, 
+                  diaActual: diaActual
+              };
+           }
 
 
-            let checkBoxEnvio = document.getElementById("<%= checkboxEnvio.ClientID %>")
-            let checkBoxRecepcion = document.getElementById("<%= checkboxRecepcion.ClientID %>")
 
 
-            if(checkBoxEnvio.checked == true){
-                window.location.href = "Pre-Produccion.aspx?FechaD=" + FechaD + "&FechaH=" + FechaH + "&SP=" + idSectorProductivo + "&E=1";
-            }
 
-
-            if(checkBoxRecepcion.checked == true){
-                window.location.href = "Pre-Produccion.aspx?FechaD=" + FechaD + "&FechaH=" + FechaH + "&SP=" + idSectorProductivo + "&RP=1";
-            }
-
-        }
-
-        function verIngredientesReceta(idCheckbox, idReceta, cantidad, descripcion, sectorProductivo)
-        {
-
-            var chk1 = document.getElementById(idCheckbox);
-            cantidad = cantidad.replace(/,/g, '.');
-
-              if (chk1.checked) {
-                  
-                  if(document.getElementById("<%= detalleRecetas.ClientID %>").value == ""){
-                    document.getElementById("<%= detalleRecetas.ClientID %>").value = idCheckbox + "," + idReceta + "," + cantidad + "," + descripcion + "," + sectorProductivo + ";" 
-                  DetalleIngredientes_Click();         
-                }
-                  else{
-                    document.getElementById("<%= detalleRecetas.ClientID %>").value += idCheckbox + "," + idReceta + "," + cantidad + "," + descripcion + "," + sectorProductivo + ";" 
-                  DetalleIngredientes_Click();         
-                    
-                  }
-                  //CargarTablaReceta(idReceta);
-                  
-              }
-
-              else{
-                  let productosSeleccionados = document.getElementById("<%= detalleRecetas.ClientID %>").value;
-                  productosSeleccionados = productosSeleccionados.split(';');
-                  let nuevosProductos = ""
-                  for (var x = 0; x < productosSeleccionados.length; x++) {
-                     if (productosSeleccionados[x] != "") {
-                         if (!productosSeleccionados[x].includes(idReceta)) {
-                             //guarda los productos actuales que hay en la tabla de la receta separados por ;, de esta forma quita de la cadena de productos 
-                             //aquellos que fueron eliminados
-                             nuevosProductos += productosSeleccionados[x] + ";";
-                         }
-                         else {
-                             /* var productoAEliminar = productos[x].split(',')[2];*/
-                             //ContentPlaceHolder1_txtPesoBruto.value = parseFloat(ContentPlaceHolder1_txtPesoBruto.value) - parseFloat(productoAEliminar);
-                             //if (ContentPlaceHolder1_txtRinde.value != "") {
-                             //    ContentPlaceHolder1_txtCoeficiente.value = (parseFloat(ContentPlaceHolder1_txtPesoBruto.value) / parseFloat(ContentPlaceHolder1_txtRinde.value)).toFixed(2);
-                             //    ContentPlaceHolder1_hiddenCoeficiente.value = ContentPlaceHolder1_txtCoeficiente.value;
-
-                             //}
-                         }
-                    }
-                 }
-
-                 document.getElementById("<%= detalleRecetas.ClientID %>").value = nuevosProductos;
-                 DetalleIngredientes_Click();
-                }
-            }
 
 
          function CargarTablaReceta(idsRecetas) {
@@ -1630,111 +1279,184 @@
              return numero.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
          }
 
-         function MostrarRecepcion(idReceta, cantidad){
-              //$('#modalRecepcionEntrega').modal('show');
-
-
-               fetch('Pre-Produccion.aspx/getIngredientesRecetaByIdRecetaSectorProductivo', {
-                 method: 'POST',
-                 body: JSON.stringify({ idReceta: idReceta, cantidad: cantidad }),
-                 headers: { 'Content-Type': 'application/json' }
-                 })
-                 .then(response => response.json())
-                 .then(data => {
           
-          
-                 //const ingredientesArray = data.d.split(';');
-                 const ingredientesArray = data.d.split(';').filter(Boolean); 
-                  document.getElementById('tablaRecepcionDerecha').innerHTML = "";
-                  ingredientesArray.forEach(producto => {
-                       // Dividir cada elemento en valores individuales usando coma como separador
-                       const ingredienteData = producto.split(',');
+          function verDetallePedidos(idTransferencia, ProductoOrigen) {
+     $.ajax({
+      method: "POST",
+      url: "PedidosOrdenes.aspx/verDetallesPedidos",
+      data: JSON.stringify({ idTransferencia: idTransferencia, ProductoOrigen: ProductoOrigen }),
+      contentType: "application/json",
+      dataType: "json",
+      error: function(error) {
+          console.log("Error");
+      },
+      success: function(data) {
 
-                       // Ahora puedes acceder a valores específicos del producto
-                       const ingredienteId = ingredienteData[0];
-                       const ingredienteNombre = ingredienteData[1];
-                       const Cantidad = ingredienteData[2];
-                       const sectorProductivo = ingredienteData[3];
+          const arraydetalleTransferencia = data.d.split(";").filter(Boolean);
+           document.getElementById('tableDetalleDatosTransferencia').innerHTML = "";
+           document.getElementById('<%= idTransferencia.ClientID %>').value = idTransferencia;
+           let cont = 0;
+           document.getElementById('<%= idsPedidos.ClientID %>').value = "";
+           let estado = false;
+           arraydetalleTransferencia.forEach(function(detalleTransferencia) {
+               cont++;
+               let cantidadAConfirmar = "";
+               const partesDetalle = detalleTransferencia.split(",").filter(Boolean);
+               document.getElementById('<%= idsPedidos.ClientID %>').value += partesDetalle[0] + ",";
+               const SectorOrigen = partesDetalle[1];
+               const ProductoOrigen = partesDetalle[2];
+               const cantidadOrigen = partesDetalle[3];
+               const estadoTransferencia = partesDetalle[10];
+               
+           
 
+               if(estadoTransferencia == "Confirmado" || estadoTransferencia == "A confirmar") 
+               {
+                  cantidadAConfirmar = "<input id=\"" + "cantAproducir_" + cont + "\" style=\"width: 100%; text-align: right;\" placeholder=\"Cantidad\" value=\"" + partesDetalle[11] + "\" oninput=\"validarTextBox(this);\" />";
+                  estado = false;
+               }
 
-                        let plantillaIngredientes = `
-                        <tr>
-                            <td>${sectorProductivo}</td>
-                            <td>${ingredienteNombre}</td>
-                            <td style="text-align: right;">${Cantidad}</td>
-                        </tr>
-                    `;
-                    document.getElementById('tablaRecepcionDerecha').innerHTML += plantillaIngredientes;
+               else
+               {
+                  cantidadAConfirmar = "<input id=\"cantAproducir_" + cont + "\" style=\"width: 100%; text-align: right;\" placeholder=\"Cantidad\" value=\"" + partesDetalle[11] + "\" disabled />";
+                  estado = true;
+               }
+               const productoDestino = partesDetalle[4];
+               const sectorDestino = partesDetalle[5];
+               const orden = partesDetalle[6];
+               const razonSocialActual = partesDetalle[7];
+               
 
-                  });
-                  //Aca termina el foreach
+               if(estado == true){
+               }
+               else{
+               }
 
-                         let recetasSeleccionadas = document.getElementById("<%= detalleRecetas.ClientID %>").value;
-                         let hiddenFieldValue = document.getElementById("<%= detalleRecetas.ClientID %>").value;
-                         let elementos = hiddenFieldValue.split(";");
-                         let idsRecetas = "";
-                         elementos.forEach(producto => {
-                             const productoData = producto.split(',');
-                             if (productoData[0].trim() !== "") {
+               let plantillaDetalleTransferencia = `
+                   <tr>
+                       <td>${SectorOrigen}</td>
+                       <td>${ProductoOrigen}</td>
+                       <td style="text-align: right;">${cantidadOrigen}</td>
+                       <td style="text-align: right;">${cantidadAConfirmar}</td>
+                       <td>${productoDestino}</td>
+                       <td>${sectorDestino}</td>
+                       <td>${orden}</td>
+                       <td>${razonSocialActual}</td>
+                   </tr>
+               `;
+       
 
-                                 let idReceta = productoData[1];
-                                 idsRecetas += idReceta + ",";
-
-                             }
-                          //   idsRecetas += idReceta
-                          });
-                  //Aca empieza el segundo fetch
-                        fetch('Pre-Produccion.aspx/getRecetasEntrega', {
-                          method: 'POST',
-                          body: JSON.stringify({ idsRecetas: idsRecetas, recetasSeleccionadas: recetasSeleccionadas, idReceta: idReceta }),
-                          headers: { 'Content-Type': 'application/json' }
-                          })
-                          .then(response => response.json())
-                          .then(data => {
-
-                                const recetasArray = data.d.split(';').filter(Boolean); 
-                                document.getElementById('tablaEntregaDerecha').innerHTML = "";
-                                recetasArray.forEach(receta => {
-                                    const recetaData = receta.split(',');
-
-                                    const idReceta = recetaData[0];
-                                    const cantidadReceta = recetaData[2];
-                                    const descripcionReceta = recetaData[3];
-                                    const sectorReceta = recetaData[4];
-
-
-                                         let plantillaRecetas = `
-                                         <tr>
-                                             <td>${sectorReceta}</td>
-                                             <td>${descripcionReceta}</td>
-                                             <td style="text-align: right;">${cantidadReceta}</td>
-                                         </tr>
-                                     `;
-
-
-                                    document.getElementById('tablaEntregaDerecha').innerHTML += plantillaRecetas;
-
-                                });
-
-                           })
-                            .catch(error => {
-                             // Código para manejar errores aquí
-                             console.error('Error:', error);
-                            });
-                             $('#modalRecepcionEntrega').modal('show');
-                        
-          
-                             })
-                       .catch(error => {
-                           // Código para manejar errores aquí
-                           console.error('Error:', error);
-                       });
-
-
-         }
+               document.getElementById('tableDetalleDatosTransferencia').innerHTML += plantillaDetalleTransferencia;
+           });
+                $("#modalDetalleDatosTransferencia").modal("show")
+              }
+          });
+      }
 
 
     </script>
+    <script>
+    function getDatosTransferenciaBySectorDestino(sectorOrigen, sectorDestino) {
+        $.ajax({
+            method: "POST",
+            url: "Pre-Produccion.aspx/getDatosTransferenciaBySectorDestino",
+            data: JSON.stringify({ sectorOrigen: sectorOrigen, sectorDestino: sectorDestino }),
+            contentType: "application/json",
+            dataType: "json",
+            async: false,
+            success: (respuesta) => {
+                console.log(respuesta.d);
+                let detalleTransferencias = respuesta.d;
+                if (detalleTransferencias != null && detalleTransferencias != '[]') {
+                    let dt = JSON.parse(detalleTransferencias);
+                    let cont = 0;
+                    let placeHolderSectores = '';
+                    dt.forEach(element => {
+                        cont++;
+                        let cantidadAConfirmar = `<input id="cantAproducir_${cont}" value="${element.cantidadConfirmada}"
+                                                     style="width: 100%; text-align: right;" 
+                                                     placeholder="Cantidad" 
+                                                     oninput="validarTextBox(this);" />`;
+                        placeHolderSectores += `
+                            <tr>
+                                <td>${element.sectorOrigen}</td>
+                                <td>${element.sectorDestino}</td>
+                                <td>${element.producto}</td>
+                                <td class="text-right">${element.cantidad}</td>
+                                <td class="text-right">${element.cantidadConfirmada}</td>
+                                <td class="text-right">${cantidadAConfirmar}</td>
+                            </tr>`;
+                    });
+                    document.getElementById('tableDetallePedidos').innerHTML = placeHolderSectores;
+                } else {
+                    document.getElementById('tableDetallePedidos').innerHTML = "";
+                }
+            },
+            error: (error) => {
+                console.log(JSON.stringify(error));
+            }
+        }); // Cierre del $.ajax()
+
+        $('#modalDetallePedidos').modal('show');
+    }
+    </script>
+    <script>
+        function verDetalleRemitoInternoPdf(idRemito) {
+            console.log("hola");
+            window.open("ImpresionRemitos.aspx?r=" + idRemito, "_blank");
+        }
+    </script>
+    <script>
+        function verDetalleRemitoInternoModal(idRemito) {
+            getItemsRemitosInternos(idRemito);
+            $('#modalDetalleRemitoInterno').modal('show');   
+        }
+    </script>
+    <script>
+        function getItemsRemitosInternos(idRemito) {
+            $.ajax({
+                method: "POST",
+                url: "Pre-Produccion.aspx/getItemsRemitosInternos",
+                data: JSON.stringify({ idRemito: idRemito }),
+                contentType: "application/json",
+                dataType: "json",
+                async: false,
+                success: (respuesta) => {
+                    console.log(respuesta.d);
+                    let detalleRemitoInternos = respuesta.d;
+                    if (detalleRemitoInternos != null && detalleRemitoInternos != '[]') {
+                        let dt = JSON.parse(detalleRemitoInternos);
+                        let placeHolderItemRemitosInternos = '';
+                        let cont = 0
+                        dt.forEach(element => {
+                        cont++
+                         let cantidadRecepcionada = `<input id="cantARecepcionar_${cont}" value="${element.cantidadRecepcionada}"
+                          style="width: 100%; text-align: right;" 
+                          placeholder="Cantidad" 
+                          oninput="validarTextBox(this);" />`;
+
+                            placeHolderItemRemitosInternos += `<tr>
+                                                               <td >${element.Producto}</td>
+                                                               <td class="text-right">${element.cantidadEnviada}</td>
+                                                               <td class="text-right">${cantidadRecepcionada}</td>
+                                                           </tr>`;
+                        });
+                        document.getElementById('tableDetalleRemitosInternos').innerHTML = placeHolderItemRemitosInternos;
+                    } else {
+                        document.getElementById('tableDetalleRemitosInternos').innerHTML = "";
+                    }
+                },
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                }
+            }); // Cierre del $.ajax()
+        }
+    </script>
+
+
+
+
+
 
 
 </asp:Content>

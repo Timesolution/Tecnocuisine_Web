@@ -8,30 +8,30 @@
             <div class="ibox float-e-margins">
 
                 <div class="ibox-content">
-               <div style="margin-left: 0px; margin-right: 0px;" class="row">
-                                                    <div class="col-md-10">
+                    <div style="margin-left: 0px; margin-right: 0px;" class="row">
+                        <div class="col-md-10">
 
-                                                        <div class="input-group m-b">
-                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                            <div class="input-group m-b">
+                                <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
 
 
-                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
+                                <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
 
-                                                        <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
-                                                    </div>
-                                                </div>
+                            <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                        </div>
+                    </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                         <ContentTemplate>
-                            <div class="table-responsive"  >
+                            <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                     <thead>
                                         <tr>
-                                            <th  style="width: 20%">#</th>
-                                            <th  style="width: 40%">Descripcion</th>
-                                            <th  style="width: 30%"></th>
+                                            <th style="width: 20%">#</th>
+                                            <th style="width: 40%">Descripcion</th>
+                                            <th style="width: 30%"></th>
                                         </tr>
                                     </thead>
                                     <tbody>

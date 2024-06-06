@@ -1,7 +1,11 @@
 ﻿using Gestion_Api.Entitys;
+using Gestion_Api.Modelo;
+using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -9,8 +13,10 @@ using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Tecnocuisine.Formularios.Administrador;
 using Tecnocuisine_API.Controladores;
 using Tecnocuisine_API.Entitys;
+using static Tecnocuisine.Formularios.Ventas.PedidosOrdenes;
 
 namespace Tecnocuisine.Formularios.Ventas
 {
@@ -25,121 +31,457 @@ namespace Tecnocuisine.Formularios.Ventas
         DataTable dt2;
         DataTable dtAuxiliar = new DataTable();
         int ultimoID = -1;
+        string sector = "";
+        string sectorValue = "";
+        public class RowClass
+        {
+            public string Id { get; set; }
+            public string sectorOrigen { get; set; }
+            public string sectorDestino { get; set; }
+            public string producto { get; set; }
+            public string cantidad { get; set; }
+            public string cantidadConfirmada { get; set; }
+            public string cantidadEnviada { get; set; }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            VerificarLogin();
             CargarSectoresProductivodDDL();
-            if (Request.QueryString["FechaD"] != null)
+            filtrarDatosTransferenciasBySectorOrigen();
+            if (!IsPostBack)
             {
-                this.FechaD = (Request.QueryString["FechaD"]).ToString();
-
-                this.FechaH = (Request.QueryString["FechaH"]).ToString();
-
-                this.idSectorProductivo = Convert.ToInt32(Request.QueryString["SP"]);
-
-            }
-            if (FechaD != "")
-            {
-                FiltrarIngredientesDeOrdenesDeProduccion(this.FechaD, this.FechaH, this.idSectorProductivo);
+                filtrarRemitosInternos();
             }
         }
 
-        public void FiltrarIngredientesDeOrdenesDeProduccion(string FechaD, string FechaH, int idSectorProductivo)
+        private void VerificarLogin()
         {
             try
             {
-                ControladorPreProduccion cPreProduccion = new ControladorPreProduccion();
-                //SectorProductivo sectorProductivo = new SectorProductivo(); 
-                this.FechaDesde.Value = this.FechaD;
-                this.FechaHasta.Value = this.FechaH;
-                this.ddlSectorSelecionado.Value = idSectorProductivo.ToString();
-
-                string FechaDesde = ConvertDateFormat(FechaD);
-                string FechaHasta = ConvertDateFormat(FechaH);
-
-                if (Request.QueryString["RP"] != null && Convert.ToInt32(Request.QueryString["RP"]) == 1)
+                if (Session["User"] == null)
                 {
-
-                    dt = cPreProduccion.GetAllIngredientesOrdenesProduccion(idSectorProductivo, FechaDesde, FechaHasta);
-                    DataTable dtCombined = dt.Clone();
-                    dtCombined.Merge(dt);
-
-                    // Ordena la DataTable combinada por la columna "Fecha" de mayor a menor
-                    dtCombined.DefaultView.Sort = "Fecha ASC";
-                    dtCombined = dtCombined.DefaultView.ToTable();
-                    CargarIngredientesFiltradosEnPH2(dtCombined);
+                    Response.Redirect("../../Usuario/Login.aspx");
                 }
-
-                if (Request.QueryString["E"] != null && Convert.ToInt32(Request.QueryString["E"]) == 1)
+                else
                 {
-                    dt = cPreProduccion.getAllIngredientesRecetasByFecha(FechaDesde, FechaHasta);
-                    DataTable dtCombined = dt.Clone();
-                    dtCombined.Merge(dt);
-
-
-                    //tengo que obtener el id de la ultima fila de la primera columna de la datatabla
-                    ultimoID = Convert.ToInt32(dt.Rows[dt.Rows.Count - 1][0]);
-
-                    // Ordena la DataTable combinada por la columna "Fecha" de mayor a menor
-                    if (dtCombined != null)
+                    if (this.verificarAcceso() != 1)
                     {
-                        foreach (DataRow dr in dtCombined.Rows)
-                        {
-                            //DataTable dtNivel1 = new DataTable();
-                            //dtNivel1.Rows.Add(dr);  
-                            //ObtenerProductoDeLasRecetas(dtNivel1, 2, Convert.ToInt32(dr["idFila"].ToString()), ultimoID);
-                            DataTable dtNivel2 = obtenerRecetasDeLasRecetas(dr["ProducoOreceta"].ToString(), Convert.ToDateTime(dr["fechaEntrega"].ToString()), Convert.ToInt32(dr["id"].ToString()), Convert.ToInt32(dr["idFila"].ToString()), ultimoID);
-                            if (dtNivel2 != null)
-                            {
-                                ultimoID = Convert.ToInt32(dtNivel2.Rows[dtNivel2.Rows.Count - 1][0]);
-                                ObtenerProductoDeLasRecetas(dtNivel2, 2, Convert.ToInt32(dr["idFila"].ToString()), ultimoID);
-                                foreach (DataRow drNivel2 in dtNivel2.Rows)
-                                {
-                                    DataTable dtNivel3 = obtenerRecetasDeLasRecetas(drNivel2["ProducoOreceta"].ToString(), Convert.ToDateTime(drNivel2["fechaEntrega"].ToString()), Convert.ToInt32(drNivel2["id"].ToString()), Convert.ToInt32(drNivel2["idFila"].ToString()), ultimoID);
-                                    if (dtNivel3 != null)
-                                    {
-                                        ultimoID = Convert.ToInt32(dtNivel3.Rows[dtNivel3.Rows.Count - 1][0]);
-                                        ObtenerProductoDeLasRecetas(dtNivel3, 3, Convert.ToInt32(drNivel2["idFila"].ToString()), ultimoID);
-                                        foreach (DataRow drNivel3 in dtNivel3.Rows)
-                                        {
-                                            //DataTable dtNivel4 = obtenerRecetasDeLasRecetas(dr["ProducoOreceta"].ToString(), Convert.ToDateTime(dr["fechaEntrega"].ToString()), Convert.ToInt32(dr["id"].ToString()), Convert.ToInt32(drNivel3["idFila"].ToString()));
-                                            //ObtenerProductoDeLasRecetas(dtNivel4, 4, );
-                                            //foreach (DataRow drNivel4 in dtNivel4.Rows)
-                                            //{
-                                            //    DataTable dtNivel5 = obtenerRecetasDeLasRecetas(dr["ProducoOreceta"].ToString(), Convert.ToDateTime(dr["fechaEntrega"].ToString()), Convert.ToInt32(dr["id"].ToString()), Convert.ToInt32(drNivel4["idFila"].ToString()));
-                                            //    ObtenerProductoDeLasRecetas(dtNivel5, 5);
-                                            //    foreach (DataRow drNivel5 in dtNivel5.Rows)
-                                            //    {
-                                            //        DataTable dtNivel6 = obtenerRecetasDeLasRecetas(dr["ProducoOreceta"].ToString(), Convert.ToDateTime(dr["fechaEntrega"].ToString()), Convert.ToInt32(dr["id"].ToString()), Convert.ToInt32(drNivel5["idFila"].ToString()));
-                                            //        ObtenerProductoDeLasRecetas(dtNivel6, 6);
-
-                                            //        foreach (DataRow drNivel6 in dtNivel6.Rows)
-                                            //        {
-                                            //            DataTable dtNivel7 = obtenerRecetasDeLasRecetas(dr["ProducoOreceta"].ToString(), Convert.ToDateTime(dr["fechaEntrega"].ToString()), Convert.ToInt32(dr["id"].ToString()), Convert.ToInt32(drNivel6["idFila"].ToString()));
-                                            //        }
-                                            //    }
-                                            //}
-                                        }
-
-                                    }
-                                }
-                            }
-                        }
+                        Response.Redirect("/Default.aspx?m=1", false);
                     }
-
-
-                    dtCombined.Merge(dtAuxiliar);
-                    dtCombined.DefaultView.Sort = "Fecha ASC";
-                    dtCombined = dtCombined.DefaultView.ToTable();
-
-                    Session["insumosYrecetas"] = dtCombined;
-
-                    CargarIngredientesFiltradosEnvioEnPH2(dtCombined);
-
                 }
+            }
+            catch
+            {
+                Response.Redirect("../../Account/Login.aspx");
+            }
+        }
+
+        private int verificarAcceso()
+        {
+            try
+            {
+                int valor = 1;
+                string permisos = Session["Login_Permisos"] as string;
+                string[] listPermisos = permisos.Split(';');
+
+                string permiso = listPermisos.Where(x => x == "215").FirstOrDefault();
+
+                if (!string.IsNullOrEmpty(permiso))
+                    valor = 1;
+
+                return valor;
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+
+        //Esta funcion filtra los remitos internos en la pestaña de recepcion
+        public void filtrarRemitosInternos()
+        {
+            if (Request.QueryString["O"] != null)
+            {
+                sector = Request.QueryString["O"].ToString();
+                ControladorRemitosInternos cRemitosInternos = new ControladorRemitosInternos();
+                var remitosInternos = cRemitosInternos.getRemitosInternosBySectorDestino(sector);
+
+
+                //Session["remitosInternosRecepcion"] = remitosInternos;
+
+                foreach (var remito in remitosInternos)
+                {
+
+                    int cont = 0;
+
+                    cont++;
+                    TableRow tr = new TableRow();
+                    tr.ID = cont.ToString();
+
+                    //Celdas
+                    TableCell celSectorDestino = new TableCell();
+                    celSectorDestino.Text = remito.sectorDestino;
+                    celSectorDestino.VerticalAlign = VerticalAlign.Middle;
+                    celSectorDestino.HorizontalAlign = HorizontalAlign.Left;
+                    celSectorDestino.Attributes.Add("style", "padding-bottom: 1px !important;");
+                    tr.Cells.Add(celSectorDestino);
+
+
+                    TableCell celNumero = new TableCell();
+                    celNumero.Text = remito.numero;
+                    celNumero.VerticalAlign = VerticalAlign.Middle;
+                    celNumero.HorizontalAlign = HorizontalAlign.Left;
+                    celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
+                    tr.Cells.Add(celNumero);
+
+
+
+                    TableCell celFecha = new TableCell();
+                    celFecha.Text = remito.fecha.ToString();
+                    celFecha.VerticalAlign = VerticalAlign.Middle;
+                    celFecha.HorizontalAlign = HorizontalAlign.Left;
+                    celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
+                    tr.Cells.Add(celFecha);
+
+
+
+                    TableCell celAccion = new TableCell();
+                    LinkButton btnDetalle = new LinkButton();
+                    btnDetalle.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
+                    btnDetalle.CssClass = "btn btn-xs";
+                    btnDetalle.Style.Add("background-color", "transparent");
+                    btnDetalle.Attributes.Add("data-toggle", "modal");
+                    btnDetalle.Attributes.Add("href", "#modalConfirmacion2");
+                    btnDetalle.Text = "<span title='Ver pedidos'><i class='fa fa-search' style='color: black;'></i></span>";
+                    btnDetalle.Attributes.Add("onclick", "verDetalleRemitoInternoPdf('" + remito.id + "');");
+                    celAccion.Controls.Add(btnDetalle);
+                    tr.Cells.Add(celAccion);
+
+
+
+
+                    LinkButton btnDetalleRemitoInterno = new LinkButton();
+                    btnDetalleRemitoInterno.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
+                    btnDetalleRemitoInterno.CssClass = "btn btn-xs";
+                    btnDetalleRemitoInterno.Style.Add("background-color", "transparent");
+                    btnDetalleRemitoInterno.Attributes.Add("data-toggle", "modal");
+                    btnDetalleRemitoInterno.Attributes.Add("href", "#modalConfirmacion2");
+                    btnDetalleRemitoInterno.Text = "<span title='Ver pedidos'><i class='fa fa-exchange' style='color: black;'></i></span>";
+                    btnDetalleRemitoInterno.Attributes.Add("onclick", "verDetalleRemitoInternoModal('" + remito.id + "');");
+                    celAccion.Controls.Add(btnDetalleRemitoInterno);
+
+                    phRecepcion.Controls.Add(tr);
+                }
+
+
 
             }
-            catch (Exception ex) { }
+
+        }
+
+        public void filtrarDatosTransferenciasBySectorOrigen()
+        {
+            if (Request.QueryString["O"] != null)
+            {
+                sector = Request.QueryString["O"].ToString();
+                sectorValue = Request.QueryString["OV"].ToString();
+                cargarHiddenFields();
+                //DataTable datosTransferencias = obtenerDatosTranferencias();
+                //Dictionary<string, DataTable> datosSeparados = separarDatosTransferenciaPorSectorDestino(datosTransferencias);
+                //controladorDatosTransferencias cDatosTransferencias = new controladorDatosTransferencias();
+                //DataTable datosTransferencias = cDatosTransferencias.getDatosTransferenciaGroupBySectorDestinoBySectorOrigen(sector);
+
+
+                controladorDatosTransferencias cTransferencias = new controladorDatosTransferencias();
+                DataTable dt = cTransferencias.getDatosTransferenciaGroupBySectorDestino(sector);
+
+                cargarDatosTransferenciasEnPh(dt);
+            }
+
+        }
+
+
+        public Dictionary<string, DataTable> separarDatosTransferenciaPorSectorDestino(DataTable datosTransferencias)
+        {
+
+            Dictionary<string, DataTable> datosSeparados = new Dictionary<string, DataTable>();
+
+            foreach (DataRow row in datosTransferencias.Rows)
+            {
+                string sectorDestino = row["sectorDestino"].ToString();
+
+                if (!datosSeparados.ContainsKey(sectorDestino))
+                {
+                    DataTable nuevaTabla = datosTransferencias.Clone();
+                    datosSeparados.Add(sectorDestino, nuevaTabla);
+                }
+
+                datosSeparados[sectorDestino].ImportRow(row);
+            }
+
+            return datosSeparados;
+
+        }
+
+        public void cargarHiddenFields()
+        {
+            try
+            {
+                //bool itemSeleccionado = false; // Variable para controlar si se ha seleccionado un elemento
+
+                //// Recorre cada elemento del DropDownList
+                //foreach (ListItem item in ddlSector.Items)
+                //{
+                //    // Comprueba si el texto del elemento coincide con el valor de la variable sector
+                //    if (item.Text == this.sector)
+                //    {
+                //        // Si hay coincidencia, establece el elemento como seleccionado
+                //        item.Selected = true;
+                //        itemSeleccionado = true; // Marca que se ha seleccionado un elemento
+                //        break; // Sal del bucle una vez que se haya encontrado la coincidencia
+                //    }
+                //}
+
+                //// Si no se ha seleccionado ningún elemento y el DropDownList tiene al menos un elemento, selecciona el primero por defecto
+                //if (!itemSeleccionado && ddlSector.Items.Count > 0)
+                //{
+                //    ddlSector.SelectedIndex = -1;
+                //}
+
+                ddlSectorSelecionadoValue.Value = sectorValue;
+                ddlSector.SelectedValue = sectorValue;
+
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores
+            }
+        }
+
+
+        public void cargarDatosTransferenciasEnPh(Dictionary<string, DataTable> datosSeparados)
+        {
+            int cont = 0;
+            foreach (var kvp in datosSeparados)
+            {
+                cont++;
+                TableRow tr = new TableRow();
+                tr.ID = cont.ToString();
+
+                ////Celdas
+                TableCell celFecha = new TableCell();
+                celFecha.Text = kvp.Key.ToString();
+                celFecha.VerticalAlign = VerticalAlign.Middle;
+                celFecha.HorizontalAlign = HorizontalAlign.Left;
+                celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celFecha);
+
+
+                //TableCell celProducto = new TableCell();
+                //celProducto.Text = datos.productoOrigen.ToString();
+                //celProducto.VerticalAlign = VerticalAlign.Middle;
+                //celProducto.HorizontalAlign = HorizontalAlign.Left;
+                //celProducto.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //tr.Cells.Add(celProducto);
+
+
+                //TableCell celCantidadConfirmada = new TableCell();
+                //celCantidadConfirmada.Text = datos.CantidadAConfirmar.ToString();
+                //celCantidadConfirmada.VerticalAlign = VerticalAlign.Middle;
+                //celCantidadConfirmada.HorizontalAlign = HorizontalAlign.Left;
+                //celCantidadConfirmada.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //tr.Cells.Add(celCantidadConfirmada);
+
+
+
+                //TableCell celCantidadEnviada = new TableCell();
+                //TextBox cantidadAConfirmarTextBox = new TextBox();
+                //cantidadAConfirmarTextBox.Style["width"] = "100%";
+                //cantidadAConfirmarTextBox.Style["text-align"] = "right";
+                //cantidadAConfirmarTextBox.Attributes["placeholder"] = "Cantidad";
+                //if (datos.cantidadEnviada == null)
+                //{
+                //    cantidadAConfirmarTextBox.Attributes["value"] = datos.CantidadAConfirmar.ToString();
+
+                //}
+                //else
+                //{
+                //    cantidadAConfirmarTextBox.Attributes["value"] = datos.cantidadEnviada.ToString();
+
+                //}
+                //cantidadAConfirmarTextBox.Attributes["oninput"] = "validarTextBox(this);";
+                //celCantidadEnviada.Controls.Add(cantidadAConfirmarTextBox);
+                //celCantidadEnviada.VerticalAlign = VerticalAlign.Middle;
+                //celCantidadEnviada.HorizontalAlign = HorizontalAlign.Left;
+                //celCantidadEnviada.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //tr.Cells.Add(celCantidadEnviada);
+
+
+                phEnvio.Controls.Add(tr);
+            }
+        }
+
+
+        public void cargarDatosTransferenciasEnPh(DataTable datosTransferencias)
+        {
+            int cont = 0;
+            foreach (DataRow dr in datosTransferencias.Rows)
+            {
+                cont++;
+                TableRow tr = new TableRow();
+                tr.ID = cont.ToString();
+
+                //Celdas
+                TableCell celSectorOrigen = new TableCell();
+                celSectorOrigen.Text = dr["sectorOrigen"].ToString();
+                celSectorOrigen.VerticalAlign = VerticalAlign.Middle;
+                celSectorOrigen.HorizontalAlign = HorizontalAlign.Left;
+                celSectorOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celSectorOrigen);
+
+
+                TableCell celSectorDestino = new TableCell();
+                celSectorDestino.Text = dr["sectorDestino"].ToString();
+                celSectorDestino.VerticalAlign = VerticalAlign.Middle;
+                celSectorDestino.HorizontalAlign = HorizontalAlign.Left;
+                celSectorDestino.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celSectorDestino);
+
+
+                //TableCell celProducto = new TableCell();
+                //celProducto.Text = dr["cantidadConfirmada"].ToString();
+                //celProducto.VerticalAlign = VerticalAlign.Middle;
+                //celProducto.HorizontalAlign = HorizontalAlign.Left;
+                //celProducto.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //tr.Cells.Add(celProducto);
+
+
+                //TableCell celCantidadConfirmada = new TableCell();
+                //celCantidadConfirmada.Text = dr["cantidadEnviada"].ToString();
+                //celCantidadConfirmada.VerticalAlign = VerticalAlign.Middle;
+                //celCantidadConfirmada.HorizontalAlign = HorizontalAlign.Left;
+                //celCantidadConfirmada.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //tr.Cells.Add(celCantidadConfirmada);
+
+
+                //if (dr["cantidadEnviada"] == null || dr["cantidadEnviada"].ToString() == "")
+                //{
+
+                //    TableCell celCantidadEnviada = new TableCell();
+                //    celCantidadEnviada.Text = dr["cantidad"].ToString();
+                //    celCantidadEnviada.VerticalAlign = VerticalAlign.Middle;
+                //    celCantidadEnviada.HorizontalAlign = HorizontalAlign.Left;
+                //    celCantidadEnviada.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //    tr.Cells.Add(celCantidadEnviada);
+                //}
+                //else
+                //{
+                //    TableCell celCantidadEnviada = new TableCell();
+                //    celCantidadEnviada.Text = dr["cantidadEnviada"].ToString();
+                //    celCantidadEnviada.VerticalAlign = VerticalAlign.Middle;
+                //    celCantidadEnviada.HorizontalAlign = HorizontalAlign.Left;
+                //    celCantidadEnviada.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //    tr.Cells.Add(celCantidadEnviada);
+                //}
+
+
+
+                //TableCell celCantidadEnviada = new TableCell();
+                //TextBox cantidadAConfirmarTextBox = new TextBox();
+                ////cantidadAConfirmarTextBox.ID = "cantAproducir_" + cont;
+                //cantidadAConfirmarTextBox.Style["width"] = "100%";
+                //cantidadAConfirmarTextBox.Style["text-align"] = "right";
+                //cantidadAConfirmarTextBox.Attributes["placeholder"] = "Cantidad";
+                //if (dr["cantidadEnviada"] == null || dr["cantidadEnviada"].ToString() == "")
+                //{
+                //    cantidadAConfirmarTextBox.Attributes["value"] = dr["cantidad"].ToString();
+
+                //}
+                //else
+                //{
+                //    cantidadAConfirmarTextBox.Attributes["value"] = dr["cantidadEnviada"].ToString(); ;
+
+                //}
+                //cantidadAConfirmarTextBox.Attributes["oninput"] = "validarTextBox(this);";
+                //celCantidadEnviada.Controls.Add(cantidadAConfirmarTextBox);
+                //celCantidadEnviada.VerticalAlign = VerticalAlign.Middle;
+                //celCantidadEnviada.HorizontalAlign = HorizontalAlign.Left;
+                //celCantidadEnviada.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //tr.Cells.Add(celCantidadEnviada);
+
+
+
+                //TableCell celCantidadEnviada = new TableCell();
+                //TextBox cantidadAConfirmarTextBox = new TextBox();
+                ////cantidadAConfirmarTextBox.ID = "cantAproducir_" + cont;
+                //cantidadAConfirmarTextBox.Style["width"] = "100%";
+                //cantidadAConfirmarTextBox.Style["text-align"] = "right";
+                //cantidadAConfirmarTextBox.Attributes["placeholder"] = "Cantidad";
+                //if (datos.cantidadEnviada == null)
+                //{
+                //    cantidadAConfirmarTextBox.Attributes["value"] = datos.CantidadAConfirmar.ToString();
+
+                //}
+                //else
+                //{
+                //    cantidadAConfirmarTextBox.Attributes["value"] = datos.cantidadEnviada.ToString();
+
+                //}
+                //cantidadAConfirmarTextBox.Attributes["oninput"] = "validarTextBox(this);";
+                //celCantidadEnviada.Controls.Add(cantidadAConfirmarTextBox);
+                //celCantidadEnviada.VerticalAlign = VerticalAlign.Middle;
+                //celCantidadEnviada.HorizontalAlign = HorizontalAlign.Left;
+                //celCantidadEnviada.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //tr.Cells.Add(celCantidadEnviada);
+
+
+
+                //TableCell celEstadoTransferencia = new TableCell();
+                //celEstadoTransferencia.Text = item.estadoTransferencias.descripcion;
+                //celEstadoTransferencia.VerticalAlign = VerticalAlign.Middle;
+                //celEstadoTransferencia.HorizontalAlign = HorizontalAlign.Left;
+                //celEstadoTransferencia.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //tr.Cells.Add(celEstadoTransferencia);
+
+
+                TableCell celAccion = new TableCell();
+                LinkButton btnDetalle = new LinkButton();
+                btnDetalle.ID = "btnVerPedidos_" + cont.ToString();
+                btnDetalle.CssClass = "btn btn-xs";
+                btnDetalle.Style.Add("background-color", "transparent");
+                btnDetalle.Attributes.Add("data-toggle", "modal");
+                btnDetalle.Attributes.Add("href", "#modalConfirmacion2");
+                btnDetalle.Text = "<span title='Ver pedidos'><i class='fa fa-exchange' style='color: black;'></i></span>";
+                btnDetalle.Attributes.Add("onclick", "getDatosTransferenciaBySectorDestino('" + dr["sectorOrigen"].ToString() + "', '" + dr["sectorDestino"].ToString() + "');");
+                celAccion.Controls.Add(btnDetalle);
+
+
+                tr.Cells.Add(celAccion);
+
+                //transferencias.Value += item.fecha.ToString() + "," +
+                //item.origen.ToString() + "," + item.destino.ToString() + "," +
+                //item.orden.ToString() + "," + item.estadoTransferencias.descripcion + ";";
+
+                phEnvio.Controls.Add(tr);
+            }
+        }
+
+
+        public List<Tecnocuisine_API.Entitys.PedidosInternos> obtenerDatosTranferencias(string sector)
+        {
+            Tecnocuisine_API.Entitys.Transferencia transferencia = new Tecnocuisine_API.Entitys.Transferencia();
+            ControladorTransferencia cTransferencia = new ControladorTransferencia();
+            var datosTransferencias = cTransferencia.obtenerDatosTrasferenciaBySectorOrigen(sector);
+            return datosTransferencias;
+        }
+
+
+        public DataTable obtenerDatosTranferencias()
+        {
+            Tecnocuisine_API.Entitys.Transferencia transferencia = new Tecnocuisine_API.Entitys.Transferencia();
+            ControladorTransferencia cTransferencia = new ControladorTransferencia();
+            var datosTransferencias = cTransferencia.getTransferenciaDatos(sector);
+            return datosTransferencias;
         }
 
 
@@ -210,315 +552,6 @@ namespace Tecnocuisine.Formularios.Ventas
         }
 
 
-        public void CargarIngredientesFiltradosEnPH2(DataTable dt)
-        {
-            try
-            {
-
-                int Cont = 0; //Esta variable contadora la uso para los ids de las filas
-                ControladorSectorProductivo cSectorProductivo = new ControladorSectorProductivo();
-                var sectorProductivo = cSectorProductivo.ObtenerSectorProductivoId(idSectorProductivo);
-
-
-
-
-                foreach (DataRow dr in dt.Rows)
-                {
-                    if (dr["sectorProductivo"].ToString().ToUpper() == sectorProductivo.descripcion.ToUpper())
-                    {
-                        Cont++;
-                        //fila
-                        TableRow tr = new TableRow();
-                        tr.ID = Cont.ToString();
-
-
-                        TableCell celFecha = new TableCell();
-                        celFecha.Text = Convert.ToDateTime(dr["Fecha"]).ToString("dd/MM/yyyy");
-                        celFecha.VerticalAlign = VerticalAlign.Middle;
-                        celFecha.HorizontalAlign = HorizontalAlign.Left;
-                        celFecha.Width = Unit.Percentage(40);
-                        celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
-                        tr.Cells.Add(celFecha);
-
-
-                        TableCell celReceta = new TableCell();
-                        celReceta.Text = dr["descripcion"].ToString();
-                        celReceta.VerticalAlign = VerticalAlign.Middle;
-                        celReceta.HorizontalAlign = HorizontalAlign.Left;
-                        celReceta.Width = Unit.Percentage(40);
-                        celReceta.Attributes.Add("style", "padding-bottom: 1px !important;");
-                        tr.Cells.Add(celReceta);
-
-
-                        TableCell celCantidad = new TableCell();
-                        celCantidad.Text = dr["cantidad"].ToString();
-                        celCantidad.VerticalAlign = VerticalAlign.Middle;
-                        celCantidad.HorizontalAlign = HorizontalAlign.Right;
-                        celCantidad.Width = Unit.Percentage(40);
-                        celCantidad.Attributes.Add("style", "padding-bottom: 1px !important;");
-                        tr.Cells.Add(celCantidad);
-
-
-                        TableCell celEstado = new TableCell();
-                        celEstado.Text = "Pendiente";
-                        celEstado.VerticalAlign = VerticalAlign.Middle;
-                        celEstado.HorizontalAlign = HorizontalAlign.Left;
-                        celEstado.Width = Unit.Percentage(40);
-                        celEstado.Attributes.Add("style", "padding-bottom: 1px !important;");
-                        tr.Cells.Add(celEstado);
-
-
-                        TableCell celSectorProductivo = new TableCell();
-                        celSectorProductivo.Text = dr["sectorProductivo"].ToString();
-                        celSectorProductivo.VerticalAlign = VerticalAlign.Middle;
-                        celSectorProductivo.HorizontalAlign = HorizontalAlign.Left;
-                        celSectorProductivo.Width = Unit.Percentage(40);
-                        celSectorProductivo.Attributes.Add("style", "display: none; padding-bottom: 1px !important;");
-                        tr.Cells.Add(celSectorProductivo);
-
-
-
-                        TableCell celidReceta = new TableCell();
-                        celidReceta.Text = dr["id"].ToString();
-                        celidReceta.VerticalAlign = VerticalAlign.Middle;
-                        celidReceta.HorizontalAlign = HorizontalAlign.Left;
-                        celidReceta.Width = Unit.Percentage(40);
-                        celidReceta.Attributes.Add("style", "display: none; padding-bottom: 1px !important;");
-                        tr.Cells.Add(celidReceta);
-
-
-                        TableCell celAccion = new TableCell();
-                        Literal l3 = new Literal();
-                        l3.Text = "&nbsp";
-                        celAccion.Controls.Add(l3);
-
-                        if (dr["ProducoOreceta"].ToString() == "Receta")
-                        {
-                            HyperLink lnkDetalles = new HyperLink();
-                            lnkDetalles.CssClass = "btn btn-xs";
-                            lnkDetalles.Style.Add("background-color", "transparent");
-                            lnkDetalles.Attributes.Add("data-toggle", "tooltip");
-                            lnkDetalles.Attributes.Add("title", "Producir");
-                            lnkDetalles.ID = "btn_Producir_" + Cont + "_";
-                            lnkDetalles.Text = "<span><i style='color:black;' class='fa fa-cutlery'></i></span>";
-                            lnkDetalles.NavigateUrl = "GenerarProduccion.aspx?PPro=2&PR=" + dr["descripcion"].ToString() + "&C=" + dr["cantidad"].ToString() + "&i=" + dr["id"].ToString();
-                            lnkDetalles.Target = "_blank"; // Esta línea abre el enlace en una nueva pestaña
-                            celAccion.Controls.Add(lnkDetalles);
-                        }
-
-                        HyperLink btnStock = new HyperLink();
-                        btnStock.CssClass = "btn btn-xs";
-                        btnStock.Style.Add("background-color", "transparent");
-                        btnStock.Attributes.Add("data-toggle", "tooltip");
-                        btnStock.Attributes.Add("title", "Ver stock");
-                        btnStock.ID = "lnk_Receta" + Cont + "_";
-                        btnStock.Text = "<span><i style='color:black;' class='fa fa-list'></i></span>";
-                        btnStock.NavigateUrl = "/Formularios/Maestros/StockDetallado.aspx?t=1&i=" + dr["id"].ToString();
-                        btnStock.Target = "_blank"; // Esta línea abre el enlace en una nueva pestaña
-                        celAccion.Controls.Add(btnStock);
-
-
-                        if (dr["ProducoOreceta"].ToString() == "Receta")
-                        {
-                            LinkButton btnIngrediente = new LinkButton();
-                            btnIngrediente.ID = "btnVerStock_" + Cont;
-                            btnIngrediente.CssClass = "btn  btn-xs";
-                            btnIngrediente.Text = $"<a data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ver ingredientes\" onclick=\"verStock('{dr["id"].ToString()}', {Convert.ToInt32(dr["cantidad"])})\"><i class='fa fa-arrows-h'></i></a>";
-                            btnIngrediente.Style.Add("background-color", "transparent");
-                            // btnEliminar.Style.Add("background-color", "transparent");
-                            celAccion.Controls.Add(btnIngrediente);
-                        }
-
-                        Literal l4 = new Literal();
-                        l4.Text = "&nbsp";
-                        celAccion.Controls.Add(l4);
-
-
-
-                        if (dr["ProducoOreceta"].ToString() != "Producto")
-                        {
-                            CheckBox chkSeleccionar = new CheckBox();
-                            chkSeleccionar.ID = "chkSeleccionar_" + Cont.ToString();
-                            chkSeleccionar.Attributes.Add("onchange", "javascript:return verIngredientesReceta('ContentPlaceHolder1_" + chkSeleccionar.ID + "', '" + dr["id"].ToString() + "', '" + dr["cantidad"].ToString() + "', '" + dr["descripcion"].ToString() + "', '" + dr["sectorProductivo"].ToString() + "');");
-                            chkSeleccionar.Style.Add("margin-left", "10px"); // Puedes ajustar el valor según tus necesidades
-                            celAccion.Controls.Add(chkSeleccionar);
-                        }
-
-                        ControladorReceta cReceta = new ControladorReceta();
-
-                        tr.Cells.Add(celAccion);
-                        phIngredientesFiltrados.Controls.Add(tr);
-
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-
-
-            }
-        }
-
-
-        public void CargarIngredientesFiltradosEnvioEnPH2(DataTable dt)
-        {
-            try
-            {
-
-                int Cont = 0; //Esta variable contadora la uso para los ids de las filas
-                ControladorSectorProductivo cSectorProductivo = new ControladorSectorProductivo();
-                var sectorProductivo = cSectorProductivo.ObtenerSectorProductivoId(idSectorProductivo);
-
-                DataTable dtSum = new DataTable();
-                var resultados = from DataRow dr in dt.Rows
-                                 group dr by new
-                                 {
-                                     id = Convert.ToInt32(dr["id"]),
-                                     Fecha = Convert.ToDateTime(dr["Fecha"]),
-                                     descripcion = dr["descripcion"].ToString(),
-                                     sectorProductivo = dr["sectorProductivo"].ToString()
-                                 } into g
-                                 select new
-                                 {
-                                     id = g.Key.id,
-                                     Fecha = g.Key.Fecha,
-                                     descripcion = g.Key.descripcion,
-                                     sectorProductivo = g.Key.sectorProductivo,
-                                     CantidadTotal = g.Sum(row => Convert.ToDecimal(row["Cantidad"])),
-                                     IdsConcatenados = string.Join(",", g.Select(row => row["idPadre"].ToString()))
-                                 };
-
-                foreach (var resultado in resultados)
-                {
-                    // Puedes hacer lo que necesites con cada resultado, como agregarlo a un nuevo DataTable
-                    // o realizar otras operaciones según tus necesidades.
-
-                    // Por ejemplo, agregar el resultado a un nuevo DataTable llamado dtSum:
-                    if (resultado.sectorProductivo.ToString().ToUpper() == sectorProductivo.descripcion.ToUpper())
-                    {
-
-                        Cont++;
-                        //fila
-                        TableRow tr = new TableRow();
-                        tr.ID = Cont.ToString();
-
-
-                        TableCell celFecha = new TableCell();
-                        celFecha.Text = Convert.ToDateTime(resultado.Fecha).ToString("dd/MM/yyyy");
-                        celFecha.VerticalAlign = VerticalAlign.Middle;
-                        celFecha.HorizontalAlign = HorizontalAlign.Left;
-                        celFecha.Width = Unit.Percentage(40);
-                        celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
-                        tr.Cells.Add(celFecha);
-
-
-
-                        TableCell celReceta = new TableCell();
-                        celReceta.Text = resultado.descripcion.ToString();
-                        celReceta.VerticalAlign = VerticalAlign.Middle;
-                        celReceta.HorizontalAlign = HorizontalAlign.Left;
-                        celReceta.Width = Unit.Percentage(40);
-                        celReceta.Attributes.Add("style", "padding-bottom: 1px !important;");
-                        tr.Cells.Add(celReceta);
-
-
-                        TableCell celCantidad = new TableCell();
-                        celCantidad.Text = resultado.CantidadTotal.ToString();
-                        celCantidad.VerticalAlign = VerticalAlign.Middle;
-                        celCantidad.HorizontalAlign = HorizontalAlign.Right;
-                        celCantidad.Width = Unit.Percentage(40);
-                        celCantidad.Attributes.Add("style", "padding-bottom: 1px !important;");
-                        tr.Cells.Add(celCantidad);
-
-
-                        TableCell celEstado = new TableCell();
-                        celEstado.Text = "Pendiente";
-                        celEstado.VerticalAlign = VerticalAlign.Middle;
-                        celEstado.HorizontalAlign = HorizontalAlign.Left;
-                        celEstado.Width = Unit.Percentage(40);
-                        celEstado.Attributes.Add("style", "padding-bottom: 1px !important;");
-                        tr.Cells.Add(celEstado);
-
-
-
-                        TableCell celAccion = new TableCell();
-                        Literal l3 = new Literal();
-                        l3.Text = "&nbsp";
-                        celAccion.Controls.Add(l3);
-
-
-                        LinkButton btnIngrediente = new LinkButton();
-                        btnIngrediente.ID = "btnVerEnvio" + Cont;
-                        btnIngrediente.CssClass = "btn  btn-xs";
-                        btnIngrediente.Text = $"<a data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ver envio\" onclick=\"verEnvio('{resultado.IdsConcatenados}')\"><i class='fa fa-arrows-h'></i></a>";
-                        btnIngrediente.Style.Add("background-color", "transparent");
-                        // btnEliminar.Style.Add("background-color", "transparent");
-                        celAccion.Controls.Add(btnIngrediente);
-
-
-                        //HyperLink lnkDetalles = new HyperLink();
-                        //lnkDetalles.CssClass = "btn btn-xs";
-                        //lnkDetalles.Style.Add("background-color", "transparent");
-                        //lnkDetalles.Attributes.Add("data-toggle", "tooltip");
-                        //lnkDetalles.Attributes.Add("title", "Producir");
-                        //lnkDetalles.ID = "btn_Producir_" + Cont + "_";
-                        //lnkDetalles.Text = "<span><i style='color:black;' class='fa fa-cutlery'></i></span>";
-                        //lnkDetalles.NavigateUrl = "GenerarProduccion.aspx?PPro=2&PR=" + dr["descripcion"].ToString() + "&C=" + dr["cantidad"].ToString() + "&i=" + dr["id"].ToString();
-                        //lnkDetalles.Target = "_blank"; // Esta línea abre el enlace en una nueva pestaña
-                        //celAccion.Controls.Add(lnkDetalles);
-
-
-                        //HyperLink btnStock = new HyperLink();
-                        //btnStock.CssClass = "btn btn-xs";
-                        //btnStock.Style.Add("background-color", "transparent");
-                        //btnStock.Attributes.Add("data-toggle", "tooltip");
-                        //btnStock.Attributes.Add("title", "Ver stock");
-                        //btnStock.ID = "lnk_Receta" + Cont + "_";
-                        //btnStock.Text = "<span><i style='color:black;' class='fa fa-list'></i></span>";
-                        //btnStock.NavigateUrl = "/Formularios/Maestros/StockDetallado.aspx?t=1&i=" + dr["id"].ToString();
-                        //btnStock.Target = "_blank"; // Esta línea abre el enlace en una nueva pestaña
-                        //celAccion.Controls.Add(btnStock);
-
-
-
-                        //LinkButton btnIngrediente = new LinkButton();
-                        //btnIngrediente.ID = "btnVerStock_" + Cont;
-                        //btnIngrediente.CssClass = "btn  btn-xs";
-                        //btnIngrediente.Text = $"<a data-toggle=\"tooltip\" data-placement=\"top\" title=\"Ver ingredientes\" onclick=\"verStock('{dr["id"].ToString()}', {Convert.ToInt32(dr["cantidad"])})\"><i class='fa fa-arrows-h'></i></a>";
-                        //btnIngrediente.Style.Add("background-color", "transparent");
-                        //// btnEliminar.Style.Add("background-color", "transparent");
-                        //celAccion.Controls.Add(btnIngrediente);
-
-
-                        Literal l4 = new Literal();
-                        l4.Text = "&nbsp";
-                        celAccion.Controls.Add(l4);
-
-
-
-                        CheckBox chkSeleccionar = new CheckBox();
-                        chkSeleccionar.ID = "chkSeleccionar_" + Cont.ToString();
-                        string cantidad = resultado.CantidadTotal.ToString();
-                        chkSeleccionar.Attributes.Add("onchange", "javascript:return cargarIngredienteEnvio('" + resultado.id + "','" + resultado.descripcion + "','" + cantidad.Replace(",", ".") + "','" + "ContentPlaceHolder1_" + chkSeleccionar.ID + "');");
-                        chkSeleccionar.Style.Add("margin-left", "10px"); // Puedes ajustar el valor según tus necesidades
-                        celAccion.Controls.Add(chkSeleccionar);
-
-
-
-                        tr.Cells.Add(celAccion);
-                        phIngredientesFiltrados.Controls.Add(tr);
-                    }
-
-                }
-
-
-            }
-            catch (Exception ex)
-            {
-
-
-            }
-        }
 
         private string ConvertDateFormat(string fecha)
         {
@@ -1020,6 +1053,93 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
 
+
+
+        [WebMethod]
+        public static string getDatosTransferenciaBySectorDestino(string sectorOrigen, string sectorDestino)
+        {
+            try
+            {
+                controladorDatosTransferencias cTransferencias = new controladorDatosTransferencias();
+                controladorsumaDatosTransferencia csumaDatosTransferencia = new controladorsumaDatosTransferencia();
+                DataTable dt = cTransferencias.getDatosTransferenciaBySectorDestino(sectorOrigen, sectorDestino);
+                DataTable dt2 = csumaDatosTransferencia.getDatosTransferencias(sectorDestino);
+
+                //HttpContext.Current.Session["datosAEnviar"] = dt2;
+
+
+                string datosTransferencia = "[";
+                string cantidad = "";
+                string cantidadConfirmada = "";
+                foreach (DataRow dr in dt2.Rows)
+                {
+                    cantidad = dr["cantidad"].ToString().Replace(",", ".");
+                    cantidadConfirmada = dr["cantidadConfirmada"].ToString().Replace(",", ".");
+                    datosTransferencia += "{" +
+                        "\"sectorOrigen\":\"" + dr["sectorOrigen"].ToString() + "\"," +
+                        "\"sectorDestino\":\"" + dr["sectorDestino"].ToString() + "\"," +
+                        "\"producto\":\"" + dr["producto"].ToString() + "\"," +
+                        "\"cantidad\":\"" + cantidad + "\"," +
+                        "\"cantidadConfirmada\":\"" + cantidadConfirmada + "\"" +
+                        "},";
+                }
+
+                // Elimina la última coma y cierra el array
+                if (dt2.Rows.Count > 0)
+                {
+                    datosTransferencia = datosTransferencia.Remove(datosTransferencia.Length - 1);
+                }
+                datosTransferencia += "]";
+
+                if (dt2.Rows.Count == 0)
+                {
+                    datosTransferencia = "[]";
+                }
+
+                return datosTransferencia;
+            }
+            catch (Exception ex)
+            {
+                return "[]";
+            }
+        }
+
+
+        //[WebMethod]
+        //public static int guardarDatosTransferencia(string idsPedidos, string cantidadesPedidos)
+        //{
+        //    try
+        //    {
+
+        //      //  int id = Convert.ToInt32(idTransferencia);
+        //        ControladorTransferencia cTransferencia = new ControladorTransferencia();
+        //        controladorDatosTransferencias cDatosTransferencias = new controladorDatosTransferencias();
+        //      //  int r = cTransferencia.CambiarEstadoTransferencia(id);
+        //      //
+        //        idsPedidos = idsPedidos.TrimEnd(',');
+        //        cantidadesPedidos = cantidadesPedidos.TrimEnd(',');
+        //        var arrayIdsPedidos = idsPedidos.Split(',');
+        //        var arraycantidadesPedidos = cantidadesPedidos.Split(',');
+        //      //
+        //        for (int i = 0; i < arrayIdsPedidos.Length; i++)
+        //        {
+        //            int idPedido = Convert.ToInt32(arrayIdsPedidos[i]);
+        //            string cantAConfirmar = arraycantidadesPedidos[i].ToString();
+        //            cDatosTransferencias.updateDatosTransferenciaCantidadEnviada(idPedido, cantAConfirmar);
+        //        }
+
+        //        return 1;
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return -1;
+        //    }
+        //}
+
+
+
+
         [WebMethod]
         public static string getRecetasProveniente(string idsRecetas)
         {
@@ -1193,5 +1313,187 @@ namespace Tecnocuisine.Formularios.Ventas
                 return "";
             }
         }
+
+        protected void btnSector_Click(object sender, EventArgs e)
+        {
+            string sector = ddlSector.SelectedItem.Text;
+        }
+
+
+        [WebMethod]
+        public static string verDetallesPedidos(int idTransferencia, string productoDescripcion)
+        {
+            try
+            {
+                controladorPedidosTranferencia cPedidosTranferencia = new controladorPedidosTranferencia();
+                DataTable dt = cPedidosTranferencia.getDatosPedidoByIdTransferenciaDT(idTransferencia, productoDescripcion);
+                string detalleTransferencias = "";
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string cantidad = dr["cantidadOrigen"].ToString();
+                    string cantidadEnviada = dr["cantidadEnviada"].ToString();
+                    cantidad = cantidad.Replace(",", ".");
+                    cantidadEnviada = cantidadEnviada.Replace(",", ".");
+                    detalleTransferencias += dr["id"].ToString() + "," + dr["sectorOrigen"].ToString()
+                        + "," + dr["ProductoOrigen"].ToString() + "," + cantidad
+                        + "," + dr["ProductoDestinodestino"].ToString() + "," + dr["SectorDestinodestino"].ToString()
+                        + "," + dr["orden"].ToString() + "," + dr["cliente"].ToString()
+                        + "," + dr["idTransferencia"].ToString() + "," + dr["estado"].ToString()
+                        + "," + dr["estadoTransferencia"].ToString() + "," + dr["CantidadAConfirmar"].ToString()
+                        + "," + cantidadEnviada + ";";
+
+                }
+
+                return detalleTransferencias;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+
+        [WebMethod]
+        public static int guardarDatosTransferencia(List<RowClass> tableData)
+        {
+
+            try
+            {
+                controladorsumaDatosTransferencia csumaDatosTransferencia = new controladorsumaDatosTransferencia();
+                ControladorTransferencia cTransferencia = new ControladorTransferencia();
+                sumaDatosTransferencia sumaDatosTransferencia = new sumaDatosTransferencia();
+                string sectorDestino = "";
+                DataTable dtTransferencias = new DataTable();
+                dtTransferencias.Columns.Add("sectorOrigen", typeof(string));
+                dtTransferencias.Columns.Add("sectorDestino", typeof(string));
+                dtTransferencias.Columns.Add("producto", typeof(string));
+                dtTransferencias.Columns.Add("cantidad", typeof(decimal));
+                dtTransferencias.Columns.Add("cantidadConfirmada", typeof(decimal));
+                dtTransferencias.Columns.Add("cantidadEnviada", typeof(decimal));
+                dtTransferencias.Columns.Add("estado", typeof(bool));
+
+                foreach (var row in tableData)
+                {
+                    sectorDestino = row.sectorDestino.ToString();
+
+                    //sumaDatosTransferencia.sectorOrigen = row.sectorOrigen.ToString();
+                    //sumaDatosTransferencia.sectorDestino = row.sectorDestino.ToString();
+                    //sumaDatosTransferencia.producto = row.producto.ToString();
+                    //sumaDatosTransferencia.cantidad = Convert.ToDecimal(row.cantidad.ToString());
+                    //sumaDatosTransferencia.cantidadConfirmada = Convert.ToDecimal(row.cantidadConfirmada.ToString());
+                    //sumaDatosTransferencia.cantidadEnviada = Convert.ToDecimal(row.cantidadEnviada.ToString());
+                    //sumaDatosTransferencia.estado = true;
+                    //csumaDatosTransferencia.addsumaDatosTransferencia(sumaDatosTransferencia);
+
+                    // Agregar fila a DataTable
+                    DataRow dr = dtTransferencias.NewRow();
+                    dr["sectorOrigen"] = row.sectorOrigen.ToString();
+                    dr["sectorDestino"] = row.sectorDestino.ToString();
+                    dr["producto"] = row.producto.ToString();
+                    dr["cantidad"] = Convert.ToDecimal(row.cantidad.ToString());
+                    dr["cantidadConfirmada"] = Convert.ToDecimal(row.cantidadConfirmada.ToString());
+                    dr["cantidadEnviada"] = Convert.ToDecimal(row.cantidadEnviada.ToString());
+                    dr["estado"] = true;
+                    dtTransferencias.Rows.Add(dr);
+                }
+
+
+
+
+                //ACA TENGO QUE GUARDAR LOS REMUTOS INTERNOS 
+                //1-Guardo el remito interno 
+                ControladorRemitosInternos cRemitosInternos = new ControladorRemitosInternos();
+                var primerElemento = tableData[0];
+                string SectorDestino = primerElemento.sectorDestino;
+                RemitosInternos remitosInternos = new RemitosInternos();
+                remitosInternos.sectorDestino = SectorDestino;
+                remitosInternos.numero = "0001-00000001";
+                remitosInternos.fecha = DateTime.Now;
+                remitosInternos.estado = true;
+
+
+                int r = cRemitosInternos.addRemitosInternos(remitosInternos);
+
+                //2-Si el remito interno se guardo, guardo sus items
+                if (r > 0)
+                {
+                    ControladorItemsRemitosInternos cItemsRemitosInternos = new ControladorItemsRemitosInternos();
+                    foreach (var row in tableData)
+                    {
+                        ItemsRemitosInternos itemRemitosInternos = new ItemsRemitosInternos();
+                        itemRemitosInternos.idRemito = r;
+                        itemRemitosInternos.Producto = row.producto;
+                        itemRemitosInternos.cantidad = Convert.ToDecimal(row.cantidad);
+                        itemRemitosInternos.cantidadConfirmada = Convert.ToDecimal(row.cantidadConfirmada);
+                        itemRemitosInternos.cantidadEnviada = Convert.ToDecimal(row.cantidadEnviada);
+                        itemRemitosInternos.fecha = DateTime.Now;
+                        itemRemitosInternos.estado = true;
+                        cItemsRemitosInternos.addItemsRemitosInternos(itemRemitosInternos);
+                    }
+                }
+
+                //foreach (var row in tableData)
+                //{
+
+                //}
+
+
+                // Guardar DataTable en la sesión
+                HttpContext.Current.Session["datosAEnviar"] = dtTransferencias;
+
+                //cambiar el estado de las transferencias involucradas en el envio
+                DataTable dtId = new DataTable();
+                dtId = cTransferencia.getidTransferenciasConfirmadas(sectorDestino);
+
+
+                foreach (DataRow dr in dtId.Rows)
+                {
+                    cTransferencia.updateEstadoTransferenciasAEnviar(Convert.ToInt32(dr["id"].ToString()));
+                }
+
+                return r;
+
+
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
+
+        [WebMethod]
+        public static string getItemsRemitosInternos(int idRemito)
+        {
+            try
+            {
+                ControladorItemsRemitosInternos cItemsRemitosInternos = new ControladorItemsRemitosInternos();
+                var itemsRemitoInterno = cItemsRemitosInternos.getItemsRemitosInternosByIdRemito(idRemito);
+
+                if (itemsRemitoInterno == null || itemsRemitoInterno.Count == 0)
+                {
+                    return "[]";
+                }
+
+                List<string> itemsList = new List<string>();
+                foreach (var remitoInterno in itemsRemitoInterno)
+                {
+                    itemsList.Add("{" +
+                                  "\"Id\":\"" + remitoInterno.id + "\"," +
+                                  "\"Producto\":\"" + remitoInterno.Producto + "\"," +
+                                  "\"cantidadEnviada\":\"" + remitoInterno.cantidadEnviada + "\"," +
+                                  "\"cantidadRecepcionada\":\"" + remitoInterno.cantidadEnviada + "\"" +
+                                  "}");
+                }
+
+                return "[" + string.Join(",", itemsList) + "]";
+            }
+            catch (Exception ex)
+            {
+                return "[]";
+            }
+        }
+
     }
 }

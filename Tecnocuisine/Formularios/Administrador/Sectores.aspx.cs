@@ -15,9 +15,53 @@ namespace Tecnocuisine.Formularios.Administrador
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            VerificarLogin();
             if (!IsPostBack)
             {
                 CargarSectoresBackEnd();
+            }
+        }
+
+        private void VerificarLogin()
+        {
+            try
+            {
+                if (Session["User"] == null)
+                {
+                    Response.Redirect("../../Usuario/Login.aspx");
+                }
+                else
+                {
+                    if (this.verificarAcceso() != 1)
+                    {
+                        Response.Redirect("/Default.aspx?m=1", false);
+                    }
+                }
+            }
+            catch
+            {
+                Response.Redirect("../../Account/Login.aspx");
+            }
+        }
+
+        private int verificarAcceso()
+        {
+            try
+            {
+                int valor = 1;
+                string permisos = Session["Login_Permisos"] as string;
+                string[] listPermisos = permisos.Split(';');
+
+                string permiso = listPermisos.Where(x => x == "215").FirstOrDefault();
+
+                if (!string.IsNullOrEmpty(permiso))
+                    valor = 1;
+
+                return valor;
+            }
+            catch
+            {
+                return -1;
             }
         }
 
@@ -64,9 +108,11 @@ namespace Tecnocuisine.Formularios.Administrador
                 btnEditar.Attributes.Add("class", "btn btn-xs");
                 btnEditar.Style.Add("background-color", "transparent");
                 btnEditar.Style.Add("margin-right", "10px");
-                btnEditar.InnerHtml = "<span><i style='color:black;' class='fa fa-pencil' title='Editar'></i></span>";
+                btnEditar.Attributes.Add("title", "Editar"); // Tooltip para el botón
+                btnEditar.InnerHtml = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
                 btnEditar.Attributes.Add("OnClick", "vaciarInputs();ModalModificar('" + sector.id + "','" + sector.nombre + "','" + sector.id_emp + "'); ");
                 celAction.Controls.Add(btnEditar);
+
 
                 Literal l = new Literal();
                 l.Text = "&nbsp";
@@ -77,8 +123,10 @@ namespace Tecnocuisine.Formularios.Administrador
                 btnEliminar.Attributes.Add("class", "btn btn-xs");
                 btnEliminar.Style.Add("background-color", "transparent");
                 btnEliminar.Style.Add("margin-right", "10px");
-                btnEliminar.InnerHtml = "<span><i style='color:red;' class='fa fa-trash' title='Eliminar'></i></span>";
                 btnEliminar.Attributes.Add("OnClick", "ModalConfirmacion(" + sector.id + ");");
+                btnEliminar.Attributes.Add("title", "Eliminar"); 
+                btnEliminar.InnerHtml = "<span><i style='color:red;' class='fa fa-trash'></i></span>";
+
 
 
                 celAction.Controls.Add(btnEliminar);
@@ -145,7 +193,7 @@ namespace Tecnocuisine.Formularios.Administrador
                         "},";
 
                 }
-                sec = sec.Remove(sec.Length - 1)+"]";
+                sec = sec.Remove(sec.Length - 1) + "]";
 
                 if (sectores.Count == 0)
                 {
@@ -175,11 +223,18 @@ namespace Tecnocuisine.Formularios.Administrador
                     sec.estado = 1;
                     sec.id_emp = Convert.ToInt32(id_emp);
 
-                    var i = contSector.AddSectores(sec);
+                    var existeNombre = contSector.validarSiExisteNombre(sec);
 
-                    //JavaScriptSerializer javaScript = new JavaScriptSerializer();
-                    //string resultadoJSON = javaScript.Serialize(empresas);
-                    return i;
+                    if (existeNombre == 0)
+                    {
+                        var i = contSector.AddSectores(sec);
+                        return i;
+
+                    }
+                    else
+                    {
+                        return "-1";
+                    }
                 }
                 else
                 {
@@ -207,15 +262,25 @@ namespace Tecnocuisine.Formularios.Administrador
                     sec.id_emp = Convert.ToInt32(id_emp);
                     sec.estado = 1;
 
-                    var rta = contSectores.ChangeSectores(sec);
 
-                    //JavaScriptSerializer javaScript = new JavaScriptSerializer();
-                    //string resultadoJSON = javaScript.Serialize(empresas);
-                    return rta;
+                    var existeNombre = contSectores.validarSiExisteNombre(sec);
+
+                    if (existeNombre == 0)
+                    {
+                        var rta = contSectores.ChangeSectores(sec);
+                        return rta.ToString();
+
+                    }
+                    else
+                    {
+                        return "-1";
+                    }
+
+
                 }
                 else
                 {
-                    return "0";
+                    return "-2";
                 }
             }
             catch (Exception ex)

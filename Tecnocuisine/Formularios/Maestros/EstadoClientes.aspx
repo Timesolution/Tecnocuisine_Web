@@ -17,9 +17,10 @@
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <a data-toggle="modal" data-backdrop="static" data-target="#modalAgregar" title="Agregar estado"
-                                class="btn btn-primary dim" onclick="vaciarInputs()"
-                                style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
+                            <a data-toggle="modal" data-backdrop="static" title="Agregar estado"
+                                class="btn btn-primary dim" onclick="vaciarInputs(); openModalAgregar()"
+                                style="margin-right: 1%; float: right"><i class='fa fa-plus'></i>
+                            </a>
                         </div>
                     </div>
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
@@ -95,6 +96,32 @@
     </div>
 
 
+    <div id="modalEditar" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Editar</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label class="col-sm-2 control-label editable">Descripción</label>
+                        <div class="col-sm-8">
+                            <asp:TextBox ID="txtDescripcionEditar" class="form-control" runat="server" />
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <asp:LinkButton runat="server" ID="btnEditar" class="buttonLoading btn btn-primary" OnClientClick="changeEstadoCliente()"><i class="fa fa-check"></i>&nbsp;Editar </asp:LinkButton>
+                    <asp:HiddenField ID="idEstadoClienteEditar" runat="server" />
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>           
         function abrirdialog(valor) {
             document.getElementById('<%= hiddenID.ClientID %>').value = valor;
@@ -106,9 +133,53 @@
             document.getElementById('<%= txtDescripcionEstado.ClientID %>').value = "";
         }
     </script>
+    <script>
+       function openModalEditar(idEstado){
+           document.getElementById('<%= idEstadoClienteEditar.ClientID %>').value = idEstado;
+           precargarCampos(idEstado);
+            setTimeout(function() {
+               $('#modalEditar').modal('show');
+           }, 500); 
+       }
+    </script>
+    <script>
+        function precargarCampos(idEstado){
+        
+             $.ajax({
+             method: "POST",
+             url: "EstadoClientes.aspx/precargarCampos",
+             data: JSON.stringify({ idEstado: idEstado }),
+             contentType: "application/json",
+             dataType: 'json',
+             error: (error) => {
+                 console.log(JSON.stringify(error));
+             },
+             success: (respuesta) => {
+                 console.log(respuesta.d)
+                 let estado = respuesta.d
+
+                 if (estado != null && estado != '[]') {
+                    let e = JSON.parse(estado);
+
+                      e.forEach(element => {
+
+                       document.getElementById('<%= txtDescripcionEditar.ClientID %>').value = element.Descripcion;
+
+                      })
+
+                 }
+
+
+             }
+         });
+    
+        }
+    </script>
 
     <script type="text/javascript">
         function openModal() {
+            $('#modalAgregar .modal-title').text('Editar estado de cliente');
+            document.getElementById('<%= btnGuardar.ClientID %>').innerHTML = '<i class="fa fa-check"></i>&nbsp;Editar';
             $('#modalAgregar').modal('show');
         }
         function vaciarFormulario() {
@@ -116,6 +187,13 @@
             ContentPlaceHolder1_hiddenEditar.value = "";
             window.history.pushState('', 'InsumosF', location.protocol + '//' + location.host + location.pathname);
 
+        }
+    </script>
+    <script>
+        function openModalAgregar() {
+            $('#modalAgregar .modal-title').text('Agregar estado de cliente');
+            document.getElementById('<%= btnGuardar.ClientID %>').innerHTML = '<i class="fa fa-check"></i>&nbsp;Agregar';
+            $('#modalAgregar').modal('show');
         }
     </script>
     <script>
@@ -179,6 +257,61 @@
                 ).draw();
             });
         });
+    </script>
+    <script>
+        function changeEstadoCliente() {
+
+
+             document.getElementById('<%= btnEditar.ClientID %>').setAttribute('disabled', 'disabled')
+             let descripcionEstadoClientes = document.getElementById('<%= txtDescripcionEditar.ClientID %>').value
+             let idEstadoCliente = document.getElementById('<%= idEstadoClienteEditar.ClientID %>').value
+
+
+
+             $.ajax({
+                 method: "POST",
+                 url: "EstadoClientes.aspx/EditarEstadoClientes",
+                 data: "{descripcionEstadoClientes: '" + descripcionEstadoClientes + "', idEstadoCliente: '" + idEstadoCliente + "'}",
+                 contentType: "application/json",
+                 dataType: 'json',
+                 error: (error) => {
+                     console.log(JSON.stringify(error));
+                     toastr.warning('No se pudo agregar el sector productivo!', 'Atencion')
+                     document.getElementById('<%= btnEditar.ClientID %>').removeAttribute('disabled')
+
+                 },
+                 success: (respuesta) => {
+                     console.log(respuesta.d)
+                     let res = respuesta.d
+
+                     if (res == '1') {
+                         document.getElementById('<%= btnEditar.ClientID %>').removeAttribute('disabled')
+                         //CargarSectoresProductivo()
+                         $('#modalEditar').modal('hide')
+                         window.location.href = "../../Formularios/Maestros/EstadoClientes.aspx";
+                     }
+     
+                     if (res == '0') {
+                         toastr.warning('Ya existe un Estado de cliente con ese nombre!', 'Atencion')
+                          document.getElementById('<%= btnEditar.ClientID %>').removeAttribute('disabled')
+                         $('#modalEditar').modal('hide')
+                     } 
+
+                     if (res == '-1') {
+                         toastr.warning('No se pudo editar el Estado de cliente!', 'Atencion')
+                         document.getElementById('<%= btnEditar.ClientID %>').removeAttribute('disabled')
+                         $('#modalEditar').modal('hide')
+                     } 
+
+                     if (res == '-2') {
+                         toastr.warning('Ya existe un Estado de cliente con ese nombre!', 'Atencion')
+                         document.getElementById('<%= btnEditar.ClientID %>').removeAttribute('disabled')
+                        $('#modalEditar').modal('hide')
+                     } 
+
+                 }
+             });
+        }
     </script>
 
 
