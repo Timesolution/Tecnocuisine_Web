@@ -105,13 +105,13 @@ namespace Tecnocuisine.Formularios.Ventas
         protected global::System.Web.UI.UpdatePanel UpdatePanel3;
 
         /// <summary>
-        /// Control PlaceHolder5.
+        /// Control phProduccion.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder PlaceHolder5;
+        protected global::System.Web.UI.WebControls.PlaceHolder phProduccion;
 
         /// <summary>
         /// Control UpdatePanel4.
@@ -177,13 +177,13 @@ namespace Tecnocuisine.Formularios.Ventas
         protected global::System.Web.UI.WebControls.HiddenField ddlSectorSelecionadoValue;
 
         /// <summary>
-        /// Control Button2.
+        /// Control btnRecepcion.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button2;
+        protected global::System.Web.UI.WebControls.Button btnRecepcion;
 
         /// <summary>
         /// Control HiddenField6.

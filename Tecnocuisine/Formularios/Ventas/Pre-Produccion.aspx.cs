@@ -48,10 +48,50 @@ namespace Tecnocuisine.Formularios.Ventas
             VerificarLogin();
             CargarSectoresProductivodDDL();
             filtrarDatosTransferenciasBySectorOrigen();
+            filtrarProduccionBySector();
             if (!IsPostBack)
             {
                 filtrarRemitosInternos();
             }
+        }
+
+        public void filtrarProduccionBySector()
+        {
+            if (Request.QueryString["O"] != null)
+            {
+                sector = Request.QueryString["O"].ToString();
+                ControladorTransferencia cTransferencia = new ControladorTransferencia();
+                DataTable dt = cTransferencia.getTransferenciasBySector(sector);
+
+                int cont = 0;
+                foreach (DataRow dr in dt.Rows)
+                {
+                    cont++;
+                    TableRow tr = new TableRow();
+                    tr.ID = cont.ToString();
+
+                    //Celdas
+                    TableCell celProducto = new TableCell();
+                    celProducto.Text = dr["productoOrigen"].ToString();
+                    celProducto.VerticalAlign = VerticalAlign.Middle;
+                    celProducto.HorizontalAlign = HorizontalAlign.Left;
+                    celProducto.Attributes.Add("style", "padding-bottom: 1px !important;");
+                    tr.Cells.Add(celProducto);
+
+
+                    TableCell celCantidad = new TableCell();
+                    celCantidad.Text = dr["cantidadOrigen"].ToString();
+                    celCantidad.VerticalAlign = VerticalAlign.Middle;
+                    celCantidad.HorizontalAlign = HorizontalAlign.Left;
+                    celCantidad.Attributes.Add("style", "padding-bottom: 1px !important;");
+                    tr.Cells.Add(celCantidad);
+
+
+                    phProduccion.Controls.Add(tr);
+                }
+
+            }
+
         }
 
         private void VerificarLogin()
@@ -1495,5 +1535,14 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
 
+        protected void Button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnRecepcion_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

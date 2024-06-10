@@ -137,15 +137,12 @@
                                     <table class="table table-striped table-bordered table-hover " id="tableProduccion">
                                         <thead>
                                             <tr>
-                                                <th style="width: 15%">Campo1</th>
-                                                <th style="width: 15%">Campo2</th>
-                                                <th style="width: 15%">Campo3</th>
-                                                <th style="width: 15%">Campo4</th>
-                                                <th style="width: 15%">Campo5</th>
+                                                <th style="width: 15%">Producto</th>
+                                                <th style="width: 15%">Cantidad</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <asp:PlaceHolder ID="PlaceHolder5" runat="server"></asp:PlaceHolder>
+                                            <asp:PlaceHolder ID="phProduccion" runat="server"></asp:PlaceHolder>
                                         </tbody>
                                     </table>
                                 </div>
@@ -338,8 +335,8 @@
 
 
                                         <div style="text-align: right; margin-top: 10px">
-                                                  <asp:Button ID="Button2" runat="server"
-                                                OnClientClick="" class="btn btn-primary"
+                                                  <asp:Button ID="btnRecepcion" runat="server"
+                                                OnClick="btnRecepcion_Click" class="btn btn-primary"
                                                 title="Enviar" Text="Recepcionar" />
                                         </div>
                                         <asp:HiddenField ID="HiddenField6" runat="server" />
