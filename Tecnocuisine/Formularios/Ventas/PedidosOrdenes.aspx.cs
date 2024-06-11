@@ -1071,7 +1071,7 @@ namespace Tecnocuisine.Formularios.Ventas
                     string cantidad = row.Cantidad;
                     string confirmada = row.Confirmada;
                     DatosTransferencias.id = Convert.ToInt32(rowId);
-                    DatosTransferencias.cantidadConfirmada = Convert.ToDecimal(confirmada);
+                    DatosTransferencias.cantidadConfirmada = Convert.ToDecimal(confirmada, CultureInfo.InvariantCulture);
                     cDatosTransferencias.updateDatosTransferenciaCantidadEnviada(DatosTransferencias);
 
                 }
