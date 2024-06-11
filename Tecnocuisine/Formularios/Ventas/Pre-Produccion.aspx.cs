@@ -1104,7 +1104,7 @@ namespace Tecnocuisine.Formularios.Ventas
             {
                 controladorDatosTransferencias cTransferencias = new controladorDatosTransferencias();
                 controladorsumaDatosTransferencia csumaDatosTransferencia = new controladorsumaDatosTransferencia();
-                DataTable dt = cTransferencias.getDatosTransferenciaBySectorDestino(sectorOrigen, sectorDestino);
+                //DataTable dt = cTransferencias.getDatosTransferenciaBySectorDestino(sectorOrigen, sectorDestino);
                 DataTable dt2 = csumaDatosTransferencia.getDatosTransferencias(sectorOrigen);
 
                 //HttpContext.Current.Session["datosAEnviar"] = dt2;
@@ -1452,7 +1452,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 string SectorDestino = primerElemento.sectorDestino;
                 RemitosInternos remitosInternos = new RemitosInternos();
                 remitosInternos.sectorDestino = SectorDestino;
-                remitosInternos.numero = "0001-00000001";
+                remitosInternos.numero = NuevoNumeroRemitoInterno();
                 remitosInternos.fecha = DateTime.Now;
                 remitosInternos.estado = true;
 
@@ -1469,8 +1469,8 @@ namespace Tecnocuisine.Formularios.Ventas
                         itemRemitosInternos.idRemito = r;
                         itemRemitosInternos.Producto = row.producto;
                         itemRemitosInternos.cantidad = Convert.ToDecimal(row.cantidad);
-                        itemRemitosInternos.cantidadConfirmada = Convert.ToDecimal(row.cantidadConfirmada);
-                        itemRemitosInternos.cantidadEnviada = Convert.ToDecimal(row.cantidadEnviada);
+                        itemRemitosInternos.cantidadConfirmada = Convert.ToDecimal(row.cantidadConfirmada, CultureInfo.InvariantCulture);
+                        itemRemitosInternos.cantidadEnviada = Convert.ToDecimal(row.cantidadEnviada, CultureInfo.InvariantCulture);
                         itemRemitosInternos.fecha = DateTime.Now;
                         itemRemitosInternos.estado = true;
                         cItemsRemitosInternos.addItemsRemitosInternos(itemRemitosInternos);
@@ -1506,6 +1506,37 @@ namespace Tecnocuisine.Formularios.Ventas
             {
                 return -1;
             }
+        }
+
+        private static string NuevoNumeroRemitoInterno()
+        {
+            var ultimoNumero = new ControladorRemitosInternos().GetUltimoNumero();
+
+            string[] partes = ultimoNumero.Split('-');
+            string prefijo = partes[0]; // "0001"
+            string numero = partes[1];  // "00000001"
+
+            // Convertir la parte numérica a entero e incrementarla
+            int numeroInt = int.Parse(numero);
+            numeroInt += 1;
+
+            // Verificar si el número ha alcanzado su límite
+            if (numeroInt > 99999999)
+            {
+                // Reiniciar la parte numérica a 0
+                numeroInt = 0;
+
+                // Incrementar el prefijo
+                int prefijoInt = int.Parse(prefijo);
+                prefijoInt += 1;
+                prefijo = prefijoInt.ToString().PadLeft(prefijo.Length, '0');
+            }
+
+            // Convertir la parte incrementada de nuevo a cadena con ceros a la izquierda
+            string nuevoNumero = numeroInt.ToString().PadLeft(numero.Length, '0');
+
+            // Reunir las partes en el nuevo formato de número de remito
+            return $"{prefijo}-{nuevoNumero}";
         }
 
         private static void DescontarStockSectorOrigen(string idSectorOrigen, string idProducto, string cantidadEnviada)
