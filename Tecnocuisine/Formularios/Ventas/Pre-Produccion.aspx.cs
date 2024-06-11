@@ -1474,6 +1474,8 @@ namespace Tecnocuisine.Formularios.Ventas
                         itemRemitosInternos.fecha = DateTime.Now;
                         itemRemitosInternos.estado = true;
                         cItemsRemitosInternos.addItemsRemitosInternos(itemRemitosInternos);
+
+                        new ControladorStockProducto().EditarStockSectores(Convert.ToInt32(row.idProducto), Convert.ToInt32(row.idSectorOrigen), decimal.Parse(row.cantidadEnviada));
                     }
                 }
 
@@ -1506,6 +1508,10 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
 
+        private static void DescontarStockSectorOrigen(string idSectorOrigen, string idProducto, string cantidadEnviada)
+        {
+            
+        }
 
         [WebMethod]
         public static string getItemsRemitosInternos(int idRemito)
