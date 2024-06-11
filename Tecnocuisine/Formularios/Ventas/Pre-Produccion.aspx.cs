@@ -36,8 +36,10 @@ namespace Tecnocuisine.Formularios.Ventas
         public class RowClass
         {
             public string Id { get; set; }
+            public string idSectorOrigen { get; set; }
             public string sectorOrigen { get; set; }
             public string sectorDestino { get; set; }
+            public string idProducto { get; set; }
             public string producto { get; set; }
             public string cantidad { get; set; }
             public string cantidadConfirmada { get; set; }
@@ -1116,8 +1118,10 @@ namespace Tecnocuisine.Formularios.Ventas
                     cantidad = dr["cantidad"].ToString().Replace(",", ".");
                     cantidadConfirmada = dr["cantidadConfirmada"].ToString().Replace(",", ".");
                     datosTransferencia += "{" +
+                        "\"idSectorOrigen\":\"" + dr["idSectorOrigen"].ToString() + "\"," +
                         "\"sectorOrigen\":\"" + dr["sectorOrigen"].ToString() + "\"," +
                         "\"sectorDestino\":\"" + dr["sectorDestino"].ToString() + "\"," +
+                        "\"idProducto\":\"" + dr["idProducto"].ToString() + "\"," +
                         "\"producto\":\"" + dr["producto"].ToString() + "\"," +
                         "\"cantidad\":\"" + cantidad + "\"," +
                         "\"cantidadConfirmada\":\"" + cantidadConfirmada + "\"" +

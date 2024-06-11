@@ -391,8 +391,10 @@
                                         <table class="table table-hover no-margins table-bordered" id="tablePedidos">
                                             <thead>
                                                 <tr>
+                                                    <td><strong>Id Sector Origen</strong></td>
                                                     <td><strong>Sector Origen</strong></td>
                                                     <td><strong>Sector Destino</strong></td>
+                                                    <td><strong>Id Producto</strong></td>
                                                     <td><strong>Producto</strong></td>
                                                     <td class="text-right"><strong>Cantidad</strong></td>
                                                     <td class="text-right"><strong>Cantidad confirmada</strong></td>
@@ -536,13 +538,15 @@
                 rows.forEach(function(row) {
                     var cells = row.getElementsByTagName('td');
                     if (cells.length > 0) {
-                        var rowData = {
-                            SectorOrigen: cells[0].textContent.trim(),
-                            SectorDestino: cells[1].textContent.trim(),
-                            Producto: cells[2].textContent.trim(),
-                            Cantidad: cells[3].textContent.trim(),
-                            CantidadConfirmada: cells[4].textContent.trim(),
-                            cantidadEnviada: cells[5].getElementsByTagName('input')[0].value.trim()
+                        var rowData = {                        
+                            idSectorOrigen: cells[0].textContent.trim(),
+                            SectorOrigen: cells[1].textContent.trim(),
+                            SectorDestino: cells[2].textContent.trim(),
+                            idProducto: cells[3].textContent.trim(),
+                            Producto: cells[4].textContent.trim(),
+                            Cantidad: cells[5].textContent.trim(),
+                            CantidadConfirmada: cells[6].textContent.trim(),
+                            cantidadEnviada: cells[7].getElementsByTagName('input')[0].value.trim()
                         };
                         tableData.push(rowData);
                     }
@@ -551,7 +555,6 @@
                 var data = {
                     tableData: tableData
                 };
-
              
                   $.ajax({
                   method: "POST",
@@ -1376,8 +1379,10 @@
                                                      oninput="validarTextBox(this);" />`;
                         placeHolderSectores += `
                             <tr>
+                                <td>${element.idSectorOrigen}</td>
                                 <td>${element.sectorOrigen}</td>
                                 <td>${element.sectorDestino}</td>
+                                <td>${element.idProducto}</td>
                                 <td>${element.producto}</td>
                                 <td class="text-right">${element.cantidad}</td>
                                 <td class="text-right">${element.cantidadConfirmada}</td>
