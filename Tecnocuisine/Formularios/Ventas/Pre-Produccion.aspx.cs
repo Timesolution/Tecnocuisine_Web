@@ -1103,7 +1103,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 controladorDatosTransferencias cTransferencias = new controladorDatosTransferencias();
                 controladorsumaDatosTransferencia csumaDatosTransferencia = new controladorsumaDatosTransferencia();
                 DataTable dt = cTransferencias.getDatosTransferenciaBySectorDestino(sectorOrigen, sectorDestino);
-                DataTable dt2 = csumaDatosTransferencia.getDatosTransferencias(sectorDestino);
+                DataTable dt2 = csumaDatosTransferencia.getDatosTransferencias(sectorOrigen);
 
                 //HttpContext.Current.Session["datosAEnviar"] = dt2;
 
