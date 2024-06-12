@@ -346,6 +346,8 @@
                                         <%-- Este HiddenField guarda el id y lo cantidad de los datos 
                                         de las transferencias--%>
                                         <asp:HiddenField ID="HiddenField10" Value="" runat="server" />
+
+                                        <asp:HiddenField ID="HFIdRemitoInterno" Value="" runat="server" />
                                     </div>
                                 </div>
                             </div>
@@ -1410,6 +1412,7 @@
     </script>
     <script>
         function verDetalleRemitoInternoModal(idRemito) {
+            document.getElementById('<%= HFIdRemitoInterno.ClientID %>').value = idRemito;
             getItemsRemitosInternos(idRemito);
             $('#modalDetalleRemitoInterno').modal('show');   
         }

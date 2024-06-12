@@ -51,9 +51,9 @@ namespace Tecnocuisine.Formularios.Ventas
             CargarSectoresProductivodDDL();
             filtrarDatosTransferenciasBySectorOrigen();
             filtrarProduccionBySector();
+            filtrarRemitosInternos();
             if (!IsPostBack)
             {
-                filtrarRemitosInternos();
             }
         }
 
@@ -1583,7 +1583,14 @@ namespace Tecnocuisine.Formularios.Ventas
 
         protected void btnRecepcion_Click(object sender, EventArgs e)
         {
+            ControladorRemitosInternos contRemitosInternos = new ControladorRemitosInternos();
+            var idRemitoInterno = Convert.ToInt32(HFIdRemitoInterno.Value);
 
+            RemitosInternos remitoInterno = contRemitosInternos.getRemitosInternosById(idRemitoInterno).FirstOrDefault();
+            remitoInterno.recepcionado = true;
+            contRemitosInternos.UpdateRemitosInternos(remitoInterno);
+
+            Response.Redirect(Request.RawUrl);
         }
     }
 }
