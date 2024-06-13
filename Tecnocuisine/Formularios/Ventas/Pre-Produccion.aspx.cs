@@ -1,4 +1,5 @@
-﻿using Gestion_Api.Entitys;
+﻿using Disipar.Models;
+using Gestion_Api.Entitys;
 using Gestion_Api.Modelo;
 using Microsoft.Ajax.Utilities;
 using System;
@@ -14,6 +15,7 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Tecnocuisine.Formularios.Administrador;
+using Tecnocuisine.Modelos;
 using Tecnocuisine_API.Controladores;
 using Tecnocuisine_API.Entitys;
 using static Tecnocuisine.Formularios.Ventas.PedidosOrdenes;
@@ -45,6 +47,7 @@ namespace Tecnocuisine.Formularios.Ventas
             public string cantidadConfirmada { get; set; }
             public string cantidadEnviada { get; set; }
         }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             VerificarLogin();
@@ -74,7 +77,7 @@ namespace Tecnocuisine.Formularios.Ventas
 
                     //Celdas
                     TableCell celProducto = new TableCell();
-                    celProducto.Text = dr["productoOrigen"].ToString();
+                    celProducto.Text = dr["productoDestino"].ToString();
                     celProducto.VerticalAlign = VerticalAlign.Middle;
                     celProducto.HorizontalAlign = HorizontalAlign.Left;
                     celProducto.Attributes.Add("style", "padding-bottom: 1px !important;");
@@ -88,6 +91,24 @@ namespace Tecnocuisine.Formularios.Ventas
                     celCantidad.Attributes.Add("style", "padding-bottom: 1px !important;");
                     tr.Cells.Add(celCantidad);
 
+                    TableCell celFecha = new TableCell();
+                    celFecha.Text = dr["fecha"].ToString();
+                    celFecha.VerticalAlign = VerticalAlign.Middle;
+                    celFecha.HorizontalAlign = HorizontalAlign.Left;
+                    celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
+                    tr.Cells.Add(celFecha);
+
+                    TableCell celAccion = new TableCell();
+                    LinkButton btnDetalle = new LinkButton();
+                    //btnDetalle.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
+                    btnDetalle.CssClass = "btn btn-xs";
+                    btnDetalle.Style.Add("background-color", "transparent");
+                    btnDetalle.Attributes.Add("data-toggle", "modal");
+                    //btnDetalle.Attributes.Add("href", "#modalConfirmacion2");
+                    btnDetalle.Text = "<span title='Ver pedidos'><i class='fa fa-search' style='color: black;'></i></span>";
+                    //btnDetalle.Attributes.Add("onclick", "verDetalleRemitoInternoPdf('" + remito.id + "');");
+                    celAccion.Controls.Add(btnDetalle);
+                    tr.Cells.Add(celAccion);
 
                     phProduccion.Controls.Add(tr);
                 }

@@ -139,6 +139,8 @@
                                             <tr>
                                                 <th style="width: 15%">Producto</th>
                                                 <th style="width: 15%">Cantidad</th>
+                                                <th style="width: 15%">Fecha</th>
+                                                <th style="width: 15%">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -317,6 +319,8 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
+                                        
+
                                         <table class="table table-hover no-margins table-bordered" id="DetalleRemitosInternos">
                                             <thead>
                                                 <tr>
