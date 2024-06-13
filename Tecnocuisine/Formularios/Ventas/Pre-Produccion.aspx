@@ -339,7 +339,7 @@
 
 
                                         <div style="text-align: right; margin-top: 10px">
-                                                  <asp:Button ID="btnRecepcion" runat="server"
+                                                  <asp:Button ID="btnRecepcion" runat="server" OnClientClick="btnRecepcion_ClientClick()"
                                                 OnClick="btnRecepcion_Click" class="btn btn-primary"
                                                 title="Enviar" Text="Recepcionar" />
                                         </div>
@@ -352,6 +352,7 @@
                                         <asp:HiddenField ID="HiddenField10" Value="" runat="server" />
 
                                         <asp:HiddenField ID="HFIdRemitoInterno" Value="" runat="server" />
+                                        <asp:HiddenField ID="HFItems" Value="" runat="server" />
                                     </div>
                                 </div>
                             </div>
@@ -578,10 +579,14 @@
                         toastr.success("Transferencia confirmada con exito!", "Exito");
                         window.open('ImpresionRemitos.aspx?r=' + r, '_blank');
                     }
-                      else{
+                   else if (response.d == -1){
                          toastr.error("La transferencia no pudo ser confirmada.", "Error");
               
                       }
+                   else if (response.d == -2) {
+                       toastr.error("La transferencia no pudo ser confirmada, hay productos con stock insuficiente.", "Error");
+
+                   }
                   }
                });
 
@@ -1383,17 +1388,36 @@
                                                      style="width: 100%; text-align: right;" 
                                                      placeholder="Cantidad" 
                                                      oninput="validarTextBox(this);" />`;
-                        placeHolderSectores += `
-                            <tr>
-                                <td>${element.idSectorOrigen}</td>
-                                <td>${element.sectorOrigen}</td>
-                                <td>${element.sectorDestino}</td>
-                                <td>${element.idProducto}</td>
-                                <td>${element.producto}</td>
-                                <td class="text-right">${element.cantidad}</td>
-                                <td class="text-right">${element.cantidadConfirmada}</td>
-                                <td class="text-right">${cantidadAConfirmar}</td>
-                            </tr>`;
+                       
+
+                        let filaProducto = "";
+
+                        if (element.tieneStock == "True") {
+                            filaProducto = `<tr>
+                                                <td>${element.idSectorOrigen}</td>
+                                                <td>${element.sectorOrigen}</td>
+                                                <td>${element.sectorDestino}</td>
+                                                <td>${element.idProducto}</td>
+                                                <td>${element.producto}</td>
+                                                <td class="text-right">${element.cantidad}</td>
+                                                <td class="text-right">${element.cantidadConfirmada}</td>
+                                                <td class="text-right">${cantidadAConfirmar}</td>
+                                            </tr>`;
+                        }
+                        else {                         
+                            filaProducto = `<tr>
+                                                <td style="color:red">${element.idSectorOrigen}</td>
+                                                <td style="color:red">${element.sectorOrigen}</td>
+                                                <td style="color:red">${element.sectorDestino}</td>
+                                                <td style="color:red">${element.idProducto}</td>
+                                                <td style="color:red">${element.producto}</td>
+                                                <td style="color:red" class="text-right">${element.cantidad}</td>
+                                                <td style="color:red" class="text-right">${element.cantidadConfirmada}</td>
+                                                <td style="color:red" class="text-right">${cantidadAConfirmar}</td>
+                                            </tr>`;
+                        }
+
+                        placeHolderSectores += filaProducto;
                     });
                     document.getElementById('tableDetallePedidos').innerHTML = placeHolderSectores;
                 } else {
@@ -1421,6 +1445,29 @@
             $('#modalDetalleRemitoInterno').modal('show');   
         }
     </script>
+    
+    <script>
+        function btnRecepcion_ClientClick()
+        {
+            var tableName = "DetalleRemitosInternos";
+            var HFItems = document.getElementById('<%= HFItems.ClientID %>');
+
+            for (var i = 1; i < document.getElementById(tableName).rows.length; i++) {
+                let producto = document.getElementById(tableName).rows[i].cells[0].innerText;
+                let cantEnviada = document.getElementById(tableName).rows[i].cells[1].innerText;
+                let cantRecepcionada = document.getElementById(tableName).rows[i].cells[2].querySelector('input').value;
+
+                HFItems.value += producto + "&" + cantEnviada + "&" + cantRecepcionada + ";";
+            }
+
+            //eliminar ultimo ;
+            HFItems.value = HFItems.value.slice(0,-1);
+
+            console.log("DetalleRemitosInternos");
+            console.log(HFItems.value);
+        }
+    </script>
+
     <script>
         function getItemsRemitosInternos(idRemito) {
             $.ajax({

@@ -1130,14 +1130,24 @@ namespace Tecnocuisine.Formularios.Ventas
 
                 //HttpContext.Current.Session["datosAEnviar"] = dt2;
 
-
                 string datosTransferencia = "[";
                 string cantidad = "";
                 string cantidadConfirmada = "";
                 foreach (DataRow dr in dt2.Rows)
                 {
-                    cantidad = dr["cantidad"].ToString().Replace(",", ".");
+                    //Verificar si tiene stock
+                    int idProducto = Convert.ToInt32(dr["idProducto"].ToString());
+                    int idSector = Convert.ToInt32(dr["idSectorOrigen"].ToString());
+                    StockSectores stockSector = new ControladorStockProducto().ObtenerStockSectores(idProducto, idSector);
+
+                    bool tieneStock = true;
+                    decimal cantConfirmada = Convert.ToDecimal(dr["cantidadConfirmada"].ToString().Replace(",", "."), CultureInfo.InvariantCulture);
+                    
+                    if (stockSector == null || stockSector.stock < cantConfirmada)
+                        tieneStock = false;
+
                     cantidadConfirmada = dr["cantidadConfirmada"].ToString().Replace(",", ".");
+                    cantidad = dr["cantidad"].ToString().Replace(",", ".");
                     datosTransferencia += "{" +
                         "\"idSectorOrigen\":\"" + dr["idSectorOrigen"].ToString() + "\"," +
                         "\"sectorOrigen\":\"" + dr["sectorOrigen"].ToString() + "\"," +
@@ -1145,7 +1155,9 @@ namespace Tecnocuisine.Formularios.Ventas
                         "\"idProducto\":\"" + dr["idProducto"].ToString() + "\"," +
                         "\"producto\":\"" + dr["producto"].ToString() + "\"," +
                         "\"cantidad\":\"" + cantidad + "\"," +
-                        "\"cantidadConfirmada\":\"" + cantidadConfirmada + "\"" +
+                        "\"cantidadConfirmada\":\"" + cantidadConfirmada + "\"," +
+
+                        "\"tieneStock\":\"" + tieneStock + "\"" +
                         "},";
                 }
 
@@ -1428,45 +1440,23 @@ namespace Tecnocuisine.Formularios.Ventas
                 controladorsumaDatosTransferencia csumaDatosTransferencia = new controladorsumaDatosTransferencia();
                 ControladorTransferencia cTransferencia = new ControladorTransferencia();
                 sumaDatosTransferencia sumaDatosTransferencia = new sumaDatosTransferencia();
-                string sectorDestino = "";
-                DataTable dtTransferencias = new DataTable();
-                dtTransferencias.Columns.Add("sectorOrigen", typeof(string));
-                dtTransferencias.Columns.Add("sectorDestino", typeof(string));
-                dtTransferencias.Columns.Add("producto", typeof(string));
-                dtTransferencias.Columns.Add("cantidad", typeof(decimal));
-                dtTransferencias.Columns.Add("cantidadConfirmada", typeof(decimal));
-                dtTransferencias.Columns.Add("cantidadEnviada", typeof(decimal));
-                dtTransferencias.Columns.Add("estado", typeof(bool));
+                ControladorStockProducto controladorStockProducto = new ControladorStockProducto();
 
+                //Ver si los productos existen en la tabla stocksector
                 foreach (var row in tableData)
                 {
-                    sectorDestino = row.sectorDestino.ToString();
+                    //validar que exista stock para hacer el envio
+                    var cantidadAEnviar = Convert.ToDecimal(row.cantidadEnviada, CultureInfo.InvariantCulture);
+                    StockSectores stockSector = controladorStockProducto.ObtenerStockSectores(Convert.ToInt32(row.idProducto), Convert.ToInt32(row.idSectorOrigen));
 
-                    //sumaDatosTransferencia.sectorOrigen = row.sectorOrigen.ToString();
-                    //sumaDatosTransferencia.sectorDestino = row.sectorDestino.ToString();
-                    //sumaDatosTransferencia.producto = row.producto.ToString();
-                    //sumaDatosTransferencia.cantidad = Convert.ToDecimal(row.cantidad.ToString());
-                    //sumaDatosTransferencia.cantidadConfirmada = Convert.ToDecimal(row.cantidadConfirmada.ToString());
-                    //sumaDatosTransferencia.cantidadEnviada = Convert.ToDecimal(row.cantidadEnviada.ToString());
-                    //sumaDatosTransferencia.estado = true;
-                    //csumaDatosTransferencia.addsumaDatosTransferencia(sumaDatosTransferencia);
-
-                    // Agregar fila a DataTable
-                    DataRow dr = dtTransferencias.NewRow();
-                    dr["sectorOrigen"] = row.sectorOrigen.ToString();
-                    dr["sectorDestino"] = row.sectorDestino.ToString();
-                    dr["producto"] = row.producto.ToString();
-                    dr["cantidad"] = Convert.ToDecimal(row.cantidad.ToString());
-                    dr["cantidadConfirmada"] = Convert.ToDecimal(row.cantidadConfirmada.ToString());
-                    dr["cantidadEnviada"] = Convert.ToDecimal(row.cantidadEnviada.ToString());
-                    dr["estado"] = true;
-                    dtTransferencias.Rows.Add(dr);
+                    if (stockSector == null || stockSector.stock < cantidadAEnviar)
+                    {
+                        Exception ex = new Exception("No se encontró stock para un producto en el sector especificado.");
+                        ex.Data["ErrorCode"] = 2;
+                        throw ex;
+                    }
                 }
 
-
-
-
-                //ACA TENGO QUE GUARDAR LOS REMUTOS INTERNOS 
                 //1-Guardo el remito interno 
                 ControladorRemitosInternos cRemitosInternos = new ControladorRemitosInternos();
                 var primerElemento = tableData[0];
@@ -1476,7 +1466,6 @@ namespace Tecnocuisine.Formularios.Ventas
                 remitosInternos.numero = NuevoNumeroRemitoInterno();
                 remitosInternos.fecha = DateTime.Now;
                 remitosInternos.estado = true;
-
 
                 int r = cRemitosInternos.addRemitosInternos(remitosInternos);
 
@@ -1489,42 +1478,38 @@ namespace Tecnocuisine.Formularios.Ventas
                         ItemsRemitosInternos itemRemitosInternos = new ItemsRemitosInternos();
                         itemRemitosInternos.idRemito = r;
                         itemRemitosInternos.Producto = row.producto;
-                        itemRemitosInternos.cantidad = Convert.ToDecimal(row.cantidad);
+                        itemRemitosInternos.cantidad = Convert.ToDecimal(row.cantidad, CultureInfo.InvariantCulture);
                         itemRemitosInternos.cantidadConfirmada = Convert.ToDecimal(row.cantidadConfirmada, CultureInfo.InvariantCulture);
                         itemRemitosInternos.cantidadEnviada = Convert.ToDecimal(row.cantidadEnviada, CultureInfo.InvariantCulture);
                         itemRemitosInternos.fecha = DateTime.Now;
                         itemRemitosInternos.estado = true;
-                        cItemsRemitosInternos.addItemsRemitosInternos(itemRemitosInternos);
+                        
+                        StockSectores stockSectores = controladorStockProducto.ObtenerStockSectores(Convert.ToInt32(row.idProducto), Convert.ToInt32(row.idSectorOrigen));
 
-                        new ControladorStockProducto().EditarStockSectores(Convert.ToInt32(row.idProducto), Convert.ToInt32(row.idSectorOrigen), decimal.Parse(row.cantidadEnviada));
+                        if(stockSectores != null )
+                        {
+                            cItemsRemitosInternos.addItemsRemitosInternos(itemRemitosInternos);
+
+                            stockSectores.stock -= itemRemitosInternos.cantidadEnviada;
+                            controladorStockProducto.EditarStockSectores(stockSectores);
+                        }
                     }
                 }
 
-                //foreach (var row in tableData)
-                //{
-
-                //}
-
-
-                // Guardar DataTable en la sesión
-                HttpContext.Current.Session["datosAEnviar"] = dtTransferencias;
-
                 //cambiar el estado de las transferencias involucradas en el envio
                 DataTable dtId = new DataTable();
-                dtId = cTransferencia.getidTransferenciasConfirmadas(sectorDestino);
-
+                dtId = cTransferencia.getidTransferenciasConfirmadas(SectorDestino);
 
                 foreach (DataRow dr in dtId.Rows)
-                {
                     cTransferencia.updateEstadoTransferenciasAEnviar(Convert.ToInt32(dr["id"].ToString()));
-                }
 
                 return r;
-
-
             }
             catch (Exception ex)
             {
+                if (ex.Data.Contains("ErrorCode") && (int)ex.Data["ErrorCode"] == 2)
+                    return -2;
+
                 return -1;
             }
         }
@@ -1604,6 +1589,7 @@ namespace Tecnocuisine.Formularios.Ventas
 
         protected void btnRecepcion_Click(object sender, EventArgs e)
         {
+            //Actualizar estado de recepcion del remito
             ControladorRemitosInternos contRemitosInternos = new ControladorRemitosInternos();
             var idRemitoInterno = Convert.ToInt32(HFIdRemitoInterno.Value);
 
@@ -1611,7 +1597,52 @@ namespace Tecnocuisine.Formularios.Ventas
             remitoInterno.recepcionado = true;
             contRemitosInternos.UpdateRemitosInternos(remitoInterno);
 
+            //ACTUALIZAR STOCKS DEL SECTOR X PRODUCTO
+            ActualizarStockSectorXProductos(remitoInterno.sectorDestino);
+
             Response.Redirect(Request.RawUrl);
+        }
+
+        private void ActualizarStockSectorXProductos(string sector)
+        {
+            string[] itemsRemitosInternos = HFItems.Value.Split(';');
+
+            var idSectorDestino = new ControladorSectorProductivo().ObtenerSectorProductivoByNombre(sector).id;
+
+            ControladorStockProducto controladorStockProducto = new ControladorStockProducto();
+            ControladorStockReceta controladorStockReceta = new ControladorStockReceta();
+
+            //Actualizar stock para cada producto del remito interno
+            foreach (var item in itemsRemitosInternos)
+            {
+                string[] itemSpliteado = item.Split('&');
+                string descripcion = itemSpliteado[0];
+                string cantidadRecepcionada = itemSpliteado[2];
+
+                //buscar el producto en la tabla productos
+                var idProducto = new ControladorProducto().ObtenerProductoByDescripcion(descripcion).id;
+                bool esProducto = true;
+
+                ////si no existe, buscarlo en la tabla recetas
+                if (idProducto == 0)
+                {
+                    idProducto = new ControladorReceta().ObtenerRecetaByDescripcion(descripcion).id;
+                    esProducto = false;
+                }
+
+                if (esProducto)
+                {
+                    StockSectores stockSectores = controladorStockProducto.ObtenerStockSectores(idProducto, idSectorDestino);
+                    stockSectores.stock += decimal.Parse(cantidadRecepcionada);
+                    controladorStockProducto.EditarStockSectores(stockSectores);
+                }
+                else
+                {
+                    stockSectoresReceta stockReceta = controladorStockReceta.ObtenerStockSectoresReceta(idProducto, idSectorDestino);
+                    stockReceta.stock += decimal.Parse(cantidadRecepcionada);
+                    controladorStockReceta.EditarStockSectoresReceta(stockReceta);
+                }
+            }
         }
     }
 }
