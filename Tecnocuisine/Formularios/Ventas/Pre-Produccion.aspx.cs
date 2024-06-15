@@ -2,6 +2,7 @@
 using Gestion_Api.Entitys;
 using Gestion_Api.Modelo;
 using Microsoft.Ajax.Utilities;
+using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -1518,6 +1519,8 @@ namespace Tecnocuisine.Formularios.Ventas
                 foreach (DataRow dr in dtId.Rows)
                     cTransferencia.updateEstadoTransferenciasAEnviar(Convert.ToInt32(dr["id"].ToString()));
 
+                generarReporteEnviado2(r);
+
                 return r;
             }
             catch (Exception ex)
@@ -1687,6 +1690,95 @@ namespace Tecnocuisine.Formularios.Ventas
                     stockReceta.stock += decimal.Parse(cantidadRecepcionada);
                     controladorStockReceta.EditarStockSectoresReceta(stockReceta);
                 }
+            }
+        }
+
+        [WebMethod]
+        public static int generarReporteEnviado(int idRemito)
+        {
+            try
+            {
+                ReportViewer ReportViewer1 = new ReportViewer();
+                ControladorRemitosInternos cRemitosInternos = new ControladorRemitosInternos();
+                DataTable dtRemito = cRemitosInternos.getRemitosInternosByIdDT(idRemito);
+                
+                ReportViewer1.ProcessingMode = ProcessingMode.Local;
+                ReportViewer1.LocalReport.ReportPath = HttpContext.Current.Server.MapPath("DetalleRemitoR.rdlc");
+                ReportViewer1.LocalReport.EnableExternalImages = true;
+
+                ReportDataSource rds = new ReportDataSource("dsDatosPedidos", dtRemito);
+
+                ReportViewer1.LocalReport.DataSources.Clear();
+                ReportViewer1.LocalReport.DataSources.Add(rds);
+
+                ReportViewer1.LocalReport.Refresh();
+
+                Warning[] warnings;
+
+                string mimeType, encoding, fileNameExtension;
+
+                string[] streams;
+
+                
+                //get pdf content
+                Byte[] pdfContent = ReportViewer1.LocalReport.Render("PDF", null, out mimeType, out encoding, out fileNameExtension, out streams, out warnings);
+
+                HttpContext.Current.Response.Clear();
+                HttpContext.Current.Response.Buffer = true;
+                HttpContext.Current.Response.ContentType = "application/pdf";
+                HttpContext.Current.Response.AddHeader("content-length", pdfContent.Length.ToString());
+                HttpContext.Current.Response.BinaryWrite(pdfContent);
+                HttpContext.Current.Response.End();
+
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
+        public static int generarReporteEnviado2(int idRemito)
+        {
+            try
+            {
+                ReportViewer ReportViewer1 = new ReportViewer();
+                ControladorRemitosInternos cRemitosInternos = new ControladorRemitosInternos();
+                DataTable dtRemito = cRemitosInternos.getRemitosInternosByIdDT(idRemito);
+
+                ReportViewer1.ProcessingMode = ProcessingMode.Local;
+                ReportViewer1.LocalReport.ReportPath = HttpContext.Current.Server.MapPath("DetalleRemitoR.rdlc");
+                ReportViewer1.LocalReport.EnableExternalImages = true;
+
+                ReportDataSource rds = new ReportDataSource("dsDatosPedidos", dtRemito);
+
+                ReportViewer1.LocalReport.DataSources.Clear();
+                ReportViewer1.LocalReport.DataSources.Add(rds);
+
+                ReportViewer1.LocalReport.Refresh();
+
+                Warning[] warnings;
+
+                string mimeType, encoding, fileNameExtension;
+
+                string[] streams;
+
+
+                //get pdf content
+                Byte[] pdfContent = ReportViewer1.LocalReport.Render("PDF", null, out mimeType, out encoding, out fileNameExtension, out streams, out warnings);
+
+                HttpContext.Current.Response.Clear();
+                HttpContext.Current.Response.Buffer = true;
+                HttpContext.Current.Response.ContentType = "application/pdf";
+                HttpContext.Current.Response.AddHeader("content-length", pdfContent.Length.ToString());
+                HttpContext.Current.Response.BinaryWrite(pdfContent);
+                HttpContext.Current.Response.End();
+
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return -1;
             }
         }
     }

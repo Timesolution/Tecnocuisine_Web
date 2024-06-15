@@ -576,7 +576,8 @@
               
                    if(response.d > 0){
                         let r = response.d;
-                        toastr.success("Transferencia confirmada con exito!", "Exito");
+                       toastr.success("Transferencia confirmada con exito!", "Exito");
+                       imprimirRemitoEnviado(r);
                         //window.open('ImpresionRemitos2.aspx?r=' + r, '_blank');
                     }
                    else if (response.d == -1){
@@ -599,7 +600,26 @@
                });
 
 
-           }
+        }
+
+            function imprimirRemitoEnviado(r) {
+                $.ajax({
+                    method: "POST",
+                    url: "Pre-Produccion.aspx/generarReporteEnviado",
+                    //body: JSON.stringify({ idRemito: r}),
+                    data: '{idRemito: "' + r + '"}',
+                    contentType: "application/json",
+                    dataType: "json",
+                    error: function (error) {
+                        //toastr.error("Ocurrio un error al mostrar el remito generado.", "Error");
+                    },
+                    success: function (response) {
+                    }
+                });
+
+
+  
+            }
 
 
            function abrirModalRecepcionSector(){
