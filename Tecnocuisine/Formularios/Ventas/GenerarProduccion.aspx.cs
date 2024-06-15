@@ -1,5 +1,6 @@
 ﻿using Gestion_Api.Entitys;
 using Gestion_Api.Modelo;
+using Microsoft.ReportingServices.ReportProcessing.ReportObjectModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Web;
+using System.Web.Optimization;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -18,6 +20,7 @@ using System.Xml.Linq;
 using Tecnocuisine.Modelos;
 using Tecnocuisine_API.Controladores;
 using Tecnocuisine_API.Entitys;
+using Tecnocuisine_API.Modelos;
 using static Gestion_Api.Auxiliares.PushNotification.AppCenterPush;
 
 namespace Tecnocuisine.Formularios.Ventas
@@ -39,12 +42,17 @@ namespace Tecnocuisine.Formularios.Ventas
         int id;
         int Mensaje;
         int PPro;
+        string sector;
         protected void Page_Load(object sender, EventArgs e)
         {
             this.Mensaje = Convert.ToInt32(Request.QueryString["m"]);
             accion = Convert.ToInt32(Request.QueryString["a"]);
             id = Convert.ToInt32(Request.QueryString["i"]);
             PPro = Convert.ToInt32(Request.QueryString["PPro"]);
+
+            if(Request.QueryString["s"]!=null)
+                sector = Request.QueryString["s"].ToString();
+
             if (!IsPostBack)
             {
                 ObtenerRecetas();
@@ -138,36 +146,33 @@ namespace Tecnocuisine.Formularios.Ventas
                 GetProductosEnRecetasConIDQuery(this.id);
                 string Add = receta.id + " - " + receta.descripcion + " - " + "Receta";
                 txtDescripcionProductos.Text = Add;
-                NRinde.Text = receta.rinde.ToString().Replace(',', '.');
+                NRinde.Text = receta.rinde.ToString().Replace(',', '.');             
             }
         }
         public void GetProductosEnRecetasConIDQuery(int idProd)
         {
             try
             {
+                ScriptManager.RegisterStartupScript(this, GetType(), "CargarTablaReceta", $"CargarTablaReceta({idProd})", true);
 
-                ControladorReceta controladorReceta = new ControladorReceta();
-                List<Recetas_Producto> listProd = controladorReceta.ObtenerProductosByReceta(Convert.ToInt16(idProd));
+                //ControladorReceta controladorReceta = new ControladorReceta();
+                //List<Recetas_Producto> listProd = controladorReceta.ObtenerProductosByReceta(Convert.ToInt16(idProd));
 
-                List<Recetas_Receta> listRecetas = controladorReceta.obtenerRecetasbyReceta(Convert.ToInt16(idProd));
-                if (listProd.Count > 0)
-                {
-                    foreach (var item in listProd)
-                    {
-                        CargarTablaPHProductos(item);
-                    }
-                }
-                if (listRecetas.Count > 0)
-                {
-                    foreach (var item in listRecetas)
-                    {
-                        CargarTablaPHRecetas(item);
-                    }
-                }
-
-
-
-
+                //List<Recetas_Receta> listRecetas = controladorReceta.obtenerRecetasbyReceta(Convert.ToInt16(idProd));
+                //if (listProd.Count > 0)
+                //{
+                //    foreach (var item in listProd)
+                //    {
+                //        CargarTablaPHProductos(item);
+                //    }
+                //}
+                //if (listRecetas.Count > 0)
+                //{
+                //    foreach (var item in listRecetas)
+                //    {
+                //        CargarTablaPHRecetas(item);
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -215,6 +220,10 @@ namespace Tecnocuisine.Formularios.Ventas
                 CelCantNecesaria.HorizontalAlign = HorizontalAlign.Left;
                 CelCantNecesaria.Attributes.Add("style", "vertical-align: middle; text-align: right;");
                 tr.Cells.Add(CelCantNecesaria);
+
+
+
+
 
 
                 string desc = String.Concat(receta.descripcion.Where(c => !Char.IsWhiteSpace(c)));
@@ -316,7 +325,6 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
 
-
         public void CargarTablaPHProductos(Recetas_Producto item)
         {
             try
@@ -327,6 +335,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 ControladorStockReceta controladorStockReceta = new ControladorStockReceta();
                 var stock = controladorStockProducto.ObtenerStockProducto(item.idProducto);
                 var unidad = controladorUnidad.ObtenerUnidadId(item.Productos.unidadMedida);
+
                 //    string faReceta = "<td></td>";
                 //string STOCK = "";
                 //string Nombre = "<td> " + item.Productos.descripcion + "</td>";
@@ -348,13 +357,13 @@ namespace Tecnocuisine.Formularios.Ventas
                 TableRow tr = new TableRow();
                 //tr.ID = "presentacion_" + presentacion.id.ToString();
                 tr.Attributes.Add("id", "Producto%" + item.Productos.id + "%" + item.cantidad);
+
                 //Celdas
                 TableCell celNumero = new TableCell();
                 celNumero.Text = item.Productos.id.ToString();
                 celNumero.VerticalAlign = VerticalAlign.Middle;
                 celNumero.HorizontalAlign = HorizontalAlign.Right;
                 celNumero.Attributes.Add("style", "vertical-align: middle; text-align: right;");
-
                 tr.Cells.Add(celNumero);
 
                 TableCell celNombre = new TableCell();
@@ -370,6 +379,14 @@ namespace Tecnocuisine.Formularios.Ventas
                 CelCantNecesaria.HorizontalAlign = HorizontalAlign.Left;
                 CelCantNecesaria.Attributes.Add("style", "vertical-align: middle; text-align: right;");
                 tr.Cells.Add(CelCantNecesaria);
+
+
+                TableCell CelCostoUnit = new TableCell();
+                CelCostoUnit.Text = "0";
+                CelCostoUnit.VerticalAlign = VerticalAlign.Middle;
+                CelCostoUnit.HorizontalAlign = HorizontalAlign.Left;
+                CelCostoUnit.Attributes.Add("style", "vertical-align: middle; text-align: right;");
+                tr.Cells.Add(CelCostoUnit);
 
 
                 string desc = String.Concat(item.Productos.descripcion.Where(c => !Char.IsWhiteSpace(c)));
@@ -407,6 +424,15 @@ namespace Tecnocuisine.Formularios.Ventas
                 CantReal.Attributes.Add("style", "vertical-align: middle; aling-item: rigth;");
                 tr.Cells.Add(CantReal);
 
+
+                TableCell CelCostoTotal = new TableCell();
+                CelCostoTotal.Text = "0";
+                CelCostoTotal.VerticalAlign = VerticalAlign.Middle;
+                CelCostoTotal.HorizontalAlign = HorizontalAlign.Left;
+                CelCostoTotal.Attributes.Add("style", "vertical-align: middle; text-align: right;");
+                tr.Cells.Add(CelCostoTotal);
+
+
                 //agrego fila a tabla
                 TableCell Celld = new TableCell();
                 HtmlGenericControl cbxCalculator = new HtmlGenericControl("a");
@@ -418,10 +444,35 @@ namespace Tecnocuisine.Formularios.Ventas
                 // <a data-toggle=tooltip data-placement=top data-original-title=Ver_Receta href=/Formularios/Maestros/RecetasABM.aspx?a=2&i=" + id + "&b=1" + " " + "target=\"_blank\" style=\"color: black;\" > <i class=\"fa fa-search-plus\"></i> </a>
                 Celld.Controls.Add(cbxCalculator);
 
+                HtmlGenericControl cbxAgregar = new HtmlGenericControl("a");
+                cbxAgregar.Attributes.Add("data-toggle", "tooltip");
+                cbxAgregar.Attributes.Add("data-original-title", "Producir Esta Receta");
+                cbxAgregar.Attributes.Add("data-toggle", "tooltip");
+                //ver
+                //cbxAgregar.Attributes.Add("href", "GenerarProduccion.aspx?i=" + receta.id);
+                cbxAgregar.Attributes.Add("target", "_blank");
+                cbxAgregar.Style.Add("background-color", "transparent");
+                cbxAgregar.InnerHtml = " <i class=\"fa fa-cutlery\"></i>";
+                // <a data-toggle=tooltip data-placement=top data-original-title=Ver_Receta href=/Formularios/Maestros/RecetasABM.aspx?a=2&i=" + id + "&b=1" + " " + "target=\"_blank\" style=\"color: black;\" > <i class=\"fa fa-search-plus\"></i> </a>
+                Celld.Controls.Add(cbxAgregar);
+
+
+                HtmlGenericControl cbxAgregar2 = new HtmlGenericControl("a");
+                cbxAgregar2.Attributes.Add("data-toggle", "tooltip");
+                cbxAgregar2.Attributes.Add("data-original-title", "Ver Receta");
+                cbxAgregar2.Attributes.Add("data-toggle", "tooltip");
+                //ver
+                //cbxAgregar2.Attributes.Add("href", "/Formularios/Maestros/RecetasABM.aspx?a=2&i=" + receta.id + "&b=1");
+                cbxAgregar2.Attributes.Add("target", "_blank");
+                cbxAgregar2.Style.Add("background-color", "transparent");
+                cbxAgregar2.InnerHtml = "<i class=\"fa fa-search-plus\"></i>";
+                Celld.Controls.Add(cbxAgregar2);
+
+                Celld.Attributes.Add("style", "vertical-align: middle;");
+               
                 tr.Cells.Add(Celld);
 
                 phTablaProductos.Controls.Add(tr);
-
             }
 
             catch (Exception)
@@ -429,7 +480,6 @@ namespace Tecnocuisine.Formularios.Ventas
 
             }
         }
-
 
 
         private void CargarDLL()
@@ -1013,17 +1063,13 @@ namespace Tecnocuisine.Formularios.Ventas
                 int idreceta = Convert.ToInt16(idReceta);
                 decimal cantProducida = Convert.ToDecimal(CantidadProducida);
                 var ArrayStock = ListStock.Split('_');
+
                 foreach (var i3 in item)
                 {
                     try
                     {
-
                         if (i3 != "")
-                        {
-
-
                             VaciarStockProductos(i3.Split('%'), ArrayStock);
-                        }
                     }
                     catch (Exception)
                     {
@@ -1036,7 +1082,6 @@ namespace Tecnocuisine.Formularios.Ventas
                 {
                     try
                     {
-
                         // Stock Receta General
                         var sr = controladorStockReceta.ObtenerStockReceta(receta.id);
                         string fecha = DateTime.Now.ToString();
@@ -1048,13 +1093,9 @@ namespace Tecnocuisine.Formularios.Ventas
                             p.idEntregas = null;
 
                             int i2 = controladorStockReceta.AgregarStockAll_Receta(p, sectorid, Lote, fecha, presentacionid, marcaid);
-
-
-
                         }
                         else
                         {
-
                             // STOCK FINAL
                             StockReceta stockreceta = new StockReceta();
                             stockreceta.idReceta = sr.idReceta;
@@ -1191,7 +1232,7 @@ namespace Tecnocuisine.Formularios.Ventas
             }
             catch (Exception)
             {
-                return "-4";
+                return "-4 Ingrese marca y presentacion";
             }
 
         }

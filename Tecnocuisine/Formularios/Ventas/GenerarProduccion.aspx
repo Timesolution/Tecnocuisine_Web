@@ -888,21 +888,31 @@
 
             let ID = url.searchParams.get('i');
 
+
+                
             if(PR != null)
-            {
-               
- 
+            {         
                  let DescripcionProducto = document.getElementById('<%=txtDescripcionProductos.ClientID%>').value = PR;
                  document.getElementById('<%=txtDescripcionProductos.ClientID%>').value = ID + " - " + PR + " - " + "Receta";
-
-                 handle();
-                 C = C.replace(',', '.');
-                 document.getElementById('<%=NCantidad.ClientID%>').value = C;
-
-                 ChangeTableCantidad();
-                 //idReceta.ToString() + " - " + DescripcionReceta + " - " + "Receta";
             }
 
+            handle();
+            C = C.replace(',', '.');
+            document.getElementById('<%=NCantidad.ClientID%>').value = C;
+
+
+            let sector = "";
+
+            if (url.searchParams.get('s') != null) {
+                sector = url.searchParams.get('s');
+
+                let sectorId = url.searchParams.get('sid');
+
+                document.getElementById('<%=NSector.ClientID%>').value = sectorId + " - " + sector;
+            }
+
+            ChangeTableCantidad();
+                 //idReceta.ToString() + " - " + DescripcionReceta + " - " + "Receta";
            
 
         });
