@@ -2,7 +2,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-    <%--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />--%>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 
     <%-- ACA EMPIEZA EL CONTAINER --%>
     <div class="container-fluid">
@@ -62,13 +62,13 @@
                                                                 </asp:TextBox>
                                                             </div>
                                                             <div class="col-md-2">
-                                                                <asp:Button ID="btnSector" runat="server" class="btn btn-primary pull-right" OnClientClick="filtrarSectorOrigen(); return false" />
+                                                                <asp:Button ID="btnSector" runat="server" class="btn btn-primary pull-right" OnClientClick="filtrarSectorOrigen(); return false"/>
                                                             </div>
 
                                                             <%-- Boton Filtrar --%>
-                                                            <div class="col-md-2">
+                                                            <%--<div class="col-md-2">
                                                                 <a id="btnFiltrar" onclick="FiltrarIngredientesDeOrdenesDeProduccion()" class="btn btn-primary pull-right" style="margin-right: 15px;"><i class="fa fa-paper-plane"></i>&nbsp;Filtrar </a>
-                                                            </div>
+                                                            </div>--%>
                                                         </div>
                                                         <%-- Fin de la row --%>
                                                     </div>
@@ -577,14 +577,22 @@
                    if(response.d > 0){
                         let r = response.d;
                         toastr.success("Transferencia confirmada con exito!", "Exito");
-                        window.open('ImpresionRemitos.aspx?r=' + r, '_blank');
+                        //window.open('ImpresionRemitos2.aspx?r=' + r, '_blank');
                     }
                    else if (response.d == -1){
                          toastr.error("La transferencia no pudo ser confirmada.", "Error");
               
                       }
                    else if (response.d == -2) {
-                       toastr.error("La transferencia no pudo ser confirmada, hay productos con stock insuficiente.", "Error");
+                       toastr.error("La transferencia no pudo ser confirmada, no hay stock cargado para uno de los productos.", "Error");
+
+                      }
+                   else if (response.d == -3) {
+                       toastr.error("La transferencia no pudo ser confirmada, no se puede enviar una cantidad cero (0).", "Error");
+
+                      }
+                   else if (response.d == -4) {
+                       toastr.error("La transferencia no pudo ser confirmada, una cantidad a enviar es mayor al stock disponible.", "Error");
 
                    }
                   }
@@ -1385,9 +1393,9 @@
                     dt.forEach(element => {
                         cont++;
                         let cantidadAConfirmar = `<input id="cantAproducir_${cont}" value="${element.cantidadConfirmada}"
-                                                     style="width: 100%; text-align: right;" 
+                                                     style="width: 100%; text-align: right; type="text" 
                                                      placeholder="Cantidad" 
-                                                     oninput="validarTextBox(this);" />`;
+                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '');" />`;
                        
 
                         let filaProducto = "";
@@ -1434,8 +1442,8 @@
     </script>
     <script>
         function verDetalleRemitoInternoPdf(idRemito) {
-            console.log("hola");
-            window.open("ImpresionRemitos.aspx?r=" + idRemito, "_blank");
+            //window.open("ImpresionRemitos2.aspx?r=" + r, "_blank");
+            /*window.open("../Ventas/ImpresionRemitos.aspx?r=" + r, "_blank");*/
         }
     </script>
     <script>

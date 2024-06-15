@@ -62,6 +62,10 @@ namespace Tecnocuisine.Formularios.Ventas
 
         public void filtrarProduccionBySector()
         {
+            string sectorId = string.Empty;
+            if (Request.QueryString["OV"] != null)
+                sectorId = Request.QueryString["OV"].ToString();
+
             if (Request.QueryString["O"] != null)
             {
                 sector = Request.QueryString["O"].ToString();
@@ -77,7 +81,7 @@ namespace Tecnocuisine.Formularios.Ventas
 
                     //Celdas
                     TableCell celProducto = new TableCell();
-                    celProducto.Text = dr["productoDestino"].ToString();
+                    celProducto.Text = dr["productoOrigen"].ToString();
                     celProducto.VerticalAlign = VerticalAlign.Middle;
                     celProducto.HorizontalAlign = HorizontalAlign.Left;
                     celProducto.Attributes.Add("style", "padding-bottom: 1px !important;");
@@ -85,7 +89,7 @@ namespace Tecnocuisine.Formularios.Ventas
 
 
                     TableCell celCantidad = new TableCell();
-                    celCantidad.Text = dr["cantidadOrigen"].ToString();
+                    celCantidad.Text = dr["cantidadConfirmada"].ToString();
                     celCantidad.VerticalAlign = VerticalAlign.Middle;
                     celCantidad.HorizontalAlign = HorizontalAlign.Left;
                     celCantidad.Attributes.Add("style", "padding-bottom: 1px !important;");
@@ -99,16 +103,30 @@ namespace Tecnocuisine.Formularios.Ventas
                     tr.Cells.Add(celFecha);
 
                     TableCell celAccion = new TableCell();
-                    LinkButton btnDetalle = new LinkButton();
+                    LinkButton btnProducir = new LinkButton();
                     //btnDetalle.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
+                    btnProducir.CssClass = "btn btn-xs";
+                    btnProducir.Style.Add("background-color", "transparent");
+                    //btnDetalle.Attributes.Add("data-toggle", "modal");
+                    //btnDetalle.Attributes.Add("href", "#modalConfirmacion2");
+                    btnProducir.Text = "<span title='Producir'><i class='fa fa-utensils' style='color: black;'></i></span>";
+                    //btnDetalle.Attributes.Add("onclick", "verDetalleRemitoInternoPdf('" + remito.id + "');");
+                    btnProducir.Attributes.Add("href", "GenerarProduccion.aspx?i="+ dr["id"].ToString() + "&C="+ dr["cantidadConfirmada"].ToString() + "&s="+sector + "&sid="+sectorId);
+                    btnProducir.Attributes.Add("target", "_blank");
+                    celAccion.Controls.Add(btnProducir);
+                    tr.Cells.Add(celAccion);
+
+                    TableCell celAccion2 = new TableCell();
+                    LinkButton btnDetalle = new LinkButton();
+                    btnDetalle.ID = "btnVerPedidos_" + cont.ToString();
                     btnDetalle.CssClass = "btn btn-xs";
                     btnDetalle.Style.Add("background-color", "transparent");
                     btnDetalle.Attributes.Add("data-toggle", "modal");
-                    //btnDetalle.Attributes.Add("href", "#modalConfirmacion2");
-                    btnDetalle.Text = "<span title='Ver pedidos'><i class='fa fa-search' style='color: black;'></i></span>";
-                    //btnDetalle.Attributes.Add("onclick", "verDetalleRemitoInternoPdf('" + remito.id + "');");
+                    btnDetalle.Attributes.Add("href", "#modalConfirmacion2");
+                    btnDetalle.Text = "<span title='Ver Detalle'><i class='fa fa-eye' style='color: black;'></i></span>";
+                    //btnDetalle.Attributes.Add("onclick", "getDatosTransferenciaBySectorDestino('" + dr["sectorOrigen"].ToString() + "', '" + dr["sectorDestino"].ToString() + "');");
                     celAccion.Controls.Add(btnDetalle);
-                    tr.Cells.Add(celAccion);
+                    tr.Cells.Add(celAccion2);
 
                     phProduccion.Controls.Add(tr);
                 }
@@ -514,7 +532,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 btnDetalle.Style.Add("background-color", "transparent");
                 btnDetalle.Attributes.Add("data-toggle", "modal");
                 btnDetalle.Attributes.Add("href", "#modalConfirmacion2");
-                btnDetalle.Text = "<span title='Ver pedidos'><i class='fa fa-exchange' style='color: black;'></i></span>";
+                btnDetalle.Text = "<span title='Ver pedidos'><i class='fa fa-eye' style='color: black;'></i></span>";
                 btnDetalle.Attributes.Add("onclick", "getDatosTransferenciaBySectorDestino('" + dr["sectorOrigen"].ToString() + "', '" + dr["sectorDestino"].ToString() + "');");
                 celAccion.Controls.Add(btnDetalle);
 
@@ -1442,17 +1460,14 @@ namespace Tecnocuisine.Formularios.Ventas
                 sumaDatosTransferencia sumaDatosTransferencia = new sumaDatosTransferencia();
                 ControladorStockProducto controladorStockProducto = new ControladorStockProducto();
 
-                //Ver si los productos existen en la tabla stocksector
                 foreach (var row in tableData)
                 {
-                    //validar que exista stock para hacer el envio
-                    var cantidadAEnviar = Convert.ToDecimal(row.cantidadEnviada, CultureInfo.InvariantCulture);
-                    StockSectores stockSector = controladorStockProducto.ObtenerStockSectores(Convert.ToInt32(row.idProducto), Convert.ToInt32(row.idSectorOrigen));
+                    int result = ValidateRow(row);
 
-                    if (stockSector == null || stockSector.stock < cantidadAEnviar)
+                    if(result != 1)
                     {
-                        Exception ex = new Exception("No se encontró stock para un producto en el sector especificado.");
-                        ex.Data["ErrorCode"] = 2;
+                        Exception ex = new Exception();
+                        ex.Data["ErrorCode"] = result;
                         throw ex;
                     }
                 }
@@ -1507,11 +1522,41 @@ namespace Tecnocuisine.Formularios.Ventas
             }
             catch (Exception ex)
             {
-                if (ex.Data.Contains("ErrorCode") && (int)ex.Data["ErrorCode"] == 2)
-                    return -2;
+                if (ex.Data.Contains("ErrorCode"))
+                {
+                    int errorCode = (int)ex.Data["ErrorCode"];
+                    switch (errorCode)
+                    {
+                        case 2:
+                            return -2;
+                        case 3:
+                            return -3;
+                        case 4:
+                            return -4;
+                        default:
+                            return -1;
+                    }
+                }
 
                 return -1;
             }
+        }
+
+        private static int ValidateRow(RowClass row)
+        {
+            var cantidadAEnviar = Convert.ToDecimal(row.cantidadEnviada, CultureInfo.InvariantCulture);
+            StockSectores stockSector = new ControladorStockProducto().ObtenerStockSectores(Convert.ToInt32(row.idProducto), Convert.ToInt32(row.idSectorOrigen));
+
+            if (stockSector == null)
+                return 2;
+
+            else if (cantidadAEnviar == 0)
+                return 3;
+
+            else if (cantidadAEnviar > stockSector.stock)
+                return 4;
+
+            return 1;
         }
 
         private static string NuevoNumeroRemitoInterno()
