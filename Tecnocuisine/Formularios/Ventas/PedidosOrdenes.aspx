@@ -29,21 +29,30 @@
                                                             </div>
 
                                                             <div>
-                                                                <a id="btnAyer" onclick="filtrartTransferenciasAyer()" class="btn btn-warning"
+                                                                <%--<a id="btnAyer" onclick="filtrartTransferenciasAyer()" class="btn btn-warning"
                                                                     title="filtrar ayer" style="height: 32px; margin-left: 10px">Ayer
-                                                                </a>
+                                                                </a>--%>
+                                                                <asp:Button runat="server" ID="btnAyer" OnClick="btnAyer_Click" class="btn btn-warning"
+                                                                    title="filtrar ayer" Style="height: 32px; margin-left: 10px" Text="Ayer"></asp:Button>
 
-                                                                <a id="btnHoy" onclick="filtrartTransferenciasHoy()" class="btn btn-warning"
+                                                                <%--<a id="btnHoy" onclick="filtrartTransferenciasHoy()" class="btn btn-warning"
                                                                     title="filtrar hoy" style="height: 32px; margin-left: 10px">Hoy
-                                                                </a>
+                                                                </a>--%>
+                                                                <asp:Button runat="server" ID="btnHoy" OnClick="btnHoy_Click" class="btn btn-warning"
+                                                                    title="filtrar hoy" Style="height: 32px; margin-left: 10px" Text="Hoy"></asp:Button>
 
-                                                                <a id="btnMañana" onclick="filtrartTransferenciasMañana()" class="btn btn-warning"
-                                                                    title="filtrar hoy" style="height: 32px; margin-left: 10px">Mañana
-                                                                </a>
+                                                                <%--<a id="btnMañana" onclick="filtrartTransferenciasMañana()" class="btn btn-warning"
+                                                                    title="filtrar mañana" style="height: 32px; margin-left: 10px">Mañana
+                                                                </a>--%>
+                                                                <asp:Button runat="server" ID="btnMañana" OnClick="btnMañana_Click" class="btn btn-warning"
+                                                                    title="filtrar mañana" Style="height: 32px; margin-left: 10px" Text="Mañana"></asp:Button>
 
-                                                                <a id="btnPasado" onclick="filtrartTransferenciasPasado()" class="btn btn-warning"
-                                                                    title="filtrar hoy" style="height: 32px; margin-left: 10px">Pasado 
-                                                                </a>
+                                                                <%--<a id="btnPasado" onclick="filtrartTransferenciasPasado()" class="btn btn-warning"
+                                                                    title="filtrar pasado" style="height: 32px; margin-left: 10px">Pasado 
+                                                                </a>--%>
+                                                                <asp:Button runat="server" id="btnPasado" onclick="btnPasado_Click" class="btn btn-warning"
+                                                                    title="filtrar pasado" style="height: 32px; margin-left: 10px" Text="Pasado"> 
+                                                                </asp:Button>
                                                             </div>
 
                                                         </div>
@@ -135,8 +144,8 @@
                                                                 </div>--%>
 
                                                                 <%--Boton Filtrar--%>
-                                                                <div style="width:29%; align-self: flex-end">
-                                                                    <a id="btnfiltrar" onclick="filtrarordenesproduccion()" class="btn btn-primary" title="filtrar" style="height: 32px; width: 100%">
+                                                                <div style="width: 29%; align-self: flex-end">
+                                                                    <a id="btnfiltrar" onclick="filtrarordenesproduccion()" class="btn btn-primary" title="filtrar" style="width: 100%">
                                                                         <i class="fa fa-search"></i>&nbsp;Filtrar
                                                                     </a>
                                                                 </div>

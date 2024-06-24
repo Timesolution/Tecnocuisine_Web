@@ -15,6 +15,7 @@ using System.Web.Script.Serialization;
 using System.Web.WebSockets;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
+using System.Data.Entity;
 
 namespace Tecnocuisine.Formularios.Ventas
 {
@@ -50,7 +51,7 @@ namespace Tecnocuisine.Formularios.Ventas
             ControladorTransferencia cTransferencia = new ControladorTransferencia();
             if (!IsPostBack)
             {
-                cargarTransferencias();
+                cargarTransferenciasByFecha(DateTime.Now);
                 cargarOrigen();
                 cargarDestino();
                 cargarEstadosOrdenes();
@@ -73,14 +74,14 @@ namespace Tecnocuisine.Formularios.Ventas
                 this.estado = Convert.ToInt32(Request.QueryString["estado"].ToString());
             }
 
-            if (Request.QueryString["FechaAyer"] != null)
-            {
-                this.fechaAyer = Request.QueryString["FechaAyer"].ToString();
-                this.origen = Request.QueryString["Origen"].ToString();
-                this.destino = Request.QueryString["Destino"].ToString();
-                this.estado = Convert.ToInt32(Request.QueryString["estado"].ToString());
-                this.sector = Request.QueryString["sector"].ToString();
-            }
+            //if (Request.QueryString["FechaAyer"] != null)
+            //{
+            //    this.fechaAyer = Request.QueryString["FechaAyer"].ToString();
+            //    this.origen = Request.QueryString["Origen"].ToString();
+            //    this.destino = Request.QueryString["Destino"].ToString();
+            //    this.estado = Convert.ToInt32(Request.QueryString["estado"].ToString());
+            //    this.sector = Request.QueryString["sector"].ToString();
+            //}
 
 
             if (Request.QueryString["FechaHoy"] != null)
@@ -145,6 +146,9 @@ namespace Tecnocuisine.Formularios.Ventas
             {
                 filtrarTransferenciasPasado(this.fechaPasado, this.origen, this.destino, this.estado, this.sector);
             }
+
+
+            //this.origen = Request.QueryString["Origen"].ToString();
 
         }
 
@@ -326,10 +330,11 @@ namespace Tecnocuisine.Formularios.Ventas
         //    }
 
         //}
-        public void cargarTransferencias()
+        public void cargarTransferenciasByFecha(DateTime fecha)
         {
             controladorPedidosTranferencia cTranferencia = new controladorPedidosTranferencia();
-            var tranferencias = cTranferencia.getAllTransferencias();
+            //var tranferencias = cTranferencia.getAllTransferencias();
+            var tranferencias = cTranferencia.getAllTransferenciasByFecha(fecha);
 
             foreach (var item in tranferencias)
             {
@@ -1142,6 +1147,26 @@ namespace Tecnocuisine.Formularios.Ventas
         protected void btnPrueba_Click(object sender, EventArgs e)
         {
 
+        }
+
+        protected void btnAyer_Click(object sender, EventArgs e)
+        {
+            cargarTransferenciasByFecha(DateTime.Now.AddDays(-1));
+        }
+
+        protected void btnHoy_Click(object sender, EventArgs e)
+        {
+            cargarTransferenciasByFecha(DateTime.Now);
+        }
+
+        protected void btnMañana_Click(object sender, EventArgs e)
+        {
+            cargarTransferenciasByFecha(DateTime.Now.AddDays(1));
+        }
+
+        protected void btnPasado_Click(object sender, EventArgs e)
+        {
+            cargarTransferenciasByFecha(DateTime.Now.AddDays(2));
         }
     }
 }
