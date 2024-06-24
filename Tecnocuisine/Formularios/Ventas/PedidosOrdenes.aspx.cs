@@ -54,7 +54,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 cargarOrigen();
                 cargarDestino();
                 cargarEstadosOrdenes();
-                cargarSectorUsuario();
+                //cargarSectorUsuario();
                 var tranferencias = cTransferencia.getListTransferencias();
 
                 foreach (var item in tranferencias)
@@ -288,44 +288,44 @@ namespace Tecnocuisine.Formularios.Ventas
 
         }
 
-        public void cargarSectorUsuario()
-        {
-            try
-            {
-                ControladorSectorProductivo cSectorProductivo = new ControladorSectorProductivo();
-                DataTable dt = cSectorProductivo.GetAllSectoresProductivosDT();
-                DataRow drSeleccione = dt.NewRow();
-                drSeleccione["descripcion"] = "Seleccione...";
-                drSeleccione["id"] = -1;
-                dt.Rows.InsertAt(drSeleccione, 0);
+        //public void cargarSectorUsuario()
+        //{
+        //    try
+        //    {
+        //        ControladorSectorProductivo cSectorProductivo = new ControladorSectorProductivo();
+        //        DataTable dt = cSectorProductivo.GetAllSectoresProductivosDT();
+        //        DataRow drSeleccione = dt.NewRow();
+        //        drSeleccione["descripcion"] = "Seleccione...";
+        //        drSeleccione["id"] = -1;
+        //        dt.Rows.InsertAt(drSeleccione, 0);
 
-                // Ordenar los datos alfabéticamente por la descripción (ignorando la primera fila)
-                var sortedData = dt.AsEnumerable()
-                                   .Skip(1) // Ignorar la primera fila ("Seleccione...")
-                                   .OrderBy(row => row.Field<string>("descripcion"));
+        //        // Ordenar los datos alfabéticamente por la descripción (ignorando la primera fila)
+        //        var sortedData = dt.AsEnumerable()
+        //                           .Skip(1) // Ignorar la primera fila ("Seleccione...")
+        //                           .OrderBy(row => row.Field<string>("descripcion"));
 
-                // Crear una nueva tabla con los elementos ordenados y el elemento inicial
-                DataTable sortedTable = dt.Clone();
-                sortedTable.Rows.Add(drSeleccione.ItemArray);
-                foreach (DataRow row in sortedData)
-                {
-                    sortedTable.ImportRow(row);
-                }
+        //        // Crear una nueva tabla con los elementos ordenados y el elemento inicial
+        //        DataTable sortedTable = dt.Clone();
+        //        sortedTable.Rows.Add(drSeleccione.ItemArray);
+        //        foreach (DataRow row in sortedData)
+        //        {
+        //            sortedTable.ImportRow(row);
+        //        }
 
-                this.ddlSectorUsuario.DataSource = sortedTable;
-                this.ddlSectorUsuario.DataValueField = "id";
-                this.ddlSectorUsuario.DataTextField = "descripcion";
+        //        this.ddlSectorUsuario.DataSource = sortedTable;
+        //        this.ddlSectorUsuario.DataValueField = "id";
+        //        this.ddlSectorUsuario.DataTextField = "descripcion";
 
-                this.ddlSectorUsuario.DataBind();
+        //        this.ddlSectorUsuario.DataBind();
 
-                this.ddlSectorUsuario.SelectedValue = "-1";
+        //        this.ddlSectorUsuario.SelectedValue = "-1";
 
-            }
-            catch (Exception ex)
-            {
-            }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //    }
 
-        }
+        //}
         public void cargarTransferencias()
         {
             controladorPedidosTranferencia cTranferencia = new controladorPedidosTranferencia();
