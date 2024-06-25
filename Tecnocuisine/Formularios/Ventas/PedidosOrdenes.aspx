@@ -14,7 +14,7 @@
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-content">
                                                 <div style="margin-left: 0px; margin-right: 0px;">
-                                                    <div style="display: flex; justify-content: space-between; column-gap: 5rem; margin-bottom: 2rem; padding-right: 1rem;">
+                                                    <div style="display: flex; justify-content: space-between; column-gap: 5rem; margin-bottom: 3rem; padding-right: 1rem;">
 
                                                         <%--Seccion busqueda rapida--%>
                                                         <div>
@@ -50,23 +50,22 @@
                                                                 <%--<a id="btnPasado" onclick="filtrartTransferenciasPasado()" class="btn btn-warning"
                                                                     title="filtrar pasado" style="height: 32px; margin-left: 10px">Pasado 
                                                                 </a>--%>
-                                                                <asp:Button runat="server" id="btnPasado" onclick="btnPasado_Click" class="btn btn-warning"
-                                                                    title="filtrar pasado" style="height: 32px; margin-left: 10px" Text="Pasado"> 
-                                                                </asp:Button>
+                                                                <asp:Button runat="server" ID="btnPasado" OnClick="btnPasado_Click" class="btn btn-warning"
+                                                                    title="filtrar pasado" Style="height: 32px; margin-left: 10px" Text="Pasado"></asp:Button>
                                                             </div>
 
                                                         </div>
 
                                                         <%--Seccion busqueda avanzada--%>
-                                                        <div>
+                                                        <div style="width: 50%">
 
                                                             <strong style="font-size: 1.6rem">Busqueda avanzada</strong>
 
                                                             <%--Fila 1--%>
-                                                            <div style="display: flex; justify-content: flex-start; column-gap: 2rem">
+                                                            <div style="display: flex; justify-content: flex-start; column-gap: 2rem; width:100%">
 
                                                                 <%--Fecha Desde--%>
-                                                                <div style="">
+                                                                <div style="width:33%">
                                                                     <label style="margin-top: 5px;">Desde:</label>
                                                                     <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy"
                                                                         data-date-format="dd/mm/yyyy">
@@ -74,7 +73,7 @@
                                                                 </div>
 
                                                                 <%--Fecha Hasta--%>
-                                                                <div style="">
+                                                                <div style="width:33%">
                                                                     <label style="margin-top: 5px;">Hasta:</label>
                                                                     <asp:TextBox class="form-control" runat="server" type="date"
                                                                         ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy">
@@ -82,7 +81,7 @@
                                                                 </div>
 
                                                                 <%--Estado--%>
-                                                                <div>
+                                                                <div style="width:33%">
                                                                     <label style="margin-top: 5px;">Estado</label>
                                                                     <asp:DropDownList ID="ddlEstado" runat="server"
                                                                         CssClass="chosen-select form-control"
@@ -96,10 +95,10 @@
 
 
                                                             <%--Fila 2--%>
-                                                            <div style="display: flex; justify-content: flex-start; column-gap: 2rem;">
+                                                            <div style="display: flex; justify-content: flex-start; column-gap: 2rem; width:100%">
 
                                                                 <%--Origen--%>
-                                                                <div style="width: 32%">
+                                                                <div style="width: 31%">
                                                                     <label style="margin-top: 5px;">Origen</label>
                                                                     <div>
                                                                         <asp:DropDownList ID="ddlOrigen" runat="server"
@@ -124,15 +123,6 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <%--<asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False">
-                                                                                 <Columns>
-                                                                                     <asp:BoundField DataField="ID" HeaderText="ID" />
-                                                                                     <asp:BoundField DataField="Nombre" HeaderText="Nombre" />
-                                                                                     <asp:BoundField DataField="Apellido" HeaderText="Apellido" />
-                                                                                 </Columns>
-                                                                             </asp:GridView>--%>
-
-
                                                                 <%--<label style="margin-top: 5px; margin-left: 10px; margin-right: 10px">Sector</label>
                                                                 <div>
                                                                     <asp:DropDownList ID="ddlSectorUsuario" runat="server"
@@ -144,10 +134,14 @@
                                                                 </div>--%>
 
                                                                 <%--Boton Filtrar--%>
-                                                                <div style="width: 29%; align-self: flex-end">
-                                                                    <a id="btnfiltrar" onclick="filtrarordenesproduccion()" class="btn btn-primary" title="filtrar" style="width: 100%">
+                                                                <div style="width: 31%; align-self: flex-end; justify-self:flex-start">
+                                                                    <%--<a id="btnfiltrar" onclick="filtrarordenesproduccion()" class="btn btn-primary" title="filtrar" style="width: 100%">
                                                                         <i class="fa fa-search"></i>&nbsp;Filtrar
-                                                                    </a>
+                                                                    </a>--%>                                          
+                                                                    <asp:LinkButton ID="btnfiltrar" runat="server" OnClick="btnfiltrar_Click" title="filtrar" Style="width: 100%" CssClass="btn btn-primary btn-with-icon">
+                                                                        <i class="fa fa-search"></i>&nbsp;Filtrar
+                                                                    </asp:LinkButton>
+
                                                                 </div>
                                                             </div>
 
@@ -448,24 +442,21 @@
         }
 
         function filtrarordenesproduccion() {
-            //let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value
-            //let FechaH = document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value
+            let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value
+            let FechaH = document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value
 
             let ddlOrigen = document.getElementById("ContentPlaceHolder1_ddlOrigen");
             let origen = ddlOrigen.options[ddlOrigen.selectedIndex].text;
 
-            //let ddlDestino = document.getElementById("ContentPlaceHolder1_ddlDestino");
-            //let destino = ddlDestino.options[ddlDestino.selectedIndex].text;
+            let ddlDestino = document.getElementById("ContentPlaceHolder1_ddlDestino");
+            let destino = ddlDestino.options[ddlDestino.selectedIndex].text;
 
-            //let estado = document.getElementById("ContentPlaceHolder1_ddlEstado").value;
+            let estado = document.getElementById("ContentPlaceHolder1_ddlEstado").value;
 
-            //let ddlSector = document.getElementById("ContentPlaceHolder1_ddlSectorUsuario");
-            //let sector = ddlSector.options[ddlSector.selectedIndex].text;
+            let ddlSector = document.getElementById("ContentPlaceHolder1_ddlSectorUsuario");
+            let sector = ddlSector.options[ddlSector.selectedIndex].text;
 
-
-            //window.location.href = "PedidosOrdenes.aspx?FechaD=" + FechaD + "&FechaH=" + FechaH + /* "&sector=" + sector + */ "&Estado=" + estado; 
-            window.location.href = "PedidosOrdenes.aspx?origen=" + origen;
-
+            window.location.href = "PedidosOrdenes.aspx?FechaD=" + FechaD + "&FechaH=" + FechaH + "&sector=" + sector + "&Estado=" + estado;
         }
 
 
