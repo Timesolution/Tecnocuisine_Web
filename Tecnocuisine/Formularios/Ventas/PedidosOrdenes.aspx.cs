@@ -600,8 +600,6 @@ namespace Tecnocuisine.Formularios.Ventas
 
             }
         }
-
-
         public void filtrarTransferenciasHoy(string fechaHoy, string origen, string destino, int estadoTransferencia, string sector)
         {
             try
@@ -1167,6 +1165,100 @@ namespace Tecnocuisine.Formularios.Ventas
         protected void btnPasado_Click(object sender, EventArgs e)
         {
             cargarTransferenciasByFecha(DateTime.Now.AddDays(2));
+        }
+
+        protected void btnfiltrar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //Obtener valores para filtro
+                DateTime fechaDesde = DateTime.ParseExact(txtFechaHoy.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                DateTime fechaHasta = DateTime.ParseExact(txtFechaVencimiento.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                string origen = ddlOrigen.SelectedValue != "-1" ? ddlOrigen.SelectedItem.Text : "";
+                string destino = ddlDestino.SelectedValue != "-1" ? ddlDestino.SelectedItem.Text : "";
+                int estado = int.Parse(ddlEstado.SelectedValue);
+
+                //Obtener transferencias filtradas
+                var transferencias = new ControladorTransferencia().filtrarTransferencias(fechaDesde, fechaHasta, origen, destino, estado);
+
+                //Mostrar
+                LoadTableTransferencias(transferencias);              
+            }
+            catch (FormatException)
+            {
+                //ClientScript.RegisterStartupScript(this.GetType(), "alert", $"alert('Error: formato de fecha no valido');", true);
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void LoadTableTransferencias(List<Transferencia> transferenciasFiltradas)
+        {
+            phTransferencias.Controls.Clear();
+            transferencias.Value = "";
+
+            foreach (var item in transferenciasFiltradas)
+            {
+                idRow++;
+                TableRow tr = new TableRow();
+                tr.ID = idRow.ToString();
+
+                //Celdas
+                TableCell celFecha = new TableCell();
+                celFecha.Text = item.fecha.ToString();
+                celFecha.VerticalAlign = VerticalAlign.Middle;
+                celFecha.HorizontalAlign = HorizontalAlign.Left;
+                celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celFecha);
+
+                TableCell celOrigen = new TableCell();
+                celOrigen.Text = item.origen.ToString();
+                celOrigen.VerticalAlign = VerticalAlign.Middle;
+                celOrigen.HorizontalAlign = HorizontalAlign.Left;
+                celOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celOrigen);
+
+                TableCell celDestino = new TableCell();
+                celDestino.Text = item.destino.ToString();
+                celDestino.VerticalAlign = VerticalAlign.Middle;
+                celDestino.HorizontalAlign = HorizontalAlign.Left;
+                celDestino.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celDestino);
+
+                TableCell celOrden = new TableCell();
+                celOrden.Text = item.orden.ToString();
+                celOrden.VerticalAlign = VerticalAlign.Middle;
+                celOrden.HorizontalAlign = HorizontalAlign.Left;
+                celOrden.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celOrden);
+
+                TableCell celEstadoTransferencia = new TableCell();
+                celEstadoTransferencia.Text = item.estadoTransferencias.descripcion;
+                celEstadoTransferencia.VerticalAlign = VerticalAlign.Middle;
+                celEstadoTransferencia.HorizontalAlign = HorizontalAlign.Left;
+                celEstadoTransferencia.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celEstadoTransferencia);
+
+                TableCell celAccion = new TableCell();
+                LinkButton btnEliminar = new LinkButton();
+                btnEliminar.ID = "btnEliminarReceta_" + item.id.ToString();
+                btnEliminar.CssClass = "btn btn-xs";
+                btnEliminar.Style.Add("background-color", "transparent");
+                btnEliminar.Attributes.Add("data-toggle", "modal");
+                btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
+                btnEliminar.Text = "<span title='Eliminar'><i class='fa fa-exchange' style='color: black;'></i></span>";
+                btnEliminar.Attributes.Add("onclick", "verDetalleTranferencia('" + item.id.ToString() + "');");
+                celAccion.Controls.Add(btnEliminar);
+
+                tr.Cells.Add(celAccion);
+
+                transferencias.Value += item.fecha.ToString() + "," +
+                item.origen.ToString() + "," + item.destino.ToString() + "," +
+                item.orden.ToString() + "," + item.estadoTransferencias.descripcion + ";";
+
+                phTransferencias.Controls.Add(tr);
+            }
         }
     }
 }
