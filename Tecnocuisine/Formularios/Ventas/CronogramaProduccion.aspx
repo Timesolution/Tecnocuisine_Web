@@ -198,7 +198,7 @@
         OnClick="btnCancelar_Click">
     </asp:LinkButton>
 
-    <asp:LinkButton runat="server" ID="btnProducir" 
+    <asp:LinkButton runat="server" ID="btnProducir"
         class="btn btn-primary dim" Style="float: right" Text="A producir" OnClientClick="Producir(); 
         return false;">
     </asp:LinkButton>
@@ -431,7 +431,7 @@
 
             $("#editable_filter").css('display', 'none');
 
-     
+
 
         });
 
@@ -445,51 +445,51 @@
             $content.slideToggle();
         }
 
-        function verIngredientes(idReceta){
+        function verIngredientes(idReceta) {
             console.log(idReceta)
             fetch('CronogramaProduccion.aspx/getIngredientesRecetaByid', {
-            method: 'POST',
-            body: JSON.stringify({idReceta: idReceta}),
-            headers: { 'Content-Type': 'application/json' },
+                method: 'POST',
+                body: JSON.stringify({ idReceta: idReceta }),
+                headers: { 'Content-Type': 'application/json' },
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data.d)
-                document.getElementById('tableIngredientres').innerHTML = "";
-                const ingredientesArray = data.d.split(';').filter(Boolean);
-                ingredientesArray.forEach(ingredientes => {
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.d)
+                    document.getElementById('tableIngredientres').innerHTML = "";
+                    const ingredientesArray = data.d.split(';').filter(Boolean);
+                    ingredientesArray.forEach(ingredientes => {
 
-                    const campos = ingredientes.split(',').filter(Boolean);
-                    const descripcion = campos[0];
-                    const sectorProductivo = campos[1];
-                    const cantidad = campos[2];
+                        const campos = ingredientes.split(',').filter(Boolean);
+                        const descripcion = campos[0];
+                        const sectorProductivo = campos[1];
+                        const cantidad = campos[2];
 
-                    let plantillaIngredientes = `
+                        let plantillaIngredientes = `
                     <tr>
                         <td>${descripcion}</td>
                         <td>${sectorProductivo}</td>
                         <td style="text-align: right;">${cantidad}</td>
                     </tr>
                    `;
-                    document.getElementById('tableIngredientres').innerHTML += plantillaIngredientes;
-                    $('#modalVerIngredientesReceta').modal('show');
+                        document.getElementById('tableIngredientres').innerHTML += plantillaIngredientes;
+                        $('#modalVerIngredientesReceta').modal('show');
+                    });
+                })
+                .catch(error => {
+                    // Manejo de errores aquí si es necesario
+                    console.error('Error:', error);
                 });
-            })
-            .catch(error => {
-                // Manejo de errores aquí si es necesario
-                console.error('Error:', error);
-            });
-          }
+        }
 
 
         function MostrarRecepcion(cantidad, id, nivel, DiasMasNivel, descripcionReceta, idReceta, dt) {
-                nivel++;
-                console.log(dt)
-                fetch('CronogramaProduccion.aspx/getProductoByidReceta', {
-                    method: 'POST',
-                    body: JSON.stringify({ id: id, nivel: nivel }),
-                    headers: { 'Content-Type': 'application/json' },
-                })
+            nivel++;
+            console.log(dt)
+            fetch('CronogramaProduccion.aspx/getProductoByidReceta', {
+                method: 'POST',
+                body: JSON.stringify({ id: id, nivel: nivel }),
+                headers: { 'Content-Type': 'application/json' },
+            })
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
@@ -497,7 +497,7 @@
 
                     const productosArray = data.d.split(';');
                     document.getElementById('tablaRecepcion').innerHTML = "";
-                   // document.getElementById('tablaEntrega').innerHTML = "";
+                    // document.getElementById('tablaEntrega').innerHTML = "";
                     productosArray.forEach(producto => {
                         // Dividir cada elemento en valores individuales usando coma como separador
                         const productoData = producto.split(',');
@@ -524,7 +524,7 @@
                             document.getElementById('tablaRecepcion').innerHTML += plantillaIngredientes;
                         }
 
-                   
+
                     });
                 })
                 .catch(error => {
@@ -532,27 +532,27 @@
                     console.error('Error:', error);
                 });
 
-                fetch('CronogramaProduccion.aspx/getSectorProductivoByIdReceta', {
-                    method: 'POST',
-                    body: JSON.stringify({ idReceta: idReceta }),
-                    headers: { 'Content-Type': 'application/json' }
-                })
+            fetch('CronogramaProduccion.aspx/getSectorProductivoByIdReceta', {
+                method: 'POST',
+                body: JSON.stringify({ idReceta: idReceta }),
+                headers: { 'Content-Type': 'application/json' }
+            })
                 .then(response => response.json())
                 .then(data => {
-                         const tablaEntrega = document.getElementById('tablaEntrega');
-                         const [sectorProductivo, cantidad] = data.d.split(';');
-                         let plantillaReceta = `
+                    const tablaEntrega = document.getElementById('tablaEntrega');
+                    const [sectorProductivo, cantidad] = data.d.split(';');
+                    let plantillaReceta = `
                              <tr>
                                  <td>${sectorProductivo}</td>
                                  <td>${descripcionReceta}</td>
                                  <td style="text-align: right;">${cantidad}</td>
                              </tr>
                          `;
-                         document.getElementById('tablaEntrega').innerHTML = plantillaReceta;
+                    document.getElementById('tablaEntrega').innerHTML = plantillaReceta;
 
-                             setTimeout(function() {
-                              $('#modalBusqueda').modal('show');
-                          }, 300);
+                    setTimeout(function () {
+                        $('#modalBusqueda').modal('show');
+                    }, 300);
 
                 })
                 .catch(error => {
@@ -560,82 +560,82 @@
                     console.error('Error:', error);
                 });
 
-              
+
+        }
+        function cambiarEstadoAPediente() {
+            //let url = window.location.href;
+            const valores = window.location.search;
+            // console.log(valores);
+
+            //Creamos la instancia
+            const urlParams = new URLSearchParams(valores);
+            // console.log(urlParams);
+
+            let id = urlParams.get('ids');
+            //console.log(id);
+
+
+            if (id && id.endsWith(',')) {
+                id = id.slice(0, -1);
             }
-              function cambiarEstadoAPediente(){
-                //let url = window.location.href;
-                const valores = window.location.search;
-               // console.log(valores);
 
-                //Creamos la instancia
-                const urlParams = new URLSearchParams(valores);
-               // console.log(urlParams);
+            let estadoOrden = 2;
+            // console.log(id);
 
-                let id = urlParams.get('ids');
-                //console.log(id);
-
-
-                 if (id && id.endsWith(',')) {
-                      id = id.slice(0, -1);
-                  }
-
-                  let estadoOrden = 2;
-               // console.log(id);
-
-                fetch('CronogramaProduccion.aspx/cambiarEstadoDeLaOrden', {
+            fetch('CronogramaProduccion.aspx/cambiarEstadoDeLaOrden', {
                 method: 'POST',
                 body: JSON.stringify({}),
                 headers: { 'Content-Type': 'application/json' },
-                })
+            })
                 .then(response => response.json())
                 .then(data => {
-               
+
                 })
                 .catch(error => {
                     // Manejo de errores aquí si es necesario
                     console.error('Error:', error);
                 });
-              }
+        }
 
-            function Producir(){
-                  const valores = window.location.search;
+        function Producir() {
+            const valores = window.location.search;
 
-                  const urlParams = new URLSearchParams(valores);
+            const urlParams = new URLSearchParams(valores);
 
-                  let id = urlParams.get('ids');
+            let ids = urlParams.get('ids');
 
 
-                   if (id && id.endsWith(',')) {
-                        id = id.slice(0, -1);
-                    }
-
-                  let estadoOrden = 1;
-                  fetch('CronogramaProduccion.aspx/cambiarEstadoDeLaOrden', {
-                  method: 'POST',
-                  body: JSON.stringify({id: id, estadoOrden: estadoOrden}),
-                  headers: { 'Content-Type': 'application/json' },
-              })
-              .then(response => response.json())
-              .then(data => {
-                   window.location.href = "OrdenesDeProduccion.aspx"
-              })
-              .catch(error => {
-                  console.error('Error:', error);
-              });
+            if (ids && ids.endsWith(',')) {
+                ids = ids.slice(0, -1);
             }
 
+            let estadoOrden = 1;
+            fetch('CronogramaProduccion.aspx/cambiarEstadoDeLaOrden', {
+                method: 'POST',
+                body: JSON.stringify({ ids: ids, estadoOrden: estadoOrden }),
+                headers: { 'Content-Type': 'application/json' },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    window.location.href = "OrdenesDeProduccion.aspx"
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
 
-            function verOrigenYDestino(ProductoOrigen, cantidadOrigen, SectorOrigen, productoPadre, cantidadPadre, sectorPadre, OPNumero, razonSocial){
-                
-                document.getElementById('tableOrigen').innerHTML = "";
-                   if(productoPadre.includes(";")){
 
-                    const arrayProductosDestino = productoPadre.split(";");
-                    const arrayOPNumero = OPNumero.split(";");
-                    const arrayCantidadOrigen = cantidadOrigen.split(";");
-                    const arrayrazonSocial = razonSocial.split(";");
-                    
-                    arrayProductosDestino.forEach((producto, index) => {
+        function verOrigenYDestino(ProductoOrigen, cantidadOrigen, SectorOrigen, productoPadre, cantidadPadre, sectorPadre, OPNumero, razonSocial) {
+
+            document.getElementById('tableOrigen').innerHTML = "";
+            if (productoPadre.includes(";")) {
+
+                const arrayProductosDestino = productoPadre.split(";");
+                const arrayOPNumero = OPNumero.split(";");
+                const arrayCantidadOrigen = cantidadOrigen.split(";");
+                const arrayrazonSocial = razonSocial.split(";");
+
+                arrayProductosDestino.forEach((producto, index) => {
                     const orden = arrayOPNumero[index] || '';
                     const cantidadOrigenActual = arrayCantidadOrigen[index] || '';
                     const razonSocialActual = arrayrazonSocial[index] || '';
@@ -651,10 +651,10 @@
                     </tr>
                     `;
                     document.getElementById('tableOrigen').innerHTML += plantillaIngredientesOrigenDestino;
-                    });
-                   }
-                   else{
-                      let plantillaIngredientesOrigenDestino = `
+                });
+            }
+            else {
+                let plantillaIngredientesOrigenDestino = `
                        <tr>
                            <td>${SectorOrigen}</td>
                            <td>${ProductoOrigen}</td>
@@ -665,11 +665,11 @@
                            <td>${razonSocial}</td>
                        </tr>
                        `;
-                       document.getElementById('tableOrigen').innerHTML += plantillaIngredientesOrigenDestino;
-                   
-                   }
-                   $('#modalOrigenDestino').modal('show');
+                document.getElementById('tableOrigen').innerHTML += plantillaIngredientesOrigenDestino;
+
             }
+            $('#modalOrigenDestino').modal('show');
+        }
 
     </script>
 </asp:Content>

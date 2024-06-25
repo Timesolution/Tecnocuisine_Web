@@ -241,7 +241,7 @@ namespace Tecnocuisine.Formularios.Ventas
         public DataTable obtenerIngredientesReceta(int id, string OPNumero, string Producto, int idReceta, string cantidad, string fechaEntrega, int idSector, string SectorPadre, string RazonSocialCliente)
         {
             try
-            {
+            {   
                 ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
                 DataTable dt = cOrdenDeProduccion.getIngredientsRecipes(id, OPNumero, Producto, idReceta, cantidad, fechaEntrega, idSector, SectorPadre, RazonSocialCliente);
                 dtGlobal.Merge(dt);
@@ -424,14 +424,12 @@ namespace Tecnocuisine.Formularios.Ventas
 
 
         [WebMethod]
-        //public static int cambiarEstadoDeLaOrden(string id, int estadoOrden)
-        public static int cambiarEstadoDeLaOrden()
+        public static int cambiarEstadoDeLaOrden(string ids, int estadoOrden)
         {
             try
             {
-
-                //ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
-                //cOrdenDeProduccion.cambiarEstadoOrden(id, estadoOrden);
+                ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
+                cOrdenDeProduccion.cambiarEstadoOrden(ids, estadoOrden);
 
                 DataTable dt = HttpContext.Current.Session["DatosOrdenesSeleccionas"] as DataTable;
                 Dictionary<string, DataTable> dtDiccionario = new Dictionary<string, DataTable>();
@@ -454,8 +452,6 @@ namespace Tecnocuisine.Formularios.Ventas
 
                     dtDiccionario[clave].ImportRow(row);
                 }
-
-
 
                 //sumaCantidadProductos = sumarCantidadAgrupadaPorProducto(dt);
 
@@ -489,13 +485,11 @@ namespace Tecnocuisine.Formularios.Ventas
                     string destinoString = partesClave[0];
                     string fechaString = partesClave[2];
 
-
                     transferencia.fecha = Convert.ToDateTime(fechaString);
                     transferencia.origen = origenString;
                     transferencia.destino = destinoString;
                     transferencia.estadoTransferencia = 2;
 
-                    ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
                     var listaTransferencias = cTransferencia.getListTransferencias();
 
                     string fac1 = "";
@@ -512,19 +506,14 @@ namespace Tecnocuisine.Formularios.Ventas
 
                     transferencia.estato = 1;
 
-
-
                     int id = cTransferencia.addTransferencia(transferencia);
 
                     if (id != -1)
                     {
-
                         Dictionary<string, DataTable> sumaCantidadPorGrupo = new Dictionary<string, DataTable>();
 
                         foreach (DataRow col1 in kvp.Value.DefaultView.Table.Rows)
                         {
-
-
                             PedidosInternos pedidosInternos = new PedidosInternos();
                             pedidosInternos.sectorOrigen = col1["sectorProductivo"].ToString();
                             pedidosInternos.productoOrigen = col1["descripcion"].ToString();
@@ -551,7 +540,6 @@ namespace Tecnocuisine.Formularios.Ventas
                             sumaCantidadPorGrupo[key].ImportRow(col1);
                         }
 
-
                         //aca quiero convertirlo en una datatable
                         controladorDatosTransferencias cDatosTransferencias = new controladorDatosTransferencias();   
                         foreach (var key in sumaCantidadPorGrupo)
@@ -571,7 +559,6 @@ namespace Tecnocuisine.Formularios.Ventas
                             cDatosTransferencias.addDatosTrasferencias(datosTransferencias);
 
                         }
-
 
                         //sumaCantidadProductos = sumarCantidadAgrupadaPorProducto(dt);
 
@@ -593,11 +580,7 @@ namespace Tecnocuisine.Formularios.Ventas
                         //    cDatosTransferencias.addDatosTrasferencias(datosTransferencias);
 
                         //}
-
-
-
                     }
-
                 }
                 return 1;
             }
