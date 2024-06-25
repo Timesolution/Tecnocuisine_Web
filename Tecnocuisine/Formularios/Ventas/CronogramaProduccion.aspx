@@ -143,8 +143,14 @@
                                                 }
                                             }
 
-                                        }%>
-                                   <strong style="text-align: right; display: inline-block;"><%= cant %></strong>
+                                        }
+                                        else
+                                        {
+                                            cant = Convert.ToDecimal(key2.Value.Rows[i]["cantidad"].ToString(), System.Globalization.CultureInfo.InvariantCulture);
+                                        }
+
+                                    %>
+                                    <strong style="text-align: right; display: inline-block;"><%= cant %></strong>
                                     <%if (key2.Value.Rows[i]["ingredienteOreceta"].ToString() == "Receta")
                                         {%>
                                     <button id="btnVerIngredientes" type="button" class="icon-button" style="float: right; margin-left: 10px;"
