@@ -346,9 +346,7 @@ namespace Tecnocuisine
 
                     foreach (var item in productos)
                     {
-
                         CargarProductosPH(item);
-
                     }
                 }
 
@@ -437,8 +435,6 @@ namespace Tecnocuisine
 
             try
             {
-
-
                 //fila
                 TableRow tr = new TableRow();
                 tr.ID = producto.id.ToString();
@@ -447,59 +443,68 @@ namespace Tecnocuisine
                 TableCell celNumero = new TableCell();
                 celNumero.Text = producto.id.ToString();
                 celNumero.VerticalAlign = VerticalAlign.Middle;
-                celNumero.HorizontalAlign = HorizontalAlign.Right;
+                celNumero.HorizontalAlign = HorizontalAlign.Left;
                 celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
 
                 tr.Cells.Add(celNumero);
 
                 TableCell celDescripcion = new TableCell();
-                celDescripcion.Width = Unit.Percentage(10);
                 celDescripcion.Text = producto.descripcion;
                 celDescripcion.VerticalAlign = VerticalAlign.Middle;
                 celDescripcion.HorizontalAlign = HorizontalAlign.Left;
                 celDescripcion.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celDescripcion);
 
-                TableCell celCategoria = new TableCell();
-                celCategoria.Text = producto.Categorias.descripcion;
-                celCategoria.VerticalAlign = VerticalAlign.Middle;
-                celCategoria.HorizontalAlign = HorizontalAlign.Left;
-                celCategoria.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celCategoria);
 
-                ControladorAtributo controladorAtributo = new ControladorAtributo();
-                string descripcionAtributos = "";
-                if (producto.Productos_Atributo != null)
-                {
-                    foreach (Productos_Atributo item in producto.Productos_Atributo)
-                    {
-                        Tecnocuisine_API.Entitys.Atributos atributo = controladorAtributo.ObtenerAtributoById(item.atributo);
-                        if (descripcionAtributos == "")
-                            descripcionAtributos = atributo.descripcion;
-                        else
-                            descripcionAtributos += " - " + atributo.descripcion;
-                    }
-                }
-                if (descripcionAtributos == null || descripcionAtributos.Trim() == "")
-                {
-                    TableCell celAtributos2 = new TableCell();
-                    celAtributos2.Text = "No Existe Atributos";
-                    celAtributos2.Width = Unit.Percentage(25);
-                    celAtributos2.VerticalAlign = VerticalAlign.Middle;
-                    celAtributos2.HorizontalAlign = HorizontalAlign.Left;
-                    celAtributos2.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celAtributos2);
-                }
-                else
-                {
-                    TableCell celAtributos = new TableCell();
-                    celAtributos.Text = descripcionAtributos;
-                    celAtributos.Width = Unit.Percentage(25);
-                    celAtributos.VerticalAlign = VerticalAlign.Middle;
-                    celAtributos.HorizontalAlign = HorizontalAlign.Left;
-                    celAtributos.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celAtributos);
-                }
+                //Cell rubro
+                TableCell celRubro = new TableCell();
+                celRubro.Text = producto.Rubros != null ? producto.Rubros.descripcion : "No Existe Rubro";
+                celRubro.VerticalAlign = VerticalAlign.Middle;
+                celRubro.HorizontalAlign = HorizontalAlign.Left;
+                celRubro.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celRubro);
+
+                //TableCell celCategoria = new TableCell();
+                //celCategoria.Text = producto.Categorias.descripcion;
+                //celCategoria.VerticalAlign = VerticalAlign.Middle;
+                //celCategoria.HorizontalAlign = HorizontalAlign.Left;
+                //celCategoria.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //tr.Cells.Add(celCategoria);
+
+
+                //ControladorAtributo controladorAtributo = new ControladorAtributo();
+                //string descripcionAtributos = "";
+                //if (producto.Productos_Atributo != null)
+                //{
+                //    foreach (Productos_Atributo item in producto.Productos_Atributo)
+                //    {
+                //        Tecnocuisine_API.Entitys.Atributos atributo = controladorAtributo.ObtenerAtributoById(item.atributo);
+                //        if (descripcionAtributos == "")
+                //            descripcionAtributos = atributo.descripcion;
+                //        else
+                //            descripcionAtributos += " - " + atributo.descripcion;
+                //    }
+                //}
+                //if (descripcionAtributos == null || descripcionAtributos.Trim() == "")
+                //{
+                //    TableCell celAtributos2 = new TableCell();
+                //    celAtributos2.Text = "No Existe Atributos";
+                //    celAtributos2.Width = Unit.Percentage(25);
+                //    celAtributos2.VerticalAlign = VerticalAlign.Middle;
+                //    celAtributos2.HorizontalAlign = HorizontalAlign.Left;
+                //    celAtributos2.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //    tr.Cells.Add(celAtributos2);
+                //}
+                //else
+                //{
+                //    TableCell celAtributos = new TableCell();
+                //    celAtributos.Text = descripcionAtributos;
+                //    celAtributos.Width = Unit.Percentage(25);
+                //    celAtributos.VerticalAlign = VerticalAlign.Middle;
+                //    celAtributos.HorizontalAlign = HorizontalAlign.Left;
+                //    celAtributos.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //    tr.Cells.Add(celAtributos);
+                //}
 
                 TableCell celUnidad = new TableCell();
                 celUnidad.Text = producto.Unidades.descripcion;

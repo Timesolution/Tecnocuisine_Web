@@ -33,16 +33,17 @@
                                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                                     <thead>
                                                         <tr>
-                                                            <th>#</th>
-                                                            <th>Descripcion</th>
-                                                            <th>Categoria</th>
-                                                            <th>Atributo</th>
-                                                            <th>Unidades</th>
-                                                            <th style="text-align: right;">Costo</th>
+                                                            <th style="width:6%">#</th>
+                                                            <th style="width:20%">Descripcion</th>
+                                                            <th>Rubro</th>
+                                                            <%--<th>Categoria</th>--%>
+                                                            <%--<th>Atributo</th>--%>
+                                                            <th style="width:11%">Unidades</th>
+                                                            <th style="text-align: right; width: 9%">Costo</th>
                                                             <th>Presentaciones</th>
                                                             <th>Marcas</th>
-                                                            <th style="text-align: right;">Alicuota</th>
-                                                            <th></th>
+                                                            <th style="text-align: right; width: 8%">Alicuota</th>
+                                                            <th style="width:9%"></th>
 
                                                         </tr>
                                                     </thead>
