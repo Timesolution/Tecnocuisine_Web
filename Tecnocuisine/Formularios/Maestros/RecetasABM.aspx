@@ -347,7 +347,7 @@
                                     
 
                                 </fieldset>
-                                <h1>INFORMACION NUTRICIONAL</h1>
+                                <h1>INF. NUTRICIONAL</h1>
                                 <fieldset style="position: relative;">
                                     <h1>
                                         <label id="lblDescripcion4"></label>
