@@ -51,6 +51,8 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 CargarUnidadesMedida();
                 CargarAlicuotasIVA();
+                CargarSectores();
+                CargarRubros();
 
                 //CargarListaCategoriasSoloHijas();
                 //cargarNestedListAtributos();
@@ -73,7 +75,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 }
             }
             ObtenerGruposArticulos();
-            CargarRubros();
+            
             //ObtenerSubGruposArticulos(Convert.ToInt32(ListGrupo.SelectedValue));
             ObtenerPresentaciones();
             ObtenerMarca();
@@ -313,6 +315,15 @@ namespace Tecnocuisine.Formularios.Maestros
                     //txtDescripcionCategoria.Text = producto.Categorias.id + " - " + producto.Categorias.descripcion;
                     ListAlicuota.SelectedValue = producto.alicuota.ToString();
                     ListUnidadMedida.SelectedValue = producto.unidadMedida.ToString();
+
+                    ddlSectores.SelectedValue = producto.idSectorProductivo.ToString();
+
+                    if (producto.idRubro != null)
+                    {
+                        var rubro = new ControladorRubros().ObtenerRubrosId((int)producto.idRubro);
+                        ListRubro.Text = producto.idRubro + " - " + rubro.descripcion;                       
+                    }
+                    
                     //btnAtributos.Attributes.Remove("disabled");
 
                 }
@@ -590,8 +601,6 @@ namespace Tecnocuisine.Formularios.Maestros
             }
         }
 
-
-
         [WebMethod]
         public static string GuardarPresentacion(string descripcion, string Cantidad)
         {
@@ -649,11 +658,8 @@ namespace Tecnocuisine.Formularios.Maestros
             }
         }
 
-
-
-
         [WebMethod]
-        public static void GuardarProducto(string descripcion, string Categoria, string Atributos, string Costo, string IVA, string Unidad, string Presentacion, string Marca, bool cbxGestion, string Rubro, string img)
+        public static void GuardarProducto(string descripcion, string Categoria, string Atributos, string Costo, string IVA, string Unidad, string Presentacion, string Marca, bool cbxGestion, string Rubro, string img, string sectorId)
         {
             try
             {
@@ -663,22 +669,17 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 producto.descripcion = descripcion;
                 producto.ProductoFinal = cbxGestion;
+
                 if (Rubro == "")
-                {
                     producto.idRubro = 1;
-                }
                 else
-                {
                     producto.idRubro = Convert.ToInt32(Rubro);
-                }
+
                 if (Categoria.Trim() == "")
-                {
                     producto.categoria = 1;
-                }
                 else
-                {
                     producto.categoria = Convert.ToInt32(Categoria.Split('-')[0].Trim());
-                }
+
                 List<Productos_Atributo> AtributosProd = new List<Productos_Atributo>();
 
                 if (Atributos.Trim() != "")
@@ -708,8 +709,6 @@ namespace Tecnocuisine.Formularios.Maestros
                 producto.unidadMedida = Convert.ToInt32(Unidad);
                 producto.alicuota = Convert.ToInt32(IVA);
                 producto.estado = 1;
-
-
 
                 List<Productos_Presentacion> PresentacionProd = new List<Productos_Presentacion>();
                 if (Presentacion.Trim() == "")
@@ -749,7 +748,6 @@ namespace Tecnocuisine.Formularios.Maestros
                 }
                 else
                 {
-
                     string[] verMarcas = Marca.Split(',');
 
                     foreach (string i in verMarcas)
@@ -768,6 +766,14 @@ namespace Tecnocuisine.Formularios.Maestros
 
 
                 producto.Marca_Productos = marca_Productos;
+
+
+                //Set Sector
+                if(sectorId == "-1")
+                    producto.idSectorProductivo = null;
+                else
+                    producto.idSectorProductivo = int.Parse(sectorId);
+
 
                 //producto.presentacion = Convert.ToInt32(ListPresentaciones.SelectedValue);
 
@@ -824,7 +830,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
         }
         [WebMethod]
-        public static string EditarProducto(string descripcion, string Categoria, string Atributos, string Costo, string IVA, string Unidad, string Presentacion, string Marca, bool cbxGestion, string Rubro, string idProducto)
+        public static string EditarProducto(string descripcion, string Categoria, string Atributos, string Costo, string IVA, string Unidad, string Presentacion, string Marca, bool cbxGestion, string Rubro, string idProducto, string sectorId)
         {
             try
             {
@@ -833,22 +839,17 @@ namespace Tecnocuisine.Formularios.Maestros
                 ControladorReceta cr = new ControladorReceta();
                 producto.id = Convert.ToInt32(idProducto);
                 producto.descripcion = descripcion;
+
                 if (Rubro == "")
-                {
                     producto.idRubro = 1;
-                }
                 else
-                {
                     producto.idRubro = Convert.ToInt32(Rubro);
-                }
+
                 if (Categoria.Trim() == "")
-                {
                     producto.categoria = 1;
-                }
                 else
-                {
                     producto.categoria = Convert.ToInt32(Categoria.Split('-')[0].Trim());
-                }
+
                 producto.costo = Convert.ToDecimal(Costo.Replace(".", ","));
                 producto.unidadMedida = Convert.ToInt32(Unidad);
                 producto.alicuota = Convert.ToInt32(IVA);
@@ -860,6 +861,13 @@ namespace Tecnocuisine.Formularios.Maestros
                 {
                     VerificarCosto(ListRP, Costo);
                 }
+
+                //Set Sector
+                if (sectorId == "-1")
+                    producto.idSectorProductivo = null;
+                else
+                    producto.idSectorProductivo = int.Parse(sectorId);
+
                 int resultado = controladorProducto.EditarProducto(producto);
 
                 if (resultado > 0)
@@ -1746,6 +1754,22 @@ namespace Tecnocuisine.Formularios.Maestros
             }
         }
 
+        private void CargarSectores()
+        {
+            try
+            {
+                ControladorSectorProductivo cSectorProductivo = new ControladorSectorProductivo();
+                this.ddlSectores.DataSource = cSectorProductivo.ObtenerTodosSectorProductivo();
+                this.ddlSectores.DataValueField = "id";
+                this.ddlSectores.DataTextField = "descripcion";
+                this.ddlSectores.DataBind();
+                ddlSectores.Items.Insert(0, new ListItem("Seleccione", "-1"));
+            }
+            catch (Exception)
+            {
+
+            }
+        }
 
         private void ObtenerGruposArticulos()
         {

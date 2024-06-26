@@ -72,11 +72,11 @@
                                                         <label>Descripción *</label>
                                                     </div>
                                                     <div class="col-md-8">
-                                                       <%-- <asp:TextBox ID="ProdDescripcion" runat="server" class="form-control required" 
+                                                        <%-- <asp:TextBox ID="ProdDescripcion" runat="server" class="form-control required" 
                                                             pattern="[a-zA-Z0-9-]+" title="Solo se permiten letras, números y el guion -" ></asp:TextBox>--%>
 
-                                                         <asp:TextBox ID="ProdDescripcion" runat="server" class="form-control required" 
-                                                         title="Solo se permiten letras, números y el guion -" onchange="ActualizarLabels()"></asp:TextBox>
+                                                        <asp:TextBox ID="ProdDescripcion" runat="server" class="form-control required"
+                                                            title="Solo se permiten letras, números y el guion -" onchange="ActualizarLabels()"></asp:TextBox>
 
 
                                                         <%--<input id="ProdDescripcion" onchange="ActualizarLabels()" name="ProdDescripcion" type="text" class="form-control required" />--%>
@@ -129,6 +129,7 @@
                                                     </div>
 
                                                 </div>--%>
+
 
                                                 <div class="row" style="margin-top: 2%">
                                                     <label class="col-sm-4 control-label editable">Rubro</label>
@@ -250,6 +251,19 @@
                                                 </div>
 
                                             </div>
+
+
+
+                                            <div class="row" style="margin-top: 2%">
+                                                <label class="col-sm-4 control-label editable">Sector</label>
+                                                <div class="col-sm-8">
+                                                    <asp:DropDownList ID="ddlSectores" class="form-control m-b" runat="server">
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+
+
+
                                             <div class="row" style="margin-top: 0.4%">
                                                 <label class="col-sm-4 control-label editable">Presentacion</label>
                                                 <div class="col-sm-8">
@@ -868,7 +882,9 @@
                     let selectUnidadMedida = document.getElementById('<%=ListUnidadMedida.ClientID%>');
                     let selectAliCuota = document.getElementById('<%=ListAlicuota.ClientID%>');
                     let selectRubro = document.getElementById('<%=ListRubro.ClientID%>');
+                    let selectSectores = document.getElementById('<%=ddlSectores.ClientID%>');
                     let url = window.location.href;
+                   
                     ulFinal.className = "disabled"
 
                     EliminarRepetidos()
@@ -886,8 +902,9 @@
                                 + '" , Presentacion: "' + document.querySelector('#lblPresentacion').textContent
                                 + '" , Marca: "' + document.querySelector('#lblMarcas').textContent
                                 + '" , cbxGestion: "' + document.getElementById('ContentPlaceHolder1_cbxGestion').checked
-                                + '" , Rubro: "' + document.getElementById('ContentPlaceHolder1_ListRubro').textContent.split("-")[0].trim()
+                                + '" , Rubro: "' + selectRubro.value.split("-")[0].replace(" ", "")
                                 + '" , img: "' + ""
+                                + '" , sectorId: "' + selectSectores.selectedOptions[0].value                        
                                 + '"}',
                             contentType: "application/json",
                             dataType: 'json',
@@ -921,8 +938,9 @@
                                 + '" , Presentacion: "' + document.querySelector('#lblPresentacion').textContent
                                 + '" , Marca: "' + document.querySelector('#lblMarcas').textContent
                                 + '" , cbxGestion: "' + document.getElementById('ContentPlaceHolder1_cbxGestion').checked
-                                + '" , Rubro: "' + document.getElementById('ContentPlaceHolder1_ListRubro').textContent.split("-")[0].trim()
+                                + '" , Rubro: "' + selectRubro.value.split("-")[0].replace(" ", "")
                                 + '" , idProducto: "' + idProd
+                                + '" , sectorId: "' + selectSectores.selectedOptions[0].value  
                                 + '"}',
                             contentType: "application/json",
                             dataType: 'json',
