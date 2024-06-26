@@ -648,4 +648,58 @@
         }
     </script>
 
+
+    <script>
+        $(document).ready(function () {
+            $('#editable2').DataTable({
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay información",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "searchPlaceholder": "Escriba su busqueda",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
+
+            $('.dataTables_filter').hide();
+            $('#txtBusquedaIngredientes').on('keyup', function () {
+                $('#editable2').DataTable().search(
+                    this.value
+                ).draw();
+            });
+
+            $('.dataTables_filter').hide();
+
+
+            $(document).on('keyup', "input[type='search']", function () {
+                var oTable = $('.dataTable').dataTable();
+                oTable.fnFilter($(this).val());
+            });
+
+        });
+        $(document).ready(function () {
+
+            $(".money").inputmask({
+                'alias': 'decimal',
+                rightAlign: true,
+                'groupSeparator': ',',
+                'autoGroup': true
+            });
+        })
+    </script>
+
 </asp:Content>
