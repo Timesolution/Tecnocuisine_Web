@@ -8,7 +8,7 @@
 
                     <div class="ibox-content">
                         <div class="row" style="padding-left: 15px;">
-                            <div class="col-sm-4 b-r">
+                            <div class="col-sm-3 b-r">
                                 <h1 class="m-t-none m-b">Entrega</h1>
                                 <div role="form">
                                     <div class="form-group" id="data_1">
@@ -46,7 +46,7 @@
 
                                 </div>
                             </div>
-                            <div class="col-sm-8">
+                            <div class="col-sm-9">
 
                                 <div class="form-group" style="padding-right: 5px;">
                                     <div class="row">
@@ -57,87 +57,106 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group" style="padding-right: 5px;">
-                                    <%--<div class="col-md-6">--%>
 
 
-                                    <label>Ingredientes </label>
 
-                                    <div class="input-group" style="text-align: right;">
-                                        <datalist id="ListaNombreProd" runat="server">
-                                        </datalist>
+                                <div class="row" style="padding-right: 5px;">
+                                    <div class="form-group col-md-6">
+                                        <label>Ingredientes </label>
+                                        <div class="input-group" style="text-align: right;">
+                                            <datalist id="ListaNombreProd" runat="server">
+                                            </datalist>
 
-                                        <asp:TextBox ID="txtDescripcionProductos" onChange="ValidarProducto()" onfocusout="handle(event)" list="ContentPlaceHolder1_ListaNombreProd" class="form-control" runat="server" />
-                                        <asp:HiddenField ID="Hiddentipo" runat="server" />
-                                        <asp:HiddenField ID="HiddenUnidad" runat="server" />
-                                        <asp:HiddenField ID="HiddenCosto" runat="server" />
+                                            <asp:TextBox ID="txtDescripcionProductos" onChange="ValidarProducto()" onfocusout="handle(event)" list="ContentPlaceHolder1_ListaNombreProd" class="form-control" runat="server" />
+                                            <asp:HiddenField ID="Hiddentipo" runat="server" />
+                                            <asp:HiddenField ID="HiddenUnidad" runat="server" />
+                                            <asp:HiddenField ID="HiddenCosto" runat="server" />
 
-                                        <span class="input-group-btn">
-                                            <%--<asp:LinkButton runat="server" ID="btnProductos" class="btn btn-primary dim" data-toggle="modal" data-backdrop="static" data-target="#modalTabsProductos"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>--%>
-                                            <a class="btn btn-primary dim" data-toggle="modal" href="#modalTabsProductos">
-                                                <i style="color: white" class="fa fa-plus" data-toggle="tooltip" data-placement="top" title data-original-title="Selecionar Ingrediente"></i>
-                                            </a>
-                                        </span>
+                                            <span class="input-group-btn">
+                                                <%--<asp:LinkButton runat="server" ID="btnProductos" class="btn btn-primary dim" data-toggle="modal" data-backdrop="static" data-target="#modalTabsProductos"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>--%>
+                                                <a class="btn btn-primary dim" data-toggle="modal" href="#modalTabsProductos">
+                                                    <i style="color: white" class="fa fa-plus" data-toggle="tooltip" data-placement="top" title data-original-title="Selecionar Ingrediente"></i>
+                                                </a>
+                                            </span>
+                                        </div>
+                                        <p id="valivaProducto" class="text-danger text-hide">Tienes que agregar un producto</p>
                                     </div>
-                                    <p id="valivaProducto" class="text-danger text-hide">Tienes que agregar un producto</p>
-                                    <%--</div>--%>
-                                </div>
-                                <div class="form-group">
 
+                                    <%--Lote--%>
+                                    <div class="form-group col-md-2">
+                                        <label>Lote</label>
+                                        <asp:TextBox runat="server" onChange="ValidadLote()" ID="txtLote" class="form-control"></asp:TextBox>
+                                    </div>
+
+
+                                    <%--Vencimiento--%>
+                                    <div class="col-md-4" style="display: flex; flex-wrap: nowrap">
+                                        <div class="form-group " id="data_2">
+                                            <label>Vencimiento</label>
+                                            <div class="input-group date">
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                <asp:TextBox onchange="ValidarDias()" class="form-control" runat="server" ID="txtFechaVencimiento"></asp:TextBox>
+                                            </div>
+                                            <p id="valiva" class="text-danger text-hide">La fecha de vencimiento no puede ser menor a 30 dias </p>
+                                        </div>
+
+                                        <div style="align-self: center">
+                                            <linkbutton id="btnAgregarProducto" onclick="agregarProductoPH();" data-toggle="tooltip" data-placement="top"
+                                                data-original-title="Agregar Producto" class="btn btn-primary dim required" validationgroup="AgregarProductos">
+                                                <i style="color: white" class="fa fa-check"></i>
+                                            </linkbutton>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <%--Cantidad--%>
+                                <div class="col-md-2" style="padding-left:0">
                                     <asp:HiddenField ID="idProducto" runat="server" />
-                                    <div class="col-md-1" style="padding-left: 0px;">
-                                        <label style="margin-bottom: auto;">Cantidad</label>
+                                    <div>
+                                        <label>Cantidad</label>
                                         <asp:TextBox ID="txtCantidad" onchange="ValidadCantidad()" Text="0" onkeypress="javascript:return validarNro(event)" Style="text-align: right;" class="form-control money" runat="server" />
-                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="<h3>Tienes que Elegir una cantidad para continuar</h3>"
-                                             SetFocusOnError="false" ForeColor="Red" Font-Bold="true"
-                                             ValidationGroup="AgregarProductos" ControlToValidate="txtCantidad">
-                                         </asp:RequiredFieldValidator>
+                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="<h3>Tienes que Elegir una cantidad para continuar</h3>"
+                                            SetFocusOnError="false" ForeColor="Red" Font-Bold="true"
+                                            ValidationGroup="AgregarProductos" ControlToValidate="txtCantidad">
+                                        </asp:RequiredFieldValidator>
                                     </div>
                                 </div>
-                                <div class="col-md-3" style="text-align: center;">
-                                    <label style="margin-bottom: auto;">Presentacion</label>
+
+
+
+                                <%-- Marca --%>
+                                <div class="form-group col-md-4">
+                                    <label>Marca</label>
+                                    <asp:DropDownList runat="server" ID="ddlMarca" class="form-control"></asp:DropDownList>
+
+                                </div>
+
+
+
+                                <%--Presentacion--%>
+                                <div class="col-md-6" style="text-align: left;">
+                                    <label>Presentacion</label>
 
                                     <%--<asp:TextBox ID="txtUnidadMed" disabled="disabled" Style="text-align: right" class="form-control" runat="server" />--%>
                                     <asp:DropDownList runat="server" ID="ddlPresentaciones" class="form-control"></asp:DropDownList>
                                 </div>
-                                <%-- MARCAS --%>
-                                <div class="form-group col-md-2">
-                                    <label style="margin-bottom: auto;">Marca</label>
-                                    <asp:DropDownList runat="server" ID="ddlMarca" class="form-control"></asp:DropDownList>
 
-                                </div>
-                                <div class="form-group col-md-2">
-                                    <label style="margin-bottom: auto;">Lote</label>
-                                    <asp:TextBox runat="server" onChange="ValidadLote()" ID="txtLote" class="form-control"></asp:TextBox>
 
-                                </div>
-                                <div class="form-group col-md-3" id="data_2">
-                                    <label style="margin-bottom: auto;">Vencimiento</label>
-                                    <div class="input-group date">
-                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                        <asp:TextBox onchange="ValidarDias()" class="form-control" runat="server" ID="txtFechaVencimiento"></asp:TextBox>
-                                    </div>
-                                    <p id="valiva" class="text-danger text-hide">La fecha de vencimiento no puede ser menor a 30 dias </p>
-                                </div>
-                                <div class="col-md-1" style="float: right; margin-right: 0px; margin-top: 18px;">
-                                    <linkbutton id="btnAgregarProducto" onclick="agregarProductoPH();" data-toggle="tooltip" data-placement="top"
-                                        data-original-title="Agregar Producto" class="btn btn-primary dim required" ValidationGroup="AgregarProductos">
-                                        <i style="color: white" class="fa fa-check"></i>
-                                    </linkbutton>
-                                </div>
 
                                 <asp:HiddenField runat="server" ID="idProductosRecetas" />
                                 <asp:HiddenField runat="server" ID="hiddenReceta" />
                                 <table class="table table-bordered table-hover" id="tableProductos" style="margin-top: 10%; max-width: 99%;">
                                     <thead>
                                         <tr>
-                                            <th style="width: 5%">Cod. Producto</th>
+                                            <th style="width: 6%">Cod Producto</th>
                                             <th style="width: 10%">Descripcion</th>
-                                            <th style="width: 5%">Marca</th>
+                                            <th style="width: 6%">Marca</th>
                                             <th style="width: 5%; text-align: right">Cantidad</th>
                                             <th style="width: 10%">Presentacion</th>
                                             <th style="width: 5%">Lote</th>
-                                            <th style="width: 7%">Vencimiento</th>
+                                            <th style="width: 4%">Vencimiento</th>
 
                                             <th style="width: 4%"></th>
                                         </tr>
@@ -282,18 +301,18 @@
 
 
             let url = new URL(window.location.href);
-            let idIngrediente = ""; 
+            let idIngrediente = "";
             let inngredienteReceta = "";
             let sectorDescripcion = "";
             let idSector = "";
-            idIngrediente = url.searchParams.get('idP'); 
-            inngredienteReceta = url.searchParams.get('Desc'); 
-            sectorDescripcion = url.searchParams.get('SP'); 
-            idSector = url.searchParams.get('idS'); 
-            if(idIngrediente != null){
-                document.getElementById('<%=txtDescripcionProductos.ClientID%>').value = idIngrediente + " - " + inngredienteReceta; 
-                 handle();
-                document.getElementById('<%=txtSector.ClientID%>').value = idSector + " - " + sectorDescripcion; 
+            idIngrediente = url.searchParams.get('idP');
+            inngredienteReceta = url.searchParams.get('Desc');
+            sectorDescripcion = url.searchParams.get('SP');
+            idSector = url.searchParams.get('idS');
+            if (idIngrediente != null) {
+                document.getElementById('<%=txtDescripcionProductos.ClientID%>').value = idIngrediente + " - " + inngredienteReceta;
+                handle();
+                document.getElementById('<%=txtSector.ClientID%>').value = idSector + " - " + sectorDescripcion;
             }
 
         });
@@ -479,7 +498,7 @@
                     "</tr>"
                 );
                 if (document.getElementById('<%= idProductosRecetas.ClientID%>').value == "") {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += (codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value).replaceAll(".",",");
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += (codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value).replaceAll(".", ",");
                 }
                 else {
                     document.getElementById('<%= idProductosRecetas.ClientID%>').value += (";" + codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value).replaceAll(".", ",");;

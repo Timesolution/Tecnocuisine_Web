@@ -141,6 +141,24 @@ namespace Tecnocuisine.Formularios.Compras
         protected global::System.Web.UI.WebControls.HiddenField HiddenCosto;
 
         /// <summary>
+        /// Control txtLote.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtLote;
+
+        /// <summary>
+        /// Control txtFechaVencimiento.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtFechaVencimiento;
+
+        /// <summary>
         /// Control idProducto.
         /// </summary>
         /// <remarks>
@@ -168,15 +186,6 @@ namespace Tecnocuisine.Formularios.Compras
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
 
         /// <summary>
-        /// Control ddlPresentaciones.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPresentaciones;
-
-        /// <summary>
         /// Control ddlMarca.
         /// </summary>
         /// <remarks>
@@ -186,22 +195,13 @@ namespace Tecnocuisine.Formularios.Compras
         protected global::System.Web.UI.WebControls.DropDownList ddlMarca;
 
         /// <summary>
-        /// Control txtLote.
+        /// Control ddlPresentaciones.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtLote;
-
-        /// <summary>
-        /// Control txtFechaVencimiento.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFechaVencimiento;
+        protected global::System.Web.UI.WebControls.DropDownList ddlPresentaciones;
 
         /// <summary>
         /// Control idProductosRecetas.
