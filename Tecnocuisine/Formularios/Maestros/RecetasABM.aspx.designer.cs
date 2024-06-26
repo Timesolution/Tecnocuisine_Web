@@ -69,42 +69,6 @@ namespace Tecnocuisine.Formularios.Maestros
         protected global::System.Web.UI.WebControls.FileUpload inputImage2;
 
         /// <summary>
-        /// Control listaCategoria.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl listaCategoria;
-
-        /// <summary>
-        /// Control txtDescripcionCategoria.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDescripcionCategoria;
-
-        /// <summary>
-        /// Control btnCategorias.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnCategorias;
-
-        /// <summary>
-        /// Control txtDescripcionAtributo.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDescripcionAtributo;
-
-        /// <summary>
         /// Control ddlTipoReceta.
         /// </summary>
         /// <remarks>

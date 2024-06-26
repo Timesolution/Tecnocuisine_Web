@@ -127,7 +127,7 @@ namespace Tecnocuisine.Formularios.Maestros
             {
                 txtCodigo.Attributes.Add("disabled", "disabled");
                 txtDescripcionReceta.Attributes.Add("disabled", "disabled");
-                txtDescripcionCategoria.Attributes.Add("disabled", "disabled");
+                //txtDescripcionCategoria.Attributes.Add("disabled", "disabled");
                 ddlTipoReceta.Attributes.Add("disabled", "disabled");
                 ddlUnidadMedida.Attributes.Add("disabled", "disabled");
                 txtRinde.Attributes.Add("disabled", "disabled");
@@ -139,7 +139,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 txtPasoDesc.Attributes.Add("disabled", "disabled");
                 btnAgregarPaso.Attributes.Add("disabled", "disabled");
                 //btnAgregarProducto.Attributes.Add("disabled", "disabled");
-                btnCategorias.Attributes.Add("disabled", "disabled");
+                //btnCategorias.Attributes.Add("disabled", "disabled");
                 btnProductos.Attributes.Add("disabled", "disabled");
                 btnSectores.Attributes.Add("disabled", "disabled");
             }
@@ -184,8 +184,8 @@ namespace Tecnocuisine.Formularios.Maestros
                     //txtMerma.Text = Receta.merma.ToString();
                     txtCodigo.Text = Receta.Codigo;
                     //categoria
-                    var categoria = cc.ObtenerCategoriaById(Receta.categoria.Value);
-                    txtDescripcionCategoria.Text = categoria.id + " - " + categoria.descripcion;
+                    //var categoria = cc.ObtenerCategoriaById(Receta.categoria.Value);
+                    //txtDescripcionCategoria.Text = categoria.id + " - " + categoria.descripcion;
                     if (Receta.ProductoFinal == true)
                     {
 
@@ -209,17 +209,17 @@ namespace Tecnocuisine.Formularios.Maestros
 
 
                     //atributo depende de la categoria seleccionada
-                    var listaDeatributo = Receta.Recetas_Atributo;
-                    foreach (var atributo in listaDeatributo)
-                    {
+                    //var listaDeatributo = Receta.Recetas_Atributo;
+                    //foreach (var atributo in listaDeatributo)
+                    //{
 
-                        var atr = controladorAtributo.ObtenerAtributoById(atributo.idAtributo.Value);
+                    //    var atr = controladorAtributo.ObtenerAtributoById(atributo.idAtributo.Value);
 
-                        if (atr != null)
+                    //    if (atr != null)
 
-                            txtDescripcionAtributo.Text += atr.id + " - " + atr.descripcion + ", ";
+                    //        txtDescripcionAtributo.Text += atr.id + " - " + atr.descripcion + ", ";
 
-                    }
+                    //}
 
                     try
                     {
@@ -854,7 +854,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 //for (int i = 0; i < table.Rows.Count; i++)
                 //    builder.Append(String.Format("<option value='{0}'>", table.Rows[i][0]));
-                listaCategoria.InnerHtml = builder.ToString();
+                //listaCategoria.InnerHtml = builder.ToString();
 
             }
             catch (Exception ex)

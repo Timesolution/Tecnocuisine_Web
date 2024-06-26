@@ -1018,7 +1018,7 @@ namespace Tecnocuisine.Formularios.Maestros
         }
         //Este WebMethod guarda la receta con todos sus datos y todos su productos, cuando se esta creando por primera vez
         [WebMethod]
-        public static string GuardarReceta2(string descripcion, string codigo, string Categoria, string Sector, string Atributos, string Unidad,
+        public static string GuardarReceta2(string descripcion, string codigo, /*string Categoria,*/ string Sector, /*string Atributos,*/ string Unidad,
             string Tipo, string rinde, string prVenta, string idProductosRecetas, string BrutoT, string CostoT, string BrutoU, string CostoU,
             string FoodCost, string ContMarg, string BuenasPract, string InfoNut, string idPasosRecetas, string Presentaciones, bool ProdFinal)
         {
@@ -1032,7 +1032,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 //Esta parte se encarga de guardar los datos de la receta, es decir la primera parte de la receta
                 Receta.descripcion = descripcion;
                 Receta.Codigo = codigo;
-                Receta.categoria = Convert.ToInt32(Categoria.Trim().Split('-')[0]);
+                Receta.categoria = /*Convert.ToInt32(Categoria.Trim().Split('-')[0]);*/ null;
                 Receta.UnidadMedida = Convert.ToInt32(Unidad);
                 Receta.Tipo = Convert.ToInt32(Tipo);
                 Receta.PrVenta = decimal.Parse(prVenta, CultureInfo.InvariantCulture);
@@ -1219,29 +1219,29 @@ namespace Tecnocuisine.Formularios.Maestros
                     }
                     try
                     {
-                        string[] itemsA;
-                        if (Atributos.Contains(","))
-                            itemsA = Atributos.Split(',');
-                        else
-                            itemsA = Atributos.Split(';');
-                        int idAtributo = 0;
-                        foreach (var pr in itemsA)
-                        {
-                            if (pr != "")
-                            {
-                                string[] Atributo = pr.Split('-');
-                                if (Atributo[1] != "")
-                                {
-                                    Recetas_Atributo AtributoNuevo = new Recetas_Atributo();
-                                    AtributoNuevo.idReceta = resultado;
-                                    AtributoNuevo.idAtributo = Convert.ToInt32(Atributo[0]);
-                                    idAtributo = AtributoNuevo.idAtributo.Value;
+                        //string[] itemsA;
+                        //if (Atributos.Contains(","))
+                        //    itemsA = Atributos.Split(',');
+                        //else
+                        //    itemsA = Atributos.Split(';');
+                        //int idAtributo = 0;
+                        //foreach (var pr in itemsA)
+                        //{
+                        //    if (pr != "")
+                        //    {
+                        //        string[] Atributo = pr.Split('-');
+                        //        if (Atributo[1] != "")
+                        //        {
+                        //            Recetas_Atributo AtributoNuevo = new Recetas_Atributo();
+                        //            AtributoNuevo.idReceta = resultado;
+                        //            AtributoNuevo.idAtributo = Convert.ToInt32(Atributo[0]);
+                        //            idAtributo = AtributoNuevo.idAtributo.Value;
 
-                                    controladorReceta.AgregarReceta_Atributo(AtributoNuevo);
-                                }
+                        //            controladorReceta.AgregarReceta_Atributo(AtributoNuevo);
+                        //        }
 
-                            }
-                        }
+                        //    }
+                        //}
                     }
                     catch { }
 
@@ -1369,7 +1369,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
         //Esra funcion se ejecuta cuando se edita una receta ya existente
         [WebMethod]
-        public static void EditarReceta2(string descripcion, string codigo, string Categoria, string Sector, string Atributos, string Unidad,
+        public static void EditarReceta2(string descripcion, string codigo, /*string Categoria,*/ string Sector, /*string Atributos,*/ string Unidad,
            string Tipo, string rinde, string prVenta, string idProductosRecetas, string BrutoT, string CostoT, string BrutoU, string CostoU,
            string FoodCost, string ContMarg, string BuenasPract, string InfoNut, string idPasosRecetas, string idReceta, string Presentaciones, bool ProdFinal)
         {
@@ -1383,7 +1383,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 Receta.id = Convert.ToInt32(idReceta);
                 Receta.descripcion = descripcion;
                 Receta.Codigo = codigo;
-                Receta.categoria = Convert.ToInt32(Categoria.Trim().Split('-')[0]);
+                Receta.categoria = /*Convert.ToInt32(Categoria.Trim().Split('-')[0])*/ null;
                 Receta.UnidadMedida = Convert.ToInt32(Unidad);
                 Receta.Tipo = Convert.ToInt32(Tipo);
                 Receta.PrVenta = decimal.Parse(prVenta, CultureInfo.InvariantCulture);
@@ -1536,26 +1536,26 @@ namespace Tecnocuisine.Formularios.Maestros
 
                     try
                     {
-                        string[] itemsA = Atributos.Split(',');
-                        int idAtributo = 0;
-                        controladorReceta.EliminarAtributos(Convert.ToInt32(idReceta));
-                        foreach (var pr in itemsA)
-                        {
-                            if (pr != "")
-                            {
-                                string[] Atributo = pr.Split('-');
-                                if (Atributo[1] != "")
-                                {
-                                    Recetas_Atributo AtributoNuevo = new Recetas_Atributo();
-                                    AtributoNuevo.idReceta = Receta.id;
-                                    AtributoNuevo.idAtributo = Convert.ToInt32(Atributo[0]);
-                                    idAtributo = AtributoNuevo.idAtributo.Value;
+                        //string[] itemsA = Atributos.Split(',');
+                        //int idAtributo = 0;
+                        //controladorReceta.EliminarAtributos(Convert.ToInt32(idReceta));
+                        //foreach (var pr in itemsA)
+                        //{
+                        //    if (pr != "")
+                        //    {
+                        //        string[] Atributo = pr.Split('-');
+                        //        if (Atributo[1] != "")
+                        //        {
+                        //            Recetas_Atributo AtributoNuevo = new Recetas_Atributo();
+                        //            AtributoNuevo.idReceta = Receta.id;
+                        //            AtributoNuevo.idAtributo = Convert.ToInt32(Atributo[0]);
+                        //            idAtributo = AtributoNuevo.idAtributo.Value;
 
-                                    controladorReceta.AgregarReceta_Atributo(AtributoNuevo);
-                                }
+                        //            controladorReceta.AgregarReceta_Atributo(AtributoNuevo);
+                        //        }
 
-                            }
-                        }
+                        //    }
+                        //}
                     }
                     catch { }
 

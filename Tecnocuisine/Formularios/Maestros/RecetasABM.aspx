@@ -103,7 +103,8 @@
                                                     </div>
 
                                                 </div>--%>
-                                                <div class="row" style="margin-top:5.09%">
+
+                                                <%--<div class="row" style="margin-top:5.09%">
                                                     <label class="col-md-3 control-label editable" style="margin-top: 5px">Categorias</label>
                                                     <div class="col-md-9">
 
@@ -119,9 +120,9 @@
                                                             *Seleccione una Categoria.
                                                         </p>
                                                     </div>
-                                                </div>
+                                                </div>--%>
                                                 
-                                                <div class="row" style="margin-top:10% ">
+                                                <%--<div class="row" style="margin-top:10% ">
 
                                                     <label class="col-md-3 control-label editable" style="margin-top: 5px">Atributos</label>
                                                     <div class="col-md-9">
@@ -134,7 +135,8 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div>--%>
+
                                             </div>
                                         </div>
                                       
@@ -1065,11 +1067,11 @@
                     if (newIndex === 3 && Number($("#age").val()) < 18) {
                         return false;
                     }
-                    let cat = document.getElementById('<%= txtDescripcionCategoria.ClientID%>');
+                    <%--let cat = document.getElementById('<%= txtDescripcionCategoria.ClientID%>');
                     if (cat.value.trim().length == 0 && currentIndex == 0) {
                         document.getElementById('valCategoria').className = 'text-danger'
                         return false;
-                    }
+                    }--%>
 
                     let ValUM = true
                     let selectUM = document.getElementById('<%=ddlUnidadMedida.ClientID%>').value
@@ -1151,9 +1153,9 @@
                                 url: "ProductosABM.aspx/GuardarReceta2",
                                 data: '{ descripcion: "' + document.getElementById('<%=txtDescripcionReceta.ClientID%>').value
                                     + '" , codigo: "' + document.getElementById('<%=txtCodigo.ClientID%>').value
-                                    + '" , Categoria: "' + document.getElementById('<%=txtDescripcionCategoria.ClientID%>').value
+                                    <%--+ '" , Categoria: "' + document.getElementById('<%=txtDescripcionCategoria.ClientID%>').value--%>
                                     + '" , Sector: "' + document.getElementById('<%=txtSector.ClientID%>').value
-                                    + '" , Atributos: "' + document.getElementById('<%=txtDescripcionAtributo.ClientID%>').value
+                                    <%--+ '" , Atributos: "' + document.getElementById('<%=txtDescripcionAtributo.ClientID%>').value--%>
                                     + '" , Unidad: "' + selectUnidadMedida.selectedOptions[0].value
                                     + '" , Tipo: "' + selectTipoReceta.selectedOptions[0].value
                                     + '" , rinde: "' + document.getElementById('<%=txtRinde.ClientID%>').value
@@ -1199,9 +1201,9 @@
                             url: "ProductosABM.aspx/EditarReceta2",
                             data: '{ descripcion: "' + document.getElementById('<%=txtDescripcionReceta.ClientID%>').value
                                 + '" , codigo: "' + document.getElementById('<%=txtCodigo.ClientID%>').value
-                                + '" , Categoria: "' + document.getElementById('<%=txtDescripcionCategoria.ClientID%>').value
+                                <%--+ '" , Categoria: "' + document.getElementById('<%=txtDescripcionCategoria.ClientID%>').value--%>
                                 + '" , Sector: "' + document.getElementById('<%=txtSector.ClientID%>').value
-                                + '" , Atributos: "' + document.getElementById('<%=txtDescripcionAtributo.ClientID%>').value
+                                <%--+ '" , Atributos: "' + document.getElementById('<%=txtDescripcionAtributo.ClientID%>').value--%>
                                 + '" , Unidad: "' + selectUnidadMedida.selectedOptions[0].value
                                 + '" , Tipo: "' + selectTipoReceta.selectedOptions[0].value
                                 + '" , rinde: "' + document.getElementById('<%=txtRinde.ClientID%>').value
@@ -1737,10 +1739,10 @@
             document.getElementById('<%=txtCantBruta.ClientID%>').value = myFormat(Math.round10(CantBruta, -3));
         }
         function ValidationCategoria() {
-            let cat = document.getElementById('<%= txtDescripcionCategoria.ClientID%>');
+            <%--let cat = document.getElementById('<%= txtDescripcionCategoria.ClientID%>');
             if (cat.value.trim().length > 0) {
                 document.getElementById('valCategoria').className = 'text-hide';
-            }
+            }--%>
         }
         function ActualizarUnidades() {
             let select = document.getElementById('<%= ddlUnidadMedida.ClientID%>');
@@ -1870,23 +1872,23 @@
             let btnAtributos = document.getElementById('btnAtributos');
             btnAtributos.removeAttribute('disabled');
 
-            let txtcat = document.getElementById('<%=txtDescripcionCategoria.ClientID%>').value
-            const idOption = document.querySelector('option[value="' + txtcat + '"]').id;
+           <%-- let txtcat = document.getElementById('<%=txtDescripcionCategoria.ClientID%>').value
+            const idOption = document.querySelector('option[value="' + txtcat + '"]').id;--%>
 
 
 
-            $.ajax({
-                method: "POST",
-                url: "Categorias.aspx/GetSubAtributos2",
-                data: '{id: "' + idOption.split('_')[1] + '" }',
-                contentType: "application/json",
-                dataType: 'json',
-                error: (error) => {
-                    console.log(JSON.stringify(error));
-                    $.msgbox("No se pudo cargar la tabla", { type: "error" });
-                },
-                success: successAgregarTipoAtributo
-            });
+            //$.ajax({
+            //    method: "POST",
+            //    url: "Categorias.aspx/GetSubAtributos2",
+            //    data: '{id: "' + idOption.split('_')[1] + '" }',
+            //    contentType: "application/json",
+            //    dataType: 'json',
+            //    error: (error) => {
+            //        console.log(JSON.stringify(error));
+            //        $.msgbox("No se pudo cargar la tabla", { type: "error" });
+            //    },
+            //    success: successAgregarTipoAtributo
+            //});
         }
 
         function pulsar(e) {
