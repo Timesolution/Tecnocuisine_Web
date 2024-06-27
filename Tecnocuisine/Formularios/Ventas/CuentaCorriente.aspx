@@ -306,14 +306,24 @@
                 proveedorValiva.className = "text-danger text-hide"
             }
         }
+        //function establecerDiaHoy() {
+        //    var fechaActual = new Date();
+
+        //    // Convertir la fecha en un formato legible para el DatePicker
+        //    var fechaFormateada = fechaActual.getDate() + '/' + (fechaActual.getMonth() + 1) + '/' + fechaActual.getFullYear();
+        //    var fechaFormateada2 = ("01" + '/' + "01" + '/' + "2000");
+        //    // Establecer la fecha actual como valor predeterminado del DatePicker
+        //    $('#ContentPlaceHolder1_txtFechaHoy').datepicker('setDate', fechaFormateada2);
+        //    $('#ContentPlaceHolder1_txtFechaVencimiento').datepicker('setDate', fechaFormateada);
+
+        //}
         function establecerDiaHoy() {
             var fechaActual = new Date();
 
             // Convertir la fecha en un formato legible para el DatePicker   
             var fechaFormateada = fechaActual.getDate() + '/' + (fechaActual.getMonth() + 1) + '/' + fechaActual.getFullYear();
-            var fechaFormateada2 = ("01" + '/' + "01" + '/' + "2000");
-            // Establecer la fecha actual como valor predeterminado del DatePicker 
-            $('#ContentPlaceHolder1_txtFechaHoy').datepicker('setDate', fechaFormateada2);
+
+            $('#ContentPlaceHolder1_txtFechaHoy').datepicker('setDate', fechaFormateada);
             $('#ContentPlaceHolder1_txtFechaVencimiento').datepicker('setDate', fechaFormateada);
 
         }
