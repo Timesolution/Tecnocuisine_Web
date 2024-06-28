@@ -19,26 +19,35 @@ namespace Tecnocuisine.Formularios.Ventas
         public DataTable dtCombined;
         protected void Page_Load(object sender, EventArgs e)
         {
+            try
+            {
+                string idsQueryString = Request.QueryString["ids"];
 
-            string idsQueryString = Request.QueryString["ids"];
+                if (string.IsNullOrWhiteSpace(idsQueryString))
+                    Response.Redirect("OrdenesDeProduccion.aspx");
 
-            ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
-            dt = cOrdenDeProduccion.GetAllIngredientesOrdenesProduccion(idsQueryString);
-            dtOrdenDeProduccionRecetas_recetas = cOrdenDeProduccion.GetAllIngredientesOrdenesProduccionRecetas_Recetas(idsQueryString);
-            dtCombined = dt.Clone();
-            // Combina los datos de ambas DataTables
-            dtCombined.Merge(dt);
-            dtCombined.Merge(dtOrdenDeProduccionRecetas_recetas);
+                ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
+                dt = cOrdenDeProduccion.GetAllIngredientesOrdenesProduccion(idsQueryString);
+                dtOrdenDeProduccionRecetas_recetas = cOrdenDeProduccion.GetAllIngredientesOrdenesProduccionRecetas_Recetas(idsQueryString);
+                dtCombined = dt.Clone();
+                // Combina los datos de ambas DataTables
+                dtCombined.Merge(dt);
+                dtCombined.Merge(dtOrdenDeProduccionRecetas_recetas);
 
-            // Ordena la DataTable combinada por la columna "Fecha" de mayor a menor
-            dtCombined.DefaultView.Sort = "Fecha ASC";
-            dtCombined = dtCombined.DefaultView.ToTable();
+                // Ordena la DataTable combinada por la columna "Fecha" de mayor a menor
+                dtCombined.DefaultView.Sort = "Fecha ASC";
+                dtCombined = dtCombined.DefaultView.ToTable();
 
-            dt = dtCombined;
+                dt = dtCombined;
 
-            dtCantidadRecetasPorCadaOrden = cOrdenDeProduccion.GetAllCantidadProductosGroupByProductoColumn(idsQueryString);
+                dtCantidadRecetasPorCadaOrden = cOrdenDeProduccion.GetAllCantidadProductosGroupByProductoColumn(idsQueryString);
 
-            obtenerOPNumeros(idsQueryString);
+                obtenerOPNumeros(idsQueryString);
+            }
+            catch (Exception)
+            {
+                Response.Redirect("OrdenesDeProduccion.aspx");
+            }
         }
 
         //Esta funcion busca y obtiene todos los numeros de produccion en base a sus id

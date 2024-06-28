@@ -99,7 +99,7 @@
                                                 
                                                 <a href="DetalleIngrediente.aspx" class="btn btn-primary dim" target="_blank"
                                                     id="detalleIngredienteURL" style="margin-right: 1%; float: right"
-                                                    title="Detalle Ingredientes">Detalle Ingredientes</a>
+                                                    title="Detalle Ingredientes" onclick="SeleccioneOrden()">Detalle Ingredientes</a>
                                             </div>
                                         </div>
                                         <datalist id="ListaProveedores" runat="server">
@@ -171,7 +171,6 @@
     <script>
 
         var countSelectedCheckboxes = 0;
-/*        var cronogramaProduccionURL = document.getElementById("cronogramaProduccionURL");*/
 
         $(document).ready(function () {
             toastr.options = {
@@ -214,6 +213,7 @@
              //establecerFechaActual():
 
             document.getElementById("cronogramaProduccionURL").removeAttribute("href");
+            document.getElementById("detalleIngredienteURL").removeAttribute("href");
         });
 
         function cambiarEstado()
@@ -352,8 +352,7 @@
                     document.getElementById('<%= IDsOrdenesDeProduccion.ClientID %>').value += idOrdenDeProduccion + ",";
                 }
 
-                console.log(document.getElementById('<%= IDsOrdenesDeProduccion.ClientID %>').value)
-
+                <%--console.log(document.getElementById('<%= IDsOrdenesDeProduccion.ClientID %>').value)--%>
             }
 
             else {
@@ -371,25 +370,25 @@
 
                 countSelectedCheckboxes--;
 
-                console.log(document.getElementById('<%= IDsOrdenesDeProduccion.ClientID %>').value)
+                <%--console.log(document.getElementById('<%= IDsOrdenesDeProduccion.ClientID %>').value)--%>
             }
 
          
-            //Habilitar href en el boton si hay checkboxs seleccionados
+            //Habilitar href en los botones si hay checkboxs seleccionados
             if (countSelectedCheckboxes > 0) {
                 var enlace = document.getElementById("cronogramaProduccionURL");
                 enlace.href = "CronogramaProduccion.aspx?ids=" + encodeURIComponent(document.getElementById('<%= IDsOrdenesDeProduccion.ClientID %>').value);
+
+                var enlace2 = document.getElementById("detalleIngredienteURL");
+                enlace2.href = "DetalleIngrediente.aspx?ids=" + encodeURIComponent(document.getElementById('<%= IDsOrdenesDeProduccion.ClientID %>').value);
             }
-            //Deshabilitar href en el boton si no quedan checkboxs seleccionados
+            //Deshabilitar href en los botones si no hay checkboxs seleccionados
             else {
                 document.getElementById("cronogramaProduccionURL").removeAttribute("href");
+                document.getElementById("detalleIngredienteURL").removeAttribute("href");
             }
 
-            var enlace2 = document.getElementById("detalleIngredienteURL");
-            enlace2.href = "DetalleIngrediente.aspx?ids=" + encodeURIComponent(document.getElementById('<%= IDsOrdenesDeProduccion.ClientID %>').value);
-            //IDsOrdenesDeProduccion
         }
-
 
         function SeleccioneOrden() {
             if (countSelectedCheckboxes <= 0) {

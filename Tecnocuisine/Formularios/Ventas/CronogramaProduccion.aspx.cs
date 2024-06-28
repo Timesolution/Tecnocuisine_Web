@@ -42,9 +42,11 @@ namespace Tecnocuisine.Formularios.Ventas
         {
             try
             {
-
-
                 string idsQueryString = Request.QueryString["ids"]; //Esta variable obtiene todos los ids de todas las ordenes de produccion seleccionadas
+                
+                if(string.IsNullOrWhiteSpace(idsQueryString))
+                    Response.Redirect("OrdenesDeProduccion.aspx", false);
+
                 int Nivel = 1;
                 ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
 
@@ -109,6 +111,7 @@ namespace Tecnocuisine.Formularios.Ventas
             }
             catch (Exception ex)
             {
+                Response.Redirect("OrdenesDeProduccion.aspx", false);
             }
 
         }
