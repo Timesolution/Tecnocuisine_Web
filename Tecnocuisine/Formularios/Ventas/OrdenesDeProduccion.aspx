@@ -95,7 +95,8 @@
 
                                                 <a href="CronogramaProduccion.aspx" class="btn btn-primary dim" target="_blank"
                                                     id="cronogramaProduccionURL" style="margin-right: 1%; float: right"
-                                                    title="Cronograma Producción">Cronograma Produccion</a>
+                                                    title="Cronograma Producción" onclick="SeleccioneOrden()">Cronograma Produccion</a>
+                                                
                                                 <a href="DetalleIngrediente.aspx" class="btn btn-primary dim" target="_blank"
                                                     id="detalleIngredienteURL" style="margin-right: 1%; float: right"
                                                     title="Detalle Ingredientes">Detalle Ingredientes</a>
@@ -168,14 +169,22 @@
 
 
     <script>
+
+        var countSelectedCheckboxes = 0;
+/*        var cronogramaProduccionURL = document.getElementById("cronogramaProduccionURL");*/
+
         $(document).ready(function () {
+            toastr.options = {
+                "positionClass": "toast-bottom-right" // Puedes usar "toast-bottom-right", "toast-bottom-left", etc.
+            };
+
             $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 
-       //     var oTable = $('#editable').dataTable({
-       //         "bLengthChange": false,
-       //         "pageLength": 100, // Establece la cantidad predeterminada de registros por página
-       //         "lengthMenu": [25, 50, 87, 100], // Opciones de cantidad de registros por página
-       //     });
+            var oTable = $('#editable').dataTable({
+                "bLengthChange": false,
+                "pageLength": 100, // Establece la cantidad predeterminada de registros por página
+                "lengthMenu": [25, 50, 87, 100], // Opciones de cantidad de registros por página
+            });
 
             oTable.$('td').editable('../example_ajax.php', {
                 "callback": function (sValue, y) {
@@ -203,6 +212,8 @@
 
              establecerDiaHoy();
              //establecerFechaActual():
+
+            document.getElementById("cronogramaProduccionURL").removeAttribute("href");
         });
 
         function cambiarEstado()
@@ -329,12 +340,10 @@
 
         function guardarIdOrdenDeProduccion(idOrdenDeProduccion) {
 
-
-
             let chk2 = document.getElementById("ContentPlaceHolder1_chkSeleccionar_" + idOrdenDeProduccion);
 
             if (chk2.checked == true) {
-
+                countSelectedCheckboxes++;
 
                 if ((document.getElementById('<%= IDsOrdenesDeProduccion.ClientID %>').value) == "") {
                     document.getElementById('<%= IDsOrdenesDeProduccion.ClientID %>').value = idOrdenDeProduccion + ",";
@@ -360,16 +369,32 @@
                 // Asignar la nueva cadena como el valor del elemento de texto oculto
                 document.getElementById('<%= IDsOrdenesDeProduccion.ClientID %>').value = nuevaCadena + ",";
 
-
+                countSelectedCheckboxes--;
 
                 console.log(document.getElementById('<%= IDsOrdenesDeProduccion.ClientID %>').value)
             }
 
-            var enlace = document.getElementById("cronogramaProduccionURL");
+         
+            //Habilitar href en el boton si hay checkboxs seleccionados
+            if (countSelectedCheckboxes > 0) {
+                var enlace = document.getElementById("cronogramaProduccionURL");
+                enlace.href = "CronogramaProduccion.aspx?ids=" + encodeURIComponent(document.getElementById('<%= IDsOrdenesDeProduccion.ClientID %>').value);
+            }
+            //Deshabilitar href en el boton si no quedan checkboxs seleccionados
+            else {
+                document.getElementById("cronogramaProduccionURL").removeAttribute("href");
+            }
+
             var enlace2 = document.getElementById("detalleIngredienteURL");
-            enlace.href = "CronogramaProduccion.aspx?ids=" + encodeURIComponent(document.getElementById('<%= IDsOrdenesDeProduccion.ClientID %>').value);
             enlace2.href = "DetalleIngrediente.aspx?ids=" + encodeURIComponent(document.getElementById('<%= IDsOrdenesDeProduccion.ClientID %>').value);
             //IDsOrdenesDeProduccion
+        }
+
+
+        function SeleccioneOrden() {
+            if (countSelectedCheckboxes <= 0) {
+                toastr.error("Seleccione una orden", "Error")
+            }
         }
 
     </script>
