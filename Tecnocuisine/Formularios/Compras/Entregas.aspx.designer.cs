@@ -15,13 +15,13 @@ namespace Tecnocuisine.Formularios.Compras
     {
 
         /// <summary>
-        /// Control txtFechaEntrega.
+        /// Control lblProdNum.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFechaEntrega;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblProdNum;
 
         /// <summary>
         /// Control txtProveedor.
@@ -78,6 +78,15 @@ namespace Tecnocuisine.Formularios.Compras
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl ListaNombreSectores;
 
         /// <summary>
+        /// Control txtFechaEntrega.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtFechaEntrega;
+
+        /// <summary>
         /// Control txtObservaciones.
         /// </summary>
         /// <remarks>
@@ -85,15 +94,6 @@ namespace Tecnocuisine.Formularios.Compras
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtObservaciones;
-
-        /// <summary>
-        /// Control lblProdNum.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblProdNum;
 
         /// <summary>
         /// Control ListaNombreProd.
@@ -141,24 +141,6 @@ namespace Tecnocuisine.Formularios.Compras
         protected global::System.Web.UI.WebControls.HiddenField HiddenCosto;
 
         /// <summary>
-        /// Control txtLote.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtLote;
-
-        /// <summary>
-        /// Control txtFechaVencimiento.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFechaVencimiento;
-
-        /// <summary>
         /// Control idProducto.
         /// </summary>
         /// <remarks>
@@ -202,6 +184,24 @@ namespace Tecnocuisine.Formularios.Compras
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlPresentaciones;
+
+        /// <summary>
+        /// Control txtLote.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtLote;
+
+        /// <summary>
+        /// Control txtFechaVencimiento.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtFechaVencimiento;
 
         /// <summary>
         /// Control idProductosRecetas.

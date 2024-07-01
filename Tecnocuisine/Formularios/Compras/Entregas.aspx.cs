@@ -59,6 +59,8 @@ namespace Tecnocuisine.Formularios.Compras
                 }
             }
             CargarNumeroVenta();
+            txtFechaVencimiento.Text = string.Empty;
+            //btnGuardar.Visible = false;
         }
 
         private void CargarNumeroVenta()
@@ -629,8 +631,6 @@ namespace Tecnocuisine.Formularios.Compras
 
                 if (IsValid)
                 {
-
-
                     string fecha = txtFechaEntrega.Text;
                     string ingredientes = idProductosRecetas.Value;
                     ingredientes = ingredientes.Replace('.', ',');
