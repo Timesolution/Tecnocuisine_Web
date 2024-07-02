@@ -150,7 +150,7 @@
 
 
                             <%--Tabla--%>
-                            <div style="margin-top: -5rem">
+                            <div style="margin-top: -2rem">
                                 <asp:HiddenField runat="server" ID="idProductosRecetas" />
                                 <asp:HiddenField runat="server" ID="hiddenReceta" />
                                 <table class="table table-bordered table-hover" id="tableProductos" style="max-width: 99%;">
@@ -412,9 +412,15 @@
                         $.each(respuesta.d, function () {
                             $("#<%=ddlPresentaciones.ClientID%>").append($("<option></option>").attr("value", this.id).text(this.descripcion))
                         });
+                        document.getElementById('btnAgregarProducto').removeAttribute('disabled');
 
                     } else {
-                        $("#<%=ddlPresentaciones.ClientID%>").append($("<option></option>").attr("value", 0).text("No tiene presentaciones asignadas"))
+                        $("#<%=ddlPresentaciones.ClientID%>").append($("<option></option>").attr("value", -1).text("No tiene presentaciones asignadas"))
+                        toastr.error("El producto no tiene presentacion.", "Error", {
+                            "positionClass": "toast-bottom-right"
+                        });
+                        document.getElementById('btnAgregarProducto').setAttribute('disabled', 'true');
+
                     }
                 }
             });
