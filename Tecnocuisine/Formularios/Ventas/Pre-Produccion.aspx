@@ -62,7 +62,7 @@
                                                                 </asp:TextBox>
                                                             </div>
                                                             <div class="col-md-2">
-                                                                <asp:Button ID="btnSector" runat="server" class="btn btn-primary pull-right" OnClientClick="filtrarSectorOrigen(); return false"/>
+                                                                <asp:Button ID="btnSector" runat="server" class="btn btn-primary pull-right" OnClientClick="filtrarSectorOrigen(); return false" Text="Buscar" />
                                                             </div>
 
                                                             <%-- Boton Filtrar --%>
@@ -137,7 +137,7 @@
                                     <table class="table table-striped table-bordered table-hover " id="tableProduccion">
                                         <thead>
                                             <tr>
-                                                <th style="width: 15%">Producto</th>
+                                                <th style="width: 35%">Producto</th>
                                                 <th style="width: 15%">Cantidad</th>
                                                 <th style="width: 15%">Fecha</th>
                                                 <th style="width: 15%">Acciones</th>
@@ -319,7 +319,7 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        
+
 
                                         <table class="table table-hover no-margins table-bordered" id="DetalleRemitosInternos">
                                             <thead>
@@ -339,7 +339,7 @@
 
 
                                         <div style="text-align: right; margin-top: 10px">
-                                                  <asp:Button ID="btnRecepcion" runat="server" OnClientClick="btnRecepcion_ClientClick()"
+                                            <asp:Button ID="btnRecepcion" runat="server" OnClientClick="btnRecepcion_ClientClick()"
                                                 OnClick="btnRecepcion_Click" class="btn btn-primary"
                                                 title="Enviar" Text="Recepcionar" />
                                         </div>
@@ -513,6 +513,59 @@
     </div>
 
 
+    <div id="modalDetalleProduccion" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog" style="width: 60%; height: 60%;">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><%--Origen/Destino--%>Detalle de produccion</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="MainContent_UpdatePanel7">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="ibox float-e-margins">
+                                    <!-- Agregar la clase "collapsed" aquí -->
+                                    <div class="ibox-title">
+                                        <h5>Origen</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-down"></i>
+                                                <!-- Usar el ícono hacia abajo por defecto -->
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-user">
+                                                <li><a href="#">Config option 1</a>
+                                                </li>
+                                                <li><a href="#">Config option 2</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <table class="table table-hover no-margins table-bordered" id="tableProduccion2">
+                                            <thead>
+                                                <tr>
+                                                    <td><strong>Sector Destino</strong></td>
+                                                    <td><strong>Producto</strong></td>
+                                                    <td class="text-right"><strong>Cantidad</strong></td>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tableDetalleProduccion">
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
     <script src="/../Scripts/plugins/staps/jquery.steps.min.js"></script>
     <script src="../../js/plugins/datapicker/bootstrap-datepicker.js"></script>
@@ -536,171 +589,169 @@
 
 
     <script>
-             function guardarDatosTransferencia(){
-         
+        function guardarDatosTransferencia() {
 
-                var rows = document.querySelectorAll('#tableDetallePedidos tr');
-                var tableData = [];
 
-                rows.forEach(function(row) {
-                    var cells = row.getElementsByTagName('td');
-                    if (cells.length > 0) {
-                        var rowData = {                        
-                            idSectorOrigen: cells[0].textContent.trim(),
-                            SectorOrigen: cells[1].textContent.trim(),
-                            SectorDestino: cells[2].textContent.trim(),
-                            idProducto: cells[3].textContent.trim(),
-                            Producto: cells[4].textContent.trim(),
-                            Cantidad: cells[5].textContent.trim(),
-                            CantidadConfirmada: cells[6].textContent.trim(),
-                            cantidadEnviada: cells[7].getElementsByTagName('input')[0].value.trim()
-                        };
-                        tableData.push(rowData);
-                    }
-                });
-               //
-                var data = {
-                    tableData: tableData
-                };
-             
-                  $.ajax({
-                  method: "POST",
-                  url: "Pre-Produccion.aspx/guardarDatosTransferencia",
-                  data: JSON.stringify(data),
-                  contentType: "application/json",
-                  dataType: "json",
-                  error: function(error) {
-                      toastr.error("La transferencia no pudo ser confirmada.", "Error");
-                  },
-                  success: function(response) {
-              
-                   if(response.d > 0){
+            var rows = document.querySelectorAll('#tableDetallePedidos tr');
+            var tableData = [];
+
+            rows.forEach(function (row) {
+                var cells = row.getElementsByTagName('td');
+                if (cells.length > 0) {
+                    var rowData = {
+                        idSectorOrigen: cells[0].textContent.trim(),
+                        SectorOrigen: cells[1].textContent.trim(),
+                        SectorDestino: cells[2].textContent.trim(),
+                        idProducto: cells[3].textContent.trim(),
+                        Producto: cells[4].textContent.trim(),
+                        Cantidad: cells[5].textContent.trim(),
+                        CantidadConfirmada: cells[6].textContent.trim(),
+                        cantidadEnviada: cells[7].getElementsByTagName('input')[0].value.trim()
+                    };
+                    tableData.push(rowData);
+                }
+            });
+            //
+            var data = {
+                tableData: tableData
+            };
+
+            $.ajax({
+                method: "POST",
+                url: "Pre-Produccion.aspx/guardarDatosTransferencia",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                dataType: "json",
+                error: function (error) {
+                    toastr.error("La transferencia no pudo ser confirmada.", "Error");
+                },
+                success: function (response) {
+
+                    if (response.d > 0) {
                         let r = response.d;
-                       toastr.success("Transferencia confirmada con exito!", "Exito");
-                       imprimirRemitoEnviado(r);
-                        //window.open('ImpresionRemitos2.aspx?r=' + r, '_blank');
+                        toastr.success("Transferencia confirmada con exito!", "Exito");
+                        //imprimirRemitoEnviado(r);
+                        window.open('ImpresionRemitos.aspx?r=' + r, '_blank');
                     }
-                   else if (response.d == -1){
-                         toastr.error("La transferencia no pudo ser confirmada.", "Error");
-              
-                      }
-                   else if (response.d == -2) {
-                       toastr.error("La transferencia no pudo ser confirmada, no hay stock cargado para uno de los productos.", "Error");
+                    else if (response.d == -1) {
+                        toastr.error("La transferencia no pudo ser confirmada.", "Error");
 
-                      }
-                   else if (response.d == -3) {
-                       toastr.error("La transferencia no pudo ser confirmada, no se puede enviar una cantidad cero (0).", "Error");
+                    }
+                    else if (response.d == -2) {
+                        toastr.error("La transferencia no pudo ser confirmada, no hay stock cargado para uno de los productos.", "Error");
 
-                      }
-                   else if (response.d == -4) {
-                       toastr.error("La transferencia no pudo ser confirmada, una cantidad a enviar es mayor al stock disponible.", "Error");
+                    }
+                    else if (response.d == -3) {
+                        toastr.error("La transferencia no pudo ser confirmada, no se puede enviar una cantidad cero (0).", "Error");
 
-                   }
-                  }
-               });
+                    }
+                    else if (response.d == -4) {
+                        toastr.error("La transferencia no pudo ser confirmada, una cantidad a enviar es mayor al stock disponible.", "Error");
+
+                    }
+                }
+            });
 
 
         }
 
-            function imprimirRemitoEnviado(r) {
-                $.ajax({
-                    method: "POST",
-                    url: "Pre-Produccion.aspx/generarReporteEnviado",
-                    //body: JSON.stringify({ idRemito: r}),
-                    data: '{idRemito: "' + r + '"}',
-                    contentType: "application/json",
-                    dataType: "json",
-                    error: function (error) {
-                        //toastr.error("Ocurrio un error al mostrar el remito generado.", "Error");
-                    },
-                    success: function (response) {
-                    }
-                });
-
-
-  
-            }
-
-
-           function abrirModalRecepcionSector(){
-                 
-                 cargarRecepcionAgrupadaPorSector()
-                 $('#recepcionSectores').modal('show');   
-           }
-
-           function obteneridSectorProductivoUrl(){
-                let url = new URL(window.location.href);
-                let sectorProductivo = url.searchParams.get('SP');
-                return sectorProductivo;
-           }
-
-           //Esta funcion se para poder filtrar todos los datos de las transferencias, cuyo campo origen sea igual al 
-           //texto de la ddl seleccionada
-           function filtrarSectorOrigen(){
-
-                let ddlSector = document.getElementById('<%=ddlSector.ClientID%>');
-                let sector = ddlSector.options[ddlSector.selectedIndex].text;
-
-                let ddlSectorValue = document.getElementById('<%=ddlSector.ClientID%>').value;
-                //la o en la url es de origen
-                window.location.href="Pre-produccion.aspx?O=" + sector + "&OV=" + ddlSectorValue;
-           }
-
-           function verDetalleTranferencia(idTransferencia, productoDescripcion) {
-               console.log(idTransferencia)
-               console.log(productoDescripcion)
-                
-                $.ajax({
-                  method: "POST",
-                  url: "Pre-produccion.aspx/verDetallesPedidos",
-                  data: JSON.stringify({ idTransferencia: idTransferencia, productoDescripcion: productoDescripcion }),
-                  contentType: "application/json",
-                  dataType: "json",
-                  error: function(error) {
-                      console.log("Error");
-                  },
-                  success: function(data) {
-                      const arraydetalleTransferencia = data.d.split(";").filter(Boolean);
-                      document.getElementById('tableDetallePedidos').innerHTML = "";
-                      document.getElementById('<%= idTransferencia.ClientID %>').value = idTransferencia;
-                      let cont = 0;
-                      document.getElementById('<%= idsPedidos.ClientID %>').value = "";
-                      document.getElementById('<%= datosTransferencias.ClientID %>').value = "";
-                      let estado = false;
-                      arraydetalleTransferencia.forEach(function(detalleTransferencia) {
-                          cont++;
-                          let cantidadAConfirmar = "";
-                          const partesDetalle = detalleTransferencia.split(",").filter(Boolean);
-                          document.getElementById('<%= idsPedidos.ClientID %>').value += partesDetalle[0] + ",";
-                          document.getElementById('<%= datosTransferencias.ClientID %>').value += partesDetalle[0] + "," + partesDetalle[12] + ";";
-                          const SectorOrigen = partesDetalle[1];
-                          const ProductoOrigen = partesDetalle[2];
-                          const cantidadOrigen = partesDetalle[3];
-                          const estadoTransferencia = partesDetalle[10];
-                          const cantEnviada = partesDetalle[12];
+        function imprimirRemitoEnviado(r) {
+            $.ajax({
+                method: "POST",
+                url: "Pre-Produccion.aspx/generarReporteEnviado",
+                //body: JSON.stringify({ idRemito: r}),
+                data: '{idRemito: "' + r + '"}',
+                contentType: "application/json",
+                dataType: "json",
+                error: function (error) {
+                    toastr.error("Ocurrio un error al mostrar el remito generado.", "Error");
+                },
+                success: function (response) {
+                }
+            });
 
 
 
-                          if(estadoTransferencia == "Confirmado" || estadoTransferencia == "A confirmar") 
-                          {
-                             cantidadAConfirmar = "<input id=\"" + "cantEnviada_" + cont + "\" style=\"width: 100%; text-align: right;\" placeholder=\"Cantidad\" value=\"" + partesDetalle[12] + "\" oninput=\"validarTextBox(this);\" />";
-                             estado = false;
-                          }
+        }
 
-                          else
-                          {
-                             cantidadAConfirmar = "<input id=\"cantEnviada_" + cont + "\" style=\"width: 100%; text-align: right;\" placeholder=\"Cantidad\" value=\"" + partesDetalle[12] + "\" disabled />";
-                             estado = true;
-                          }
-                          const productoDestino = partesDetalle[4];
-                          const sectorDestino = partesDetalle[5];
-                          const orden = partesDetalle[6];
-                          const razonSocialActual = partesDetalle[7];
+
+        function abrirModalRecepcionSector() {
+
+            cargarRecepcionAgrupadaPorSector()
+            $('#recepcionSectores').modal('show');
+        }
+
+        function obteneridSectorProductivoUrl() {
+            let url = new URL(window.location.href);
+            let sectorProductivo = url.searchParams.get('SP');
+            return sectorProductivo;
+        }
+
+        //Esta funcion se para poder filtrar todos los datos de las transferencias, cuyo campo origen sea igual al 
+        //texto de la ddl seleccionada
+        function filtrarSectorOrigen() {
+
+            let ddlSector = document.getElementById('<%=ddlSector.ClientID%>');
+            let sector = ddlSector.options[ddlSector.selectedIndex].text;
+
+            let ddlSectorValue = document.getElementById('<%=ddlSector.ClientID%>').value;
+            //la o en la url es de origen
+            window.location.href = "Pre-produccion.aspx?O=" + sector + "&OV=" + ddlSectorValue;
+        }
+
+        function verDetalleTranferencia(idTransferencia, productoDescripcion) {
+            console.log(idTransferencia)
+            console.log(productoDescripcion)
+
+            $.ajax({
+                method: "POST",
+                url: "Pre-produccion.aspx/verDetallesPedidos",
+                data: JSON.stringify({ idTransferencia: idTransferencia, productoDescripcion: productoDescripcion }),
+                contentType: "application/json",
+                dataType: "json",
+                error: function (error) {
+                    console.log("Error");
+                },
+                success: function (data) {
+                    const arraydetalleTransferencia = data.d.split(";").filter(Boolean);
+                    document.getElementById('tableDetallePedidos').innerHTML = "";
+                    document.getElementById('<%= idTransferencia.ClientID %>').value = idTransferencia;
+                    let cont = 0;
+                    document.getElementById('<%= idsPedidos.ClientID %>').value = "";
+                    document.getElementById('<%= datosTransferencias.ClientID %>').value = "";
+                    let estado = false;
+                    arraydetalleTransferencia.forEach(function (detalleTransferencia) {
+                        cont++;
+                        let cantidadAConfirmar = "";
+                        const partesDetalle = detalleTransferencia.split(",").filter(Boolean);
+                        document.getElementById('<%= idsPedidos.ClientID %>').value += partesDetalle[0] + ",";
+                        document.getElementById('<%= datosTransferencias.ClientID %>').value += partesDetalle[0] + "," + partesDetalle[12] + ";";
+                        const SectorOrigen = partesDetalle[1];
+                        const ProductoOrigen = partesDetalle[2];
+                        const cantidadOrigen = partesDetalle[3];
+                        const estadoTransferencia = partesDetalle[10];
+                        const cantEnviada = partesDetalle[12];
+
+
+
+                        if (estadoTransferencia == "Confirmado" || estadoTransferencia == "A confirmar") {
+                            cantidadAConfirmar = "<input id=\"" + "cantEnviada_" + cont + "\" style=\"width: 100%; text-align: right;\" placeholder=\"Cantidad\" value=\"" + partesDetalle[12] + "\" oninput=\"validarTextBox(this);\" />";
+                            estado = false;
+                        }
+
+                        else {
+                            cantidadAConfirmar = "<input id=\"cantEnviada_" + cont + "\" style=\"width: 100%; text-align: right;\" placeholder=\"Cantidad\" value=\"" + partesDetalle[12] + "\" disabled />";
+                            estado = true;
+                        }
+                        const productoDestino = partesDetalle[4];
+                        const sectorDestino = partesDetalle[5];
+                        const orden = partesDetalle[6];
+                        const razonSocialActual = partesDetalle[7];
 
 
 
 
-                          let plantillaDetalleTransferencia = `
+                        let plantillaDetalleTransferencia = `
                               <tr>
                                   <td>${SectorOrigen}</td>
                                   <td>${ProductoOrigen}</td>
@@ -714,96 +765,96 @@
                           `;
 
 
-                          document.getElementById('tableDetallePedidos').innerHTML += plantillaDetalleTransferencia;
+                        document.getElementById('tableDetallePedidos').innerHTML += plantillaDetalleTransferencia;
 
-                });
-                 $("#modalDetallePedidos").modal("show")
-               }
+                    });
+                    $("#modalDetallePedidos").modal("show")
+                }
             });
-           }
+        }
 
-      
-           function guardarDetallesTransferenciasConfirmadas(){
-           
-         //    for (var i = 0; i < document.getElementById('DetallesTransferenciasConfirmadas').rows.length; i++) {
-         //       let cantidad = document.getElementById('DetallesTransferenciasConfirmadas').rows[i].cells[3].querySelector('input').value;
-         //       
-         //
-         //    }
-           
-           }
+
+        function guardarDetallesTransferenciasConfirmadas() {
+
+            //    for (var i = 0; i < document.getElementById('DetallesTransferenciasConfirmadas').rows.length; i++) {
+            //       let cantidad = document.getElementById('DetallesTransferenciasConfirmadas').rows[i].cells[3].querySelector('input').value;
+            //       
+            //
+            //    }
+
+        }
 
 
     </script>
 
     <script>
-       function CheckAll() {
-           var total = 0;
-           for (var i = 1; i < document.getElementById('editable').rows.length; i++) {
-              // document.getElementById('editable').rows[i].cells[4].childNodes[1].children[0].checked = true;
-             let checkbox = document.getElementById('editable').rows[i].cells[6].getElementsByTagName('input')[0];
+        function CheckAll() {
+            var total = 0;
+            for (var i = 1; i < document.getElementById('editable').rows.length; i++) {
+                // document.getElementById('editable').rows[i].cells[4].childNodes[1].children[0].checked = true;
+                let checkbox = document.getElementById('editable').rows[i].cells[6].getElementsByTagName('input')[0];
 
 
-             if(checkbox != null){
-                checkbox.checked = true;
+                if (checkbox != null) {
+                    checkbox.checked = true;
 
 
 
-                let id = document.getElementById('editable').rows[i].cells[5].innerText;
-                let sectorProductivo = document.getElementById('editable').rows[i].cells[4].innerText;
-                let cantidad = document.getElementById('editable').rows[i].cells[2].innerText;
-                let descripcion = document.getElementById('editable').rows[i].cells[1].innerText;
+                    let id = document.getElementById('editable').rows[i].cells[5].innerText;
+                    let sectorProductivo = document.getElementById('editable').rows[i].cells[4].innerText;
+                    let cantidad = document.getElementById('editable').rows[i].cells[2].innerText;
+                    let descripcion = document.getElementById('editable').rows[i].cells[1].innerText;
 
 
-                     verIngredientesReceta(checkbox.id, id, cantidad, descripcion, sectorProductivo);
-             }
+                    verIngredientesReceta(checkbox.id, id, cantidad, descripcion, sectorProductivo);
+                }
 
-           }
-       }
-
-
-       function cargarInsumo(){
-       }
-    </script>
-    <script>
-            function Recepcionar(ingredienteId, ingredienteNombre, idSector, SectorProductivo){
-                window.open("../Compras/Entregas.aspx?idP=" + ingredienteId + "&Desc=" + ingredienteNombre + "&idS=" + idSector + "&SP=" + SectorProductivo, '_blank');
             }
+        }
+
+
+        function cargarInsumo() {
+        }
+    </script>
+    <script>
+        function Recepcionar(ingredienteId, ingredienteNombre, idSector, SectorProductivo) {
+            window.open("../Compras/Entregas.aspx?idP=" + ingredienteId + "&Desc=" + ingredienteNombre + "&idS=" + idSector + "&SP=" + SectorProductivo, '_blank');
+        }
     </script>
 
     <script>
-             function unCheckAll() {
-                 var total = 0;
-                 for (var i = 1; i < document.getElementById('editable').rows.length; i++) {
+        function unCheckAll() {
+            var total = 0;
+            for (var i = 1; i < document.getElementById('editable').rows.length; i++) {
 
-                       let checkbox = document.getElementById('editable').rows[i].cells[6].getElementsByTagName('input')[0];
-                     if(checkbox != null){
-                          checkbox.checked = false;
-
-
-
-                      let id = document.getElementById('editable').rows[i].cells[5].innerText;
-                      let sectorProductivo = document.getElementById('editable').rows[i].cells[4].innerText;
-                      let cantidad = document.getElementById('editable').rows[i].cells[2].innerText;
-                      let descripcion = document.getElementById('editable').rows[i].cells[1].innerText;
+                let checkbox = document.getElementById('editable').rows[i].cells[6].getElementsByTagName('input')[0];
+                if (checkbox != null) {
+                    checkbox.checked = false;
 
 
-                          // Ejecutar manualmente el evento onchange
+
+                    let id = document.getElementById('editable').rows[i].cells[5].innerText;
+                    let sectorProductivo = document.getElementById('editable').rows[i].cells[4].innerText;
+                    let cantidad = document.getElementById('editable').rows[i].cells[2].innerText;
+                    let descripcion = document.getElementById('editable').rows[i].cells[1].innerText;
 
 
-                         // let rowId = document.getElementById('editable').rows[i].id;
-                         //  let onchangeFunction = checkbox.onchange;
-                         //
-                        verIngredientesReceta(checkbox.id, id, cantidad, descripcion, sectorProductivo);
-                         //  function verIngredientesReceta(idCheckbox, idReceta, cantidad, descripcion, sectorProductivo)
-                         //
-                         // if (onchangeFunction && typeof onchangeFunction === 'function') {
-                          //  onchangeFunction.apply(checkbox);  // Asegurar que 'this' sea la casilla de verificación
-                    }
+                    // Ejecutar manualmente el evento onchange
 
-             // }
-                 }
-             }
+
+                    // let rowId = document.getElementById('editable').rows[i].id;
+                    //  let onchangeFunction = checkbox.onchange;
+                    //
+                    verIngredientesReceta(checkbox.id, id, cantidad, descripcion, sectorProductivo);
+                    //  function verIngredientesReceta(idCheckbox, idReceta, cantidad, descripcion, sectorProductivo)
+                    //
+                    // if (onchangeFunction && typeof onchangeFunction === 'function') {
+                    //  onchangeFunction.apply(checkbox);  // Asegurar que 'this' sea la casilla de verificación
+                }
+
+                // }
+            }
+        }
     </script>
 
 
@@ -826,26 +877,26 @@
             }
 
             //Este codigo esta para la barra buscadora de recepcion
-           // var oTable = $('#idTablaRecepcionSector').dataTable({
-           //      "bLengthChange": false,
-           //      "pageLength": 100, // Establece la cantidad predeterminada de registros por página
-           //      "lengthMenu": [25, 50, 87, 100], // Opciones de cantidad de registros por página
-           // });
-           //
-           // oTable.$('td').editable('../example_ajax.php', {
-           //    "callback": function (sValue, y) {
-           //        var aPos = oTable.fnGetPosition(this);
-           //        oTable.fnUpdate(sValue, aPos[0], aPos[1]);
-           //    },
-           //    "submitdata": function (value, settings) {
-           //        return {
-           //            "row_id": this.parentNode.getAttribute('id'),
-           //            "column": oTable.fnGetPosition(this)[2]
-           //        };
-           //    },
-           //    "width": "90%",
-           //    "height": "100%"
-           //});
+            // var oTable = $('#idTablaRecepcionSector').dataTable({
+            //      "bLengthChange": false,
+            //      "pageLength": 100, // Establece la cantidad predeterminada de registros por página
+            //      "lengthMenu": [25, 50, 87, 100], // Opciones de cantidad de registros por página
+            // });
+            //
+            // oTable.$('td').editable('../example_ajax.php', {
+            //    "callback": function (sValue, y) {
+            //        var aPos = oTable.fnGetPosition(this);
+            //        oTable.fnUpdate(sValue, aPos[0], aPos[1]);
+            //    },
+            //    "submitdata": function (value, settings) {
+            //        return {
+            //            "row_id": this.parentNode.getAttribute('id'),
+            //            "column": oTable.fnGetPosition(this)[2]
+            //        };
+            //    },
+            //    "width": "90%",
+            //    "height": "100%"
+            //});
 
 
             var oTable = $('#idTablaRecepcionSector').dataTable({
@@ -893,54 +944,54 @@
             $("#editable_filter").css('display', 'none');
         });
 
-        function establecerSectorSeleccionado(){
+        function establecerSectorSeleccionado() {
             let ddlSectorProductivo = document.getElementById("ContentPlaceHolder1_ddlSectorSelecionado").value
             document.getElementById("ContentPlaceHolder1_ddlSector").value = ddlSectorProductivo;
-            
+
         }
 
 
-        function verStock(idReceta, cantidad){
-        
-              fetch('Pre-Produccion.aspx/getIngredientesRecetaByIdReceta', {
-              method: 'POST',
-              body: JSON.stringify({ idReceta: idReceta, cantidad: cantidad }),
-              headers: { 'Content-Type': 'application/json' }
-              })
-              .then(response => response.json())
-              .then(data => {
-          
-          
-              //const ingredientesArray = data.d.split(';');
-              const ingredientesArray = data.d.split(';').filter(Boolean); 
-               document.getElementById('tablaRecepcion').innerHTML = "";
-               ingredientesArray.forEach(producto => {
-                    // Dividir cada elemento en valores individuales usando coma como separador
-                    const ingredienteData = producto.split(',');
+        function verStock(idReceta, cantidad) {
 
-                    // Ahora puedes acceder a valores específicos del producto
-                    const ingredienteId = ingredienteData[0];
-                    const ingredienteNombre = ingredienteData[1];
-                    const Cantidad = ingredienteData[2];
+            fetch('Pre-Produccion.aspx/getIngredientesRecetaByIdReceta', {
+                method: 'POST',
+                body: JSON.stringify({ idReceta: idReceta, cantidad: cantidad }),
+                headers: { 'Content-Type': 'application/json' }
+            })
+                .then(response => response.json())
+                .then(data => {
 
 
-                     let plantillaIngredientes = `
+                    //const ingredientesArray = data.d.split(';');
+                    const ingredientesArray = data.d.split(';').filter(Boolean);
+                    document.getElementById('tablaRecepcion').innerHTML = "";
+                    ingredientesArray.forEach(producto => {
+                        // Dividir cada elemento en valores individuales usando coma como separador
+                        const ingredienteData = producto.split(',');
+
+                        // Ahora puedes acceder a valores específicos del producto
+                        const ingredienteId = ingredienteData[0];
+                        const ingredienteNombre = ingredienteData[1];
+                        const Cantidad = ingredienteData[2];
+
+
+                        let plantillaIngredientes = `
                      <tr>
                          <td>${ingredienteNombre}</td>
                          <td style="text-align: right;">${Cantidad}</td>
                      </tr>
                  `;
-                 document.getElementById('tablaRecepcion').innerHTML += plantillaIngredientes;
+                        document.getElementById('tablaRecepcion').innerHTML += plantillaIngredientes;
 
-               });
-              $('#modalIngredientes').modal('show');
-                                    
-          
-              })
-              .catch(error => {
-                  // Código para manejar errores aquí
-                  console.error('Error:', error);
-              });
+                    });
+                    $('#modalIngredientes').modal('show');
+
+
+                })
+                .catch(error => {
+                    // Código para manejar errores aquí
+                    console.error('Error:', error);
+                });
 
         }
 
@@ -957,7 +1008,7 @@
 
 
 
-       function verEnvio(idsRecetas) {
+        function verEnvio(idsRecetas) {
             console.log("Recetas provenientes:" + idsRecetas);
 
             $.ajax({
@@ -973,7 +1024,7 @@
                 success: (respuesta) => {
                     console.log(respuesta.d);
 
-                    const recetasArray = respuesta.d.split(';').filter(Boolean); 
+                    const recetasArray = respuesta.d.split(';').filter(Boolean);
                     document.getElementById('tablaEnvioReceta').innerHTML = "";
                     recetasArray.forEach(receta => {
                         const recetaData = receta.split(',');
@@ -1002,48 +1053,48 @@
 
 
 
-        function cargarIngredienteEnvio(id, descripcion, cantidad, idCheckBox){
+        function cargarIngredienteEnvio(id, descripcion, cantidad, idCheckBox) {
 
-                 //Esta funcion valida si el producto ya existe en la tabla, de ser asi acumula la cantidad de ese producto
+            //Esta funcion valida si el producto ya existe en la tabla, de ser asi acumula la cantidad de ese producto
 
-                 let checkBox = document.getElementById(idCheckBox);
-                 console.log("check: " + checkBox)
-
-
-                 if(checkBox.checked == true){
-                    let existe = validarProductoExisteTabla(id, cantidad);
-                    if(existe != true){
-                           $.ajax({
-                           method: "POST",
-                           url: "Pre-Produccion.aspx/getStockCostoUnidad",
-                           data: '{id: "' + id + '"}',
-                           contentType: "application/json",
-                           dataType: "json",
-                           dataType: "json",
-                           async: false,
-                           error: (error) => {
-                               console.log(JSON.stringify(error));
-                           },
-                           success: (respuesta) => {
-
-                              let datosIngredienteSplit = respuesta.d.split(';').filter(Boolean);
-                              let costo = "";
-                              let stock = "";
-                              let unidad = "";
-
-                              console.log("console:" + datosIngredienteSplit);
-
-                              datosIngredienteSplit.forEach(producto => {
-                                  let datosIngredientesSplitComa = producto.split(','); // Cambié datosIngredienteSplit por producto
-                                      costo = datosIngredientesSplitComa[0];
-                                      stock = datosIngredientesSplitComa[1];
-                                      unidad = datosIngredientesSplitComa[2];
-
-                              });
+            let checkBox = document.getElementById(idCheckBox);
+            console.log("check: " + checkBox)
 
 
-   
-                              let plantillaIngredientes = `
+            if (checkBox.checked == true) {
+                let existe = validarProductoExisteTabla(id, cantidad);
+                if (existe != true) {
+                    $.ajax({
+                        method: "POST",
+                        url: "Pre-Produccion.aspx/getStockCostoUnidad",
+                        data: '{id: "' + id + '"}',
+                        contentType: "application/json",
+                        dataType: "json",
+                        dataType: "json",
+                        async: false,
+                        error: (error) => {
+                            console.log(JSON.stringify(error));
+                        },
+                        success: (respuesta) => {
+
+                            let datosIngredienteSplit = respuesta.d.split(';').filter(Boolean);
+                            let costo = "";
+                            let stock = "";
+                            let unidad = "";
+
+                            console.log("console:" + datosIngredienteSplit);
+
+                            datosIngredienteSplit.forEach(producto => {
+                                let datosIngredientesSplitComa = producto.split(','); // Cambié datosIngredienteSplit por producto
+                                costo = datosIngredientesSplitComa[0];
+                                stock = datosIngredientesSplitComa[1];
+                                unidad = datosIngredientesSplitComa[2];
+
+                            });
+
+
+
+                            let plantillaIngredientes = `
                                   <tr>
                                       <td>${id}</td>
                                       <td>${descripcion}</td>
@@ -1053,104 +1104,104 @@
                                       <td>${unidad}</td>
                                   </tr>
                               `;
-                              document.getElementById('tableProductos').innerHTML += plantillaIngredientes;
-                           }
-                       });
-                    }
-                 
-                 
-                 }
-                 else{
-                    quitarProductoTabla(id, cantidad)
-                 }
-            
-             
+                            document.getElementById('tableProductos').innerHTML += plantillaIngredientes;
+                        }
+                    });
+                }
+
+
+            }
+            else {
+                quitarProductoTabla(id, cantidad)
+            }
+
+
         }
 
 
         function establecerDiaHoy() {
-              var fechas = obtenerRangoFechas();
-              var fechaFormateada1 = (fechas.primerDia.getFullYear() + '/' + (fechas.primerDia.getMonth() + 1) + '/' + fechas.diaActual.getDate())
-              var fechaFormateada2 = (fechas.ultimoDia.getFullYear() + '/' + (fechas.ultimoDia.getMonth() + 1) + '/' + fechas.diaActual.getDate())
+            var fechas = obtenerRangoFechas();
+            var fechaFormateada1 = (fechas.primerDia.getFullYear() + '/' + (fechas.primerDia.getMonth() + 1) + '/' + fechas.diaActual.getDate())
+            var fechaFormateada2 = (fechas.ultimoDia.getFullYear() + '/' + (fechas.ultimoDia.getMonth() + 1) + '/' + fechas.diaActual.getDate())
 
 
-              document.getElementById("ContentPlaceHolder1_txtFechaHoy").value = formatearFechas(fechaFormateada1);
-              document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value = formatearFechas(fechaFormateada2);;
+            document.getElementById("ContentPlaceHolder1_txtFechaHoy").value = formatearFechas(fechaFormateada1);
+            document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value = formatearFechas(fechaFormateada2);;
 
         }
 
 
-        function quitarProductoTabla(id, cantidad){
+        function quitarProductoTabla(id, cantidad) {
             let existe = false;
             for (var i = 1; i < document.getElementById('tableProductos').rows.length; i++) {
                 let idTabla = document.getElementById('tableProductos').rows[i].cells[0].innerHTML
 
-                if(id == idTabla){
-                  existe = true;
-                  let cantidadTableStr = document.getElementById('tableProductos').rows[i].cells[2].innerHTML;
-                  let cantDecimalesTotales = contarDecimales(cantidadTableStr);
+                if (id == idTabla) {
+                    existe = true;
+                    let cantidadTableStr = document.getElementById('tableProductos').rows[i].cells[2].innerHTML;
+                    let cantDecimalesTotales = contarDecimales(cantidadTableStr);
 
-                  console.log("cantidadTableStr: " + cantidadTableStr)
+                    console.log("cantidadTableStr: " + cantidadTableStr)
 
-                  //let cantidadTable = parseFloat(cantidadTableStr).toFixed(4);
+                    //let cantidadTable = parseFloat(cantidadTableStr).toFixed(4);
 
-                 // console.log("cantidadTableDecimal: " + cantidadTable)
+                    // console.log("cantidadTableDecimal: " + cantidadTable)
 
-                  //let cantidadNum = parseFloat(cantidad).toFixed(4); 
-
-
-                  let cantidadTable = Number(cantidadTableStr);
-                  let cantidadNum = Number(cantidad); 
-
-                  let resta = cantidadTable - cantidadNum;
+                    //let cantidadNum = parseFloat(cantidad).toFixed(4); 
 
 
-                  let cantDecimales = contarDecimales(resta.toString());
-                  if(cantDecimales == 0){
-                     resta = resta.toFixed(cantDecimalesTotales);
-                  }
+                    let cantidadTable = Number(cantidadTableStr);
+                    let cantidadNum = Number(cantidad);
 
-                  console.log("cantidadTableSuma: " + resta)
-                  document.getElementById('tableProductos').rows[i].cells[2].innerHTML = resta
+                    let resta = cantidadTable - cantidadNum;
 
-                  if(resta == 0){
-                    document.getElementById('tableProductos').deleteRow(i);
-                  }
+
+                    let cantDecimales = contarDecimales(resta.toString());
+                    if (cantDecimales == 0) {
+                        resta = resta.toFixed(cantDecimalesTotales);
+                    }
+
+                    console.log("cantidadTableSuma: " + resta)
+                    document.getElementById('tableProductos').rows[i].cells[2].innerHTML = resta
+
+                    if (resta == 0) {
+                        document.getElementById('tableProductos').deleteRow(i);
+                    }
 
                 }
 
                 console.log(idTabla)
             }
 
-           return existe;
-        
+            return existe;
+
         }
 
-        function validarProductoExisteTabla(id, cantidad){
-                
-              let existe = false;
-              for (var i = 1; i < document.getElementById('tableProductos').rows.length; i++) {
-                  let idTabla = document.getElementById('tableProductos').rows[i].cells[0].innerHTML
+        function validarProductoExisteTabla(id, cantidad) {
 
-                  if(id == idTabla){
+            let existe = false;
+            for (var i = 1; i < document.getElementById('tableProductos').rows.length; i++) {
+                let idTabla = document.getElementById('tableProductos').rows[i].cells[0].innerHTML
+
+                if (id == idTabla) {
                     existe = true;
                     let cantidadTableStr = document.getElementById('tableProductos').rows[i].cells[2].innerHTML;
                     let cantDecimalesTotales = contarDecimales(cantidadTableStr);
-                    
+
                     let cantidadDecimal = "2.0000";
                     let cantidadDecimal2 = "2.2455";
                     let numeroEntero = "2";
-                    
-                   
+
+
                     //console.log("cantidadTableStr: " + cantidadTableStr)
 
                     //let cantidadTable = parseFloat(cantidadTableStr).toFixed(4);
 
-                   // console.log("cantidadTableDecimal: " + cantidadTable)
+                    // console.log("cantidadTableDecimal: " + cantidadTable)
 
-                   // let cantidadNum = parseFloat(cantidad).toFixed(4); 
-                    let cantidadNum1 = parseFloat(cantidadDecimal); 
-                    let cantidadNum2 = parseFloat(cantidadDecimal2); 
+                    // let cantidadNum = parseFloat(cantidad).toFixed(4); 
+                    let cantidadNum1 = parseFloat(cantidadDecimal);
+                    let cantidadNum2 = parseFloat(cantidadDecimal2);
 
 
 
@@ -1160,26 +1211,26 @@
 
 
                     let cantidadTable = Number(cantidadTableStr);
-                    let cantidadNum = Number(cantidad); 
+                    let cantidadNum = Number(cantidad);
 
 
 
                     let suma = cantidadTable + cantidadNum;
-                    
+
                     let cantDecimales = contarDecimales(suma.toString());
-                    if(cantDecimales == 0){
-                       suma = suma.toFixed(cantDecimalesTotales);
+                    if (cantDecimales == 0) {
+                        suma = suma.toFixed(cantDecimalesTotales);
                     }
-                 
+
 
                     //console.log("cantidadTableSuma: " + suma)
                     document.getElementById('tableProductos').rows[i].cells[2].innerHTML = suma;
-                  }
+                }
 
-                  //console.log(idTabla)
-              }
+                //console.log(idTabla)
+            }
 
-             return existe;
+            return existe;
         }
 
 
@@ -1215,84 +1266,84 @@
         }
 
 
-           function obtenerRangoFechas() {
-              var fechaActual = new Date(); 
-              let diaActual = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate());
-              var primerDiaMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), 1); 
-              var ultimoDiaMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth() + 1, 0); 
+        function obtenerRangoFechas() {
+            var fechaActual = new Date();
+            let diaActual = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate());
+            var primerDiaMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), 1);
+            var ultimoDiaMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth() + 1, 0);
 
-              return {
-                  primerDia: primerDiaMes,
-                  ultimoDia: ultimoDiaMes, 
-                  diaActual: diaActual
-              };
-           }
-
-
+            return {
+                primerDia: primerDiaMes,
+                ultimoDia: ultimoDiaMes,
+                diaActual: diaActual
+            };
+        }
 
 
 
 
 
-         function CargarTablaReceta(idsRecetas) {
-             $.ajax({
-                 method: "POST",
-                 url: "Pre-Produccion.aspx/GetProductosEnRecetas2",
-                 data: '{idsRecetas: "' + idsRecetas + '"}',
-                 contentType: "application/json",
-                 dataType: "json",
-                 dataType: "json",
-                 async: false,
-                 error: (error) => {
-                     console.log(JSON.stringify(error));
-                 },
-                 success: (respuesta) => {
-                     AgregarATabla(respuesta.d);
-                     //document.getElementById("ContentPlaceHolder1_StockAlteradoFinal").textContent = "";
-                     /*  PedirStockTotal(id);*/
-
-                 }
-             });
-         }
 
 
-          function AgregarATabla(list) {
-             $('#tableProductos tbody')[0].innerHTML = "";
-             let listArr = list.split(";");
-             for (let i = 0; i < listArr.length; ++i) {
-                 if (listArr[i].length > 1) {
-                     idCostoFinal = "costofinal" + (i + 1);
-                     let item = listArr[i].split(",");
-                     let id = item[0].trim();
-                     let name = item[1].trim();
-                     let cantNecesaria = Number(item[2].replace(',', '.')).toFixed(2);
-                     let stock = Number(item[3].replace(',', '.')).toFixed(2)
-                     let unidad = item[4].trim();
-                     let tipo = item[5].trim();
-                     let costo = item[6].trim();
+        function CargarTablaReceta(idsRecetas) {
+            $.ajax({
+                method: "POST",
+                url: "Pre-Produccion.aspx/GetProductosEnRecetas2",
+                data: '{idsRecetas: "' + idsRecetas + '"}',
+                contentType: "application/json",
+                dataType: "json",
+                dataType: "json",
+                async: false,
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                },
+                success: (respuesta) => {
+                    AgregarATabla(respuesta.d);
+                    //document.getElementById("ContentPlaceHolder1_StockAlteradoFinal").textContent = "";
+                    /*  PedirStockTotal(id);*/
 
-                     let faCosto = "<a data-toggle=tooltip data-placement=top data-original-title=Cambiar_Costo  style=\"color: black;\"  onclick=ModalCambiarCosto('" + id + "-P" + "')>  <i id=\"" + id + "-P" + "\" class=\"fa fa-dollar\"></i> <a>"
-                    
-                     let Costo = "<td style=\" text-align: right\"> " + formatearNumero(Number(costo)) + "</td>";
-                     let CostoFinal = "<td style=\" text-align: right\" id=\"" + idCostoFinal.trim() + "\" text-align: right\"> " + 0 + "</td>"
-                     let faChangeProduct = "<a data-toggle=tooltip data-placement=top data-original-title=Cambiar_Producto  style=\"color: black;\"  onclick=ModalCambiarProducto('" + id + "-P" + "')>  <i id=\"" + id + "-P" + "\" class=\"fa fa-exchange\"></i> <a>"
-                     //let faReceta = "<td></td > ";
-                     let faReceta = "";
+                }
+            });
+        }
 
-                     
-                     if (tipo == "Receta") {
-                         faChangeProduct = "<a data-toggle=tooltip data-placement=top data-original-title=Cambiar_Producto  style=\"color: black;\"  onclick=ModalCambiarProducto('" + id + "-R" + "')>  <i id=\"" + id + "-R" + "\" class=\"fa fa-exchange\"></i> <a>"
-                         //faReceta = "<td><a data-toggle=tooltip data-placement=top data-original-title=Elegir_Stock  style=\"color: black;\"  onclick=ModalTablaStocks('" + id + "-R" + "')> <i id=\"" + id + "-R" + "\" class=\"fa fa-calculator\"></i> </a>   <a data-toggle=tooltip data-placement=top data-original-title=Ver_Receta href=/Formularios/Maestros/RecetasABM.aspx?a=2&i=" + id + "&b=1" + " " + "target=\"_blank\" style=\"color: black;\" > <i class=\"fa fa-search-plus\"></i> </a>   <a data-toggle=tooltip data-placement=top data-original-title=Producir_Receta href=GenerarProduccion.aspx?i=" + id + " " + "target=\"_blank\" style=\"color: black;\" > <i class=\"fa fa-cutlery\"></i> </a> " + faChangeProduct + faCosto + "  <button id=\"Recepcion\" type=\"button\" class=\"icon-button\" style=\"float: right; margin-left: 5px; color: black;\" title=\"Recepción\" onclick=\"MostrarRecepcion(" + id + "," + cantNecesaria + ")\"><i class=\"fa fa-arrows-h\"></i></button></td>";
-                         faReceta = "<td> <button id=\"Recepcion\" type=\"button\" class=\"icon-button\" style=\"float: right; margin-left: 5px; color: black; border: none;\" title=\"Recepción\" onclick=\"MostrarRecepcion(" + id + "," + cantNecesaria + ")\"><i class=\"fa fa-arrows-h\"></i></button></td>";
-                         faCosto = "<a data-toggle=tooltip data-placement=top data-original-title=Cambiar_Costo  style=\"color: black;\"  onclick=ModalCambiarCosto('" + id + "-R" + "')>  <i id=\"" + id + "-R" + "\" class=\"fa fa-dollar\"></i> <a>"
-                     }
-                     
-                     let Nombre = "<td> " + name + "</td>";
-                     let ID = "<td style=\" text-align: right\"> " + id + "</td>";
-                     let STOCK = stock > cantNecesaria ? "<td id=\"" + stock + "-" + name.replaceAll(" ", "") + "-" + id.trim() + "\" style=\" text-align: right;\"> " + stock + "</td>" : "<td id=\"" + stock + "-" + name.replaceAll(" ", "") + "-" + id.trim() + "\" style=\" text-align: right; color: red;\"> " + stock + "</td>"
-                     let CantNecesaria = "<td style=\" text-align: right\"> " + formatearNumero(Number(cantNecesaria)) + "</td>";
-                     let Unidad = "<td style=\" text-align: left\">" + unidad + "</td>";
-                     
+
+        function AgregarATabla(list) {
+            $('#tableProductos tbody')[0].innerHTML = "";
+            let listArr = list.split(";");
+            for (let i = 0; i < listArr.length; ++i) {
+                if (listArr[i].length > 1) {
+                    idCostoFinal = "costofinal" + (i + 1);
+                    let item = listArr[i].split(",");
+                    let id = item[0].trim();
+                    let name = item[1].trim();
+                    let cantNecesaria = Number(item[2].replace(',', '.')).toFixed(2);
+                    let stock = Number(item[3].replace(',', '.')).toFixed(2)
+                    let unidad = item[4].trim();
+                    let tipo = item[5].trim();
+                    let costo = item[6].trim();
+
+                    let faCosto = "<a data-toggle=tooltip data-placement=top data-original-title=Cambiar_Costo  style=\"color: black;\"  onclick=ModalCambiarCosto('" + id + "-P" + "')>  <i id=\"" + id + "-P" + "\" class=\"fa fa-dollar\"></i> <a>"
+
+                    let Costo = "<td style=\" text-align: right\"> " + formatearNumero(Number(costo)) + "</td>";
+                    let CostoFinal = "<td style=\" text-align: right\" id=\"" + idCostoFinal.trim() + "\" text-align: right\"> " + 0 + "</td>"
+                    let faChangeProduct = "<a data-toggle=tooltip data-placement=top data-original-title=Cambiar_Producto  style=\"color: black;\"  onclick=ModalCambiarProducto('" + id + "-P" + "')>  <i id=\"" + id + "-P" + "\" class=\"fa fa-exchange\"></i> <a>"
+                    //let faReceta = "<td></td > ";
+                    let faReceta = "";
+
+
+                    if (tipo == "Receta") {
+                        faChangeProduct = "<a data-toggle=tooltip data-placement=top data-original-title=Cambiar_Producto  style=\"color: black;\"  onclick=ModalCambiarProducto('" + id + "-R" + "')>  <i id=\"" + id + "-R" + "\" class=\"fa fa-exchange\"></i> <a>"
+                        //faReceta = "<td><a data-toggle=tooltip data-placement=top data-original-title=Elegir_Stock  style=\"color: black;\"  onclick=ModalTablaStocks('" + id + "-R" + "')> <i id=\"" + id + "-R" + "\" class=\"fa fa-calculator\"></i> </a>   <a data-toggle=tooltip data-placement=top data-original-title=Ver_Receta href=/Formularios/Maestros/RecetasABM.aspx?a=2&i=" + id + "&b=1" + " " + "target=\"_blank\" style=\"color: black;\" > <i class=\"fa fa-search-plus\"></i> </a>   <a data-toggle=tooltip data-placement=top data-original-title=Producir_Receta href=GenerarProduccion.aspx?i=" + id + " " + "target=\"_blank\" style=\"color: black;\" > <i class=\"fa fa-cutlery\"></i> </a> " + faChangeProduct + faCosto + "  <button id=\"Recepcion\" type=\"button\" class=\"icon-button\" style=\"float: right; margin-left: 5px; color: black;\" title=\"Recepción\" onclick=\"MostrarRecepcion(" + id + "," + cantNecesaria + ")\"><i class=\"fa fa-arrows-h\"></i></button></td>";
+                        faReceta = "<td> <button id=\"Recepcion\" type=\"button\" class=\"icon-button\" style=\"float: right; margin-left: 5px; color: black; border: none;\" title=\"Recepción\" onclick=\"MostrarRecepcion(" + id + "," + cantNecesaria + ")\"><i class=\"fa fa-arrows-h\"></i></button></td>";
+                        faCosto = "<a data-toggle=tooltip data-placement=top data-original-title=Cambiar_Costo  style=\"color: black;\"  onclick=ModalCambiarCosto('" + id + "-R" + "')>  <i id=\"" + id + "-R" + "\" class=\"fa fa-dollar\"></i> <a>"
+                    }
+
+                    let Nombre = "<td> " + name + "</td>";
+                    let ID = "<td style=\" text-align: right\"> " + id + "</td>";
+                    let STOCK = stock > cantNecesaria ? "<td id=\"" + stock + "-" + name.replaceAll(" ", "") + "-" + id.trim() + "\" style=\" text-align: right;\"> " + stock + "</td>" : "<td id=\"" + stock + "-" + name.replaceAll(" ", "") + "-" + id.trim() + "\" style=\" text-align: right; color: red;\"> " + stock + "</td>"
+                    let CantNecesaria = "<td style=\" text-align: right\"> " + formatearNumero(Number(cantNecesaria)) + "</td>";
+                    let Unidad = "<td style=\" text-align: left\">" + unidad + "</td>";
+
 
                     $('#tableProductos').append(
                         "<tr id='" + tipo + "%" + id + "%" + cantNecesaria + "'>" +
@@ -1309,69 +1360,67 @@
                         "</tr>"
                     );
 
-                 }
-             }
-     //document.getElementById("DivTablaRow").style.display = "flex"
- }
+                }
+            }
+            //document.getElementById("DivTablaRow").style.display = "flex"
+        }
 
-          function formatearNumero(numero) {
-             return numero.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-         }
+        function formatearNumero(numero) {
+            return numero.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
 
-          
-          function verDetallePedidos(idTransferencia, ProductoOrigen) {
-     $.ajax({
-      method: "POST",
-      url: "PedidosOrdenes.aspx/verDetallesPedidos",
-      data: JSON.stringify({ idTransferencia: idTransferencia, ProductoOrigen: ProductoOrigen }),
-      contentType: "application/json",
-      dataType: "json",
-      error: function(error) {
-          console.log("Error");
-      },
-      success: function(data) {
 
-          const arraydetalleTransferencia = data.d.split(";").filter(Boolean);
-           document.getElementById('tableDetalleDatosTransferencia').innerHTML = "";
-           document.getElementById('<%= idTransferencia.ClientID %>').value = idTransferencia;
-           let cont = 0;
-           document.getElementById('<%= idsPedidos.ClientID %>').value = "";
-           let estado = false;
-           arraydetalleTransferencia.forEach(function(detalleTransferencia) {
-               cont++;
-               let cantidadAConfirmar = "";
-               const partesDetalle = detalleTransferencia.split(",").filter(Boolean);
-               document.getElementById('<%= idsPedidos.ClientID %>').value += partesDetalle[0] + ",";
-               const SectorOrigen = partesDetalle[1];
-               const ProductoOrigen = partesDetalle[2];
-               const cantidadOrigen = partesDetalle[3];
-               const estadoTransferencia = partesDetalle[10];
-               
-           
+        function verDetallePedidos(idTransferencia, ProductoOrigen) {
+            $.ajax({
+                method: "POST",
+                url: "PedidosOrdenes.aspx/verDetallesPedidos",
+                data: JSON.stringify({ idTransferencia: idTransferencia, ProductoOrigen: ProductoOrigen }),
+                contentType: "application/json",
+                dataType: "json",
+                error: function (error) {
+                    console.log("Error");
+                },
+                success: function (data) {
 
-               if(estadoTransferencia == "Confirmado" || estadoTransferencia == "A confirmar") 
-               {
-                  cantidadAConfirmar = "<input id=\"" + "cantAproducir_" + cont + "\" style=\"width: 100%; text-align: right;\" placeholder=\"Cantidad\" value=\"" + partesDetalle[11] + "\" oninput=\"validarTextBox(this);\" />";
-                  estado = false;
-               }
+                    const arraydetalleTransferencia = data.d.split(";").filter(Boolean);
+                    document.getElementById('tableDetalleDatosTransferencia').innerHTML = "";
+                    document.getElementById('<%= idTransferencia.ClientID %>').value = idTransferencia;
+                    let cont = 0;
+                    document.getElementById('<%= idsPedidos.ClientID %>').value = "";
+                    let estado = false;
+                    arraydetalleTransferencia.forEach(function (detalleTransferencia) {
+                        cont++;
+                        let cantidadAConfirmar = "";
+                        const partesDetalle = detalleTransferencia.split(",").filter(Boolean);
+                        document.getElementById('<%= idsPedidos.ClientID %>').value += partesDetalle[0] + ",";
+                        const SectorOrigen = partesDetalle[1];
+                        const ProductoOrigen = partesDetalle[2];
+                        const cantidadOrigen = partesDetalle[3];
+                        const estadoTransferencia = partesDetalle[10];
 
-               else
-               {
-                  cantidadAConfirmar = "<input id=\"cantAproducir_" + cont + "\" style=\"width: 100%; text-align: right;\" placeholder=\"Cantidad\" value=\"" + partesDetalle[11] + "\" disabled />";
-                  estado = true;
-               }
-               const productoDestino = partesDetalle[4];
-               const sectorDestino = partesDetalle[5];
-               const orden = partesDetalle[6];
-               const razonSocialActual = partesDetalle[7];
-               
 
-               if(estado == true){
-               }
-               else{
-               }
 
-               let plantillaDetalleTransferencia = `
+                        if (estadoTransferencia == "Confirmado" || estadoTransferencia == "A confirmar") {
+                            cantidadAConfirmar = "<input id=\"" + "cantAproducir_" + cont + "\" style=\"width: 100%; text-align: right;\" placeholder=\"Cantidad\" value=\"" + partesDetalle[11] + "\" oninput=\"validarTextBox(this);\" />";
+                            estado = false;
+                        }
+
+                        else {
+                            cantidadAConfirmar = "<input id=\"cantAproducir_" + cont + "\" style=\"width: 100%; text-align: right;\" placeholder=\"Cantidad\" value=\"" + partesDetalle[11] + "\" disabled />";
+                            estado = true;
+                        }
+                        const productoDestino = partesDetalle[4];
+                        const sectorDestino = partesDetalle[5];
+                        const orden = partesDetalle[6];
+                        const razonSocialActual = partesDetalle[7];
+
+
+                        if (estado == true) {
+                        }
+                        else {
+                        }
+
+                        let plantillaDetalleTransferencia = `
                    <tr>
                        <td>${SectorOrigen}</td>
                        <td>${ProductoOrigen}</td>
@@ -1383,45 +1432,89 @@
                        <td>${razonSocialActual}</td>
                    </tr>
                `;
-       
 
-               document.getElementById('tableDetalleDatosTransferencia').innerHTML += plantillaDetalleTransferencia;
-           });
-                $("#modalDetalleDatosTransferencia").modal("show")
-              }
-          });
-      }
+
+                        document.getElementById('tableDetalleDatosTransferencia').innerHTML += plantillaDetalleTransferencia;
+                    });
+                    $("#modalDetalleDatosTransferencia").modal("show")
+                }
+            });
+        }
 
 
     </script>
+
+
     <script>
-    function getDatosTransferenciaBySectorDestino(sectorOrigen, sectorDestino) {
-        $.ajax({
-            method: "POST",
-            url: "Pre-Produccion.aspx/getDatosTransferenciaBySectorDestino",
-            data: JSON.stringify({ sectorOrigen: sectorOrigen, sectorDestino: sectorDestino }),
-            contentType: "application/json",
-            dataType: "json",
-            async: false,
-            success: (respuesta) => {
-                console.log(respuesta.d);
-                let detalleTransferencias = respuesta.d;
-                if (detalleTransferencias != null && detalleTransferencias != '[]') {
-                    let dt = JSON.parse(detalleTransferencias);
-                    let cont = 0;
-                    let placeHolderSectores = '';
-                    dt.forEach(element => {
-                        cont++;
-                        let cantidadAConfirmar = `<input id="cantAproducir_${cont}" value="${element.cantidadConfirmada}"
+        function verDetalleProduccion(sector, idProducto, fecha) {
+            $.ajax({
+                method: "POST",
+                url: "Pre-Produccion.aspx/verDetalleProduccion",
+                data: JSON.stringify({ sector: sector, idProducto: idProducto, fecha: fecha }),
+                contentType: "application/json",
+                dataType: "json",
+                error: function (error) {
+                    console.log("Error");
+                },
+                success: function (data)
+                {
+                    const arraydetalleProduccion = data.d.split(";").filter(Boolean);
+
+                    document.getElementById('tableDetalleProduccion').innerHTML = "";
+
+                    arraydetalleProduccion.forEach(function (detalleProduccion) {
+
+                        const partesDetalle = detalleProduccion.split(",").filter(Boolean);
+
+                        const sectorDestino = partesDetalle[0];
+                        const producto = partesDetalle[1];
+                        const cantidad = partesDetalle[2];
+
+                        let plantillaDetalleProduccion= `
+                          <tr>
+                              <td>${sectorDestino}</td>
+                              <td>${producto}</td>
+                              <td style="text-align: right;">${cantidad}</td>
+                          </tr>
+                      `;
+                        
+                        document.getElementById('tableDetalleProduccion').innerHTML += plantillaDetalleProduccion;
+                    });
+
+                    $("#modalDetalleProduccion").modal("show")
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function getDatosTransferenciaBySectorDestino(sectorOrigen, sectorDestino) {
+            $.ajax({
+                method: "POST",
+                url: "Pre-Produccion.aspx/getDatosTransferenciaBySectorDestino",
+                data: JSON.stringify({ sectorOrigen: sectorOrigen, sectorDestino: sectorDestino }),
+                contentType: "application/json",
+                dataType: "json",
+                async: false,
+                success: (respuesta) => {
+                    console.log(respuesta.d);
+                    let detalleTransferencias = respuesta.d;
+                    if (detalleTransferencias != null && detalleTransferencias != '[]') {
+                        let dt = JSON.parse(detalleTransferencias);
+                        let cont = 0;
+                        let placeHolderSectores = '';
+                        dt.forEach(element => {
+                            cont++;
+                            let cantidadAConfirmar = `<input id="cantAproducir_${cont}" value="${element.cantidadConfirmada}"
                                                      style="width: 100%; text-align: right; type="text" 
                                                      placeholder="Cantidad" 
                                                      oninput="this.value = this.value.replace(/[^0-9.]/g, '');" />`;
-                       
 
-                        let filaProducto = "";
 
-                        if (element.tieneStock == "True") {
-                            filaProducto = `<tr>
+                            let filaProducto = "";
+
+                            if (element.tieneStock == "True") {
+                                filaProducto = `<tr>
                                                 <td>${element.idSectorOrigen}</td>
                                                 <td>${element.sectorOrigen}</td>
                                                 <td>${element.sectorDestino}</td>
@@ -1431,9 +1524,9 @@
                                                 <td class="text-right">${element.cantidadConfirmada}</td>
                                                 <td class="text-right">${cantidadAConfirmar}</td>
                                             </tr>`;
-                        }
-                        else {                         
-                            filaProducto = `<tr>
+                            }
+                            else {
+                                filaProducto = `<tr>
                                                 <td style="color:red">${element.idSectorOrigen}</td>
                                                 <td style="color:red">${element.sectorOrigen}</td>
                                                 <td style="color:red">${element.sectorDestino}</td>
@@ -1443,22 +1536,22 @@
                                                 <td style="color:red" class="text-right">${element.cantidadConfirmada}</td>
                                                 <td style="color:red" class="text-right">${cantidadAConfirmar}</td>
                                             </tr>`;
-                        }
+                            }
 
-                        placeHolderSectores += filaProducto;
-                    });
-                    document.getElementById('tableDetallePedidos').innerHTML = placeHolderSectores;
-                } else {
-                    document.getElementById('tableDetallePedidos').innerHTML = "";
+                            placeHolderSectores += filaProducto;
+                        });
+                        document.getElementById('tableDetallePedidos').innerHTML = placeHolderSectores;
+                    } else {
+                        document.getElementById('tableDetallePedidos').innerHTML = "";
+                    }
+                },
+                error: (error) => {
+                    console.log(JSON.stringify(error));
                 }
-            },
-            error: (error) => {
-                console.log(JSON.stringify(error));
-            }
-        }); // Cierre del $.ajax()
+            }); // Cierre del $.ajax()
 
-        $('#modalDetallePedidos').modal('show');
-    }
+            $('#modalDetallePedidos').modal('show');
+        }
     </script>
     <script>
         function verDetalleRemitoInternoPdf(idRemito) {
@@ -1470,13 +1563,12 @@
         function verDetalleRemitoInternoModal(idRemito) {
             document.getElementById('<%= HFIdRemitoInterno.ClientID %>').value = idRemito;
             getItemsRemitosInternos(idRemito);
-            $('#modalDetalleRemitoInterno').modal('show');   
+            $('#modalDetalleRemitoInterno').modal('show');
         }
     </script>
-    
+
     <script>
-        function btnRecepcion_ClientClick()
-        {
+        function btnRecepcion_ClientClick() {
             var tableName = "DetalleRemitosInternos";
             var HFItems = document.getElementById('<%= HFItems.ClientID %>');
 
@@ -1489,7 +1581,7 @@
             }
 
             //eliminar ultimo ;
-            HFItems.value = HFItems.value.slice(0,-1);
+            HFItems.value = HFItems.value.slice(0, -1);
 
             console.log("DetalleRemitosInternos");
             console.log(HFItems.value);
@@ -1513,8 +1605,8 @@
                         let placeHolderItemRemitosInternos = '';
                         let cont = 0
                         dt.forEach(element => {
-                        cont++
-                         let cantidadRecepcionada = `<input id="cantARecepcionar_${cont}" value="${element.cantidadRecepcionada}"
+                            cont++
+                            let cantidadRecepcionada = `<input id="cantARecepcionar_${cont}" value="${element.cantidadRecepcionada}"
                           style="width: 100%; text-align: right;" 
                           placeholder="Cantidad" 
                           oninput="validarTextBox(this);" />`;
