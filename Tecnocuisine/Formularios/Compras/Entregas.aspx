@@ -365,7 +365,7 @@
     <script>
         function handle(e) {
 
-
+            document.getElementById('btnAgregarProducto').removeAttribute('disabled');
             //let x = ContentPlaceHolder1_txtDescripcionProductos.value = clickedId.split('_')[1];
             let txtProd = document.getElementById('ContentPlaceHolder1_txtDescripcionProductos').value
             if (txtProd.includes(' - ')) {
@@ -382,6 +382,7 @@
                 }
                 else if (idOption.includes("c_r_")) {
                     agregarReceta(idOption, costo)
+                    /*CargarRubro(txtProd.split('-')[0].trim(), 2);*/
                     CargarOptionsDllPresentaciones(txtProd.split('-')[0].trim(), 2);
                     CargarOptionDllMarcas(txtProd.split('-')[0].trim(), 1);
                 }
@@ -436,35 +437,48 @@
                         $.each(respuesta.d, function () {
                             $("#<%=ddlPresentaciones.ClientID%>").append($("<option></option>").attr("value", this.id).text(this.descripcion))
                         });
-                        document.getElementById('btnAgregarProducto').removeAttribute('disabled');
-
                     } else {
                         $("#<%=ddlPresentaciones.ClientID%>").append($("<option></option>").attr("value", -1).text("No tiene presentaciones asignadas"))
                         toastr.error("El producto no tiene presentacion.", "Error", {
                             "positionClass": "toast-bottom-right"
                         });
-                        document.getElementById('btnAgregarProducto').setAttribute('disabled', 'true');
 
+                        // Deshabilitar boton para agregar el item
+                        document.getElementById('btnAgregarProducto').setAttribute('disabled', 'true');
                     }
                 }
             });
         }
 
-        function CargarRubro(id) {
+        function CargarRubro(id, tipo) {
             $.ajax({
                 method: "POST",
                 url: "Entregas.aspx/GetRubro",
-                data: '{idProd: "' + id + '"}',
+                data: '{idProd: "' + id + '",tipo:"' + tipo + '"}',
                 contentType: "application/json",
                 dataType: "json",
                 async: true,
                 error: (error) => {
                     console.log(JSON.stringify(error));
+                    // Deshabilitar boton para agregar el item
+                    document.getElementById('btnAgregarProducto').setAttribute('disabled', 'true');
+
+                    toastr.error("El producto no tiene rubro.", "Error", {
+                        "positionClass": "toast-bottom-right"
+                    });
                 },
                 success: function (response) {
-                    if (response.d.length > 0) {
+                    if (response != null) {
                         document.getElementById('<%=txtRubro.ClientID%>').value = response.d[0].descripcion;
                         document.getElementById('<%=hfRubro.ClientID%>').value = response.d[0].id;
+                    }
+                    else {
+                        // Deshabilitar boton para agregar el item
+                        document.getElementById('btnAgregarProducto').setAttribute('disabled', 'true');
+
+                        toastr.error("El producto no tiene rubro.", "Error", {
+                            "positionClass": "toast-bottom-right"
+                        });
                     }
                 }
             });

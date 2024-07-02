@@ -900,22 +900,35 @@ namespace Tecnocuisine.Formularios.Compras
         }
 
         [WebMethod]
-        public static List<PresentacionClass> GetRubro(int idProd)
+        public static List<PresentacionClass> GetRubro(int idProd, int tipo)
         {
             try
             {
-                ControladorProducto cProducto = new ControladorProducto();
-                ControladorRubros cRubro = new ControladorRubros();
-
-                var producto = cProducto.ObtenerProductoId(idProd);
-                var rubro = cRubro.ObtenerRubrosId((int)producto.idRubro);
-
                 List<PresentacionClass> listaFInal = new List<PresentacionClass>();
-
                 PresentacionClass presentacionClass = new PresentacionClass();
-                presentacionClass.id = rubro.id;
-                presentacionClass.descripcion = rubro.descripcion;
-
+                ControladorRubros cRubro = new ControladorRubros();
+                Tecnocuisine_API.Entitys.Rubros rubro;
+                               
+                // Es producto
+                if (tipo==1)
+                {
+                    ControladorProducto cProducto = new ControladorProducto();
+                    Tecnocuisine_API.Entitys.Productos producto = cProducto.ObtenerProductoId(idProd);
+                    rubro = cRubro.ObtenerRubrosId((int)producto.idRubro);
+                    presentacionClass.id = rubro.id;
+                    presentacionClass.descripcion = rubro.descripcion;
+                }
+                // Es receta
+                else 
+                {
+                    //ControladorReceta cReceta = new ControladorReceta();
+                    //Tecnocuisine_API.Entitys.Recetas receta = cReceta.ObtenerRecetaId(idProd);
+                    //rubro = cRubro.ObtenerRubrosId((int)receta.);
+                    ////presentacionClass.id = rubro.id;
+                    ////presentacionClass.descripcion = rubro.descripcion;
+                    ///
+                }
+                       
                 listaFInal.Add(presentacionClass);
 
                 return listaFInal.ToList();
