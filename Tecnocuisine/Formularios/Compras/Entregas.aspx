@@ -459,13 +459,15 @@
                 dataType: "json",
                 async: true,
                 error: (error) => {
-                    console.log(JSON.stringify(error));
-                    // Deshabilitar boton para agregar el item
-                    document.getElementById('btnAgregarProducto').setAttribute('disabled', 'true');
+                    //console.log(JSON.stringify(error));
+                    //// Deshabilitar boton para agregar el item
+                    //document.getElementById('btnAgregarProducto').setAttribute('disabled', 'true');
 
-                    toastr.error("El producto no tiene rubro.", "Error", {
-                        "positionClass": "toast-bottom-right"
-                    });
+                    //toastr.error("El producto no tiene rubro.", "Error", {
+                    //    "positionClass": "toast-bottom-right"
+                    //});
+                    document.getElementById('<%=txtRubro.ClientID%>').value = "";
+                    document.getElementById('<%=hfRubro.ClientID%>').value = "";
                 },
                 success: function (response) {
                     if (response != null) {
@@ -473,12 +475,14 @@
                         document.getElementById('<%=hfRubro.ClientID%>').value = response.d[0].id;
                     }
                     else {
-                        // Deshabilitar boton para agregar el item
-                        document.getElementById('btnAgregarProducto').setAttribute('disabled', 'true');
+                        document.getElementById('<%=txtRubro.ClientID%>').value = "";
+                        document.getElementById('<%=hfRubro.ClientID%>').value = "";
+                        //// Deshabilitar boton para agregar el item
+                        //document.getElementById('btnAgregarProducto').setAttribute('disabled', 'true');
 
-                        toastr.error("El producto no tiene rubro.", "Error", {
-                            "positionClass": "toast-bottom-right"
-                        });
+                        //toastr.error("El producto no tiene rubro.", "Error", {
+                        //    "positionClass": "toast-bottom-right"
+                        //});
                     }
                 }
             });
@@ -529,6 +533,7 @@
             let fechaVencimiento = document.getElementById('<%= txtFechaVencimiento.ClientID%>');
             let lot = document.getElementById('<%=txtLote.ClientID%>');
             let rubro = document.getElementById('<%=txtRubro.ClientID%>');
+            let hiddenRubro = document.getElementById('<%=hfRubro.ClientID%>');
 
             //if (lot.value.length < 1) {
             //    lot.style.border = "1px solid red";
@@ -552,7 +557,11 @@
             let tdCantidad = "<td style=\" text-align: right\"> " + myFormat(cantidad) + "</td>";
             let tdPrecio = "<td style=\" text-align: right\"> " + myFormat(precioFormated) + "</td>";
             let tdUnidad = "<td> " + unidad + "</td>";
-            let tdRubro = "<td> " + rubro.value.split('-')[1] + "</td>";
+
+            let tdRubro = "";
+            if (rubro.value != "" && rubro.value != null) {
+                tdRubro = "<td> " + rubro.value + "</td>";
+            }
             marca = "<td> " + document.getElementById('<%=ddlMarca.ClientID%>').selectedOptions[0].text + "</td>";
             idMarca = document.getElementById('<%=ddlMarca.ClientID%>').value.trim()
 
@@ -579,10 +588,10 @@
                     "</tr>"
                 );
                 if (document.getElementById('<%= idProductosRecetas.ClientID%>').value == "") {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += (codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%= txtFechaVencimiento.ClientID%>').value).replaceAll(".", ",");
-                }
-                else {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += (";" + codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%=txtFechaVencimiento.ClientID%>').value).replaceAll(".", ",");;
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += (codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%= txtFechaVencimiento.ClientID%>').value + "%" + precioFormated).replaceAll(".", ",");
+                    }
+                    else {
+                        document.getElementById('<%= idProductosRecetas.ClientID%>').value += (";" + codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%=txtFechaVencimiento.ClientID%>').value + "%" + precioFormated).replaceAll(".", ",");;
                 }
 
                 prod.value = "";
