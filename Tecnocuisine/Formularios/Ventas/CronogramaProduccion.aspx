@@ -37,28 +37,31 @@
     </div>
     <%-- Aca termina el primer widget --%>
 
-    <%foreach (var keyFecha in sectorTables)
+
+    <%if (sectorTables != null)
         {
-            foreach (System.Data.DataRow col3 in keyFecha.Value.DefaultView.Table.Rows)
+
+            foreach (var keyFecha in sectorTables)
             {
-                fechasHead.Add(col3["fechaProducto"].ToString());
+                foreach (System.Data.DataRow col3 in keyFecha.Value.DefaultView.Table.Rows)
+                {
+                    fechasHead.Add(col3["fechaProducto"].ToString());
+                }
             }
-        } %>
 
 
-    <%
-        List<string> fechasOrdenadasList = fechasHead.ToList();
-        fechasOrdenadasList.Sort((x, y) => DateTime.Parse(x).CompareTo(DateTime.Parse(y)));
-        fechasHead.Clear();
-        foreach (var fecha in fechasOrdenadasList)
-        {
-            fechasHead.Add(fecha);
-        }
-    %>
+            List<string> fechasOrdenadasList = fechasHead.ToList();
+            fechasOrdenadasList.Sort((x, y) => DateTime.Parse(x).CompareTo(DateTime.Parse(y)));
+            fechasHead.Clear();
+            foreach (var fecha in fechasOrdenadasList)
+            {
+                fechasHead.Add(fecha);
+            }
 
-    <%-- De aca en adelante, se van a generar widgets de manera dinamica --%>
-    <% foreach (var kvp in sectorTables)
-        {%>
+
+            //De aca en adelante, se van a generar widgets de manera dinamica 
+            foreach (var kvp in sectorTables)
+            {%>
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
@@ -119,15 +122,22 @@
                             <tr>
                                 <%foreach (var item in fechasHead)
                                     {%>
-                                <td>
+                                <td style="display: flex; width: 100%">
                                     <%foreach (var key2 in sectorTablesGroupByFechas)
                                         {%>
                                     <%if (key2.Key == item)
                                         {
                                             if (key2.Value.Rows.Count >= i + 1)
                                             {
-                                                object obj = key2.Value.Rows[i]["descripcion"];                                    %>
-                                    <%= obj.ToString()%>
+                                                object obj = key2.Value.Rows[i]["descripcion"];
+                                                object objUnidadMedida = key2.Value.Rows[i]["unidadMedida"];
+                                    %>
+
+                                    <div style="width: 35%">
+                                        <%= obj.ToString()%>
+                                    </div>
+
+
                                     <%decimal cant = 0;%>
                                     <%if (key2.Value.Rows[i]["cantidad"].ToString().Contains(";"))
                                         {
@@ -150,30 +160,46 @@
                                         }
 
                                     %>
-                                    <strong style="text-align: right; display: inline-block;"><%= cant %></strong>
-                                    <%if (key2.Value.Rows[i]["ingredienteOreceta"].ToString() == "Receta")
-                                        {%>
-                                    <button id="btnVerIngredientes" type="button" class="icon-button" style="float: right; margin-left: 10px;"
-                                        title="Ver ingredientes" onclick="verIngredientes('<%=key2.Value.Rows[i]["idProductoOReceta"].ToString()%>')">
-                                        <i class="fa fa-cutlery" style="float: right;"></i>
-                                    </button>
-                                    <%} %>
 
-                                    <button id="btn" type="button" class="icon-button" style="float: right; margin-left: 10px;"
-                                        title="OrigenDestino" onclick="verOrigenYDestino('<%=key2.Value.Rows[i]["descripcion"].ToString()%>', 
+                                    <div style="width: 15%;">
+                                        <strong style="text-align: right; display: inline-block;"><%= cant %></strong>
+                                    </div>
+
+
+                                    <div style="width: 30%;">
+                                        <p style="text-align: right; display: inline-block;"><%= objUnidadMedida.ToString() %></p>
+                                    </div>
+
+
+                                    <div style="width: 20%; justify-self: end">
+                                        <%if (key2.Value.Rows[i]["ingredienteOreceta"].ToString() == "Receta")
+                                            {%>
+                                        <button id="btnVerIngredientes" type="button" class="icon-button" style="float: right; margin-left: 10px;"
+                                            title="Ver ingredientes" onclick="verIngredientes('<%=key2.Value.Rows[i]["idProductoOReceta"].ToString()%>')">
+                                            <i class="fa fa-cutlery" style="float: right;"></i>
+                                        </button>
+                                        <%} %>
+
+                                        <button id="btn" type="button" class="icon-button" style="float: right; margin-left: 10px;"
+                                            title="OrigenDestino" onclick="verOrigenYDestino('<%=key2.Value.Rows[i]["descripcion"].ToString()%>', 
                                         '<%=key2.Value.Rows[i]["cantidad"].ToString()%>', '<%=key2.Value.Rows[i]["sectorProductivo"].ToString()%>', 
                                         '<%=key2.Value.Rows[i]["Column1"].ToString()%>', '<%=key2.Value.Rows[i]["CantidadPadre"].ToString()%>', 
                                         '<%=key2.Value.Rows[i]["sectorPadre"].ToString()%>', '<%=key2.Value.Rows[i]["OPNumero"].ToString() %>',
                                         '<%=key2.Value.Rows[i]["RazonSocial"].ToString() %>' )">
-                                        <i class="fa fa-exchange"></i>
-                                    </button>
+                                            <i class="fa fa-exchange"></i>
+                                        </button>
 
 
-                                    <a href="/Formularios/Maestros/StockDetallado.aspx?t=1&i=<%=key2.Value.Rows[i]["idProductoOReceta"].ToString()%>"
-                                        target="_blank" style="float: right; margin-left: 10px;"
-                                        title="Ver stock">
-                                        <i style="color: black" class="fa fa-list-alt"></i>
-                                    </a>
+
+
+                                        <a href="/Formularios/Maestros/StockDetallado.aspx?t=1&i=<%=key2.Value.Rows[i]["idProductoOReceta"].ToString()%>"
+                                            target="_blank" style="float: right; margin-left: 10px;"
+                                            title="Ver stock">
+                                            <i style="color: black" class="fa fa-list-alt"></i>
+                                        </a>
+
+                                    </div>
+
                                     <%}%>
                                     <%}%>
                                     <%}%>
@@ -188,10 +214,7 @@
             </div>
         </div>
     </div>
-    <% }%>
-
-
-
+    <%}%>
 
 
     <asp:LinkButton runat="server" ID="btnCancelar" class="btn btn-primary dim" Style="float: right; margin-left: 1%" Text="Cancelar"
@@ -202,6 +225,10 @@
         class="btn btn-primary dim" Style="float: right" Text="A producir" OnClientClick="Producir(); 
         return false;">
     </asp:LinkButton>
+    <%}%>
+
+
+
 
 
 
