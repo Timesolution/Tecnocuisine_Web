@@ -1203,30 +1203,31 @@ namespace Tecnocuisine.Formularios.Maestros
                             }
                         }
                     }
-                    if (controladorReceta.EsMonoProducto(resultado))
-                    {
-                        int categoria = controladorProducto.ObtenerProductoId(idProducto).categoria;
-                        if (categoria > 0)
-                        {
-                            Tecnocuisine_API.Entitys.Recetas r = controladorReceta.ObtenerRecetaId(resultado);
-                            r.categoria = categoria;
-                            controladorReceta.EditarReceta(r);
+                    //if (controladorReceta.EsMonoProducto(resultado))
+                    //{
+                    //    int categoria = controladorProducto.ObtenerProductoId(idProducto).categoria;
+                    //    if (categoria > 0)
+                    //    {
+                    //        Tecnocuisine_API.Entitys.Recetas r = controladorReceta.ObtenerRecetaId(resultado);
+                    //        r.categoria = categoria;
+                    //        controladorReceta.EditarReceta(r);
 
-                            List<Productos_Atributo> atributos = controladorAtributo.ObtenerAtributosByIdProducto(idProducto);
-                            foreach (Productos_Atributo item in atributos)
-                            {
-                                Recetas_Atributo atributo = new Recetas_Atributo();
-                                atributo.idAtributo = item.atributo;
-                                atributo.idReceta = resultado;
+                    //        List<Productos_Atributo> atributos = controladorAtributo.ObtenerAtributosByIdProducto(idProducto);
+                    //        foreach (Productos_Atributo item in atributos)
+                    //        {
+                    //            Recetas_Atributo atributo = new Recetas_Atributo();
+                    //            atributo.idAtributo = item.atributo;
+                    //            atributo.idReceta = resultado;
 
 
-                                controladorReceta.AgregarReceta_Atributo(atributo);
-                            }
+                    //            controladorReceta.AgregarReceta_Atributo(atributo);
+                    //        }
 
-                        }
-                    }
-                    try
-                    {
+                    //    }
+                    //}
+
+                    //try
+                    //{
                         //string[] itemsA;
                         //if (Atributos.Contains(","))
                         //    itemsA = Atributos.Split(',');
@@ -1250,8 +1251,8 @@ namespace Tecnocuisine.Formularios.Maestros
 
                         //    }
                         //}
-                    }
-                    catch { }
+                    //}
+                    //catch { }
 
                     try
                     {
@@ -1306,7 +1307,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                     sectorP_.idSectorP = Convert.ToInt32(Sect[0]);
                                     sectorP_.estado = 1;
 
-
+                                    controladorReceta.EliminarSectorProductivoRecetaByIdReceta(resultado); //Eliminar sector anterior si tiene
                                     controladorReceta.AgregarSectorProductivoReceta(sectorP_);
                                 }
 
@@ -1315,8 +1316,6 @@ namespace Tecnocuisine.Formularios.Maestros
                     }
                     catch (Exception)
                     {
-
-
                     }
 
                     try
@@ -1417,9 +1416,6 @@ namespace Tecnocuisine.Formularios.Maestros
                 {
                     Receta.rinde = decimal.Parse(rinde, CultureInfo.InvariantCulture);
                 }
-
-
-
 
                 int resultado = controladorReceta.EditarReceta(Receta); //Edita los datos de la primera parte de la receta
 
@@ -1613,7 +1609,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                     sectorP_.idSectorP = Convert.ToInt32(Sect[0]);
                                     sectorP_.estado = 1;
 
-
+                                    controladorReceta.EliminarSectorProductivoRecetaByIdReceta(Receta.id); //Eliminar sector anterior si tiene
                                     controladorReceta.AgregarSectorProductivoReceta(sectorP_);
                                 }
 
@@ -1645,16 +1641,16 @@ namespace Tecnocuisine.Formularios.Maestros
                                     Rec_Pres.idPresentacion = Convert.ToInt32(PRess[0]);
                                     Rec_Pres.idRecetas = resultado;
 
-
                                     controladorReceta.AgregarPresentacionReceta(Rec_Pres);
                                 }
 
                             }
                         }
                     }
+                    //agregar toast
                     catch (Exception)
                     {
-
+                        //agregar toast
 
                     }
 
