@@ -10,6 +10,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
+using Tecnocuisine.Formularios.Administrador;
 using Tecnocuisine.Formularios.Ventas;
 using Tecnocuisine.Modelos;
 using Tecnocuisine_API.Controladores;
@@ -623,38 +624,43 @@ namespace Tecnocuisine.Formularios.Compras
         }
 
 
+        private Tecnocuisine_API.Entitys.Entregas CrearEntrega()
+        {
+            Tecnocuisine_API.Entitys.Entregas newEntrega = new Tecnocuisine_API.Entitys.Entregas();
+            newEntrega.idProveedor = Convert.ToInt32(txtProveedor.Text.Split('-')[0]);
+            newEntrega.idSector = Convert.ToInt32(txtSector.Text.Split('-')[0]);
+            newEntrega.Observaciones = txtObservaciones.Text;
+            newEntrega.fechaEntrega = DateTime.ParseExact(txtFechaEntrega.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            newEntrega.fechaRealizada = DateTime.Now;
+            newEntrega.Estado = 1;
+            var EntregasList = ControladorEntregas.ObtenerEntregasAll();
+            string fac1 = "000000";
+
+            if (EntregasList.Count == 0)
+            {
+                fac1 = "000001";
+            }
+            else
+            {
+                string codigo = (EntregasList.Count + 1).ToString();
+                fac1 = GenerarCodigoPedido(codigo);
+
+            }
+            newEntrega.CodigoEntrega = fac1;
+
+            return newEntrega;
+        }
+
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
             try
             {
-
                 if (IsValid)
                 {
                     string ingredientes = idProductosRecetas.Value;
                     ingredientes = ingredientes.Replace('.', ',');
 
-                    Tecnocuisine_API.Entitys.Entregas newEntrega = new Tecnocuisine_API.Entitys.Entregas();
-
-                    newEntrega.idProveedor = Convert.ToInt32(txtProveedor.Text.Split('-')[0]);
-                    newEntrega.idSector = Convert.ToInt32(txtSector.Text.Split('-')[0]);
-                    newEntrega.Observaciones = txtObservaciones.Text;
-                    newEntrega.fechaEntrega = DateTime.ParseExact(txtFechaEntrega.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    newEntrega.fechaRealizada = DateTime.Now;
-                    newEntrega.Estado = 1;
-                    var EntregasList = ControladorEntregas.ObtenerEntregasAll();
-                    string fac1 = "000000";
-
-                    if (EntregasList.Count == 0)
-                    {
-                        fac1 = "000001";
-                    }
-                    else
-                    {
-                        string codigo = (EntregasList.Count + 1).ToString();
-                        fac1 = GenerarCodigoPedido(codigo);
-
-                    }
-                    newEntrega.CodigoEntrega = fac1;
+                    Tecnocuisine_API.Entitys.Entregas newEntrega = CrearEntrega();
 
                     if (accion == 2)
                     {
@@ -676,9 +682,8 @@ namespace Tecnocuisine.Formularios.Compras
                                     string Tipo = producto[1];
                                     string Cantidad = producto[3];
                                     string Presentaciones = producto[5];
-                                    string LoteEnviado = producto[6];
-
-                                    string fechaVencimientoItem = string.IsNullOrEmpty(txtFechaVencimiento.Text) ? null : txtFechaVencimiento.Text;
+                                    string LoteEnviado = string.IsNullOrEmpty(producto[6].Trim()) ? null : producto[6].Trim();
+                                    string fechaVencimientoItem = string.IsNullOrEmpty(producto[7].Trim()) ? null : producto[7].Trim();
 
                                     if (producto[1] == "Producto")
                                     {
@@ -733,7 +738,7 @@ namespace Tecnocuisine.Formularios.Compras
                                     string Tipo = producto[1];
                                     string Cantidad = producto[3];
                                     string Presentaciones = producto[5];
-                                    string LoteEnviado = producto[6].Trim();
+                                    string LoteEnviado = string.IsNullOrEmpty(producto[6].Trim()) ? null : producto[6].Trim();
                                     string fechaVencimientoItem = string.IsNullOrEmpty(producto[7].Trim()) ? null : producto[7].Trim();
 
                                     if (producto[1] == "Producto")
@@ -743,7 +748,7 @@ namespace Tecnocuisine.Formularios.Compras
                                         productoNuevo.idProductos = Convert.ToInt32(producto[0]);
                                         productoNuevo.Lote = LoteEnviado;
                                         productoNuevo.Stock = null;
-                                        productoNuevo.CodigoEntrega = fac1;
+                                        productoNuevo.CodigoEntrega = newEntrega.CodigoEntrega;
                                         productoNuevo.idSector = Convert.ToInt32(txtSector.Text.Split('-')[0]);
                                         productoNuevo.idPresentacion = Convert.ToInt32(Presentaciones);
                                         productoNuevo.FechaVencimiento = fechaVencimientoItem;
@@ -770,8 +775,6 @@ namespace Tecnocuisine.Formularios.Compras
                             m.ShowToastr(Page, "No se pudo agregar la entrega!", "Error", "error");
                         }
                     }
-
-
                 }
                 else
                 {
@@ -830,6 +833,7 @@ namespace Tecnocuisine.Formularios.Compras
             {
             }
         }
+
         [WebMethod]
         public static List<PresentacionClass> GetPresentaciones(int idProd, int tipo)
         {
@@ -892,6 +896,33 @@ namespace Tecnocuisine.Formularios.Compras
             {
                 return new List<PresentacionClass>();
 
+            }
+        }
+
+        [WebMethod]
+        public static List<PresentacionClass> GetRubro(int idProd)
+        {
+            try
+            {
+                ControladorProducto cProducto = new ControladorProducto();
+                ControladorRubros cRubro = new ControladorRubros();
+
+                var producto = cProducto.ObtenerProductoId(idProd);
+                var rubro = cRubro.ObtenerRubrosId((int)producto.idRubro);
+
+                List<PresentacionClass> listaFInal = new List<PresentacionClass>();
+
+                PresentacionClass presentacionClass = new PresentacionClass();
+                presentacionClass.id = rubro.id;
+                presentacionClass.descripcion = rubro.descripcion;
+
+                listaFInal.Add(presentacionClass);
+
+                return listaFInal.ToList();
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
 
