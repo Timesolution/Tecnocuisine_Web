@@ -204,7 +204,7 @@ namespace Tecnocuisine.Formularios.Maestros
                         var sec = controladorSector.ObtenerSectorProductivoId(sector.idSectorP.Value);
                         if (sec != null)
 
-                            txtSector.Text += sec.id + " - " + sec.descripcion + ", ";
+                            txtSector.Text += sec.id + " - " + sec.descripcion /*+ ", "*/;
                     }
 
 
@@ -421,24 +421,39 @@ namespace Tecnocuisine.Formularios.Maestros
                 //btnVerFamilia.Attributes.Add("OnClick", "MostrarModalFamilia(\'" + familia + "\')");
                 //celAccion.Controls.Add(btnVerFamilia);
 
-                HtmlGenericControl btnDetalles = new HtmlGenericControl("input");
-                btnDetalles.Attributes.Add("class", "presentacion radio btn btn-primary btn-xs");
-                //btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                //btnDetalles.Attributes.Add("onclick", "agregarSector(this.id); return false;");
-                btnDetalles.Attributes.Add("type", "checkbox");
-                btnDetalles.ID = "btnSelecSec_" + Sector.id + "_" + Sector.descripcion;
-                //btnDetalles.Text = "<span><i class='fa fa-check'></i></span>";
-                celAccion.Controls.Add(btnDetalles);
+                //HtmlGenericControl btnDetalles = new HtmlGenericControl("input");
+                //btnDetalles.Attributes.Add("class", "presentacion radio btn btn-primary btn-xs");
+                ////btnDetalles.Attributes.Add("data-toggle", "tooltip");
+                ////btnDetalles.Attributes.Add("onclick", "agregarSector(this.id); return false;");
+                //btnDetalles.Attributes.Add("type", "checkbox");
+                //btnDetalles.ID = "btnSelecSec_" + Sector.id + "_" + Sector.descripcion;
+                ////btnDetalles.Text = "<span><i class='fa fa-check'></i></span>";
+                //celAccion.Controls.Add(btnDetalles);
 
-                //agrego fila a tabla
-
-
+                ////agrego fila a tabla
 
 
+                //celAccion.Width = Unit.Percentage(5);
+                //celAccion.Attributes.Add("style", "padding-bottom: 1px !important;text-align:right");
+                //tr.Cells.Add(celAccion);
 
-                celAccion.Width = Unit.Percentage(5);
-                celAccion.Attributes.Add("style", "padding-bottom: 1px !important;text-align:right");
-                tr.Cells.Add(celAccion);
+
+
+
+                // Crear la celda para la acción (radio button)
+                TableCell cellRb = new TableCell();
+                HtmlGenericControl radioButton = new HtmlGenericControl("input");
+                radioButton.Attributes.Add("class", "presentacion radio btn btn-primary btn-xs");
+                radioButton.Attributes.Add("type", "radio");
+                radioButton.Attributes.Add("style", "width:100%; height:100%");
+                radioButton.Attributes.Add("name", "SectorSelection"); // Grupo de radio buttons
+                radioButton.ID = "btnSelecSec_" + Sector.id + "_" + Sector.descripcion;
+                cellRb.Controls.Add(radioButton);
+
+
+                cellRb.Width = Unit.Percentage(5);
+                cellRb.Attributes.Add("style", "");
+                tr.Cells.Add(cellRb);
 
                 phSectores.Controls.Add(tr);
 
