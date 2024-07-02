@@ -36,6 +36,10 @@
         .jstree-default .jstree-icon.none {
             width: 0;
         }
+
+        .invalid {
+            border-color: #ed5565 !important;
+        }
     </style>
    
 
@@ -151,7 +155,7 @@
 
                                         <label class="col-md-1 control-label editable" style="margin-top: 2%">Propiedades</label>
                                         <div class="col-md-2" style="margin-top: 1.5%">
-                                            <asp:DropDownList ID="ddlTipoReceta" runat="server" class="form-control">
+                                            <asp:DropDownList ID="ddlTipoReceta" runat="server" class="form-control" onchange="EsTipoRecetaValido()">
                                                 <asp:ListItem Value="-1" Text="Tipo receta"> </asp:ListItem>
                                                 <asp:ListItem Value="1" Text="Baño"></asp:ListItem>
                                                 <asp:ListItem Value="2" Text="Cartoon"></asp:ListItem>
@@ -160,6 +164,9 @@
                                                 <asp:ListItem Value="5" Text="Relleno"></asp:ListItem>
                                                 <asp:ListItem Value="6" Text="Salsa"></asp:ListItem>
                                             </asp:DropDownList>
+                                             <p id="error-tipo" class="text-danger text-hide">
+                                                *Seleccione un Tipo de Receta.
+                                            </p>
                                         </div>
                                         <div class="col-md-2" style="margin-top: 1.5%">
                                             <asp:DropDownList ID="ddlUnidadMedida" onchange="ActualizarUnidades()" runat="server" class="form-control">
@@ -168,23 +175,23 @@
                                                 *Seleccione Unidad de medida.
                                             </p>
                                         </div>
-                                        <div class="col-md-2" style="text-align: center;">
+                                        <div class="col-md-2" style="text-align: left;">
                                             <label id="lblBrutoTotal" style="margin-bottom: auto;">Kg Br. Total</label>
                                             <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtKgBrutTotal" class="form-control" runat="server" />
                                         </div>
-                                        <div class="col-md-1" style="text-align: center;">
+                                        <div class="col-md-1" style="text-align: left;">
                                             <label style="margin-bottom: auto;">Costo total</label>
                                             <asp:TextBox Text="0.00" disabled="disabled" Style="text-align: right;" ID="txtCostoTotal" class="form-control" runat="server" />
                                         </div>
-                                        <div class="col-md-1" style="text-align: center;">
+                                        <div class="col-md-1" style="text-align: left;">
                                             <label id="lblTotalUnidad" style="margin-bottom: auto;margin-top: -25%;"> Rinde </label>
                                             <asp:TextBox Style="text-align: right;" Text="0" ID="txtRinde" onkeyUp="ActualizarxPorcion()" class="form-control" runat="server" />
                                         </div>
-                                        <div class="col-md-1" style="text-align: center;">
+                                        <div class="col-md-1" style="text-align: left;">
                                             <label id="lblBrutoUnidad" style="margin-bottom: auto;margin-top: -25%;">Kg Br.</label>
                                             <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtKgxPorcion" class="form-control" runat="server" />
                                         </div>
-                                        <div class="col-md-1" style="text-align: center;">
+                                        <div class="col-md-1" style="text-align: left;">
                                             <label id="lblCosto" style="margin-bottom: auto;margin-top: -25%;">Costo</label>
                                             <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtCostoxPorcion" class="form-control" runat="server" />
                                         </div>
@@ -216,16 +223,16 @@
                                         
                                         </div>
                                            <div class="col-sm-2"></div>
-                                        <div class="col-md-1" style="text-align: center;">
+                                        <div class="col-md-1" style="text-align: left;">
                                             <label id="rxrt" style="margin-bottom:0px">Pr.Venta</label>
                                             <asp:TextBox Text="0" Style="text-align: right;" ID="txtPrVenta"  onkeyUp="ActualizarxPrVenta()" class="form-control" runat="server" />
                                         </div>
-                                        <div class="col-md-2" style="text-align: center;">
+                                        <div class="col-md-2" style="text-align: left;">
                                             <label style="margin-bottom: auto;">Food Cost</label>
                                             <asp:TextBox Text="0.00" disabled="disabled" Style="text-align: right;" ID="txtPFoodCost" class="form-control" runat="server" />
                                         </div>
-                                        <div class="col-md-1" style="text-align: center;">
-                                            <label id="erwt" style="margin-bottom: auto;margin-top: -25%;"> cont. marg </label>
+                                        <div class="col-md-1" style="text-align: left;">
+                                            <label id="erwt" style="margin-bottom: auto;margin-top: -25%;"> Cont. Marg. </label>
                                             <asp:TextBox Style="text-align: right;" disabled="disabled" Text="0.00" ID="txtContMarg" class="form-control" runat="server" />
                                         </div>
                                         
@@ -235,7 +242,7 @@
                                     <div class="row" style="margin-top: 0.5%; margin-bottom: 2%">
                                         <div class="col-md-4">
                                           
-                                            <label  style="margin-left:5px;margin-bottom: 0px;"> Ingredientes </label>
+                                            <label  style="margin-bottom: 0px;"> Ingredientes </label>
                                              
                                             <div class="input-group" style="text-align: right;">
                                                 <datalist id="ListaNombreProd" runat="server">
@@ -252,33 +259,33 @@
                                         <asp:HiddenField ID="idProducto" runat="server" />
 
                                      
-                                        <div class="col-md-1" style="text-align: center;">
+                                        <div class="col-md-1" style="text-align: left;">
                                             <label style="margin-bottom: auto;">Cantidad</label>
 
                                             <asp:TextBox ID="txtCantidad" Text="0" onkeydown="PasarAFactor(event)" onchange="CalcularCantBruta()" onkeypress="javascript:return validarNro(event)" Style="text-align: right" class="form-control money" runat="server" />
                                         </div>
-                                        <div class="col-md-1" style="text-align: center;">
+                                        <div class="col-md-1" style="text-align: left;">
                                             <label style="margin-bottom: auto;">Unidad Med.</label>
 
                                             <asp:TextBox ID="txtUnidadMed" disabled="disabled" Style="text-align: right" class="form-control" runat="server" />
                                         </div>
-                                        <div class="col-md-1" style="text-align: center;">
+                                        <div class="col-md-1" style="text-align: left;">
                                             <label style="margin-bottom: auto;">Factor</label>
 
                                             <asp:TextBox ID="txtFactor" Text="1" onkeyUp="CalcularCantBruta()" Style="text-align: right" class="form-control" runat="server" />
                                         </div>
-                                        <div class="col-md-1" style="text-align: center;">
+                                        <div class="col-md-1" style="text-align: left;">
                                             <label style="margin-bottom: auto;">Cant. Bruta</label>
 
                                             <asp:TextBox disabled="disabled" ID="txtCantBruta" Style="text-align: right" class="form-control" runat="server" />
                                         </div>
-                                        <div class="col-md-1" style="text-align: center;">
+                                        <div class="col-md-1" style="text-align: left;">
                                             <label style="margin-bottom: auto; vertical-align: middle">$ Kg limpio</label>
                                             <asp:TextBox ID="txtCostoLimpio" disabled="disabled" 
                                                 onkeypress="javascript:return validarNro(event)" 
                                                 Style="text-align: right" class="form-control" runat="server" />
                                         </div>
-                                        <div class="col-md-2" style="text-align: center; padding-left:2px; padding-right:2px">
+                                        <div class="col-md-2" style="text-align: left; padding-left:2px; padding-right:2px">
                                             <label style="margin-bottom: auto; vertical-align: middle">Sector productivo</label>
                                                <asp:DropDownList ID="ddlSector" runat="server"
                                                      CssClass="chosen-select form-control"
@@ -287,10 +294,10 @@
                                                <asp:ListItem Text="Select" Value=""></asp:ListItem>
                                                </asp:DropDownList>                                            
                                         </div>
-                                            <div class="col-md-1" style="text-align: center;">
+                                            <div class="col-md-1" style="text-align: left;">
                                              <label id="TiempoPreparacion" style="margin-bottom:0px">Tiempo</label>
                                                <asp:TextBox Text="0" Style="text-align: right;" ID="TiempoDePreparacion"  
-                                                    class="form-control" runat="server" />
+                                                    class="form-control" runat="server" onkeypress="javascript:return validarNro(event)"/>
                                              </div>
                                          <div style="float: right; margin-right: 10px; margin-top: 19px">
                                             <LinkButton ID="btnAgregarProducto" onclick="agregarProductoPH();" class="btn btn-primary dim required"><i style="color: white" class="fa fa-check"></i></LinkButton>
@@ -890,6 +897,10 @@
     </script>--%>
 
     <script>
+        toastr.options = {
+            "positionClass": "toast-bottom-right" // Puedes usar "toast-bottom-right", "toast-bottom-left", etc.
+        };
+
         function BuscarlistaProd() {
             let numLetras = document.getElementById('txtDescripcionProductos').value.length;
             let descripcion = document.getElementById('txtDescripcionProductos').value;
@@ -1073,6 +1084,7 @@
                         return false;
                     }--%>
 
+
                     let ValUM = true
                     let selectUM = document.getElementById('<%=ddlUnidadMedida.ClientID%>').value
                     if (selectUM == -1 && currentIndex == 1) {
@@ -1113,7 +1125,6 @@
                     // At this point it's recommended to do an overall check (mean ignoring only disabled fields)
                     form.validate().settings.ignore = ":disabled";
 
-
                     // Start validation; Prevent form submission if false
                     let ValUM = true
                     let selectUM = document.getElementById('<%=ddlUnidadMedida.ClientID%>').value
@@ -1135,6 +1146,12 @@
 
                     //----------------------------------------------------------------------------- REVISAR
 
+
+                    //No enviar formulario si el tipo es "Seleccione"
+                    if (!EsTipoRecetaValido()) return false;
+
+
+
                     let selectUnidadMedida = document.getElementById('<%=ddlUnidadMedida.ClientID%>');
                     let selectTipoReceta = document.getElementById('<%=ddlTipoReceta.ClientID%>');
                     let url = window.location.href;
@@ -1144,7 +1161,7 @@
                         if (selectUM != -1) {
 
 
-                        /* alert("esta en onfinished!");*/
+                            /* alert("esta en onfinished!");*/
 
                             //Este ajax se ejecuta cuando se esta guardando la receta por primera vez, lo que que hace es guardar la recetas
                             //con todos los datos de la receta y ademas guarda todos los productos de la receta
@@ -1665,9 +1682,7 @@
         }
         function recargarPagina2() {
             toastr.success("guardado con exito!", "Exito")
-            //window.location.href = 'RecetasABM.aspx?m=1';
-
-
+            //window.location.href = 'Recetas.aspx?m=1';
             //alert('Guardado con exito');
         }
         function mostrarGestion() {
@@ -1779,6 +1794,22 @@
 
 
         }
+
+        function EsTipoRecetaValido() {
+            let select = document.getElementById('<%= ddlTipoReceta.ClientID%>');
+
+            // Mostrar mensaje de error y devolver false si el valor es -1
+            if (select.value == -1) {
+                document.getElementById('error-tipo').classList.remove('text-hide');
+                return false;
+            }
+            // Ocultar mensaje de error y devolver true si el valor es válido
+            else {
+                document.getElementById('error-tipo').classList.add('text-hide');
+                return true;
+            }
+        }
+
 
         function ActualizarxPorcion() {
 
@@ -2017,6 +2048,8 @@
             document.getElementById('btnEditarProducto').style.display = null
 
         }
+
+
         //Esta funcion agrega un registro a la tabla de productos de la receta
         function agregarProductoPH() {
             var codigo = ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0];
@@ -2030,8 +2063,50 @@
             let costototal = 0;
             let ddlSector = document.getElementById('<%= ddlSector.ClientID %>');
             let Tiempo = document.getElementById('<%= TiempoDePreparacion.ClientID %>').value;
+            let TiempoFloat = parseFloat(Tiempo);
             let opcionSeleccionada = ddlSector.options[ddlSector.selectedIndex].text;
             let ddlSectoridSectorProductivo = document.getElementById('<%= ddlSector.ClientID %>').value
+
+
+            //Validar Codigo
+            if (codigo == "") {
+                ContentPlaceHolder1_txtDescripcionProductos.classList.add('invalid');
+                return;
+            }
+            else {
+                ContentPlaceHolder1_txtDescripcionProductos.classList.remove('invalid');
+            }
+
+
+            //Validar Costo Positivo 
+            if (isNaN(CantAux) || CantAux <= 0) {
+                document.getElementById('<%=txtCantidad.ClientID%>').classList.add('invalid');
+                return;
+            }
+            else {
+                document.getElementById('<%=txtCantidad.ClientID%>').classList.remove('invalid');
+            }
+
+
+            //Validar Sector Productivo
+            if (ddlSectoridSectorProductivo == "-1") {
+                document.getElementById('<%= ddlSector.ClientID %>').classList.add('invalid');
+                return;
+            }
+            else {
+                document.getElementById('<%= ddlSector.ClientID %>').classList.remove('invalid');
+            }
+
+
+            //Validar Tiempo
+            if (isNaN(TiempoFloat) || TiempoFloat < 0) {
+                document.getElementById('<%= TiempoDePreparacion.ClientID %>').classList.add('invalid');
+                return;
+            }
+            else {
+                document.getElementById('<%= TiempoDePreparacion.ClientID %>').classList.remove('invalid');
+            }
+
 
 
             costototal = Math.round10(costAux * CantAux, -3);
@@ -2066,7 +2141,7 @@
                 listaDdlSectorProductivoDesplegable = "<td> <div id=\"jstree_SP" + ContentPlaceHolder1_ddlSector.value.split('-')[0].trim() + "\"> <ul><li id='RecetaSP_LI_" + ContentPlaceHolder1_ddlSector.value.split('-')[0].trim() + "' class=\"jstree-open\">" + opcionSeleccionada + "</li></ul></div></td>";
                 ListaTiempo = "<td> <div id=\"jstree_T" + ContentPlaceHolder1_TiempoDePreparacion.value.split('-')[0].trim() + "\"> <ul><li id='RecetaT_LI_" + ContentPlaceHolder1_TiempoDePreparacion.value.split('-')[0].trim() + "' class=\"jstree-open\">" + Tiempo + "</li></ul></div></td>";
 
-            } 
+            }
             //Si es un producto, entonces viene por el else
             else {
                 //Aca simplemente agrega cada producto sin desplegables
@@ -2151,7 +2226,7 @@
 
                     setTimeout(ObtenerListaIntegradoraDetalleCostosTotalReceta(ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim(), myFormat(cantidad)), 25);
 
-                    
+
 
                 }
                 ContentPlaceHolder1_txtDescripcionProductos.value = "";
@@ -2768,7 +2843,9 @@
                 }
 
             }
-            document.getElementById('ContentPlaceHolder1_txtSector').value = presentacionFinal.trimEnd(', ');
+            document.getElementById('ContentPlaceHolder1_txtSector').value = presentacionFinal.replace(/,\s*$/, '');
+
+            /*document.getElementById('ContentPlaceHolder1_txtSector').value = presentacionFinal.trimEnd(', ');*/
             //document.getElementById('btnAgregarSectores').classList.remove("buttonLoading");
             /*  document.querySelector('#txtBusquedaSector').value = '';*/
             $('#modalSectores').modal('hide');
@@ -2898,8 +2975,8 @@
                 for (var x = 0; x < productos.length; x++) {
                     if (productos[x] != "") {
                         if (!productos[x].includes(idprod)) {
-                             //guarda los productos actuales que hay en la tabla de la receta separados por ;, de esta forma quita de la cadena de productos 
-                             //aquellos que fueron eliminados
+                            //guarda los productos actuales que hay en la tabla de la receta separados por ;, de esta forma quita de la cadena de productos 
+                            //aquellos que fueron eliminados
                             nuevosProductos += productos[x] + ";";
                         }
                         else {
