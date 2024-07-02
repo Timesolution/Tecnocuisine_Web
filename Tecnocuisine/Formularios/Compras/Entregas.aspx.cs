@@ -643,6 +643,7 @@ namespace Tecnocuisine.Formularios.Compras
                     newEntrega.Estado = 1;
                     var EntregasList = ControladorEntregas.ObtenerEntregasAll();
                     string fac1 = "000000";
+
                     if (EntregasList.Count == 0)
                     {
                         fac1 = "000001";
@@ -654,9 +655,6 @@ namespace Tecnocuisine.Formularios.Compras
 
                     }
                     newEntrega.CodigoEntrega = fac1;
-
-                    string fechaVencimiento = txtFechaVencimiento.Text;
-
 
                     if (accion == 2)
                     {
@@ -695,7 +693,7 @@ namespace Tecnocuisine.Formularios.Compras
                                         productoNuevo.FechaVencimiento = fechaVencimientoItem;
                                         productoNuevo.idMarca = Convert.ToInt32(id_Marca);
                                         productoNuevo.Cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
-                                        ControladorEntregas.AgregarEntrega_Producto(productoNuevo, newEntrega.idSector, LoteEnviado, txtFechaEntrega.Text, Convert.ToInt32(producto[4]));
+                                        ControladorEntregas.AgregarEntrega_Producto(productoNuevo, newEntrega.idSector, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(producto[4]));
                                     }
                                     else
                                     {
@@ -735,12 +733,8 @@ namespace Tecnocuisine.Formularios.Compras
                                     string Tipo = producto[1];
                                     string Cantidad = producto[3];
                                     string Presentaciones = producto[5];
-                                    string LoteEnviado = producto[6];
-                                    string fechaVencimientoItem = string.IsNullOrEmpty(txtFechaVencimiento.Text) ? null : txtFechaVencimiento.Text;
-
-                                    //if (Presentaciones.Equals("-1"))
-                                    //    throw new Exception("Hay un producto sin presentacion");
-
+                                    string LoteEnviado = producto[6].Trim();
+                                    string fechaVencimientoItem = string.IsNullOrEmpty(producto[7].Trim()) ? null : producto[7].Trim();
 
                                     if (producto[1] == "Producto")
                                     {
