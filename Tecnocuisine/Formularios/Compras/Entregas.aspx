@@ -180,13 +180,14 @@
                                             <th style="width: 10%">Descripcion</th>
                                             <th style="width: 5%; text-align: right">Cantidad</th>
                                             <th style="width: 5%; text-align: right">Precio</th>
+                                            <th style="width: 5%; text-align: right">Total</th>
                                             <th style="width: 10%">Rubro</th>
                                             <th style="width: 6%">Marca</th>
-                                            <th style="width: 10%">Presentacion</th>
+                                            <th style="width: 9%">Presentacion</th>
                                             <th style="width: 5%">Lote</th>
-                                            <th style="width: 4%">Vencimiento</th>
+                                            <th style="width: 5%">Vencimiento</th>
 
-                                            <th style="width: 4%"></th>
+                                            <th style="width: 3%"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -194,18 +195,26 @@
                                     </tbody>
                                 </table>
 
+                                <br />
+
                                 <%--Suma Total--%>
-                                <div>
-                                    <span style="font-size: 2rem">Total: $</span>
-                                    <span id="total" style="font-size: 2rem">0</span>
+                                <div style="text-align: right; padding-right: 1rem;">
+                                    <span style="font-size: 2rem">Total: </span>
+
+                                    <div style="display:inline-block; font-size: 2rem; font-weight: bold;">
+                                        <span>$</span>
+                                        <span id="total">0</span>
+                                    </div>
                                 </div>
 
-                                <div>
+                                <br />
 
-                                    <asp:Button class="btn btn-sm btn-primary pull-right m-t-n-xs" Style="margin-right: 8px;" data-toggle="tooltip"
+                                <div>
+                                    <asp:Button class="btn btn-md btn-primary pull-right m-t-n-xs" Style="margin-right: 8px;" data-toggle="tooltip"
                                         data-placement="top" title data-original-title="Guardar"
                                         Text="Guardar" runat="server" ValidationGroup="AgregarEntregas" ID="btnGuardar" disabled="true" OnClick="btnGuardar_Click" />
                                 </div>
+
                             </div>
 
                         </div>
@@ -563,6 +572,7 @@
             let tdDescripcion = "<td> " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
             let tdCantidad = "<td style=\" text-align: right\"> " + myFormat(cantidad) + "</td>";
             let tdPrecio = "<td style=\" text-align: right\"> $ " + myFormat(precioFormated) + "</td>";
+            let tdTotalProducto = "<td style=\" text-align: right\"> $ " + Number(cantidad) * Number(precioFormated)  + "</td>";
             let tdUnidad = "<td> " + unidad + "</td>";
             let btnRec = "";
 
@@ -581,6 +591,7 @@
                     tdDescripcion +
                     tdCantidad +
                     tdPrecio +
+                    tdTotalProducto +
                     tdRubro +
                     marca +
                     //"<td ondblclick=\"CargarmodalRecetaDetalle('" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0]+"')\" > " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>" +
@@ -604,7 +615,7 @@
                 }
 
                 let totalActual = Number(document.getElementById('total').textContent);
-                totalActual = Number(totalActual) + ( Number(precio.value) * Number(cantidad) )
+                totalActual = Number(totalActual) + (Number(precio.value) * Number(cantidad))
                 document.getElementById('total').textContent = totalActual;
 
                 prod.value = "";
