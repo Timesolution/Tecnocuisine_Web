@@ -193,6 +193,13 @@
                                         <asp:PlaceHolder ID="phProductos" runat="server" />
                                     </tbody>
                                 </table>
+
+                                <%--Suma Total--%>
+                                <div>
+                                    <span style="font-size: 2rem">Total: $</span>
+                                    <span id="total" style="font-size: 2rem">0</span>
+                                </div>
+
                                 <div>
 
                                     <asp:Button class="btn btn-sm btn-primary pull-right m-t-n-xs" Style="margin-right: 8px;" data-toggle="tooltip"
@@ -555,13 +562,15 @@
 
             let tdDescripcion = "<td> " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
             let tdCantidad = "<td style=\" text-align: right\"> " + myFormat(cantidad) + "</td>";
-            let tdPrecio = "<td style=\" text-align: right\"> " + myFormat(precioFormated) + "</td>";
+            let tdPrecio = "<td style=\" text-align: right\"> $ " + myFormat(precioFormated) + "</td>";
             let tdUnidad = "<td> " + unidad + "</td>";
+            let btnRec = "";
 
-            let tdRubro = "";
+            let tdRubro = "<td></td>";
             if (rubro.value != "" && rubro.value != null) {
                 tdRubro = "<td> " + rubro.value + "</td>";
             }
+
             marca = "<td> " + document.getElementById('<%=ddlMarca.ClientID%>').selectedOptions[0].text + "</td>";
             idMarca = document.getElementById('<%=ddlMarca.ClientID%>').value.trim()
 
@@ -589,10 +598,14 @@
                 );
                 if (document.getElementById('<%= idProductosRecetas.ClientID%>').value == "") {
                     document.getElementById('<%= idProductosRecetas.ClientID%>').value += (codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%= txtFechaVencimiento.ClientID%>').value + "%" + precioFormated).replaceAll(".", ",");
-                    }
-                    else {
-                        document.getElementById('<%= idProductosRecetas.ClientID%>').value += (";" + codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%=txtFechaVencimiento.ClientID%>').value + "%" + precioFormated).replaceAll(".", ",");;
                 }
+                else {
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += (";" + codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%=txtFechaVencimiento.ClientID%>').value + "%" + precioFormated).replaceAll(".", ",");;
+                }
+
+                let totalActual = Number(document.getElementById('total').textContent);
+                totalActual = Number(totalActual) + ( Number(precio.value) * Number(cantidad) )
+                document.getElementById('total').textContent = totalActual;
 
                 prod.value = "";
                 cant.value = "0";
@@ -602,12 +615,15 @@
                 fechaVencimiento.value = "";
                 unidad = "";
 
+
                 $("#<%=ddlPresentaciones.ClientID%>").html("");
 
                   //document.getElementById('<%--<%=txtUnidadMed.ClientID%>--%>').value = "";
                 document.getElementById('ContentPlaceHolder1_txtDescripcionProductos').focus();
 
                 document.getElementById('<%= btnGuardar.ClientID %>').disabled = false;
+
+
             }
         }
         function agregarProducto(clickedId, costo) {
