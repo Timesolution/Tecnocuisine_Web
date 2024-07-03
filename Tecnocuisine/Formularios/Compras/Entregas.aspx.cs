@@ -740,6 +740,7 @@ namespace Tecnocuisine.Formularios.Compras
                                     string Presentaciones = producto[5];
                                     string LoteEnviado = string.IsNullOrEmpty(producto[6].Trim()) ? null : producto[6].Trim();
                                     string fechaVencimientoItem = string.IsNullOrEmpty(producto[7].Trim()) ? null : producto[7].Trim();
+                                    var precio = Convert.ToDecimal(producto[8].Replace("$", ""));
 
                                     if (producto[1] == "Producto")
                                     {
@@ -754,6 +755,7 @@ namespace Tecnocuisine.Formularios.Compras
                                         productoNuevo.FechaVencimiento = fechaVencimientoItem;
                                         productoNuevo.idMarca = Convert.ToInt32(id_Marca);
                                         productoNuevo.Cantidad = Convert.ToDecimal(Cantidad);
+                                        productoNuevo.Precio = precio;
                                         ControladorEntregas.AgregarEntrega_Producto(productoNuevo, newEntrega.idSector, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(Presentaciones));
                                     }
                                     else
