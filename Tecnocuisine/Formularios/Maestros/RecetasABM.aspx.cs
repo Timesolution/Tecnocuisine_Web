@@ -46,7 +46,7 @@ namespace Tecnocuisine.Formularios.Maestros
             ObtenerPresentaciones();
             if (!IsPostBack)
             {
-
+                CargarRubros();
                 CargarUnidadesMedida();
                 CargarListaCategoriasSoloHijas();
                 CargarSectoresProductivodDDL();
@@ -79,6 +79,23 @@ namespace Tecnocuisine.Formularios.Maestros
 
             }
 
+        }
+
+        public void CargarRubros()
+        {
+            try
+            {
+                ControladorRubros cr = new ControladorRubros();
+                var listRubros = cr.ObtenerTodosRubros();
+                this.ddlRubros.DataSource = listRubros;
+                this.ddlRubros.DataValueField = "id";
+                this.ddlRubros.DataTextField = "descripcion";
+                this.ddlRubros.DataBind();
+                ddlRubros.Items.Insert(0, new ListItem("Rubro", "-1"));
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         //Esta funcion carga los sectores producitvos en la ddl de sectores productivos

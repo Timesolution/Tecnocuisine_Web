@@ -306,6 +306,7 @@
     <Content Include="Formularios\Administrador\EntidadesBancarias.aspx" />
     <Content Include="Formularios\Administrador\Paises.aspx" />
     <Content Include="Formularios\Administrador\PanelDeControl.aspx" />
+    <Content Include="Formularios\Administrador\Precios.aspx" />
     <Content Include="Formularios\Administrador\Rubros.aspx" />
     <Content Include="Formularios\Administrador\Sectores.aspx" />
     <Content Include="Formularios\Administrador\PuntosDeVenta.aspx" />
@@ -946,6 +947,13 @@
     </Compile>
     <Compile Include="Formularios\Administrador\PanelDeControl.aspx.designer.cs">
       <DependentUpon>PanelDeControl.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Administrador\Precios.aspx.cs">
+      <DependentUpon>Precios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Administrador\Precios.aspx.designer.cs">
+      <DependentUpon>Precios.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Administrador\Rubros.aspx.cs">
       <DependentUpon>Rubros.aspx</DependentUpon>

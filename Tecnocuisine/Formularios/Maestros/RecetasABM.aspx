@@ -40,6 +40,10 @@
         .invalid {
             border-color: #ed5565 !important;
         }
+
+        .wizard > .content > .body {
+            width: 100%;
+        }
     </style>
    
 
@@ -66,16 +70,15 @@
 
                                         <div class="row">
                                             <div class="col-lg-7">
+                                                
                                                 <div class="form-group">
                                                     <label>Codigo *</label>
                                                     <%--<input id="ProdDescripcion" onchange="ActualizarLabels()" name="ProdDescripcion" type="text" class="form-control required" />--%>
                                                     <asp:TextBox ID="txtCodigo" class="form-control required" 
                                                         Style="width: 30%" runat="server" MaxLength="50" oninput="this.value = this.value.replace(/[^A-Za-z0-9\s]/g, '');"/>
-
-
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>Recetas *</label>
+                                                    <label>Receta *</label>
                                                     <%--<input id="ProdDescripcion" onchange="ActualizarLabels()" name="ProdDescripcion" type="text" class="form-control required" />--%>
                                                     <asp:TextBox ID="txtDescripcionReceta" Style="max-width: 500px;" MaxLength="100"
                                                         onchange="ActualizarLabels()" class="form-control required" runat="server" />
@@ -84,6 +87,32 @@
                                                     <asp:HiddenField ID="HiddenCosto" runat="server" />
                                                     <%--<p id="valUser" class="hide">Ingresar usuario</p>--%>
                                                 </div>
+
+                                                                                                <%--Producto final--%>
+                                                <div class="row" style="margin-top: 2%;">
+                                                    <div class="form-check">
+                                                        <div class="col-sm-3">
+                                                            <label class="form-check-label" for="CheckProductoFinal">Se puede vender</label>
+                                                        </div>                                 
+                                                        <asp:CheckBox ID="CheckProductoFinal" style="transform: scale(1.4);" runat="server" data-toggle="tooltip" data-placement="top" data-original-title="Selecionar como Producto Final" />
+                                                    </div>
+                                                </div>
+
+                                                <%--Se puede comprar--%>
+                                                <div class="row" style="margin-top: 2%">
+                                                    <div class="form-check">
+                                                        <div class="col-sm-3">
+                                                          <label class="form-check-label" for="CheckSePuedeComprar">Se puede comprar</label>
+                                                        </div>
+                                                        <asp:CheckBox ID="CheckSePuedeComprar" style="transform: scale(1.4);" runat="server" data-toggle="tooltip" data-placement="top" data-original-title="" />
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+<%--                                            <div class="col-lg-2"></div>--%>
+                                            <div class="col-lg-5">
+
+                                                <%--Imagen--%>
                                                 <div class="form-group">
                                                     <label id="valDocFrente">Imagen de la receta</label><br />
                                                     <div class="image-crop btn-group">
@@ -96,11 +125,10 @@
                                                         <%--<input type="file" id="inputImage2" name="file2" class="hide" accept="image/*" onchange="cargarImagen()"/>--%>
                                                         <asp:FileUpload ID="inputImage2" runat="server" CssClass="hide" />
                                                     </div>
-
                                                 </div>
-                                            </div>
-<%--                                            <div class="col-lg-2"></div>--%>
-                                            <div class="col-lg-5">
+
+
+
                                               <%--  <div class="text-center">
                                                     <div style="margin-top: 20px">
                                                         <i class="fa fa-sign-in" style="font-size: 180px; color: #e5e5e5"></i>
@@ -222,7 +250,14 @@
                                                     
                                         
                                         </div>
-                                           <div class="col-sm-2"></div>
+                                           <div class="col-md-2" style="margin-top: 1.5%">
+                                                <asp:DropDownList ID="ddlRubros" runat="server" class="form-control" onchange="EsRubroValido()">
+                                                </asp:DropDownList>
+                                                 <p id="errorRubro" class="text-danger text-hide">
+                                                    *Seleccione un Rubro.
+                                                </p>
+                                            </div>
+  
                                         <div class="col-md-1" style="text-align: left;">
                                             <label id="rxrt" style="margin-bottom:0px">Pr.Venta</label>
                                             <asp:TextBox Text="0" Style="text-align: right;" ID="txtPrVenta"  onkeyUp="ActualizarxPrVenta()" class="form-control" runat="server" />
@@ -239,8 +274,8 @@
                                     </div>
 
                                     <div class="well"style="margin-top:1%;margin-right: -15px;margin-left: -15px;">
-                                    <div class="row" style="margin-top: 0.5%; margin-bottom: 2%">
-                                        <div class="col-md-4">
+                                    <div class="row" style="margin-top: 0.5%; margin-bottom: 2%; display:flex;flex-wrap:nowrap;justify-content:space-between">
+                                        <div class="col-md-3">
                                           
                                             <label  style="margin-bottom: 0px;"> Ingredientes </label>
                                              
@@ -265,7 +300,7 @@
                                             <asp:TextBox ID="txtCantidad" Text="0" onkeydown="PasarAFactor(event)" onchange="CalcularCantBruta()" onkeypress="javascript:return validarNro(event)" Style="text-align: right" class="form-control money" runat="server" />
                                         </div>
                                         <div class="col-md-1" style="text-align: left;">
-                                            <label style="margin-bottom: auto;">Unidad Med.</label>
+                                            <label style="margin-bottom: auto;">U. Med.</label>
 
                                             <asp:TextBox ID="txtUnidadMed" disabled="disabled" Style="text-align: right" class="form-control" runat="server" />
                                         </div>
@@ -327,14 +362,14 @@
                                     </table>
 
                                     </div>
-                                     <div class="row" style="margin-top: 2%">
+                                     <%--<div class="row" style="margin-top: 2%">
                                                     <label class="col-sm-2 control-label editable">Producto Final</label>
                                                     <div class="col-sm-8">
                                                         <div class="input-group m-b">
                                                             <asp:CheckBox ID="CheckProductoFinal" runat="server"  data-toggle="tooltip" data-placement="top" data-original-title="Selecionar como Producto Final" />
                                                         </div>
                                                     </div>
-                                         </div>
+                                         </div>--%>
                                 </fieldset>
 
 
@@ -1147,13 +1182,15 @@
                     //----------------------------------------------------------------------------- REVISAR
 
 
-                    //No enviar formulario si el tipo es "Seleccione"
                     if (!EsTipoRecetaValido()) return false;
 
+                    if (!EsRubroValido()) return false;
 
 
                     let selectUnidadMedida = document.getElementById('<%=ddlUnidadMedida.ClientID%>');
                     let selectTipoReceta = document.getElementById('<%=ddlTipoReceta.ClientID%>');
+                    let selectRubro = document.getElementById('<%=ddlRubros.ClientID%>');
+
                     let url = window.location.href;
                     if (!url.includes("a=2")) {
                         let selectUM = document.getElementById('<%=ddlUnidadMedida.ClientID%>').value
@@ -1189,6 +1226,8 @@
                                     + '" , idPasosRecetas: "' + document.getElementById('<%=hfPasos.ClientID%>').value
                                     + '" , Presentaciones: "' + document.getElementById('<%=hfPresentaciones.ClientID%>').value
                                     + '" , ProdFinal: "' + document.getElementById('ContentPlaceHolder1_CheckProductoFinal').checked
+                                    + '" , Comprable: "' + document.getElementById('ContentPlaceHolder1_CheckSePuedeComprar').checked
+                                    + '" , Rubro: "' + selectRubro.selectedOptions[0].value
                                     + '"}',
                                 contentType: "application/json",
                                 dataType: 'json',
@@ -1806,6 +1845,21 @@
             // Ocultar mensaje de error y devolver true si el valor es válido
             else {
                 document.getElementById('error-tipo').classList.add('text-hide');
+                return true;
+            }
+        }
+
+        function EsRubroValido() {
+            let select = document.getElementById('<%= ddlRubros.ClientID%>');
+
+            // Mostrar mensaje de error y devolver false si el valor es -1
+            if (select.value == -1) {
+                document.getElementById('errorRubro').classList.remove('text-hide');
+                return false;
+            }
+            // Ocultar mensaje de error y devolver true si el valor es válido
+            else {
+                document.getElementById('errorRubro').classList.add('text-hide');
                 return true;
             }
         }

@@ -60,6 +60,24 @@ namespace Tecnocuisine.Formularios.Maestros
         protected global::System.Web.UI.WebControls.HiddenField HiddenCosto;
 
         /// <summary>
+        /// Control CheckProductoFinal.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckProductoFinal;
+
+        /// <summary>
+        /// Control CheckSePuedeComprar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckSePuedeComprar;
+
+        /// <summary>
         /// Control inputImage2.
         /// </summary>
         /// <remarks>
@@ -175,6 +193,15 @@ namespace Tecnocuisine.Formularios.Maestros
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnSectores;
+
+        /// <summary>
+        /// Control ddlRubros.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlRubros;
 
         /// <summary>
         /// Control txtPrVenta.
@@ -319,15 +346,6 @@ namespace Tecnocuisine.Formularios.Maestros
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder phProductos;
-
-        /// <summary>
-        /// Control CheckProductoFinal.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox CheckProductoFinal;
 
         /// <summary>
         /// Control txtObservaciones.

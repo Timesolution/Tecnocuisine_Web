@@ -331,6 +331,7 @@
                                 <span class="fa arrow"></span>
                             </a>
                             <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Administrador/Precios.aspx">Precios</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Alicuotas.aspx">Alicuotas IVA</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Administrador/Empresas.aspx">Empresas</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/EstadoClientes.aspx">Estados de clientes</a></li>

@@ -1028,7 +1028,7 @@ namespace Tecnocuisine.Formularios.Maestros
         [WebMethod]
         public static string GuardarReceta2(string descripcion, string codigo, /*string Categoria,*/ string Sector, /*string Atributos,*/ string Unidad,
             string Tipo, string rinde, string prVenta, string idProductosRecetas, string BrutoT, string CostoT, string BrutoU, string CostoU,
-            string FoodCost, string ContMarg, string BuenasPract, string InfoNut, string idPasosRecetas, string Presentaciones, bool ProdFinal)
+            string FoodCost, string ContMarg, string BuenasPract, string InfoNut, string idPasosRecetas, string Presentaciones, bool ProdFinal, bool Comprable, string Rubro)
         {
             try
             {
@@ -1053,6 +1053,8 @@ namespace Tecnocuisine.Formularios.Maestros
                 Receta.BuenasPracticas = BuenasPract;
                 Receta.InfNutricional = InfoNut;
                 Receta.ProductoFinal = ProdFinal;
+                Receta.Comprable = Comprable;
+                Receta.idRubro = Convert.ToInt32(Rubro);
                 //Receta.sector -- falta agregar
 
                 Receta.estado = 1;
