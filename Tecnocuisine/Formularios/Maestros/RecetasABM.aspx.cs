@@ -200,6 +200,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     txtDescripcionReceta.Text = Receta.descripcion;
                     //txtMerma.Text = Receta.merma.ToString();
                     txtCodigo.Text = Receta.Codigo;
+                    CheckSePuedeComprar.Checked = (bool)Receta.Comprable;
                     //categoria
                     //var categoria = cc.ObtenerCategoriaById(Receta.categoria.Value);
                     //txtDescripcionCategoria.Text = categoria.id + " - " + categoria.descripcion;
@@ -252,8 +253,9 @@ namespace Tecnocuisine.Formularios.Maestros
 
                     }
 
-                    ddlTipoReceta.SelectedIndex = Receta.Tipo.Value;
-                    ddlUnidadMedida.SelectedIndex = Receta.UnidadMedida.Value;
+                    ddlTipoReceta.SelectedValue = Receta.Tipo.ToString();
+                    ddlUnidadMedida.SelectedValue = Receta.UnidadMedida.ToString();
+                    ddlRubros.SelectedValue = Receta.idRubro.ToString();
                     txtKgBrutTotal.Text = Receta.peso.ToString().Replace(',', '.');
                     txtKgxPorcion.Text = Receta.PesoU.Value.ToString().Replace(',', '.');
                     txtRinde.Text = Receta.rinde.Value.ToString().Replace(',', '.');

@@ -20,6 +20,7 @@ using Gestion_Api.Entitys;
 using Gestion_Api.Modelo;
 using System.Web.Services.Description;
 using System.Text.RegularExpressions;
+using Tecnocuisine.Formularios.Administrador;
 
 
 namespace Tecnocuisine.Formularios.Maestros
@@ -1378,9 +1379,9 @@ namespace Tecnocuisine.Formularios.Maestros
 
         //Esra funcion se ejecuta cuando se edita una receta ya existente
         [WebMethod]
-        public static void EditarReceta2(string descripcion, string codigo, /*string Categoria,*/ string Sector, /*string Atributos,*/ string Unidad,
+        public static string EditarReceta2(string descripcion, string codigo, /*string Categoria,*/ string Sector, /*string Atributos,*/ string Unidad,
            string Tipo, string rinde, string prVenta, string idProductosRecetas, string BrutoT, string CostoT, string BrutoU, string CostoU,
-           string FoodCost, string ContMarg, string BuenasPract, string InfoNut, string idPasosRecetas, string idReceta, string Presentaciones, bool ProdFinal)
+           string FoodCost, string ContMarg, string BuenasPract, string InfoNut, string idPasosRecetas, string idReceta, string Presentaciones, bool ProdFinal, bool Comprable, string Rubro)
         {
             try
             {
@@ -1405,7 +1406,8 @@ namespace Tecnocuisine.Formularios.Maestros
                 Receta.BuenasPracticas = BuenasPract;
                 Receta.InfNutricional = InfoNut;
                 Receta.ProductoFinal = ProdFinal;
-
+                Receta.Comprable = Comprable;
+                Receta.idRubro = Convert.ToInt32(Rubro);
                 //Receta.sector -- falta agregar
 
                 Receta.estado = 1;
@@ -1647,21 +1649,33 @@ namespace Tecnocuisine.Formularios.Maestros
                                 }
 
                             }
-                        }
-                    }
-                    //agregar toast
+                        }                      
+                    }               
                     catch (Exception)
                     {
-                        //agregar toast
-
+                        throw new Exception();
                     }
 
+                    JavaScriptSerializer javaScript = new JavaScriptSerializer();
+                    javaScript.MaxJsonLength = 5000000;
+                    string resultadoJSON = javaScript.Serialize("Exito guardando la Receta.");
+                    return resultadoJSON;
                 }
-
+                else
+                {
+                    JavaScriptSerializer javaScript = new JavaScriptSerializer();
+                    javaScript.MaxJsonLength = 5000000;
+                    string resultadoJSON = javaScript.Serialize("Hubo un error al guardar la receta.");
+                    return resultadoJSON;
+                }
             }
-            catch (Exception ex)
-            {
 
+            catch (Exception)
+            {
+                JavaScriptSerializer javaScript = new JavaScriptSerializer();
+                javaScript.MaxJsonLength = 5000000;
+                string resultadoJSON = javaScript.Serialize("Error al guardar la Receta.");
+                return resultadoJSON;
             }
 
         }

@@ -1277,7 +1277,8 @@
                                 + '" , idReceta: "' + idReceta
                                 + '" , Presentaciones: "' + document.getElementById('<%=hfPresentaciones.ClientID%>').value
                                 + '" , ProdFinal: "' + document.getElementById('ContentPlaceHolder1_CheckProductoFinal').checked
-
+                                + '" , Comprable: "' + document.getElementById('ContentPlaceHolder1_CheckSePuedeComprar').checked
+                                + '" , Rubro: "' + document.getElementById('<%=ddlRubros.ClientID%>').selectedOptions[0].value
                                 + '"}',
                             contentType: "application/json",
                             dataType: 'json',
