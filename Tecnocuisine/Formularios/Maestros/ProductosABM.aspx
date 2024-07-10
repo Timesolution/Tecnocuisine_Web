@@ -914,9 +914,11 @@
                                 $.msgbox("No se pudo cargar la tabla", { type: "error" });
                                 ulFinal.className = ""
                             },
-                            success: setTimeout(function () {
-                                recargarPagina();
-                            }, 2000)
+                            success: function (response) {
+                                setTimeout(function () {
+                                    recargarPagina3(response.d);
+                                }, 2000);
+                            }
                         });
                     } else {
                         let parameter = url.split("?")[1]
@@ -1026,8 +1028,28 @@
 
         function recargarPagina() {
             window.location.replace('ProductosABM.aspx?m=1');
-
         }
+
+        function recargarPagina3(data) {
+            var obj = JSON.parse(data);
+            toastr.options = { "positionClass": "toast-bottom-right" };
+
+            if (obj == null) {
+                alert('Obj es null');
+                //return;
+            } else if (obj.toUpperCase().includes("ERROR")) {
+                toastr.error(obj, "Error");
+                ulFinal.className = ""
+            } else {
+                //toastr.success(obj, "Exito!");
+                setTimeout(function () {
+                    location.reload()
+                        , 3000
+                })
+
+            }
+        }
+
         function AgregarToolTips() {
             let list = document.querySelectorAll('[aria-label="Pagination"]');
             let listaUL = list[0];
@@ -1062,8 +1084,6 @@
                 })
 
             }
-
-
         }
         function GuardarProducto2() {
             var formData = new FormData();

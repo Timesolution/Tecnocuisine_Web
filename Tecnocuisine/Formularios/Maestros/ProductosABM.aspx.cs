@@ -660,7 +660,7 @@ namespace Tecnocuisine.Formularios.Maestros
         }
 
         [WebMethod]
-        public static void GuardarProducto(string descripcion, string Categoria, string Atributos, string Costo, string IVA, string Unidad, string Presentacion, string Marca, bool cbxGestion, string Rubro, string img, string sectorId)
+        public static string GuardarProducto(string descripcion, string Categoria, string Atributos, string Costo, string IVA, string Unidad, string Presentacion, string Marca, bool cbxGestion, string Rubro, string img, string sectorId)
         {
             try
             {
@@ -821,12 +821,23 @@ namespace Tecnocuisine.Formularios.Maestros
                         //upload.PostedFile.SaveAs(path + upload.FileName);
                     }
 
-                }
+                    JavaScriptSerializer javaScript = new JavaScriptSerializer();
+                    javaScript.MaxJsonLength = 5000000;
+                    string resultadoJSON = javaScript.Serialize("Exito al editar el Producto.");
+                    return resultadoJSON;
 
+                }
+                else
+                {
+                    throw new Exception();
+                }
             }
             catch (Exception ex)
             {
-
+                JavaScriptSerializer javaScript = new JavaScriptSerializer();
+                javaScript.MaxJsonLength = 5000000;
+                string resultadoJSON = javaScript.Serialize("ERROR. Verifique los campos.");
+                return resultadoJSON;
             }
 
         }
