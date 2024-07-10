@@ -1639,7 +1639,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     try
                     {
                         string[] itemsPres;
-                        controladorReceta.EliminarPresentaciones(resultado);
+                        controladorReceta.EliminarPresentaciones(Receta.id);
                         if (Sector.Contains(","))
                             itemsPres = Presentaciones.Split(',');
                         else
@@ -1654,7 +1654,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                 {
                                     Recetas_Presentacion Rec_Pres = new Recetas_Presentacion();
                                     Rec_Pres.idPresentacion = Convert.ToInt32(PRess[0]);
-                                    Rec_Pres.idRecetas = resultado;
+                                    Rec_Pres.idRecetas = Receta.id;
 
                                     controladorReceta.AgregarPresentacionReceta(Rec_Pres);
                                 }
