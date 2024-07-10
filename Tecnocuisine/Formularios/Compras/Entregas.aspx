@@ -33,8 +33,27 @@
                                     </datalist>
                                 </div>
 
-                                <%--Sector--%>
+                                <%--Tipo Documento--%>
+                                <div class="" style="width: 10%">
+                                    <label>Documento</label>
+                                    <asp:DropDownList ID="ddlDocumentos" runat="server" CssClass="form-control">
+                                        <asp:ListItem Text="FC" Value="1"></asp:ListItem>
+                                        <asp:ListItem Text="PR" Value="2"></asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
+
+                                <%--Nro Factura--%>
                                 <div class="">
+                                    <label>Nro Factura</label>
+                                    <asp:TextBox runat="server" ID="txtNroFactura" class="form-control">
+                                    </asp:TextBox>
+                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="<p>Ingrese Nro Factura</p>" SetFocusOnError="false" ForeColor="Red" Font-Bold="false" ValidationGroup="AgregarEntregas" ControlToValidate="txtNroFactura"></asp:RequiredFieldValidator>
+                                    <datalist id="Datalist1" runat="server">
+                                    </datalist>
+                                </div>
+
+                                <%--Sector--%>
+                                <%--<div class="">
                                     <label>Sector</label>
                                     <asp:TextBox runat="server" ID="txtSector" list="ContentPlaceHolder1_ListaNombreSectores" class="form-control">
                                     </asp:TextBox>
@@ -42,11 +61,12 @@
 
                                     <datalist id="ListaNombreSectores" runat="server">
                                     </datalist>
-                                </div>
+                                </div>--%>
+
 
                                 <%--Fecha entrega--%>
                                 <div class="" id="data_1" style="width: auto">
-                                    <label>Fecha de Entrega</label>
+                                    <label>Fecha de Factura</label>
                                     <div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                         <asp:TextBox class="form-control" runat="server" ID="txtFechaEntrega"></asp:TextBox>
@@ -118,11 +138,10 @@
                                         </div>
                                     </div>
 
-                                    <%-- Rubro --%>
+                                    <%-- Sector/Deposito --%>
                                     <div class="" style="width: 20%">
-                                        <label>Rubro</label>
-                                        <asp:TextBox runat="server" ID="txtRubro" disabled="true" class="form-control"></asp:TextBox>
-                                        <asp:HiddenField runat="server" ID="hfRubro" />
+                                        <label>Sector/Deposito</label>
+                                        <asp:DropDownList onchange="handleDepositoChange()" runat="server" ID="ddlDepositos" class="form-control"></asp:DropDownList>
                                     </div>
 
                                     <%-- Marca --%>
@@ -150,7 +169,7 @@
                                             <label>Vencimiento</label>
                                             <div class="input-group date">
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                <asp:TextBox onchange="ValidarDias()" class="form-control" runat="server" ID="txtFechaVencimiento"></asp:TextBox>
+                                                <asp:TextBox onChange="ValidarDias()" class="form-control" runat="server" ID="txtFechaVencimiento"></asp:TextBox>
                                             </div>
                                             <p id="valiva" class="text-danger text-hide">La fecha de vencimiento no puede ser menor a 30 dias </p>
                                         </div>
@@ -181,12 +200,11 @@
                                             <th style="width: 5%; text-align: right">Cantidad</th>
                                             <th style="width: 5%; text-align: right">Precio</th>
                                             <th style="width: 5%; text-align: right">Total</th>
-                                            <th style="width: 10%">Rubro</th>
+                                            <th style="width: 10%">Deposito</th>
                                             <th style="width: 6%">Marca</th>
                                             <th style="width: 9%">Presentacion</th>
                                             <th style="width: 5%">Lote</th>
                                             <th style="width: 5%">Vencimiento</th>
-
                                             <th style="width: 3%"></th>
                                         </tr>
                                     </thead>
@@ -201,7 +219,7 @@
                                 <div style="text-align: right; padding-right: 1rem;">
                                     <span style="font-size: 2rem">Total: </span>
 
-                                    <div style="display:inline-block; font-size: 2rem; font-weight: bold;">
+                                    <div style="display: inline-block; font-size: 2rem; font-weight: bold;">
                                         <span>$</span>
                                         <span id="total">0</span>
                                     </div>
@@ -284,8 +302,9 @@
                                         <table class="table table-bordered table-hover" id="editable3">
                                             <thead>
                                                 <tr>
-                                                    <th style="width: 10%">Cod. Receta</th>
+                                                    <th style="width: 10%">Cod.</th>
                                                     <th style="width: 20%">Descripcion</th>
+                                                    <th style="width: 20%">Costo $</th>
                                                     <th style="width: 10%"></th>
                                                 </tr>
                                             </thead>
@@ -338,6 +357,7 @@
         <script src="//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
         <link href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.css" rel="stylesheet" />
     </div>
+
     <script src="../../js/plugins/datapicker/bootstrap-datepicker.js"></script>
     <script>
         $(document).ready(function () {
@@ -357,7 +377,7 @@
             if (idIngrediente != null) {
                 document.getElementById('<%=txtDescripcionProductos.ClientID%>').value = idIngrediente + " - " + inngredienteReceta;
                 handle();
-                document.getElementById('<%=txtSector.ClientID%>').value = idSector + " - " + sectorDescripcion;
+                <%--document.getElementById('<%=txtSector.ClientID%>').value = idSector + " - " + sectorDescripcion;--%>
             }
 
         });
@@ -392,18 +412,20 @@
                 //let costo = document.getElementById('ContentPlaceHolder1_Productos_' + idOption.split("_")[1] + "_" + idOption.split("_")[2]).children[1].innerHTML;
                 if (idOption.includes("c_p_")) {
                     agregarProducto(idOption, costo);
-                    CargarRubro(txtProd.split('-')[0].trim(), 1);
+                    //CargarRubro(txtProd.split('-')[0].trim(), 1);
+                    CargarDepositos(txtProd.split('-')[0].trim(), 1);
                     CargarOptionsDllPresentaciones(txtProd.split('-')[0].trim(), 1);
                     CargarOptionDllMarcas(txtProd.split('-')[0].trim(), 1);
                 }
                 else if (idOption.includes("c_r_")) {
                     agregarReceta(idOption, costo)
-                    /*CargarRubro(txtProd.split('-')[0].trim(), 2);*/
+                    CargarDepositos(txtProd.split('-')[0].trim(), 2);
                     CargarOptionsDllPresentaciones(txtProd.split('-')[0].trim(), 2);
                     CargarOptionDllMarcas(txtProd.split('-')[0].trim(), 1);
                 }
             }
         }
+
         function CargarOptionDllMarcas(id, tipo) {
             $.ajax({
                 method: "POST",
@@ -431,6 +453,25 @@
                 }
             });
 
+        }
+
+        function CargarDepositos(id, tipo) {
+            $.ajax({
+                method: "POST",
+                url: "Entregas.aspx/GetIdSectorByIdProd",
+                data: '{idProd: "' + id + '",tipo:"' + tipo + '"}',
+                contentType: "application/json",
+                dataType: "json",
+                dataType: "json",
+                async: false,
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                },
+                success: function (respuesta) {
+                    var ddlDepositos = $("#<%=ddlDepositos.ClientID%>");
+                    ddlDepositos.val(respuesta.d);
+                }
+            });
         }
 
         function CargarOptionsDllPresentaciones(id, tipo) {
@@ -466,42 +507,13 @@
             });
         }
 
-        function CargarRubro(id, tipo) {
-            $.ajax({
-                method: "POST",
-                url: "Entregas.aspx/GetRubro",
-                data: '{idProd: "' + id + '",tipo:"' + tipo + '"}',
-                contentType: "application/json",
-                dataType: "json",
-                async: true,
-                error: (error) => {
-                    //console.log(JSON.stringify(error));
-                    //// Deshabilitar boton para agregar el item
-                    //document.getElementById('btnAgregarProducto').setAttribute('disabled', 'true');
+        function handleDepositoChange() {
+            let deposito = document.getElementById('<%= ddlDepositos.ClientID %>');
 
-                    //toastr.error("El producto no tiene rubro.", "Error", {
-                    //    "positionClass": "toast-bottom-right"
-                    //});
-                    document.getElementById('<%=txtRubro.ClientID%>').value = "";
-                    document.getElementById('<%=hfRubro.ClientID%>').value = "";
-                },
-                success: function (response) {
-                    if (response != null) {
-                        document.getElementById('<%=txtRubro.ClientID%>').value = response.d[0].descripcion;
-                        document.getElementById('<%=hfRubro.ClientID%>').value = response.d[0].id;
-                    }
-                    else {
-                        document.getElementById('<%=txtRubro.ClientID%>').value = "";
-                        document.getElementById('<%=hfRubro.ClientID%>').value = "";
-                        //// Deshabilitar boton para agregar el item
-                        //document.getElementById('btnAgregarProducto').setAttribute('disabled', 'true');
-
-                        //toastr.error("El producto no tiene rubro.", "Error", {
-                        //    "positionClass": "toast-bottom-right"
-                        //});
-                    }
-                }
-            });
+            if (deposito.value != "-1")
+                deposito.style.border = "1px solid #e5e6e7";
+            else 
+                deposito.style.border = "1px solid red";          
         }
 
         function ComprobarFecha(date, DiaIngresado) {
@@ -548,13 +560,14 @@
 
             let fechaVencimiento = document.getElementById('<%= txtFechaVencimiento.ClientID%>');
             let lot = document.getElementById('<%=txtLote.ClientID%>');
-            let rubro = document.getElementById('<%=txtRubro.ClientID%>');
-            let hiddenRubro = document.getElementById('<%=hfRubro.ClientID%>');
 
-            //if (lot.value.length < 1) {
-            //    lot.style.border = "1px solid red";
-            //    return false
-            //}
+            // Sector/Deposito
+            let deposito = document.getElementById('<%=ddlDepositos.ClientID%>');
+            let tdDeposito = "";
+            if (deposito.value != "-1")
+                tdDeposito = "<td> " + deposito.selectedOptions[0].text + "</td>";
+            else 
+                return false
 
             lot.style.border = "1px solid #e5e6e7";
             cant.style.border = "1px solid #e5e6e7";
@@ -572,14 +585,9 @@
             let tdDescripcion = "<td> " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
             let tdCantidad = "<td style=\" text-align: right\"> " + myFormat(cantidad) + "</td>";
             let tdPrecio = "<td style=\" text-align: right\"> $ " + myFormat(precioFormated) + "</td>";
-            let tdTotalProducto = "<td style=\" text-align: right\"> $ " + Number(cantidad) * Number(precioFormated)  + "</td>";
+            let tdTotalProducto = "<td style=\" text-align: right\"> $ " + (myFormat(cantidad) * myFormat(precioFormated)).toFixed(2) + "</td>";
             let tdUnidad = "<td> " + unidad + "</td>";
             let btnRec = "";
-
-            let tdRubro = "<td></td>";
-            if (rubro.value != "" && rubro.value != null) {
-                tdRubro = "<td> " + rubro.value + "</td>";
-            }
 
             marca = "<td> " + document.getElementById('<%=ddlMarca.ClientID%>').selectedOptions[0].text + "</td>";
             idMarca = document.getElementById('<%=ddlMarca.ClientID%>').value.trim()
@@ -592,7 +600,7 @@
                     tdCantidad +
                     tdPrecio +
                     tdTotalProducto +
-                    tdRubro +
+                    tdDeposito +
                     marca +
                     //"<td ondblclick=\"CargarmodalRecetaDetalle('" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0]+"')\" > " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>" +
                     tdUnidad +
@@ -601,7 +609,7 @@
 
 
                     "<td style=\" text-align: center\">" +
-                    " <a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent; " + styleCorrect + "\" class=\"btn  btn-xs \" onclick=\"javascript: return borrarProd('" + tipo + "_" + codigo.trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "');\" >" +
+                    " <a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent; " + styleCorrect + "\" class=\"btn  btn-xs \" onclick=\"javascript: return borrarProd('" + tipo + "_" + codigo.trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "', " + (myFormat(cantidad) * myFormat(precioFormated)).toFixed(2) + ");\" >" +
                     "<i class=\"fa fa-trash - o\" style=\"color: black\"></i> </a> " +
                     btnRec
                     + "</td > " +
@@ -614,18 +622,26 @@
                     document.getElementById('<%= idProductosRecetas.ClientID%>').value += (";" + codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%=txtFechaVencimiento.ClientID%>').value + "%" + precioFormated).replaceAll(".", ",");;
                 }
 
-                let totalActual = Number(document.getElementById('total').textContent);
-                totalActual = Number(totalActual) + (Number(precio.value) * Number(cantidad))
-                document.getElementById('total').textContent = totalActual;
+                // Aumentar total general
+                //let totalActual = Number(document.getElementById('total').textContent);
+                //totalActual = Number(totalActual) + (Number(precio.value) * Number(cantidad))
+                //document.getElementById('total').textContent = totalActual;
 
+                // Aumentar total general
+                let total = document.getElementById('total');
+                let totalActual = parseFloat(total.textContent);
+                totalActual += parseFloat(precio.value).toFixed(2) * parseFloat(cantidad).toFixed(3);
+                total.textContent = totalActual.toFixed(2);
+
+
+                // Limpiar campos
                 prod.value = "";
                 cant.value = "0";
                 precio.value = "0";
-                rubro.value = "";
                 lot.value = "";
                 fechaVencimiento.value = "";
                 unidad = "";
-
+                $("#<%=ddlDepositos.ClientID%>").val("-1");;
 
                 $("#<%=ddlPresentaciones.ClientID%>").html("");
 
@@ -633,10 +649,9 @@
                 document.getElementById('ContentPlaceHolder1_txtDescripcionProductos').focus();
 
                 document.getElementById('<%= btnGuardar.ClientID %>').disabled = false;
-
-
             }
         }
+
         function agregarProducto(clickedId, costo) {
             ContentPlaceHolder1_txtDescripcionProductos.value = clickedId.split('_')[2] + ' - ' + clickedId.split('_')[3];
             ContentPlaceHolder1_Hiddentipo.value = "Producto";
@@ -651,6 +666,7 @@
             document.getElementById('<%=txtCantidad.ClientID%>').value = '';
             document.getElementById('<%=txtCantidad.ClientID%>').focus();
         }
+
         function agregarReceta(clickedId, costo) {
             ContentPlaceHolder1_txtDescripcionProductos.value = clickedId.split('_')[2] + ' - ' + clickedId.split('_')[3];
             ContentPlaceHolder1_Hiddentipo.value = "Receta";
@@ -665,7 +681,8 @@
             document.getElementById('<%=txtCantidad.ClientID%>').value = '';
             document.getElementById('<%=txtCantidad.ClientID%>').focus();
         }
-        function borrarProd(idprod) {
+
+        function borrarProd(idprod, totalToRemove) {
             event.preventDefault();
 
             $('#' + idprod).remove();
@@ -693,6 +710,14 @@
             if (nuevosProductos == "") {
                 document.getElementById('<%= btnGuardar.ClientID %>').disabled = true;
             }
+
+
+            // Descontar en total general
+            let totalElement = document.getElementById('total');
+            let totalActual = parseFloat(totalElement.textContent);
+            console.log(totalToRemove);
+            totalActual -= totalToRemove;
+            totalElement.textContent = totalActual.toFixed(2);
 
         }
     </script>
@@ -833,6 +858,43 @@
                     this.value
                 ).draw();
             });
+
+
+
+            // Modal buscar recetas
+            $('#editable3').DataTable({
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay información",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "searchPlaceholder": "Escriba su busqueda",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
+
+            $('.dataTables_filter').hide();
+            $('#txtBusquedaIngredientes').on('keyup', function () {
+                $('#editable3').DataTable().search(
+                    this.value
+                ).draw();
+            });
+
+
+
 
             $('.dataTables_filter').hide();
 

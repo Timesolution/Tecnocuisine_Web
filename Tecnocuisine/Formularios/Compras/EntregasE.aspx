@@ -44,7 +44,7 @@
 
                                                             <th style="max-width: 100px">Fecha Entrega</th>
                                                             <th>PROVEEDOR </th>
-                                                            <th>Sector</th>
+                                                            <%--<th>Sector</th>--%>
                                                             <th>Código Entrega</th>
                                                             <th> Estado Facturado</th>
                                                             <th style="max-width: 100px"></th>

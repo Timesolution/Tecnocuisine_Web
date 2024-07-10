@@ -1,4 +1,5 @@
 ﻿using Gestion_Api.Modelo;
+using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -43,8 +44,9 @@ namespace Tecnocuisine.Formularios.Compras
             {
                 ObtenerRecetas();
                 ObtenerProductos();
-                ObtenerSectores();
+                //ObtenerSectores();
                 ObtenerProveedores();
+                CargarSectores();
                 //ObtenerPresentaciones();
                 txtFechaEntrega.Text = DateTime.Now.ToString("dd/MM/yyyy");
                 txtFechaVencimiento.Text = DateTime.Now.AddDays(31).ToString("dd/MM/yyyy");
@@ -118,11 +120,11 @@ namespace Tecnocuisine.Formularios.Compras
             {
                 var entrega = ControladorEntregas.ObtenerEntregasByID(id);
                 Tecnocuisine_API.Entitys.Proveedores p = ControladorProveedores.ObtenerProveedorByID(entrega.idProveedor);
-                Tecnocuisine_API.Entitys.SectorProductivo s = ControladorSector.ObtenerSectorProductivoId(entrega.idSector);
+                //Tecnocuisine_API.Entitys.SectorProductivo s = ControladorSector.ObtenerSectorProductivoId(entrega.idSector);
                 txtFechaEntrega.Text = entrega.fechaEntrega.ToString("dd/MM/yyyy");
                 txtObservaciones.Text = entrega.Observaciones;
                 txtProveedor.Text = p.Id.ToString() + " - " + p.Alias;
-                txtSector.Text = s.id + " - " + s.descripcion;
+                //txtSector.Text = s.id + " - " + s.descripcion;
                 CargarPHEntrega();
             }
             catch (Exception ex)
@@ -314,11 +316,28 @@ namespace Tecnocuisine.Formularios.Compras
 
         }
 
+        private void CargarSectores()
+        {
+            try
+            {
+                ControladorSectorProductivo cSectorProductivo = new ControladorSectorProductivo();
+                this.ddlDepositos.DataSource = cSectorProductivo.ObtenerTodosSectorProductivo();
+                this.ddlDepositos.DataValueField = "id";
+                this.ddlDepositos.DataTextField = "descripcion";
+                this.ddlDepositos.DataBind();
+                ddlDepositos.Items.Insert(0, new ListItem("", "-1"));
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
         private void ObtenerRecetas()
         {
             try
             {
-                var Recetas = ControladorReceta.ObtenerTodosRecetas();
+                var Recetas = ControladorReceta.ObtenerTodosRecetasComprables();
 
                 if (Recetas.Count > 0)
                 {
@@ -393,7 +412,7 @@ namespace Tecnocuisine.Formularios.Compras
                 celAccion.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celAccion);
 
-                phProductosAgregar.Controls.Add(tr);
+                phRecetasModal.Controls.Add(tr);
 
             }
             catch (Exception ex)
@@ -505,7 +524,7 @@ namespace Tecnocuisine.Formularios.Compras
 
                 //for (int i = 0; i < table.Rows.Count; i++)
                 //    builder.Append(String.Format("<option value='{0}'>", table.Rows[i][0]));
-                ListaNombreSectores.InnerHtml += builder.ToString();
+                //ListaNombreSectores.InnerHtml += builder.ToString();
 
             }
             catch (Exception ex)
@@ -628,7 +647,7 @@ namespace Tecnocuisine.Formularios.Compras
         {
             Tecnocuisine_API.Entitys.Entregas newEntrega = new Tecnocuisine_API.Entitys.Entregas();
             newEntrega.idProveedor = Convert.ToInt32(txtProveedor.Text.Split('-')[0]);
-            newEntrega.idSector = Convert.ToInt32(txtSector.Text.Split('-')[0]);
+            //newEntrega.idSector = Convert.ToInt32(txtSector.Text.Split('-')[0]);
             newEntrega.Observaciones = txtObservaciones.Text;
             newEntrega.fechaEntrega = DateTime.ParseExact(txtFechaEntrega.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             newEntrega.fechaRealizada = DateTime.Now;
@@ -693,12 +712,12 @@ namespace Tecnocuisine.Formularios.Compras
                                         productoNuevo.Lote = LoteEnviado;
                                         productoNuevo.Stock = null;
                                         productoNuevo.CodigoEntrega = "";
-                                        productoNuevo.idSector = Convert.ToInt32(txtSector.Text.Split('-')[0]);
+                                        //productoNuevo.idSector = Convert.ToInt32(txtSector.Text.Split('-')[0]);
                                         productoNuevo.idPresentacion = Convert.ToInt32(Presentaciones);
                                         productoNuevo.FechaVencimiento = fechaVencimientoItem;
                                         productoNuevo.idMarca = Convert.ToInt32(id_Marca);
                                         productoNuevo.Cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
-                                        ControladorEntregas.AgregarEntrega_Producto(productoNuevo, newEntrega.idSector, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(producto[4]));
+                                        ControladorEntregas.AgregarEntrega_Producto(productoNuevo, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(producto[4]));
                                     }
                                     else
                                     {
@@ -707,7 +726,7 @@ namespace Tecnocuisine.Formularios.Compras
                                         RecetaNuevo.idRecetas = Convert.ToInt32(producto[0]);
                                         idProducto = RecetaNuevo.idRecetas.Value;
                                         RecetaNuevo.Cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
-                                        ControladorEntregas.AgregarEntrega_Receta(RecetaNuevo, newEntrega.idSector, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(producto[4]));
+                                        //ControladorEntregas.AgregarEntrega_Receta(RecetaNuevo, newEntrega.idSector, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(producto[4]));
                                     }
                                 }
                             }
@@ -750,13 +769,13 @@ namespace Tecnocuisine.Formularios.Compras
                                         productoNuevo.Lote = LoteEnviado;
                                         productoNuevo.Stock = null;
                                         productoNuevo.CodigoEntrega = newEntrega.CodigoEntrega;
-                                        productoNuevo.idSector = Convert.ToInt32(txtSector.Text.Split('-')[0]);
+                                        //productoNuevo.idSector = Convert.ToInt32(txtSector.Text.Split('-')[0]);
                                         productoNuevo.idPresentacion = Convert.ToInt32(Presentaciones);
                                         productoNuevo.FechaVencimiento = fechaVencimientoItem;
                                         productoNuevo.idMarca = Convert.ToInt32(id_Marca);
                                         productoNuevo.Cantidad = Convert.ToDecimal(Cantidad);
                                         productoNuevo.Precio = precio;
-                                        ControladorEntregas.AgregarEntrega_Producto(productoNuevo, newEntrega.idSector, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(Presentaciones));
+                                        //ControladorEntregas.AgregarEntrega_Producto(productoNuevo, newEntrega.idSector, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(Presentaciones));
                                     }
                                     else
                                     {
@@ -765,7 +784,8 @@ namespace Tecnocuisine.Formularios.Compras
                                         RecetaNuevo.idRecetas = Convert.ToInt32(id_Producto);
                                         idProducto = RecetaNuevo.idRecetas.Value;
                                         RecetaNuevo.Cantidad = Convert.ToDecimal(Cantidad);
-                                        ControladorEntregas.AgregarEntrega_Receta(RecetaNuevo, newEntrega.idSector, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(Presentaciones));
+                                        RecetaNuevo.Precio = precio;
+                                        //ControladorEntregas.AgregarEntrega_Receta(RecetaNuevo, newEntrega.idSector, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(Presentaciones));
                                     }
                                 }
                             }
@@ -826,7 +846,7 @@ namespace Tecnocuisine.Formularios.Compras
                 txtCantidad.Text = "";
                 txtDescripcionProductos.Text = "";
                 txtProveedor.Text = "";
-                txtSector.Text = "";
+                //txtSector.Text = "";
                 //txtUnidadMed.Text = "";
                 txtObservaciones.Text = "";
                 idProductosRecetas.Value = "";
@@ -910,9 +930,9 @@ namespace Tecnocuisine.Formularios.Compras
                 PresentacionClass presentacionClass = new PresentacionClass();
                 ControladorRubros cRubro = new ControladorRubros();
                 Tecnocuisine_API.Entitys.Rubros rubro;
-                               
+
                 // Es producto
-                if (tipo==1)
+                if (tipo == 1)
                 {
                     ControladorProducto cProducto = new ControladorProducto();
                     Tecnocuisine_API.Entitys.Productos producto = cProducto.ObtenerProductoId(idProd);
@@ -921,16 +941,15 @@ namespace Tecnocuisine.Formularios.Compras
                     presentacionClass.descripcion = rubro.descripcion;
                 }
                 // Es receta
-                else 
+                else
                 {
-                    //ControladorReceta cReceta = new ControladorReceta();
-                    //Tecnocuisine_API.Entitys.Recetas receta = cReceta.ObtenerRecetaId(idProd);
-                    //rubro = cRubro.ObtenerRubrosId((int)receta.);
-                    ////presentacionClass.id = rubro.id;
-                    ////presentacionClass.descripcion = rubro.descripcion;
-                    ///
+                    ControladorReceta cReceta = new ControladorReceta();
+                    Tecnocuisine_API.Entitys.Recetas receta = cReceta.ObtenerRecetaId(idProd);
+                    rubro = cRubro.ObtenerRubrosId((int)receta.idRubro);
+                    presentacionClass.id = rubro.id;
+                    presentacionClass.descripcion = rubro.descripcion;
                 }
-                       
+
                 listaFInal.Add(presentacionClass);
 
                 return listaFInal.ToList();
@@ -938,6 +957,39 @@ namespace Tecnocuisine.Formularios.Compras
             catch (Exception)
             {
                 return null;
+            }
+        }
+
+        [WebMethod]
+        public static int GetIdSectorByIdProd(int idProd, int tipo)
+        {
+            try
+            {
+                ControladorSectorProductivo cSector = new ControladorSectorProductivo();
+
+                // Es producto
+                if (tipo == 1)
+                {
+                    ControladorProducto cProducto = new ControladorProducto();
+                    Tecnocuisine_API.Entitys.Productos producto = cProducto.ObtenerProductoId(idProd);
+                    return producto.idSectorProductivo ?? -1;
+                }
+
+                // Es receta
+                ControladorReceta cReceta = new ControladorReceta();
+                Tecnocuisine_API.Entitys.Recetas receta = cReceta.ObtenerRecetaId(idProd);
+
+                if (receta.SectorP_Recetas == null)
+                    return -1;
+
+                foreach (var sector in receta.SectorP_Recetas)
+                    return sector.idSectorP ?? -1;
+
+                return -1;
+            }
+            catch (Exception)
+            {
+                return -1;
             }
         }
 

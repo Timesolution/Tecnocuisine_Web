@@ -51,13 +51,22 @@ namespace Tecnocuisine.Formularios.Compras
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl ListaNombreProveedores;
 
         /// <summary>
-        /// Control txtSector.
+        /// Control ddlDocumentos.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSector;
+        protected global::System.Web.UI.WebControls.DropDownList ddlDocumentos;
+
+        /// <summary>
+        /// Control txtNroFactura.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNroFactura;
 
         /// <summary>
         /// Control RequiredFieldValidator1.
@@ -69,13 +78,13 @@ namespace Tecnocuisine.Formularios.Compras
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
 
         /// <summary>
-        /// Control ListaNombreSectores.
+        /// Control Datalist1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ListaNombreSectores;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Datalist1;
 
         /// <summary>
         /// Control txtFechaEntrega.
@@ -195,22 +204,13 @@ namespace Tecnocuisine.Formularios.Compras
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator3;
 
         /// <summary>
-        /// Control txtRubro.
+        /// Control ddlDepositos.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtRubro;
-
-        /// <summary>
-        /// Control hfRubro.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfRubro;
+        protected global::System.Web.UI.WebControls.DropDownList ddlDepositos;
 
         /// <summary>
         /// Control ddlMarca.
