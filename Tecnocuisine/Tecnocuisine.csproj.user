@@ -9,7 +9,12 @@
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <LastActiveSolutionConfig>Debug|Any CPU</LastActiveSolutionConfig>
+<<<<<<< HEAD
     <ProjectView>ProjectFiles</ProjectView>
+=======
+    <ProjectView>ShowAllFiles</ProjectView>
+    <NameOfLastUsedPublishProfile>C:\Repos\TecnoCuisineWeb\Tecnocuisine\Properties\PublishProfiles\FolderProfile1.pubxml</NameOfLastUsedPublishProfile>
+>>>>>>> 43abe9e (Se agregaron Categorias,Atributos,Tipos de Atributo,Unidades de medida y Presentaciones)
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>

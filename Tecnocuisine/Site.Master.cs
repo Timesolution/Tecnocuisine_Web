@@ -11,7 +11,8 @@ namespace Tecnocuisine
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            this.lblSiteMap.Text = HttpContext.Current.Request.Url.AbsolutePath.Remove(0,1).Replace("/"," / ").Replace(".aspx","").Replace("Formularios","");
+            lblSiteMap.Style.Add("padding-top", "10%");
         }
     }
 }

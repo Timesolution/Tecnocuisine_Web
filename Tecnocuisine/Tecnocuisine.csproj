@@ -51,13 +51,52 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.Identity.EntityFramework.2.2.3\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -92,7 +131,11 @@
     </Reference>
     <Reference Include="Tecnocuisine_API, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+<<<<<<< HEAD
       <HintPath>..\..\TecnoCuisine Api\Tecnocuisine_API\bin\Debug\Tecnocuisine_API.dll</HintPath>
+=======
+      <HintPath>..\..\TecnoCuisineApi\Tecnocuisine_API\bin\Debug\Tecnocuisine_API.dll</HintPath>
+>>>>>>> 43abe9e (Se agregaron Categorias,Atributos,Tipos de Atributo,Unidades de medida y Presentaciones)
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -203,8 +246,17 @@
     <Content Include="font-awesome\css\font-awesome.min.css" />
     <Content Include="font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+<<<<<<< HEAD
     <Content Include="Formularios\Categorias.aspx" />
     <Content Include="Formularios\InsumosF.aspx" />
+=======
+    <Content Include="Formularios\Maestros\Atributos.aspx" />
+    <Content Include="Formularios\Maestros\Categorias.aspx" />
+    <Content Include="Formularios\Maestros\Presentaciones.aspx" />
+    <Content Include="Formularios\Maestros\Unidades.aspx" />
+    <Content Include="Formularios\Maestros\InsumosF.aspx" />
+    <Content Include="Formularios\Usuario\login.aspx" />
+>>>>>>> 43abe9e (Se agregaron Categorias,Atributos,Tipos de Atributo,Unidades de medida y Presentaciones)
     <Content Include="Global.asax" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -725,6 +777,7 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+<<<<<<< HEAD
     <Compile Include="Formularios\Categorias.aspx.cs">
       <DependentUpon>Categorias.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -733,11 +786,49 @@
       <DependentUpon>Categorias.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\InsumosF.aspx.cs">
+=======
+    <Compile Include="Formularios\Maestros\Atributos.aspx.cs">
+      <DependentUpon>Atributos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Atributos.aspx.designer.cs">
+      <DependentUpon>Atributos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Categorias.aspx.cs">
+      <DependentUpon>Categorias.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Categorias.aspx.designer.cs">
+      <DependentUpon>Categorias.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Presentaciones.aspx.cs">
+      <DependentUpon>Presentaciones.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Presentaciones.aspx.designer.cs">
+      <DependentUpon>Presentaciones.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Unidades.aspx.cs">
+      <DependentUpon>Unidades.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\Unidades.aspx.designer.cs">
+      <DependentUpon>Unidades.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\InsumosF.aspx.cs">
+>>>>>>> 43abe9e (Se agregaron Categorias,Atributos,Tipos de Atributo,Unidades de medida y Presentaciones)
       <DependentUpon>InsumosF.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Formularios\InsumosF.aspx.designer.cs">
+    <Compile Include="Formularios\Maestros\InsumosF.aspx.designer.cs">
       <DependentUpon>InsumosF.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Usuario\login.aspx.cs">
+      <DependentUpon>login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Usuario\login.aspx.designer.cs">
+      <DependentUpon>login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
