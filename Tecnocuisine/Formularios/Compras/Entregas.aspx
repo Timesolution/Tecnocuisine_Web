@@ -647,7 +647,6 @@
                 lot.value = "";
                 fechaVencimiento.value = "";
                 unidad = "";
-                document.getElementById('ContentPlaceHolder1_txtNroFactura').value = "";
 
                 $("#<%=ddlDepositos.ClientID%>").val("-1");;
 
