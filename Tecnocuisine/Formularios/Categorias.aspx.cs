@@ -112,7 +112,15 @@ namespace Tecnocuisine
 
         private void cargarNestedListCategorias()
         {
+<<<<<<< HEAD
 
+=======
+            List<Tecnocuisine_API.Entitys.Categorias> categorias = controlador.ObtenerCategorias();
+            foreach(Tecnocuisine_API.Entitys.Categorias item in categorias)
+            {
+                contentArea.Controls.Add(h1);
+            }
+>>>>>>> fe7b56c (Cambios)
         }
 
         //protected void btnGuardar_Click(object sender, EventArgs e)

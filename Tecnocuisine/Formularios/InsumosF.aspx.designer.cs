@@ -30,7 +30,11 @@ namespace Tecnocuisine
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
+<<<<<<< HEAD
         protected global::System.Web.UI.WebControls.Button Button1;
+=======
+        protected global::System.Web.UI.WebControls.Button btnGuardar;
+>>>>>>> fe7b56c (Cambios)
 
         /// <summary>
         /// UpdatePanel2 control.

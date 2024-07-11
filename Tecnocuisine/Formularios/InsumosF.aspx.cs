@@ -30,6 +30,23 @@ namespace Tecnocuisine
                 {
                     CargarInsumo();
                 }
+<<<<<<< HEAD
+=======
+
+                if(Mensaje == 1)
+                {
+                    this.m.ShowToastr(this.Page, "Proceso concluido con Exito!", "Exito");
+                }
+                else if (Mensaje == 2)
+                {
+                    this.m.ShowToastr(this.Page, "Proceso concluido con Exito!", "Exito");
+                }
+                else if (Mensaje == 3)
+                {
+                    this.m.ShowToastr(this.Page, "Proceso concluido con Exito!", "Exito");
+                }
+
+>>>>>>> fe7b56c (Cambios)
             }
 
             ObtenerInsumos();
