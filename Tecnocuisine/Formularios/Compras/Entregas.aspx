@@ -564,11 +564,17 @@
             // Sector/Deposito
             let deposito = document.getElementById('<%=ddlDepositos.ClientID%>');
             let tdDeposito = "";
-            if (deposito.value != "-1")
-                tdDeposito = "<td> " + deposito.selectedOptions[0].text + "</td>";
-            else 
-                return false
 
+            if (deposito.value != "-1") {
+                tdDeposito = "<td> " + deposito.selectedOptions[0].text + "</td>";
+                deposito.style.border = "1px solid #e5e6e7";
+            }
+            else {
+                deposito.style.border = "1px solid red"; 
+                return false
+            }
+
+            //
             lot.style.border = "1px solid #e5e6e7";
             cant.style.border = "1px solid #e5e6e7";
 
@@ -616,10 +622,10 @@
                     "</tr>"
                 );
                 if (document.getElementById('<%= idProductosRecetas.ClientID%>').value == "") {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += (codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%= txtFechaVencimiento.ClientID%>').value + "%" + precioFormated).replaceAll(".", ",");
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += (codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%= txtFechaVencimiento.ClientID%>').value + "%" + precioFormated + "%" + deposito.value).replaceAll(".", ",");
                 }
                 else {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += (";" + codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%=txtFechaVencimiento.ClientID%>').value + "%" + precioFormated).replaceAll(".", ",");;
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += (";" + codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%=txtFechaVencimiento.ClientID%>').value + "%" + precioFormated + "%" + deposito.value).replaceAll(".", ",");;
                 }
 
                 // Aumentar total general
@@ -641,6 +647,8 @@
                 lot.value = "";
                 fechaVencimiento.value = "";
                 unidad = "";
+                document.getElementById('ContentPlaceHolder1_txtNroFactura').value = "";
+
                 $("#<%=ddlDepositos.ClientID%>").val("-1");;
 
                 $("#<%=ddlPresentaciones.ClientID%>").html("");

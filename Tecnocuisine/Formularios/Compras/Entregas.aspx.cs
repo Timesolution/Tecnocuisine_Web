@@ -744,7 +744,6 @@ namespace Tecnocuisine.Formularios.Compras
                         if (i > 0)
                         {
                             string[] items = ingredientes.Split(';');
-                            int idProducto = 0;
 
                             foreach (var pr in items)
                             {
@@ -754,12 +753,12 @@ namespace Tecnocuisine.Formularios.Compras
                                     string[] producto = pr.Split('%');
                                     string id_Marca = producto[2];
                                     string id_Producto = producto[0].Trim();
-                                    string Tipo = producto[1];
                                     string Cantidad = producto[3];
                                     string Presentaciones = producto[5];
                                     string LoteEnviado = string.IsNullOrEmpty(producto[6].Trim()) ? null : producto[6].Trim();
                                     string fechaVencimientoItem = string.IsNullOrEmpty(producto[7].Trim()) ? null : producto[7].Trim();
                                     var precio = Convert.ToDecimal(producto[8].Replace("$", ""));
+                                    int idSector = Convert.ToInt32(producto[9]);
 
                                     if (producto[1] == "Producto")
                                     {
@@ -769,26 +768,27 @@ namespace Tecnocuisine.Formularios.Compras
                                         productoNuevo.Lote = LoteEnviado;
                                         productoNuevo.Stock = null;
                                         productoNuevo.CodigoEntrega = newEntrega.CodigoEntrega;
-                                        //productoNuevo.idSector = Convert.ToInt32(txtSector.Text.Split('-')[0]);
+                                        productoNuevo.idSector = idSector;
                                         productoNuevo.idPresentacion = Convert.ToInt32(Presentaciones);
                                         productoNuevo.FechaVencimiento = fechaVencimientoItem;
                                         productoNuevo.idMarca = Convert.ToInt32(id_Marca);
                                         productoNuevo.Cantidad = Convert.ToDecimal(Cantidad);
                                         productoNuevo.Precio = precio;
-                                        //ControladorEntregas.AgregarEntrega_Producto(productoNuevo, newEntrega.idSector, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(Presentaciones));
+                                        ControladorEntregas.AgregarEntrega_Producto(productoNuevo, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(Presentaciones));
                                     }
                                     else
                                     {
                                         Entregas_Recetas RecetaNuevo = new Entregas_Recetas();
                                         RecetaNuevo.idEntregas = i;
                                         RecetaNuevo.idRecetas = Convert.ToInt32(id_Producto);
-                                        idProducto = RecetaNuevo.idRecetas.Value;
                                         RecetaNuevo.Cantidad = Convert.ToDecimal(Cantidad);
                                         RecetaNuevo.Precio = precio;
-                                        //ControladorEntregas.AgregarEntrega_Receta(RecetaNuevo, newEntrega.idSector, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(Presentaciones));
+                                        RecetaNuevo.idSector = idSector;
+                                        ControladorEntregas.AgregarEntrega_Receta(RecetaNuevo, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(Presentaciones));
                                     }
                                 }
                             }
+
                             m.ShowToastr(Page, "Agregado con exito!", "Exito", "success");
                             LimpiarCampos();
                         }
