@@ -15,18 +15,22 @@ namespace Tecnocuisine.Formularios.Administrador
         {
             if (!IsPostBack)
             {
-                PreferenciasPrecios pref = ControladorPreferenciasPrecios.Obtener();
-                if (pref == null)
-                {
-                    rbUltimoPrecio.Checked = true;
-                }
-                else
-                {
-                    rbUltimoPrecio.Checked = pref.Ultimo;
-                    rbPrecioBarato.Checked = pref.Mas_Barato;
-                    rbPromedioPonderado.Checked = pref.Promedio_Ponderado;
-                }
+                PreCargarRadioButtons();
+            }
+        }
 
+        private void PreCargarRadioButtons()
+        {
+            PreferenciasPrecios pref = ControladorPreferenciasPrecios.Obtener();
+            if (pref == null)
+            {
+                rbUltimoPrecio.Checked = true;
+            }
+            else
+            {
+                rbUltimoPrecio.Checked = pref.Ultimo;
+                rbPrecioBarato.Checked = pref.Mas_Barato;
+                rbPromedioPonderado.Checked = pref.Promedio_Ponderado;
             }
         }
 
@@ -51,6 +55,22 @@ namespace Tecnocuisine.Formularios.Administrador
             pref.Ultimo = rbUltimoPrecio.Checked;
             pref.Mas_Barato = rbPrecioBarato.Checked;
             pref.Promedio_Ponderado = rbPromedioPonderado.Checked;
+
+            /// Asignar rango de fechas
+            
+            if (pref.Ultimo) return;
+
+            if (pref.Mas_Barato)
+            {
+                pref.Fecha_Inicio = DateTime.Parse(txtPrecioBaratoInicio.Text);
+                pref.Fecha_Fin = DateTime.Parse(txtPrecioBaratoFin.Text);
+            }
+            else if (pref.Promedio_Ponderado)
+            {
+                pref.Fecha_Inicio = DateTime.Parse(txtPromedioPonderadoInicio.Text);
+                pref.Fecha_Fin = DateTime.Parse(txtPromedioPonderadoFin.Text);
+            }
+
         }
     }
 }

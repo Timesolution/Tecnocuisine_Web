@@ -40,7 +40,10 @@
                                                 <asp:TextBox ID="txtPrecioBaratoFin" runat="server" CssClass="form-control" Style="width: auto" TextMode="Date" />
                                             </div>
                                         </div>
-                                        <br />
+                                    </div>
+                                    <br />
+                                    <div>
+                                        <asp:Label ID="lblErrorPrecioBarato" runat="server" ForeColor="Red" />
                                     </div>
                                 </div>
 
@@ -61,14 +64,17 @@
                                                 <asp:TextBox ID="txtPromedioPonderadoFin" runat="server" CssClass="form-control" Style="width: auto" TextMode="Date" />
                                             </div>
                                         </div>
-                                        <br />
+                                    </div>
+                                    <br />
+                                    <div>
+                                        <asp:Label ID="lblErrorPromedioPonderado" runat="server" ForeColor="Red" />
                                     </div>
                                 </div>
                             </div>
 
                             <br />
 
-                            <asp:Button ID="btnGuardar" CssClass="btn btn-primary" runat="server" Text="Guardar" OnClick="btnGuardar_Click" />
+                            <asp:Button ID="btnGuardar" CssClass="btn btn-primary" runat="server" Text="Guardar" OnClick="btnGuardar_Click" OnClientClick="return validarCampos()" />
 
                         </div>
 
@@ -80,8 +86,9 @@
 
     <script type="text/javascript">
         function showHideFields(option) {
+            limpiarErrores();
 
-            // Obtener los RadioButton que usaran fechas
+            // Obtener los RadioButton que usan rangos de fechas
             var rbPrecioBarato = document.getElementById('<%= rbPrecioBarato.ClientID %>');
             var rbPromedioPonderado = document.getElementById('<%= rbPromedioPonderado.ClientID %>');
 
@@ -96,6 +103,54 @@
             else if (option === 'promedioPonderado' && rbPromedioPonderado.checked) {
                 document.getElementById('divPromedioPonderado').style.display = 'block';
             }
+        }
+
+        function validarCampos() {
+            var rbPrecioBarato = document.getElementById('<%= rbPrecioBarato.ClientID %>');
+            var rbPromedioPonderado = document.getElementById('<%= rbPromedioPonderado.ClientID %>');
+
+            if (rbPrecioBarato.checked) {
+                return validarOpcionPrecioMasBarato()
+            }
+            else if (rbPromedioPonderado.checked) {
+                return validarOpcionPromedioPonderado()
+            }
+
+            return true;
+        }
+
+        function validarOpcionPrecioMasBarato() {
+            var txtPrecioBaratoInicio = document.getElementById('<%= txtPrecioBaratoInicio.ClientID %>');
+            var txtPrecioBaratoFin = document.getElementById('<%= txtPrecioBaratoFin.ClientID %>');
+
+            if (txtPrecioBaratoInicio.value === "" || txtPrecioBaratoFin.value === "") {
+                var lblErrorPrecioBarato = document.getElementById('<%= lblErrorPrecioBarato.ClientID %>');
+                lblErrorPrecioBarato.textContent = "Las fechas no fueron validas.";
+                return false;
+            }
+
+            return true;
+        }
+
+        function validarOpcionPromedioPonderado() {
+            var txtPromedioPonderadoInicio = document.getElementById('<%= txtPromedioPonderadoInicio.ClientID %>');
+            var txtPromedioPonderadoFin = document.getElementById('<%= txtPromedioPonderadoFin.ClientID %>');
+
+            if (txtPromedioPonderadoInicio.value === "" || txtPromedioPonderadoFin.value === "") {
+                var lblErrorPromedioPonderado = document.getElementById('<%= lblErrorPromedioPonderado.ClientID %>');
+                lblErrorPromedioPonderado.textContent = "Las fechas no fueron validas.";
+                return false;
+            }
+
+            return true;
+        }
+
+        function limpiarErrores() {
+            var lblErrorPrecioBarato = document.getElementById('<%= lblErrorPrecioBarato.ClientID %>');
+            lblErrorPrecioBarato.textContent = "";
+
+            var lblErrorPromedioPonderado = document.getElementById('<%= lblErrorPromedioPonderado.ClientID %>');
+            lblErrorPromedioPonderado.textContent = "";
         }
 </script>
 
