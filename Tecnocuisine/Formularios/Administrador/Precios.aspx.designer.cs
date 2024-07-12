@@ -33,6 +33,24 @@ namespace Tecnocuisine.Formularios.Administrador
         protected global::System.Web.UI.WebControls.RadioButton rbPrecioBarato;
 
         /// <summary>
+        /// Control txtPrecioBaratoInicio.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPrecioBaratoInicio;
+
+        /// <summary>
+        /// Control txtPrecioBaratoFin.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPrecioBaratoFin;
+
+        /// <summary>
         /// Control rbPromedioPonderado.
         /// </summary>
         /// <remarks>
@@ -40,6 +58,24 @@ namespace Tecnocuisine.Formularios.Administrador
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rbPromedioPonderado;
+
+        /// <summary>
+        /// Control txtPromedioPonderadoInicio.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPromedioPonderadoInicio;
+
+        /// <summary>
+        /// Control txtPromedioPonderadoFin.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPromedioPonderadoFin;
 
         /// <summary>
         /// Control btnGuardar.
