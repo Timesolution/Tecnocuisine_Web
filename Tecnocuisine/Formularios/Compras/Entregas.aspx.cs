@@ -775,7 +775,7 @@ namespace Tecnocuisine.Formularios.Compras
                                         productoNuevo.Cantidad = Convert.ToDecimal(Cantidad);
                                         productoNuevo.Precio = precio;
                                         ControladorEntregas.AgregarEntrega_Producto(productoNuevo, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(Presentaciones));
-                                        controladorProducto.ActualizarCosto((int)productoNuevo.idProductos, precio);
+                                        controladorProducto.ActualizarCosto((int)productoNuevo.idProductos);
                                     }
                                     else
                                     {

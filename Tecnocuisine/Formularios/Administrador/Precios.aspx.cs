@@ -11,12 +11,11 @@ namespace Tecnocuisine.Formularios.Administrador
 {
     public partial class Precios : System.Web.UI.Page
     {
-        ControladorPreferenciasPrecios cPref = new ControladorPreferenciasPrecios();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                PreferenciasPrecios pref = cPref.Obtener();
+                PreferenciasPrecios pref = ControladorPreferenciasPrecios.Obtener();
                 if (pref == null)
                 {
                     rbUltimoPrecio.Checked = true;
@@ -33,18 +32,18 @@ namespace Tecnocuisine.Formularios.Administrador
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
-            PreferenciasPrecios pref = cPref.Obtener();
+            PreferenciasPrecios pref = ControladorPreferenciasPrecios.Obtener();
 
             if (pref == null)
             {
                 pref = new PreferenciasPrecios();
                 SetPreferencia(pref);
-                cPref.Agregar(pref);
+                ControladorPreferenciasPrecios.Agregar(pref);
                 return;
             }
 
             SetPreferencia(pref);
-            cPref.Actualizar(pref);
+            ControladorPreferenciasPrecios.Actualizar(pref);
         }
 
         private void SetPreferencia(PreferenciasPrecios pref)
