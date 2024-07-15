@@ -31,6 +31,20 @@ namespace Tecnocuisine.Formularios.Administrador
                 rbUltimoPrecio.Checked = pref.Ultimo;
                 rbPrecioBarato.Checked = pref.Mas_Barato;
                 rbPromedioPonderado.Checked = pref.Promedio_Ponderado;
+
+                string fechaInicio = pref.Fecha_Inicio.Value.ToString("yyyy-MM-dd");
+                string fechaFin = pref.Fecha_Fin.Value.ToString("yyyy-MM-dd");
+
+                if (rbPrecioBarato.Checked)
+                {
+                    txtPrecioBaratoInicio.Text = fechaInicio;
+                    txtPrecioBaratoFin.Text = fechaFin;
+                }
+                else if (rbPromedioPonderado.Checked)
+                {
+                    txtPromedioPonderadoInicio.Text = fechaInicio;
+                    txtPromedioPonderadoFin.Text = fechaFin;
+                }
             }
         }
 
@@ -57,10 +71,13 @@ namespace Tecnocuisine.Formularios.Administrador
             pref.Promedio_Ponderado = rbPromedioPonderado.Checked;
 
             /// Asignar rango de fechas
-            
-            if (pref.Ultimo) return;
 
-            if (pref.Mas_Barato)
+            if (pref.Ultimo)
+            {
+                pref.Fecha_Inicio = null;
+                pref.Fecha_Fin = null;
+            }
+            else if (pref.Mas_Barato)
             {
                 pref.Fecha_Inicio = DateTime.Parse(txtPrecioBaratoInicio.Text);
                 pref.Fecha_Fin = DateTime.Parse(txtPrecioBaratoFin.Text);

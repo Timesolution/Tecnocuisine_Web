@@ -33,6 +33,15 @@ namespace Tecnocuisine.Formularios.Administrador
         protected global::System.Web.UI.WebControls.RadioButton rbPrecioBarato;
 
         /// <summary>
+        /// Control divPrecioBarato.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel divPrecioBarato;
+
+        /// <summary>
         /// Control txtPrecioBaratoInicio.
         /// </summary>
         /// <remarks>
@@ -67,6 +76,15 @@ namespace Tecnocuisine.Formularios.Administrador
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rbPromedioPonderado;
+
+        /// <summary>
+        /// Control divPromedioPonderado.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel divPromedioPonderado;
 
         /// <summary>
         /// Control txtPromedioPonderadoInicio.

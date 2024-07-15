@@ -28,7 +28,7 @@
                                 <%--Precio mas barato--%>
                                 <div class="form-check">
                                     <asp:RadioButton ID="rbPrecioBarato" runat="server" GroupName="Precio" Text="Precio más barato" CssClass="form-check-input" Style="cursor: pointer;" onclick="showHideFields('precioBarato');" />
-                                    <div class="date-range" id="divPrecioBarato" style="display: none;">
+                                    <asp:Panel runat="server" class="date-range" id="divPrecioBarato">
                                         <p>Indica el rango de fechas a utilizar para el calculo</p>
                                         <div style="display: flex">
                                             <div>
@@ -40,7 +40,7 @@
                                                 <asp:TextBox ID="txtPrecioBaratoFin" runat="server" CssClass="form-control" Style="width: auto" TextMode="Date" />
                                             </div>
                                         </div>
-                                    </div>
+                                    </asp:Panel>
                                     <br />
                                     <div>
                                         <asp:Label ID="lblErrorPrecioBarato" runat="server" ForeColor="Red" />
@@ -52,7 +52,7 @@
                                 <%--Promedio ponderado--%>
                                 <div class="form-check">
                                     <asp:RadioButton ID="rbPromedioPonderado" runat="server" GroupName="Precio" Text="Promedio ponderado" CssClass="form-check-input" Style="cursor: pointer" onclick="showHideFields('promedioPonderado');" />
-                                    <div class="date-range" id="divPromedioPonderado" style="display: none;">
+                                    <asp:Panel runat="server" class="date-range" id="divPromedioPonderado">
                                         <p>Indica el rango de fechas a utilizar para el calculo</p>
                                         <div style="display: flex">
                                             <div>
@@ -64,7 +64,7 @@
                                                 <asp:TextBox ID="txtPromedioPonderadoFin" runat="server" CssClass="form-control" Style="width: auto" TextMode="Date" />
                                             </div>
                                         </div>
-                                    </div>
+                                    </asp:Panel>
                                     <br />
                                     <div>
                                         <asp:Label ID="lblErrorPromedioPonderado" runat="server" ForeColor="Red" />
@@ -88,21 +88,21 @@
         function showHideFields(option) {
             limpiarErrores();
 
-            // Obtener los RadioButton que usan rangos de fechas
+            <%--// Obtener los RadioButton que usan rangos de fechas
             var rbPrecioBarato = document.getElementById('<%= rbPrecioBarato.ClientID %>');
             var rbPromedioPonderado = document.getElementById('<%= rbPromedioPonderado.ClientID %>');
 
             // Ocultar todos los campos primero
-            document.getElementById('divPrecioBarato').style.display = 'none';
-            document.getElementById('divPromedioPonderado').style.display = 'none';
-
+            document.getElementById('<%= divPrecioBarato.ClientID %>').style.display = 'none';
+            document.getElementById('<%= divPromedioPonderado.ClientID %>').style.display = 'none';
+            
             // Determinar cuál RadioButton está seleccionado y mostrar el campo correspondiente
             if (option === 'precioBarato' && rbPrecioBarato.checked) {
-                document.getElementById('divPrecioBarato').style.display = 'block';
+                document.getElementById('<%= divPrecioBarato.ClientID %>').style.display = 'block';
             }
             else if (option === 'promedioPonderado' && rbPromedioPonderado.checked) {
-                document.getElementById('divPromedioPonderado').style.display = 'block';
-            }
+                document.getElementById('<%= divPromedioPonderado.ClientID %>').style.display = 'block';
+            }--%>
         }
 
         function validarCampos() {
@@ -152,7 +152,7 @@
             var lblErrorPromedioPonderado = document.getElementById('<%= lblErrorPromedioPonderado.ClientID %>');
             lblErrorPromedioPonderado.textContent = "";
         }
-</script>
+    </script>
 
 
 </asp:Content>
