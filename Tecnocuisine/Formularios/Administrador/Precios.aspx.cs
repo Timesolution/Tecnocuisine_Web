@@ -22,7 +22,7 @@ namespace Tecnocuisine.Formularios.Administrador
         private void PreCargarRadioButtons()
         {
             PreferenciasPrecios pref = ControladorPreferenciasPrecios.Obtener();
-            if (pref == null)
+            if (pref == null || pref.Ultimo)
             {
                 rbUltimoPrecio.Checked = true;
             }
