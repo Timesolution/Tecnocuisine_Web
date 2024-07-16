@@ -421,38 +421,53 @@
                     agregarReceta(idOption, costo)
                     CargarDepositos(txtProd.split('-')[0].trim(), 2);
                     CargarOptionsDllPresentaciones(txtProd.split('-')[0].trim(), 2);
-                    CargarOptionDllMarcas(txtProd.split('-')[0].trim(), 1);
+                    CargarOptionDllMarcas(txtProd.split('-')[0].trim(), 2);
                 }
             }
         }
 
         function CargarOptionDllMarcas(id, tipo) {
-            $.ajax({
-                method: "POST",
-                url: "Entregas.aspx/GetMarca",
-                data: '{idProd: "' + id + '"}',
-                contentType: "application/json",
-                dataType: "json",
-                dataType: "json",
-                async: false,
-                error: (error) => {
-                    console.log(JSON.stringify(error));
-                },
-                success: function (respuesta) {
-                    //quito los options que pudiera tener previamente el combo
-                    $("#<%=ddlMarca.ClientID%>").html("");
-                    //recorro cada item que devuelve el servicio web y lo aÃ±ado como un opcion
-                    if (respuesta.d.length > 0) {
-                        $.each(respuesta.d, function () {
-                            $("#<%=ddlMarca.ClientID%>").append($("<option></option>").attr("value", this.id).text(this.descripcion))
-                        });
+            // Si es un producto se buscaran las marcas
+            if (tipo == 1) {
+                document.getElementById('<%=ddlMarca.ClientID%>').removeAttribute('disabled');
 
-                    } else {
-                        $("#<%=ddlMarca.ClientID%>").append($("<option></option>").attr("value", 0).text("No Existen Marcas"))
+                $.ajax({
+                    method: "POST",
+                    url: "Entregas.aspx/GetMarca",
+                    data: '{idProd: "' + id + '"}',
+                    contentType: "application/json",
+                    dataType: "json",
+                    dataType: "json",
+                    async: false,
+                    error: (error) => {
+                        console.log(JSON.stringify(error));
+                    },
+                    success: function (respuesta) {
+                        //quito los options que pudiera tener previamente el combo
+                        $("#<%=ddlMarca.ClientID%>").html("");
+
+                        if (respuesta.d.length > 0) {
+                            $.each(respuesta.d, function () {
+                                $("#<%=ddlMarca.ClientID%>").append($("<option></option>").attr("value", this.id).text(this.descripcion))
+                            });
+
+                        } else {                          
+                            toastr.error("El producto no tiene marcas asignadas.", "Error", {
+                                "positionClass": "toast-bottom-right"
+                            });
+
+                            // Deshabilitar boton para agregar el item
+                            document.getElementById('btnAgregarProducto').setAttribute('disabled', 'true');
+                        }
                     }
-                }
-            });
-
+                });
+            }
+            // Es receta
+            else {             
+                $("#<%=ddlMarca.ClientID%>").empty(); // Limpiar el select
+                $("#<%=ddlMarca.ClientID%>").append($("<option></option>").attr("value", -1).text(""))
+                document.getElementById('<%=ddlMarca.ClientID%>').setAttribute('disabled', 'true');
+            }
         }
 
         function CargarDepositos(id, tipo) {
@@ -512,8 +527,8 @@
 
             if (deposito.value != "-1")
                 deposito.style.border = "1px solid #e5e6e7";
-            else 
-                deposito.style.border = "1px solid red";          
+            else
+                deposito.style.border = "1px solid red";
         }
 
         function ComprobarFecha(date, DiaIngresado) {
@@ -570,7 +585,7 @@
                 deposito.style.border = "1px solid #e5e6e7";
             }
             else {
-                deposito.style.border = "1px solid red"; 
+                deposito.style.border = "1px solid red";
                 return false
             }
 

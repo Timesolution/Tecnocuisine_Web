@@ -804,6 +804,8 @@ namespace Tecnocuisine.Formularios.Compras
                 {
                     m.ShowToastr(Page, "Algun dato no se ingreso correctamente", "Error", "warning");
                 }
+
+                txtNroFactura.Text = string.Empty;
             }
             catch (Exception ex)
             {
