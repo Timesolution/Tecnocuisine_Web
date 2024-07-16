@@ -774,7 +774,7 @@ namespace Tecnocuisine.Formularios.Compras
                                         productoNuevo.idMarca = Convert.ToInt32(id_Marca);
                                         productoNuevo.Cantidad = Convert.ToDecimal(Cantidad);
                                         productoNuevo.Precio = precio;
-                                        ControladorEntregas.AgregarEntrega_Producto(productoNuevo, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(Presentaciones));
+                                        ControladorEntregas.AgregarEntrega_Producto(productoNuevo, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(Presentaciones));                        
                                         controladorProducto.ActualizarCosto((int)productoNuevo.idProductos);
                                     }
                                     else
@@ -786,7 +786,7 @@ namespace Tecnocuisine.Formularios.Compras
                                         RecetaNuevo.Precio = precio;
                                         RecetaNuevo.idSector = idSector;
                                         ControladorEntregas.AgregarEntrega_Receta(RecetaNuevo, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(Presentaciones));
-                                        ControladorReceta.ActualizarCosto((int)RecetaNuevo.idRecetas, precio);
+                                        ControladorReceta.ActualizarCosto((int)RecetaNuevo.idRecetas);
                                     }
                                 }
                             }
@@ -854,6 +854,7 @@ namespace Tecnocuisine.Formularios.Compras
                 //txtUnidadMed.Text = "";
                 txtObservaciones.Text = "";
                 idProductosRecetas.Value = "";
+                txtNroFactura.Text = "";
             }
             catch (Exception ex)
             {
