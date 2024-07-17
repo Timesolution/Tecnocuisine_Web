@@ -50,18 +50,35 @@ namespace Tecnocuisine.Formularios.Administrador
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
-            PreferenciasPrecios pref = ControladorPreferenciasPrecios.Obtener();
-
-            if (pref == null)
+            try
             {
-                pref = new PreferenciasPrecios();
-                SetPreferencia(pref);
-                ControladorPreferenciasPrecios.Agregar(pref);
-                return;
-            }
+                PreferenciasPrecios pref = ControladorPreferenciasPrecios.Obtener();
 
-            SetPreferencia(pref);
-            ControladorPreferenciasPrecios.Actualizar(pref);
+                if (pref == null)
+                {
+                    pref = new PreferenciasPrecios();
+                    this.SetPreferencia(pref);
+                    ControladorPreferenciasPrecios.Agregar(pref);
+                }
+                else
+                {
+                    this.SetPreferencia(pref);
+                    ControladorPreferenciasPrecios.Actualizar(pref);
+                }
+
+                this.ActualizarCostos();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private void ActualizarCostos()
+        {
+            // Actualiza el costo de los productos y recetas de manera masiva en base a la configuracion del sistema
+            new ControladorProducto().ActualizarTodosLosCostos();
+            new ControladorReceta().ActualizarTodosLosCostos();
         }
 
         private void SetPreferencia(PreferenciasPrecios pref)
