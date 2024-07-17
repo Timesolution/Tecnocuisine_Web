@@ -785,6 +785,7 @@ namespace Tecnocuisine.Formularios.Compras
                                         RecetaNuevo.Cantidad = Convert.ToDecimal(Cantidad);
                                         RecetaNuevo.Precio = precio;
                                         RecetaNuevo.idSector = idSector;
+                                        RecetaNuevo.idPresentacion = Convert.ToInt32(Presentaciones);
                                         ControladorEntregas.AgregarEntrega_Receta(RecetaNuevo, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(Presentaciones));
                                         ControladorReceta.ActualizarCosto((int)RecetaNuevo.idRecetas);
                                     }
