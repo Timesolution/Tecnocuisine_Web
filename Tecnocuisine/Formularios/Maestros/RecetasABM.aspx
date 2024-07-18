@@ -80,7 +80,7 @@
                                                 <div class="form-group">
                                                     <label>Receta *</label>
                                                     <%--<input id="ProdDescripcion" onchange="ActualizarLabels()" name="ProdDescripcion" type="text" class="form-control required" />--%>
-                                                    <asp:TextBox ID="txtDescripcionReceta" Style="max-width: 500px;" MaxLength="100"
+                                                    <asp:TextBox ID="txtDescripcionReceta" Style="max-width: 300px;" MaxLength="100"
                                                         onchange="ActualizarLabels()" class="form-control required" runat="server" />
                                                     <asp:HiddenField ID="Hiddentipo" runat="server" />
                                                     <asp:HiddenField ID="HiddenUnidad" runat="server" />
@@ -91,7 +91,7 @@
                                                                                                 <%--Producto final--%>
                                                 <div class="row" style="margin-top: 2%;">
                                                     <div class="form-check">
-                                                        <div class="col-sm-3">
+                                                        <div class="col-sm-4">
                                                             <label class="form-check-label" for="CheckProductoFinal">Se puede vender</label>
                                                         </div>                                 
                                                         <asp:CheckBox ID="CheckProductoFinal" style="transform: scale(1.4);" runat="server" data-toggle="tooltip" data-placement="top" data-original-title="Selecionar como Producto Final" />
@@ -101,7 +101,7 @@
                                                 <%--Se puede comprar--%>
                                                 <div class="row" style="margin-top: 2%">
                                                     <div class="form-check">
-                                                        <div class="col-sm-3">
+                                                        <div class="col-sm-4">
                                                           <label class="form-check-label" for="CheckSePuedeComprar">Se puede comprar</label>
                                                         </div>
                                                         <asp:CheckBox ID="CheckSePuedeComprar" style="transform: scale(1.4);" runat="server" data-toggle="tooltip" data-placement="top" data-original-title="" />
@@ -177,12 +177,14 @@
                                 <h1>INGREDIENTES</h1>
                                 <fieldset style="position: relative;padding-top: 10px;display: block;padding-bottom: 0px;"">
                                     <h1>
-                                        <label id="lblDescripcion1"></label>
+                                        <label id="lblDescripcion1" style="font-size:2rem"></label>
                                     </h1>
-                                    <div class="row">
-
-                                        <label class="col-md-1 control-label editable" style="margin-top: 2%">Propiedades</label>
-                                        <div class="col-md-2" style="margin-top: 1.5%">
+                                    <%--<div class="row">
+                                        <label class="control-label editable" style="padding-left:15px">Propiedades</label>
+                                    </div>--%>
+                                    <div class="row" style="display:flex; flex-wrap:wrap; row-gap:1rem">
+                                        <%--Tipo de receta--%>
+                                        <div class="col-md-2" style="padding-right:0;">
                                             <asp:DropDownList ID="ddlTipoReceta" runat="server" class="form-control" onchange="EsTipoRecetaValido()">
                                                 <asp:ListItem Value="-1" Text="Tipo receta"> </asp:ListItem>
                                                 <asp:ListItem Value="1" Text="Baño"></asp:ListItem>
@@ -196,84 +198,106 @@
                                                 *Seleccione un Tipo de Receta.
                                             </p>
                                         </div>
-                                        <div class="col-md-2" style="margin-top: 1.5%">
+                                        <%--Unidad de medida--%>
+                                        <div class="col-md-2" style="padding-right:0; margin-right:1rem">
                                             <asp:DropDownList ID="ddlUnidadMedida" onchange="ActualizarUnidades()" runat="server" class="form-control">
                                             </asp:DropDownList>
                                              <p id="valiva" class="text-danger text-hide">
                                                 *Seleccione Unidad de medida.
                                             </p>
                                         </div>
-                                        <div class="col-md-2" style="text-align: left;">
-                                            <label id="lblBrutoTotal" style="margin-bottom: auto;">Kg Br. Total</label>
-                                            <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtKgBrutTotal" class="form-control" runat="server" />
+                                        <%--Rubro--%>
+                                        <div class="col-md-2" style="padding-right:0;padding-left:0;">
+                                             <asp:DropDownList ID="ddlRubros" runat="server" class="form-control" onchange="EsRubroValido()">
+                                             </asp:DropDownList>
+                                              <p id="errorRubro" class="text-danger text-hide">
+                                                 *Seleccione un Rubro.
+                                             </p>
+                                         </div>
+                                        <%--Sector--%>
+                                        <div class="col-md-3" style="padding-right:0;">
+                                            <asp:HiddenField id="HFRecetas" runat="server" />
+                                                <div class="input-group">
+                                                    <asp:TextBox ID="txtSector" disabled="disabled" placeholder="Sector" class="form-control" runat="server" />
+                                                    <span class="input-group-btn">
+                                                        <asp:LinkButton runat="server" ID="btnSectores" class="btn btn-primary dim" onclientclick="FocusSearch()" data-toggle="modal" data-backdrop="static" data-target="#modalSectores"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
+                                                    </span>
+                                                </div>                                                                                          
                                         </div>
-                                        <div class="col-md-1" style="text-align: left;">
-                                            <label style="margin-bottom: auto;">Costo total</label>
-                                            <asp:TextBox Text="0.00" disabled="disabled" Style="text-align: right;" ID="txtCostoTotal" class="form-control" runat="server" />
+                                        
+                                        
+                                    </div>
+
+                                    <div class="row">
+                                        <%--Presentaciones--%>
+                                        <div class="col-sm-4" style="padding-right:0;">
+                                            <div class="input-group">
+                                                <asp:TextBox ID="txtPresentaciones" disabled="disabled" placeholder="Presentaciones" class="form-control" runat="server" />
+                                                <span class="input-group-btn">
+                                                 <asp:LinkButton runat="server" ID="LinkButton1" class="btn btn-primary dim" data-toggle="modal"  data-keyboard="false" data-backdrop="static" href="#modalPresentacion"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
+
+                                                     <%--<button  class="btn btn-primary" data-toggle="modal" data-backdrop="static" data-target="#modalPresentacion"> <i style="color: white" class="fa fa-plus"></i></button>--%>
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div class="col-md-1" style="text-align: left;">
-                                            <label id="lblTotalUnidad" style="margin-bottom: auto;margin-top: -25%;"> Rinde </label>
-                                            <asp:TextBox Style="text-align: right;" Text="0" ID="txtRinde" onkeyUp="ActualizarxPorcion()" class="form-control" runat="server" />
-                                        </div>
-                                        <div class="col-md-1" style="text-align: left;">
-                                            <label id="lblBrutoUnidad" style="margin-bottom: auto;margin-top: -25%;">Kg Br.</label>
-                                            <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtKgxPorcion" class="form-control" runat="server" />
-                                        </div>
-                                        <div class="col-md-1" style="text-align: left;">
-                                            <label id="lblCosto" style="margin-bottom: auto;margin-top: -25%;">Costo</label>
-                                            <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtCostoxPorcion" class="form-control" runat="server" />
+                                        <%--Marcas--%>
+                                        <div class="col-sm-4" style="padding-right:0;">
+                                            <div class="input-group">
+                                                <asp:TextBox ID="txtMarcas" disabled="disabled" placeholder="Marcas" class="form-control" runat="server" />
+                                                <span class="input-group-btn">
+                                                 <asp:LinkButton runat="server" ID="LinkButton2" class="btn btn-primary dim" data-toggle="modal"  data-keyboard="false" data-backdrop="static" href="#modalMarcas"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
+
+                                                     <%--<button  class="btn btn-primary" data-toggle="modal" data-backdrop="static" data-target="#modalPresentacion"> <i style="color: white" class="fa fa-plus"></i></button>--%>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
-                                       <div class="row" >
+
+                                    <br />
                                    
-                                        <label class="col-sm-1 control-label editable" ></label>
-                                           <div class="col-sm-2" style="margin-top: 1.5%">
 
-                                           <div class="input-group">
-                                               <asp:TextBox ID="txtPresentaciones" disabled="disabled" placeholder="Presentaciones" class="form-control" runat="server" />
-                                               <span class="input-group-btn">
-                                                <asp:LinkButton runat="server" ID="LinkButton1" class="btn btn-primary dim" data-toggle="modal"  data-keyboard="false" data-backdrop="static" href="#modalPresentacion"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
+                                       <div class="row" style="padding-left:15px; display:flex">
 
-                                                    <%--<button  class="btn btn-primary" data-toggle="modal" data-backdrop="static" data-target="#modalPresentacion"> <i style="color: white" class="fa fa-plus"></i></button>--%>
-                                               </span>
-                                           </div>
-                                           </div>
-                                            <div class="col-md-2" style="margin-top: 1.5%">
-                                           <asp:HiddenField id="HFRecetas" runat="server" />
-                                                        <div class="input-group">
-                                                            <asp:TextBox ID="txtSector" disabled="disabled" placeholder="Sector" class="form-control" runat="server" />
-                                                            <span class="input-group-btn">
-                                                                <asp:LinkButton runat="server" ID="btnSectores" class="btn btn-primary dim" onclientclick="FocusSearch()" data-toggle="modal" data-backdrop="static" data-target="#modalSectores"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
-
-                                                            </span>
-                                                        </div>
-                                                    
-                                        
-                                        </div>
-                                           <div class="col-md-2" style="margin-top: 1.5%">
-                                                <asp:DropDownList ID="ddlRubros" runat="server" class="form-control" onchange="EsRubroValido()">
-                                                </asp:DropDownList>
-                                                 <p id="errorRubro" class="text-danger text-hide">
-                                                    *Seleccione un Rubro.
-                                                </p>
+                                           <div class="col-md-1" style="text-align: left; margin-right:1rem">
+                                                <label id="lblBrutoTotal" style="margin-bottom: auto;">Kg Br. Total</label>
+                                                <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtKgBrutTotal" class="form-control" runat="server" />
                                             </div>
+                                            <div class="col-md-1" style="text-align: left; margin-right:1rem">
+                                                <label style="margin-bottom: auto;">Costo total</label>
+                                                <asp:TextBox Text="0.00" disabled="disabled" Style="text-align: right;" ID="txtCostoTotal" class="form-control" runat="server" />
+                                            </div>
+                                            <div class="col-md-1" style="text-align: left; margin-right:1rem">
+                                                <label id="lblTotalUnidad" style="margin-bottom: auto;margin-top: -25%;"> Rinde </label>
+                                                <asp:TextBox Style="text-align: right;" Text="0" ID="txtRinde" onkeyUp="ActualizarxPorcion()" class="form-control" runat="server" />
+                                            </div>
+                                            <div class="col-md-1" style="text-align: left; margin-right:1rem">
+                                                <label id="lblBrutoUnidad" style="margin-bottom: auto;margin-top: -25%;">Kg Br.</label>
+                                                <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtKgxPorcion" class="form-control" runat="server" />
+                                            </div>
+                                            <div class="col-md-1" style="text-align: left; margin-right:1rem"">
+                                                <label id="lblCosto" style="margin-bottom: auto;margin-top: -25%;">Costo</label>
+                                                <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtCostoxPorcion" class="form-control" runat="server" />
+                                            </div>
+                                   
+
+                                                                                                                               
   
-                                        <div class="col-md-1" style="text-align: left;">
+                                        <div class="col-md-1" style="text-align: left; margin-right:1rem"">
                                             <label id="rxrt" style="margin-bottom:0px">Pr.Venta</label>
                                             <asp:TextBox Text="0" Style="text-align: right;" ID="txtPrVenta"  onkeyUp="ActualizarxPrVenta()" class="form-control" runat="server" />
                                         </div>
-                                        <div class="col-md-2" style="text-align: left;">
+                                        <div class="col-md-1" style="text-align: left; margin-right:1rem"">
                                             <label style="margin-bottom: auto;">Food Cost</label>
                                             <asp:TextBox Text="0.00" disabled="disabled" Style="text-align: right;" ID="txtPFoodCost" class="form-control" runat="server" />
                                         </div>
-                                        <div class="col-md-1" style="text-align: left;">
+                                        <div class="col-md-1" style="text-align: left; margin-right:1rem"">
                                             <label id="erwt" style="margin-bottom: auto;margin-top: -25%;"> Cont. Marg. </label>
                                             <asp:TextBox Style="text-align: right;" disabled="disabled" Text="0.00" ID="txtContMarg" class="form-control" runat="server" />
                                         </div>
                                         
                                     </div>
 
-                                    <div class="well"style="margin-top:1%;margin-right: -15px;margin-left: -15px;">
+                                    <div class="well"style="margin-top:2%;margin-right: -15px;margin-left: -15px;">
                                     <div class="row" style="margin-top: 0.5%; margin-bottom: 2%; display:flex;flex-wrap:nowrap;justify-content:space-between">
                                         <div class="col-md-3">
                                           
@@ -300,7 +324,7 @@
                                             <asp:TextBox ID="txtCantidad" Text="0" onkeydown="PasarAFactor(event)" onchange="CalcularCantBruta()" onkeypress="javascript:return validarNro(event)" Style="text-align: right" class="form-control money" runat="server" />
                                         </div>
                                         <div class="col-md-1" style="text-align: left;">
-                                            <label style="margin-bottom: auto;">U. Med.</label>
+                                            <label style="margin-bottom: auto;">U. Medida.</label>
 
                                             <asp:TextBox ID="txtUnidadMed" disabled="disabled" Style="text-align: right" class="form-control" runat="server" />
                                         </div>
@@ -315,7 +339,7 @@
                                             <asp:TextBox disabled="disabled" ID="txtCantBruta" Style="text-align: right" class="form-control" runat="server" />
                                         </div>
                                         <div class="col-md-1" style="text-align: left;">
-                                            <label style="margin-bottom: auto; vertical-align: middle">$ Kg limpio</label>
+                                            <label style="margin-bottom: auto; vertical-align: middle">Kg limpio $</label>
                                             <asp:TextBox ID="txtCostoLimpio" disabled="disabled" 
                                                 onkeypress="javascript:return validarNro(event)" 
                                                 Style="text-align: right" class="form-control" runat="server" />
@@ -345,13 +369,13 @@
                                     <table class="table table-bordered table-hover" id="tableProductos">
                                         <thead>
                                             <tr>
-                                                <th style="width: 5%">Cod. Producto</th>
+                                                <th style="width: 5%">Codigo</th>
                                                 <th style="width: 15%">Descripcion</th>
                                                 <th style="width: 10%; text-align:right">Cantidad</th>
-                                                <th style="width: 10%">Unidad Medida</th>
+                                                <th style="width: 10%">U. Medida</th>
                                                 <th style="width: 10%;text-align:right">Costo $</th>
                                                 <th style="width: 10%;text-align:right">Costo Total $</th>
-                                                <th style="width: 10%;text-align:right">Sector Productivo</th>
+                                                <th style="width: 10%;text-align:left">Sector</th>
                                                 <th style="width: 10%;text-align:right">Tiempo(dias)</th>
                                                 <th style="width: 5%">Acciones</th>
                                             </tr>

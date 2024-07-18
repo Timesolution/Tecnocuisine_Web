@@ -1033,7 +1033,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 celSectorProductivo.VerticalAlign = VerticalAlign.Middle;
                 celSectorProductivo.HorizontalAlign = HorizontalAlign.Left;
-                celSectorProductivo.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
+                celSectorProductivo.Attributes.Add("style", "padding-bottom: 1px !important; text-align: left;");
                 tr.Cells.Add(celSectorProductivo);
 
 
