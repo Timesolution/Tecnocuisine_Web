@@ -1246,13 +1246,9 @@ namespace Tecnocuisine.Formularios.Maestros
 
         public void CargarRecetasPHModal(Tecnocuisine_API.Entitys.Recetas Receta)
         {
-
             try
             {
-
                 //fila
-
-
                 TableRow tr = new TableRow();
                 tr.ID = "Recetas_" + Receta.id.ToString() + "_" + Receta.UnidadMedida;
 
@@ -1262,7 +1258,6 @@ namespace Tecnocuisine.Formularios.Maestros
                 celNumero.VerticalAlign = VerticalAlign.Middle;
                 celNumero.HorizontalAlign = HorizontalAlign.Right;
                 celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
-
                 tr.Cells.Add(celNumero);
 
                 TableCell celDescripcion = new TableCell();
@@ -1300,8 +1295,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 celAccion.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celAccion);
 
-                phProductosAgregar.Controls.Add(tr);
-
+                phRecetasModal.Controls.Add(tr);
             }
             catch (Exception ex)
             {

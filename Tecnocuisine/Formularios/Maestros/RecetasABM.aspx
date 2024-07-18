@@ -539,8 +539,9 @@
                                             <table class="table table-bordered table-hover" id="editable3">
                                                 <thead>
                                                     <tr>
-                                                        <th style="width: 10%">Cod. Receta</th>
+                                                        <th style="width: 10%">Cod.</th>
                                                         <th style="width: 20%">Descripcion</th>
+                                                        <th style="width: 20%">Costo $</th>
                                                         <th style="width: 10%"></th>
                                                     </tr>
                                                 </thead>
@@ -3112,6 +3113,30 @@
                 }
             });
 
+            $('#editable3').DataTable({
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay información",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "searchPlaceholder": "Escriba su busqueda",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
+
             $('#editable6').DataTable({
                 language: {
                     "decimal": "",
@@ -3148,6 +3173,13 @@
             $('.dataTables_filter').hide();
             $('#txtBusquedaIngredientes').on('keyup', function () {
                 $('#editable2').DataTable().search(
+                    this.value
+                ).draw();
+            });
+
+            $('.dataTables_filter').hide();
+            $('#txtBusquedaIngredientes').on('keyup', function () {
+                $('#editable3').DataTable().search(
                     this.value
                 ).draw();
             });
