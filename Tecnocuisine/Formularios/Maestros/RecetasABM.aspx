@@ -976,16 +976,44 @@
             if (txtProd.includes(' - ')) {
 
                 const idOption = document.querySelector('option[value="' + txtProd + '"]').id;
-                let costo = idOption.split("_")[5];
+                let costo = idOption.split("_")[5].trim();
                 //let prod = document.getElementById('ContentPlaceHolder1_Productos_' + idOption.split("_")[1] + "_" + idOption.split("_")[2]).children[0].innerHTML;
                 //let costo = document.getElementById('ContentPlaceHolder1_Productos_' + idOption.split("_")[1] + "_" + idOption.split("_")[2]).children[1].innerHTML;
-                if (idOption.includes("c_p_"))
+                const itemId = idOption.split('_')[2].trim();
+
+                if (idOption.includes("c_p_")) {
                     agregarProducto(idOption, costo);
-                else if (idOption.includes("c_r_"))
+                    CargarDepositos(itemId, 1);
+                }
+                else if (idOption.includes("c_r_")) {
                     agregarReceta(idOption, costo)
+                    CargarDepositos(itemId, 2);
+                }
             }
         }
     </script>
+
+    <script>
+        function CargarDepositos(id, tipo) {
+            $.ajax({
+                method: "POST",
+                url: "RecetasABM.aspx/GetIdSectorByIdProd",
+                data: '{idProd: "' + id + '", tipo:"' + tipo + '"}',
+                contentType: "application/json",
+                dataType: "json",
+                dataType: "json",
+                async: false,
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                },
+                success: function (respuesta) {
+                    var ddlDepositos = $("#<%=ddlSector.ClientID%>");
+                    ddlDepositos.val(respuesta.d);
+                }
+            });
+                }
+    </script>
+
     <script>
         function agregarPresentaciones() {
             //let table1 = $('#editable1').DataTable();

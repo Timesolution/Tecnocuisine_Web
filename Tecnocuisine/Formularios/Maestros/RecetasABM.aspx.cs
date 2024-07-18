@@ -591,6 +591,40 @@ namespace Tecnocuisine.Formularios.Maestros
 
         }
 
+        [WebMethod]
+        public static int GetIdSectorByIdProd(int idProd, int tipo)
+        {
+            try
+            {
+                ControladorSectorProductivo cSector = new ControladorSectorProductivo();
+
+                // Es producto
+                if (tipo == 1)
+                {
+                    ControladorProducto cProducto = new ControladorProducto();
+                    Tecnocuisine_API.Entitys.Productos producto = cProducto.ObtenerProductoId(idProd);
+                    return producto.idSectorProductivo ?? -1;
+                }
+
+                // Es receta
+                ControladorReceta cReceta = new ControladorReceta();
+                Tecnocuisine_API.Entitys.Recetas receta = cReceta.ObtenerRecetaId(idProd);
+
+                if (receta.SectorP_Recetas == null)
+                    return -1;
+
+                // TODO: sacar for
+                foreach (var sector in receta.SectorP_Recetas)
+                    return sector.idSectorP ?? -1;
+
+                return -1;
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+        }
+
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
             try
