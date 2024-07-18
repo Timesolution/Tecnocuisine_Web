@@ -245,7 +245,7 @@
                                             <div class="input-group">
                                                 <asp:TextBox ID="txtMarcas" disabled="disabled" placeholder="Marcas" class="form-control" runat="server" />
                                                 <span class="input-group-btn">
-                                                 <asp:LinkButton runat="server" ID="LinkButton2" class="btn btn-primary dim" data-toggle="modal"  data-keyboard="false" data-backdrop="static" href="#modalMarcas"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
+                                                 <asp:LinkButton runat="server" ID="LinkButton2" class="btn btn-primary dim" data-toggle="modal" data-keyboard="false" data-backdrop="static" data-target="#modalMarca"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
 
                                                      <%--<button  class="btn btn-primary" data-toggle="modal" data-backdrop="static" data-target="#modalPresentacion"> <i style="color: white" class="fa fa-plus"></i></button>--%>
                                                 </span>
@@ -825,7 +825,62 @@
             </div>
         </div>
 
-               <div id="modalPresentacion" class="modal" role="dialog">
+    <%-- Modal MARCAS--%>
+        <div id="modalMarca" class="modal" tabindex="-2" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Elegir Marca</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="ibox-content">
+                            <asp:UpdatePanel ID="UpdatePanel7" runat="server">
+                                <ContentTemplate>
+
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="ibox ">
+                                                <asp:UpdatePanel ID="UpdatePanel8" runat="server">
+                                                    <ContentTemplate>
+                                                        <div class="table-responsive">
+                                                            <table class="table table-striped table-bordered table-hover " id="editableMarcas2">
+
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Descripcion</th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <asp:PlaceHolder ID="phMarcas" runat="server"></asp:PlaceHolder>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+                                                    </ContentTemplate>
+
+                                                </asp:UpdatePanel>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    </div>
+                                </ContentTemplate>
+
+                            </asp:UpdatePanel>
+                        </div>
+                        <div class="modal-footer">
+                            <a id="btnAgregarMarca" onclick="agregarMarcas()" class=" btn btn-primary"><i class="fa fa-check"></i>&nbsp;Agregar </a>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+                            <asp:HiddenField runat="server" ID="hfMarcas" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modalPresentacion" class="modal" role="dialog">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                     <div class="modal-header">

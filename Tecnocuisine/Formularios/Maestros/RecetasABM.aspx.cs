@@ -44,6 +44,7 @@ namespace Tecnocuisine.Formularios.Maestros
             ObtenerRecetas();
             ObtenerProductos();
             ObtenerPresentaciones();
+            ObtenerMarcas();
             if (!IsPostBack)
             {
                 CargarRubros();
@@ -525,6 +526,27 @@ namespace Tecnocuisine.Formularios.Maestros
 
             }
         }
+
+        public void ObtenerMarcas()
+        {
+            try
+            {
+                ControladorMarca controladorMarca = new ControladorMarca();
+                var marcas = controladorMarca.ObtenerTodasMarcas();
+
+                if (marcas.Count > 0)
+                {
+                    foreach (var marca in marcas)
+                    {
+                        CargarMarcasPH(marca);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
         public void CargarPresentacionesPH(Tecnocuisine_API.Entitys.Presentaciones presentacion)
         {
 
@@ -589,6 +611,43 @@ namespace Tecnocuisine.Formularios.Maestros
 
             }
 
+        }
+
+        public void CargarMarcasPH(Tecnocuisine_API.Entitys.Articulos_Marcas marca)
+        {
+            try
+            {
+                //fila
+                TableRow tr = new TableRow();
+                tr.ID = "marca_" + marca.id.ToString();
+
+                //Celdas
+
+                TableCell celNombre = new TableCell();
+                celNombre.Text = marca.descripcion;
+                celNombre.VerticalAlign = VerticalAlign.Middle;
+                celNombre.HorizontalAlign = HorizontalAlign.Left;
+                celNombre.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
+                tr.Cells.Add(celNombre);
+
+                //agrego fila a tabla
+                TableCell celAccion = new TableCell();
+                HtmlGenericControl cbxAgregar = new HtmlGenericControl("input");
+                cbxAgregar.Attributes.Add("class", "presentacion radio btn btn-primary btn-xs pull-right");
+                cbxAgregar.Attributes.Add("type", "checkbox");
+                //cbxAgregar.Attributes.Add("value", "1");
+                cbxAgregar.ID = "btnSelecPres_" + marca.id + " - " + marca.descripcion;
+                celAccion.Controls.Add(cbxAgregar);
+
+                celAccion.Width = Unit.Percentage(5);
+                celAccion.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
+                tr.Cells.Add(celAccion);
+
+                phMarcas.Controls.Add(tr);
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         protected void btnGuardar_Click(object sender, EventArgs e)
