@@ -844,7 +844,7 @@
                                                 <asp:UpdatePanel ID="UpdatePanel8" runat="server">
                                                     <ContentTemplate>
                                                         <div class="table-responsive">
-                                                            <table class="table table-striped table-bordered table-hover " id="editableMarcas2">
+                                                            <table class="table table-striped table-bordered table-hover " id="tableMarcas">
 
                                                                 <thead>
                                                                     <tr>
@@ -852,7 +852,7 @@
                                                                         <th></th>
                                                                     </tr>
                                                                 </thead>
-                                                                <tbody>
+                                                                <tbody id="tbodyMarcas">
                                                                     <asp:PlaceHolder ID="phMarcas" runat="server"></asp:PlaceHolder>
                                                                 </tbody>
                                                             </table>
@@ -2983,6 +2983,29 @@
             //document.getElementById('btnAgregarSectores').classList.remove("buttonLoading");
             /*  document.querySelector('#txtBusquedaSector').value = '';*/
             $('#modalSectores').modal('hide');
+        }
+
+        function agregarMarcas() {
+            //ContentPlaceHolder1_txtSector.value = id.split('_')[2] + ' - ' + id.split('_')[3];
+
+            let table = document.getElementById('tableMarcas');
+            let body = document.getElementById("tbodyMarcas");
+            let max = table.rows.length;
+            let listaMarcas = '';
+            //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
+            for (let i = 1; i < max; i++) {
+                /*if (i > 1) {*/
+                if (table.rows[i].cells[1].children[0].checked) {
+                    let id = table.rows[i].id.split("_")[2]
+                    listaMarcas += id + " - " + table.rows[i].cells[0].innerHTML + ', ';
+                }
+            }
+            document.getElementById('ContentPlaceHolder1_txtMarcas').value = listaMarcas.replace(/,\s*$/, '');
+
+            /*document.getElementById('ContentPlaceHolder1_txtSector').value = presentacionFinal.trimEnd(', ');*/
+            //document.getElementById('btnAgregarSectores').classList.remove("buttonLoading");
+            /*  document.querySelector('#txtBusquedaSector').value = '';*/
+            $('#modalMarca').modal('hide');
         }
 
         //Esta funcion se encarga de borrar el producto de la receta
