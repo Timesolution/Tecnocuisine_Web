@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Gestion_Api.Modelo;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web.Script.Serialization;
 using System.Web.Services;
 using System.Web.UI;
@@ -44,6 +46,7 @@ namespace Tecnocuisine.Formularios.Maestros
             ObtenerRecetas();
             ObtenerProductos();
             ObtenerPresentaciones();
+            ObtenerMarcas();
             if (!IsPostBack)
             {
                 CargarRubros();
@@ -239,20 +242,9 @@ namespace Tecnocuisine.Formularios.Maestros
 
                     //}
 
-                    try
-                    {
-                        var Presentacionreceta = controladorReceta.ObtenerPresentacionByIdReceta(idReceta);
-                        if (Presentacionreceta != null)
-                        {
-                            hfPresentaciones.Value = Presentacionreceta.FirstOrDefault().idPresentacion.ToString() + " - " + Presentacionreceta.FirstOrDefault().Presentaciones.descripcion;
-                            txtPresentaciones.Text = Presentacionreceta.FirstOrDefault().idPresentacion.ToString() + " - " + Presentacionreceta.FirstOrDefault().Presentaciones.descripcion;
-                        }
-                    }
-                    catch (Exception)
-                    {
-
-                    }
-
+                    PrecargarPresentaciones();
+                    PrecargarMarcas();
+                     
                     ddlTipoReceta.SelectedValue = Receta.Tipo.ToString();
                     ddlUnidadMedida.SelectedValue = Receta.UnidadMedida.ToString();
                     ddlRubros.SelectedValue = Receta.idRubro.ToString();
@@ -284,6 +276,41 @@ namespace Tecnocuisine.Formularios.Maestros
             catch (Exception ex)
             {
 
+            }
+        }
+
+        private void PrecargarPresentaciones()
+        {
+            try
+            {
+                var Presentacionreceta = controladorReceta.ObtenerPresentacionByIdReceta(idReceta);
+                if (Presentacionreceta != null)
+                {
+                    hfPresentaciones.Value = Presentacionreceta.FirstOrDefault().idPresentacion.ToString() + " - " + Presentacionreceta.FirstOrDefault().Presentaciones.descripcion;
+                    txtPresentaciones.Text = Presentacionreceta.FirstOrDefault().idPresentacion.ToString() + " - " + Presentacionreceta.FirstOrDefault().Presentaciones.descripcion;
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void PrecargarMarcas()
+        {
+            ControladorMarca controladorMarca = new ControladorMarca();
+
+            // Obtener todas las marcas asignadas a la receta
+            var marcasReceta = controladorReceta.ObtenerMarcasRecetaByIdReceta(this.idReceta);
+
+            if (marcasReceta != null)
+            {
+                foreach (Marca_Recetas marcaReceta in marcasReceta)
+                {
+                    Articulos_Marcas marca = controladorMarca.ObtenerMarcaId((int)marcaReceta.id_marca);
+
+                    if (marca != null)
+                        txtMarcas.Text += marca.id + " - " + marca.descripcion + ", ";
+                }
             }
         }
 
@@ -525,6 +552,27 @@ namespace Tecnocuisine.Formularios.Maestros
 
             }
         }
+
+        public void ObtenerMarcas()
+        {
+            try
+            {
+                ControladorMarca controladorMarca = new ControladorMarca();
+                var marcas = controladorMarca.ObtenerTodasMarcas();
+
+                if (marcas.Count > 0)
+                {
+                    foreach (var marca in marcas)
+                    {
+                        CargarMarcasPH(marca);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
         public void CargarPresentacionesPH(Tecnocuisine_API.Entitys.Presentaciones presentacion)
         {
 
@@ -622,6 +670,43 @@ namespace Tecnocuisine.Formularios.Maestros
             catch (Exception)
             {
                 return -1;
+            }
+        }
+        
+        public void CargarMarcasPH(Tecnocuisine_API.Entitys.Articulos_Marcas marca)
+        {
+            try
+            {
+                //fila
+                TableRow tr = new TableRow();
+                tr.ID = "marca_" + marca.id.ToString();
+
+                //Celdas
+
+                TableCell celNombre = new TableCell();
+                celNombre.Text = marca.descripcion;
+                celNombre.VerticalAlign = VerticalAlign.Middle;
+                celNombre.HorizontalAlign = HorizontalAlign.Left;
+                celNombre.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
+                tr.Cells.Add(celNombre);
+
+                //agrego fila a tabla
+                TableCell celAccion = new TableCell();
+                HtmlGenericControl cbxAgregar = new HtmlGenericControl("input");
+                cbxAgregar.Attributes.Add("class", "presentacion radio btn btn-primary btn-xs pull-right");
+                cbxAgregar.Attributes.Add("type", "checkbox");
+                //cbxAgregar.Attributes.Add("value", "1");
+                cbxAgregar.ID = "btnSelecPres_" + marca.id + " - " + marca.descripcion;
+                celAccion.Controls.Add(cbxAgregar);
+
+                celAccion.Width = Unit.Percentage(5);
+                celAccion.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
+                tr.Cells.Add(celAccion);
+
+                phMarcas.Controls.Add(tr);
+            }
+            catch (Exception ex)
+            {
             }
         }
 
@@ -1067,7 +1152,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 celSectorProductivo.VerticalAlign = VerticalAlign.Middle;
                 celSectorProductivo.HorizontalAlign = HorizontalAlign.Left;
-                celSectorProductivo.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
+                celSectorProductivo.Attributes.Add("style", "padding-bottom: 1px !important; text-align: left;");
                 tr.Cells.Add(celSectorProductivo);
 
 
