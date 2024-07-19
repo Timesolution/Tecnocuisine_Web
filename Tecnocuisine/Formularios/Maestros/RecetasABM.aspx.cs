@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Gestion_Api.Modelo;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web.Script.Serialization;
 using System.Web.Services;
 using System.Web.UI;
@@ -240,20 +242,9 @@ namespace Tecnocuisine.Formularios.Maestros
 
                     //}
 
-                    try
-                    {
-                        var Presentacionreceta = controladorReceta.ObtenerPresentacionByIdReceta(idReceta);
-                        if (Presentacionreceta != null)
-                        {
-                            hfPresentaciones.Value = Presentacionreceta.FirstOrDefault().idPresentacion.ToString() + " - " + Presentacionreceta.FirstOrDefault().Presentaciones.descripcion;
-                            txtPresentaciones.Text = Presentacionreceta.FirstOrDefault().idPresentacion.ToString() + " - " + Presentacionreceta.FirstOrDefault().Presentaciones.descripcion;
-                        }
-                    }
-                    catch (Exception)
-                    {
-
-                    }
-
+                    PrecargarPresentaciones();
+                    PrecargarMarcas();
+                     
                     ddlTipoReceta.SelectedValue = Receta.Tipo.ToString();
                     ddlUnidadMedida.SelectedValue = Receta.UnidadMedida.ToString();
                     ddlRubros.SelectedValue = Receta.idRubro.ToString();
@@ -285,6 +276,41 @@ namespace Tecnocuisine.Formularios.Maestros
             catch (Exception ex)
             {
 
+            }
+        }
+
+        private void PrecargarPresentaciones()
+        {
+            try
+            {
+                var Presentacionreceta = controladorReceta.ObtenerPresentacionByIdReceta(idReceta);
+                if (Presentacionreceta != null)
+                {
+                    hfPresentaciones.Value = Presentacionreceta.FirstOrDefault().idPresentacion.ToString() + " - " + Presentacionreceta.FirstOrDefault().Presentaciones.descripcion;
+                    txtPresentaciones.Text = Presentacionreceta.FirstOrDefault().idPresentacion.ToString() + " - " + Presentacionreceta.FirstOrDefault().Presentaciones.descripcion;
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void PrecargarMarcas()
+        {
+            ControladorMarca controladorMarca = new ControladorMarca();
+
+            // Obtener todas las marcas asignadas a la receta
+            var marcasReceta = controladorReceta.ObtenerMarcasRecetaByIdReceta(this.idReceta);
+
+            if (marcasReceta != null)
+            {
+                foreach (Marca_Recetas marcaReceta in marcasReceta)
+                {
+                    Articulos_Marcas marca = controladorMarca.ObtenerMarcaId((int)marcaReceta.id_marca);
+
+                    if (marca != null)
+                        txtMarcas.Text += marca.id + " - " + marca.descripcion + ", ";
+                }
             }
         }
 

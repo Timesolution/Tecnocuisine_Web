@@ -1040,7 +1040,7 @@ namespace Tecnocuisine.Formularios.Maestros
         [WebMethod]
         public static string GuardarReceta2(string descripcion, string codigo, /*string Categoria,*/ string Sector, /*string Atributos,*/ string Unidad,
             string Tipo, string rinde, string prVenta, string idProductosRecetas, string BrutoT, string CostoT, string BrutoU, string CostoU,
-            string FoodCost, string ContMarg, string BuenasPract, string InfoNut, string idPasosRecetas, string Presentaciones, bool ProdFinal, bool Comprable, string Rubro)
+            string FoodCost, string ContMarg, string BuenasPract, string InfoNut, string idPasosRecetas, string Presentaciones, bool ProdFinal, bool Comprable, string Rubro, string Marcas)
         {
             try
             {
@@ -1309,6 +1309,7 @@ namespace Tecnocuisine.Formularios.Maestros
                         else
                             itemsS = Sector.Split(';');
 
+                        // TODO: Quitar for porque solo entrara una vez
                         foreach (var pr in itemsS)
                         {
                             if (pr != "")
@@ -1324,7 +1325,6 @@ namespace Tecnocuisine.Formularios.Maestros
                                     controladorReceta.EliminarSectorProductivoRecetaByIdReceta(resultado); //Eliminar sector anterior si tiene
                                     controladorReceta.AgregarSectorProductivoReceta(sectorP_);
                                 }
-
                             }
                         }
                     }
@@ -1351,8 +1351,6 @@ namespace Tecnocuisine.Formularios.Maestros
                                     Recetas_Presentacion Rec_Pres = new Recetas_Presentacion();
                                     Rec_Pres.idPresentacion = Convert.ToInt32(PRess[0]);
                                     Rec_Pres.idRecetas = resultado;
-
-
                                     controladorReceta.AgregarPresentacionReceta(Rec_Pres);
                                 }
 
@@ -1361,8 +1359,35 @@ namespace Tecnocuisine.Formularios.Maestros
                     }
                     catch (Exception)
                     {
+                    }
 
+                    //Guardar marcas
+                    try
+                    {
+                        string[] itemsMarcas;
 
+                        if (Marcas.Contains(","))
+                            itemsMarcas = Marcas.Split(',');
+                        else
+                            itemsMarcas = Marcas.Split(';');
+
+                        foreach (var mr in itemsMarcas)
+                        {
+                            if (mr != "")
+                            {
+                                string[] marcaArray = mr.Split('-');
+                                if (marcaArray[1] != "")
+                                {
+                                    Marca_Recetas Marca_Receta = new Marca_Recetas();
+                                    Marca_Receta.id_marca = Convert.ToInt32(marcaArray[0].Trim());
+                                    Marca_Receta.id_Receta = resultado;                                   
+                                    controladorReceta.AgregarMarcaReceta(Marca_Receta);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
                     }
 
                     JavaScriptSerializer javaScript = new JavaScriptSerializer();
@@ -1392,7 +1417,7 @@ namespace Tecnocuisine.Formularios.Maestros
         [WebMethod]
         public static string EditarReceta2(string descripcion, string codigo, /*string Categoria,*/ string Sector, /*string Atributos,*/ string Unidad,
            string Tipo, string rinde, string prVenta, string idProductosRecetas, string BrutoT, string CostoT, string BrutoU, string CostoU,
-           string FoodCost, string ContMarg, string BuenasPract, string InfoNut, string idPasosRecetas, string idReceta, string Presentaciones, bool ProdFinal, bool Comprable, string Rubro)
+           string FoodCost, string ContMarg, string BuenasPract, string InfoNut, string idPasosRecetas, string idReceta, string Presentaciones, bool ProdFinal, bool Comprable, string Rubro, string Marcas)
         {
             try
             {
@@ -1665,6 +1690,38 @@ namespace Tecnocuisine.Formularios.Maestros
                     catch (Exception)
                     {
                         throw new Exception();
+                    }
+
+                    // Editar marcas
+                    try
+                    {
+                        string[] itemsMarcas;
+
+                        if (Marcas.Contains(","))
+                            itemsMarcas = Marcas.Split(',');
+                        else
+                            itemsMarcas = Marcas.Split(';');
+
+                        // Limpiar las asignaciones que tenia para reemplazarlas por las nuevas
+                        controladorReceta.EliminarTodasMarcaReceta(Receta.id);
+
+                        foreach (var mr in itemsMarcas)
+                        {
+                            if (mr != "")
+                            {
+                                string[] marcaArray = mr.Split('-');
+                                if (marcaArray[1] != "")
+                                {
+                                    Marca_Recetas Marca_Receta = new Marca_Recetas();
+                                    Marca_Receta.id_marca = Convert.ToInt32(marcaArray[0].Trim());
+                                    Marca_Receta.id_Receta = Receta.id;
+                                    controladorReceta.AgregarMarcaReceta(Marca_Receta);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
                     }
 
                     JavaScriptSerializer javaScript = new JavaScriptSerializer();

@@ -1307,6 +1307,7 @@
                                     + '" , ProdFinal: "' + document.getElementById('ContentPlaceHolder1_CheckProductoFinal').checked
                                     + '" , Comprable: "' + document.getElementById('ContentPlaceHolder1_CheckSePuedeComprar').checked
                                     + '" , Rubro: "' + selectRubro.selectedOptions[0].value
+                                    + '" , Marcas: "' + document.getElementById('<%=txtMarcas.ClientID%>').value
                                     + '"}',
                                 contentType: "application/json",
                                 dataType: 'json',
@@ -1358,6 +1359,7 @@
                                 + '" , ProdFinal: "' + document.getElementById('ContentPlaceHolder1_CheckProductoFinal').checked
                                 + '" , Comprable: "' + document.getElementById('ContentPlaceHolder1_CheckSePuedeComprar').checked
                                 + '" , Rubro: "' + document.getElementById('<%=ddlRubros.ClientID%>').selectedOptions[0].value
+                                + '" , Marcas: "' + document.getElementById('<%=txtMarcas.ClientID%>').value
                                 + '"}',
                             contentType: "application/json",
                             dataType: 'json',
