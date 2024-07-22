@@ -186,13 +186,13 @@
                                         <%--Tipo de receta--%>
                                         <div class="col-md-2" style="padding-right:0;">
                                             <asp:DropDownList ID="ddlTipoReceta" runat="server" class="form-control" onchange="EsTipoRecetaValido()">
-                                                <asp:ListItem Value="-1" Text="Tipo receta"> </asp:ListItem>
+                                                <%--<asp:ListItem Value="-1" Text="Tipo receta"> </asp:ListItem>
                                                 <asp:ListItem Value="1" Text="Baño"></asp:ListItem>
                                                 <asp:ListItem Value="2" Text="Cartoon"></asp:ListItem>
                                                 <asp:ListItem Value="3" Text="Glaseada"></asp:ListItem>
                                                 <asp:ListItem Value="4" Text="Masa"></asp:ListItem>
                                                 <asp:ListItem Value="5" Text="Relleno"></asp:ListItem>
-                                                <asp:ListItem Value="6" Text="Salsa"></asp:ListItem>
+                                                <asp:ListItem Value="6" Text="Salsa"></asp:ListItem>--%>
                                             </asp:DropDownList>
                                              <p id="error-tipo" class="text-danger text-hide">
                                                 *Seleccione un Tipo de Receta.

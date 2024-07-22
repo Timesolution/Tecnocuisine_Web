@@ -53,6 +53,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 CargarUnidadesMedida();
                 CargarListaCategoriasSoloHijas();
                 CargarSectoresProductivodDDL();
+                CargarTipos();
                 //cargarNestedListCategorias();
                 //cargarNestedListAtributos();
                 if (accion == 2)
@@ -79,9 +80,17 @@ namespace Tecnocuisine.Formularios.Maestros
                 {
                     this.m.ShowToastr(this.Page, "Proceso concluido con Exito!", "Exito");
                 }
-
             }
+        }
 
+        private void CargarTipos()
+        {
+            ControladorTiposDeReceta cTiposDeReceta = new ControladorTiposDeReceta();
+            this.ddlTipoReceta.DataSource = cTiposDeReceta.ObtenerTodosTiposDeReceta();
+            this.ddlTipoReceta.DataValueField = "id";
+            this.ddlTipoReceta.DataTextField = "tipo";
+            this.ddlTipoReceta.DataBind();
+            ddlTipoReceta.Items.Insert(0, new ListItem("Tipo de Receta", "-1"));
         }
 
         public void CargarRubros()
