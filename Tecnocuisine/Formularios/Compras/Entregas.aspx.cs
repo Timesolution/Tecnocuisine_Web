@@ -988,6 +988,7 @@ namespace Tecnocuisine.Formularios.Compras
                 if (receta.SectorP_Recetas == null)
                     return -1;
 
+                // TODO: sacar for
                 foreach (var sector in receta.SectorP_Recetas)
                     return sector.idSectorP ?? -1;
 
@@ -1003,33 +1004,55 @@ namespace Tecnocuisine.Formularios.Compras
         //OBTENER TODAS LAS MARCAS
 
         [WebMethod]
-        public static List<PresentacionClass> GetMarca(int idProd)
+        public static List<PresentacionClass> GetMarca(int idItem, int tipo)
         {
             try
             {
                 ControladorMarca controladorMarca = new ControladorMarca();
-                var marcas = controladorMarca.ObtenerMarcaPorIDProducto(idProd);
                 List<PresentacionClass> listaFInal = new List<PresentacionClass>();
-                if (marcas.Count > 0)
+
+                // Es Producto
+                if (tipo == 1)
                 {
-                    foreach (var item in marcas)
+                    var marcas = controladorMarca.ObtenerMarcaPorIDProducto(idItem);
+
+                    if (marcas.Count > 0)
                     {
-                        PresentacionClass pc = new PresentacionClass();
-                        pc.id = item.Articulos_Marcas.id;
-                        pc.descripcion = item.Articulos_Marcas.descripcion;
-                        listaFInal.Add(pc);
+                        foreach (var item in marcas)
+                        {
+                            PresentacionClass pc = new PresentacionClass();
+                            pc.id = item.Articulos_Marcas.id;
+                            pc.descripcion = item.Articulos_Marcas.descripcion;
+                            listaFInal.Add(pc);
+                        }                        
                     }
+
                     return listaFInal;
                 }
+
+                // Es Receta
                 else
                 {
-                    return new List<PresentacionClass>();
+                    //var marcas = controladorMarca.ObtenerMarcaPorIDReceta(idItem);
+
+                    //if (marcas.Count > 0)
+                    //{
+                    //    foreach (var item in marcas)
+                    //    {
+                    //        PresentacionClass pc = new PresentacionClass();
+                    //        pc.id = item.Articulos_Marcas.id;
+                    //        pc.descripcion = item.Articulos_Marcas.descripcion;
+                    //        listaFInal.Add(pc);
+                    //    }
+                    //}
+
+                    return listaFInal;
                 }
+                
             }
             catch (Exception)
             {
                 return new List<PresentacionClass>();
-
             }
         }
         public class PresentacionClass

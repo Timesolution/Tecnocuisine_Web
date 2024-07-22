@@ -427,54 +427,45 @@
         }
 
         function CargarOptionDllMarcas(id, tipo) {
-            // Si es un producto se buscaran las marcas
-            if (tipo == 1) {
-                document.getElementById('<%=ddlMarca.ClientID%>').removeAttribute('disabled');
+            document.getElementById('<%=ddlMarca.ClientID%>').removeAttribute('disabled');
 
-                $.ajax({
-                    method: "POST",
-                    url: "Entregas.aspx/GetMarca",
-                    data: '{idProd: "' + id + '"}',
-                    contentType: "application/json",
-                    dataType: "json",
-                    dataType: "json",
-                    async: false,
-                    error: (error) => {
-                        console.log(JSON.stringify(error));
-                    },
-                    success: function (respuesta) {
-                        //quito los options que pudiera tener previamente el combo
-                        $("#<%=ddlMarca.ClientID%>").html("");
+            $.ajax({
+                method: "POST",
+                url: "Entregas.aspx/GetMarca",
+                data: '{idItem: "' + id + '", tipo:"' + tipo + '"}',
+                contentType: "application/json",
+                dataType: "json",
+                dataType: "json",
+                async: false,
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                },
+                success: function (respuesta) {
+                    //quito los options que pudiera tener previamente el combo
+                    $("#<%=ddlMarca.ClientID%>").html("");
 
-                        if (respuesta.d.length > 0) {
-                            $.each(respuesta.d, function () {
-                                $("#<%=ddlMarca.ClientID%>").append($("<option></option>").attr("value", this.id).text(this.descripcion))
+                    if (respuesta.d.length > 0) {
+                        $.each(respuesta.d, function () {
+                            $("#<%=ddlMarca.ClientID%>").append($("<option></option>").attr("value", this.id).text(this.descripcion))
                             });
 
-                        } else {                          
-                            toastr.error("El producto no tiene marcas asignadas.", "Error", {
-                                "positionClass": "toast-bottom-right"
-                            });
+                    } else {
+                        toastr.error("El item no tiene marcas asignadas.", "Error", {
+                            "positionClass": "toast-bottom-right"
+                        });
 
-                            // Deshabilitar boton para agregar el item
-                            document.getElementById('btnAgregarProducto').setAttribute('disabled', 'true');
-                        }
+                        // Deshabilitar boton para agregar el item
+                        document.getElementById('btnAgregarProducto').setAttribute('disabled', 'true');
                     }
-                });
-            }
-            // Es receta
-            else {             
-                $("#<%=ddlMarca.ClientID%>").empty(); // Limpiar el select
-                $("#<%=ddlMarca.ClientID%>").append($("<option></option>").attr("value", -1).text(""))
-                document.getElementById('<%=ddlMarca.ClientID%>').setAttribute('disabled', 'true');
-            }
+                }
+            });
         }
 
         function CargarDepositos(id, tipo) {
             $.ajax({
                 method: "POST",
                 url: "Entregas.aspx/GetIdSectorByIdProd",
-                data: '{idProd: "' + id + '",tipo:"' + tipo + '"}',
+                data: '{idProd: "' + id + '", tipo:"' + tipo + '"}',
                 contentType: "application/json",
                 dataType: "json",
                 dataType: "json",
