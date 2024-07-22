@@ -49,6 +49,7 @@
             </div>
         </div>
 
+        <%--Modal Agregar--%>
         <div id="modalAgregar" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
@@ -64,7 +65,7 @@
                             </div>
                             <label class="col-sm-2 control-label editable">Descripción</label>
                             <div class="col-sm-8">
-                                <asp:TextBox ID="txtDescripcionInsumo" class="form-control" runat="server" />
+                                <asp:TextBox ID="txtDescripcionTipo" class="form-control" runat="server" />
 
                             </div>
                         </div>
@@ -271,11 +272,11 @@
              },
              success: function(response) {
                  document.getElementById('<%= idInsumoEditar.ClientID %>').value = "";
-                 document.getElementById('<%= txtDescripcion.ClientID %>').value = "";
+                 document.getElementById('<%= txtDescripcionTipo.ClientID %>').value = "";
                  const arrayInsumo = response.d.split(",").filter(Boolean);
                  document.getElementById('<%= idInsumoEditar.ClientID %>').value = arrayInsumo[0];
                  console.log(arrayInsumo[0])
-                 document.getElementById('<%= txtDescripcion.ClientID %>').value = arrayInsumo[1]
+                 document.getElementById('<%= txtDescripcionTipo.ClientID %>').value = arrayInsumo[1]
              }
            });  
         }
@@ -286,7 +287,7 @@
             $('#modalAgregar').modal('show');
         }
         function vaciarFormulario() {
-            ContentPlaceHolder1_txtDescripcionInsumo.value = "";
+            ContentPlaceHolder1_txtDescripcionTipo.value = "";
             ContentPlaceHolder1_hiddenEditar.value = "";
             window.history.pushState('', 'InsumosF', location.protocol + '//' + location.host + location.pathname);
 

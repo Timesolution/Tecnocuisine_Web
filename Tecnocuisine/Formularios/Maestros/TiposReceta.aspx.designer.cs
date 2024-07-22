@@ -33,13 +33,13 @@ namespace Tecnocuisine.Formularios.Maestros
         protected global::System.Web.UI.WebControls.PlaceHolder phTipos;
 
         /// <summary>
-        /// Control txtDescripcionInsumo.
+        /// Control txtDescripcionTipo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDescripcionInsumo;
+        protected global::System.Web.UI.WebControls.TextBox txtDescripcionTipo;
 
         /// <summary>
         /// Control btnGuardar.
