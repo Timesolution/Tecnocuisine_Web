@@ -19,49 +19,63 @@
                                                 <div class="ibox-content">
                                                     <div style="margin-left: 0px; margin-right: 0px;"
                                                         class="row">
-                                                        <div class="row" style="display: flex">
-                                                            <%-- Label de la ddl --%>
-                                                            <div class="col-md-1" style="margin-left: 15px; margin-right: 15px;">
-                                                                <label class="col-sm-2 control-label">Sector</label>
-                                                            </div>
-                                                            <%-- Ddl sectores --%>
-                                                            <div class="col-md-2">
-                                                                <asp:DropDownList ID="ddlSector" runat="server"
-                                                                    CssClass="chosen-select form-control"
-                                                                    DataTextField="CountryName" DataValueField="CountryCode"
-                                                                    Data-placeholder="Seleccione Rubro..." Width="100%">
-                                                                    <asp:ListItem Text="Select" Value=""></asp:ListItem>
-                                                                </asp:DropDownList>
-                                                            </div>
-                                                            <%-- boton ayer --%>
-                                                            <a id="btnAyer" onclick="filtrartTransferenciasAyer()" class="btn btn-default"
-                                                                title="filtrar ayer" style="height: 32px; margin-left: 10px">Ayer
-                                                            </a>
-                                                            <%-- boton hoy --%>
-                                                            <a id="btnHoy" onclick="filtrartTransferenciasHoy()" class="btn btn-default"
-                                                                title="filtrar hoy" style="height: 32px; margin-left: 10px">Hoy
-                                                            </a>
-                                                            <a id="btnMañana" onclick="filtrartTransferenciasMañana()" class="btn btn-default"
-                                                                title="filtrar hoy" style="height: 32px; margin-left: 10px">Mañana
-                                                            </a>
-                                                            <a id="btnPasado" onclick="filtrartTransferenciasPasado()" class="btn btn-default"
-                                                                title="filtrar hoy" style="height: 32px; margin-left: 10px">Pasado 
-                                                            </a>
+                                                        <div class="row" style="display: flex; flex-wrap: wrap; padding-bottom: 2rem">
 
-                                                            <label style="margin-left: 40px; margin-top: 5px">Desde</label>
-                                                            <div>
-                                                                <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy"
-                                                                    data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;">
-                                                                </asp:TextBox>
+                                                            <div class="" style="margin-left: 15px; margin-right: 15px;">
+                                                                <%-- Label de la ddl --%>
+                                                                <div class="">
+                                                                    <label class="col-sm-2 control-label">Sector</label>
+                                                                </div>
+                                                                <%-- Ddl sectores --%>
+                                                                <div class="" style="margin-left: 15px; margin-right: 15px;">
+                                                                    <asp:DropDownList ID="ddlSector" runat="server"
+                                                                        CssClass="chosen-select form-control"
+                                                                        DataTextField="CountryName" DataValueField="CountryCode"
+                                                                        Data-placeholder="Seleccione Rubro..." Width="100%">
+                                                                        <asp:ListItem Text="Select" Value=""></asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                </div>
                                                             </div>
-                                                            <label style="margin-top: 5px; margin-left: 10px">Hasta</label>
-                                                            <div>
-                                                                <asp:TextBox class="form-control" runat="server" type="date"
-                                                                    ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy"
-                                                                    Style="margin-left: 0px; width: 100%;">
-                                                                </asp:TextBox>
+
+                                                            <div style="align-content: end">
+                                                                <div style="display: block; width: 100%">
+                                                                    <%-- boton ayer --%>
+                                                                    <a id="btnAyer" onclick="filtrartTransferenciasAyer()" class="btn btn-default"
+                                                                        title="filtrar ayer" style="height: 32px; margin-left: 10px">Ayer
+                                                                    </a>
+                                                                    <%-- boton hoy --%>
+                                                                    <a id="btnHoy" onclick="filtrartTransferenciasHoy()" class="btn btn-default"
+                                                                        title="filtrar hoy" style="height: 32px; margin-left: 10px">Hoy
+                                                                    </a>
+                                                                    <a id="btnMañana" onclick="filtrartTransferenciasMañana()" class="btn btn-default"
+                                                                        title="filtrar hoy" style="height: 32px; margin-left: 10px">Mañana
+                                                                    </a>
+                                                                    <a id="btnPasado" onclick="filtrartTransferenciasPasado()" class="btn btn-default"
+                                                                        title="filtrar hoy" style="height: 32px; margin-left: 10px">Pasado 
+                                                                    </a>
+                                                                </div>
                                                             </div>
-                                                            <div class="col-md-2">
+
+                                                            <div style="margin-left: 20px">
+                                                                <label>Desde</label>
+                                                                <div style="align-content: end">
+                                                                    <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy"
+                                                                        data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;">
+                                                                    </asp:TextBox>
+                                                                </div>
+                                                            </div>
+
+                                                            <div style="margin-left: 20px">
+                                                                <label>Hasta</label>
+                                                                <div style="align-content: end">
+                                                                    <asp:TextBox class="form-control" runat="server" type="date"
+                                                                        ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy"
+                                                                        Style="margin-left: 0px; width: 100%;">
+                                                                    </asp:TextBox>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="" style="align-content: end; margin-left: 20px">
                                                                 <asp:Button ID="btnSector" runat="server" class="btn btn-primary pull-right" OnClientClick="filtrarSectorOrigen(); return false" Text="Buscar" />
                                                             </div>
 
@@ -1456,8 +1470,7 @@
                 error: function (error) {
                     console.log("Error");
                 },
-                success: function (data)
-                {
+                success: function (data) {
                     const arraydetalleProduccion = data.d.split(";").filter(Boolean);
 
                     document.getElementById('tableDetalleProduccion').innerHTML = "";
@@ -1470,14 +1483,14 @@
                         const producto = partesDetalle[1];
                         const cantidad = partesDetalle[2];
 
-                        let plantillaDetalleProduccion= `
+                        let plantillaDetalleProduccion = `
                           <tr>
                               <td>${sectorDestino}</td>
                               <td>${producto}</td>
                               <td style="text-align: right;">${cantidad}</td>
                           </tr>
                       `;
-                        
+
                         document.getElementById('tableDetalleProduccion').innerHTML += plantillaDetalleProduccion;
                     });
 
