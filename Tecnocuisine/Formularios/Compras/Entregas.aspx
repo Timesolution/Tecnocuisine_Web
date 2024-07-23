@@ -197,14 +197,14 @@
                                         <tr>
                                             <%--<th style="width: 6%">Cod Producto</th>--%>
                                             <th style="width: 10%">Descripcion</th>
-                                            <th style="width: 5%; text-align: right">Cantidad</th>
-                                            <th style="width: 5%; text-align: right">Precio</th>
-                                            <th style="width: 5%; text-align: right">Total</th>
                                             <th style="width: 10%">Deposito</th>
                                             <th style="width: 6%">Marca</th>
                                             <th style="width: 9%">Presentacion</th>
-                                            <th style="width: 5%">Lote</th>
-                                            <th style="width: 5%">Vencimiento</th>
+                                            <th style="width: 5%; text-align: right">Cantidad</th>
+                                            <th style="width: 5%; text-align: right">Precio</th>
+                                            <th style="width: 5%; text-align: right">Total</th>
+                                            <%--<th style="width: 5%">Lote</th>
+                                            <th style="width: 5%">Vencimiento</th>--%>
                                             <th style="width: 3%"></th>
                                         </tr>
                                     </thead>
@@ -609,16 +609,16 @@
                     "<tr id=" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value.trim() + ">" +
                     /*"<td style=\" text-align: right\"> " + codigo + "</td>" +*/
                     tdDescripcion +
-                    tdCantidad +
-                    tdPrecio +
-                    tdTotalProducto +
                     tdDeposito +
                     marca +
                     //"<td ondblclick=\"CargarmodalRecetaDetalle('" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0]+"')\" > " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>" +
                     tdUnidad +
-                    "<td style=\" text-align: center\"> " + document.getElementById('<%=txtLote.ClientID%>').value + "</td>" +
-                    "<td style=\" text-align: center\"> " + document.getElementById('<%=txtFechaVencimiento.ClientID%>').value + "</td>" +
+                    <%--"<td style=\" text-align: center\"> " + document.getElementById('<%=txtLote.ClientID%>').value + "</td>" +
+                    "<td style=\" text-align: center\"> " + document.getElementById('<%=txtFechaVencimiento.ClientID%>').value + "</td>" +--%>
 
+                    tdCantidad +
+                    tdPrecio +
+                    tdTotalProducto +
 
                     "<td style=\" text-align: center\">" +
                     " <a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent; " + styleCorrect + "\" class=\"btn  btn-xs \" onclick=\"javascript: return borrarProd('" + tipo + "_" + codigo.trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "', " + (myFormat(cantidad) * myFormat(precioFormated)).toFixed(2) + ");\" >" +
