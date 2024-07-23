@@ -1,4 +1,5 @@
-﻿<%@ Page Title="TiposReceta" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="TiposReceta.aspx.cs" Inherits="Tecnocuisine.Formularios.Maestros.TiposReceta" %>
+﻿<%@ Page Title="Tipos De Receta" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="TiposReceta.aspx.cs" Inherits="Tecnocuisine.Formularios.Maestros.TiposReceta" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <div class="wrapper wrapper-content">
@@ -72,7 +73,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <asp:LinkButton runat="server" ID="btnGuardar" class="buttonLoading btn btn-primary" 
+                        <asp:LinkButton runat="server" ID="btnGuardar" class="buttonLoading btn btn-primary"
                             OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
                         <asp:HiddenField ID="hiddenEditar" runat="server" />
                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
@@ -103,10 +104,10 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <asp:LinkButton runat="server" ID="btnEditarInsumo" 
-                            class="buttonLoading btn btn-primary" 
-                            OnClientClick="editarInsumo(); return false"><i class="fa fa-check"></i>&nbsp;Editar </asp:LinkButton>
-                        <asp:HiddenField ID="idInsumoEditar" runat="server" />
+                        <asp:LinkButton runat="server" ID="btnEditarTipo"
+                            class="buttonLoading btn btn-primary"
+                            OnClientClick="editarTipo(); return false"><i class="fa fa-check"></i>&nbsp;Editar </asp:LinkButton>
+                        <asp:HiddenField ID="idTipoEditar" runat="server" />
                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
 
 
@@ -177,47 +178,47 @@
             $('#modalconfirmacion2').modal('show');
         }
 
-        function openModalEditar(idInsumo){
-               
+        function openModalEditar(idInsumo) {
+
             precargarCamposModalEditar(idInsumo);
-           setTimeout(function() {
-             $('#modalEditar').modal('show');
-           }, 500); 
+            setTimeout(function () {
+                $('#modalEditar').modal('show');
+            }, 500);
         }
 
-        function editarInsumo(){
-             let idInsumo = document.getElementById('<%= idInsumoEditar.ClientID %>').value
-             let Descripcion = document.getElementById('<%= txtDescripcion.ClientID %>').value
+        function editarTipo() {
+            let idTipo = document.getElementById('<%= idTipoEditar.ClientID %>').value
+            let Descripcion = document.getElementById('<%= txtDescripcion.ClientID %>').value
 
-               $.ajax({
-                 method: "POST",
-                 url: "InsumosF.aspx/editarInsumo",
-                 data: JSON.stringify({ idInsumo: idInsumo, Descripcion: Descripcion}),
-                 contentType: "application/json",
-                 dataType: "json",
-                 error: function(error) {
-                     toastr.error("No se pudo modificar el insumo.", "Error");
-                 },
-                 success: function(response) {
-                      if(response.d == 3){
-                            $('#modalEditar').modal('hide')
-                            window.location.href = "../../Formularios/Maestros/InsumosF.aspx";
-                      }
+            $.ajax({
+                method: "POST",
+                url: "TiposReceta.aspx/EditarTipo",
+                data: JSON.stringify({ idTipo: idTipo, Descripcion: Descripcion }),
+                contentType: "application/json",
+                dataType: "json",
+                error: function (error) {
+                    toastr.error("No se pudo modificar el tipo de receta.", "Error");
+                },
+                success: function (response) {
+                    if (response.d == 3) {
+                        $('#modalEditar').modal('hide')
+                        window.location.href = "../../Formularios/Maestros/TiposReceta.aspx";
+                    }
 
 
-                      if(response.d == 4){
-                            toastr.warning('No se pudo editar el tipo de atributo!', 'Atencion')
-                            $('#modalEditar').modal('hide')
-                      }
+                    if (response.d == 4) {
+                        toastr.warning('No se pudo editar el tipo de receta.', 'Atencion')
+                        $('#modalEditar').modal('hide')
+                    }
 
-                  
-                 }
-               });        
-        } 
 
-        function CargarInsumos(){
-            
-                $.ajax({
+                }
+            });
+        }
+
+        function CargarInsumos() {
+
+            $.ajax({
                 method: "POST",
                 url: "InsumosF.aspx/CargarInsumos",
                 data: null,
@@ -256,29 +257,28 @@
                     }
                 }
             });
-        
+
         }
 
-        function precargarCamposModalEditar(idInsumo)
-        {
-             $.ajax({
-             method: "POST",
-             url: "InsumosF.aspx/getInsumoById",
-             data: JSON.stringify({ idInsumo: idInsumo}),
-             contentType: "application/json",
-             dataType: "json",
-             error: function(error) {
-                 toastr.error("La transferencia no pudo ser confirmada.", "Error");
-             },
-             success: function(response) {
-                 document.getElementById('<%= idInsumoEditar.ClientID %>').value = "";
-                 document.getElementById('<%= txtDescripcionTipo.ClientID %>').value = "";
-                 const arrayInsumo = response.d.split(",").filter(Boolean);
-                 document.getElementById('<%= idInsumoEditar.ClientID %>').value = arrayInsumo[0];
-                 console.log(arrayInsumo[0])
-                 document.getElementById('<%= txtDescripcionTipo.ClientID %>').value = arrayInsumo[1]
-             }
-           });  
+        function precargarCamposModalEditar(idTipo) {
+            $.ajax({
+                method: "POST",
+                url: "TiposReceta.aspx/GetTipoById",
+                data: JSON.stringify({ idTipo: idTipo }),
+                contentType: "application/json",
+                dataType: "json",
+                error: function (error) {
+                    toastr.error("La transferencia no pudo ser confirmada.", "Error");
+                },
+                success: function (response) {
+                    document.getElementById('<%= idTipoEditar.ClientID %>').value = "";
+                    document.getElementById('<%= txtDescripcion.ClientID %>').value = "";
+                    const arrayInsumo = response.d.split(",").filter(Boolean);
+                    document.getElementById('<%= idTipoEditar.ClientID %>').value = arrayInsumo[0];
+                    console.log(arrayInsumo[0])
+                    document.getElementById('<%= txtDescripcion.ClientID %>').value = arrayInsumo[1]
+                }
+            });
         }
     </script>
 

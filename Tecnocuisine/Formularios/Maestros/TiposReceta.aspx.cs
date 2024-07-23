@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Tecnocuisine.Modelos;
@@ -22,7 +23,7 @@ namespace Tecnocuisine.Formularios.Maestros
             VerificarLogin();
             this.Mensaje = Convert.ToInt32(Request.QueryString["m"]);
             this.accion = Convert.ToInt32(Request.QueryString["a"]);
-            this.idInsumo = Convert.ToInt32(Request.QueryString["i"]);
+            //this.idInsumo = Convert.ToInt32(Request.QueryString["i"]);
 
             if (!IsPostBack)
             {
@@ -66,7 +67,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 if (toastrValue == "4")
                 {
-                    this.m.ShowToastr(this.Page, "Tipo atributo eliminado con exito!", "Exito");
+                    this.m.ShowToastr(this.Page, "Tipo de receta eliminado con exito!", "Exito");
                     Session["toastrTipos"] = null;
                 }
 
@@ -178,11 +179,6 @@ namespace Tecnocuisine.Formularios.Maestros
 
         }
 
-        protected void btnSi_Click(object sender, EventArgs e)
-        {
-
-        }
-
         public void CargarListado()
         {
             try
@@ -263,6 +259,74 @@ namespace Tecnocuisine.Formularios.Maestros
             }
             catch (Exception ex)
             {
+            }
+        }
+
+        [WebMethod]
+        public static string EditarTipo(int idTipo, string Descripcion)
+        {
+            try
+            {
+                TiposDeReceta tipo = new TiposDeReceta();
+                tipo.id = idTipo;
+                tipo.tipo = Descripcion;
+                tipo.estado = true;
+
+                int r = new ControladorTiposDeReceta().EditarTipoDeReceta(tipo);
+                if (r > 0)
+                {
+                    HttpContext.Current.Session["toastrTipos"] = "3";
+                    return "3";
+                }
+                else
+                {
+                    return "4";
+                }
+            }
+            catch
+            {
+                return "-1";
+            }
+        }
+
+        [WebMethod]
+        public static string GetTipoById(int idTipo)
+        {
+            try
+            {
+                TiposDeReceta tipo = new ControladorTiposDeReceta().ObtenerTipoDeRecetaById(idTipo);
+
+                return 
+                    tipo.id.ToString() + "," +
+                    tipo.tipo.ToString() + "," +
+                    tipo.estado.ToString();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        protected void btnSi_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int idTipo = Convert.ToInt32(this.hiddenID.Value);
+                int resultado = cTiposDeReceta.EliminarTipoDeReceta(idTipo);
+
+                if (resultado > 0)
+                {
+                    Session["toastrTipos"] = "4";
+                    Response.Redirect("TiposReceta.aspx");
+                }
+                else
+                {
+                    this.m.ShowToastrError(this.Page, "No se pudo eliminar el tipo de receta", "Error");
+                }
+            }
+            catch (Exception ex)
+            {
+                this.m.ShowToastrError(this.Page, "No se pudo eliminar el tipo de receta", "Error");
             }
         }
     }

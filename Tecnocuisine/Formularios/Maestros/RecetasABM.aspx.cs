@@ -253,7 +253,12 @@ namespace Tecnocuisine.Formularios.Maestros
 
                     PrecargarPresentaciones();
                     PrecargarMarcas();
-                     
+
+                    // Si tiene un tipo de receta inactivo, agregarlo al select
+                    TiposDeReceta tipo = new ControladorTiposDeReceta().ObtenerTipoDeRecetaById((int)Receta.Tipo);
+                    if(!tipo.estado)
+                        ddlTipoReceta.Items.Insert(1, new ListItem(tipo.tipo, tipo.id.ToString()));
+
                     ddlTipoReceta.SelectedValue = Receta.Tipo.ToString();
                     ddlUnidadMedida.SelectedValue = Receta.UnidadMedida.ToString();
                     ddlRubros.SelectedValue = Receta.idRubro.ToString();
