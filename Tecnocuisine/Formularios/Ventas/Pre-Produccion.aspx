@@ -1569,7 +1569,7 @@
     <script>
         function verDetalleRemitoInternoPdf(idRemito) {
             //window.open("ImpresionRemitos2.aspx?r=" + r, "_blank");
-            /*window.open("../Ventas/ImpresionRemitos.aspx?r=" + r, "_blank");*/
+            window.open("../Ventas/ImpresionRemitos.aspx?r=" + idRemito, "_blank");
         }
     </script>
     <script>
