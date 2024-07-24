@@ -268,7 +268,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     txtCostoTotal.Text = Receta.Costo.Value.ToString("N", culture);
                     txtCostoxPorcion.Text = Receta.CostoU.Value.ToString("N", culture);
                     txtPrVenta.Text = Receta.PrVenta.Value.ToString("N", culture);
-                    txtPFoodCost.Text = Receta.PorcFoodCost.Value.ToString("N", culture);
+                    txtPFoodCost.Text = Receta.PorcFoodCost.Value.ToString("N", culture) + "%";
                     txtContMarg.Text = Receta.CostMarginal.Value.ToString("N", culture);
 
 

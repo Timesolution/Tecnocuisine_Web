@@ -288,7 +288,7 @@
                                         </div>
                                         <div class="col-md-1" style="text-align: left; margin-right:1rem"">
                                             <label style="margin-bottom: auto;">Food Cost</label>
-                                            <asp:TextBox Text="0.00" disabled="disabled" Style="text-align: right;" ID="txtPFoodCost" class="form-control" runat="server" />
+                                            <asp:TextBox Text="0%" disabled="disabled" Style="text-align: right;" ID="txtPFoodCost" class="form-control" runat="server" />
                                         </div>
                                         <div class="col-md-1" style="text-align: left; margin-right:1rem"">
                                             <label id="erwt" style="margin-bottom: auto;margin-top: -25%;"> Cont. Marg. </label>
@@ -369,7 +369,7 @@
                                     <table class="table table-bordered table-hover" id="tableProductos">
                                         <thead>
                                             <tr>
-                                                <th style="width: 5%">Codigo</th>
+                                                <th style="width: 0%;"></th> <!--Codigo-->
                                                 <th style="width: 15%">Descripcion</th>
                                                 <th style="width: 10%; text-align:right">Cantidad</th>
                                                 <th style="width: 10%">U. Medida</th>
@@ -1327,7 +1327,7 @@
                                     + '" , CostoT: "' + document.getElementById('<%=txtCostoTotal.ClientID%>').value
                                     + '" , BrutoU: "' + document.getElementById('<%=txtKgxPorcion.ClientID%>').value
                                     + '" , CostoU: "' + document.getElementById('<%=txtCostoxPorcion.ClientID%>').value
-                                    + '" , FoodCost: "' + document.getElementById('<%=txtPFoodCost.ClientID%>').value
+                                    + '" , FoodCost: "' + document.getElementById('<%=txtPFoodCost.ClientID%>').value.replace('%','')
                                     + '" , ContMarg: "' + document.getElementById('<%=txtContMarg.ClientID%>').value
                                     + '" , BuenasPract: "' + document.getElementById('<%=txtObservaciones.ClientID%>').value
                                     + '" , InfoNut: "' + document.getElementById('<%=txtInfoNutr.ClientID%>').value
@@ -1378,7 +1378,7 @@
                                 + '" , CostoT: "' + document.getElementById('<%=txtCostoTotal.ClientID%>').value
                                 + '" , BrutoU: "' + document.getElementById('<%=txtKgxPorcion.ClientID%>').value
                                 + '" , CostoU: "' + document.getElementById('<%=txtCostoxPorcion.ClientID%>').value
-                                + '" , FoodCost: "' + document.getElementById('<%=txtPFoodCost.ClientID%>').value
+                                + '" , FoodCost: "' + document.getElementById('<%=txtPFoodCost.ClientID%>').value.replace('%', '')
                                 + '" , ContMarg: "' + document.getElementById('<%=txtContMarg.ClientID%>').value
                                 + '" , BuenasPract: "' + document.getElementById('<%=txtObservaciones.ClientID%>').value
                                 + '" , InfoNut: "' + document.getElementById('<%=txtInfoNutr.ClientID%>').value
@@ -1996,10 +1996,10 @@
             let ContMarg = parseFloat(document.getElementById('<%=txtContMarg.ClientID%>').value);
             if (PRVenta > 0) {
 
-                document.getElementById('<%=txtPFoodCost.ClientID%>').value = myFormat(Math.round10(costototal / PRVenta * 100));
+                document.getElementById('<%=txtPFoodCost.ClientID%>').value = myFormat(Math.round10(costototal / PRVenta)) +'%';
                 document.getElementById('<%=txtContMarg.ClientID%>').value = myFormat(Math.round10(PRVenta - costototal));
             } else {
-                document.getElementById('<%=txtPFoodCost.ClientID%>').value = "0.00";
+                document.getElementById('<%=txtPFoodCost.ClientID%>').value = "0%";
                 document.getElementById('<%=txtContMarg.ClientID%>').value = "0.00";
             }
         }
