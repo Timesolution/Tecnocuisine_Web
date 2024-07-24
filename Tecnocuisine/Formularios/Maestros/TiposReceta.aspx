@@ -204,10 +204,12 @@
                         $('#modalEditar').modal('hide')
                         window.location.href = "../../Formularios/Maestros/TiposReceta.aspx";
                     }
-
-
-                    if (response.d == 4) {
-                        toastr.warning('No se pudo editar el tipo de receta.', 'Atencion')
+                    else if (response.d == 4) {
+                        toastr.warning('No se pudo editar el tipo de receta.', 'Error')
+                        $('#modalEditar').modal('hide')
+                    }
+                    else if (response.d == 5) {
+                        toastr.error('Ya existe un tipo de receta con esa descripcion.', 'Error')
                         $('#modalEditar').modal('hide')
                     }
 

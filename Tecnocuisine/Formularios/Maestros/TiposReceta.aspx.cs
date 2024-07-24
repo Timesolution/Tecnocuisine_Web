@@ -267,20 +267,28 @@ namespace Tecnocuisine.Formularios.Maestros
         {
             try
             {
+                ControladorTiposDeReceta cTiposDeReceta = new ControladorTiposDeReceta();
                 TiposDeReceta tipo = new TiposDeReceta();
                 tipo.id = idTipo;
                 tipo.tipo = Descripcion;
                 tipo.estado = true;
 
-                int r = new ControladorTiposDeReceta().EditarTipoDeReceta(tipo);
-                if (r > 0)
+                if (!cTiposDeReceta.Existe(tipo.tipo)) // Si no existe esa descripcion, deja editarlo
                 {
-                    HttpContext.Current.Session["toastrTipos"] = "3";
-                    return "3";
+                    int r = new ControladorTiposDeReceta().EditarTipoDeReceta(tipo);
+                    if (r > 0)
+                    {
+                        HttpContext.Current.Session["toastrTipos"] = "3";
+                        return "3";
+                    }
+                    else
+                    {
+                        return "4"; // No se pudo editar el tipo de receta
+                    }
                 }
                 else
                 {
-                    return "4";
+                    return "5"; // Ya existe una receta con la misma descripcion
                 }
             }
             catch
@@ -296,7 +304,7 @@ namespace Tecnocuisine.Formularios.Maestros
             {
                 TiposDeReceta tipo = new ControladorTiposDeReceta().ObtenerTipoDeRecetaById(idTipo);
 
-                return 
+                return
                     tipo.id.ToString() + "," +
                     tipo.tipo.ToString() + "," +
                     tipo.estado.ToString();
