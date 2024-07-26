@@ -117,7 +117,7 @@
                                         <asp:HiddenField ID="idProducto" runat="server" />
                                         <div>
                                             <label>Cantidad</label>
-                                            <asp:TextBox ID="txtCantidad" onchange="ValidadCantidad()" Text="0" onkeypress="javascript:return validarNro(event)" Style="text-align: right;" class="form-control money" runat="server" />
+                                            <asp:TextBox ID="txtCantidad" MaxLength="10" onchange="ValidadCantidad()" Text="0" onkeypress="javascript:return validarNro(event)" Style="text-align: right;" class="form-control money" runat="server" />
                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage=""
                                                 SetFocusOnError="false" ForeColor="Red" Font-Bold="false"
                                                 ValidationGroup="AgregarProductos" ControlToValidate="txtCantidad">
@@ -130,7 +130,7 @@
                                         <asp:HiddenField ID="HiddenField1" runat="server" />
                                         <div>
                                             <label>Precio</label>
-                                            <asp:TextBox ID="txtPrecio" onchange="ValidarPrecio()" Text="0" onkeypress="javascript:return validarNro(event)" Style="text-align: right;" class="form-control money" runat="server" />
+                                            <asp:TextBox ID="txtPrecio" MaxLength="10" onchange="ValidarPrecio()" Text="0" onkeypress="javascript:return validarNro(event)" Style="text-align: right;" class="form-control money" runat="server" />
                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ErrorMessage=""
                                                 SetFocusOnError="false" ForeColor="Red" Font-Bold="false"
                                                 ValidationGroup="AgregarProductos" ControlToValidate="txtPrecio">
@@ -221,7 +221,7 @@
 
                                     <div style="display: inline-block; font-size: 2rem; font-weight: bold;">
                                         <span>$</span>
-                                        <span id="total">0</span>
+                                        <span id="total">0.00</span>
                                     </div>
                                 </div>
 
@@ -447,7 +447,7 @@
                     if (respuesta.d.length > 0) {
                         $.each(respuesta.d, function () {
                             $("#<%=ddlMarca.ClientID%>").append($("<option></option>").attr("value", this.id).text(this.descripcion))
-                            });
+                        });
 
                     } else {
                         toastr.error("El item no tiene marcas asignadas.", "Error", {
@@ -538,8 +538,16 @@
 
         }
 
-        function agregarProductoPH() {
+        // Función para convertir cadena formateada a número
+        function parseNumber(str) {
+            const cleaned = str.replace(/,/g, '');
+            return parseFloat(cleaned);
+        }
 
+
+        let idRow = 0;
+
+        function agregarProductoPH() {
             // Validaciones
             let ValDias = ValidarDias();
             if (ValDias == false) {
@@ -592,12 +600,16 @@
             let styleCorrect = "";
             let unidad = document.getElementById('ContentPlaceHolder1_ddlPresentaciones').selectedOptions[0].text;
 
+            let cantidadNum = parseNumber(cantidad);
+            let precioNum = parseNumber(precioFormated);
+            let totalProducto = cantidadNum * precioNum;
+
             //costototal = costototal.toString().replace('.', ',');
 
             let tdDescripcion = "<td> " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
-            let tdCantidad = "<td style=\" text-align: right\"> " + myFormat(cantidad) + "</td>";
-            let tdPrecio = "<td style=\" text-align: right\"> $ " + myFormat(precioFormated) + "</td>";
-            let tdTotalProducto = "<td style=\" text-align: right\"> $ " + (myFormat(cantidad) * myFormat(precioFormated)).toFixed(2) + "</td>";
+            let tdCantidad = "<td style=\" text-align: right\"> " + myFormat2(cantidad) + "</td>";
+            let tdPrecio = "<td style=\" text-align: right\"> $ " + myFormat2(precioFormated) + "</td>";
+            let tdTotalProducto = "<td style=\"text-align: right\"> $ " + myFormat2(totalProducto.toString()) + "</td>";
             let tdUnidad = "<td> " + unidad + "</td>";
             let btnRec = "";
 
@@ -605,8 +617,10 @@
             idMarca = document.getElementById('<%=ddlMarca.ClientID%>').value.trim()
 
             if (!document.getElementById('<%= idProductosRecetas.ClientID%>').value.includes(tipo + '_' + codigo + "," + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value)) {
+
+                idRow += 1;
                 $('#tableProductos').append(
-                    "<tr id=" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value.trim() + ">" +
+                    "<tr id=" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value.trim() + "_" + idRow + ">" +
                     /*"<td style=\" text-align: right\"> " + codigo + "</td>" +*/
                     tdDescripcion +
                     tdDeposito +
@@ -621,7 +635,7 @@
                     tdTotalProducto +
 
                     "<td style=\" text-align: center\">" +
-                    " <a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent; " + styleCorrect + "\" class=\"btn  btn-xs \" onclick=\"javascript: return borrarProd('" + tipo + "_" + codigo.trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "', " + (myFormat(cantidad) * myFormat(precioFormated)).toFixed(2) + ");\" >" +
+                    " <a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent; " + styleCorrect + "\" class=\"btn  btn-xs \" onclick=\"javascript: return borrarProd('" + tipo + "_" + codigo.trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "_" + idRow + "', " + (totalProducto*-1) + ");\" >" +
                     "<i class=\"fa fa-trash - o\" style=\"color: black\"></i> </a> " +
                     btnRec
                     + "</td > " +
@@ -640,11 +654,7 @@
                 //document.getElementById('total').textContent = totalActual;
 
                 // Aumentar total general
-                let total = document.getElementById('total');
-                let totalActual = parseFloat(total.textContent);
-                totalActual += parseFloat(precio.value).toFixed(2) * parseFloat(cantidad).toFixed(3);
-                total.textContent = totalActual.toFixed(2);
-
+                updateTotalGeneral(totalProducto);
 
                 // Limpiar campos
                 prod.value = "";
@@ -663,6 +673,18 @@
 
                 document.getElementById('<%= btnGuardar.ClientID %>').disabled = false;
             }
+        }
+
+        // Actualizar el total general
+        function updateTotalGeneral(newTotalProducto) {
+            let totalGeneralElement = document.getElementById("total");
+            let currentTotalGeneral = parseNumber(totalGeneralElement.textContent);
+            let newTotalGeneral = currentTotalGeneral + newTotalProducto;
+
+            if (newTotalGeneral <= 0)
+                newTotalGeneral = 0.00;
+
+            totalGeneralElement.textContent = myFormat2(newTotalGeneral.toString());
         }
 
         function agregarProducto(clickedId, costo) {
@@ -698,9 +720,13 @@
         function borrarProd(idprod, totalToRemove) {
             event.preventDefault();
 
+            // Eliminar la fila del producto de la interfaz de usuario
             $('#' + idprod).remove();
+
+             // Obtener la lista de productos del campo oculto
             var productos = ContentPlaceHolder1_idProductosRecetas.value.split(';');
 
+             // Crear una nueva lista de productos sin el producto eliminado
             var nuevosProductos = "";
             for (var x = 0; x < productos.length; x++) {
                 if (productos[x] != "") {
@@ -726,11 +752,7 @@
 
 
             // Descontar en total general
-            let totalElement = document.getElementById('total');
-            let totalActual = parseFloat(totalElement.textContent);
-            console.log(totalToRemove);
-            totalActual -= totalToRemove;
-            totalElement.textContent = totalActual.toFixed(2);
+            updateTotalGeneral(totalToRemove);
 
         }
     </script>
@@ -803,6 +825,44 @@
         function myFormat(str) {
             //const cleaned = str.replace(/[^\d,]/g, '').replace(",", ".")
             return Number(str).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 })
+        }
+        //function myFormat2(str) {
+        //    // Eliminar espacios en blanco alrededor del número
+        //    str = str.trim();
+
+        //    // Reemplazar comas con nada para los separadores de miles
+        //    // y los puntos con nada para los separadores de miles en notación europea
+        //    const cleaned = str.replace(/,/g, '').replace(/\./g, '');
+
+        //    // Intentar convertir la cadena limpiada a un número
+        //    const number = parseFloat(cleaned);
+
+        //    // Verificar si la conversión fue exitosa
+        //    if (isNaN(number)) {
+        //        return "Invalid number";
+        //    }
+
+        //    // Formatear el número con la configuración de locales en-US
+        //    return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+        //}
+        function myFormat2(str) {
+            // Eliminar espacios en blanco alrededor del número
+            str = str.trim();
+
+            // Reemplazar comas con nada para los separadores de miles
+            // pero dejar los puntos para los decimales
+            const cleaned = str.replace(/,/g, '');
+
+            // Intentar convertir la cadena limpiada a un número
+            const number = parseFloat(cleaned);
+
+            // Verificar si la conversión fue exitosa
+            if (isNaN(number)) {
+                return "Invalid number";
+            }
+
+            // Formatear el número con la configuración de locales en-US
+            return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 });
         }
         function ValidadCantidad() {
             let cant = document.getElementById('<%=txtCantidad.ClientID%>')
