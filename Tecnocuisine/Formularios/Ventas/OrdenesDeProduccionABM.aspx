@@ -467,4 +467,10 @@
 
     </script>
 
+        <script>
+            $(document).ready(function () {
+                document.getElementById("lblSiteMap").innerText = "Produccion / Nueva Orden";
+            });
+        </script>
+
 </asp:Content>

@@ -267,15 +267,15 @@
                                     <a style="color: white !important;" href="../..\Formularios\Ventas\OrdenesDeProduccion.aspx">Ordenes de produccion </a>
                                 </li>
                                 <li>
+                                    <a style="color: white !important;" href="../../Formularios/Ventas/PedidosOrdenes.aspx">Pedidos</a>
+                                </li>
+                                <li>
                                     <a style="color: white !important;" href="../..\Formularios\Ventas\Pre-Produccion.aspx">Pre-Produccion </a>
                                 </li>
                                 <li>
                                     <a style="color: white !important;" href="../..\Formularios\Ventas\Produccion.aspx">Producción </a>
                                 </li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Recetas.aspx">Recetas</a></li>
-                                <li>
-                                    <a style="color: white !important;" href="../../Formularios/Ventas/PedidosOrdenes.aspx">Pedidos</a>
-                                </li>
                             </ul>
                         </li>
 

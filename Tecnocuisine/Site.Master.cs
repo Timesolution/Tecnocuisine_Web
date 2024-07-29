@@ -14,6 +14,9 @@ namespace Tecnocuisine
         {
             this.lblSiteMap.Text = HttpContext.Current.Request.Url.AbsolutePath.Remove(0, 1).Replace("/", " / ").Replace(".aspx", "").Replace("Formularios", "");
             lblSiteMap.Style.Add("padding-top", "5%");
+
+            if (lblSiteMap.Text.Contains("PedidosOrdenes"))
+                this.lblSiteMap.Text = "Produccion / Pedidos";
         }
         protected void btnGestion_Click(object sender, EventArgs e)
         {

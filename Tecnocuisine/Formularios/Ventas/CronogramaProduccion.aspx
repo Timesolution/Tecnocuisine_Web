@@ -699,4 +699,10 @@
         }
 
     </script>
+
+    <script>
+        $(document).ready(function () {
+            document.getElementById("lblSiteMap").innerText = "Produccion / Cronograma";
+        });
+    </script>
 </asp:Content>

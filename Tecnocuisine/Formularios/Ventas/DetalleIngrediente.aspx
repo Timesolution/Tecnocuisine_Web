@@ -266,4 +266,10 @@
         }
 
     </script>
+
+        <script>
+            $(document).ready(function () {
+                document.getElementById("lblSiteMap").innerText = "Produccion / Detalle de Ingredientes";
+            });
+        </script>
 </asp:Content>
