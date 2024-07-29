@@ -138,7 +138,7 @@
                                                                     <%--<a id="btnfiltrar" onclick="filtrarordenesproduccion()" class="btn btn-primary" title="filtrar" style="width: 100%">
                                                                         <i class="fa fa-search"></i>&nbsp;Filtrar
                                                                     </a>--%>
-                                                                    <asp:LinkButton ID="btnfiltrar" runat="server" OnClick="btnfiltrar_Click" title="filtrar" Style="width: 100%" CssClass="btn btn-primary btn-with-icon">
+                                                                    <asp:LinkButton ID="btnfiltrar" runat="server" OnClick="btnfiltrar_Click" OnClientClick="limpiarUrl()" title="filtrar" Style="width: 100%" CssClass="btn btn-primary btn-with-icon">
                                                                         <i class="fa fa-search"></i>&nbsp;Filtrar
                                                                     </asp:LinkButton>
 
@@ -329,7 +329,7 @@
     <script>
         $(document).ready(function () {
             $("body").tooltip({ selector: '[data-toggle=tooltip]' });
-            establecerDiaHoy();
+            //establecerDiaHoy();
 
             // var oTable = $('#editable').dataTable({
             //     "bLengthChange": false,
@@ -347,7 +347,7 @@
                 var list = e.length ? e : $(e.target),
                     output = list.data('output');
                 if (window.JSON) {
-                    output.val(window.JSON.stringify(list.nestable('serialize')));
+                    //output.val(window.JSON.stringify(list.nestable('serialize')));
                 } else {
                     output.val('JSON browser support required for this demo.');
                 }
@@ -775,6 +775,13 @@
         }
 
 
+        function limpiarUrl() {
+            // Obtener la URL actual sin parámetros
+            var urlBase = window.location.pathname;
+            window.history.replaceState({}, document.title, urlBase);
+        }
+
+
         function validarTextBox(input) {
             // Obtener el valor del input
             var valor = input.value;
@@ -795,7 +802,7 @@
         }
 
         function confirmarTransferencia() {
-            document.getElementById('<%= btnConfirmar.ClientID %>').disabled = true;
+            //document.getElementById('<%= btnConfirmar.ClientID %>').disabled = true;
             let idTransferencia = document.getElementById('<%= idTransferencia.ClientID %>').value;
 
             var rows = document.querySelectorAll('#tableOrigen tr');
@@ -830,22 +837,58 @@
                 dataType: "json",
                 error: function (error) {
                     toastr.error("La transferencia no pudo ser confirmada.", "Error");
-                    document.getElementById('<%= btnConfirmar.ClientID %>').disabled = false;
                 },
                 success: function (response) {
 
                     if (response.d > 0) {
-                        toastr.success("Transferencia confirmada con exito!", "Exito")
+                        toastr.success("Transferencia confirmada con exito! Recargue la pagina para ver los cambios", "Exito")
+
+                        // Obtener la URL actual
+                        <%--var urlActual = window.location.href;
+                        var urlSinParametros = urlActual.split('?')[0];
+
+                        var parametros =
+                            "a=1" + "&" +
+                            "fDesde=" + document.getElementById('<%=txtFechaHoy.ClientID%>').value + "&" +
+                            "fHasta=" + document.getElementById('<%=txtFechaVencimiento.ClientID%>').value + "&" +
+                            "origen=" + document.getElementById('<%=ddlOrigen.ClientID%>').value + "&" +
+                            "destino=" + document.getElementById('<%=ddlDestino.ClientID%>').value + "&" +
+                            "estado=" + document.getElementById('<%=ddlEstado.ClientID%>').value;
+                        // Recargar la página con la nueva URL
+                        window.location.href = urlSinParametros + "?" + parametros;--%>
 
 
-                        setTimeout(function () {
-                            window.location.reload();
-                        }, 1000);
+                        //OTRA MANERA
+                        <%--// RECARGAR TABLA
+                        var data = {
+                            fDesde: document.getElementById('<%=txtFechaHoy.ClientID%>').value,
+                            fHasta: document.getElementById('<%=txtFechaVencimiento.ClientID%>').value,
+                            origen: document.getElementById('<%=ddlOrigen.ClientID%>').value,
+                            destino: document.getElementById('<%=ddlDestino.ClientID%>').value,
+                            estado: document.getElementById('<%=ddlEstado.ClientID%>').value,
+                        };
+                        $.ajax({
+                            method: "POST",
+                            url: "PedidosOrdenes.aspx/GetTransferenciasConFiltros",
+                            data: JSON.stringify(data),
+                            contentType: "application/json",
+                            dataType: "json",
+                            error: function (error) {
+                            },
+                            success: function (response) {
+                                if (response.d > 0) {
+                                }
+                                else {
+                                }
+                            }
+                        });--%>
+
+                        //dibujar en js la tabla
+
+                        $("#modalOrigenDestino").modal("hide");
                     }
                     else {
                         toastr.error("La transferencia no pudo ser confirmada.", "Error");
-                        document.getElementById('<%= btnConfirmar.ClientID %>').disabled = false;
-
                     }
                 }
             });

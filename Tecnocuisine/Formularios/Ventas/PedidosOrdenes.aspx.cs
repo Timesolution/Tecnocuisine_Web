@@ -16,6 +16,7 @@ using System.Web.WebSockets;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
 using System.Data.Entity;
+using System.EnterpriseServices.Internal;
 
 namespace Tecnocuisine.Formularios.Ventas
 {
@@ -24,17 +25,16 @@ namespace Tecnocuisine.Formularios.Ventas
         public Dictionary<string, DataTable> transferenciasDiccionario;
         public DataTable dt;
         public int idRow = 0;
-        string FechaD = "";
-        string FechaH = "";
-        string fechaAyer = "";
-        string fechaHoy = "";
-        string fechaMañana = "";
-        string fechaPasado = "";
-        string origen = "";
-        string destino = "";
-        int estado = -1;
-        string sector = "";
-
+        //string FechaD = "";
+        //string FechaH = "";
+        //string fechaAyer = "";
+        //string fechaHoy = "";
+        //string fechaMañana = "";
+        //string fechaPasado = "";
+        //string origen = "";
+        //string destino = "";
+        //int estado = -1;
+        //string sector = "";
 
         public class RowData
         {
@@ -64,15 +64,20 @@ namespace Tecnocuisine.Formularios.Ventas
                 }
             }
 
-            if (Request.QueryString["FechaD"] != null)
-            {
-                this.FechaD = Request.QueryString["FechaD"].ToString();
-                this.FechaH = Request.QueryString["FechaH"].ToString();
-                //    this.origen = Request.QueryString["Origen"].ToString();
-                //    this.destino = Request.QueryString["Destino"].ToString();
-                this.sector = Request.QueryString["sector"].ToString();
-                this.estado = Convert.ToInt32(Request.QueryString["estado"].ToString());
-            }
+            //if (Request.QueryString["a"] == "1")
+            //{
+            //    RecargarPaginaAlConfirmarTransferencia();
+            //}
+
+            //if (Request.QueryString["FechaD"] != null)
+            //{
+            //    this.FechaD = Request.QueryString["FechaD"].ToString();
+            //    this.FechaH = Request.QueryString["FechaH"].ToString();
+            //    //    this.origen = Request.QueryString["Origen"].ToString();
+            //    //    this.destino = Request.QueryString["Destino"].ToString();
+            //    this.sector = Request.QueryString["sector"].ToString();
+            //    this.estado = Convert.ToInt32(Request.QueryString["estado"].ToString());
+            //}
 
             //if (Request.QueryString["FechaAyer"] != null)
             //{
@@ -84,72 +89,102 @@ namespace Tecnocuisine.Formularios.Ventas
             //}
 
 
-            if (Request.QueryString["FechaHoy"] != null)
-            {
-                this.fechaHoy = Request.QueryString["FechaHoy"].ToString();
-                this.origen = Request.QueryString["Origen"].ToString();
-                this.destino = Request.QueryString["Destino"].ToString();
-                this.estado = Convert.ToInt32(Request.QueryString["estado"].ToString());
-                this.sector = Request.QueryString["sector"].ToString();
+            //if (Request.QueryString["FechaHoy"] != null)
+            //{
+            //    this.fechaHoy = Request.QueryString["FechaHoy"].ToString();
+            //    this.origen = Request.QueryString["Origen"].ToString();
+            //    this.destino = Request.QueryString["Destino"].ToString();
+            //    this.estado = Convert.ToInt32(Request.QueryString["estado"].ToString());
+            //    this.sector = Request.QueryString["sector"].ToString();
 
-            }
-
-
-            if (Request.QueryString["FechaMañana"] != null)
-            {
-                this.fechaMañana = Request.QueryString["FechaMañana"].ToString();
-                this.origen = Request.QueryString["Origen"].ToString();
-                this.destino = Request.QueryString["Destino"].ToString();
-                this.estado = Convert.ToInt32(Request.QueryString["estado"].ToString());
-                this.sector = Request.QueryString["sector"].ToString();
-
-            }
+            //}
 
 
-            if (Request.QueryString["FechaPasado"] != null)
-            {
-                this.fechaPasado = Request.QueryString["FechaPasado"].ToString();
-                this.origen = Request.QueryString["Origen"].ToString();
-                this.destino = Request.QueryString["Destino"].ToString();
-                this.estado = Convert.ToInt32(Request.QueryString["estado"].ToString());
-                this.sector = Request.QueryString["sector"].ToString();
+            //if (Request.QueryString["FechaMañana"] != null)
+            //{
+            //    this.fechaMañana = Request.QueryString["FechaMañana"].ToString();
+            //    this.origen = Request.QueryString["Origen"].ToString();
+            //    this.destino = Request.QueryString["Destino"].ToString();
+            //    this.estado = Convert.ToInt32(Request.QueryString["estado"].ToString());
+            //    this.sector = Request.QueryString["sector"].ToString();
 
-            }
-
-
-
-            if (FechaD != "")
-            {
-                filtrarTransferencias(this.FechaD, this.FechaH, this.sector, this.estado);
-            }
+            //}
 
 
-            if (fechaAyer != "")
-            {
-                filtrarTransferenciasAyer(this.fechaAyer, this.origen, this.destino, this.estado, this.sector);
-            }
+            //if (Request.QueryString["FechaPasado"] != null)
+            //{
+            //    this.fechaPasado = Request.QueryString["FechaPasado"].ToString();
+            //    this.origen = Request.QueryString["Origen"].ToString();
+            //    this.destino = Request.QueryString["Destino"].ToString();
+            //    this.estado = Convert.ToInt32(Request.QueryString["estado"].ToString());
+            //    this.sector = Request.QueryString["sector"].ToString();
+
+            //}
 
 
-            if (fechaHoy != "")
-            {
-                filtrarTransferenciasHoy(this.fechaHoy, this.origen, this.destino, this.estado, this.sector);
-            }
+
+            //if (FechaD != "")
+            //{
+            //    filtrarTransferencias(this.FechaD, this.FechaH, this.sector, this.estado);
+            //}
 
 
-            if (fechaMañana != "")
-            {
-                filtrarTransferenciasMañana(this.fechaMañana, this.origen, this.destino, this.estado, this.sector);
-            }
+            //if (fechaAyer != "")
+            //{
+            //    filtrarTransferenciasAyer(this.fechaAyer, this.origen, this.destino, this.estado, this.sector);
+            //}
 
 
-            if (fechaPasado != "")
-            {
-                filtrarTransferenciasPasado(this.fechaPasado, this.origen, this.destino, this.estado, this.sector);
-            }
+            //if (fechaHoy != "")
+            //{
+            //    filtrarTransferenciasHoy(this.fechaHoy, this.origen, this.destino, this.estado, this.sector);
+            //}
+
+
+            //if (fechaMañana != "")
+            //{
+            //    filtrarTransferenciasMañana(this.fechaMañana, this.origen, this.destino, this.estado, this.sector);
+            //}
+
+
+            //if (fechaPasado != "")
+            //{
+            //    filtrarTransferenciasPasado(this.fechaPasado, this.origen, this.destino, this.estado, this.sector);
+            //}
 
 
             //this.origen = Request.QueryString["Origen"].ToString();
 
+        }
+
+        private bool HayParametros()
+        {
+            return Request.QueryString["fDesde"] != null;
+        }
+
+        private void RecargarPaginaAlConfirmarTransferencia()
+        {
+            try
+            {
+                // Obtener valores de la url
+                string fDesde = Request.QueryString["fDesde"].ToString();
+                string fHasta = Request.QueryString["fHasta"].ToString();
+                string origen = Request.QueryString["origen"].ToString();
+                string destino = Request.QueryString["destino"].ToString();
+                string estado = Request.QueryString["estado"].ToString();
+
+                // Precargar filtros
+                txtFechaHoy.Text = fDesde;
+                txtFechaVencimiento.Text = fHasta;
+                ddlOrigen.SelectedValue = origen;
+                ddlDestino.SelectedValue = destino;
+                ddlEstado.SelectedValue = estado;
+
+                GetTransferenciasConFiltros();
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private void VerificarLogin()
@@ -1166,7 +1201,7 @@ namespace Tecnocuisine.Formularios.Ventas
         //    cargarTransferenciasByFecha(DateTime.Now.AddDays(2));
         //}
 
-        protected void btnfiltrar_Click(object sender, EventArgs e)
+        protected void GetTransferenciasConFiltros()
         {
             try
             {
@@ -1182,6 +1217,21 @@ namespace Tecnocuisine.Formularios.Ventas
 
                 //Mostrar
                 LoadTableTransferencias(transferencias);
+            }
+            catch (FormatException)
+            {
+                //ClientScript.RegisterStartupScript(this.GetType(), "alert", $"alert('Error: formato de fecha no valido');", true);
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        protected void btnfiltrar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                GetTransferenciasConFiltros();
             }
             catch (FormatException)
             {

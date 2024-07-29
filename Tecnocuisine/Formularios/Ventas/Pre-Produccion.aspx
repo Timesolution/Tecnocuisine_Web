@@ -40,18 +40,18 @@
                                                             <div style="align-content: end">
                                                                 <div style="display: block; width: 100%">
                                                                     <%-- boton ayer --%>
-                                                                    <a id="btnAyer" onclick="filtrartTransferenciasAyer()" class="btn btn-default"
+                                                                    <a id="btnAyer" onclick="setFecha(-1); return false;" class="btn btn-default"
                                                                         title="filtrar ayer" style="height: 32px; margin-left: 10px">Ayer
                                                                     </a>
                                                                     <%-- boton hoy --%>
-                                                                    <a id="btnHoy" onclick="filtrartTransferenciasHoy()" class="btn btn-default"
+                                                                    <a id="btnHoy" onclick="setFecha(0); return false;" class="btn btn-default"
                                                                         title="filtrar hoy" style="height: 32px; margin-left: 10px">Hoy
                                                                     </a>
-                                                                    <a id="btnMañana" onclick="filtrartTransferenciasMañana()" class="btn btn-default"
-                                                                        title="filtrar hoy" style="height: 32px; margin-left: 10px">Mañana
+                                                                    <a id="btnMañana" onclick="setFecha(1); return false;" class="btn btn-default"
+                                                                        title="filtrar mañana" style="height: 32px; margin-left: 10px">Mañana
                                                                     </a>
-                                                                    <a id="btnPasado" onclick="filtrartTransferenciasPasado()" class="btn btn-default"
-                                                                        title="filtrar hoy" style="height: 32px; margin-left: 10px">Pasado 
+                                                                    <a id="btnPasado" onclick="setFecha(2); return false;" class="btn btn-default"
+                                                                        title="filtrar pasado" style="height: 32px; margin-left: 10px">Pasado 
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -1650,6 +1650,28 @@
         </script>
 
 
+        <script>
+            // Esta funcion cambiara el valor de los inputs de fecha agregandole los dias que indique el boton seleccionado
+            function setFecha(diasASumar) {
+                // Obtener la fecha actual
+                var fecha = new Date();
 
+                // Sumar los días especificados
+                fecha.setDate(fecha.getDate() + diasASumar);
+
+                // Formatear la fecha a YYYY-MM-DD
+                var dia = ('0' + fecha.getDate()).slice(-2);
+                var mes = ('0' + (fecha.getMonth() + 1)).slice(-2);
+                var anio = fecha.getFullYear();
+
+                // Establecer el valor del textbox de fecha
+                var txtFechaDesde = document.getElementById('<%=txtFechaHoy.ClientID%>');
+            var txtFechaHasta = document.getElementById('<%=txtFechaVencimiento.ClientID%>');
+
+                txtFechaDesde.value = anio.toString() + "-" + mes.toString() + "-" + dia.toString();
+                txtFechaHasta.value = anio.toString() + "-" + mes.toString() + "-" + dia.toString();
+            }
+
+        </script>
 
 </asp:Content>
