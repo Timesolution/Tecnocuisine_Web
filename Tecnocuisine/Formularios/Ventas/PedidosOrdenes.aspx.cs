@@ -1053,7 +1053,6 @@ namespace Tecnocuisine.Formularios.Ventas
         }
 
 
-
         [WebMethod]
         public static int confirmarTransferencia(string idTransferencia, List<RowData> tableData)
         {
@@ -1147,25 +1146,25 @@ namespace Tecnocuisine.Formularios.Ventas
 
         }
 
-        protected void btnAyer_Click(object sender, EventArgs e)
-        {
-            cargarTransferenciasByFecha(DateTime.Now.AddDays(-1));
-        }
+        //protected void btnAyer_Click(object sender, EventArgs e)
+        //{
+        //    cargarTransferenciasByFecha(DateTime.Now.AddDays(-1));
+        //}
 
-        protected void btnHoy_Click(object sender, EventArgs e)
-        {
-            cargarTransferenciasByFecha(DateTime.Now);
-        }
+        //protected void btnHoy_Click(object sender, EventArgs e)
+        //{
+        //    cargarTransferenciasByFecha(DateTime.Now);
+        //}
 
-        protected void btnMañana_Click(object sender, EventArgs e)
-        {
-            cargarTransferenciasByFecha(DateTime.Now.AddDays(1));
-        }
+        //protected void btnMañana_Click(object sender, EventArgs e)
+        //{
+        //    cargarTransferenciasByFecha(DateTime.Now.AddDays(1));
+        //}
 
-        protected void btnPasado_Click(object sender, EventArgs e)
-        {
-            cargarTransferenciasByFecha(DateTime.Now.AddDays(2));
-        }
+        //protected void btnPasado_Click(object sender, EventArgs e)
+        //{
+        //    cargarTransferenciasByFecha(DateTime.Now.AddDays(2));
+        //}
 
         protected void btnfiltrar_Click(object sender, EventArgs e)
         {
@@ -1182,7 +1181,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 var transferencias = new ControladorTransferencia().filtrarTransferencias(fechaDesde, fechaHasta, origen, destino, estado);
 
                 //Mostrar
-                LoadTableTransferencias(transferencias);              
+                LoadTableTransferencias(transferencias);
             }
             catch (FormatException)
             {

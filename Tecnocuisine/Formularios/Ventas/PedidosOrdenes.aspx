@@ -32,25 +32,25 @@
                                                                 <%--<a id="btnAyer" onclick="filtrartTransferenciasAyer()" class="btn btn-warning"
                                                                     title="filtrar ayer" style="height: 32px; margin-left: 10px">Ayer
                                                                 </a>--%>
-                                                                <asp:Button runat="server" ID="btnAyer" OnClick="btnAyer_Click" class="btn btn-warning"
+                                                                <asp:Button runat="server" ID="btnAyer" OnClientClick="setFecha(-1); return false" class="btn btn-warning"
                                                                     title="filtrar ayer" Style="height: 32px; margin-left: 10px" Text="Ayer"></asp:Button>
 
                                                                 <%--<a id="btnHoy" onclick="filtrartTransferenciasHoy()" class="btn btn-warning"
                                                                     title="filtrar hoy" style="height: 32px; margin-left: 10px">Hoy
                                                                 </a>--%>
-                                                                <asp:Button runat="server" ID="btnHoy" OnClick="btnHoy_Click" class="btn btn-warning"
+                                                                <asp:Button runat="server" ID="btnHoy" OnClientClick="setFecha(0); return false" class="btn btn-warning"
                                                                     title="filtrar hoy" Style="height: 32px; margin-left: 10px" Text="Hoy"></asp:Button>
 
                                                                 <%--<a id="btnMañana" onclick="filtrartTransferenciasMañana()" class="btn btn-warning"
                                                                     title="filtrar mañana" style="height: 32px; margin-left: 10px">Mañana
                                                                 </a>--%>
-                                                                <asp:Button runat="server" ID="btnMañana" OnClick="btnMañana_Click" class="btn btn-warning"
+                                                                <asp:Button runat="server" ID="btnMañana" OnClientClick="setFecha(1); return false" class="btn btn-warning"
                                                                     title="filtrar mañana" Style="height: 32px; margin-left: 10px" Text="Mañana"></asp:Button>
 
                                                                 <%--<a id="btnPasado" onclick="filtrartTransferenciasPasado()" class="btn btn-warning"
                                                                     title="filtrar pasado" style="height: 32px; margin-left: 10px">Pasado 
                                                                 </a>--%>
-                                                                <asp:Button runat="server" ID="btnPasado" OnClick="btnPasado_Click" class="btn btn-warning"
+                                                                <asp:Button runat="server" ID="btnPasado" OnClientClick="setFecha(2); return false" class="btn btn-warning"
                                                                     title="filtrar pasado" Style="height: 32px; margin-left: 10px" Text="Pasado"></asp:Button>
                                                             </div>
 
@@ -62,10 +62,10 @@
                                                             <strong style="font-size: 1.6rem">Busqueda avanzada</strong>
 
                                                             <%--Fila 1--%>
-                                                            <div style="display: flex; justify-content: flex-start; column-gap: 2rem; width:100%">
+                                                            <div style="display: flex; justify-content: flex-start; column-gap: 2rem; width: 100%">
 
                                                                 <%--Fecha Desde--%>
-                                                                <div style="width:33%">
+                                                                <div style="width: 33%">
                                                                     <label style="margin-top: 5px;">Desde:</label>
                                                                     <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy"
                                                                         data-date-format="dd/mm/yyyy">
@@ -73,7 +73,7 @@
                                                                 </div>
 
                                                                 <%--Fecha Hasta--%>
-                                                                <div style="width:33%">
+                                                                <div style="width: 33%">
                                                                     <label style="margin-top: 5px;">Hasta:</label>
                                                                     <asp:TextBox class="form-control" runat="server" type="date"
                                                                         ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy">
@@ -81,7 +81,7 @@
                                                                 </div>
 
                                                                 <%--Estado--%>
-                                                                <div style="width:33%">
+                                                                <div style="width: 33%">
                                                                     <label style="margin-top: 5px;">Estado</label>
                                                                     <asp:DropDownList ID="ddlEstado" runat="server"
                                                                         CssClass="chosen-select form-control"
@@ -95,7 +95,7 @@
 
 
                                                             <%--Fila 2--%>
-                                                            <div style="display: flex; justify-content: flex-start; column-gap: 2rem; width:100%">
+                                                            <div style="display: flex; justify-content: flex-start; column-gap: 2rem; width: 100%">
 
                                                                 <%--Origen--%>
                                                                 <div style="width: 31%">
@@ -134,10 +134,10 @@
                                                                 </div>--%>
 
                                                                 <%--Boton Filtrar--%>
-                                                                <div style="width: 31%; align-self: flex-end; justify-self:flex-start">
+                                                                <div style="width: 31%; align-self: flex-end; justify-self: flex-start">
                                                                     <%--<a id="btnfiltrar" onclick="filtrarordenesproduccion()" class="btn btn-primary" title="filtrar" style="width: 100%">
                                                                         <i class="fa fa-search"></i>&nbsp;Filtrar
-                                                                    </a>--%>                                          
+                                                                    </a>--%>
                                                                     <asp:LinkButton ID="btnfiltrar" runat="server" OnClick="btnfiltrar_Click" title="filtrar" Style="width: 100%" CssClass="btn btn-primary btn-with-icon">
                                                                         <i class="fa fa-search"></i>&nbsp;Filtrar
                                                                     </asp:LinkButton>
@@ -855,9 +855,33 @@
 
     </script>
 
-        <script>
-            $(document).ready(function () {
-                document.getElementById("lblSiteMap").innerText = "Produccion / Pedidos";
-            });
-        </script>
+    <script>
+        // Esta funcion cambiara el valor de los inputs de fecha agregandole los dias que indique el boton seleccionado
+        function setFecha(diasASumar) {
+            // Obtener la fecha actual
+            var fecha = new Date();
+
+            // Sumar los días especificados
+            fecha.setDate(fecha.getDate() + diasASumar);
+
+            // Formatear la fecha a YYYY-MM-DD
+            var dia = ('0' + fecha.getDate()).slice(-2);
+            var mes = ('0' + (fecha.getMonth() + 1)).slice(-2);
+            var anio = fecha.getFullYear();
+
+            // Establecer el valor del textbox de fecha
+            var txtFechaDesde = document.getElementById('<%=txtFechaHoy.ClientID%>');
+            var txtFechaHasta = document.getElementById('<%=txtFechaVencimiento.ClientID%>');
+
+            txtFechaDesde.value = anio.toString() + "-" + mes.toString() + "-" + dia.toString();
+            txtFechaHasta.value = anio.toString() + "-" + mes.toString() + "-" + dia.toString();
+        }
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            document.getElementById("lblSiteMap").innerText = "Produccion / Pedidos";
+        });
+    </script>
 </asp:Content>
