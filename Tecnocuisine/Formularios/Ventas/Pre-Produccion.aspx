@@ -709,8 +709,10 @@
             let sector = ddlSector.options[ddlSector.selectedIndex].text;
 
             let ddlSectorValue = document.getElementById('<%=ddlSector.ClientID%>').value;
+            let fDesde = document.getElementById('<%=txtFechaHoy.ClientID%>').value;
+            let fHasta = document.getElementById('<%=txtFechaVencimiento.ClientID%>').value;
             //la o en la url es de origen
-            window.location.href = "Pre-produccion.aspx?O=" + sector + "&OV=" + ddlSectorValue;
+            window.location.href = "Pre-produccion.aspx?O=" + sector + "&OV=" + ddlSectorValue + "&fDesde=" + fDesde + "&fHasta=" + fHasta;
         }
 
         function verDetalleTranferencia(idTransferencia, productoDescripcion) {
@@ -871,24 +873,31 @@
         }
     </script>
 
+    <script>
+        function precargarFiltros() {
+            //let fechad = document.getElementById("ContentPlaceHolder1_FechaDesde").value
+            //let fechah = document.getElementById("ContentPlaceHolder1_FechaHasta").value
+            //let ddlSectorProductivo = document.getElementById("ContentPlaceHolder1_ddlSector").value
+            //ddlSectorProductivo.value;
+
+            //if (fechad != "" && fechah != "" && ddlSectorProductivo.value != "") {
+
+            //    establecerFechasSeleccionadas();
+            //    establecerSectorSeleccionado();
+            //} else {
+
+            //    establecerDiaHoy();
+            //}
+
+
+        }
+    </script>
 
     <script>
 
         $(document).ready(function () {
 
-            let fechad = document.getElementById("ContentPlaceHolder1_FechaDesde").value
-            let fechah = document.getElementById("ContentPlaceHolder1_FechaHasta").value
-            let ddlSectorProductivo = document.getElementById("ContentPlaceHolder1_ddlSector").value
-            ddlSectorProductivo.value;
-
-            if (fechad != "" && fechah != "" && ddlSectorProductivo.value != "") {
-
-                establecerFechasSeleccionadas();
-                establecerSectorSeleccionado();
-            } else {
-
-                establecerDiaHoy();
-            }
+            precargarFiltros();
 
             //Este codigo esta para la barra buscadora de recepcion
             // var oTable = $('#idTablaRecepcionSector').dataTable({

@@ -27,8 +27,8 @@ namespace Tecnocuisine.Formularios.Ventas
     {
 
         ControladorSectorProductivo sectorProductivo = new ControladorSectorProductivo();
-        string FechaD = "";
-        string FechaH = "";
+        string fDesde;
+        string fHasta;
         int idSectorProductivo = -1;
         DataTable dt;
         DataTable dt2;
@@ -53,27 +53,57 @@ namespace Tecnocuisine.Formularios.Ventas
         {
             VerificarLogin();
             CargarSectoresProductivodDDL();
-            filtrarDatosTransferenciasBySectorOrigen();
-            filtrarProduccionBySector();
-            filtrarRemitosInternos();
+            SetParametros();
+
             if (!IsPostBack)
             {
             }
+
+            filtrarDatosTransferencias();
+            filtrarProduccion();
+            filtrarRemitosInternos();
+            PrecargarFiltros();
         }
 
-        public void filtrarProduccionBySector()
+        private void PrecargarFiltros()
         {
+            if (!HayBusqueda()) return;
+
+            txtFechaHoy.Text = fDesde.ToString();
+            txtFechaVencimiento.Text = fHasta.ToString();
+            ddlSector.SelectedValue = sectorValue;
+        }
+
+        private void SetParametros()
+        {
+            if (!HayBusqueda()) return;
+
+            sectorValue = Request.QueryString["OV"].ToString();
+            sector = Request.QueryString["O"].ToString();
+            fDesde = Request.QueryString["fDesde"].ToString();
+            fHasta = Request.QueryString["fHasta"].ToString();
+        }
+
+        public void filtrarProduccion()
+        {
+            if (!HayBusqueda()) 
+                return;
+            // Si no hay ningun filtro/parametro
+            if (sectorValue == "-1" && string.IsNullOrEmpty(fDesde) && string.IsNullOrEmpty(fHasta)) 
+                return;
+
             string sectorId = string.Empty;
             if (Request.QueryString["OV"] != null)
                 sectorId = Request.QueryString["OV"].ToString();
 
             if (Request.QueryString["O"] != null)
             {
-                sector = Request.QueryString["O"].ToString();
-                ControladorTransferencia cTransferencia = new ControladorTransferencia();
-                DataTable dt = cTransferencia.getTransferenciasBySector(sector);
+                this.sector = this.sectorValue != "-1" ? Request.QueryString["O"].ToString() : "";
 
-                OrdenarRecetas(dt);
+                ControladorTransferencia cTransferencia = new ControladorTransferencia();
+                DataTable dt = cTransferencia.getTransferenciasByFiltros(sector, fDesde, fHasta);
+
+                //OrdenarRecetas(dt);
 
                 int cont = 0;
                 foreach (DataRow dr in dt.Rows)
@@ -208,87 +238,93 @@ namespace Tecnocuisine.Formularios.Ventas
         //Esta funcion filtra los remitos internos en la pestaña de recepcion
         public void filtrarRemitosInternos()
         {
-            if (Request.QueryString["O"] != null)
+            if (!HayBusqueda())
+                return;
+            // Si no hay ningun filtro/parametro
+            if (sectorValue == "-1" && string.IsNullOrEmpty(fDesde) && string.IsNullOrEmpty(fHasta))
+                return;
+
+            ControladorRemitosInternos cRemitosInternos = new ControladorRemitosInternos();
+            //var remitosInternos = cRemitosInternos.getRemitosInternosBySectorDestino(sector);
+            var remitosInternos = cRemitosInternos.getRemitosInternosByFiltros(sector, fDesde, fHasta);
+
+            //Session["remitosInternosRecepcion"] = remitosInternos;
+
+            foreach (var remito in remitosInternos)
             {
-                sector = Request.QueryString["O"].ToString();
-                ControladorRemitosInternos cRemitosInternos = new ControladorRemitosInternos();
-                var remitosInternos = cRemitosInternos.getRemitosInternosBySectorDestino(sector);
+                int cont = 0;
 
+                cont++;
+                TableRow tr = new TableRow();
+                tr.ID = cont.ToString();
 
-                //Session["remitosInternosRecepcion"] = remitosInternos;
+                //Celdas
+                TableCell celSectorDestino = new TableCell();
+                celSectorDestino.Text = remito.sectorDestino;
+                celSectorDestino.VerticalAlign = VerticalAlign.Middle;
+                celSectorDestino.HorizontalAlign = HorizontalAlign.Left;
+                celSectorDestino.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celSectorDestino);
 
-                foreach (var remito in remitosInternos)
-                {
+                TableCell celNumero = new TableCell();
+                celNumero.Text = remito.numero;
+                celNumero.VerticalAlign = VerticalAlign.Middle;
+                celNumero.HorizontalAlign = HorizontalAlign.Left;
+                celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celNumero);
 
-                    int cont = 0;
+                TableCell celFecha = new TableCell();
+                celFecha.Text = remito.fecha.ToString();
+                celFecha.VerticalAlign = VerticalAlign.Middle;
+                celFecha.HorizontalAlign = HorizontalAlign.Left;
+                celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celFecha);
 
-                    cont++;
-                    TableRow tr = new TableRow();
-                    tr.ID = cont.ToString();
+                TableCell celAccion = new TableCell();
+                LinkButton btnDetalle = new LinkButton();
+                btnDetalle.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
+                btnDetalle.CssClass = "btn btn-xs";
+                btnDetalle.Style.Add("background-color", "transparent");
+                btnDetalle.Attributes.Add("data-toggle", "modal");
+                btnDetalle.Attributes.Add("href", "#modalConfirmacion2");
+                btnDetalle.Text = "<span title='Ver pedidos'><i class='fa fa-search' style='color: black;'></i></span>";
+                btnDetalle.Attributes.Add("onclick", "verDetalleRemitoInternoPdf('" + remito.id + "');");
+                celAccion.Controls.Add(btnDetalle);
+                tr.Cells.Add(celAccion);
 
-                    //Celdas
-                    TableCell celSectorDestino = new TableCell();
-                    celSectorDestino.Text = remito.sectorDestino;
-                    celSectorDestino.VerticalAlign = VerticalAlign.Middle;
-                    celSectorDestino.HorizontalAlign = HorizontalAlign.Left;
-                    celSectorDestino.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celSectorDestino);
+                LinkButton btnDetalleRemitoInterno = new LinkButton();
+                btnDetalleRemitoInterno.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
+                btnDetalleRemitoInterno.CssClass = "btn btn-xs";
+                btnDetalleRemitoInterno.Style.Add("background-color", "transparent");
+                btnDetalleRemitoInterno.Attributes.Add("data-toggle", "modal");
+                btnDetalleRemitoInterno.Attributes.Add("href", "#modalConfirmacion2");
+                btnDetalleRemitoInterno.Text = "<span title='Ver pedidos'><i class='fa fa-tasks' style='color: black;'></i></span>";
+                btnDetalleRemitoInterno.Attributes.Add("onclick", "verDetalleRemitoInternoModal('" + remito.id + "');");
+                celAccion.Controls.Add(btnDetalleRemitoInterno);
 
-
-                    TableCell celNumero = new TableCell();
-                    celNumero.Text = remito.numero;
-                    celNumero.VerticalAlign = VerticalAlign.Middle;
-                    celNumero.HorizontalAlign = HorizontalAlign.Left;
-                    celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celNumero);
-
-
-
-                    TableCell celFecha = new TableCell();
-                    celFecha.Text = remito.fecha.ToString();
-                    celFecha.VerticalAlign = VerticalAlign.Middle;
-                    celFecha.HorizontalAlign = HorizontalAlign.Left;
-                    celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celFecha);
-
-
-
-                    TableCell celAccion = new TableCell();
-                    LinkButton btnDetalle = new LinkButton();
-                    btnDetalle.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
-                    btnDetalle.CssClass = "btn btn-xs";
-                    btnDetalle.Style.Add("background-color", "transparent");
-                    btnDetalle.Attributes.Add("data-toggle", "modal");
-                    btnDetalle.Attributes.Add("href", "#modalConfirmacion2");
-                    btnDetalle.Text = "<span title='Ver pedidos'><i class='fa fa-search' style='color: black;'></i></span>";
-                    btnDetalle.Attributes.Add("onclick", "verDetalleRemitoInternoPdf('" + remito.id + "');");
-                    celAccion.Controls.Add(btnDetalle);
-                    tr.Cells.Add(celAccion);
-
-
-
-
-                    LinkButton btnDetalleRemitoInterno = new LinkButton();
-                    btnDetalleRemitoInterno.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
-                    btnDetalleRemitoInterno.CssClass = "btn btn-xs";
-                    btnDetalleRemitoInterno.Style.Add("background-color", "transparent");
-                    btnDetalleRemitoInterno.Attributes.Add("data-toggle", "modal");
-                    btnDetalleRemitoInterno.Attributes.Add("href", "#modalConfirmacion2");
-                    btnDetalleRemitoInterno.Text = "<span title='Ver pedidos'><i class='fa fa-tasks' style='color: black;'></i></span>";
-                    btnDetalleRemitoInterno.Attributes.Add("onclick", "verDetalleRemitoInternoModal('" + remito.id + "');");
-                    celAccion.Controls.Add(btnDetalleRemitoInterno);
-
-                    phRecepcion.Controls.Add(tr);
-                }
-
-
-
+                phRecepcion.Controls.Add(tr);
             }
-
         }
 
-        public void filtrarDatosTransferenciasBySectorOrigen()
+        /// <summary>
+        /// Verifica que esten en la URL los parametros enviados al hacer una busqueda
+        /// </summary>
+        /// <returns></returns>
+        private bool HayBusqueda()
         {
+            return Request.QueryString["O"] != null && 
+                    Request.QueryString["fDesde"] != null &&
+                    Request.QueryString["fHasta"] != null;
+        }
+
+        public void filtrarDatosTransferencias()
+        {
+            if (!HayBusqueda())
+                return;
+            // Si no hay ningun filtro/parametro
+            if (sectorValue == "-1" && string.IsNullOrEmpty(fDesde) && string.IsNullOrEmpty(fHasta))
+                return;
+
             if (Request.QueryString["O"] != null)
             {
                 sector = Request.QueryString["O"].ToString();
@@ -301,7 +337,7 @@ namespace Tecnocuisine.Formularios.Ventas
 
 
                 controladorDatosTransferencias cTransferencias = new controladorDatosTransferencias();
-                DataTable dt = cTransferencias.getDatosTransferenciaGroupBySectorDestino(sector);
+                DataTable dt = cTransferencias.getDatosTransferenciaGroupByFiltros(sector,fDesde,fHasta);
 
                 cargarDatosTransferenciasEnPh(dt);
             }
