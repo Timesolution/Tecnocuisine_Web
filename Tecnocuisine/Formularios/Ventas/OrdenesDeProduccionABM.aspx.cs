@@ -44,12 +44,8 @@ namespace Tecnocuisine.Formularios.Ventas
                 {
                     CargarCodigoOrdenCompra();
                 }
-
             }
-
-
         }
-
 
         private void precargarOrdenDeProduccion(int idOrdenDeProduccion)
         {
@@ -60,7 +56,6 @@ namespace Tecnocuisine.Formularios.Ventas
             TxtClientes.Text = ordeneDeProduccion.idCliente.ToString() + " - " + ordeneDeProduccion.Clientes.alias + " - " + "Cliente";
 
             precargarRecetasDeLaOrden(idOrdenDeProduccion);
-
         }
 
         public void precargarRecetasDeLaOrden(int idOrdenDeProduccion)
@@ -405,11 +400,7 @@ namespace Tecnocuisine.Formularios.Ventas
         [WebMethod]
         public static int btnGuardarOrdenDeCompra_Click(string OrdenNumero, string fechaEntrega, string Cliente, string DatosProductos)
         {
-
-
-            //Si esto da false quiere decir que se esta agregando
-
-            Tecnocuisine_API.Entitys.ordenesDeProduccion ordDeProduccion = new Tecnocuisine_API.Entitys.ordenesDeProduccion();
+            ordenesDeProduccion ordDeProduccion = new ordenesDeProduccion();
             ordDeProduccion.OPNumero = OrdenNumero;
             ordDeProduccion.fechaEntrega = Convert.ToDateTime(fechaEntrega);
 
@@ -417,15 +408,13 @@ namespace Tecnocuisine.Formularios.Ventas
             string clienteTexto = Cliente;
             int numeroCliente;
             string[] partes = clienteTexto.Split('-');
+
             if (partes.Length >= 2)
             {
                 if (int.TryParse(partes[0].Trim(), out numeroCliente))
-                {
-                    // Ahora tienes el número del cliente en la variable numeroCliente
-                    // Puedes usarlo en tu código
                     ordDeProduccion.idCliente = numeroCliente;
-                }
             }
+
             ordDeProduccion.Estado = true;
             ordDeProduccion.estadoDeLaOrden = 2;
             ControladorOrdenDeProduccion controladorOrdenDeProduccion = new ControladorOrdenDeProduccion();

@@ -281,16 +281,16 @@ namespace Tecnocuisine.Formularios.Ventas
                 tr.Cells.Add(celFecha);
 
                 TableCell celAccion = new TableCell();
-                LinkButton btnDetalle = new LinkButton();
-                btnDetalle.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
-                btnDetalle.CssClass = "btn btn-xs";
-                btnDetalle.Style.Add("background-color", "transparent");
-                btnDetalle.Attributes.Add("data-toggle", "modal");
-                btnDetalle.Attributes.Add("href", "#modalConfirmacion2");
-                btnDetalle.Text = "<span title='Ver pedidos'><i class='fa fa-search' style='color: black;'></i></span>";
-                btnDetalle.Attributes.Add("onclick", "verDetalleRemitoInternoPdf('" + remito.id + "');");
-                celAccion.Controls.Add(btnDetalle);
-                tr.Cells.Add(celAccion);
+                //LinkButton btnDetalle = new LinkButton();
+                //btnDetalle.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
+                //btnDetalle.CssClass = "btn btn-xs";
+                //btnDetalle.Style.Add("background-color", "transparent");
+                //btnDetalle.Attributes.Add("data-toggle", "modal");
+                //btnDetalle.Attributes.Add("href", "#modalConfirmacion2");
+                //btnDetalle.Text = "<span title='Ver pedidos'><i class='fa fa-search' style='color: black;'></i></span>";
+                //btnDetalle.Attributes.Add("onclick", "verDetalleRemitoInternoPdf('" + remito.id + "');");
+                //celAccion.Controls.Add(btnDetalle);
+                
 
                 LinkButton btnDetalleRemitoInterno = new LinkButton();
                 btnDetalleRemitoInterno.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
@@ -301,6 +301,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 btnDetalleRemitoInterno.Text = "<span title='Ver pedidos'><i class='fa fa-tasks' style='color: black;'></i></span>";
                 btnDetalleRemitoInterno.Attributes.Add("onclick", "verDetalleRemitoInternoModal('" + remito.id + "');");
                 celAccion.Controls.Add(btnDetalleRemitoInterno);
+                tr.Cells.Add(celAccion);
 
                 phRecepcion.Controls.Add(tr);
             }
@@ -598,6 +599,14 @@ namespace Tecnocuisine.Formularios.Ventas
                 btnDetalle.Text = "<span title='Ver pedidos'><i class='fa fa-eye' style='color: black;'></i></span>";
                 btnDetalle.Attributes.Add("onclick", "getDatosTransferenciaBySectorDestino('" + dr["sectorOrigen"].ToString() + "', '" + dr["sectorDestino"].ToString() + "');");
                 celAccion.Controls.Add(btnDetalle);
+
+                LinkButton btnRemito = new LinkButton();
+                btnRemito.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
+                btnRemito.CssClass = "btn btn-xs";
+                btnRemito.Style.Add("background-color", "transparent");
+                btnRemito.Text = "<span title='Imprimir'><i class='fa fa-search' style='color: black;'></i></span>";
+               // btnRemito.Attributes.Add("onclick", "verDetalleRemitoInternoPdf('" + remito.id + "');");
+                celAccion.Controls.Add(btnRemito);
 
 
                 tr.Cells.Add(celAccion);
@@ -1553,9 +1562,9 @@ namespace Tecnocuisine.Formularios.Ventas
 
                 foreach (var row in tableData)
                 {
-                    int result = ValidateRow(row);
+                    //int result = ValidateRow(row);
 
-                    //if(result != 1)
+                    //if (result != 1)
                     //{
                     //    Exception ex = new Exception();
                     //    ex.Data["ErrorCode"] = result;
@@ -1589,16 +1598,16 @@ namespace Tecnocuisine.Formularios.Ventas
                         itemRemitosInternos.cantidadEnviada = Convert.ToDecimal(row.cantidadEnviada, CultureInfo.InvariantCulture);
                         itemRemitosInternos.fecha = DateTime.Now;
                         itemRemitosInternos.estado = true;
+                        cItemsRemitosInternos.addItemsRemitosInternos(itemRemitosInternos);
 
+                        //Descontar stock del producto en el sector de origen(desde donde se esta enviando)
                         StockSectores stockSectores = controladorStockProducto.ObtenerStockSectores(Convert.ToInt32(row.idProducto), Convert.ToInt32(row.idSectorOrigen));
-
                         if (stockSectores != null)
                         {
-                            cItemsRemitosInternos.addItemsRemitosInternos(itemRemitosInternos);
-
                             stockSectores.stock -= itemRemitosInternos.cantidadEnviada;
                             controladorStockProducto.EditarStockSectores(stockSectores);
                         }
+                        //Falta aumentar stock en el sector destino (hacia donde se envian los productos)
                     }
                 }
 

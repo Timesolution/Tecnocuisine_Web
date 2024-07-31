@@ -18,7 +18,7 @@
                 <div class="ibox float-e-margins">
 
                     <div class="ibox-content">
-                        <div class="row" style="padding-left: 15px; padding-right: 15px; padding-bottom:15px">
+                        <div class="row" style="padding-left: 15px; padding-right: 15px; padding-bottom: 15px">
 
                             <div class="row" style="padding-left: 15px; padding-right: 15px">
                                 <div class="col-md-4">
@@ -31,7 +31,7 @@
 
                             <div class="row" style="padding-left: 15px; padding-right: 15px">
                                 <%--Cliente--%>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div>
                                         <label>Cliente</label>
                                     </div>
@@ -49,7 +49,7 @@
                                 </div>
 
                                 <%--Fecha de entrega--%>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div>
                                         <label>Fecha de entrega</label>
                                     </div>
@@ -67,11 +67,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row" style="padding-left: 15px; padding-right: 15px">
-
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div>
                                         <label>Producto/Receta</label>
                                     </div>
@@ -118,18 +115,20 @@
 
                                 <div class="col-md-2">
                                     <div>
-                                        <label style="visibility:hidden">Agregar</label>
+                                        <label style="visibility: hidden">Agregar</label>
                                     </div>
                                     <%-- Este es el boton para agregar una receta a la tabla de abajo --%>
                                     <button class="btn btn-md btn-primary m-t-n-xs"
                                         data-toggle="tooltip" data-placement="top"
                                         data-original-title="Agregar producto"
                                         text="Confirmar Venta" validationgroup="AgregarEntregas"
-                                        id="btnGuardar" onclick="agregarProductoPH(); return false;" style="height:100%">
+                                        id="btnGuardar" onclick="agregarProductoPH(); return false;" style="height: 100%; margin-top: 0">
                                         <i style="color: white" class="fa fa-check"></i>
                                     </button>
                                 </div>
+                            </div>
 
+                            <div class="row" style="padding-left: 15px; padding-right: 15px">
                             </div>
 
 
@@ -467,10 +466,10 @@
 
     </script>
 
-        <script>
-            $(document).ready(function () {
-                document.getElementById("lblSiteMap").innerText = "Produccion / Nueva Orden";
-            });
-        </script>
+    <script>
+        $(document).ready(function () {
+            document.getElementById("lblSiteMap").innerText = "Produccion / Nueva Orden";
+        });
+    </script>
 
 </asp:Content>

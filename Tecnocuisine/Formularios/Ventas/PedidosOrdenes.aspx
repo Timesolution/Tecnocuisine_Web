@@ -11,57 +11,51 @@
                             <div class="wrapper wrapper-content animated fadeInRight">
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <div class="ibox float-e-margins">
+                                        <div class="ibox float-e-margins" style="padding:1rem">
                                             <div class="ibox-content">
                                                 <div style="margin-left: 0px; margin-right: 0px;">
-                                                    <div style="display: flex; justify-content: space-between; column-gap: 5rem; margin-bottom: 3rem; padding-right: 1rem;">
+                                                    <div style="display: flex; justify-content: space-between; column-gap: 5rem; margin-bottom: 3rem; padding-right: 1rem; flex-wrap: nowrap">
 
-                                                        <%--Seccion busqueda rapida--%>
-                                                        <div>
+                                                        <%--Seccion filtros--%>
+                                                        <div style="width: 100%">
 
-                                                            <strong style="margin-left: 1rem; font-size: 1.6rem">Busqueda rapida</strong>
+                                                            <strong style="font-size: 2rem">Filtrar</strong>
 
-                                                            <div style="margin-left: 1rem; margin-top: 1rem">
+                                                            <div style="margin-top: 1rem; display: none">
                                                                 <div class="input-group m-b">
                                                                     <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
                                                                     <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" />
                                                                 </div>
                                                             </div>
 
+                                                            <%--Botones ayer hoy mañana pasado--%>
                                                             <div>
                                                                 <%--<a id="btnAyer" onclick="filtrartTransferenciasAyer()" class="btn btn-warning"
                                                                     title="filtrar ayer" style="height: 32px; margin-left: 10px">Ayer
                                                                 </a>--%>
-                                                                <asp:Button runat="server" ID="btnAyer" OnClientClick="setFecha(-1); return false" class="btn btn-warning"
-                                                                    title="filtrar ayer" Style="height: 32px; margin-left: 10px" Text="Ayer"></asp:Button>
+                                                                <asp:Button runat="server" ID="btnAyer" OnClientClick="setFecha(-1); return false" class="btn btn-default"
+                                                                    title="filtrar ayer" Style="height: 32px;" Text="Ayer"></asp:Button>
 
                                                                 <%--<a id="btnHoy" onclick="filtrartTransferenciasHoy()" class="btn btn-warning"
                                                                     title="filtrar hoy" style="height: 32px; margin-left: 10px">Hoy
                                                                 </a>--%>
-                                                                <asp:Button runat="server" ID="btnHoy" OnClientClick="setFecha(0); return false" class="btn btn-warning"
-                                                                    title="filtrar hoy" Style="height: 32px; margin-left: 10px" Text="Hoy"></asp:Button>
+                                                                <asp:Button runat="server" ID="btnHoy" OnClientClick="setFecha(0); return false" class="btn btn-default"
+                                                                    title="filtrar hoy" Style="height: 32px;" Text="Hoy"></asp:Button>
 
                                                                 <%--<a id="btnMañana" onclick="filtrartTransferenciasMañana()" class="btn btn-warning"
                                                                     title="filtrar mañana" style="height: 32px; margin-left: 10px">Mañana
                                                                 </a>--%>
-                                                                <asp:Button runat="server" ID="btnMañana" OnClientClick="setFecha(1); return false" class="btn btn-warning"
-                                                                    title="filtrar mañana" Style="height: 32px; margin-left: 10px" Text="Mañana"></asp:Button>
+                                                                <asp:Button runat="server" ID="btnMañana" OnClientClick="setFecha(1); return false" class="btn btn-default"
+                                                                    title="filtrar mañana" Style="height: 32px;" Text="Mañana"></asp:Button>
 
                                                                 <%--<a id="btnPasado" onclick="filtrartTransferenciasPasado()" class="btn btn-warning"
                                                                     title="filtrar pasado" style="height: 32px; margin-left: 10px">Pasado 
                                                                 </a>--%>
-                                                                <asp:Button runat="server" ID="btnPasado" OnClientClick="setFecha(2); return false" class="btn btn-warning"
-                                                                    title="filtrar pasado" Style="height: 32px; margin-left: 10px" Text="Pasado"></asp:Button>
+                                                                <asp:Button runat="server" ID="btnPasado" OnClientClick="setFecha(2); return false" class="btn btn-default"
+                                                                    title="filtrar pasado" Style="height: 32px;" Text="Pasado"></asp:Button>
                                                             </div>
 
-                                                        </div>
-
-                                                        <%--Seccion busqueda avanzada--%>
-                                                        <div style="width: 50%">
-
-                                                            <strong style="font-size: 1.6rem">Busqueda avanzada</strong>
-
-                                                            <%--Fila 1--%>
+                                                            <%--Fila--%>
                                                             <div style="display: flex; justify-content: flex-start; column-gap: 2rem; width: 100%">
 
                                                                 <%--Fecha Desde--%>
@@ -79,23 +73,6 @@
                                                                         ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy">
                                                                     </asp:TextBox>
                                                                 </div>
-
-                                                                <%--Estado--%>
-                                                                <div style="width: 33%">
-                                                                    <label style="margin-top: 5px;">Estado</label>
-                                                                    <asp:DropDownList ID="ddlEstado" runat="server"
-                                                                        CssClass="chosen-select form-control"
-                                                                        DataTextField="CountryName" DataValueField="CountryCode"
-                                                                        Data-placeholder="Seleccione Estado..." Width="100%">
-                                                                        <asp:ListItem Text="Select" Value=""></asp:ListItem>
-                                                                    </asp:DropDownList>
-                                                                </div>
-
-                                                            </div>
-
-
-                                                            <%--Fila 2--%>
-                                                            <div style="display: flex; justify-content: flex-start; column-gap: 2rem; width: 100%">
 
                                                                 <%--Origen--%>
                                                                 <div style="width: 31%">
@@ -123,6 +100,36 @@
                                                                     </div>
                                                                 </div>
 
+                                                                                                                                <%--Estado--%>
+                                                                <div style="width: 33%">
+                                                                    <label style="margin-top: 5px;">Estado</label>
+                                                                    <asp:DropDownList ID="ddlEstado" runat="server"
+                                                                        CssClass="chosen-select form-control"
+                                                                        DataTextField="CountryName" DataValueField="CountryCode"
+                                                                        Data-placeholder="Seleccione Estado..." Width="100%">
+                                                                        <asp:ListItem Text="Select" Value=""></asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                </div>
+
+                                                                <%--Boton Filtrar--%>
+                                                                <div style="align-self: flex-end; justify-self: flex-start">
+                                                                    <%--<a id="btnfiltrar" onclick="filtrarordenesproduccion()" class="btn btn-primary" title="filtrar" style="width: 100%">
+                                                               <i class="fa fa-search"></i>&nbsp;Filtrar
+                                                           </a>--%>
+                                                                    <asp:LinkButton ID="btnfiltrar" runat="server" OnClick="btnfiltrar_Click" OnClientClick="limpiarUrl()" title="filtrar" Style="width: 100%; margin-bottom:0" CssClass="btn btn-primary btn-with-icon">
+                                                                         <i class="fa fa-search"></i>
+                                                                    </asp:LinkButton>
+
+                                                                </div>
+
+                                                            </div>
+
+
+                                                            <%--Fila 2--%>
+                                                            <div style="display: flex; justify-content: flex-start; column-gap: 2rem; width: 100%">
+
+
+
                                                                 <%--<label style="margin-top: 5px; margin-left: 10px; margin-right: 10px">Sector</label>
                                                                 <div>
                                                                     <asp:DropDownList ID="ddlSectorUsuario" runat="server"
@@ -132,21 +139,13 @@
                                                                         <asp:ListItem Text="Select" Value=""></asp:ListItem>
                                                                     </asp:DropDownList>
                                                                 </div>--%>
-
-                                                                <%--Boton Filtrar--%>
-                                                                <div style="width: 31%; align-self: flex-end; justify-self: flex-start">
-                                                                    <%--<a id="btnfiltrar" onclick="filtrarordenesproduccion()" class="btn btn-primary" title="filtrar" style="width: 100%">
-                                                                        <i class="fa fa-search"></i>&nbsp;Filtrar
-                                                                    </a>--%>
-                                                                    <asp:LinkButton ID="btnfiltrar" runat="server" OnClick="btnfiltrar_Click" OnClientClick="limpiarUrl()" title="filtrar" Style="width: 100%" CssClass="btn btn-primary btn-with-icon">
-                                                                        <i class="fa fa-search"></i>&nbsp;Filtrar
-                                                                    </asp:LinkButton>
-
-                                                                </div>
                                                             </div>
 
                                                         </div>
 
+                                                        <%--Seccion busqueda avanzada--%>
+                                                        <%--    <div style="width: 50%">
+                                                        </div>--%>
                                                     </div>
 
                                                     <asp:UpdatePanel ID="UpdatePanel1" runat="server">

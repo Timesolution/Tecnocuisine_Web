@@ -438,6 +438,29 @@ namespace Tecnocuisine.Formularios.Ventas
                 Dictionary<string, DataTable> dtDiccionario = new Dictionary<string, DataTable>();
                 Dictionary<string, DataTable> sumaCantidadProductos = new Dictionary<string, DataTable>();
 
+                // Insertar una fila manualmente en el DataTable
+                //DataRow newRow = dt.NewRow();
+                ////newRow["ID"] = 1;
+                //newRow["idOrdenProduccion"] = 255;
+                //newRow["OPNumero"] = "#000252";
+                //newRow["Column1"] = "LA RECETA A PRODUCIR";
+                //newRow["idRecetaPadre"] = 94;
+                //newRow["CantidadPadre"] = 1;
+                //newRow["FechaEntregaOrden"] = DateTime.Now;
+                //newRow["idSectorPadre"] = 1;
+                //newRow["sectorPadre"] = "COCINA CALIENTE";
+                //newRow["idProductoOReceta"] = 51;
+                //newRow["descripcion"] = "LA RECETA A PRODUCIR";
+                //newRow["cantidad"] = 10;
+                //newRow["idSector"] = 7;
+                //newRow["sectorProductivo"] = "ALMACEN";
+                //newRow["fechaProducto"] = DateTime.Now;
+                //newRow["ingredienteOreceta"] = "ingrediente";
+                //newRow["RazonSocial"] = "AIR CANADA INTERNACIONAL";
+                //newRow["unidadMedida"] = "Litro";
+                //newRow["SectorPadre"] = "COCINA CALIENTE";
+                //dt.Rows.Add(newRow);
+
                 foreach (DataRow row in dt.Rows)
                 {
                     string sector = row["sectorPadre"].ToString();

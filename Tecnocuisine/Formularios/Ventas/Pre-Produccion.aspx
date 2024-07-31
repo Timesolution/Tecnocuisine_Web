@@ -412,10 +412,10 @@
                                         <table class="table table-hover no-margins table-bordered" id="tablePedidos">
                                             <thead>
                                                 <tr>
-                                                    <td><strong>Id Sector Origen</strong></td>
+                                                    <td style="display:none; width:0"><strong>Id Sector Origen</strong></td>
                                                     <td><strong>Sector Origen</strong></td>
                                                     <td><strong>Sector Destino</strong></td>
-                                                    <td><strong>Id Producto</strong></td>
+                                                    <td style="display:none; width:0"><strong>Id Producto</strong></td>
                                                     <td><strong>Producto</strong></td>
                                                     <td class="text-right"><strong>Cantidad</strong></td>
                                                     <td class="text-right"><strong>Cantidad confirmada</strong></td>
@@ -646,6 +646,7 @@
                         toastr.success("Transferencia confirmada con exito!", "Exito");
                         //imprimirRemitoEnviado(r);
                         window.open('ImpresionRemitos.aspx?r=' + r, '_blank');
+                        location.reload();
                     }
                     else if (response.d == -1) {
                         toastr.error("La transferencia no pudo ser confirmada.", "Error");
@@ -1537,10 +1538,10 @@
 
                             if (element.tieneStock == "True") {
                                 filaProducto = `<tr>
-                                                <td>${element.idSectorOrigen}</td>
+                                                <td style="display:none">${element.idSectorOrigen}</td>
                                                 <td>${element.sectorOrigen}</td>
                                                 <td>${element.sectorDestino}</td>
-                                                <td>${element.idProducto}</td>
+                                                <td style="display:none">${element.idProducto}</td>
                                                 <td>${element.producto}</td>
                                                 <td class="text-right">${element.cantidad}</td>
                                                 <td class="text-right">${element.cantidadConfirmada}</td>
@@ -1549,10 +1550,10 @@
                             }
                             else {
                                 filaProducto = `<tr>
-                                                <td style="color:red">${element.idSectorOrigen}</td>
+                                                <td style="color:red; display:none">${element.idSectorOrigen}</td>
                                                 <td style="color:red">${element.sectorOrigen}</td>
                                                 <td style="color:red">${element.sectorDestino}</td>
-                                                <td style="color:red">${element.idProducto}</td>
+                                                <td style="color:red; display:none">${element.idProducto}</td>
                                                 <td style="color:red">${element.producto}</td>
                                                 <td style="color:red" class="text-right">${element.cantidad}</td>
                                                 <td style="color:red" class="text-right">${element.cantidadConfirmada}</td>

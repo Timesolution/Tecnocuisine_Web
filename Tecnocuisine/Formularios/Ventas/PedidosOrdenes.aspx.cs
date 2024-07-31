@@ -1206,14 +1206,12 @@ namespace Tecnocuisine.Formularios.Ventas
             try
             {
                 //Obtener valores para filtro
-                DateTime fechaDesde = DateTime.ParseExact(txtFechaHoy.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                DateTime fechaHasta = DateTime.ParseExact(txtFechaVencimiento.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture);
                 string origen = ddlOrigen.SelectedValue != "-1" ? ddlOrigen.SelectedItem.Text : "";
                 string destino = ddlDestino.SelectedValue != "-1" ? ddlDestino.SelectedItem.Text : "";
                 int estado = int.Parse(ddlEstado.SelectedValue);
 
                 //Obtener transferencias filtradas
-                var transferencias = new ControladorTransferencia().filtrarTransferencias(fechaDesde, fechaHasta, origen, destino, estado);
+                var transferencias = new ControladorTransferencia().filtrarTransferencias(txtFechaHoy.Text, txtFechaVencimiento.Text, origen, destino, estado);
 
                 //Mostrar
                 LoadTableTransferencias(transferencias);
@@ -1255,7 +1253,12 @@ namespace Tecnocuisine.Formularios.Ventas
 
                 //Celdas
                 TableCell celFecha = new TableCell();
-                celFecha.Text = item.fecha.ToString();
+                DateTime soloFecha;
+                if (DateTime.TryParse(item.fecha.ToString(), out soloFecha))
+                {
+                    celFecha.Text = soloFecha.ToString("dd/MM/yyyy"); 
+                }
+
                 celFecha.VerticalAlign = VerticalAlign.Middle;
                 celFecha.HorizontalAlign = HorizontalAlign.Left;
                 celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
