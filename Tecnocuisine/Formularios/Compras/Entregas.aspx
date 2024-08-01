@@ -450,7 +450,7 @@
                         });
 
                     } else {
-                        toastr.error("El item no tiene marcas asignadas.", "Error", {
+                        toastr.error("El producto o receta no tiene marcas asignadas.", "Error", {
                             "positionClass": "toast-bottom-right"
                         });
 

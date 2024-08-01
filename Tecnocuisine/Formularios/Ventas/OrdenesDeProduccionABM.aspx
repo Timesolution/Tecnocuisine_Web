@@ -68,7 +68,12 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                            </div>
+
+
+                            <div class="row" style="padding-left: 15px; padding-right: 15px">
+
+                                                                <div class="col-md-3">
                                     <div>
                                         <label>Producto/Receta</label>
                                     </div>
@@ -126,9 +131,6 @@
                                         <i style="color: white" class="fa fa-check"></i>
                                     </button>
                                 </div>
-                            </div>
-
-                            <div class="row" style="padding-left: 15px; padding-right: 15px">
                             </div>
 
 

@@ -1033,18 +1033,18 @@ namespace Tecnocuisine.Formularios.Compras
                 // Es Receta
                 else
                 {
-                    //var marcas = controladorMarca.ObtenerMarcaPorIDReceta(idItem);
+                    var marcas = controladorMarca.ObtenerMarcasPorIDReceta(idItem);
 
-                    //if (marcas.Count > 0)
-                    //{
-                    //    foreach (var item in marcas)
-                    //    {
-                    //        PresentacionClass pc = new PresentacionClass();
-                    //        pc.id = item.Articulos_Marcas.id;
-                    //        pc.descripcion = item.Articulos_Marcas.descripcion;
-                    //        listaFInal.Add(pc);
-                    //    }
-                    //}
+                    if (marcas.Count > 0)
+                    {
+                        foreach (var item in marcas)
+                        {
+                            PresentacionClass pc = new PresentacionClass();
+                            pc.id = item.Articulos_Marcas.id;
+                            pc.descripcion = item.Articulos_Marcas.descripcion;
+                            listaFInal.Add(pc);
+                        }
+                    }
 
                     return listaFInal;
                 }
