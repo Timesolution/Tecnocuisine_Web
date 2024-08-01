@@ -1562,14 +1562,14 @@ namespace Tecnocuisine.Formularios.Ventas
 
                 foreach (var row in tableData)
                 {
-                    //int result = ValidateRow(row);
+                    int result = ValidateRow(row);
 
-                    //if (result != 1)
-                    //{
-                    //    Exception ex = new Exception();
-                    //    ex.Data["ErrorCode"] = result;
-                    //    throw ex;
-                    //}
+                    if (result != 1)
+                    {
+                        Exception ex = new Exception();
+                        ex.Data["ErrorCode"] = result;
+                        throw ex;
+                    }
                 }
 
                 //1-Guardo el remito interno 
@@ -1646,16 +1646,31 @@ namespace Tecnocuisine.Formularios.Ventas
 
         private static int ValidateRow(RowClass row)
         {
+            ControladorProducto cProducto = new ControladorProducto();
+            ControladorReceta cReceta = new ControladorReceta();
             var cantidadAEnviar = Convert.ToDecimal(row.cantidadEnviada, CultureInfo.InvariantCulture);
-            StockSectores stockSector = new ControladorStockProducto().ObtenerStockSectores(Convert.ToInt32(row.idProducto), Convert.ToInt32(row.idSectorOrigen));
+            decimal stock = 0;
+            int idItem = Convert.ToInt32(row.idProducto);
+            string descripcion = row.producto;
 
-            if (stockSector == null)
+            if (cProducto.ExisteProducto(idItem, descripcion))
+            {
+                StockProducto stockProducto = new ControladorStockProducto().ObtenerStockProducto(idItem);
+                stock = stockProducto.stock ?? 0;
+            }
+            else // Es Receta
+            {
+                StockReceta stockReceta = new ControladorStockReceta().ObtenerStockReceta(idItem);
+                stock = stockReceta.stock ?? 0;
+            }
+
+            if (stock==0)
                 return 2;
 
             else if (cantidadAEnviar == 0)
                 return 3;
 
-            else if (cantidadAEnviar > stockSector.stock)
+            else if (cantidadAEnviar > stock)
                 return 4;
 
             return 1;
