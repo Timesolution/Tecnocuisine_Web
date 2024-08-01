@@ -341,6 +341,11 @@ namespace Tecnocuisine.Formularios.Ventas
 
                 LinkButton btnDetalles = new LinkButton();
                 btnDetalles.CssClass = "btn btn-xs";
+
+                // Si la orden ya se mando a producir, no se debe poder editar
+                if (ordenProd.EstadosOrdenes.id == 1)
+                    btnDetalles.Attributes.Add("disabled", "true");
+
                 btnDetalles.Style.Add("background-color", "transparent");
                 btnDetalles.ID = "btnSelecReceta_" + ordenProd.id + "_";
                 btnDetalles.Text = "<span><i style='color:black;' class='fa fa-pencil' title='Editar'></i></span>"; // Agregar la tooltip "Editar"

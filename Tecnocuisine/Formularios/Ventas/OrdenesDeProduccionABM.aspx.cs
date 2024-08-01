@@ -26,10 +26,8 @@ namespace Tecnocuisine.Formularios.Ventas
                 ObtenerClientes();
                 txtFechaHoy.Text = DateTime.Now.ToString("dd/MM/yyyy");
 
-
                 if (int.Parse(Request.QueryString["Accion"]) == 2)
                 {
-
                     if (Request.QueryString["id"] != null)
                     {
                         int idOrdenDeProduccion = int.Parse(Request.QueryString["id"]);
@@ -51,6 +49,11 @@ namespace Tecnocuisine.Formularios.Ventas
         {
             ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
             ordenesDeProduccion ordeneDeProduccion = cOrdenDeProduccion.GetOneOrdenesDeProduccionById(idOrdenDeProduccion);
+
+            // Si la orden ya se mando a producir, no se debe poder editar
+            if (ordeneDeProduccion.estadoDeLaOrden == 1)
+                Response.Redirect("OrdenesDeProduccion.aspx", false);
+
             txtFechaHoy.Text = Convert.ToDateTime(ordeneDeProduccion.fechaEntrega).ToString("dd/MM/yyyy");
             lblOPNumero.Text = ordeneDeProduccion.OPNumero;
             TxtClientes.Text = ordeneDeProduccion.idCliente.ToString() + " - " + ordeneDeProduccion.Clientes.alias + " - " + "Cliente";
