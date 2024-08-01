@@ -49,7 +49,7 @@ namespace Tecnocuisine.Formularios.Compras
                 CargarSectores();
                 //ObtenerPresentaciones();
                 txtFechaEntrega.Text = DateTime.Now.ToString("dd/MM/yyyy");
-                txtFechaVencimiento.Text = DateTime.Now.AddDays(31).ToString("dd/MM/yyyy");
+                //txtFechaVencimiento.Text = DateTime.Now.AddDays(31).ToString("dd/MM/yyyy");
                 //DateTime.Now.AddMonths(1).ToString("dd/MM/yyyy");
                 if (accion == 2)
                 {
@@ -786,6 +786,7 @@ namespace Tecnocuisine.Formularios.Compras
                                         RecetaNuevo.Precio = precio;
                                         RecetaNuevo.idSector = idSector;
                                         RecetaNuevo.idPresentacion = Convert.ToInt32(Presentaciones);
+                                        RecetaNuevo.FechaVencimiento = fechaVencimientoItem;
                                         RecetaNuevo.idMarca = Convert.ToInt32(id_Marca);
                                         ControladorEntregas.AgregarEntrega_Receta(RecetaNuevo, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(Presentaciones));
                                         ControladorReceta.ActualizarCosto((int)RecetaNuevo.idRecetas);
