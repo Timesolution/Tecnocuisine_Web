@@ -350,6 +350,7 @@
     <Content Include="Formularios\Maestros\Grupos.aspx" />
     <Content Include="Formularios\Maestros\Marcas.aspx" />
     <Content Include="Formularios\Maestros\Tarjetas.aspx" />
+    <Content Include="Formularios\Maestros\TiposReceta.aspx" />
     <Content Include="Formularios\Maestros\Vendedores.aspx" />
     <Content Include="Formularios\Maestros\Articulos.aspx" />
     <Content Include="Formularios\Maestros\Atributos.aspx" />
@@ -1255,6 +1256,13 @@
     </Compile>
     <Compile Include="Formularios\Maestros\Tarjetas.aspx.designer.cs">
       <DependentUpon>Tarjetas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\TiposReceta.aspx.cs">
+      <DependentUpon>TiposReceta.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\TiposReceta.aspx.designer.cs">
+      <DependentUpon>TiposReceta.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Maestros\Vendedores.aspx.cs">
       <DependentUpon>Vendedores.aspx</DependentUpon>
