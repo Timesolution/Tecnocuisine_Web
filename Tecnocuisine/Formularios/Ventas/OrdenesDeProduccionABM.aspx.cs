@@ -33,11 +33,7 @@ namespace Tecnocuisine.Formularios.Ventas
                         int idOrdenDeProduccion = int.Parse(Request.QueryString["id"]);
                         precargarOrdenDeProduccion(idOrdenDeProduccion);
                     }
-
                 }
-
-
-
                 else
                 {
                     CargarCodigoOrdenCompra();

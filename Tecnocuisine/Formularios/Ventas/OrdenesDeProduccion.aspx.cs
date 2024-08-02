@@ -331,9 +331,6 @@ namespace Tecnocuisine.Formularios.Ventas
                 CheckBox chkSeleccionar = new CheckBox();
                 chkSeleccionar.ID = "chkSeleccionar_" + ordenProd.id;
                 chkSeleccionar.Attributes.Add("onchange", "javascript:return guardarIdOrdenDeProduccion(" + ordenProd.id + ");");
-                celAccion.Controls.Add(chkSeleccionar);
-
-
 
                 Literal l3 = new Literal();
                 l3.Text = "&nbsp";
@@ -341,19 +338,10 @@ namespace Tecnocuisine.Formularios.Ventas
 
                 LinkButton btnDetalles = new LinkButton();
                 btnDetalles.CssClass = "btn btn-xs";
-
-                // Si la orden ya se mando a producir, no se debe poder editar
-                if (ordenProd.EstadosOrdenes.id == 1)
-                    btnDetalles.Attributes.Add("disabled", "true");
-
                 btnDetalles.Style.Add("background-color", "transparent");
                 btnDetalles.ID = "btnSelecReceta_" + ordenProd.id + "_";
                 btnDetalles.Text = "<span><i style='color:black;' class='fa fa-pencil' title='Editar'></i></span>"; // Agregar la tooltip "Editar"
                 btnDetalles.PostBackUrl = "OrdenesDeProduccionABM.aspx?Accion=2&id=" + ordenProd.id;
-                celAccion.Controls.Add(btnDetalles);
-
-
-
 
                 Literal l2 = new Literal();
                 l2.Text = "&nbsp";
@@ -367,11 +355,22 @@ namespace Tecnocuisine.Formularios.Ventas
                 btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
                 btnEliminar.Text = "<span><i style='color:red' class='fa fa-trash-o' title='Eliminar'></i></span>"; // Agregar la tooltip "Eliminar"
                 btnEliminar.OnClientClick = "abrirdialog(" + ordenProd.id + ");";
+
+
+                // Si la orden ya se mando a producir, no se podra editar, producir, y eliminar
+                if (ordenProd.EstadosOrdenes.id == 1)
+                {
+                    chkSeleccionar.InputAttributes.Add("disabled", "true");
+                    btnDetalles.Attributes.Add("disabled", "true");
+                    btnEliminar.Attributes.Add("disabled", "true");
+                }
+
+                celAccion.Controls.Add(chkSeleccionar);
+                celAccion.Controls.Add(btnDetalles);
                 celAccion.Controls.Add(btnEliminar);
 
                 tr.Cells.Add(celAccion);
                 phOrdenesProduccion.Controls.Add(tr);
-
             }
             catch (Exception ex)
             {
