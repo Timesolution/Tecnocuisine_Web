@@ -43,28 +43,34 @@ namespace Tecnocuisine.Formularios.Ventas
             try
             {
                 string idsQueryString = Request.QueryString["ids"]; //Esta variable obtiene todos los ids de todas las ordenes de produccion seleccionadas
-                
-                if(string.IsNullOrWhiteSpace(idsQueryString))
+
+                if (string.IsNullOrWhiteSpace(idsQueryString))
                     Response.Redirect("OrdenesDeProduccion.aspx", false);
 
-                int Nivel = 1;
                 ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
 
                 //Esta funcion obtiene todas los ingredientes de todas las ordenes de produccion de nivel 1
                 dt = cOrdenDeProduccion.GetAllIngredientesOrdenesProduccionGroupBySector(idsQueryString);
+                DataTable dtRecetasOrdenes = cOrdenDeProduccion.GetRecetasDeOrdenesSeleccionadas(idsQueryString);
 
-
-                DataTable dtCopia = cOrdenDeProduccion.getRecipesFromSelectedOrders(idsQueryString);
-
-                foreach (DataRow dr in dtCopia.Rows)
+                /// Recorrer todas las recetas de cada orden seleccionada
+                foreach (DataRow dr in dtRecetasOrdenes.Rows)
                 {
+                    /// Obtener los ingredientes de la orden 
                     DataTable dtingredietesNivel1 = obtenerIngredientesReceta(Convert.ToInt32(dr["id"].ToString()), dr["OPNumero"].ToString(), dr["Producto"].ToString(), Convert.ToInt32(dr["idReceta"].ToString()),
                         dr["cantidad"].ToString(), dr["fechaEntrega"].ToString(), Convert.ToInt32(dr["id5"].ToString()), dr["descripcion1"].ToString(), dr["razonSocial"].ToString());
-                    //aca tengo que obtener el set de datos necesito 
+
+
+                    /// Insertar en la tabla la receta (producto final) que se esta recorriendo
+                    DataRow rowRecetaOrden = CrearRowRecetaOrden(dr);
+                    dtGlobal.Rows.Add(rowRecetaOrden);
+
+
+                    /// Obtener los sub-ingredientes de cada receta ingrediente de la orden
                     DataTable dtSubRecetas = obtenerSubRecetasOrdenes(Convert.ToInt32(dr["id"].ToString()), dr["OPNumero"].ToString(), dr["Producto"].ToString(), Convert.ToInt32(dr["idReceta"].ToString()),
                           dr["cantidad"].ToString(), dr["fechaEntrega"].ToString(), Convert.ToInt32(dr["id5"].ToString()), dr["descripcion1"].ToString(), dr["razonSocial"].ToString());
 
-
+                    /// Recorrer los ingredientes de cada receta ingrediente
                     foreach (DataRow drNivel1 in dtSubRecetas.Rows)
                     {
                         DataTable dtingredietesNivel2 = obtenerIngredientesReceta(Convert.ToInt32(drNivel1["idOrdenProduccion"].ToString()), drNivel1["OPNumero"].ToString(), drNivel1["descripcion"].ToString(), Convert.ToInt32(drNivel1["idProductoOReceta"].ToString()),
@@ -114,6 +120,38 @@ namespace Tecnocuisine.Formularios.Ventas
                 Response.Redirect("OrdenesDeProduccion.aspx", false);
             }
 
+        }
+
+        /// <summary>
+        /// Devuelve una fila para la datatable "dtGlobal" con la informacion de una receta de la orden de produccion (producto final)
+        /// </summary>
+        /// <param name="rowRecetasOrden">
+        /// </param>
+        /// <returns></returns>
+        private DataRow CrearRowRecetaOrden(DataRow rowRecetasOrden)
+        {
+            DataRow newRow = dtGlobal.NewRow();
+            newRow["idOrdenProduccion"] = rowRecetasOrden["idOrdenDeProduccion"];
+            newRow["OPNumero"] = rowRecetasOrden["OPNumero"];
+            newRow["Column1"] = rowRecetasOrden["Producto"];
+            newRow["idRecetaPadre"] = rowRecetasOrden["idReceta"];
+            newRow["CantidadPadre"] = rowRecetasOrden["cantidad"];
+            newRow["FechaEntregaOrden"] = rowRecetasOrden["fechaEntrega"];
+            newRow["idSectorPadre"] = rowRecetasOrden["id5"];          
+            newRow["sectorPadre"] = rowRecetasOrden["descripcion1"];
+
+            newRow["idProductoOReceta"] = rowRecetasOrden["idReceta"];
+            newRow["descripcion"] = rowRecetasOrden["descripcion"];
+            newRow["cantidad"] = rowRecetasOrden["cantidad"];
+            newRow["idSector"] = rowRecetasOrden["id5"];
+            newRow["sectorProductivo"] = rowRecetasOrden["descripcion1"];
+            newRow["fechaProducto"] = rowRecetasOrden["fechaEntrega"]; //ver
+            newRow["ingredienteOreceta"] = "Receta";
+            newRow["RazonSocial"] = rowRecetasOrden["razonSocial"];
+            //newRow["unidadMedida"] = "Litro";
+            newRow["SectorPadre"] = rowRecetasOrden["descripcion1"]; //ver
+
+            return newRow;
         }
 
         public void separarSectoresEnTablas()
@@ -244,7 +282,7 @@ namespace Tecnocuisine.Formularios.Ventas
         public DataTable obtenerIngredientesReceta(int id, string OPNumero, string Producto, int idReceta, string cantidad, string fechaEntrega, int idSector, string SectorPadre, string RazonSocialCliente)
         {
             try
-            {   
+            {
                 ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
                 DataTable dt = cOrdenDeProduccion.getIngredientsRecipes(id, OPNumero, Producto, idReceta, cantidad, fechaEntrega, idSector, SectorPadre, RazonSocialCliente);
                 dtGlobal.Merge(dt);
@@ -438,29 +476,6 @@ namespace Tecnocuisine.Formularios.Ventas
                 Dictionary<string, DataTable> dtDiccionario = new Dictionary<string, DataTable>();
                 Dictionary<string, DataTable> sumaCantidadProductos = new Dictionary<string, DataTable>();
 
-                // Insertar una fila manualmente en el DataTable
-                //DataRow newRow = dt.NewRow();
-                ////newRow["ID"] = 1;
-                //newRow["idOrdenProduccion"] = 255;
-                //newRow["OPNumero"] = "#000252";
-                //newRow["Column1"] = "LA RECETA A PRODUCIR";
-                //newRow["idRecetaPadre"] = 94;
-                //newRow["CantidadPadre"] = 1;
-                //newRow["FechaEntregaOrden"] = DateTime.Now;
-                //newRow["idSectorPadre"] = 1;
-                //newRow["sectorPadre"] = "COCINA CALIENTE";
-                //newRow["idProductoOReceta"] = 51;
-                //newRow["descripcion"] = "LA RECETA A PRODUCIR";
-                //newRow["cantidad"] = 10;
-                //newRow["idSector"] = 7;
-                //newRow["sectorProductivo"] = "ALMACEN";
-                //newRow["fechaProducto"] = DateTime.Now;
-                //newRow["ingredienteOreceta"] = "ingrediente";
-                //newRow["RazonSocial"] = "AIR CANADA INTERNACIONAL";
-                //newRow["unidadMedida"] = "Litro";
-                //newRow["SectorPadre"] = "COCINA CALIENTE";
-                //dt.Rows.Add(newRow);
-
                 foreach (DataRow row in dt.Rows)
                 {
                     string sector = row["sectorPadre"].ToString();
@@ -567,7 +582,7 @@ namespace Tecnocuisine.Formularios.Ventas
                         }
 
                         //aca quiero convertirlo en una datatable
-                        controladorDatosTransferencias cDatosTransferencias = new controladorDatosTransferencias();   
+                        controladorDatosTransferencias cDatosTransferencias = new controladorDatosTransferencias();
                         foreach (var key in sumaCantidadPorGrupo)
                         {
                             datosTransferencias datosTransferencias = new datosTransferencias();
