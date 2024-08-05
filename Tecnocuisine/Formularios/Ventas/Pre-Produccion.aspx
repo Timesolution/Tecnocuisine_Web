@@ -142,19 +142,20 @@
             </asp:UpdatePanel>
         </div>
         <div class="tab-pane fade" id="Produccion">
-            <asp:UpdatePanel ID="UpdatePanel3" UpdateMode="Always" runat="server">
+            <asp:UpdatePanel ID="UpdatePanel3" UpdateMode="Always" runat="server" style="width: 100%" >
                 <ContentTemplate>
                     <div id="validation-form" role="form" class="form-horizontal col-md-10">
-                        <fieldset>
+                        <fieldset style="width: 100%" >
                             <div class="row" style="margin-top: 20px">
                                 <div class="col-lg-12">
-                                    <table class="table table-striped table-bordered table-hover " id="tableProduccion">
+                                    <table class="table table-striped table-bordered table-hover " style="width: 100%" id="tableProduccion">
                                         <thead>
                                             <tr>
                                                 <th style="width: 35%">Producto</th>
                                                 <th style="width: 15%">Cantidad</th>
                                                 <th style="width: 15%">Fecha</th>
                                                 <th style="width: 15%">Acciones</th>
+                                                <th style="width: 0%"></th>
                                             </tr>
                                         </thead>
                                         <tbody>

@@ -139,17 +139,16 @@ namespace Tecnocuisine.Formularios.Ventas
             newRow["FechaEntregaOrden"] = rowRecetasOrden["fechaEntrega"];
             newRow["idSectorPadre"] = rowRecetasOrden["id5"];          
             newRow["sectorPadre"] = rowRecetasOrden["descripcion1"];
-
             newRow["idProductoOReceta"] = rowRecetasOrden["idReceta"];
             newRow["descripcion"] = rowRecetasOrden["descripcion"];
             newRow["cantidad"] = rowRecetasOrden["cantidad"];
             newRow["idSector"] = rowRecetasOrden["id5"];
             newRow["sectorProductivo"] = rowRecetasOrden["descripcion1"];
-            newRow["fechaProducto"] = rowRecetasOrden["fechaEntrega"]; //ver
+            newRow["fechaProducto"] = rowRecetasOrden["fechaEntrega"];
             newRow["ingredienteOreceta"] = "Receta";
             newRow["RazonSocial"] = rowRecetasOrden["razonSocial"];
             //newRow["unidadMedida"] = "Litro";
-            newRow["SectorPadre"] = rowRecetasOrden["descripcion1"]; //ver
+            newRow["SectorPadre"] = rowRecetasOrden["descripcion1"];
 
             return newRow;
         }

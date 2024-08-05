@@ -122,88 +122,91 @@
                             <tr>
                                 <%foreach (var item in fechasHead)
                                     {%>
-                                <td style="display: flex; width: 100%">
-                                    <%foreach (var key2 in sectorTablesGroupByFechas)
-                                        {%>
-                                    <%if (key2.Key == item)
-                                        {
-                                            if (key2.Value.Rows.Count >= i + 1)
+                                <td>
+                                    <div style="display:flex">
+                                        <%foreach (var key2 in sectorTablesGroupByFechas)
+                                            {%>
+                                        <%if (key2.Key == item)
                                             {
-                                                object obj = key2.Value.Rows[i]["descripcion"];
-                                                object objUnidadMedida = key2.Value.Rows[i]["unidadMedida"];
-                                    %>
-
-                                    <div style="width: 35%">
-                                        <%= obj.ToString()%>
-                                    </div>
-
-
-                                    <%decimal cant = 0;%>
-                                    <%if (key2.Value.Rows[i]["cantidad"].ToString().Contains(";"))
-                                        {
-                                            string cantidad = key2.Value.Rows[i]["cantidad"].ToString();
-                                            string[] partes = cantidad.Split(';');
-                                            for (int j = 0; j < partes.Length; j++)
-                                            {
-                                                //cant += decimal.Parse(partes[j]);
-                                                decimal value;
-                                                if (decimal.TryParse(partes[j], System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.InvariantCulture, out value))
+                                                if (key2.Value.Rows.Count >= i + 1)
                                                 {
-                                                    cant += value;
+                                                    object obj = key2.Value.Rows[i]["descripcion"];
+                                                    object objUnidadMedida = key2.Value.Rows[i]["unidadMedida"];
+                                        %>
+
+                                        <div style="width: 35%; white-space: normal;">
+                                            <%= obj.ToString()%>
+                                        </div>
+
+
+                                        <%decimal cant = 0;%>
+                                        <%if (key2.Value.Rows[i]["cantidad"].ToString().Contains(";"))
+                                            {
+                                                string cantidad = key2.Value.Rows[i]["cantidad"].ToString();
+                                                string[] partes = cantidad.Split(';');
+                                                for (int j = 0; j < partes.Length; j++)
+                                                {
+                                                    //cant += decimal.Parse(partes[j]);
+                                                    decimal value;
+                                                    if (decimal.TryParse(partes[j], System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.InvariantCulture, out value))
+                                                    {
+                                                        cant += value;
+                                                    }
                                                 }
+
+                                            }
+                                            else
+                                            {
+                                                cant = Convert.ToDecimal(key2.Value.Rows[i]["cantidad"].ToString(), System.Globalization.CultureInfo.InvariantCulture);
                                             }
 
-                                        }
-                                        else
-                                        {
-                                            cant = Convert.ToDecimal(key2.Value.Rows[i]["cantidad"].ToString(), System.Globalization.CultureInfo.InvariantCulture);
-                                        }
+                                        %>
 
-                                    %>
-
-                                    <div style="width: 15%;">
-                                        <strong style="text-align: right; display: inline-block;"><%= cant %></strong>
-                                    </div>
+                                        <div style="width: 15%;">
+                                            <strong style="text-align: right; display: inline-block;"><%= cant %></strong>
+                                        </div>
 
 
-                                    <div style="width: 30%;">
-                                        <p style="text-align: right; display: inline-block;"><%= objUnidadMedida.ToString() %></p>
-                                    </div>
+                                        <div style="width: 30%;">
+                                            <p style="text-align: right; display: inline-block;"><%= objUnidadMedida.ToString() %></p>
+                                        </div>
 
 
-                                    <div style="width: 20%; justify-self: end">
-                                        <%if (key2.Value.Rows[i]["ingredienteOreceta"].ToString() == "Receta")
-                                            {%>
-                                        <button id="btnVerIngredientes" type="button" class="icon-button" style="float: right; margin-left: 10px;"
-                                            title="Ver ingredientes" onclick="verIngredientes('<%=key2.Value.Rows[i]["idProductoOReceta"].ToString()%>')">
-                                            <i class="fa fa-cutlery" style="float: right;"></i>
-                                        </button>
-                                        <%} %>
+                                        <div style="width: 20%; justify-self: end">
+                                            <%if (key2.Value.Rows[i]["ingredienteOreceta"].ToString() == "Receta")
+                                                {%>
+                                            <button id="btnVerIngredientes" type="button" class="icon-button" style="float: right; margin-left: 10px;"
+                                                title="Ver ingredientes" onclick="verIngredientes('<%=key2.Value.Rows[i]["idProductoOReceta"].ToString()%>')">
+                                                <i class="fa fa-cutlery" style="float: right;"></i>
+                                            </button>
+                                            <%} %>
 
-                                        <button id="btn" type="button" class="icon-button" style="float: right; margin-left: 10px;"
-                                            title="OrigenDestino" onclick="verOrigenYDestino('<%=key2.Value.Rows[i]["descripcion"].ToString()%>', 
+                                            <button id="btn" type="button" class="icon-button" style="float: right; margin-left: 10px;"
+                                                title="OrigenDestino" onclick="verOrigenYDestino('<%=key2.Value.Rows[i]["descripcion"].ToString()%>', 
                                         '<%=key2.Value.Rows[i]["cantidad"].ToString()%>', '<%=key2.Value.Rows[i]["sectorProductivo"].ToString()%>', 
                                         '<%=key2.Value.Rows[i]["Column1"].ToString()%>', '<%=key2.Value.Rows[i]["CantidadPadre"].ToString()%>', 
                                         '<%=key2.Value.Rows[i]["sectorPadre"].ToString()%>', '<%=key2.Value.Rows[i]["OPNumero"].ToString() %>',
                                         '<%=key2.Value.Rows[i]["RazonSocial"].ToString() %>' )">
-                                            <i class="fa fa-exchange"></i>
-                                        </button>
+                                                <i class="fa fa-exchange"></i>
+                                            </button>
 
 
 
 
-                                        <a href="/Formularios/Maestros/StockDetallado.aspx?t=1&i=<%=key2.Value.Rows[i]["idProductoOReceta"].ToString()%>"
-                                            target="_blank" style="float: right; margin-left: 10px;"
-                                            title="Ver stock">
-                                            <i style="color: black" class="fa fa-list-alt"></i>
-                                        </a>
+                                            <a href="/Formularios/Maestros/StockDetallado.aspx?t=1&i=<%=key2.Value.Rows[i]["idProductoOReceta"].ToString()%>"
+                                                target="_blank" style="float: right; margin-left: 10px;"
+                                                title="Ver stock">
+                                                <i style="color: black" class="fa fa-list-alt"></i>
+                                            </a>
 
+                                        </div>
+
+                                        <%}%>
+                                        <%}%>
+                                        <%}%>
                                     </div>
-
-                                    <%}%>
-                                    <%}%>
-                                    <%}%>
                                 </td>
+
                                 <%}%>
                             </tr>
                             <%}%>
