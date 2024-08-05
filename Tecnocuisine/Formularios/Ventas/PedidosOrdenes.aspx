@@ -2,6 +2,10 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
+
+    <style>
+    </style>
+
     <div class="wrapper wrapper-content">
         <div class="container-fluid">
             <div class="ibox float-e-margins">
@@ -11,7 +15,7 @@
                             <div class="wrapper wrapper-content animated fadeInRight">
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <div class="ibox float-e-margins" style="padding:1rem">
+                                        <div class="ibox float-e-margins" style="padding: 1rem">
                                             <div class="ibox-content">
                                                 <div style="margin-left: 0px; margin-right: 0px;">
                                                     <div style="display: flex; justify-content: space-between; column-gap: 5rem; margin-bottom: 3rem; padding-right: 1rem; flex-wrap: nowrap">
@@ -100,7 +104,7 @@
                                                                     </div>
                                                                 </div>
 
-                                                                                                                                <%--Estado--%>
+                                                                <%--Estado--%>
                                                                 <div style="width: 33%">
                                                                     <label style="margin-top: 5px;">Estado</label>
                                                                     <asp:DropDownList ID="ddlEstado" runat="server"
@@ -116,7 +120,7 @@
                                                                     <%--<a id="btnfiltrar" onclick="filtrarordenesproduccion()" class="btn btn-primary" title="filtrar" style="width: 100%">
                                                                <i class="fa fa-search"></i>&nbsp;Filtrar
                                                            </a>--%>
-                                                                    <asp:LinkButton ID="btnfiltrar" runat="server" OnClick="btnfiltrar_Click" OnClientClick="limpiarUrl()" title="filtrar" Style="width: 100%; margin-bottom:0" CssClass="btn btn-primary btn-with-icon">
+                                                                    <asp:LinkButton ID="btnfiltrar" runat="server" OnClick="btnfiltrar_Click" OnClientClick="limpiarUrl()" title="filtrar" Style="width: 100%; margin-bottom: 0" CssClass="btn btn-primary btn-with-icon">
                                                                          <i class="fa fa-search"></i>
                                                                     </asp:LinkButton>
 
@@ -198,7 +202,10 @@
                                 <div class="ibox float-e-margins">
                                     <!-- Agregar la clase "collapsed" aquí -->
                                     <div class="ibox-title">
-                                        <h5>Origen</h5>
+                                        <div style="display: flex; justify-content:space-between">
+                                            <h5>Origen</h5>
+                                            <h5 id="modalOrigenDestino_fecha"></h5>
+                                        </div>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-down"></i>
@@ -214,14 +221,14 @@
                                     </div>
                                     <div class="ibox-content">
 
-                                        <table class="table table-hover no-margins table-bordered" id="tableDatosTransferencia">
+                                        <table class="table table-hover no-margins table-bordered" style="" id="tableDatosTransferencia">
                                             <thead>
                                                 <tr>
-                                                    <td><strong>Sector Productivo</strong></td>
-                                                    <td><strong>Producto</strong></td>
-                                                    <td class="text-right"><strong>Cantidad</strong></td>
-                                                    <td class="text-right"><strong>Confirmada</strong></td>
-                                                    <td><strong>Acciones</strong></td>
+                                                    <td style="width: 25%"><strong>Sector Productivo</strong></td>
+                                                    <td style="width: 35%"><strong>Producto</strong></td>
+                                                    <td class="text-right" style="width: 14%"><strong>Cantidad</strong></td>
+                                                    <td class="text-right" style="width: 14%"><strong>Confirmada</strong></td>
+                                                    <td style="width: 10%"><strong>Acciones</strong></td>
                                                     <%--<td><strong>SectorDestino</strong></td>--%>
                                                     <%--<td><strong>Orden destino</strong></td>--%>
                                                     <%--<td><strong>Cliente destino</strong></td>--%>
@@ -570,7 +577,7 @@
         }
 
 
-        function verDetalleTranferencia(idTransferencia) {
+        function verDetalleTranferencia(idTransferencia, fecha) {
             $.ajax({
                 method: "POST",
                 url: "PedidosOrdenes.aspx/verDetallesTransferencia",
@@ -619,6 +626,9 @@
 
                         document.getElementById('tableOrigen').innerHTML += plantillaDetalleTransferencia;
                     });
+
+                    document.getElementById('modalOrigenDestino_fecha').innerHTML = 'Fecha: ' + fecha;
+
                     $("#modalOrigenDestino").modal("hide");
                     setTimeout(function () {
                         $("#modalOrigenDestino").modal("show");
