@@ -36,6 +36,7 @@ namespace Tecnocuisine.Formularios.Ventas
         int ultimoID = -1;
         string sector = "";
         string sectorValue = "";
+        ReportViewer ReportViewer1 = new ReportViewer();
         public class RowClass
         {
             public string Id { get; set; }
@@ -86,10 +87,10 @@ namespace Tecnocuisine.Formularios.Ventas
 
         public void filtrarProduccion()
         {
-            if (!HayBusqueda()) 
+            if (!HayBusqueda())
                 return;
             // Si no hay ningun filtro/parametro
-            if (sectorValue == "-1" && string.IsNullOrEmpty(fDesde) && string.IsNullOrEmpty(fHasta)) 
+            if (sectorValue == "-1" && string.IsNullOrEmpty(fDesde) && string.IsNullOrEmpty(fHasta))
                 return;
 
             string sectorId = string.Empty;
@@ -103,7 +104,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 ControladorTransferencia cTransferencia = new ControladorTransferencia();
                 DataTable dt = cTransferencia.getTransferenciasByFiltros(sector, fDesde, fHasta);
 
-                //OrdenarRecetas(dt);
+                OrdenarRecetas(dt);
 
                 int cont = 0;
                 foreach (DataRow dr in dt.Rows)
@@ -158,18 +159,16 @@ namespace Tecnocuisine.Formularios.Ventas
 
                     celAccion.Controls.Add(btnDetalle);
 
+                    //LinkButton btnImprimir = new LinkButton();
+                    ////btnDetalle.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
+                    //btnImprimir.CssClass = "btn btn-xs";
+                    //btnImprimir.Style.Add("background-color", "transparent");
+                    //btnImprimir.Text = "<span title='Imprimir'><i class='fa fa-print' style='color: black;'></i></span>";
+                    //btnImprimir.Attributes.Add("href", $"ImpresionProduccion.aspx?id=" + dr["id"].ToString() + "&&sector=" + sector + "&&fecha=" + dr["fecha"].ToString());
+                    //btnImprimir.Attributes.Add("target", "_blank");
+                    ////btnDetalle.Attributes.Add("onclick", "impresionProduccion('" + sector + "', '" + dr["id"].ToString() + "', '" + dr["fecha"].ToString() + "');");
 
-          
-                    LinkButton btnImprimir = new LinkButton();
-                    //btnDetalle.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
-                    btnImprimir.CssClass = "btn btn-xs";
-                    btnImprimir.Style.Add("background-color", "transparent");
-                    btnImprimir.Text = "<span title='Imprimir'><i class='fa fa-print' style='color: black;'></i></span>";
-                    btnImprimir.Attributes.Add("href", $"ImpresionProduccion.aspx?id=" + dr["id"].ToString() + "&&sector=" + sector + "&&fecha=" + dr["fecha"].ToString());
-                    btnImprimir.Attributes.Add("target", "_blank");
-                    //btnDetalle.Attributes.Add("onclick", "impresionProduccion('" + sector + "', '" + dr["id"].ToString() + "', '" + dr["fecha"].ToString() + "');");
-
-                    celAccion.Controls.Add(btnImprimir);
+                    //celAccion.Controls.Add(btnImprimir);
    
 
                     phProduccion.Controls.Add(tr);
@@ -179,28 +178,78 @@ namespace Tecnocuisine.Formularios.Ventas
 
         }
 
+        /// <summary>
+        /// Genera un RDLC en otra pestaña con los registros de produccion filtrados
+        /// </summary>
+        protected void btnImprimirProduccion_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string url = $"ImpresionProduccion.aspx?sector={Server.UrlEncode(sector)}&fDesde={Server.UrlEncode(fDesde)}&fHasta={Server.UrlEncode(fHasta)}";
+                string script = $"window.open('{url}', '_blank');";
+                ScriptManager.RegisterStartupScript(this, GetType(), "OpenNewTab", script, true);
+                //Response.Redirect($"ImpresionProduccion.aspx?sector={sector}&&fDesde={fDesde}&&fHasta={fHasta}");
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
         private void OrdenarRecetas(DataTable dt)
         {
             ControladorReceta cReceta = new ControladorReceta();
             int idR1, idR2;
+            DataTable dtAux = dt.Copy();
 
-            ///Por cada receta, pregunto en toda la tabla si es requerida por otra receta 
+            // Recorrer las filas de recetas 
             foreach (DataRow r1 in dt.Rows)
             {
                 idR1 = int.Parse(r1["id"].ToString());
 
-                ///Ver si r1 es usada por otra receta de la tabla
-                ///comparando si existen los ids concatenados en db
+                // Comparar la receta con todas las recetas de la tabla
+                DataRow copiaR2 = null;
+                int indexR2 = 0;
+
                 foreach (DataRow r2 in dt.Rows)
                 {
                     idR2 = int.Parse(r2["id"].ToString());
 
                     if (cReceta.EsSubReceta(idR1, idR2))
                     {
-                        bool r = true;
-                        //DataRow auxR2 = r2;
-                        //dt.Rows[0] = auxR2;
+                        //Si tiene hijos
+                        //do
+                        //{
+                        //    foreach (DataRow r3 in dt.Rows)
+                        //    {
+
+                        //    }
+                        //} while ();
+
+                        //mover r2 al final porque es padre de una receta
+                        copiaR2 = r2;
+                        break; // Sale de este for
                     }
+                    // Es receta final
+                    else
+                    {
+
+                    }
+
+                    indexR2++;
+                }
+
+                // Si no es subreceta se coloca al final. El orden es: primero subrecetas y al final recetas
+                if (copiaR2 != null)
+                {
+                    // Crear una copia de la fila
+                    DataRow nuevaFila = dt.NewRow();
+                    nuevaFila.ItemArray = copiaR2.ItemArray.Clone() as object[];
+
+                    // Eliminar la fila de su posición actual
+                    //dtAux.Rows.RemoveAt(indexR2);
+                    // Insertar la fila al final
+                    // dtAux.Rows.Add(nuevaFila);
                 }
             }
         }
@@ -303,7 +352,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 //btnDetalle.Text = "<span title='Ver pedidos'><i class='fa fa-search' style='color: black;'></i></span>";
                 //btnDetalle.Attributes.Add("onclick", "verDetalleRemitoInternoPdf('" + remito.id + "');");
                 //celAccion.Controls.Add(btnDetalle);
-                
+
 
                 LinkButton btnDetalleRemitoInterno = new LinkButton();
                 btnDetalleRemitoInterno.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
@@ -326,7 +375,7 @@ namespace Tecnocuisine.Formularios.Ventas
         /// <returns></returns>
         private bool HayBusqueda()
         {
-            return Request.QueryString["O"] != null && 
+            return Request.QueryString["O"] != null &&
                     Request.QueryString["fDesde"] != null &&
                     Request.QueryString["fHasta"] != null;
         }
@@ -351,7 +400,7 @@ namespace Tecnocuisine.Formularios.Ventas
 
 
                 controladorDatosTransferencias cTransferencias = new controladorDatosTransferencias();
-                DataTable dt = cTransferencias.getDatosTransferenciaGroupByFiltros(sector,fDesde,fHasta);
+                DataTable dt = cTransferencias.getDatosTransferenciaGroupByFiltros(sector, fDesde, fHasta);
 
                 cargarDatosTransferenciasEnPh(dt);
             }
@@ -618,7 +667,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 btnRemito.CssClass = "btn btn-xs";
                 btnRemito.Style.Add("background-color", "transparent");
                 btnRemito.Text = "<span title='Imprimir'><i class='fa fa-search' style='color: black;'></i></span>";
-               // btnRemito.Attributes.Add("onclick", "verDetalleRemitoInternoPdf('" + remito.id + "');");
+                // btnRemito.Attributes.Add("onclick", "verDetalleRemitoInternoPdf('" + remito.id + "');");
                 celAccion.Controls.Add(btnRemito);
 
 
@@ -1677,7 +1726,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 stock = stockReceta.stock ?? 0;
             }
 
-            if (stock==0)
+            if (stock == 0)
                 return 2;
 
             else if (cantidadAEnviar == 0)
@@ -1909,6 +1958,11 @@ namespace Tecnocuisine.Formularios.Ventas
             {
                 return -1;
             }
+        }
+
+        protected void btnImprimirProduccion_Click1(object sender, EventArgs e)
+        {
+            int a = 0;
         }
     }
 }

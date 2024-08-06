@@ -3,6 +3,8 @@ using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -15,15 +17,15 @@ namespace Tecnocuisine.Formularios.Ventas
     public partial class ImpresionProduccion : System.Web.UI.Page
     {
         ReportViewer ReportViewer1 = new ReportViewer();
-        int idProducto;
         string sector;
-        string fecha;
+        string fDesde;
+        string fHasta;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            idProducto = Convert.ToInt32(Request.QueryString["id"]);
             sector = Request.QueryString["sector"].ToString();
-            fecha = Request.QueryString["fecha"].ToString();
-
+            fDesde = Request.QueryString["fDesde"].ToString();
+            fHasta = Request.QueryString["fHasta"].ToString();
             generarReporte();
         }
 
@@ -31,16 +33,39 @@ namespace Tecnocuisine.Formularios.Ventas
         {
             try
             {
-                DataTable dt = new controladorDatosTransferencias().getDatosTransferenciaByProductoSectorFecha(sector, idProducto, DateTime.Parse(fecha));
+                DataTable dt = new ControladorTransferencia().getTransferenciasByFiltros(sector, fDesde, fHasta);
 
                 this.ReportViewer1.ProcessingMode = ProcessingMode.Local;
                 this.ReportViewer1.LocalReport.ReportPath = Server.MapPath("DetalleProduccion2.rdlc");
                 this.ReportViewer1.LocalReport.EnableExternalImages = true;
 
-                ReportDataSource rds = new ReportDataSource("dsDatosPedidos", dt);                
+                ReportDataSource rds = new ReportDataSource("dsDatosPedidos", dt);
 
                 this.ReportViewer1.LocalReport.DataSources.Clear();
-                this.ReportViewer1.LocalReport.DataSources.Add(rds);                
+                this.ReportViewer1.LocalReport.DataSources.Add(rds);
+
+                // SETEAR FECHAS
+                string fechaDesdeFormateada = string.Empty;
+                string fechaHastaFormateada = string.Empty;
+
+                if (!string.IsNullOrEmpty(fDesde))
+                {
+                    // Convertir el string a DateTime
+                    DateTime fechaDesdeDT = DateTime.ParseExact(fDesde, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    // Convertir de vuelta a string en el formato deseado
+                    fechaDesdeFormateada = fechaDesdeDT.ToString("dd/MM/yyyy");
+                }
+                if (!string.IsNullOrEmpty(fHasta))
+                {
+                    // Convertir el string a DateTime
+                    DateTime fechaHastaDT = DateTime.ParseExact(fHasta, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    // Convertir de vuelta a string en el formato deseado
+                    fechaHastaFormateada = fechaHastaDT.ToString("dd/MM/yyyy");
+                }
+
+                ReportParameter paramFecha = new ReportParameter("fechaParametro", fechaDesdeFormateada + " - " + fechaHastaFormateada);
+                this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { paramFecha });
+
                 this.ReportViewer1.LocalReport.Refresh();
 
                 Warning[] warnings;
