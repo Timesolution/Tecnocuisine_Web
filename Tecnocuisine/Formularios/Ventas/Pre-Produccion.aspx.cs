@@ -146,18 +146,31 @@ namespace Tecnocuisine.Formularios.Ventas
                     celAccion.Controls.Add(btnProducir);
                     tr.Cells.Add(celAccion);
 
-                    TableCell celAccion2 = new TableCell();
+
                     LinkButton btnDetalle = new LinkButton();
                     btnDetalle.ID = "btnVerPedidos_" + cont.ToString();
                     btnDetalle.CssClass = "btn btn-xs";
                     btnDetalle.Style.Add("background-color", "transparent");
                     btnDetalle.Attributes.Add("data-toggle", "modal");
                     btnDetalle.Attributes.Add("href", "#modalConfirmacion2");
-                    btnDetalle.Text = "<span title='Ver Detalle'><i class='fa fa-eye' style='color: black;'></i></span>";
+                    btnDetalle.Text = "<span title='Ver Detalle'><i class='fa fa-file-text' style='color: black;'></i></span>";
                     btnDetalle.Attributes.Add("onclick", "verDetalleProduccion('" + sector + "', '" + dr["id"].ToString() + "', '" + dr["fecha"].ToString() + "');");
 
                     celAccion.Controls.Add(btnDetalle);
-                    tr.Cells.Add(celAccion2);
+
+
+          
+                    LinkButton btnImprimir = new LinkButton();
+                    //btnDetalle.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
+                    btnImprimir.CssClass = "btn btn-xs";
+                    btnImprimir.Style.Add("background-color", "transparent");
+                    btnImprimir.Text = "<span title='Imprimir'><i class='fa fa-print' style='color: black;'></i></span>";
+                    btnImprimir.Attributes.Add("href", $"ImpresionProduccion.aspx?id=" + dr["id"].ToString() + "&&sector=" + sector + "&&fecha=" + dr["fecha"].ToString());
+                    btnImprimir.Attributes.Add("target", "_blank");
+                    //btnDetalle.Attributes.Add("onclick", "impresionProduccion('" + sector + "', '" + dr["id"].ToString() + "', '" + dr["fecha"].ToString() + "');");
+
+                    celAccion.Controls.Add(btnImprimir);
+   
 
                     phProduccion.Controls.Add(tr);
                 }
