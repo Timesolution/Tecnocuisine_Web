@@ -60,9 +60,9 @@ namespace Tecnocuisine.Formularios.Ventas
             {
             }
 
-            filtrarDatosTransferencias();
-            filtrarProduccion();
             filtrarRemitosInternos();
+            filtrarProduccion();
+            filtrarDatosTransferenciasEnvios();
             PrecargarFiltros();
         }
 
@@ -380,7 +380,7 @@ namespace Tecnocuisine.Formularios.Ventas
                     Request.QueryString["fHasta"] != null;
         }
 
-        public void filtrarDatosTransferencias()
+        public void filtrarDatosTransferenciasEnvios()
         {
             if (!HayBusqueda())
                 return;
@@ -662,13 +662,24 @@ namespace Tecnocuisine.Formularios.Ventas
                 btnDetalle.Attributes.Add("onclick", "getDatosTransferenciaBySectorDestino('" + dr["sectorOrigen"].ToString() + "', '" + dr["sectorDestino"].ToString() + "');");
                 celAccion.Controls.Add(btnDetalle);
 
-                LinkButton btnRemito = new LinkButton();
-                btnRemito.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
-                btnRemito.CssClass = "btn btn-xs";
-                btnRemito.Style.Add("background-color", "transparent");
-                btnRemito.Text = "<span title='Imprimir'><i class='fa fa-search' style='color: black;'></i></span>";
-                // btnRemito.Attributes.Add("onclick", "verDetalleRemitoInternoPdf('" + remito.id + "');");
-                celAccion.Controls.Add(btnRemito);
+                //LinkButton btnRemito = new LinkButton();
+                //btnRemito.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
+                //btnRemito.CssClass = "btn btn-xs";
+                //btnRemito.Style.Add("background-color", "transparent");
+                //btnRemito.Text = "<span title='Imprimir'><i class='fa fa-search' style='color: black;'></i></span>";
+                //// btnRemito.Attributes.Add("onclick", "verDetalleRemitoInternoPdf('" + remito.id + "');");
+                //celAccion.Controls.Add(btnRemito);
+
+                LinkButton btnImprimir = new LinkButton();
+                //btnDetalle.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
+                btnImprimir.CssClass = "btn btn-xs";
+                btnImprimir.Style.Add("background-color", "transparent");
+                btnImprimir.Text = "<span title='Imprimir'><i class='fa fa-print' style='color: black;'></i></span>";
+                btnImprimir.Attributes.Add("href", $"ImpresionEnvio.aspx?sectorO={dr["sectorOrigen"]}&&sectorD={dr["sectorDestino"]}");
+                btnImprimir.Attributes.Add("target", "_blank");
+                //btnDetalle.Attributes.Add("onclick", "impresionProduccion('" + sector + "', '" + dr["id"].ToString() + "', '" + dr["fecha"].ToString() + "');");
+
+                celAccion.Controls.Add(btnImprimir);
 
 
                 tr.Cells.Add(celAccion);
@@ -1275,10 +1286,11 @@ namespace Tecnocuisine.Formularios.Ventas
         {
             try
             {
-                controladorDatosTransferencias cTransferencias = new controladorDatosTransferencias();
-                controladorsumaDatosTransferencia csumaDatosTransferencia = new controladorsumaDatosTransferencia();
+                //controladorDatosTransferencias cTransferencias = new controladorDatosTransferencias();
                 //DataTable dt = cTransferencias.getDatosTransferenciaBySectorDestino(sectorOrigen, sectorDestino);
-                DataTable dt2 = csumaDatosTransferencia.getDatosTransferencias(sectorOrigen);
+
+                controladorsumaDatosTransferencia csumaDatosTransferencia = new controladorsumaDatosTransferencia();
+                DataTable dt2 = csumaDatosTransferencia.getDatosTransferencias(sectorOrigen, sectorDestino);
 
                 //HttpContext.Current.Session["datosAEnviar"] = dt2;
 
