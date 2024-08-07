@@ -368,6 +368,8 @@
     <Content Include="Formularios\Ventas\DetalleIngredientes.aspx" />
     <Content Include="Formularios\Ventas\GenerarProduccion.aspx" />
     <Content Include="Formularios\Ventas\GenerarVenta.aspx" />
+    <Content Include="Formularios\Ventas\ImpresionEnvio.aspx" />
+    <Content Include="Formularios\Ventas\ImpresionProduccion.aspx" />
     <Content Include="Formularios\Ventas\ImpresionRemitos.aspx" />
     <Content Include="Formularios\Ventas\OrdenesDeProduccion.aspx" />
     <Content Include="Formularios\Ventas\OrdenesDeProduccionABM.aspx" />
@@ -1382,6 +1384,20 @@
     </Compile>
     <Compile Include="Formularios\Ventas\GenerarVenta.aspx.designer.cs">
       <DependentUpon>GenerarVenta.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Ventas\ImpresionEnvio.aspx.cs">
+      <DependentUpon>ImpresionEnvio.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Ventas\ImpresionEnvio.aspx.designer.cs">
+      <DependentUpon>ImpresionEnvio.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Ventas\ImpresionProduccion.aspx.cs">
+      <DependentUpon>ImpresionProduccion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Ventas\ImpresionProduccion.aspx.designer.cs">
+      <DependentUpon>ImpresionProduccion.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Ventas\ImpresionRemitos.aspx.cs">
       <DependentUpon>ImpresionRemitos.aspx</DependentUpon>
