@@ -45,6 +45,10 @@
           <DataField>estado</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="fecha">
+          <DataField>fecha</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>dsListadoPedidos</rd:DataSetName>
@@ -153,16 +157,53 @@
                 <TablixBody>
                   <TablixColumns>
                     <TablixColumn>
-                      <Width>13.48736cm</Width>
+                      <Width>4.0013cm</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>4.32702cm</Width>
+                      <Width>10.79531cm</Width>
+                    </TablixColumn>
+                    <TablixColumn>
+                      <Width>3.4788cm</Width>
                     </TablixColumn>
                   </TablixColumns>
                   <TablixRows>
                     <TablixRow>
-                      <Height>0.99688cm</Height>
+                      <Height>1.28151cm</Height>
                       <TablixCells>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Textbox4">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>Fecha</Value>
+                                      <Style>
+                                        <FontSize>11pt</FontSize>
+                                        <FontWeight>Bold</FontWeight>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style />
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox4</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Color>LightGrey</Color>
+                                  <Style>Solid</Style>
+                                </Border>
+                                <VerticalAlign>Middle</VerticalAlign>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
                         <TablixCell>
                           <CellContents>
                             <Textbox Name="Textbox41">
@@ -236,8 +277,46 @@
                       </TablixCells>
                     </TablixRow>
                     <TablixRow>
-                      <Height>0.6cm</Height>
+                      <Height>0.88463cm</Height>
                       <TablixCells>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="fecha">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>=Fields!fecha.Value</Value>
+                                      <Style />
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Left</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>fecha</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Color>LightGrey</Color>
+                                  <Style>None</Style>
+                                </Border>
+                                <LeftBorder>
+                                  <Style>Solid</Style>
+                                </LeftBorder>
+                                <RightBorder>
+                                  <Style>Solid</Style>
+                                </RightBorder>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
                         <TablixCell>
                           <CellContents>
                             <Textbox Name="productoOrigen">
@@ -322,6 +401,7 @@
                   <TablixMembers>
                     <TablixMember />
                     <TablixMember />
+                    <TablixMember />
                   </TablixMembers>
                 </TablixColumnHierarchy>
                 <TablixRowHierarchy>
@@ -333,10 +413,8 @@
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>dsDatosPedidos</DataSetName>
-                <Top>0.25394cm</Top>
-                <Left>0.46103cm</Left>
-                <Height>1.59688cm</Height>
-                <Width>17.81438cm</Width>
+                <Height>2.16614cm</Height>
+                <Width>18.27541cm</Width>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -357,10 +435,10 @@
             </Style>
           </Rectangle>
         </ReportItems>
-        <Height>2.16286in</Height>
+        <Height>1.91286in</Height>
         <Style />
       </Body>
-      <Width>7.57964in</Width>
+      <Width>7.61287in</Width>
       <Page>
         <PageHeight>29.7cm</PageHeight>
         <PageWidth>21cm</PageWidth>
