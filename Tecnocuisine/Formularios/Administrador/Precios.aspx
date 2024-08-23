@@ -28,7 +28,7 @@
                                 <%--Precio mas barato--%>
                                 <div class="form-check">
                                     <asp:RadioButton ID="rbPrecioBarato" runat="server" GroupName="Precio" Text="Precio más barato" CssClass="form-check-input" Style="cursor: pointer;" onclick="showHideFields('precioBarato');" />
-                                    <asp:Panel runat="server" class="date-range" id="divPrecioBarato">
+                                    <asp:Panel runat="server" class="date-range" ID="divPrecioBarato">
                                         <p>Indica el rango de fechas a utilizar para el calculo</p>
                                         <div style="display: flex">
                                             <div>
@@ -52,7 +52,7 @@
                                 <%--Promedio ponderado--%>
                                 <div class="form-check">
                                     <asp:RadioButton ID="rbPromedioPonderado" runat="server" GroupName="Precio" Text="Promedio ponderado" CssClass="form-check-input" Style="cursor: pointer" onclick="showHideFields('promedioPonderado');" />
-                                    <asp:Panel runat="server" class="date-range" id="divPromedioPonderado">
+                                    <asp:Panel runat="server" class="date-range" ID="divPromedioPonderado">
                                         <p>Indica el rango de fechas a utilizar para el calculo</p>
                                         <div style="display: flex">
                                             <div>
@@ -70,6 +70,18 @@
                                         <asp:Label ID="lblErrorPromedioPonderado" runat="server" ForeColor="Red" />
                                     </div>
                                 </div>
+                            </div>
+
+                            <%--Food Cost--%>
+                            <div>
+                                <label for="porcentajeAlertaFoodCost" style="font-weight: 600;">Porcentaje de alerta (Food Cost):</label>
+                                <div class="input-group" style="display: flex">
+                                    <div>
+                                        <asp:TextBox ID="txtPorcentajeAlertaFoodCost" runat="server" CssClass="form-control" TextMode="Number" />
+                                    </div>
+                                    <span class="input-group-addon" style="align-items:center;align-content:center; width:auto">%</span>
+                                </div>
+
                             </div>
 
                             <br />

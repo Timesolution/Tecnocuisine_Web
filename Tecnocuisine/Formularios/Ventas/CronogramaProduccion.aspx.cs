@@ -112,14 +112,9 @@ namespace Tecnocuisine.Formularios.Ventas
 
         private void RecorrerSubrecetas(DataTable dtRecetas)
         {
-            DataTable dtRecetasOriginal; // Para mantener la fuente original
-
             // Cada subreceta puede tener infinitas subrecetas (por eso se usa while preguntando si la receta tiene mas subrecetas dentro)
             while (dtRecetas.Rows.Count > 0)
             {
-                // Guardar la fuente original de subrecetas
-                dtRecetasOriginal = dtRecetas.Copy();
-
                 foreach (DataRow dr in dtRecetas.Rows)
                 {
                     DateTime fechaSubrecetaPadre = Convert.ToDateTime(dr["fechaProducto"].ToString());
@@ -159,15 +154,6 @@ namespace Tecnocuisine.Formularios.Ventas
                         break;
                     }
                 }
-
-                //Cuando la receta procesada ya no tenga subrecetas, seguimos con la siguiente receta
-                //Esto se deberia hacer solo en el caso de que la receta procesada anteriormente haya tenido subrecetas, porque si no tuvo, este segundo registro ya se habria procesado en el for
-                //if (entroEnSubreceta)
-                //{
-                //    entroEnSubreceta = false;
-                //    dtRecetasOriginal.Rows.RemoveAt(0);
-                //    dtRecetas = dtRecetasOriginal;
-                //}
             }
 
         }

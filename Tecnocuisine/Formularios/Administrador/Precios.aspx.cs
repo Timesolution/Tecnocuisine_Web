@@ -15,35 +15,36 @@ namespace Tecnocuisine.Formularios.Administrador
         {
             if (!IsPostBack)
             {
-                PreCargarRadioButtons();
+                PreCargarOpciones();
             }
         }
 
-        private void PreCargarRadioButtons()
+        private void PreCargarOpciones()
         {
             PreferenciasPrecios pref = ControladorPreferenciasPrecios.Obtener();
-            if (pref == null || pref.Ultimo)
+            if (pref == null)
             {
                 rbUltimoPrecio.Checked = true;
             }
-            else
+            else // Si existen preferencias en la base, se cargan sus valores
             {
                 rbUltimoPrecio.Checked = pref.Ultimo;
                 rbPrecioBarato.Checked = pref.Mas_Barato;
                 rbPromedioPonderado.Checked = pref.Promedio_Ponderado;
 
-                string fechaInicio = pref.Fecha_Inicio.Value.ToString("yyyy-MM-dd");
-                string fechaFin = pref.Fecha_Fin.Value.ToString("yyyy-MM-dd");
+                if(pref.Porcentaje_Alerta_FoodCost != null)
+                    txtPorcentajeAlertaFoodCost.Text = pref.Porcentaje_Alerta_FoodCost.ToString();
 
+                // Formatear fechas para los input date si el valor no es la preferencia "ultimo"
                 if (rbPrecioBarato.Checked)
                 {
-                    txtPrecioBaratoInicio.Text = fechaInicio;
-                    txtPrecioBaratoFin.Text = fechaFin;
+                    txtPrecioBaratoInicio.Text = pref.Fecha_Inicio.Value.ToString("yyyy-MM-dd");
+                    txtPrecioBaratoFin.Text = pref.Fecha_Fin.Value.ToString("yyyy-MM-dd");
                 }
                 else if (rbPromedioPonderado.Checked)
                 {
-                    txtPromedioPonderadoInicio.Text = fechaInicio;
-                    txtPromedioPonderadoFin.Text = fechaFin;
+                    txtPromedioPonderadoInicio.Text = pref.Fecha_Inicio.Value.ToString("yyyy-MM-dd");
+                    txtPromedioPonderadoFin.Text = pref.Fecha_Fin.Value.ToString("yyyy-MM-dd");
                 }
             }
         }
@@ -87,8 +88,12 @@ namespace Tecnocuisine.Formularios.Administrador
             pref.Mas_Barato = rbPrecioBarato.Checked;
             pref.Promedio_Ponderado = rbPromedioPonderado.Checked;
 
-            /// Asignar rango de fechas
+            if (txtPorcentajeAlertaFoodCost.Text.Trim() != string.Empty)
+                pref.Porcentaje_Alerta_FoodCost = Convert.ToDouble(txtPorcentajeAlertaFoodCost.Text.Trim());
+            else
+                pref.Porcentaje_Alerta_FoodCost = null; // El foodcost no fue ingresado
 
+            /// Asignar rango de fechas
             if (pref.Ultimo)
             {
                 pref.Fecha_Inicio = null;
