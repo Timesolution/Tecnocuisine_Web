@@ -312,7 +312,7 @@
                                 <li>
                                     <a style="color: white !important;" href="../../Formularios/Maestros/Tarjetas.aspx">Tarjetas</a>
                                 </li>
-                                <li><a style="color: white !important;" href="../../Formularios/Maestros/TiposReceta.aspx">Tipos de Receta</a></li>                                
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/TiposReceta.aspx">Tipos de Receta</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/InsumosF.aspx">Tipos de Atributos</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Unidades.aspx">Unidades de medida</a></li>
 
@@ -322,6 +322,17 @@
                         </li>
 
 
+                        <%-- Gestion--%>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-bar-chart text-white"></i>
+                                <span class="nav-label " style="color: white;">Gestion</span>
+                                <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Gestion/AlertasFoodCost.aspx">Alertas</a></li>
+                            </ul>
+                        </li>
 
 
                         <%-- CONFIGURACION--%>
