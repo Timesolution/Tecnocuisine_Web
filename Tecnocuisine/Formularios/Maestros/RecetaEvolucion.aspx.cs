@@ -102,9 +102,9 @@ namespace Tecnocuisine.Formularios.Maestros
                 TableRow tr = new TableRow();
                 tr.ID = "Evolucion" + evolucion.Id.ToString();
 
-                ////Celdas
+                //Celdas
                 //TableCell celNumero = new TableCell();
-                //celNumero.Text = entrega.id.ToString();
+                //celNumero.Text = evolucion.Id.ToString();
                 //celNumero.VerticalAlign = VerticalAlign.Middle;
                 //celNumero.HorizontalAlign = HorizontalAlign.Right;
                 //celNumero.Attributes.Add("style", " text-align: right");
@@ -122,13 +122,6 @@ namespace Tecnocuisine.Formularios.Maestros
                 celDescripcion.HorizontalAlign = HorizontalAlign.Left;
                 tr.Cells.Add(celDescripcion);
 
-                TableCell celCostoAnteriorIngrediente = new TableCell();
-                celCostoAnteriorIngrediente.Text = evolucion.CostoAnterior_Producto.ToString("C").Replace(',', '.');
-                celCostoAnteriorIngrediente.VerticalAlign = VerticalAlign.Middle;
-                celCostoAnteriorIngrediente.HorizontalAlign = HorizontalAlign.Left;
-                celCostoAnteriorIngrediente.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
-                tr.Cells.Add(celCostoAnteriorIngrediente);
-
                 TableCell celCostoNuevoIngrediente = new TableCell();
                 celCostoNuevoIngrediente.Text = evolucion.CostoNuevo_Producto.ToString("C").Replace(',', '.');
                 celCostoNuevoIngrediente.VerticalAlign = VerticalAlign.Middle;
@@ -136,12 +129,12 @@ namespace Tecnocuisine.Formularios.Maestros
                 celCostoNuevoIngrediente.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
                 tr.Cells.Add(celCostoNuevoIngrediente);
 
-                TableCell celCostoTotalAnteriorReceta = new TableCell();
-                celCostoTotalAnteriorReceta.Text = evolucion.CostoTotalAnterior_Receta.ToString("C").Replace(',', '.');
-                celCostoTotalAnteriorReceta.VerticalAlign = VerticalAlign.Middle;
-                celCostoTotalAnteriorReceta.HorizontalAlign = HorizontalAlign.Left;
-                celCostoTotalAnteriorReceta.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
-                tr.Cells.Add(celCostoTotalAnteriorReceta);
+                TableCell celCostoAnteriorIngrediente = new TableCell();
+                celCostoAnteriorIngrediente.Text = evolucion.CostoAnterior_Producto.ToString("C").Replace(',', '.');
+                celCostoAnteriorIngrediente.VerticalAlign = VerticalAlign.Middle;
+                celCostoAnteriorIngrediente.HorizontalAlign = HorizontalAlign.Left;
+                celCostoAnteriorIngrediente.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
+                tr.Cells.Add(celCostoAnteriorIngrediente);
 
                 TableCell celCostoTotalNuevoReceta = new TableCell();
                 celCostoTotalNuevoReceta.Text = evolucion.CostoTotalNuevo_Receta.ToString("C").Replace(',', '.');
@@ -149,6 +142,13 @@ namespace Tecnocuisine.Formularios.Maestros
                 celCostoTotalNuevoReceta.HorizontalAlign = HorizontalAlign.Left;
                 celCostoTotalNuevoReceta.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
                 tr.Cells.Add(celCostoTotalNuevoReceta);
+
+                TableCell celCostoTotalAnteriorReceta = new TableCell();
+                celCostoTotalAnteriorReceta.Text = evolucion.CostoTotalAnterior_Receta.ToString("C").Replace(',', '.');
+                celCostoTotalAnteriorReceta.VerticalAlign = VerticalAlign.Middle;
+                celCostoTotalAnteriorReceta.HorizontalAlign = HorizontalAlign.Left;
+                celCostoTotalAnteriorReceta.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
+                tr.Cells.Add(celCostoTotalAnteriorReceta);
 
                 phIngredientes.Controls.Add(tr);
 

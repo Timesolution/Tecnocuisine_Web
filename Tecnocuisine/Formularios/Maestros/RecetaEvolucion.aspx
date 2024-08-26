@@ -2,6 +2,8 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <div class="wrapper wrapper-content">
         <div class="container-fluid">
             <div class="ibox float-e-margins">
@@ -26,11 +28,19 @@
 
                                             <div class="ibox-content">
                                                 <div style="margin-left: 0px; margin-right: 0px;" class="row">
-                                                    <div class="col-md-10">
+                                                    <div class="col-md-12">
 
-                                                        <h1>
-                                                            <asp:Label runat="server" ID="lblDescripcion" Style="font-size: 2rem; font-weight: bold"></asp:Label>
-                                                        </h1>
+                                                        <div style="display: flex; width: 100%">
+                                                            <h1 style="width: 50%">
+                                                                <asp:Label runat="server" ID="lblDescripcion" Style="font-size: 2rem; font-weight: bold"></asp:Label>
+                                                            </h1>
+
+                                                            <%--<div style="width: 50%; height: 120px;">
+                                                                <div style="width:100%; height:100%">
+                                                                    <canvas id="costChart" style="float: right; width: 100%"></canvas>
+                                                                </div>
+                                                            </div>--%>
+                                                        </div>
 
                                                         <div class="input-group m-b">
                                                             <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
@@ -44,6 +54,7 @@
                                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                                     <thead>
                                                         <tr>
+                                                            <%--<th>ID</th>--%>
                                                             <th>Fecha del cambio</th>
                                                             <th>Ingrediente</th>
                                                             <th style="text-align: right">Nuevo Costo Ingrediente</th>
@@ -70,69 +81,59 @@
 
     <script>
         $(document).ready(function () {
-            $('.dataTables-example').dataTable({
+            // Inicializa DataTable con opciones
+            var oTable = $('#editable').DataTable({
                 responsive: true,
-                "dom": 'T<"clear">lfrtip',
-                "tableTools": {
-                    "sSwfPath": "js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
+                dom: 'T<"clear">lfrtip',
+                order: [[0, 'desc']],
+                pageLength: 25,
+                language: {
+                    emptyTable: "No hay datos disponibles en la tabla",
+                    search: "Buscar:",
+                    lengthMenu: "Mostrar _MENU_ entradas",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "Último"
+                    }
                 }
             });
 
-            /* Init DataTables */
-            var oTable = $('#editable').dataTable();
+            // Oculta los elementos dataTables_length y editable_filter
+            $('#editable_length').hide();
+            $('#editable_filter').hide();
+            $('.DTTT_container').hide();
+            $('#editable_wrapper').css('background-color', 'white');
 
-            /* Apply the jEditable handlers to the table */
-            oTable.$('td').editable('../example_ajax.php', {
-                "callback": function (sValue, y) {
-                    var aPos = oTable.fnGetPosition(this);
-                    oTable.fnUpdate(sValue, aPos[0], aPos[1]);
-                },
-                "submitdata": function (value, settings) {
-                    return {
-                        "row_id": this.parentNode.getAttribute('id'),
-                        "column": oTable.fnGetPosition(this)[2]
-                    };
-                },
-                "width": "90%",
-                "height": "100%",
-                "pageLength": 25
+            // Cambia el estilo del contenedor de longitud de tabla
+            var parent = $("#editable_length").parent();
+            parent.addClass('col-sm-12');
+
+            // Añade un botón para agregar registros
+            var div = $('#editable_filter');
+            var button = $('<a>', {
+                href: "RecetasABM.aspx",
+                class: "btn",
+                style: "float: right; margin-right: 1%;",
+                html: "<i style='color: black' class='fa fa-plus'></i>"
             });
-
-
-            $("#editable_filter").appendTo("#editable_length");
-
-            $("#editable_filter").css('display', 'inline');
-            $("#editable_filter").css('padding-left', '5%');
-            var parent = $("#editable_length")[0].parentNode;
-            parent.className = 'col-sm-12';
-
-            var div = document.getElementById('editable_filter');
-            var button = document.createElement('a');
-            //button.id = "btnAgregar";
-            button.style.float = "right";
-            button.style.marginRight = "1%";
-            //button.setAttribute("type", "a");
-            button.setAttribute("href", "RecetasABM.aspx");
-            //button.setAttribute("onclick", "vaciarFormulario()");
-            //button.setAttribute("data-toggle", "modal");
-            button.setAttribute("class", "btn");
-
-            button.innerHTML = "<i style='color: black' class='fa fa-plus'></i>";
             div.prepend(button);
-            var filter = $("#editable_filter");
-            filter[0].id = 'editable_filter2';
-            var filter = $("#editable_length").css('display', 'none');
-            filter[0].id = 'editable_length2';
 
-            $('.dataTables_filter').hide();
+            // Configura el campo de búsqueda personalizado
             $('#txtBusqueda').on('keyup', function () {
-                $('#editable').DataTable().search(
-                    this.value
-                ).draw();
+                oTable.search(this.value).draw();
             });
+        });
+    </script>
 
 
-            //document.getElementById('editable_length2').children[0].remove();
+
+
+    <script>
+        $(document).ready(function () {
+            document.getElementById("lblSiteMap").innerText = "Recetas / Evolucion";
         });
     </script>
 
