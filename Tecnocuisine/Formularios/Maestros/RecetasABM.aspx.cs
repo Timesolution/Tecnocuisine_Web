@@ -35,7 +35,7 @@ namespace Tecnocuisine.Formularios.Maestros
         CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
         protected void Page_Load(object sender, EventArgs e)
         {
-            //VerificarLogin();
+            VerificarLogin();
 
             this.Mensaje = Convert.ToInt32(Request.QueryString["m"]);
             this.accion = Convert.ToInt32(Request.QueryString["a"]);

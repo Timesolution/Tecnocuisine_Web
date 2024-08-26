@@ -67,4 +67,73 @@
         </div>
     </div>
 
+
+    <script>
+        $(document).ready(function () {
+            $('.dataTables-example').dataTable({
+                responsive: true,
+                "dom": 'T<"clear">lfrtip',
+                "tableTools": {
+                    "sSwfPath": "js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
+                }
+            });
+
+            /* Init DataTables */
+            var oTable = $('#editable').dataTable();
+
+            /* Apply the jEditable handlers to the table */
+            oTable.$('td').editable('../example_ajax.php', {
+                "callback": function (sValue, y) {
+                    var aPos = oTable.fnGetPosition(this);
+                    oTable.fnUpdate(sValue, aPos[0], aPos[1]);
+                },
+                "submitdata": function (value, settings) {
+                    return {
+                        "row_id": this.parentNode.getAttribute('id'),
+                        "column": oTable.fnGetPosition(this)[2]
+                    };
+                },
+                "width": "90%",
+                "height": "100%",
+                "pageLength": 25
+            });
+
+
+            $("#editable_filter").appendTo("#editable_length");
+
+            $("#editable_filter").css('display', 'inline');
+            $("#editable_filter").css('padding-left', '5%');
+            var parent = $("#editable_length")[0].parentNode;
+            parent.className = 'col-sm-12';
+
+            var div = document.getElementById('editable_filter');
+            var button = document.createElement('a');
+            //button.id = "btnAgregar";
+            button.style.float = "right";
+            button.style.marginRight = "1%";
+            //button.setAttribute("type", "a");
+            button.setAttribute("href", "RecetasABM.aspx");
+            //button.setAttribute("onclick", "vaciarFormulario()");
+            //button.setAttribute("data-toggle", "modal");
+            button.setAttribute("class", "btn");
+
+            button.innerHTML = "<i style='color: black' class='fa fa-plus'></i>";
+            div.prepend(button);
+            var filter = $("#editable_filter");
+            filter[0].id = 'editable_filter2';
+            var filter = $("#editable_length").css('display', 'none');
+            filter[0].id = 'editable_length2';
+
+            $('.dataTables_filter').hide();
+            $('#txtBusqueda').on('keyup', function () {
+                $('#editable').DataTable().search(
+                    this.value
+                ).draw();
+            });
+
+
+            //document.getElementById('editable_length2').children[0].remove();
+        });
+    </script>
+
 </asp:Content>

@@ -18,6 +18,8 @@ namespace Tecnocuisine.Formularios.Maestros
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            VerificarLogin();
+
             if (Request.QueryString["id"] == null)
                 Response.Redirect("Recetas.aspx");
 
@@ -28,6 +30,49 @@ namespace Tecnocuisine.Formularios.Maestros
             lblDescripcion.Text = receta.descripcion;
 
             CrearTablaIngredientes();
+        }
+
+        private void VerificarLogin()
+        {
+            try
+            {
+                if (Session["User"] == null)
+                {
+                    Response.Redirect("../../Usuario/Login.aspx");
+                }
+                else
+                {
+                    if (this.verificarAcceso() != 1)
+                    {
+                        Response.Redirect("/Default.aspx?m=1", false);
+                    }
+                }
+            }
+            catch
+            {
+                Response.Redirect("../../Account/Login.aspx");
+            }
+        }
+
+        private int verificarAcceso()
+        {
+            try
+            {
+                int valor = 0;
+                string permisos = Session["Login_Permisos"] as string;
+                string[] listPermisos = permisos.Split(';');
+
+                string permiso = listPermisos.Where(x => x == "215").FirstOrDefault();
+
+                if (!string.IsNullOrEmpty(permiso))
+                    valor = 1;
+
+                return valor;
+            }
+            catch
+            {
+                return -1;
+            }
         }
 
         private void CrearTablaIngredientes()
@@ -41,19 +86,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
         private void CargarFilasProductos()
         {
-            //List<Tecnocuisine_API.Entitys.Productos> productos = controladorReceta.obteneProductosPadres(idReceta);
-
-            //foreach (var producto in productos)
-            //{
-            //    //Obtener entregas por id producto
-            //    List<Entregas_Productos> entregas_producto = controladorEntregas.ObtenerEntregasProductoByidProducto(producto.id);
-            //    foreach (Entregas_Productos entrega in entregas_producto)
-            //    {
-            //        InsertarFilaProducto(entrega);
-            //    }
-            //}
-
-            List<EvolucionCostos_Productos> evoluciones = new ControladorEvolucionCostos_Productos().GetAll();
+            List<EvolucionCostos_Productos> evoluciones = new ControladorEvolucionCostos_Productos().GetAllByRecetaId(idReceta);
 
             foreach (var e in evoluciones)
             {
