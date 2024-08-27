@@ -107,7 +107,7 @@ namespace Tecnocuisine.Formularios.Gestion
                     tr.Cells.Add(celPrecioVenta);
 
                     TableCell celContMarginal = new TableCell();
-                    celContMarginal.Text = alerta.Recetas.CostMarginal?.ToString("P");
+                    celContMarginal.Text = alerta.Recetas.CostMarginal?.ToString("C");
                     celContMarginal.VerticalAlign = VerticalAlign.Middle;
                     celContMarginal.HorizontalAlign = HorizontalAlign.Left;
                     celContMarginal.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
