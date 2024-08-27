@@ -1117,6 +1117,9 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 if (resultado > 0)
                 {
+                    if (Receta.PorcFoodCost != null && controladorReceta.DebeGenerarAlerta((decimal)Receta.PorcFoodCost))
+                        controladorReceta.GenerarAlerta(Receta);
+
                     string[] items = idProductosRecetas.Split(';');
                     int idProducto = 0;
                     foreach (var pr in items)
@@ -1401,7 +1404,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                 {
                                     Marca_Recetas Marca_Receta = new Marca_Recetas();
                                     Marca_Receta.id_marca = Convert.ToInt32(marcaArray[0].Trim());
-                                    Marca_Receta.id_Receta = resultado;                                   
+                                    Marca_Receta.id_Receta = resultado;
                                     controladorReceta.AgregarMarcaReceta(Marca_Receta);
                                 }
                             }
@@ -1483,6 +1486,9 @@ namespace Tecnocuisine.Formularios.Maestros
                 //Si los datos de la primera parte de la receta se puedieron editar entonces entrea al if
                 if (resultado > 0)
                 {
+                    if (Receta.PorcFoodCost != null && controladorReceta.DebeGenerarAlerta((decimal)Receta.PorcFoodCost))
+                        controladorReceta.GenerarAlerta(Receta);
+
                     //Elimina todos los productos y tambien las recetas usadas como ingrediente que pertenezcan a la receta
                     //Esto lo hace porque los va a agregar nuevamente, es como si los pisara
                     controladorReceta.EliminarIngredientes(Receta.id);

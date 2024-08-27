@@ -93,28 +93,28 @@ namespace Tecnocuisine.Formularios.Gestion
                     tr.Cells.Add(celDescripcion);
 
                     TableCell celCostoUnitario = new TableCell();
-                    celCostoUnitario.Text = alerta.Recetas.CostoU?.ToString("C");
+                    celCostoUnitario.Text = alerta.CostoU.ToString("C");
                     celCostoUnitario.VerticalAlign = VerticalAlign.Middle;
                     celCostoUnitario.HorizontalAlign = HorizontalAlign.Left;
                     celCostoUnitario.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
                     tr.Cells.Add(celCostoUnitario);
 
                     TableCell celPrecioVenta = new TableCell();
-                    celPrecioVenta.Text = alerta.Recetas.PrVenta?.ToString("C");
+                    celPrecioVenta.Text = alerta.PrVenta.ToString("C");
                     celPrecioVenta.VerticalAlign = VerticalAlign.Middle;
                     celPrecioVenta.HorizontalAlign = HorizontalAlign.Left;
                     celPrecioVenta.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
                     tr.Cells.Add(celPrecioVenta);
 
                     TableCell celContMarginal = new TableCell();
-                    celContMarginal.Text = alerta.Recetas.CostMarginal?.ToString("C");
+                    celContMarginal.Text = alerta.CostMarginal.ToString("C");
                     celContMarginal.VerticalAlign = VerticalAlign.Middle;
                     celContMarginal.HorizontalAlign = HorizontalAlign.Left;
                     celContMarginal.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
                     tr.Cells.Add(celContMarginal);
 
                     TableCell celFoodCost = new TableCell();
-                    celFoodCost.Text = alerta.Recetas.PorcFoodCost?.ToString() + " %";
+                    celFoodCost.Text = alerta.PorcFoodCost.ToString() + " %";
                     celFoodCost.VerticalAlign = VerticalAlign.Middle;
                     celFoodCost.HorizontalAlign = HorizontalAlign.Left;
                     celFoodCost.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");

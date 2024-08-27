@@ -2,7 +2,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <%--<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>--%>
 
     <div class="wrapper wrapper-content">
         <div class="container-fluid">

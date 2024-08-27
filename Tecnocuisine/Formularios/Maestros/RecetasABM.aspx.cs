@@ -1306,12 +1306,6 @@ namespace Tecnocuisine.Formularios.Maestros
             return resultadoJSON;
         }
 
-
-
-
-
-
-
         private void agregarArticulo(object sender, EventArgs e)
         {
             try
