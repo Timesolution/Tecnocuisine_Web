@@ -192,7 +192,7 @@ namespace Tecnocuisine.Formularios.Ventas
             newRow["fechaProducto"] = rowRecetasOrden["fechaEntrega"];
             newRow["ingredienteOreceta"] = "Receta";
             newRow["RazonSocial"] = rowRecetasOrden["razonSocial"];
-            //newRow["unidadMedida"] = "Litro";
+            newRow["unidadMedida"] = rowRecetasOrden["unidad"];
             newRow["SectorPadre"] = rowRecetasOrden["descripcion1"];
 
             return newRow;
