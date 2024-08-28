@@ -18,26 +18,88 @@ namespace Tecnocuisine.Formularios.Ventas
     {
         ControladorReceta ControladorReceta = new ControladorReceta();
         ControladorCliente controladorCliente = new ControladorCliente();
+        int accion;
+        int idOrdenDeProduccion;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                ObtenerRecetas();
-                ObtenerClientes();
-                txtFechaHoy.Text = DateTime.Now.ToString("dd/MM/yyyy");
+            VerificarLogin();
 
-                if (int.Parse(Request.QueryString["Accion"]) == 2)
+            // Verificar si hay parámetros en la consulta
+            if (Request.QueryString["Accion"] != null && Request.QueryString["id"] != null)
+            {
+                // Intentar convertir los valores de los parámetros
+                if (int.TryParse(Request.QueryString["Accion"], out accion) &&
+                    int.TryParse(Request.QueryString["id"], out idOrdenDeProduccion))
                 {
-                    if (Request.QueryString["id"] != null)
+                    // Ejecutar la acción según el valor de "Accion"
+                    switch (accion)
                     {
-                        int idOrdenDeProduccion = int.Parse(Request.QueryString["id"]);
-                        precargarOrdenDeProduccion(idOrdenDeProduccion);
+                        case 1: // Ver
+                            precargarOrdenDeProduccion(idOrdenDeProduccion);
+                            // Llama a la función JavaScript para deshabilitar campos
+                            ClientScript.RegisterStartupScript(this.GetType(), "deshabilitarCampos", $"deshabilitarCampos();", true);
+                            return;
+
+                        case 2: // Editar
+                            if (!SePuedeEditar(idOrdenDeProduccion)) // Si no se puede editar, redirecciona al listado de Ordenes
+                                Response.Redirect("OrdenesDeProduccion.aspx", false);
+
+                            precargarOrdenDeProduccion(idOrdenDeProduccion);
+                            return;
+
+                        default:
+                             Response.Redirect("OrdenesDeProduccion.aspx", false);
+                            break;
                     }
                 }
                 else
                 {
-                    CargarCodigoOrdenCompra();
+                    Response.Redirect("OrdenesDeProduccion.aspx", false); // Si falla la conversion, se redirecciona al listado de Ordenes
                 }
+            }
+        }
+
+        private void VerificarLogin()
+        {
+            try
+            {
+                if (Session["User"] == null)
+                {
+                    Response.Redirect("../../Usuario/Login.aspx");
+                }
+                else
+                {
+                    if (this.verificarAcceso() != 1)
+                    {
+                        Response.Redirect("/Default.aspx?m=1", false);
+                    }
+                }
+            }
+            catch
+            {
+                Response.Redirect("../../Account/Login.aspx");
+            }
+        }
+
+        private int verificarAcceso()
+        {
+            try
+            {
+                int valor = 1;
+                string permisos = Session["Login_Permisos"] as string;
+                string[] listPermisos = permisos.Split(';');
+
+                string permiso = listPermisos.Where(x => x == "215").FirstOrDefault();
+
+                if (!string.IsNullOrEmpty(permiso))
+                    valor = 1;
+
+                return valor;
+            }
+            catch
+            {
+                return -1;
             }
         }
 
@@ -46,15 +108,37 @@ namespace Tecnocuisine.Formularios.Ventas
             ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
             ordenesDeProduccion ordeneDeProduccion = cOrdenDeProduccion.GetOneOrdenesDeProduccionById(idOrdenDeProduccion);
 
-            // Si la orden ya se mando a producir, no se debe poder editar
-            if (ordeneDeProduccion.estadoDeLaOrden == 1)
-                Response.Redirect("OrdenesDeProduccion.aspx", false);
-
             txtFechaHoy.Text = Convert.ToDateTime(ordeneDeProduccion.fechaEntrega).ToString("dd/MM/yyyy");
             lblOPNumero.Text = ordeneDeProduccion.OPNumero;
             TxtClientes.Text = ordeneDeProduccion.idCliente.ToString() + " - " + ordeneDeProduccion.Clientes.alias + " - " + "Cliente";
 
             precargarRecetasDeLaOrden(idOrdenDeProduccion);
+        }
+
+        /// <summary>
+        /// Verifica si la orden no tiene estado "A producir", en ese caso, se puede editar y retorna true. En caso que su estado sea "A producir", retorna false
+        /// </summary>
+        /// <param name="idOrdenDeProduccion"></param>
+        private bool SePuedeEditar(int idOrdenDeProduccion)
+        {
+            try
+            {
+                ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
+                ordenesDeProduccion ordeneDeProduccion = cOrdenDeProduccion.GetOneOrdenesDeProduccionById(idOrdenDeProduccion);
+
+                if (ordeneDeProduccion == null)
+                    throw new Exception();
+
+                // Si la orden ya se mando a producir, no se debe poder editar
+                if (ordeneDeProduccion.estadoDeLaOrden == 1)
+                    return false;
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public void precargarRecetasDeLaOrden(int idOrdenDeProduccion)
@@ -68,8 +152,6 @@ namespace Tecnocuisine.Formularios.Ventas
             }
 
         }
-
-
 
         private void CargarOrdendesProduccionenPH(ordenesXRecetas RecetaXOrden)
         {
@@ -98,17 +180,18 @@ namespace Tecnocuisine.Formularios.Ventas
                 l2.Text = "&nbsp";
                 celAccion.Controls.Add(l2);
 
-                LinkButton btnEliminar = new LinkButton();
-                btnEliminar.ID = "btnEliminarReceta_" + RecetaXOrden.id;
-                btnEliminar.CssClass = "btn btn-xs";
-                btnEliminar.Style.Add("background-color", "transparent");
-                btnEliminar.Attributes.Add("data-toggle", "modal");
-                btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                btnEliminar.Text = "<span title='Eliminar'><i class='fa fa-trash-o' style='color: #FF0000;'></i></span>";
-                btnEliminar.Attributes.Add("onclick", "borrarDocumentoSelect('ContentPlaceHolder1_" + RecetaXOrden.idReceta.ToString() + "');");
-                celAccion.Controls.Add(btnEliminar);
-
-
+                if (accion != 1) // Si no se esta visualizando
+                {
+                    LinkButton btnEliminar = new LinkButton();
+                    btnEliminar.ID = "btnEliminarReceta_" + RecetaXOrden.id;
+                    btnEliminar.CssClass = "btn btn-xs";
+                    btnEliminar.Style.Add("background-color", "transparent");
+                    btnEliminar.Attributes.Add("data-toggle", "modal");
+                    btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
+                    btnEliminar.Text = "<span title='Eliminar'><i class='fa fa-trash-o' style='color: #FF0000;'></i></span>";
+                    btnEliminar.Attributes.Add("onclick", "borrarDocumentoSelect('ContentPlaceHolder1_" + RecetaXOrden.idReceta.ToString() + "');");
+                    celAccion.Controls.Add(btnEliminar);
+                }
 
                 tr.Cells.Add(celAccion);
                 phRecetasOrdenProduccion.Controls.Add(tr);

@@ -336,11 +336,18 @@ namespace Tecnocuisine.Formularios.Ventas
                 l3.Text = "&nbsp";
                 celAccion.Controls.Add(l3);
 
+                LinkButton btnVer = new LinkButton();
+                btnVer.CssClass = "btn btn-xs";
+                btnVer.Style.Add("background-color", "transparent");
+                btnVer.ID = "btnVer_" + ordenProd.id + "_";
+                btnVer.Text = "<span><i style='color:black;' class='fa fa-search' title='Ver'></i></span>";
+                btnVer.PostBackUrl = "OrdenesDeProduccionABM.aspx?Accion=1&id=" + ordenProd.id;
+
                 LinkButton btnDetalles = new LinkButton();
                 btnDetalles.CssClass = "btn btn-xs";
                 btnDetalles.Style.Add("background-color", "transparent");
                 btnDetalles.ID = "btnSelecReceta_" + ordenProd.id + "_";
-                btnDetalles.Text = "<span><i style='color:black;' class='fa fa-pencil' title='Editar'></i></span>"; // Agregar la tooltip "Editar"
+                btnDetalles.Text = "<span><i style='color:black;' class='fa fa-pencil' title='Editar'></i></span>";
                 btnDetalles.PostBackUrl = "OrdenesDeProduccionABM.aspx?Accion=2&id=" + ordenProd.id;
 
                 Literal l2 = new Literal();
@@ -353,7 +360,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 btnEliminar.Style.Add("background-color", "transparent");
                 btnEliminar.Attributes.Add("data-toggle", "modal");
                 btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                btnEliminar.Text = "<span><i style='color:red' class='fa fa-trash-o' title='Eliminar'></i></span>"; // Agregar la tooltip "Eliminar"
+                btnEliminar.Text = "<span><i style='color:red' class='fa fa-trash-o' title='Eliminar'></i></span>";
                 btnEliminar.OnClientClick = "abrirdialog(" + ordenProd.id + ");";
 
 
@@ -366,6 +373,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 }
 
                 celAccion.Controls.Add(chkSeleccionar);
+                celAccion.Controls.Add(btnVer);
                 celAccion.Controls.Add(btnDetalles);
                 celAccion.Controls.Add(btnEliminar);
 

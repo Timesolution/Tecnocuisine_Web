@@ -21,9 +21,10 @@
                         <div class="row" style="padding-left: 15px; padding-right: 15px; padding-bottom: 15px">
 
                             <div class="row" style="padding-left: 15px; padding-right: 15px">
-                                <div class="col-md-4">
-                                    <label>Número de orden: </label>
-                                    <asp:Label ID="lblOPNumero" runat="server" Text=""></asp:Label>
+                                <div class="col-md-12">
+                                    <h3>Número de orden:
+                                        <asp:Label ID="lblOPNumero" runat="server" Style="font-weight: 500" Text=""></asp:Label></h3>
+
                                 </div>
                             </div>
 
@@ -31,7 +32,7 @@
 
                             <div class="row" style="padding-left: 15px; padding-right: 15px">
                                 <%--Cliente--%>
-                                <div class="col-md-3">
+                                <div class="col-md-6">
                                     <div>
                                         <label>Cliente</label>
                                     </div>
@@ -49,7 +50,7 @@
                                 </div>
 
                                 <%--Fecha de entrega--%>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div>
                                         <label>Fecha de entrega</label>
                                     </div>
@@ -71,9 +72,9 @@
                             </div>
 
 
-                            <div class="row" style="padding-left: 15px; padding-right: 15px">
+                            <div class="row" id="row2" style="padding-left: 15px; padding-right: 15px">
 
-                                                                <div class="col-md-3">
+                                <div class="col-md-6">
                                     <div>
                                         <label>Producto/Receta</label>
                                     </div>
@@ -92,14 +93,14 @@
                                         <asp:HiddenField ID="HiddenUnidad" runat="server" />
 
                                     </div>
-                                    <div class="col-md-1" style="margin-top: 8px;">
+                                    <div class="col-md-2" style="margin-top: 8px;">
                                         <a id="StockChange" target="_blank" data-toggle="tooltip" data-placement="top" title data-original-title="Stock" style="color: black;">
                                             <h5 id="StockDisponible"></h5>
                                         </a>
                                     </div>
                                 </div>
 
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div>
                                         <label>Cantidad</label>
                                     </div>
@@ -135,14 +136,14 @@
 
 
                             <%-- Aca empieza la tabla en la que se cargan las recetas para la orden de produccion --%>
-                            <div class="row">
-                                <div class="col-lg-11" style="margin-left: 10px">
+                            <div class="row" style="padding: 10px">
+                                <div class="col-lg-12">
                                     <table class="table table-striped table-bordered table-hover" id="editable">
                                         <thead>
                                             <tr>
-                                                <th style="width: 30%">Producto</th>
-                                                <th style="text-align: right; width: 10%; padding-right: 5px;">Cantidad</th>
-                                                <th style="width: auto"></th>
+                                                <th>Producto</th>
+                                                <th style="text-align: right; width: 20%; padding-right: 5px;">Cantidad</th>
+                                                <th style="width: 15%"></th>
                                             </tr>
                                         </thead>
                                         <tbody id="tableOrdenesProduccion">
@@ -155,10 +156,13 @@
 
                             <%-- Este es el boton para guardar la orden de produccion --%>
                             <asp:LinkButton runat="server" class="btn btn-sm btn-primary pull-right m-t-n-xs"
-                                Style="margin-right: 145px; margin-bottom: 5px; margin-top: 5px;" data-toggle="tooltip"
-                                data-placement="top" data-original-title="Guardan orden de producción" Text="Guardar orden de producción"
+                                Style="margin-bottom: 5px; margin-top: 5px; margin-right: 10px" Text="Guardar orden de producción"
                                 ValidationGroup="AgregarEntregas" ID="btnGuardarOrdenDeCompra" OnClientClick="guardarOrden(); return false;">
                             </asp:LinkButton>
+
+                            <a href="OrdenesDeProduccion.aspx" class="btn btn-sm btn-default pull-right m-t-n-xs"
+                                style="margin-right: 1rem; margin-bottom: 5px; margin-top: 5px;">Volver al listado
+                            </a>
 
                             <%-- Estas son textboxOcultas que se usan para varias cosas --%>
                             <asp:TextBox runat="server" ID="DatosProductos" Text="" Style="display: none;" />
@@ -472,6 +476,19 @@
         $(document).ready(function () {
             document.getElementById("lblSiteMap").innerText = "Produccion / Nueva Orden";
         });
+    </script>
+
+    <script type="text/javascript">
+        function deshabilitarCampos() {
+            // Obtén referencias a los controles por sus IDs
+            var txtFechaHoy = document.getElementById('<%= txtFechaHoy.ClientID %>');
+            var txtClientes = document.getElementById('<%= TxtClientes.ClientID %>');
+            var row2 = document.getElementById('row2');
+
+            txtFechaHoy.disabled = 'true';
+            txtClientes.disabled = 'true';
+            row2.style.display = 'none';
+        }
     </script>
 
 </asp:Content>
