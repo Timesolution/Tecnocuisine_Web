@@ -367,7 +367,6 @@ namespace Tecnocuisine.Formularios.Ventas
                 // Si la orden ya se mando a producir, no se podra editar, producir, y eliminar
                 if (ordenProd.EstadosOrdenes.id == 1)
                 {
-                    chkSeleccionar.InputAttributes.Add("disabled", "true");
                     btnDetalles.Attributes.Add("disabled", "true");
                     btnEliminar.Attributes.Add("disabled", "true");
                 }

@@ -69,10 +69,41 @@ namespace Tecnocuisine.Formularios.Ventas
                 // dtCantidadRecetasPorCadaOrden = cOrdenDeProduccion.GetAllCantidadProductosGroupByProductoColumn(idsQueryString);
 
                 obtenerOPNumeros(idsQueryString);
+
+                // Si alguna orden tiene estado "A producir", ocultar los botones para evitar duplicar la produccion de la orden
+                if (HayOrdenesProducidas(idsQueryString))
+                {
+                    btnProducir.Visible = false;
+                    btnCancelar.Visible = false;
+                }
             }
             catch (Exception ex)
             {
                 Response.Redirect("OrdenesDeProduccion.aspx", false);
+            }
+        }
+
+        private bool HayOrdenesProducidas(string idsQueryString)
+        {
+            ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
+
+            try
+            {
+                var idsArray = idsQueryString.Split(',');
+                foreach (string id in idsArray)
+                {
+                    if (string.IsNullOrEmpty(id)) continue;
+
+                    var orden = cOrdenDeProduccion.GetOneOrdenesDeProduccionById(Convert.ToInt32(id));
+                    if (orden?.estadoDeLaOrden == 1) // Si tiene estado y es "a producir"
+                        return true;
+                }
+
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 

@@ -160,8 +160,7 @@
                                 ValidationGroup="AgregarEntregas" ID="btnGuardarOrdenDeCompra" OnClientClick="guardarOrden(); return false;">
                             </asp:LinkButton>
 
-                            <a href="OrdenesDeProduccion.aspx" class="btn btn-sm btn-default pull-right m-t-n-xs"
-                                style="margin-right: 1rem; margin-bottom: 5px; margin-top: 5px;">Volver al listado
+                            <a href="OrdenesDeProduccion.aspx" class="btn btn-sm btn-default pull-left m-t-n-xs" style="margin-left: 1rem; margin-bottom: 5px; margin-top: 5px;">Volver al listado
                             </a>
 
                             <%-- Estas son textboxOcultas que se usan para varias cosas --%>

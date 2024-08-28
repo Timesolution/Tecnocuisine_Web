@@ -123,7 +123,7 @@
                                 <%foreach (var item in fechasHead)
                                     {%>
                                 <td>
-                                    <div style="display:flex">
+                                    <div style="display: flex">
                                         <%foreach (var key2 in sectorTablesGroupByFechas)
                                             {%>
                                         <%if (key2.Key == item)
@@ -220,7 +220,7 @@
     <%}%>
 
 
-    <asp:LinkButton runat="server" ID="btnCancelar" class="btn btn-primary dim" Style="float: right; margin-left: 1%" Text="Cancelar"
+    <asp:LinkButton runat="server" ID="btnCancelar" class="btn btn-default dim" Style="margin-left: 1%" Text="Volver al listado"
         OnClick="btnCancelar_Click">
     </asp:LinkButton>
 
@@ -228,6 +228,7 @@
         class="btn btn-primary dim" Style="float: right" Text="A producir" OnClientClick="Producir(); 
         return false;">
     </asp:LinkButton>
+
     <%}%>
 
 
