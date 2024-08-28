@@ -60,6 +60,15 @@ namespace Tecnocuisine
         protected global::System.Web.UI.WebControls.TextBox txtDescripcionPresentacion;
 
         /// <summary>
+        /// Control ddlCuentasContables.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlCuentasContables;
+
+        /// <summary>
         /// Control btnGuardar.
         /// </summary>
         /// <remarks>

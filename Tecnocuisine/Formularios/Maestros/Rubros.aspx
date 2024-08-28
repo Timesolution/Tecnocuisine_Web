@@ -2,6 +2,12 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
+    <style>
+        .borde-rojo {
+            border: 1px solid red;
+        }
+    </style>
+
     <div class="wrapper wrapper-content">
         <div class="container-fluid">
 
@@ -32,8 +38,9 @@
 
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th>Descripción</th>
+                                            <th style="display: none">#</th>
+                                            <th>Rubro</th>
+                                            <th>Cuenta Contable</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -86,15 +93,29 @@
                         <div class="col-sm-1">
                             <label style="color: red;" class="danger">*</label>
                         </div>
-                        <label class="col-sm-2 control-label editable">Descripción</label>
-                        <div class="col-sm-9">
+                        <label class="col-sm-4 control-label editable">Descripción</label>
+                        <div class="col-sm-7">
                             <asp:TextBox ID="txtDescripcionPresentacion" class="form-control" runat="server" />
 
                         </div>
                     </div>
+
+                    <br />
+                    <br />
+
+                    <div class="form-group">
+                        <div class="col-sm-1">
+                            <label style="color: red;" class="danger">*</label>
+                        </div>
+                        <label class="col-sm-4 control-label editable">Cuenta Contable</label>
+                        <div class="col-sm-7">
+                            <asp:DropDownList ID="ddlCuentasContables" runat="server" CssClass="form-control"></asp:DropDownList>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
-                    <asp:LinkButton runat="server" ID="btnGuardar" class="buttonLoading btn btn-primary" 
+                    <asp:LinkButton runat="server" ID="btnGuardar" class="btn btn-primary" OnClientClick="return validarFormulario()"
                         OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
                     <asp:HiddenField ID="hiddenEditar" runat="server" />
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
@@ -125,13 +146,13 @@
         }
         function vaciarFormulario() {
             ContentPlaceHolder1_txtDescripcionPresentacion.value = "";
-           // ContentPlaceHolder1_txtCantidadPresentacion.value = "";
+            // ContentPlaceHolder1_txtCantidadPresentacion.value = "";
             ContentPlaceHolder1_hiddenEditar.value = "";
             window.history.pushState('', 'Presentaciones', location.protocol + '//' + location.host + location.pathname);
 
         }
 
-        function vaciarInputs(){
+        function vaciarInputs() {
             document.getElementById('<%= txtDescripcionPresentacion.ClientID %>').value = "";
         }
     </script>
@@ -209,4 +230,31 @@
         })
 
     </script>
+
+    <script>
+        function validarFormulario() {
+            var nombre = document.getElementById('<%= txtDescripcionPresentacion.ClientID %>');
+            var ddl = document.getElementById('<%= ddlCuentasContables.ClientID %>');
+
+            nombre.classList.remove('borde-rojo'); // Remover la clase si la tenia
+            ddl.classList.remove('borde-rojo'); // Remover la clase si la tenia
+
+            //Validar nombre del rubro
+            if (nombre.value === "") {
+                toastr.error("Por favor, ingrese un nombre para el rubro.", "Error");
+                nombre.classList.add('borde-rojo');
+                return false; // Evita el envío del formulario
+            }
+
+            //Validar ddlCuentasContables
+            if (ddl.value === "-1") {
+                toastr.error("Por favor, seleccione una cuenta contable.", "Error");
+                ddl.classList.add('borde-rojo');
+                return false; // Evita el envío del formulario
+            }
+
+            return true; // Permite el envío del formulario
+        }
+    </script>
+
 </asp:Content>
