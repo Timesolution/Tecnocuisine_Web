@@ -218,58 +218,38 @@
 
 
         function guardarOrden() {
-            // Contar filas de la tabla
-            let rowCountTable = $("#editable tbody tr").length;
+            let rowCountTable = $("#editable tbody tr").length; // Contar filas de la tabla           
+            let rowCountPlaceHolder = $("#phRecetasOrdenProduccion tr").length; // Contar filas del PlaceHolder          
+            let totalRowCount = rowCountTable + rowCountPlaceHolder; // Sumar las filas de la tabla y del PlaceHolder
 
-            // Contar filas del PlaceHolder
-            let rowCountPlaceHolder = $("#phRecetasOrdenProduccion tr").length;
+            if (totalRowCount <= 0) return;
 
-            // Sumar las filas de la tabla y del PlaceHolder
-            let totalRowCount = rowCountTable + rowCountPlaceHolder;
+            let params = new URLSearchParams(window.location.search);
+            let accion = params.get('Accion');
 
-            let Cliente = document.getElementById("<%= Cliente.ClientID %>").value
+            if (accion !== '1' && accion !== '2') return; 
 
+            let idOrdenParam = params.get('id');
 
-            console.log("Cantidad total de filas: " + totalRowCount);
+            let Cliente = document.getElementById("<%= TxtClientes.ClientID %>").value;
+            let OrdenNumero = document.getElementById("<%= lblOPNumero.ClientID %>").innerHTML;
+            let textoLabel = OrdenNumero.innerText;
+            let fechaEntrega = document.getElementById("<%= txtFechaHoy.ClientID %>").value
+            let DatosProductos = document.getElementById("<%= DatosProductos.ClientID %>").value
 
-            //if(totalRowCount > 0){
-            let url = window.location.href;
-            if (!url.includes("Accion=2")) {
-                console.log("Se esta agregando");
-                let OrdenNumero = document.getElementById("<%= lblOPNumero.ClientID %>").innerHTML;
-
-                let textoLabel = OrdenNumero.innerText;
-
-                let fechaEntrega = document.getElementById("<%= fechaEntrega.ClientID %>").value
-
-                console.log(typeof fechaEntrega);
-
-                let DatosProductos = document.getElementById("<%= DatosProductos.ClientID %>").value
-
-                if (totalRowCount > 0) {
-                    fetch('OrdenesDeProduccionABM.aspx/btnGuardarOrdenDeCompra_Click', {
-                        method: 'POST',
-                        body: JSON.stringify({ OrdenNumero: OrdenNumero, fechaEntrega: fechaEntrega, Cliente: Cliente, DatosProductos: DatosProductos }),
-                        headers: { 'Content-Type': 'application/json' }
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            window.location.href = "OrdenesDeProduccion.aspx";
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
-                }
-
-                else {
-                    console.log("No se pudo guardar la orden")
-                }
-
-
-            }
-
+            fetch('OrdenesDeProduccionABM.aspx/btnGuardarOrdenDeCompra_Click', {
+                method: 'POST',
+                body: JSON.stringify({ idOrdenParam: idOrdenParam, accion: accion, OrdenNumero: OrdenNumero, fechaEntrega: fechaEntrega, Cliente: Cliente, DatosProductos: DatosProductos }),
+                headers: { 'Content-Type': 'application/json' }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    window.location.href = "OrdenesDeProduccion.aspx";
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         }
-
 
 
         //Esta es la funcion que se ejecuta al hacer click en el boton btnGuardar, 
@@ -483,10 +463,12 @@
             var txtFechaHoy = document.getElementById('<%= txtFechaHoy.ClientID %>');
             var txtClientes = document.getElementById('<%= TxtClientes.ClientID %>');
             var row2 = document.getElementById('row2');
-
+            var btnGuardar = document.getElementById('ContentPlaceHolder1_btnGuardarOrdenDeCompra');
+            
             txtFechaHoy.disabled = 'true';
             txtClientes.disabled = 'true';
-            row2.style.display = 'none';
+            row2.remove(); // Eliminarlo del dom  
+            btnGuardar.remove(); // Eliminarlo del dom   
         }
     </script>
 

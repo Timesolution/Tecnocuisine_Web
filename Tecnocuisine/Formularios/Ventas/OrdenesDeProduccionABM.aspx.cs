@@ -25,47 +25,46 @@ namespace Tecnocuisine.Formularios.Ventas
         {
             VerificarLogin();
 
-            // Verificar si hay parámetros en la consulta
-            if (Request.QueryString["Accion"] != null && Request.QueryString["id"] != null)
-            {
-                // Intentar convertir los valores de los parámetros
-                if (int.TryParse(Request.QueryString["Accion"], out accion) &&
-                    int.TryParse(Request.QueryString["id"], out idOrdenDeProduccion))
-                {
-                    // Ejecutar la acción según el valor de "Accion"
-                    switch (accion)
-                    {
-                        case 1: // Ver
-                            precargarOrdenDeProduccion(idOrdenDeProduccion);
-                            // Llama a la función JavaScript para deshabilitar campos
-                            ClientScript.RegisterStartupScript(this.GetType(), "deshabilitarCampos", $"deshabilitarCampos();", true);
-                            return;
-
-                        case 2: // Editar
-                            if (!SePuedeEditar(idOrdenDeProduccion)) // Si no se puede editar, redirecciona al listado de Ordenes
-                                Response.Redirect("OrdenesDeProduccion.aspx", false);
-
-                            precargarOrdenDeProduccion(idOrdenDeProduccion);
-                            return;
-
-                        default:
-                             Response.Redirect("OrdenesDeProduccion.aspx", false);
-                            break;
-                    }
-                }
-                else
-                {
-                    Response.Redirect("OrdenesDeProduccion.aspx", false); // Si falla la conversion, se redirecciona al listado de Ordenes
-                }
-            }
-
-
             if (!IsPostBack)
             {
                 ObtenerClientes();
                 ObtenerRecetas();
                 CargarCodigoOrdenCompra();
                 txtFechaHoy.Text = DateTime.Now.ToString("dd/MM/yyyy");
+
+                // Verificar si hay parámetros en la consulta
+                if (Request.QueryString["Accion"] != null && Request.QueryString["id"] != null)
+                {
+                    // Intentar convertir los valores de los parámetros
+                    if (int.TryParse(Request.QueryString["Accion"], out accion) &&
+                        int.TryParse(Request.QueryString["id"], out idOrdenDeProduccion))
+                    {
+                        // Ejecutar la acción según el valor de "Accion"
+                        switch (accion)
+                        {
+                            case 1: // Ver
+                                precargarOrdenDeProduccion(idOrdenDeProduccion);
+                                // Llama a la función JavaScript para deshabilitar campos
+                                ClientScript.RegisterStartupScript(this.GetType(), "deshabilitarCampos", $"deshabilitarCampos();", true);
+                                return;
+
+                            case 2: // Editar
+                                if (!SePuedeEditar(idOrdenDeProduccion)) // Si no se puede editar, redirecciona al listado de Ordenes
+                                    Response.Redirect("OrdenesDeProduccion.aspx", false);
+
+                                precargarOrdenDeProduccion(idOrdenDeProduccion);
+                                return;
+
+                            default:
+                                Response.Redirect("OrdenesDeProduccion.aspx", false);
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        Response.Redirect("OrdenesDeProduccion.aspx", false); // Si falla la conversion, se redirecciona al listado de Ordenes
+                    }
+                }
             }
         }
 
@@ -264,7 +263,6 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
 
-
         private void CargarClientesOptions(List<Tecnocuisine_API.Entitys.Clientes> clientes)
         {
             try
@@ -289,6 +287,7 @@ namespace Tecnocuisine.Formularios.Ventas
             {
             }
         }
+
         private void ObtenerRecetas()
         {
             try
@@ -486,10 +485,7 @@ namespace Tecnocuisine.Formularios.Ventas
         //}
 
 
-
-
-        [WebMethod]
-        public static int btnGuardarOrdenDeCompra_Click(string OrdenNumero, string fechaEntrega, string Cliente, string DatosProductos)
+        public static int CrearOrden(string OrdenNumero, string fechaEntrega, string Cliente, string DatosProductos)
         {
             ordenesDeProduccion ordDeProduccion = new ordenesDeProduccion();
             ordDeProduccion.OPNumero = OrdenNumero;
@@ -556,7 +552,113 @@ namespace Tecnocuisine.Formularios.Ventas
 
             //Response.Redirect("OrdenesDeProduccion.aspx", false);
             return 1;
+        }
 
+        public static int EditarOrden(string idOrdenParam, string OrdenNumero, string fechaEntrega, string Cliente, string DatosProductos)
+        {
+            try
+            {
+                ordenesDeProduccion ordDeProduccion = new ordenesDeProduccion();
+                ordDeProduccion.id = Convert.ToInt32(idOrdenParam);
+                ordDeProduccion.OPNumero = OrdenNumero;
+                ordDeProduccion.fechaEntrega = Convert.ToDateTime(fechaEntrega);
+
+                //string clienteTexto = TxtClientes.Text;
+                string clienteTexto = Cliente;
+                int numeroCliente;
+                string[] partes = clienteTexto.Split('-');
+
+                if (partes.Length >= 2)
+                {
+                    if (int.TryParse(partes[0].Trim(), out numeroCliente))
+                        ordDeProduccion.idCliente = numeroCliente;
+                }
+
+                ordDeProduccion.Estado = true;
+                ordDeProduccion.estadoDeLaOrden = 2;
+                ControladorOrdenDeProduccion controladorOrdenDeProduccion = new ControladorOrdenDeProduccion();
+                int idOrdenDeProduccion = controladorOrdenDeProduccion.ActualizarOrdenDeProduccion(ordDeProduccion);
+                ControladorOrdenesxRecetas cOrdenesxRecetas = new ControladorOrdenesxRecetas();
+
+                string texto = DatosProductos;
+                string[] cadenas = texto.Split(';'); // Divide el texto en cadenas usando ';' como delimitador
+
+                // Ahora 'cadenas' es un arreglo que contiene las cadenas separadas por ';'
+
+                // Si quieres almacenarlas en una lista, puedes hacerlo así:
+                List<string> listaCadenas = cadenas.ToList();
+
+                //Eliminar todos los registros para volver a cargar los nuevos
+                cOrdenesxRecetas.EliminarOrdenesxRecetasByIdOrden(Convert.ToInt32(idOrdenParam));
+
+                // Puedes recorrer la lista o el arreglo para trabajar con cada cadena individualmente:
+                foreach (string cadena in listaCadenas)
+                {
+                    // Dividir la cadena en partes usando '-' como delimitador
+                    string[] elementos = cadena.Split('-');
+
+                    if (elementos.Length >= 2)
+                    {
+                        // elementos[0] contiene el primer número (7)
+                        string primerElemento = elementos[0].Trim();
+                        Match id = Regex.Match(primerElemento, @"ID=(\d+)");
+                        int idReceta = int.Parse(id.Groups[1].Value); //Obtiene el id de la receta y lo guarda en esta variable
+                        string RecetaDescripcion = elementos[1].Trim(); //Obtiene la descripcion de la receta y la guarda en esta variable
+                        string TercerElemento = elementos[2].Trim(); //Guarda la cadena Receta,N es decir guarda la cadena Receta y separada por , la cantidad                                                                     // Definir una expresión regular para buscar números en la cadena
+                        Regex regex = new Regex(@"\d+");
+                        // Buscar coincidencias en la cadena
+                        Match match = regex.Match(TercerElemento);
+                        int Cantidad = int.Parse(match.Value);
+
+
+
+                        //Esta parte se encarga de guardar la receta de la orden en la base de datos
+                        ordenesXRecetas ordenesXRecetas = new ordenesXRecetas();
+                        ordenesXRecetas.idReceta = idReceta;
+                        ordenesXRecetas.idOrdenDeProduccion = idOrdenDeProduccion;
+                        ordenesXRecetas.Estado = true;
+                        ordenesXRecetas.cantidad = Cantidad;
+                        ordenesXRecetas.Producto = RecetaDescripcion;
+                        cOrdenesxRecetas.AgregarOrdenesxRecetas(ordenesXRecetas);
+                        //DatosProductos.Text = "";
+
+                    }
+                }
+
+                //Response.Redirect("OrdenesDeProduccion.aspx", false);
+                return 1;
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+        }
+
+
+        [WebMethod]
+        public static int btnGuardarOrdenDeCompra_Click(string idOrdenParam, string accion, string OrdenNumero, string fechaEntrega, string Cliente, string DatosProductos)
+        {
+            //TODO: Validar que los parametros tengan valores aceptables
+
+            int result = -1;
+
+            try
+            {
+                switch (accion)
+                {
+                    case "1":
+                        result = CrearOrden(OrdenNumero, fechaEntrega, Cliente, DatosProductos);
+                        break;
+                    case "2":
+                        result = EditarOrden(idOrdenParam, OrdenNumero, fechaEntrega, Cliente, DatosProductos);
+                        break;
+                }
+                return result;
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
         }
 
 
