@@ -58,6 +58,15 @@ namespace Tecnocuisine.Formularios.Ventas
                     Response.Redirect("OrdenesDeProduccion.aspx", false); // Si falla la conversion, se redirecciona al listado de Ordenes
                 }
             }
+
+
+            if (!IsPostBack)
+            {
+                ObtenerClientes();
+                ObtenerRecetas();
+                CargarCodigoOrdenCompra();
+                txtFechaHoy.Text = DateTime.Now.ToString("dd/MM/yyyy");
+            }
         }
 
         private void VerificarLogin()

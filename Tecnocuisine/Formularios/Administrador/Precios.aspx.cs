@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Tecnocuisine.Modelos;
 using Tecnocuisine_API.Controladores;
 using Tecnocuisine_API.Entitys;
 
@@ -11,12 +12,27 @@ namespace Tecnocuisine.Formularios.Administrador
 {
     public partial class Precios : System.Web.UI.Page
     {
+        Mensaje m = new Mensaje();
+        int Mensaje;
+        
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.Mensaje = Convert.ToInt32(Request.QueryString["m"]);
+
             if (!IsPostBack)
             {
                 PreCargarOpciones();
+
+                if (Mensaje == 1)
+                {
+                    this.m.ShowToastr(this.Page, "Guardado con exito!", "Exito");
+                }
+                else if (Mensaje == 2)
+                {
+                    this.m.ShowToastrError(this.Page, "Ocurrio un error al guardar.", "Error");
+                }
             }
+
         }
 
         private void PreCargarOpciones()
@@ -68,10 +84,16 @@ namespace Tecnocuisine.Formularios.Administrador
                 }
 
                 this.ActualizarCostos();
+
+                Response.Redirect("Precios.aspx?m=1", false); // El segundo parámetro false evita que se lance la excepción interna para terminar el flujo.
+                // Termina la respuesta para asegurarse de que no se ejecute más código
+                Context.ApplicationInstance.CompleteRequest();
             }
             catch (Exception)
             {
-                throw;
+                Response.Redirect("Precios.aspx?m=2", false); // El segundo parámetro false evita que se lance la excepción interna para terminar el flujo.
+                // Termina la respuesta para asegurarse de que no se ejecute más código
+                Context.ApplicationInstance.CompleteRequest();
             }
         }
 
