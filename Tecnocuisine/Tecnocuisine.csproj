@@ -332,9 +332,11 @@
     <Content Include="Formularios\Compras\Proveedores.aspx" />
     <Content Include="Formularios\Contabilidad\PlanDeCuentas.aspx" />
     <Content Include="Formularios\Compras\Entregas.aspx" />
+    <Content Include="Formularios\Gestion\AlertasFoodCost.aspx" />
     <Content Include="Formularios\Maestros\Conceptos.aspx" />
     <Content Include="Formularios\Maestros\Entidades.aspx" />
     <Content Include="Formularios\Maestros\Prueba.aspx" />
+    <Content Include="Formularios\Maestros\RecetaEvolucion.aspx" />
     <Content Include="Formularios\Maestros\RecetasABM.aspx" />
     <Content Include="Formularios\Maestros\ProductosABM.aspx" />
     <Content Include="Formularios\Maestros\Rubros.aspx" />
@@ -1133,6 +1135,13 @@
     <Compile Include="Formularios\Compras\Entregas.aspx.designer.cs">
       <DependentUpon>Entregas.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Formularios\Gestion\AlertasFoodCost.aspx.cs">
+      <DependentUpon>AlertasFoodCost.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Gestion\AlertasFoodCost.aspx.designer.cs">
+      <DependentUpon>AlertasFoodCost.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Formularios\Maestros\Conceptos.aspx.cs">
       <DependentUpon>Conceptos.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1153,6 +1162,13 @@
     </Compile>
     <Compile Include="Formularios\Maestros\Prueba.aspx.designer.cs">
       <DependentUpon>Prueba.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\RecetaEvolucion.aspx.cs">
+      <DependentUpon>RecetaEvolucion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\RecetaEvolucion.aspx.designer.cs">
+      <DependentUpon>RecetaEvolucion.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Maestros\RecetasABM.aspx.cs">
       <DependentUpon>RecetasABM.aspx</DependentUpon>

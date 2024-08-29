@@ -43,7 +43,16 @@
 
         .wizard > .content > .body {
             width: 100%;
+    /*        white-space: normal !important;*/
         }
+
+/*
+        td ul, td a, td li{
+            white-space: normal !important;
+        }
+        .jstree-default .jstree-anchor {
+            white-space: normal !important;
+        }*/
     </style>
    
 
@@ -368,16 +377,18 @@
                                     <asp:HiddenField runat="server" ID="hiddenReceta" />
                                     <table class="table table-bordered table-hover" id="tableProductos">
                                         <thead>
-                                            <tr>
+                                            <tr style="white-space:normal">
                                                 <th style="width: 0%;"></th> <!--Codigo-->
-                                                <th style="width: 15%">Descripcion</th>
-                                                <th style="width: 10%; text-align:right">Cantidad</th>
-                                                <th style="width: 10%">U. Medida</th>
-                                                <th style="width: 10%;text-align:right">Costo $</th>
-                                                <th style="width: 10%;text-align:right">Costo Total $</th>
-                                                <th style="width: 10%;text-align:left">Sector</th>
-                                                <th style="width: 10%;text-align:right">Tiempo(dias)</th>
-                                                <th style="width: 5%">Acciones</th>
+                                                <th style="width: 25%">Descripcion</th>
+                                                <th style="width: auto; text-align:right">Cantidad</th>
+                                                <th style="width: auto">Unidad</th>
+                                                <th style="width: auto">Factor</th>
+                                                <th style="width: auto">C. Bruta</th>
+                                                <th style="width: auto; text-align:right">Costo</th>
+                                                <th style="width: auto; text-align:right">C. Total</th>
+                                                <th style="width: auto; text-align:left">Sector</th>
+                                                <th style="width: auto; text-align:right">Tiempo</th>
+                                                <th style="width: auto"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -2225,6 +2236,8 @@
 
             let costAux = parseFloat(costo.replace(',', '.'));
             let CantAux = parseFloat(cantidad);
+            let factor = document.getElementById('<%= txtFactor.ClientID %>').value;
+            let cantBruta = document.getElementById('<%= txtCantBruta.ClientID %>').value;
             let costototal = 0;
             let ddlSector = document.getElementById('<%= ddlSector.ClientID %>');
             let Tiempo = document.getElementById('<%= TiempoDePreparacion.ClientID %>').value;
@@ -2275,6 +2288,7 @@
 
 
             costototal = Math.round10(costAux * CantAux, -3);
+            costototal *= factor; // Multiplicar por factor
             let auxCostoTotal = myFormat(costototal.toString());
             if (!auxCostoTotal.includes('.'))
                 auxCostoTotal += ".00";
@@ -2288,6 +2302,7 @@
             let listaCostototalDesplegable = "";
             let listaDdlSectorProductivoDesplegable = "";
             let ListaTiempo = "";
+            let cellFactor = "";
             //Si lo que se esta agregando a la tabla de productos es una receta entra a este if 
             if (tipo == "Receta") {
                 btnRec = "<a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent;\" class=\"btn  btn-xs \" onclick=\"javascript: return CargarmodalRecetaDetalle('" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "');\" >" +
@@ -2301,10 +2316,12 @@
                 listaDesplegable = "<td> <div id=\"jstree" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaLI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</li></ul></div></td>";
                 listaCantidadDesplegable = "<td> <div id=\"jstree_C" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaC_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + myFormat(cantidad) + "</li></ul></div></td>";
                 listaUnidadesDesplegable = "<td> <div id=\"jstree_UM" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaUM_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + unidad + "</li></ul></div></td>";
+                cellFactor = "<td> <div <ul><li 'class=\"jstree-open\">" + factor + "</li></ul></div></td>";
+                cellCantBruta = "<td> <div <ul><li 'class=\"jstree-open\">" + cantBruta + "</li></ul></div></td>";
                 listaCostosDesplegable = "<td> <div id=\"jstree_CS" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaCS_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + costo + "</li></ul></div></td>";
                 listaCostototalDesplegable = "<td> <div id=\"jstree_CST" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaCST_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + auxCostoTotal + "</li></ul></div></td>";
                 listaDdlSectorProductivoDesplegable = "<td> <div id=\"jstree_SP" + ContentPlaceHolder1_ddlSector.value.split('-')[0].trim() + "\"> <ul><li id='RecetaSP_LI_" + ContentPlaceHolder1_ddlSector.value.split('-')[0].trim() + "' class=\"jstree-open\">" + opcionSeleccionada + "</li></ul></div></td>";
-                ListaTiempo = "<td> <div id=\"jstree_T" + ContentPlaceHolder1_TiempoDePreparacion.value.split('-')[0].trim() + "\"> <ul><li id='RecetaT_LI_" + ContentPlaceHolder1_TiempoDePreparacion.value.split('-')[0].trim() + "' class=\"jstree-open\">" + Tiempo + "</li></ul></div></td>";
+                ListaTiempo = "<td style=\" text-align:right;\"> <div id=\"jstree_T" + ContentPlaceHolder1_TiempoDePreparacion.value.split('-')[0].trim() + "\"> <ul><li id='RecetaT_LI_" + ContentPlaceHolder1_TiempoDePreparacion.value.split('-')[0].trim() + "' class=\"jstree-open\">" + Tiempo + "</li></ul></div></td>";
 
             }
             //Si es un producto, entonces viene por el else
@@ -2313,11 +2330,12 @@
                 listaDesplegable = "<td> " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
                 listaCantidadDesplegable = "<td style=\" text-align: right\"> " + myFormat(cantidad) + "</td>";
                 listaUnidadesDesplegable = "<td> " + unidad + "</td>";
+                cellFactor = "<td> " + factor + "</td>";
+                cellCantBruta = "<td> " + cantBruta + "</td>";
                 listaCostosDesplegable = "<td style=\" text-align:right;\"> " + costo + "</td>";
                 listaCostototalDesplegable = "<td style=\" text-align:right;\"> " + auxCostoTotal + "</td>";
                 listaDdlSectorProductivoDesplegable = "<td style=\" text-align:right;\"> " + opcionSeleccionada + "</td>";
                 ListaTiempo = "<td style=\" text-align:right;\"> " + Tiempo + "</td>";
-
             }
             if (!document.getElementById('<%= idProductosRecetas.ClientID%>').value.includes(tipo + '_' + codigo)) {
                 //Agrega un registro a la tabla de productos 
@@ -2327,6 +2345,8 @@
                     listaDesplegable +
                     listaCantidadDesplegable +
                     listaUnidadesDesplegable +
+                    cellFactor +
+                    cellCantBruta +
                     listaCostosDesplegable +
                     listaCostototalDesplegable +
                     listaDdlSectorProductivoDesplegable +
