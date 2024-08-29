@@ -202,7 +202,7 @@
                                 <div class="ibox float-e-margins">
                                     <!-- Agregar la clase "collapsed" aquí -->
                                     <div class="ibox-title">
-                                        <div style="display: flex; justify-content:space-between">
+                                        <div style="display: flex; justify-content: space-between">
                                             <h5>Origen</h5>
                                             <h5 id="modalOrigenDestino_fecha"></h5>
                                         </div>
@@ -578,6 +578,8 @@
 
 
         function verDetalleTranferencia(idTransferencia, fecha) {
+            VisibilidadBotonConfirmar(idTransferencia)
+
             $.ajax({
                 method: "POST",
                 url: "PedidosOrdenes.aspx/verDetallesTransferencia",
@@ -588,7 +590,6 @@
                     console.log("Error");
                 },
                 success: function (data) {
-
                     const arraydetalleTransferencia = data.d.split(";").filter(Boolean);
                     document.getElementById('tableOrigen').innerHTML = "";
                     document.getElementById('<%= idTransferencia.ClientID %>').value = idTransferencia;
@@ -637,6 +638,32 @@
             });
         }
 
+        // Mostrar boton confirmar solo si el estado de la transferencia es "A confirmar"
+        function VisibilidadBotonConfirmar(idTransferencia) {
+            GetIdEstadoTransferencia(idTransferencia).done(function (response) {
+                var estadoTransferencia = response.d;
+
+                //console.log("Estado: " + estadoTransferencia);
+
+                if (estadoTransferencia === 2) { // A Confirmar
+                    document.getElementById('<%= btnConfirmar.ClientID %>').style.display = 'inline-block';               
+                } else {
+                    document.getElementById('<%= btnConfirmar.ClientID %>').style.display = 'none';
+                }
+            }).fail(function (xhr, status, error) {
+                console.error("Error al llamar al método del servidor: ", error);
+            });
+        }
+
+        function GetIdEstadoTransferencia(idTransferencia) {
+            return $.ajax({
+                method: "POST",
+                url: "PedidosOrdenes.aspx/GetEstadoTransferencia",
+                data: JSON.stringify({ idTransferencia: idTransferencia }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json"
+            });
+        }
 
         function verDetallePedidos(idTransferencia, ProductoOrigen) {
             $.ajax({

@@ -426,7 +426,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 btnEliminar.Style.Add("background-color", "transparent");
                 btnEliminar.Attributes.Add("data-toggle", "modal");
                 btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                btnEliminar.Text = "<span title='Ver pedido'><i class='fa fa-exchange' style='color: black;'></i></span>";
+                btnEliminar.Text = "<span title='Detalle'><i class='fa fa-exchange' style='color: black;'></i></span>";
                 btnEliminar.Attributes.Add("onclick", "verDetalleTranferencia('" + item.id.ToString() + "', '" + celFecha.Text + "');");
                 celAccion.Controls.Add(btnEliminar);
 
@@ -616,7 +616,7 @@ namespace Tecnocuisine.Formularios.Ventas
                     btnEliminar.Style.Add("background-color", "transparent");
                     btnEliminar.Attributes.Add("data-toggle", "modal");
                     btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                    btnEliminar.Text = "<span title='Eliminar'><i class='fa fa-exchange' style='color: black;'></i></span>";
+                    btnEliminar.Text = "<span title='Detalle'><i class='fa fa-exchange' style='color: black;'></i></span>";
                     btnEliminar.Attributes.Add("onclick", "verDetalleTranferencia('" + item.id.ToString() + "', '" + celFecha.Text + "');");
                     celAccion.Controls.Add(btnEliminar);
 
@@ -699,7 +699,7 @@ namespace Tecnocuisine.Formularios.Ventas
                     btnEliminar.Style.Add("background-color", "transparent");
                     btnEliminar.Attributes.Add("data-toggle", "modal");
                     btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                    btnEliminar.Text = "<span title='Eliminar'><i class='fa fa-exchange' style='color: black;'></i></span>";
+                    btnEliminar.Text = "<span title='Detalle'><i class='fa fa-exchange' style='color: black;'></i></span>";
                     btnEliminar.Attributes.Add("onclick", "verDetalleTranferencia('" + item.id.ToString() + "', '" + celFecha.Text + "');");
                     celAccion.Controls.Add(btnEliminar);
 
@@ -781,7 +781,7 @@ namespace Tecnocuisine.Formularios.Ventas
                     btnEliminar.Style.Add("background-color", "transparent");
                     btnEliminar.Attributes.Add("data-toggle", "modal");
                     btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                    btnEliminar.Text = "<span title='Eliminar'><i class='fa fa-exchange' style='color: black;'></i></span>";
+                    btnEliminar.Text = "<span title='Detalle'><i class='fa fa-exchange' style='color: black;'></i></span>";
                     btnEliminar.Attributes.Add("onclick", "verDetalleTranferencia('" + item.id.ToString() + "', '" + celFecha.Text + "');");
                     celAccion.Controls.Add(btnEliminar);
 
@@ -860,8 +860,8 @@ namespace Tecnocuisine.Formularios.Ventas
                     btnEliminar.Style.Add("background-color", "transparent");
                     btnEliminar.Attributes.Add("data-toggle", "modal");
                     btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                    btnEliminar.Text = "<span title='Eliminar'><i class='fa fa-exchange' style='color: black;'></i></span>";
-                btnEliminar.Attributes.Add("onclick", "verDetalleTranferencia('" + item.id.ToString() + "', '" + celFecha.Text + "');");
+                    btnEliminar.Text = "<span title='Detalle'><i class='fa fa-exchange' style='color: black;'></i></span>";
+                    btnEliminar.Attributes.Add("onclick", "verDetalleTranferencia('" + item.id.ToString() + "', '" + celFecha.Text + "');");
                     celAccion.Controls.Add(btnEliminar);
 
 
@@ -938,7 +938,7 @@ namespace Tecnocuisine.Formularios.Ventas
                     btnEliminar.Style.Add("background-color", "transparent");
                     btnEliminar.Attributes.Add("data-toggle", "modal");
                     btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                    btnEliminar.Text = "<span title='Eliminar'><i class='fa fa-exchange' style='color: black;'></i></span>";
+                    btnEliminar.Text = "<span title='Detalle'><i class='fa fa-exchange' style='color: black;'></i></span>";
                     btnEliminar.Attributes.Add("onclick", "verDetalleTranferencia('" + dr["id"].ToString() + "', '" + celFecha.Text + "');");
                     celAccion.Controls.Add(btnEliminar);
 
@@ -1006,7 +1006,7 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
 
-
+  
 
         [WebMethod]
         public static string verDetallesPedidos(int idTransferencia, string ProductoOrigen)
@@ -1054,6 +1054,15 @@ namespace Tecnocuisine.Formularios.Ventas
         }
 
 
+        [WebMethod]
+        public static int GetEstadoTransferencia(int idTransferencia)
+        {
+            ControladorTransferencia cTransferencia = new ControladorTransferencia();
+            var transferencia = cTransferencia.getTransferenciaById(idTransferencia);
+            return (int)(transferencia?.estadoTransferencia);
+        }
+
+
 
 
         [WebMethod]
@@ -1061,8 +1070,11 @@ namespace Tecnocuisine.Formularios.Ventas
         {
             try
             {
-
                 int id = Convert.ToInt32(idTransferencia);
+
+                // Si el estado es distinto a "A confirmar", no permitir confirmar la transferencia
+                if (GetEstadoTransferencia(id) != 2) return -1;
+
                 ControladorTransferencia cTransferencia = new ControladorTransferencia();
                 int r = cTransferencia.CambiarEstadoTransferencia(id);
 
@@ -1093,13 +1105,17 @@ namespace Tecnocuisine.Formularios.Ventas
         {
             try
             {
-
                 int id = Convert.ToInt32(idTransferencia);
+
+                // Si el estado es distinto a "A confirmar", no permitir confirmar la transferencia
+                if(GetEstadoTransferencia(id) != 2) return -1;
+
                 ControladorTransferencia cTransferencia = new ControladorTransferencia();
                 int r = cTransferencia.CambiarEstadoTransferencia(id);
                 // Usar expresiones regulares para extraer filas de la tabla
                 controladorDatosTransferencias cDatosTransferencias = new controladorDatosTransferencias();
                 datosTransferencias DatosTransferencias = new datosTransferencias();
+
                 foreach (var row in tableData)
                 {
                     string rowId = row.Id;
@@ -1110,14 +1126,10 @@ namespace Tecnocuisine.Formularios.Ventas
                     DatosTransferencias.id = Convert.ToInt32(rowId);
                     DatosTransferencias.cantidadConfirmada = Convert.ToDecimal(confirmada, CultureInfo.InvariantCulture);
                     cDatosTransferencias.updateDatosTransferenciaCantidadEnviada(DatosTransferencias);
-
                 }
 
-
                 saveSumaDatosTransferencia();
-
                 return r;
-
             }
             catch (Exception ex)
             {
@@ -1256,7 +1268,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 DateTime soloFecha;
                 if (DateTime.TryParse(item.fecha.ToString(), out soloFecha))
                 {
-                    celFecha.Text = soloFecha.ToString("dd/MM/yyyy"); 
+                    celFecha.Text = soloFecha.ToString("dd/MM/yyyy");
                 }
 
                 celFecha.VerticalAlign = VerticalAlign.Middle;
@@ -1299,7 +1311,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 btnEliminar.Style.Add("background-color", "transparent");
                 btnEliminar.Attributes.Add("data-toggle", "modal");
                 btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                btnEliminar.Text = "<span title='Eliminar'><i class='fa fa-exchange' style='color: black;'></i></span>";
+                btnEliminar.Text = "<span title='Detalle'><i class='fa fa-exchange' style='color: black;'></i></span>";
                 btnEliminar.Attributes.Add("onclick", "verDetalleTranferencia('" + item.id.ToString() + "', '" + celFecha.Text + "');");
 
                 celAccion.Controls.Add(btnEliminar);
