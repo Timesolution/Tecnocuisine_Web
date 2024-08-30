@@ -539,6 +539,15 @@ namespace Tecnocuisine.Formularios.Ventas
                 tr.ID = cont.ToString();
 
                 //Celdas
+                TableCell celFecha = new TableCell();
+                DateTime fecha = Convert.ToDateTime(dr["fecha"]);
+                celFecha.Text = fecha.ToString("dd/MM/yyyy");
+                celFecha.VerticalAlign = VerticalAlign.Middle;
+                celFecha.HorizontalAlign = HorizontalAlign.Left;
+                celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celFecha);
+
+                //Celdas
                 TableCell celSectorOrigen = new TableCell();
                 celSectorOrigen.Text = dr["sectorOrigen"].ToString();
                 celSectorOrigen.VerticalAlign = VerticalAlign.Middle;
@@ -659,7 +668,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 btnDetalle.Attributes.Add("data-toggle", "modal");
                 btnDetalle.Attributes.Add("href", "#modalConfirmacion2");
                 btnDetalle.Text = "<span title='Ver pedidos'><i class='fa fa-eye' style='color: black;'></i></span>";
-                btnDetalle.Attributes.Add("onclick", "getDatosTransferenciaBySectorDestino('" + dr["sectorOrigen"].ToString() + "', '" + dr["sectorDestino"].ToString() + "');");
+                btnDetalle.Attributes.Add("onclick", "getDatosTransferenciaDetalle('" + dr["sectorOrigen"].ToString() + "', '" + dr["sectorDestino"].ToString() + "', '" + fecha.ToString("yyyy-MM-dd") + "');");
                 celAccion.Controls.Add(btnDetalle);
 
                 //LinkButton btnRemito = new LinkButton();
@@ -675,7 +684,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 btnImprimir.CssClass = "btn btn-xs";
                 btnImprimir.Style.Add("background-color", "transparent");
                 btnImprimir.Text = "<span title='Imprimir'><i class='fa fa-print' style='color: black;'></i></span>";
-                btnImprimir.Attributes.Add("href", $"ImpresionEnvio.aspx?sectorO={dr["sectorOrigen"]}&&sectorD={dr["sectorDestino"]}");
+                btnImprimir.Attributes.Add("href", $"ImpresionEnvio.aspx?sectorO={dr["sectorOrigen"]}&&sectorD={dr["sectorDestino"]}&&fecha={fecha.ToString("yyyy-MM-dd")}");
                 btnImprimir.Attributes.Add("target", "_blank");
                 //btnDetalle.Attributes.Add("onclick", "impresionProduccion('" + sector + "', '" + dr["id"].ToString() + "', '" + dr["fecha"].ToString() + "');");
 
@@ -1282,7 +1291,7 @@ namespace Tecnocuisine.Formularios.Ventas
 
 
         [WebMethod]
-        public static string getDatosTransferenciaBySectorDestino(string sectorOrigen, string sectorDestino)
+        public static string getDatosTransferenciaDetalle(string sectorOrigen, string sectorDestino, DateTime fecha)
         {
             try
             {
@@ -1290,7 +1299,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 //DataTable dt = cTransferencias.getDatosTransferenciaBySectorDestino(sectorOrigen, sectorDestino);
 
                 controladorsumaDatosTransferencia csumaDatosTransferencia = new controladorsumaDatosTransferencia();
-                DataTable dt2 = csumaDatosTransferencia.getDatosTransferencias(sectorOrigen, sectorDestino);
+                DataTable dt2 = csumaDatosTransferencia.getDatosTransferenciasDetalle(sectorOrigen, sectorDestino, fecha);
 
                 //HttpContext.Current.Session["datosAEnviar"] = dt2;
 

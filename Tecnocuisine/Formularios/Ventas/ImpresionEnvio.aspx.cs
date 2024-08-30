@@ -16,6 +16,7 @@ namespace Tecnocuisine.Formularios.Ventas
 
         string sectorOrigen;
         string sectorDestino;
+        DateTime fechaDt;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -26,6 +27,9 @@ namespace Tecnocuisine.Formularios.Ventas
             sectorOrigen = Request.QueryString["sectorO"].ToString();
             sectorDestino = Request.QueryString["sectorD"].ToString();
 
+            string fecha = Request.QueryString["fecha"].ToString();
+            fechaDt = Convert.ToDateTime(fecha);
+
             generarReporte();
         }
 
@@ -33,7 +37,7 @@ namespace Tecnocuisine.Formularios.Ventas
         {
             try
             {
-                DataTable dt = new controladorsumaDatosTransferencia().getDatosTransferencias(sectorOrigen, sectorDestino);
+                DataTable dt = new controladorsumaDatosTransferencia().getDatosTransferenciasDetalle(sectorOrigen, sectorDestino, fechaDt);
 
                 this.ReportViewer1.ProcessingMode = ProcessingMode.Local;
                 this.ReportViewer1.LocalReport.ReportPath = Server.MapPath("DetalleEnvio.rdlc");

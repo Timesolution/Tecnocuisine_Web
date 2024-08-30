@@ -11,7 +11,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value />
+                    <Value>=Fields!fecha.Value</Value>
                     <Style>
                       <Format>dd/MM/yyyy</Format>
                     </Style>
@@ -589,6 +589,10 @@
         </Field>
         <Field Name="estado">
           <DataField>estado</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="fecha">
+          <DataField>fecha</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>

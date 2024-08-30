@@ -56,12 +56,12 @@ namespace Tecnocuisine.Formularios.Ventas
                 cargarDestino();
                 cargarEstadosOrdenes();
                 //cargarSectorUsuario();
-                var tranferencias = cTransferencia.getListTransferencias();
+                //var tranferencias = cTransferencia.getListTransferencias();
 
-                foreach (var item in tranferencias)
-                {
+                //foreach (var item in tranferencias)
+                //{
 
-                }
+                //}
             }
 
             //if (Request.QueryString["a"] == "1")

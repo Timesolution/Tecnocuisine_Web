@@ -185,12 +185,13 @@
                                     <table class="table table-striped table-bordered table-hover " id="tableEnvios">
                                         <thead>
                                             <tr>
-                                                <th style="width: 15%">Sector Origen</th>
-                                                <th style="width: 15%">Sector Destino</th>
+                                                <th style="width:15%">Fecha</th>
+                                                <th style="">Sector Origen</th>
+                                                <th style="">Sector Destino</th>
                                                 <%--<th style="width: 15%">Producto</th>--%>
                                                 <%--<th style="width: 15%">Confirmada</th>--%>
                                                 <%--<th style="width: 15%">Enviada</th>--%>
-                                                <th style="width: 15%">Acciones</th>
+                                                <th style="">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody id="detallesTransferenciasConfirmadas">
@@ -1515,11 +1516,11 @@
     </script>
 
     <script>
-        function getDatosTransferenciaBySectorDestino(sectorOrigen, sectorDestino) {
+        function getDatosTransferenciaDetalle(sectorOrigen, sectorDestino, fecha) {
             $.ajax({
                 method: "POST",
-                url: "Pre-Produccion.aspx/getDatosTransferenciaBySectorDestino",
-                data: JSON.stringify({ sectorOrigen: sectorOrigen, sectorDestino: sectorDestino }),
+                url: "Pre-Produccion.aspx/getDatosTransferenciaDetalle",
+                data: JSON.stringify({ sectorOrigen: sectorOrigen, sectorDestino: sectorDestino, fecha: fecha }),
                 contentType: "application/json",
                 dataType: "json",
                 async: false,
