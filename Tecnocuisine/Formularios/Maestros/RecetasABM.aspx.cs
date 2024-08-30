@@ -1136,6 +1136,18 @@ namespace Tecnocuisine.Formularios.Maestros
                 celUM.HorizontalAlign = HorizontalAlign.Left;
                 tr.Cells.Add(celUM);
 
+                TableCell celFactor = new TableCell();
+                celFactor.Text = prodRec.FirstOrDefault().Factor.ToString().Replace(',', '.');
+                celFactor.VerticalAlign = VerticalAlign.Middle;
+                celFactor.HorizontalAlign = HorizontalAlign.Left;
+                tr.Cells.Add(celFactor);
+
+                TableCell celCantBruta = new TableCell();
+                celCantBruta.Text = (prodRec.FirstOrDefault().cantidad * Convert.ToDecimal(prodRec.FirstOrDefault().Factor)).ToString("N", culture);
+                celCantBruta.VerticalAlign = VerticalAlign.Middle;
+                celCantBruta.HorizontalAlign = HorizontalAlign.Left;
+                tr.Cells.Add(celCantBruta);
+
                 TableCell celCosto = new TableCell();
                 celCosto.Text = prodRec.FirstOrDefault().Productos.costo.ToString("N", culture);
                 celCosto.VerticalAlign = VerticalAlign.Middle;
@@ -1144,7 +1156,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 tr.Cells.Add(celCosto);
 
                 TableCell celCostoTotal = new TableCell();
-                celCostoTotal.Text = (prodRec.FirstOrDefault().Productos.costo * prodRec.FirstOrDefault().cantidad).ToString("N", culture);
+                celCostoTotal.Text = (prodRec.FirstOrDefault().Productos.costo * prodRec.FirstOrDefault().cantidad * (decimal)prodRec.FirstOrDefault().Factor).ToString("N", culture);
                 celCostoTotal.VerticalAlign = VerticalAlign.Middle;
                 celCostoTotal.HorizontalAlign = HorizontalAlign.Left;
                 celCostoTotal.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
@@ -1220,7 +1232,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 phProductos.Controls.Add(tr);
 
-                idProductosRecetas.Value += producto.id.ToString() + " ,Producto," + prodRec.FirstOrDefault().cantidad.ToString().Replace(',', '.') + ", ContentPlaceHolder1_Producto_" + producto.id.ToString() + "," + "idSectorProductivo_" + prodRec.FirstOrDefault().SectorProductivo.id + "," + "Tiempo_" + prodRec.FirstOrDefault().Tiempo + ";";
+                idProductosRecetas.Value += producto.id.ToString() + " ,Producto," + prodRec.FirstOrDefault().cantidad.ToString().Replace(',', '.') + ", ContentPlaceHolder1_Producto_" + producto.id.ToString() + "," + "idSectorProductivo_" + prodRec.FirstOrDefault().SectorProductivo.id + "," + "Tiempo_" + prodRec.FirstOrDefault().Tiempo + "," + "Factor_" + prodRec.FirstOrDefault().Factor.ToString().Replace(',', '.') + ";";
 
             }
             catch (Exception ex)
@@ -1448,6 +1460,18 @@ namespace Tecnocuisine.Formularios.Maestros
                 //celUM.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celUM);
 
+                TableCell celFactor = new TableCell();
+                celFactor.Text = Receta.Factor?.ToString().Replace(',', '.');
+                celFactor.VerticalAlign = VerticalAlign.Middle;
+                celFactor.HorizontalAlign = HorizontalAlign.Left;
+                tr.Cells.Add(celFactor);
+
+                TableCell celCantBruta = new TableCell();
+                celCantBruta.Text = (Receta.cantidad * Convert.ToDecimal(Receta.Factor)).ToString("N", culture);
+                celCantBruta.VerticalAlign = VerticalAlign.Middle;
+                celCantBruta.HorizontalAlign = HorizontalAlign.Left;
+                tr.Cells.Add(celCantBruta);
+
                 TableCell celCosto = new TableCell();
                 celCosto.Text = "<div id=\"jstree_CS" + RecetaingredienteI.id + "\"> <ul><li id='RecetaCS_LI_" + RecetaingredienteI.id + "' class=\"jstree-open\">" + Receta.Recetas.Costo.Value.ToString("N", culture) + ObtenerrecetaString(Receta.idRecetaIngrediente, 4, 0) + "</li></ul></div>";
                 celCosto.VerticalAlign = VerticalAlign.Middle;
@@ -1456,7 +1480,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 tr.Cells.Add(celCosto);
 
                 TableCell celCostoTotal = new TableCell();
-                celCostoTotal.Text = "<div id=\"jstree_CST" + RecetaingredienteI.id + "\"> <ul><li id='RecetaCST_LI_" + RecetaingredienteI.id + "' class=\"jstree-open\">" + (Receta.Recetas.Costo.Value * Receta.cantidad).ToString("N", culture) + ObtenerrecetaString(Receta.idRecetaIngrediente, 5, 0) + "</li></ul></div>";
+                celCostoTotal.Text = "<div id=\"jstree_CST" + RecetaingredienteI.id + "\"> <ul><li id='RecetaCST_LI_" + RecetaingredienteI.id + "' class=\"jstree-open\">" + (Receta.Recetas.Costo.Value * Receta.cantidad * (decimal)Receta.Factor).ToString("N", culture) + ObtenerrecetaString(Receta.idRecetaIngrediente, 5, 0) + "</li></ul></div>";
                 celCostoTotal.VerticalAlign = VerticalAlign.Middle;
                 celCostoTotal.HorizontalAlign = HorizontalAlign.Left;
                 //celCostoTotal.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
@@ -1528,7 +1552,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 //idProductosRecetas.Value += RecetaingredienteI.id.ToString() + " ,Receta," + Receta.cantidad.ToString().Replace(',', '.') + ", ContentPlaceHolder1_Receta_" + RecetaingredienteI.id.ToString() + ";";
 
-                idProductosRecetas.Value += RecetaingredienteI.id.ToString() + " ,Receta," + Receta.cantidad.ToString().Replace(',', '.') + ", ContentPlaceHolder1_Receta_" + RecetaingredienteI.id.ToString() + "idSectorProductivoRecetas_recetas_" + Receta.idSectorProductivo + "," + "Tiempo_" + Receta.Tiempo + ";";
+                idProductosRecetas.Value += RecetaingredienteI.id.ToString() + " ,Receta," + Receta.cantidad.ToString().Replace(',', '.') + ", ContentPlaceHolder1_Receta_" + RecetaingredienteI.id.ToString() + "idSectorProductivoRecetas_recetas_" + Receta.idSectorProductivo + "," + "Tiempo_" + Receta.Tiempo + "," + "Factor_" + Receta.Factor.ToString().Replace(',', '.') + ";";
 
 
             }

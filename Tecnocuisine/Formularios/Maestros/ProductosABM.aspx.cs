@@ -1172,6 +1172,24 @@ namespace Tecnocuisine.Formularios.Maestros
                                 }
                             }
 
+                            decimal factorParte = 1;
+                            foreach (string elemento in producto)
+                            {
+                                Match match = Regex.Match(elemento, @"Factor_(.+)");  // Expresión regular para capturar todo después del guion bajo
+
+                                if (match.Success)
+                                {
+                                    // Si se encuentra una coincidencia, extrae el número y almacénalo en la variable
+                                    string numeroStr = match.Groups[1].Value;
+                                    if (decimal.TryParse(numeroStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal numero))
+                                    {
+                                        factorParte = Math.Round(numero, 2); // Redondear a 2 decimales para coincidir con el tipo de dato en la base de datos
+                                        break; // Rompe el bucle una vez que se encuentra el número
+                                    }
+                                }
+                            }
+
+
 
                             //-----------------------------------------------------------------------------------------
 
@@ -1186,7 +1204,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                 productoNuevo.cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
                                 productoNuevo.idSectorProductivo = numeroEncontrado;
                                 productoNuevo.Tiempo = tiempoParte;
-
+                                productoNuevo.Factor = factorParte;
 
                                 controladorReceta.AgregarReceta_Producto(productoNuevo);
                             }
@@ -1229,6 +1247,23 @@ namespace Tecnocuisine.Formularios.Maestros
                                     }
                                 }
 
+                                decimal factorParteRecetes_Recetas = 1;
+                                foreach (string elemento in producto)
+                                {
+                                    Match match = Regex.Match(elemento, @"Factor_(.+)");  // Expresión regular para capturar todo después del guion bajo
+
+                                    if (match.Success)
+                                    {
+                                        // Si se encuentra una coincidencia, extrae el número y almacénalo en la variable
+                                        string numeroStr = match.Groups[1].Value;
+                                        if (decimal.TryParse(numeroStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal numero))
+                                        {
+                                            factorParteRecetes_Recetas = Math.Round(numero, 2); // Redondear a 2 decimales para coincidir con el tipo de dato en la base de datos
+                                            break; // Rompe el bucle una vez que se encuentra el número
+                                        }
+                                    }
+                                }
+
                                 //Guarda la receta usada como ingrediente
                                 Recetas_Receta recetaNueva = new Recetas_Receta();
                                 recetaNueva.idReceta = Receta.id;
@@ -1236,6 +1271,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                 recetaNueva.cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
                                 recetaNueva.idSectorProductivo = idSectorProductivo;
                                 recetaNueva.Tiempo = tiempoParteRecetes_Recetas;
+                                recetaNueva.Factor = factorParteRecetes_Recetas;
                                 controladorReceta.AgregarReceta_Receta(recetaNueva);
 
                             }
@@ -1535,6 +1571,23 @@ namespace Tecnocuisine.Formularios.Maestros
                                 }
                             }
 
+                            decimal factorParte = 1;
+                            foreach (string elemento in producto)
+                            {
+                                Match match = Regex.Match(elemento, @"Factor_(.+)");  // Expresión regular para capturar todo después del guion bajo
+
+                                if (match.Success)
+                                {
+                                    // Si se encuentra una coincidencia, extrae el número y almacénalo en la variable
+                                    string numeroStr = match.Groups[1].Value;
+                                    if (decimal.TryParse(numeroStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal numero))
+                                    {
+                                        factorParte = Math.Round(numero, 2); // Redondear a 2 decimales para coincidir con el tipo de dato en la base de datos
+                                        break; // Rompe el bucle una vez que se encuentra el número
+                                    }
+                                }
+                            }
+
                             //Valida si el elemento es producto o una receta usada como ingrediente
                             if (producto[1] == "Producto")
                             {
@@ -1546,6 +1599,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                 //productoNuevo.idSectorProductivo = Convert.ToInt32(1);
                                 productoNuevo.idSectorProductivo = numeroEncontrado;
                                 productoNuevo.Tiempo = tiempoParte;
+                                productoNuevo.Factor = factorParte;
                                 //Guarda el producto
                                 controladorReceta.AgregarReceta_Producto(productoNuevo);
                             }
@@ -1590,6 +1644,22 @@ namespace Tecnocuisine.Formularios.Maestros
                                     }
                                 }
 
+                                decimal factorParteRecetes_Recetas = 1;
+                                foreach (string elemento in producto)
+                                {
+                                    Match match = Regex.Match(elemento, @"Factor_(.+)");  // Expresión regular para capturar todo después del guion bajo
+
+                                    if (match.Success)
+                                    {
+                                        // Si se encuentra una coincidencia, extrae el número y almacénalo en la variable
+                                        string numeroStr = match.Groups[1].Value;
+                                        if (decimal.TryParse(numeroStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal numero))
+                                        {
+                                            factorParteRecetes_Recetas = Math.Round(numero, 2); // Redondear a 2 decimales para coincidir con el tipo de dato en la base de datos
+                                            break; // Rompe el bucle una vez que se encuentra el número
+                                        }
+                                    }
+                                }
 
 
                                 //Obtiene los datos de la receta
@@ -1599,6 +1669,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                 recetaNueva.cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
                                 recetaNueva.idSectorProductivo = idSectorProductivo;
                                 recetaNueva.Tiempo = tiempoParteRecetes_Recetas;
+                                recetaNueva.Factor = factorParteRecetes_Recetas;
                                 //Guarda la receta usada como ingrediente
                                 controladorReceta.AgregarReceta_Receta(recetaNueva);
                             }

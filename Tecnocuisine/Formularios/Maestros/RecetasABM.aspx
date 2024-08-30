@@ -2236,7 +2236,10 @@
 
             let costAux = parseFloat(costo.replace(',', '.'));
             let CantAux = parseFloat(cantidad);
-            let factor = document.getElementById('<%= txtFactor.ClientID %>').value;
+
+            let factorValue = parseFloat(document.getElementById('<%= txtFactor.ClientID %>').value);
+            let factor = factorValue.toFixed(2);
+
             let cantBruta = document.getElementById('<%= txtCantBruta.ClientID %>').value;
             let costototal = 0;
             let ddlSector = document.getElementById('<%= ddlSector.ClientID %>');
