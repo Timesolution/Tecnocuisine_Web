@@ -884,7 +884,10 @@
                 success: function (response) {
 
                     if (response.d > 0) {
-                        toastr.success("Transferencia confirmada con exito! Recargue la pagina para ver los cambios", "Exito")
+                        var table = $('#editable').DataTable();
+                        table.ajax.reload(null, false); // El segundo parámetro false evita reiniciar la paginación
+
+                        toastr.success("Transferencia confirmada con exito!", "Exito")
 
                         // Obtener la URL actual
                         <%--var urlActual = window.location.href;
