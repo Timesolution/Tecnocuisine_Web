@@ -118,9 +118,9 @@
                                                             <%--<a id="btnfiltrar" onclick="filtrarordenesproduccion()" class="btn btn-primary" title="filtrar" style="width: 100%">
                                                                <i class="fa fa-search"></i>&nbsp;Filtrar
                                                            </a>--%>
-                                                            <asp:LinkButton ID="btnfiltrar" runat="server" OnClick="btnfiltrar_Click" OnClientClick="limpiarUrl()" title="filtrar" Style="width: 100%; margin-bottom: 0" CssClass="btn btn-primary btn-with-icon">
+                                                            <%--<asp:LinkButton ID="btnfiltrar" runat="server" OnClick="btnfiltrar_Click" OnClientClick="limpiarUrl()" title="filtrar" Style="width: 100%; margin-bottom: 0" CssClass="btn btn-primary btn-with-icon">
                                                                          <i class="fa fa-search"></i>
-                                                            </asp:LinkButton>
+                                                            </asp:LinkButton>--%>
 
                                                         </div>
 
@@ -344,6 +344,7 @@
 
 
     <script src="../../js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/2.1.5/i18n/es-ES.json"></script>
 
     <script>
         $(document).ready(function () {
@@ -351,7 +352,7 @@
             //establecerDiaHoy();
 
 
-            $('#editable').DataTable({
+            var table = $('#editable').DataTable({
                 "ajax": {
                     "url": "PedidosOrdenes.aspx/GetTransferencias",
                     "type": "POST",
@@ -381,7 +382,12 @@
                         }
                     }
                 ],
-                "order": [[0, 'desc']] // Ordenar por la primera columna (fecha) en orden descendente
+                "order": [[0, 'desc']], // Ordenar por la primera columna (fecha) en orden descendente
+                "searching": false, // Ocultar el buscador
+                "lengthChange": false, // Ocultar el filtro de cantidad de registros
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/2.1.5/i18n/es-ES.json',
+                },
             });
 
 
@@ -390,8 +396,42 @@
                 $('#editable').DataTable().search(this.value).draw();
             });
 
+            ////////////////////////////////////////
 
+            // Filtro personalizado
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var fechaDesde = $('#<%= txtFechaHoy.ClientID %>').val();
+                    var fechaHasta = $('#<%= txtFechaVencimiento.ClientID %>').val();
+                    var origenText = $('#<%= ddlOrigen.ClientID %> option:selected').text();
+                    var destinoText = $('#<%= ddlDestino.ClientID %> option:selected').text();
+                    var estadoText = $('#<%= ddlEstado.ClientID %> option:selected').text();
 
+                    var fecha = data[0]; // columna Fecha, fecha de la fila recorrida (ej 31/08/2024)
+                    var origen = data[1]; // columna Origen
+                    var destino = data[2]; // columna Destino
+                    var estado = data[4]; // columna Estado
+
+                    var fechaFilaAISO = formatDateToISO(fecha); // Se convierte la fecha de la fila a formato ISO (2024-08-31) para compararla con los filtros
+
+                    // Comprobar rango de fechas
+                    var dateInRange = (!fechaDesde || fechaFilaAISO >= fechaDesde) && (!fechaHasta || fechaFilaAISO <= fechaHasta);
+
+                    // Comparar origen, destino y estado
+                    var origenMatch = (origenText === "Seleccione..." || origenText === origen);
+                    var destinoMatch = (destinoText === "Seleccione..." || destinoText === destino);
+                    var estadoMatch = (estadoText === "Seleccione..." || estadoText === estado);
+
+                    return dateInRange && origenMatch && destinoMatch && estadoMatch;
+                }
+            );
+
+            // Aplicar filtros cuando cambian
+            $('#<%= txtFechaHoy.ClientID %>, #<%= txtFechaVencimiento.ClientID %>, #<%= ddlOrigen.ClientID %>, #<%= ddlDestino.ClientID %>, #<%= ddlEstado.ClientID %>').on('change', function () {
+                table.draw();
+            });
+
+            ////////////////////////////////////
 
 
             var updateOutput = function (e) {
@@ -426,6 +466,42 @@
                 }
             });
         });
+
+
+        // Función para convertir fecha en formato dd/mm/yyyy o dd-mm-yyyy a objeto Date
+        function parseDate(dateString) {
+            var parts = dateString.split(/[/\-]/); // Dividir por / o -
+            // Asegúrate de ajustar el año si es necesario
+            return new Date(parts[2], parts[1] - 1, parts[0]); // Meses en JavaScript van de 0 a 11
+        }
+
+        /**
+ * Convierte una fecha en formato 'dd/mm/yyyy' o 'dd-mm-yyyy' a 'yyyy-mm-dd'.
+ * @param {string} dateString - La fecha en formato 'dd/mm/yyyy' o 'dd-mm-yyyy'.
+ * @returns {string} La fecha en formato 'yyyy-mm-dd'.
+ */
+        function formatDateToISO(dateString) {
+            // Dividir la fecha en partes usando '/' o '-'
+            var parts = dateString.split(/[/\-]/);
+
+            // Verificar que la fecha tiene las partes correctas
+            if (parts.length !== 3) {
+                throw new Error('Formato de fecha inválido. Use "dd/mm/yyyy" o "dd-mm-yyyy".');
+            }
+
+            var day = parts[0];
+            var month = parts[1];
+            var year = parts[2];
+
+            // Asegurarse de que el mes sea 2 dígitos
+            month = month.length === 1 ? '0' + month : month;
+
+            // Asegurarse de que el día sea 2 dígitos
+            day = day.length === 1 ? '0' + day : day;
+
+            // Devolver la fecha en formato 'yyyy-mm-dd'
+            return `${year}-${month}-${day}`;
+        }
 
 
         function establecerDiaHoy() {
