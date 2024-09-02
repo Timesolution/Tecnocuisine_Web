@@ -10,131 +10,129 @@
         <div class="container-fluid">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
-                    <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Always">
-                        <ContentTemplate>
-                            <div class="wrapper wrapper-content animated fadeInRight">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="ibox float-e-margins" style="padding: 1rem">
-                                            <div class="ibox-content">
-                                                <div style="margin-left: 0px; margin-right: 0px;">
-                                                    <div style="display: flex; justify-content: space-between; column-gap: 5rem; margin-bottom: 3rem; padding-right: 1rem; flex-wrap: nowrap">
+                    <div class="wrapper wrapper-content animated fadeInRight">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="ibox float-e-margins" style="padding: 1rem">
+                                    <div class="ibox-content">
+                                        <div style="margin-left: 0px; margin-right: 0px;">
+                                            <div style="display: flex; justify-content: space-between; column-gap: 5rem; margin-bottom: 3rem; padding-right: 1rem; flex-wrap: nowrap">
 
-                                                        <%--Seccion filtros--%>
-                                                        <div style="width: 100%">
+                                                <%--Seccion filtros--%>
+                                                <div style="width: 100%">
 
-                                                            <strong style="font-size: 2rem">Filtrar</strong>
+                                                    <strong style="font-size: 2rem">Filtrar</strong>
 
-                                                            <div style="margin-top: 1rem; display: none">
-                                                                <div class="input-group m-b">
-                                                                    <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
-                                                                    <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" />
-                                                                </div>
-                                                            </div>
+                                                    <div style="margin-top: 1rem; display: none">
+                                                        <div class="input-group m-b">
+                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" />
+                                                        </div>
+                                                    </div>
 
-                                                            <%--Botones ayer hoy mañana pasado--%>
-                                                            <div>
-                                                                <%--<a id="btnAyer" onclick="filtrartTransferenciasAyer()" class="btn btn-warning"
+                                                    <%--Botones ayer hoy mañana pasado--%>
+                                                    <div>
+                                                        <%--<a id="btnAyer" onclick="filtrartTransferenciasAyer()" class="btn btn-warning"
                                                                     title="filtrar ayer" style="height: 32px; margin-left: 10px">Ayer
                                                                 </a>--%>
-                                                                <asp:Button runat="server" ID="btnAyer" OnClientClick="setFecha(-1); return false" class="btn btn-default"
-                                                                    title="filtrar ayer" Style="height: 32px;" Text="Ayer"></asp:Button>
+                                                        <asp:Button runat="server" ID="btnAyer" OnClientClick="setFecha(-1); return false" class="btn btn-default"
+                                                            title="filtrar ayer" Style="height: 32px;" Text="Ayer"></asp:Button>
 
-                                                                <%--<a id="btnHoy" onclick="filtrartTransferenciasHoy()" class="btn btn-warning"
+                                                        <%--<a id="btnHoy" onclick="filtrartTransferenciasHoy()" class="btn btn-warning"
                                                                     title="filtrar hoy" style="height: 32px; margin-left: 10px">Hoy
                                                                 </a>--%>
-                                                                <asp:Button runat="server" ID="btnHoy" OnClientClick="setFecha(0); return false" class="btn btn-default"
-                                                                    title="filtrar hoy" Style="height: 32px;" Text="Hoy"></asp:Button>
+                                                        <asp:Button runat="server" ID="btnHoy" OnClientClick="setFecha(0); return false" class="btn btn-default"
+                                                            title="filtrar hoy" Style="height: 32px;" Text="Hoy"></asp:Button>
 
-                                                                <%--<a id="btnMañana" onclick="filtrartTransferenciasMañana()" class="btn btn-warning"
+                                                        <%--<a id="btnMañana" onclick="filtrartTransferenciasMañana()" class="btn btn-warning"
                                                                     title="filtrar mañana" style="height: 32px; margin-left: 10px">Mañana
                                                                 </a>--%>
-                                                                <asp:Button runat="server" ID="btnMañana" OnClientClick="setFecha(1); return false" class="btn btn-default"
-                                                                    title="filtrar mañana" Style="height: 32px;" Text="Mañana"></asp:Button>
+                                                        <asp:Button runat="server" ID="btnMañana" OnClientClick="setFecha(1); return false" class="btn btn-default"
+                                                            title="filtrar mañana" Style="height: 32px;" Text="Mañana"></asp:Button>
 
-                                                                <%--<a id="btnPasado" onclick="filtrartTransferenciasPasado()" class="btn btn-warning"
+                                                        <%--<a id="btnPasado" onclick="filtrartTransferenciasPasado()" class="btn btn-warning"
                                                                     title="filtrar pasado" style="height: 32px; margin-left: 10px">Pasado 
                                                                 </a>--%>
-                                                                <asp:Button runat="server" ID="btnPasado" OnClientClick="setFecha(2); return false" class="btn btn-default"
-                                                                    title="filtrar pasado" Style="height: 32px;" Text="Pasado"></asp:Button>
+                                                        <asp:Button runat="server" ID="btnPasado" OnClientClick="setFecha(2); return false" class="btn btn-default"
+                                                            title="filtrar pasado" Style="height: 32px;" Text="Pasado"></asp:Button>
+                                                    </div>
+
+                                                    <%--Fila--%>
+                                                    <div style="display: flex; justify-content: flex-start; column-gap: 2rem; width: 100%">
+
+                                                        <%--Fecha Desde--%>
+                                                        <div style="width: 33%">
+                                                            <label style="margin-top: 5px;">Desde:</label>
+                                                            <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy"
+                                                                data-date-format="dd/mm/yyyy">
+                                                            </asp:TextBox>
+                                                        </div>
+
+                                                        <%--Fecha Hasta--%>
+                                                        <div style="width: 33%">
+                                                            <label style="margin-top: 5px;">Hasta:</label>
+                                                            <asp:TextBox class="form-control" runat="server" type="date"
+                                                                ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy">
+                                                            </asp:TextBox>
+                                                        </div>
+
+                                                        <%--Origen--%>
+                                                        <div style="width: 31%">
+                                                            <label style="margin-top: 5px;">Origen</label>
+                                                            <div>
+                                                                <asp:DropDownList ID="ddlOrigen" runat="server"
+                                                                    CssClass="chosen-select form-control"
+                                                                    DataTextField="CountryName" DataValueField="CountryCode"
+                                                                    Data-placeholder="Seleccione Origen..." Width="100%">
+                                                                    <asp:ListItem Text="Select" Value=""></asp:ListItem>
+                                                                </asp:DropDownList>
                                                             </div>
+                                                        </div>
 
-                                                            <%--Fila--%>
-                                                            <div style="display: flex; justify-content: flex-start; column-gap: 2rem; width: 100%">
+                                                        <%--Destino--%>
+                                                        <div style="width: 31%">
+                                                            <label style="margin-top: 5px;">Destino</label>
+                                                            <div>
+                                                                <asp:DropDownList ID="ddlDestino" runat="server"
+                                                                    CssClass="chosen-select form-control"
+                                                                    DataTextField="CountryName" DataValueField="CountryCode"
+                                                                    Data-placeholder="Seleccione Origen..." Width="100%">
+                                                                    <asp:ListItem Text="Select" Value=""></asp:ListItem>
+                                                                </asp:DropDownList>
+                                                            </div>
+                                                        </div>
 
-                                                                <%--Fecha Desde--%>
-                                                                <div style="width: 33%">
-                                                                    <label style="margin-top: 5px;">Desde:</label>
-                                                                    <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy"
-                                                                        data-date-format="dd/mm/yyyy">
-                                                                    </asp:TextBox>
-                                                                </div>
+                                                        <%--Estado--%>
+                                                        <div style="width: 33%">
+                                                            <label style="margin-top: 5px;">Estado</label>
+                                                            <asp:DropDownList ID="ddlEstado" runat="server"
+                                                                CssClass="chosen-select form-control"
+                                                                DataTextField="CountryName" DataValueField="CountryCode"
+                                                                Data-placeholder="Seleccione Estado..." Width="100%">
+                                                                <asp:ListItem Text="Select" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
 
-                                                                <%--Fecha Hasta--%>
-                                                                <div style="width: 33%">
-                                                                    <label style="margin-top: 5px;">Hasta:</label>
-                                                                    <asp:TextBox class="form-control" runat="server" type="date"
-                                                                        ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy">
-                                                                    </asp:TextBox>
-                                                                </div>
-
-                                                                <%--Origen--%>
-                                                                <div style="width: 31%">
-                                                                    <label style="margin-top: 5px;">Origen</label>
-                                                                    <div>
-                                                                        <asp:DropDownList ID="ddlOrigen" runat="server"
-                                                                            CssClass="chosen-select form-control"
-                                                                            DataTextField="CountryName" DataValueField="CountryCode"
-                                                                            Data-placeholder="Seleccione Origen..." Width="100%">
-                                                                            <asp:ListItem Text="Select" Value=""></asp:ListItem>
-                                                                        </asp:DropDownList>
-                                                                    </div>
-                                                                </div>
-
-                                                                <%--Destino--%>
-                                                                <div style="width: 31%">
-                                                                    <label style="margin-top: 5px;">Destino</label>
-                                                                    <div>
-                                                                        <asp:DropDownList ID="ddlDestino" runat="server"
-                                                                            CssClass="chosen-select form-control"
-                                                                            DataTextField="CountryName" DataValueField="CountryCode"
-                                                                            Data-placeholder="Seleccione Origen..." Width="100%">
-                                                                            <asp:ListItem Text="Select" Value=""></asp:ListItem>
-                                                                        </asp:DropDownList>
-                                                                    </div>
-                                                                </div>
-
-                                                                <%--Estado--%>
-                                                                <div style="width: 33%">
-                                                                    <label style="margin-top: 5px;">Estado</label>
-                                                                    <asp:DropDownList ID="ddlEstado" runat="server"
-                                                                        CssClass="chosen-select form-control"
-                                                                        DataTextField="CountryName" DataValueField="CountryCode"
-                                                                        Data-placeholder="Seleccione Estado..." Width="100%">
-                                                                        <asp:ListItem Text="Select" Value=""></asp:ListItem>
-                                                                    </asp:DropDownList>
-                                                                </div>
-
-                                                                <%--Boton Filtrar--%>
-                                                                <div style="align-self: flex-end; justify-self: flex-start">
-                                                                    <%--<a id="btnfiltrar" onclick="filtrarordenesproduccion()" class="btn btn-primary" title="filtrar" style="width: 100%">
+                                                        <%--Boton Filtrar--%>
+                                                        <div style="align-self: flex-end; justify-self: flex-start">
+                                                            <%--<a id="btnfiltrar" onclick="filtrarordenesproduccion()" class="btn btn-primary" title="filtrar" style="width: 100%">
                                                                <i class="fa fa-search"></i>&nbsp;Filtrar
                                                            </a>--%>
-                                                                    <asp:LinkButton ID="btnfiltrar" runat="server" OnClick="btnfiltrar_Click" OnClientClick="limpiarUrl()" title="filtrar" Style="width: 100%; margin-bottom: 0" CssClass="btn btn-primary btn-with-icon">
+                                                            <asp:LinkButton ID="btnfiltrar" runat="server" OnClick="btnfiltrar_Click" OnClientClick="limpiarUrl()" title="filtrar" Style="width: 100%; margin-bottom: 0" CssClass="btn btn-primary btn-with-icon">
                                                                          <i class="fa fa-search"></i>
-                                                                    </asp:LinkButton>
+                                                            </asp:LinkButton>
 
-                                                                </div>
+                                                        </div>
 
-                                                            </div>
-
-
-                                                            <%--Fila 2--%>
-                                                            <div style="display: flex; justify-content: flex-start; column-gap: 2rem; width: 100%">
+                                                    </div>
 
 
+                                                    <%--Fila 2--%>
+                                                    <div style="display: flex; justify-content: flex-start; column-gap: 2rem; width: 100%">
 
-                                                                <%--<label style="margin-top: 5px; margin-left: 10px; margin-right: 10px">Sector</label>
+
+
+                                                        <%--<label style="margin-top: 5px; margin-left: 10px; margin-right: 10px">Sector</label>
                                                                 <div>
                                                                     <asp:DropDownList ID="ddlSectorUsuario" runat="server"
                                                                         CssClass="chosen-select form-control"
@@ -143,16 +141,16 @@
                                                                         <asp:ListItem Text="Select" Value=""></asp:ListItem>
                                                                     </asp:DropDownList>
                                                                 </div>--%>
-                                                            </div>
-
-                                                        </div>
-
-                                                        <%--Seccion busqueda avanzada--%>
-                                                        <%--    <div style="width: 50%">
-                                                        </div>--%>
                                                     </div>
 
-                                                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                                </div>
+
+                                                <%--Seccion busqueda avanzada--%>
+                                                <%--    <div style="width: 50%">
+                                                        </div>--%>
+                                            </div>
+
+                                            <%--<asp:UpdatePanel ID="UpdatePanel1" runat="server">
                                                         <ContentTemplate>
                                                             <table class="table table-hover no-margins table-bordered" style="width: 100%; margin-top: 30px" id="editable">
                                                                 <thead>
@@ -171,15 +169,30 @@
                                                             </table>
 
                                                         </ContentTemplate>
-                                                    </asp:UpdatePanel>
-                                                </div>
-                                            </div>
+                                                    </asp:UpdatePanel>--%>
+
+                                            <table class="table table-hover no-margins table-bordered" style="width: 100%; margin-top: 30px" id="editable">
+                                                <thead>
+                                                    <tr style="height: 20px">
+                                                        <th style="width: 5%; margin-top: 20px; height: 10px; padding-left: 4px">Fecha</th>
+                                                        <th style="width: 5%; margin-top: 20px; padding-left: 4px">Origen</th>
+                                                        <th style="width: 5%; margin-top: 20px; padding-left: 4px">Destino</th>
+                                                        <th style="width: 5%; margin-top: 20px; padding-left: 4px">Orden</th>
+                                                        <th style="width: 5%; margin-top: 20px; padding-left: 4px">Estado</th>
+                                                        <th style="width: 5%; margin-top: 20px; padding-left: 4px">Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tableTransferencias">
+                                                </tbody>
+                                            </table>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </ContentTemplate>
-                    </asp:UpdatePanel>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -337,17 +350,49 @@
             $("body").tooltip({ selector: '[data-toggle=tooltip]' });
             //establecerDiaHoy();
 
-            // var oTable = $('#editable').dataTable({
-            //     "bLengthChange": false,
-            //     "pageLength": 100,
-            //     "lengthMenu": [25, 50, 87, 100]
-            // });
+
+            $('#editable').DataTable({
+                "ajax": {
+                    "url": "PedidosOrdenes.aspx/GetTransferencias",
+                    "type": "POST",
+                    "dataType": "json",
+                    contentType: "application/json; charset=utf-8",
+                    "dataSrc": function (json) {
+                        // Accede al array dentro de data.d.data
+                        return json.d.data; // Aquí especificas que los datos están en json.d.data
+                    },
+                    "error": function (xhr, status, error) {
+                        console.log('Error:', error);
+                        //console.log('Response Text:', xhr.responseText);
+                    }
+                },
+                "columns": [
+                    { "data": "fecha" },
+                    { "data": "origen" },
+                    { "data": "destino" },
+                    { "data": "orden" },
+                    { "data": "estado" },
+                    {
+                        "data": "id",
+                        "render": function (data, type, row) {
+                            return "<button style='background-color: transparent' class='btn btn-xs btnVerDetalle' onclick='verDetalleTranferencia(\"" + data + "\", \"" + row.fecha + "\"); return false;'>"
+                                + "<span title='Detalle'><i class='fa fa-exchange' style='color: black;'></i></span>"
+                                + "</button>";
+                        }
+                    }
+                ],
+                "order": [[0, 'desc']] // Ordenar por la primera columna (fecha) en orden descendente
+            });
 
 
             $("#editable_filter").css('display', 'none');
             $('#txtBusqueda').on('keyup', function () {
                 $('#editable').DataTable().search(this.value).draw();
             });
+
+
+
+
 
             var updateOutput = function (e) {
                 var list = e.length ? e : $(e.target),
@@ -382,45 +427,6 @@
             });
         });
 
-     //   function confirmarTransferencia() {
-     //        //document.getElementById('tableTransferencias').innerHTML = "";
-     //
-     //       let idTransferencia = document.getElementById('<%= idTransferencia.ClientID %>').value;
-     //       //let transferencias = document.getElementById('<%= transferencias.ClientID %>').value;
-        //
-        //       $.ajax({
-        //           method: "POST",
-        //           url: "PedidosOrdenes.aspx/cambiarEstadoTransferencia",
-        //           data: JSON.stringify({ idTransferencia: idTransferencia }),
-        //           contentType: "application/json",
-        //           dataType: "json",
-        //           error: function(error) {
-        //               console.log("Error:", error);
-        //           },
-        //           success: function(data) {
-        //              // const arrayTransferencias = transferencias.split(";").filter(Boolean);
-        //              // arrayTransferencias.forEach(function(detalleTransferencia) {
-        //              //     const partesDetalle = detalleTransferencia.split(",").filter(Boolean);
-        //              //     const fecha = partesDetalle[0];
-        //              //     const origen = partesDetalle[1];
-        //              //     const destino = partesDetalle[2];
-        //              //     const orden = partesDetalle[3];
-        //              //     const estadoTransferencias = partesDetalle[4];
-        //              //
-        //              //     let plantillaTransferencia = `
-        //              //         <tr>
-        //              //             <td>${fecha}</td>
-        //              //             <td>${origen}</td>
-        //              //             <td>${destino}</td>
-        //              //             <td>${orden}</td>
-        //              //             <td>${estadoTransferencias}</td>
-        //              //         </tr>
-        //              //     `;
-        //              //     document.getElementById('editable').innerHTML += plantillaTransferencia;
-        //            //   });
-        //           }
-        //         });
-        //   }
 
         function establecerDiaHoy() {
             var fechas = obtenerRangoFechas();
@@ -628,6 +634,7 @@
                         document.getElementById('tableOrigen').innerHTML += plantillaDetalleTransferencia;
                     });
 
+                    //TODO: traer fecha de la data
                     document.getElementById('modalOrigenDestino_fecha').innerHTML = 'Fecha: ' + fecha;
 
                     $("#modalOrigenDestino").modal("hide");
@@ -646,7 +653,7 @@
                 //console.log("Estado: " + estadoTransferencia);
 
                 if (estadoTransferencia === 2) { // A Confirmar
-                    document.getElementById('<%= btnConfirmar.ClientID %>').style.display = 'inline-block';               
+                    document.getElementById('<%= btnConfirmar.ClientID %>').style.display = 'inline-block';
                 } else {
                     document.getElementById('<%= btnConfirmar.ClientID %>').style.display = 'none';
                 }
