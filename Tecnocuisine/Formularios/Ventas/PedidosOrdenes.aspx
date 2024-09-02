@@ -121,7 +121,6 @@
                                                             <%--<asp:LinkButton ID="btnfiltrar" runat="server" OnClick="btnfiltrar_Click" OnClientClick="limpiarUrl()" title="filtrar" Style="width: 100%; margin-bottom: 0" CssClass="btn btn-primary btn-with-icon">
                                                                          <i class="fa fa-search"></i>
                                                             </asp:LinkButton>--%>
-
                                                         </div>
 
                                                     </div>
@@ -351,7 +350,6 @@
             $("body").tooltip({ selector: '[data-toggle=tooltip]' });
             //establecerDiaHoy();
 
-
             var table = $('#editable').DataTable({
                 "ajax": {
                     "url": "PedidosOrdenes.aspx/GetTransferencias",
@@ -383,17 +381,14 @@
                     }
                 ],
                 "order": [[0, 'desc']], // Ordenar por la primera columna (fecha) en orden descendente
-                "searching": false, // Ocultar el buscador
+                "searching": true, // Ocultar el buscador
                 "lengthChange": false, // Ocultar el filtro de cantidad de registros
                 language: {
                     url: '//cdn.datatables.net/plug-ins/2.1.5/i18n/es-ES.json',
                 },
-            });
-
-
-            $("#editable_filter").css('display', 'none');
-            $('#txtBusqueda').on('keyup', function () {
-                $('#editable').DataTable().search(this.value).draw();
+                "initComplete": function (settings, json) {
+                    $('#editable_filter').hide(); // Ocultar el campo de búsqueda global después de la inicialización
+                }
             });
 
             ////////////////////////////////////////
@@ -527,135 +522,6 @@
                 ultimoDia: ultimoDiaMes,
                 diaActual: diaActual
             };
-        }
-
-        function filtrarordenesproduccion() {
-            let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value
-            let FechaH = document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value
-
-            let ddlOrigen = document.getElementById("ContentPlaceHolder1_ddlOrigen");
-            let origen = ddlOrigen.options[ddlOrigen.selectedIndex].text;
-
-            let ddlDestino = document.getElementById("ContentPlaceHolder1_ddlDestino");
-            let destino = ddlDestino.options[ddlDestino.selectedIndex].text;
-
-            let estado = document.getElementById("ContentPlaceHolder1_ddlEstado").value;
-
-            let ddlSector = document.getElementById("ContentPlaceHolder1_ddlSectorUsuario");
-            let sector = ddlSector.options[ddlSector.selectedIndex].text;
-
-            window.location.href = "PedidosOrdenes.aspx?FechaD=" + FechaD + "&FechaH=" + FechaH + "&sector=" + sector + "&Estado=" + estado;
-        }
-
-
-        function filtrartTransferenciasAyer() {
-
-            let ddlOrigen = document.getElementById("ContentPlaceHolder1_ddlOrigen");
-            let origen = ddlOrigen.options[ddlOrigen.selectedIndex].text;
-
-            let ddlDestino = document.getElementById("ContentPlaceHolder1_ddlDestino");
-            let destino = ddlDestino.options[ddlDestino.selectedIndex].text;
-
-            let estado = document.getElementById("ContentPlaceHolder1_ddlEstado").value;
-
-            let ddlSectorUsuario = document.getElementById("ContentPlaceHolder1_ddlSectorUsuario");
-            let sector = ddlSectorUsuario.options[ddlSectorUsuario.selectedIndex].text;
-
-            let yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-            let year = yesterday.getFullYear();
-            let month = (yesterday.getMonth() + 1).toString().padStart(2, '0');
-            let day = yesterday.getDate().toString().padStart(2, '0');
-            let fechaAyer = year + "/" + month + "/" + day;
-
-
-            let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value
-
-            window.location.href = "PedidosOrdenes.aspx?FechaAyer=" + FechaD + "&Origen=" + origen + "&Destino=" + destino + "&Estado=" + estado + "&sector=" + sector;
-        }
-
-
-
-        function filtrartTransferenciasHoy() {
-
-            let ddlOrigen = document.getElementById("ContentPlaceHolder1_ddlOrigen");
-            let origen = ddlOrigen.options[ddlOrigen.selectedIndex].text;
-
-            let ddlDestino = document.getElementById("ContentPlaceHolder1_ddlDestino");
-            let destino = ddlDestino.options[ddlDestino.selectedIndex].text;
-
-            let estado = document.getElementById("ContentPlaceHolder1_ddlEstado").value;
-
-            let ddlSectorUsuario = document.getElementById("ContentPlaceHolder1_ddlSectorUsuario");
-            let sector = ddlSectorUsuario.options[ddlSectorUsuario.selectedIndex].text;
-
-            let yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-            let year = yesterday.getFullYear();
-            let month = (yesterday.getMonth() + 1).toString().padStart(2, '0');
-            let day = yesterday.getDate().toString().padStart(2, '0');
-            let fechaAyer = year + "/" + month + "/" + day;
-
-
-            let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value
-
-            window.location.href = "PedidosOrdenes.aspx?FechaHoy=" + FechaD + "&Origen=" + origen + "&Destino=" + destino + "&Estado=" + estado + "&sector=" + sector;
-        }
-
-
-
-        function filtrartTransferenciasMañana() {
-
-            let ddlOrigen = document.getElementById("ContentPlaceHolder1_ddlOrigen");
-            let origen = ddlOrigen.options[ddlOrigen.selectedIndex].text;
-
-            let ddlDestino = document.getElementById("ContentPlaceHolder1_ddlDestino");
-            let destino = ddlDestino.options[ddlDestino.selectedIndex].text;
-
-            let estado = document.getElementById("ContentPlaceHolder1_ddlEstado").value;
-
-            let ddlSectorUsuario = document.getElementById("ContentPlaceHolder1_ddlSectorUsuario");
-            let sector = ddlSectorUsuario.options[ddlSectorUsuario.selectedIndex].text;
-
-
-            let yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-            let year = yesterday.getFullYear();
-            let month = (yesterday.getMonth() + 1).toString().padStart(2, '0');
-            let day = yesterday.getDate().toString().padStart(2, '0');
-            let fechaAyer = year + "/" + month + "/" + day;
-
-
-            let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value
-
-            window.location.href = "PedidosOrdenes.aspx?FechaMañana=" + FechaD + "&Origen=" + origen + "&Destino=" + destino + "&Estado=" + estado + "&sector=" + sector;
-        }
-
-
-        function filtrartTransferenciasPasado() {
-
-            let ddlOrigen = document.getElementById("ContentPlaceHolder1_ddlOrigen");
-            let origen = ddlOrigen.options[ddlOrigen.selectedIndex].text;
-
-            let ddlDestino = document.getElementById("ContentPlaceHolder1_ddlDestino");
-            let destino = ddlDestino.options[ddlDestino.selectedIndex].text;
-
-            let estado = document.getElementById("ContentPlaceHolder1_ddlEstado").value;
-
-            let ddlSectorUsuario = document.getElementById("ContentPlaceHolder1_ddlSectorUsuario");
-            let sector = ddlSectorUsuario.options[ddlSectorUsuario.selectedIndex].text;
-
-            let yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-            let year = yesterday.getFullYear();
-            let month = (yesterday.getMonth() + 1).toString().padStart(2, '0');
-            let day = yesterday.getDate().toString().padStart(2, '0');
-            let fechaAyer = year + "/" + month + "/" + day;
-
-
-            let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value
-
-            window.location.href = "PedidosOrdenes.aspx?FechaPasado=" + FechaD + "&Origen=" + origen + "&Destino=" + destino + "&Estado=" + estado + "&sector=" + sector;
         }
 
 
