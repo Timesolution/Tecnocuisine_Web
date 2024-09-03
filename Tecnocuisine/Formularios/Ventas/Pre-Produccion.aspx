@@ -650,7 +650,7 @@
                         let r = response.d;
                         toastr.success("Transferencia confirmada con exito!", "Exito");
                         //imprimirRemitoEnviado(r);
-                        window.open('ImpresionRemitos.aspx?r=' + r, '_blank');
+                        //window.open('ImpresionRemitos.aspx?r=' + r, '_blank');
                         location.reload();
                     }
                     else if (response.d == -1) {
