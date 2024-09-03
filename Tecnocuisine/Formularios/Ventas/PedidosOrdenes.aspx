@@ -525,8 +525,10 @@
         }
 
 
-        function verDetalleTranferencia(idTransferencia, fecha) {
-            VisibilidadBotonConfirmar(idTransferencia)
+        async function verDetalleTranferencia(idTransferencia, fecha) {
+            // Espera el resultado de la función VisibilidadBotonConfirmar
+            const disabledInputs = await VisibilidadBotonConfirmar(idTransferencia);
+
 
             $.ajax({
                 method: "POST",
@@ -554,7 +556,9 @@
                         const cantidadAConfirmar = "<input id=\"cantAproducir_" + cont + "\" " +
                             "style=\"width: 100%; text-align: right;\" " +
                             "placeholder=\"Cantidad\" " +
-                            "value=\"" + partesDetalle[4] + "\" />";
+                            "value=\"" + partesDetalle[4] + "\" " +
+                            (disabledInputs ? "disabled" : "") + " />";
+
 
 
                         let btnVerDetalle =
@@ -589,20 +593,22 @@
 
         // Mostrar boton confirmar solo si el estado de la transferencia es "A confirmar"
         function VisibilidadBotonConfirmar(idTransferencia) {
-            GetIdEstadoTransferencia(idTransferencia).done(function (response) {
+            return GetIdEstadoTransferencia(idTransferencia).then(function (response) {
                 var estadoTransferencia = response.d;
-
-                //console.log("Estado: " + estadoTransferencia);
 
                 if (estadoTransferencia === 2) { // A Confirmar
                     document.getElementById('<%= btnConfirmar.ClientID %>').style.display = 'inline-block';
-                } else {
-                    document.getElementById('<%= btnConfirmar.ClientID %>').style.display = 'none';
-                }
-            }).fail(function (xhr, status, error) {
-                console.error("Error al llamar al método del servidor: ", error);
-            });
+            return false; 
+        } else {
+            document.getElementById('<%= btnConfirmar.ClientID %>').style.display = 'none';
+            return true;
         }
+    }).fail(function (xhr, status, error) {
+        console.error("Error al llamar al método del servidor: ", error);
+        return true; // Retornar false en caso de error
+    });
+        }
+
 
         function GetIdEstadoTransferencia(idTransferencia) {
             return $.ajax({
@@ -906,6 +912,12 @@
 
             txtFechaDesde.value = anio.toString() + "-" + mes.toString() + "-" + dia.toString();
             txtFechaHasta.value = anio.toString() + "-" + mes.toString() + "-" + dia.toString();
+
+
+            // Llamar al evento onchange del select
+            var event = new Event('change');
+            txtFechaDesde.dispatchEvent(event);
+            txtFechaHasta.dispatchEvent(event);
         }
 
     </script>
