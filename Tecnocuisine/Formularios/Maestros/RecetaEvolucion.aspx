@@ -121,6 +121,21 @@
             });
             div.prepend(button);
 
+
+            // Función de filtro personalizada para buscar registros que comiencen con el término ingresado
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var searchTerm = $('#txtBusqueda').val().toLowerCase();
+                    if (searchTerm === "") {
+                        return true; // No hay filtro, mostrar todas las filas
+                    }
+
+                    // Comprueba si alguna columna comienza con el término de búsqueda
+                    return data.some(function (value) {
+                        return value.toLowerCase().startsWith(searchTerm);
+                    });
+                }
+            );
             // Configura el campo de búsqueda personalizado
             $('#txtBusqueda').on('keyup', function () {
                 oTable.search(this.value).draw();
