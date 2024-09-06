@@ -250,6 +250,7 @@
                             </a>
                             <ul class="nav nav-second-level">
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/StockProductosYRecetas.aspx">Stock</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/StockSectores.aspx">Stock Sectores</a></li>
                             </ul>
                         </li>
 

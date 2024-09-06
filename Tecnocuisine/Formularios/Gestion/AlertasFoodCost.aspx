@@ -28,9 +28,9 @@
                                                 <div class="col-md-12">
 
                                                     <div style="display: flex; width: 100%">
-                                                        <h1 style="font-size: 2rem; font-weight: bold">
+                                                        <%--<h1 style="font-size: 2rem; font-weight: bold">
                                                             Alertas de Food Cost
-                                                        </h1>
+                                                        </h1>--%>
 
                                                         <%--<div style="width: 50%; height: 120px;">
                                                             <div style="width:100%; height:100%">

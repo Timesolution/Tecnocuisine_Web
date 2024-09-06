@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -13,7 +14,6 @@ namespace Tecnocuisine.Formularios.Maestros
     public partial class RecetaEvolucion : System.Web.UI.Page
     {
         ControladorReceta controladorReceta = new ControladorReceta();
-        ControladorEntregas controladorEntregas = new ControladorEntregas();
         int idReceta;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -27,7 +27,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
             var receta = controladorReceta.ObtenerRecetaId(idReceta);
 
-            lblDescripcion.Text = receta.descripcion;
+            lblDescripcion.Text = "Evolucion de: " + receta.descripcion;
 
             CrearTablaIngredientes();
         }
@@ -123,28 +123,28 @@ namespace Tecnocuisine.Formularios.Maestros
                 tr.Cells.Add(celDescripcion);
 
                 TableCell celCostoNuevoIngrediente = new TableCell();
-                celCostoNuevoIngrediente.Text = evolucion.CostoNuevo_Producto.ToString("C").Replace(',', '.');
+                celCostoNuevoIngrediente.Text = evolucion.CostoNuevo_Producto.ToString("C", CultureInfo.CreateSpecificCulture("es-AR")).Replace(',', '.');
                 celCostoNuevoIngrediente.VerticalAlign = VerticalAlign.Middle;
                 celCostoNuevoIngrediente.HorizontalAlign = HorizontalAlign.Left;
                 celCostoNuevoIngrediente.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
                 tr.Cells.Add(celCostoNuevoIngrediente);
 
                 TableCell celCostoAnteriorIngrediente = new TableCell();
-                celCostoAnteriorIngrediente.Text = evolucion.CostoAnterior_Producto.ToString("C").Replace(',', '.');
+                celCostoAnteriorIngrediente.Text = evolucion.CostoAnterior_Producto.ToString("C", CultureInfo.CreateSpecificCulture("es-AR")).Replace(',', '.');
                 celCostoAnteriorIngrediente.VerticalAlign = VerticalAlign.Middle;
                 celCostoAnteriorIngrediente.HorizontalAlign = HorizontalAlign.Left;
                 celCostoAnteriorIngrediente.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
                 tr.Cells.Add(celCostoAnteriorIngrediente);
 
                 TableCell celCostoTotalNuevoReceta = new TableCell();
-                celCostoTotalNuevoReceta.Text = evolucion.CostoTotalNuevo_Receta.ToString("C").Replace(',', '.');
+                celCostoTotalNuevoReceta.Text = evolucion.CostoTotalNuevo_Receta.ToString("C", CultureInfo.CreateSpecificCulture("es-AR")).Replace(',', '.');
                 celCostoTotalNuevoReceta.VerticalAlign = VerticalAlign.Middle;
                 celCostoTotalNuevoReceta.HorizontalAlign = HorizontalAlign.Left;
                 celCostoTotalNuevoReceta.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
                 tr.Cells.Add(celCostoTotalNuevoReceta);
 
                 TableCell celCostoTotalAnteriorReceta = new TableCell();
-                celCostoTotalAnteriorReceta.Text = evolucion.CostoTotalAnterior_Receta.ToString("C").Replace(',', '.');
+                celCostoTotalAnteriorReceta.Text = evolucion.CostoTotalAnterior_Receta.ToString("C", CultureInfo.CreateSpecificCulture("es-AR")).Replace(',', '.');
                 celCostoTotalAnteriorReceta.VerticalAlign = VerticalAlign.Middle;
                 celCostoTotalAnteriorReceta.HorizontalAlign = HorizontalAlign.Left;
                 celCostoTotalAnteriorReceta.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");

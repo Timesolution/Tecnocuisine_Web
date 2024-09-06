@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -93,21 +94,21 @@ namespace Tecnocuisine.Formularios.Gestion
                     tr.Cells.Add(celDescripcion);
 
                     TableCell celCostoUnitario = new TableCell();
-                    celCostoUnitario.Text = alerta.CostoU.ToString("C");
+                    celCostoUnitario.Text = alerta.CostoU.ToString("C", CultureInfo.CreateSpecificCulture("es-AR"));
                     celCostoUnitario.VerticalAlign = VerticalAlign.Middle;
                     celCostoUnitario.HorizontalAlign = HorizontalAlign.Left;
                     celCostoUnitario.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
                     tr.Cells.Add(celCostoUnitario);
 
                     TableCell celPrecioVenta = new TableCell();
-                    celPrecioVenta.Text = alerta.PrVenta.ToString("C");
+                    celPrecioVenta.Text = alerta.PrVenta.ToString("C", CultureInfo.CreateSpecificCulture("es-AR"));
                     celPrecioVenta.VerticalAlign = VerticalAlign.Middle;
                     celPrecioVenta.HorizontalAlign = HorizontalAlign.Left;
                     celPrecioVenta.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
                     tr.Cells.Add(celPrecioVenta);
 
                     TableCell celContMarginal = new TableCell();
-                    celContMarginal.Text = alerta.CostMarginal.ToString("C");
+                    celContMarginal.Text = alerta.CostMarginal.ToString("C", CultureInfo.CreateSpecificCulture("es-AR"));
                     celContMarginal.VerticalAlign = VerticalAlign.Middle;
                     celContMarginal.HorizontalAlign = HorizontalAlign.Left;
                     celContMarginal.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
