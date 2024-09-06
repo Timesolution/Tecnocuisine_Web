@@ -348,6 +348,8 @@
     <Content Include="Formularios\Maestros\Clientes.aspx" />
     <Content Include="Formularios\Maestros\EstadoClientes.aspx" />
     <Content Include="Formularios\Maestros\StockProductosYRecetas.aspx" />
+    <Content Include="Formularios\Maestros\StockSectores.aspx" />
+    <Content Include="Formularios\Maestros\StockSectoresDetalle.aspx" />
     <Content Include="Formularios\Maestros\Subgrupos.aspx" />
     <Content Include="Formularios\Maestros\Grupos.aspx" />
     <Content Include="Formularios\Maestros\Marcas.aspx" />
@@ -1246,6 +1248,20 @@
     </Compile>
     <Compile Include="Formularios\Maestros\StockProductosYRecetas.aspx.designer.cs">
       <DependentUpon>StockProductosYRecetas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\StockSectores.aspx.cs">
+      <DependentUpon>StockSectores.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\StockSectores.aspx.designer.cs">
+      <DependentUpon>StockSectores.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Maestros\StockSectoresDetalle.aspx.cs">
+      <DependentUpon>StockSectoresDetalle.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Maestros\StockSectoresDetalle.aspx.designer.cs">
+      <DependentUpon>StockSectoresDetalle.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Maestros\Subgrupos.aspx.cs">
       <DependentUpon>Subgrupos.aspx</DependentUpon>
