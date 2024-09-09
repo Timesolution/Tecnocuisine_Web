@@ -2326,21 +2326,34 @@
 
 
         function AjaxBajarStock() {
+            let listaTablaFinal = document.getElementById("ContentPlaceHolder1_ListaTablaFinal").value;
+            let marca = document.getElementById("ContentPlaceHolder1_NMarca").value;
+            let presentacion = document.getElementById("ContentPlaceHolder1_txtPresentacion").value;
+            let unidadMedida = document.getElementById("ContentPlaceHolder1_NUnidadMedida").value;
+            let sector = document.getElementById("ContentPlaceHolder1_NSector").value;
+            let lote = document.getElementById("ContentPlaceHolder1_NLote").value;
+            let cantidadProducida = document.getElementById("ContentPlaceHolder1_NCantidadProducida").value.replace(".", ",");
+            let idReceta = document.getElementById('ContentPlaceHolder1_txtDescripcionProductos').value.split("-")[0].trim();
+            let listStock = document.getElementById("ContentPlaceHolder1_StockAlteradoFinal").textContent.replaceAll(".", ",");
+            let historicoProduccion = document.getElementById("ContentPlaceHolder1_HistoricoProduccion").innerText;
+            let listCostoCambios = document.getElementById("ContentPlaceHolder1_ListaCostoCambiado").value.replaceAll(".", ",");
+            let costoTotal = document.getElementById("CostoFinalTotal").innerText.split("$")[1].replaceAll(".", ",");
+
             $.ajax({
                 method: "POST",
                 url: "GenerarProduccion.aspx/GenerarProduccionFinal",
-                data: '{List: "' + document.getElementById("ContentPlaceHolder1_ListaTablaFinal").value
-                    + '" , Marca: "' + document.getElementById("ContentPlaceHolder1_NMarca").value
-                    + '" , Presentacion: "' + document.getElementById("ContentPlaceHolder1_txtPresentacion").value
-                    + '" , UnidadMedida: "' + document.getElementById("ContentPlaceHolder1_NUnidadMedida").value
-                    + '" , Sector: "' + document.getElementById("ContentPlaceHolder1_NSector").value
-                    + '" , Lote: "' + document.getElementById("ContentPlaceHolder1_NLote").value
-                    + '" , CantidadProducida: "' + document.getElementById("ContentPlaceHolder1_NCantidadProducida").value.replace(".", ",")
-                    + '" , idReceta: "' + document.getElementById('ContentPlaceHolder1_txtDescripcionProductos').value.split("-")[0].trim()
-                    + '" , ListStock: "' + document.getElementById("ContentPlaceHolder1_StockAlteradoFinal").textContent.replaceAll(".", ",")
-                    + '" , ListHistoricoCambio: "' + document.getElementById("ContentPlaceHolder1_HistoricoProduccion").innerText
-                    + '" , ListCostoCambios: "' + document.getElementById("ContentPlaceHolder1_ListaCostoCambiado").value.replaceAll(".", ",")
-                    + '" , CostoTotal: "' + document.getElementById("CostoFinalTotal").innerText.split("$")[1].replaceAll(".", ",")
+                data: '{List: "' + listaTablaFinal
+                    + '" , Marca: "' + marca
+                    + '" , Presentacion: "' + presentacion
+                    + '" , UnidadMedida: "' + unidadMedida
+                    + '" , Sector: "' + sector
+                    + '" , Lote: "' + lote
+                    + '" , CantidadProducida: "' + cantidadProducida
+                    + '" , idReceta: "' + idReceta
+                    + '" , ListStock: "' + listStock
+                    + '" , ListHistoricoCambio: "' + historicoProduccion
+                    + '" , ListCostoCambios: "' + listCostoCambios
+                    + '" , CostoTotal: "' + costoTotal
                     + '"}',
                 contentType: "application/json",
                 dataType: "json",
