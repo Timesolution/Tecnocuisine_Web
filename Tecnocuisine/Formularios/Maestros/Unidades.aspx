@@ -28,8 +28,9 @@
                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
+                                            <th style="display: none">#</th>
                                             <th>Descripción</th>
+                                            <th>Abreviacion</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -77,17 +78,31 @@
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                     <h4 class="modal-title">Agregar Unidad</h4>
                 </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-sm-1">
-                            <label style="color: red;" class="danger">*</label>
+                <div class="modal-body" style="">
+                    <div>
+                        <div class="row" style="display:flex; justify-content:center">
+                            <div class="col-sm-1">
+                                <label style="color: red;" class="danger">*</label>
+                            </div>
+                            <label class="col-sm-2 control-label editable">Descripción</label>
+                            <div class="col-sm-5">
+                                <asp:TextBox ID="txtDescripcionUnidad" class="form-control" runat="server" />
+                            </div>
                         </div>
-                        <label class="col-sm-2 control-label editable">Descripción</label>
-                        <div class="col-sm-8">
-                            <asp:TextBox ID="txtDescripcionUnidad" class="form-control" runat="server" />
 
+                        <br />
+
+                        <div class="row" style="display:flex; justify-content:center">
+                            <div class="col-sm-1">
+                                <label style="color: red;" class="danger">*</label>
+                            </div>
+                            <label class="col-sm-2 control-label editable">Abreviación</label>
+                            <div class="col-sm-5">
+                                <asp:TextBox ID="txtAbreviacion" MaxLength="5" class="form-control" runat="server" />
+                            </div>
                         </div>
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <asp:LinkButton runat="server" ID="btnGuardar" class="buttonLoading btn btn-primary" OnClick="btnGuardar_Click"><i class="fa fa-check"></i>&nbsp;Agregar </asp:LinkButton>
@@ -111,6 +126,7 @@
         }
         function vaciarFormulario() {
             ContentPlaceHolder1_txtDescripcionUnidad.value = "";
+            ContentPlaceHolder1_txtAbreviacion.value = "";
             ContentPlaceHolder1_hiddenEditar.value = "";
             window.history.pushState('', 'Unidades', location.protocol + '//' + location.host + location.pathname);
 
@@ -186,8 +202,8 @@
         });
 
 
-        function vaciarInputs(){
-             document.getElementById('<%= txtDescripcionUnidad.ClientID %>').value = "";
+        function vaciarInputs() {
+            document.getElementById('<%= txtDescripcionUnidad.ClientID %>').value = "";
         }
 
     </script>

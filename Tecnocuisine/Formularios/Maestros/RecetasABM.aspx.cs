@@ -1,4 +1,5 @@
-﻿using Gestion_Api.Modelo;
+﻿using Gestion_Api.Entitys;
+using Gestion_Api.Modelo;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -256,7 +257,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                     // Si tiene un tipo de receta inactivo, agregarlo al select
                     TiposDeReceta tipo = new ControladorTiposDeReceta().ObtenerTipoDeRecetaById((int)Receta.Tipo);
-                    if(!tipo.estado)
+                    if (!tipo.estado)
                         ddlTipoReceta.Items.Insert(1, new ListItem(tipo.tipo, tipo.id.ToString()));
 
                     ddlTipoReceta.SelectedValue = Receta.Tipo.ToString();
@@ -686,7 +687,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 return -1;
             }
         }
-        
+
         public void CargarMarcasPH(Tecnocuisine_API.Entitys.Articulos_Marcas marca)
         {
             try
@@ -960,7 +961,9 @@ namespace Tecnocuisine.Formularios.Maestros
                 foreach (var prod in productos)
                 {
                     string UnidadMedida = "";
-                    UnidadMedida = cu.ObtenerUnidadId(prod.unidadMedida).descripcion;
+                    var unidad = cu.ObtenerUnidadId(prod.unidadMedida);
+                    UnidadMedida = unidad.abreviacion ?? unidad.descripcion;
+
                     builder.Append(String.Format("<option value='{0}' id='c_p_" + prod.id + "_" + prod.descripcion + "_" + UnidadMedida + "_" + prod.costo.ToString().Replace(',', '.') + "'>", prod.id + " - " + prod.descripcion));
                 }
 
@@ -988,7 +991,8 @@ namespace Tecnocuisine.Formularios.Maestros
                         if (rec.UnidadMedida.Value == -1)
                             rec.UnidadMedida = 1;
 
-                        UnidadMedida = cu.ObtenerUnidadId(rec.UnidadMedida.Value).descripcion;
+                        var unidad = cu.ObtenerUnidadId(rec.UnidadMedida.Value);
+                        UnidadMedida = unidad.abreviacion ?? unidad.descripcion;
                         builder.Append(String.Format("<option value='{0}' id='c_r_" + rec.id + "_" + rec.descripcion + "_" + UnidadMedida + "_" + rec.Costo.ToString().Replace(',', '.') + "'>", rec.id + " - " + rec.descripcion));
                     }
                     else
@@ -1064,7 +1068,8 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 ControladorUnidad cu = new ControladorUnidad();
                 string UnidadMedida = "";
-                UnidadMedida = cu.ObtenerUnidadId(producto.unidadMedida).descripcion;
+                var unidad = cu.ObtenerUnidadId(producto.unidadMedida);
+                UnidadMedida = unidad.abreviacion ?? unidad.descripcion;
 
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
@@ -1128,7 +1133,9 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 ControladorUnidad cu = new ControladorUnidad();
                 string UnidadMedida = "";
-                UnidadMedida = cu.ObtenerUnidadId(prodRec.FirstOrDefault().Productos.unidadMedida).descripcion;
+                var unidad = cu.ObtenerUnidadId(prodRec.FirstOrDefault().Productos.unidadMedida);
+                UnidadMedida = unidad.abreviacion ?? unidad.descripcion;
+
 
                 TableCell celUM = new TableCell();
                 celUM.Text = UnidadMedida;
@@ -1381,7 +1388,8 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 ControladorUnidad cu = new ControladorUnidad();
                 string UnidadMedida = "";
-                UnidadMedida = cu.ObtenerUnidadId(Receta.UnidadMedida.Value).descripcion;
+                var unidad = cu.ObtenerUnidadId(Receta.UnidadMedida.Value);
+                UnidadMedida = unidad.abreviacion ?? unidad.descripcion;
 
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
@@ -1412,10 +1420,8 @@ namespace Tecnocuisine.Formularios.Maestros
         //Esta funcion se encarga de precargar las recetas que se usan como ingredientes para la receta
         public void CargarRecetasPHModal2(Tecnocuisine_API.Entitys.Recetas_Receta Receta)
         {
-
             try
             {
-
                 //fila
                 var RecetaingredienteI = controladorReceta.ObtenerRecetaId(Receta.idRecetaIngrediente);
 
@@ -1451,7 +1457,8 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 ControladorUnidad cu = new ControladorUnidad();
                 string UnidadMedida = "";
-                UnidadMedida = cu.ObtenerUnidadId(Receta.Recetas.UnidadMedida.Value).descripcion;
+                var unidad = cu.ObtenerUnidadId(Receta.Recetas.UnidadMedida.Value);
+                UnidadMedida = unidad.abreviacion ?? unidad.descripcion;
 
                 TableCell celUM = new TableCell();
                 celUM.Text = "<div id=\"jstree_UM" + RecetaingredienteI.id + "\"> <ul><li id='RecetaUM_LI_" + RecetaingredienteI.id + "' class=\"jstree-open\">" + UnidadMedida + ObtenerrecetaString(Receta.idRecetaIngrediente, 3, 0) + "</li></ul></div>";

@@ -131,7 +131,9 @@
                                                 if (key2.Value.Rows.Count >= i + 1)
                                                 {
                                                     object obj = key2.Value.Rows[i]["descripcion"];
-                                                    object objUnidadMedida = key2.Value.Rows[i]["unidadMedida"];
+                                                    object objUnidadMedida = string.IsNullOrEmpty(key2.Value.Rows[i]["abreviacion"].ToString()) 
+                                                        ? key2.Value.Rows[i]["unidadMedida"]
+                                                        : key2.Value.Rows[i]["abreviacion"];
                                         %>
 
                                         <div style="width: 35%; white-space: normal;">
