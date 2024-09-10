@@ -261,13 +261,13 @@ namespace Tecnocuisine
         {
             try
             {
-                if (txtAbreviacion.Text.Length > 5) return;
+                if (string.IsNullOrEmpty(txtAbreviacion.Text) || string.IsNullOrEmpty(txtDescripcionUnidad.Text)) throw new Exception();
+                if (txtAbreviacion.Text.Length > 5) throw new Exception();
 
                 Tecnocuisine_API.Entitys.Unidades unidad = new Tecnocuisine_API.Entitys.Unidades();
-
                 unidad.descripcion = txtDescripcionUnidad.Text.Trim();
                 unidad.estado = 1;
-                unidad.abreviacion = txtAbreviacion.Text.Trim() != string.Empty ? txtAbreviacion.Text.Trim() : null;
+                unidad.abreviacion = txtAbreviacion.Text.Trim();
 
                 int resultado = controladorUnidad.AgregarUnidad(unidad);
 
@@ -277,12 +277,12 @@ namespace Tecnocuisine
                 }
                 else
                 {
-                    this.m.ShowToastr(this.Page, "No se pudo agregar el unidad", "warning");
+                    this.m.ShowToastrError(this.Page, "No se pudo agregar la unidad", "Error");
                 }
             }
             catch (Exception ex)
             {
-
+                this.m.ShowToastrError(this.Page, "No se pudo agregar la unidad", "Error");
             }
 
         }

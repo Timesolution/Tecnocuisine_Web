@@ -223,7 +223,7 @@ namespace Tecnocuisine.Formularios.Ventas
             newRow["fechaProducto"] = rowRecetasOrden["fechaEntrega"];
             newRow["ingredienteOreceta"] = "Receta";
             newRow["RazonSocial"] = rowRecetasOrden["razonSocial"];
-            newRow["unidadMedida"] = string.IsNullOrEmpty(rowRecetasOrden["abreviacion"].ToString()) ? rowRecetasOrden["unidad"] : rowRecetasOrden["abreviacion"];
+            newRow["unidadMedida"] = rowRecetasOrden["abreviacion"];
             newRow["SectorPadre"] = rowRecetasOrden["descripcion1"];
 
             return newRow;

@@ -11,11 +11,12 @@ namespace Tecnocuisine.Formularios.Maestros
         private ControladorSectorProductivo cSectorProductivo = new ControladorSectorProductivo();
         private Tecnocuisine_API.Entitys.SectorProductivo sector = new Tecnocuisine_API.Entitys.SectorProductivo();
         private ControladorStockProducto cStockProducto = new ControladorStockProducto();
+        private ControladorStockReceta cStockReceta = new ControladorStockReceta();
 
         protected void Page_Load(object sender, EventArgs e)
         {
             VerificarLogin();
-            ObtenerParametros();                
+            ObtenerParametros();
             MostrarDescripcionSector();
             CargarTabla();
         }
@@ -79,6 +80,12 @@ namespace Tecnocuisine.Formularios.Maestros
 
         public void CargarTabla()
         {
+            CargarTablaProductos();
+            CargarTablaRecetas();
+        }
+
+        private void CargarTablaProductos()
+        {
             try
             {
                 var stocks = cStockProducto.ObtenerStockSectoresByIdSector(sectorId);
@@ -100,7 +107,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     cellStock.HorizontalAlign = HorizontalAlign.Left;
 
                     TableCell cellUnidad = new TableCell();
-                    cellUnidad.Text = stock.Productos.Unidades.descripcion;
+                    cellUnidad.Text = stock.Productos.Unidades.abreviacion;
                     cellUnidad.VerticalAlign = VerticalAlign.Middle;
                     cellUnidad.HorizontalAlign = HorizontalAlign.Left;
 
@@ -115,7 +122,45 @@ namespace Tecnocuisine.Formularios.Maestros
             {
 
             }
+        }
+        private void CargarTablaRecetas()
+        {
+            try
+            {
+                var stocks = cStockReceta.ObtenerStockSectoresByIdSector(sectorId);
 
+                foreach (var stock in stocks)
+                {
+                    //fila
+                    TableRow tr = new TableRow();
+                    //tr.ID = sector.id.ToString();
+
+                    TableCell cellDescripcion = new TableCell();
+                    cellDescripcion.Text = stock.Recetas.descripcion;
+                    cellDescripcion.VerticalAlign = VerticalAlign.Middle;
+                    cellDescripcion.HorizontalAlign = HorizontalAlign.Left;
+
+                    TableCell cellStock = new TableCell();
+                    cellStock.Text = stock.stock.ToString();
+                    cellStock.VerticalAlign = VerticalAlign.Middle;
+                    cellStock.HorizontalAlign = HorizontalAlign.Left;
+
+                    TableCell cellUnidad = new TableCell();
+                    cellUnidad.Text = stock.Recetas.Unidades.abreviacion;
+                    cellUnidad.VerticalAlign = VerticalAlign.Middle;
+                    cellUnidad.HorizontalAlign = HorizontalAlign.Left;
+
+                    tr.Cells.Add(cellDescripcion);
+                    tr.Cells.Add(cellStock);
+                    tr.Cells.Add(cellUnidad);
+
+                    phItems.Controls.Add(tr);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }

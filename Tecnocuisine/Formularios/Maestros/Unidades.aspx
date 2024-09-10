@@ -204,6 +204,7 @@
 
         function vaciarInputs() {
             document.getElementById('<%= txtDescripcionUnidad.ClientID %>').value = "";
+            document.getElementById('<%= txtAbreviacion.ClientID %>').value = "";
         }
 
     </script>

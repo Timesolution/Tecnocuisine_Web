@@ -962,7 +962,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 {
                     string UnidadMedida = "";
                     var unidad = cu.ObtenerUnidadId(prod.unidadMedida);
-                    UnidadMedida = unidad.abreviacion ?? unidad.descripcion;
+                    UnidadMedida = unidad.abreviacion;
 
                     builder.Append(String.Format("<option value='{0}' id='c_p_" + prod.id + "_" + prod.descripcion + "_" + UnidadMedida + "_" + prod.costo.ToString().Replace(',', '.') + "'>", prod.id + " - " + prod.descripcion));
                 }
@@ -992,7 +992,7 @@ namespace Tecnocuisine.Formularios.Maestros
                             rec.UnidadMedida = 1;
 
                         var unidad = cu.ObtenerUnidadId(rec.UnidadMedida.Value);
-                        UnidadMedida = unidad.abreviacion ?? unidad.descripcion;
+                        UnidadMedida = unidad.abreviacion;
                         builder.Append(String.Format("<option value='{0}' id='c_r_" + rec.id + "_" + rec.descripcion + "_" + UnidadMedida + "_" + rec.Costo.ToString().Replace(',', '.') + "'>", rec.id + " - " + rec.descripcion));
                     }
                     else
@@ -1069,7 +1069,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 ControladorUnidad cu = new ControladorUnidad();
                 string UnidadMedida = "";
                 var unidad = cu.ObtenerUnidadId(producto.unidadMedida);
-                UnidadMedida = unidad.abreviacion ?? unidad.descripcion;
+                UnidadMedida = unidad.abreviacion;
 
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
@@ -1134,7 +1134,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 ControladorUnidad cu = new ControladorUnidad();
                 string UnidadMedida = "";
                 var unidad = cu.ObtenerUnidadId(prodRec.FirstOrDefault().Productos.unidadMedida);
-                UnidadMedida = unidad.abreviacion ?? unidad.descripcion;
+                UnidadMedida = unidad.abreviacion;
 
 
                 TableCell celUM = new TableCell();
@@ -1389,7 +1389,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 ControladorUnidad cu = new ControladorUnidad();
                 string UnidadMedida = "";
                 var unidad = cu.ObtenerUnidadId(Receta.UnidadMedida.Value);
-                UnidadMedida = unidad.abreviacion ?? unidad.descripcion;
+                UnidadMedida = unidad.abreviacion;
 
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
@@ -1458,7 +1458,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 ControladorUnidad cu = new ControladorUnidad();
                 string UnidadMedida = "";
                 var unidad = cu.ObtenerUnidadId(Receta.Recetas.UnidadMedida.Value);
-                UnidadMedida = unidad.abreviacion ?? unidad.descripcion;
+                UnidadMedida = unidad.abreviacion;
 
                 TableCell celUM = new TableCell();
                 celUM.Text = "<div id=\"jstree_UM" + RecetaingredienteI.id + "\"> <ul><li id='RecetaUM_LI_" + RecetaingredienteI.id + "' class=\"jstree-open\">" + UnidadMedida + ObtenerrecetaString(Receta.idRecetaIngrediente, 3, 0) + "</li></ul></div>";
