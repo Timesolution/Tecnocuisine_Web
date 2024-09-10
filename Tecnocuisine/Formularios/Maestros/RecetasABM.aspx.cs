@@ -1163,7 +1163,8 @@ namespace Tecnocuisine.Formularios.Maestros
                 tr.Cells.Add(celCosto);
 
                 TableCell celCostoTotal = new TableCell();
-                celCostoTotal.Text = (prodRec.FirstOrDefault().Productos.costo * prodRec.FirstOrDefault().cantidad * (decimal)prodRec.FirstOrDefault().Factor).ToString("N", culture);
+                decimal factor = prodRec.FirstOrDefault().Factor != null ? (decimal)prodRec.FirstOrDefault().Factor : 1;
+                celCostoTotal.Text = (prodRec.FirstOrDefault().Productos.costo * prodRec.FirstOrDefault().cantidad * factor).ToString("N", culture);
                 celCostoTotal.VerticalAlign = VerticalAlign.Middle;
                 celCostoTotal.HorizontalAlign = HorizontalAlign.Left;
                 celCostoTotal.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
@@ -1487,7 +1488,8 @@ namespace Tecnocuisine.Formularios.Maestros
                 tr.Cells.Add(celCosto);
 
                 TableCell celCostoTotal = new TableCell();
-                celCostoTotal.Text = "<div id=\"jstree_CST" + RecetaingredienteI.id + "\"> <ul><li id='RecetaCST_LI_" + RecetaingredienteI.id + "' class=\"jstree-open\">" + (Receta.Recetas.Costo.Value * Receta.cantidad * (decimal)Receta.Factor).ToString("N", culture) + ObtenerrecetaString(Receta.idRecetaIngrediente, 5, 0) + "</li></ul></div>";
+                decimal factor = Receta.Factor != null ? (decimal)Receta.Factor : 1;
+                celCostoTotal.Text = "<div id=\"jstree_CST" + RecetaingredienteI.id + "\"> <ul><li id='RecetaCST_LI_" + RecetaingredienteI.id + "' class=\"jstree-open\">" + (Receta.Recetas.Costo.Value * Receta.cantidad * factor).ToString("N", culture) + ObtenerrecetaString(Receta.idRecetaIngrediente, 5, 0) + "</li></ul></div>";
                 celCostoTotal.VerticalAlign = VerticalAlign.Middle;
                 celCostoTotal.HorizontalAlign = HorizontalAlign.Left;
                 //celCostoTotal.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
