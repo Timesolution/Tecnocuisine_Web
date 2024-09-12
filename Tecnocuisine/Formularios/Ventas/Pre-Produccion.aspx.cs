@@ -310,6 +310,7 @@ namespace Tecnocuisine.Formularios.Ventas
             //var remitosInternos = cRemitosInternos.getRemitosInternosBySectorDestino(sector);
             var remitosInternos = cRemitosInternos.getRemitosInternosByFiltros(sector, fDesde, fHasta);
 
+            if (remitosInternos == null) return;
             //Session["remitosInternosRecepcion"] = remitosInternos;
 
             foreach (var remito in remitosInternos)
@@ -319,6 +320,8 @@ namespace Tecnocuisine.Formularios.Ventas
                 cont++;
                 TableRow tr = new TableRow();
                 tr.ID = cont.ToString();
+                if(remito.recepcionado != null && remito.recepcionado == true)
+                    tr.Style.Add("color", "green");
 
                 //Celdas
                 TableCell celSectorDestino = new TableCell();
@@ -336,7 +339,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 tr.Cells.Add(celNumero);
 
                 TableCell celFecha = new TableCell();
-                celFecha.Text = remito.fecha.ToString();
+                celFecha.Text = remito.fecha.ToShortDateString();
                 celFecha.VerticalAlign = VerticalAlign.Middle;
                 celFecha.HorizontalAlign = HorizontalAlign.Left;
                 celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
