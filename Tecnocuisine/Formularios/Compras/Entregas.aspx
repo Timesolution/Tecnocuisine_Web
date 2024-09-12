@@ -635,17 +635,17 @@
                     tdTotalProducto +
 
                     "<td style=\" text-align: center\">" +
-                    " <a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent; " + styleCorrect + "\" class=\"btn  btn-xs \" onclick=\"javascript: return borrarProd('" + tipo + "_" + codigo.trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "_" + idRow + "', " + (totalProducto*-1) + ");\" >" +
+                    " <a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent; " + styleCorrect + "\" class=\"btn  btn-xs \" onclick=\"javascript: return borrarProd(event,'" + tipo + "_" + codigo.trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "_" + idRow + "', " + (totalProducto*-1) + ");\" >" +
                     "<i class=\"fa fa-trash - o\" style=\"color: black\"></i> </a> " +
                     btnRec
                     + "</td > " +
                     "</tr>"
                 );
                 if (document.getElementById('<%= idProductosRecetas.ClientID%>').value == "") {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += (codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%= txtFechaVencimiento.ClientID%>').value + "%" + precioFormated + "%" + deposito.value).replaceAll(".", ",");
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += (codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%= txtFechaVencimiento.ClientID%>').value + "%" + precioFormated + "%" + deposito.value + "%" + idRow).replaceAll(".", ",");
                 }
                 else {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += (";" + codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%=txtFechaVencimiento.ClientID%>').value + "%" + precioFormated + "%" + deposito.value).replaceAll(".", ",");;
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += (";" + codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%=txtFechaVencimiento.ClientID%>').value + "%" + precioFormated + "%" + deposito.value + "%" + idRow).replaceAll(".", ",");
                 }
 
                 // Aumentar total general
@@ -717,20 +717,28 @@
             document.getElementById('<%=txtCantidad.ClientID%>').focus();
         }
 
-        function borrarProd(idprod, totalToRemove) {
+        function borrarProd(event, idprod, totalToRemove) {
             event.preventDefault();
 
+            // Obtener el id de la row a eliminar
+            let idRowToDelete = idprod.split("_")[3].trim();
             // Eliminar la fila del producto de la interfaz de usuario
             $('#' + idprod).remove();
 
-             // Obtener la lista de productos del campo oculto
+            // Obtener la lista de productos del campo oculto
             var productos = ContentPlaceHolder1_idProductosRecetas.value.split(';');
+            console.log(productos);
 
              // Crear una nueva lista de productos sin el producto eliminado
             var nuevosProductos = "";
             for (var x = 0; x < productos.length; x++) {
                 if (productos[x] != "") {
-                    if (!productos[x].includes(idprod)) {
+                    // Dividir la cadena en partes usando '%' como delimitador
+                    var productoPartes = productos[x].split('%');
+                    // Obtener el último valor
+                    let idRow = productoPartes[productoPartes.length - 1];
+
+                    if (idRow !== idRowToDelete) {
                         nuevosProductos += productos[x] + ";";
                     }
                     else {
@@ -744,6 +752,10 @@
                     }
                 }
             }
+
+            console.log("Nuevos: ");
+            console.log(nuevosProductos);
+
             ContentPlaceHolder1_idProductosRecetas.value = nuevosProductos;
 
             if (nuevosProductos == "") {
