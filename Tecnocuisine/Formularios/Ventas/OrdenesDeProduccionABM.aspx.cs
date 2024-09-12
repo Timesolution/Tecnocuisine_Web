@@ -174,13 +174,17 @@ namespace Tecnocuisine.Formularios.Ventas
                 celProducto.VerticalAlign = VerticalAlign.Middle;
                 tr.Cells.Add(celProducto);
 
-
                 TableCell celCantidad = new TableCell();
                 celCantidad.Text = RecetaXOrden.cantidad.ToString();
                 celCantidad.VerticalAlign = VerticalAlign.Middle;
                 celCantidad.Attributes.Add("style", "text-align: right;");
                 tr.Cells.Add(celCantidad);
 
+                TableCell celUnidad = new TableCell();
+                celUnidad.Text = GetUnidadByIdReceta(RecetaXOrden.idReceta);
+                celUnidad.VerticalAlign = VerticalAlign.Middle;
+                celUnidad.Attributes.Add("style", "text-align: right;");
+                tr.Cells.Add(celUnidad);
 
                 TableCell celAccion = new TableCell();
 
@@ -799,6 +803,14 @@ namespace Tecnocuisine.Formularios.Ventas
         //        Response.Redirect("OrdenesDeProduccion.aspx", false);
         //    }
         //}
+
+        [WebMethod]
+        public static string GetUnidadByIdReceta(int idReceta)
+        {
+            ControladorReceta cReceta = new ControladorReceta();
+            var unidad = cReceta.GetUnidadMedidaByIdReceta(idReceta);
+            return unidad;
+        }
 
     }
 }

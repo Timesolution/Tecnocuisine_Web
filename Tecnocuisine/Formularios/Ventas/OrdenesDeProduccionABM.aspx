@@ -143,6 +143,7 @@
                                             <tr>
                                                 <th>Producto</th>
                                                 <th style="text-align: right; width: 20%; padding-right: 5px;">Cantidad</th>
+                                                <th style="text-align: right; width: 20%; padding-right: 5px;">U. Medida</th>
                                                 <th style="width: 15%"></th>
                                             </tr>
                                         </thead>
@@ -252,9 +253,33 @@
         }
 
 
+        async function GetUnidadByIdReceta(idReceta) {
+            try {
+                // Hacer la solicitud fetch con await
+                const response = await fetch('OrdenesDeProduccionABM.aspx/GetUnidadByIdReceta', {
+                    method: 'POST',
+                    body: JSON.stringify({ idReceta: idReceta }),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                // Verificar si la respuesta es válida
+                if (!response.ok) {
+                    return null;
+                }
+
+                const data = await response.json();
+
+                return data.d;
+            } catch (error) {
+                console.error('Error:', error);
+                return null;
+            }
+        }
+
+
         //Esta es la funcion que se ejecuta al hacer click en el boton btnGuardar, 
         //lo que hace es agregar la receta en la tabla
-        function agregarProductoPH() {
+        async function agregarProductoPH() {
 
             var i = ValidarForm();
             if (i == false) {
@@ -263,6 +288,12 @@
 
             let ProductoDescripcion = ContentPlaceHolder1_txtDescripcionProductos.value;
             let Cantidad = ContentPlaceHolder1_NCantidad.value;
+
+            // Dividir la cadena por el guion
+            const recetaPartes = ProductoDescripcion.split('-');
+            // Obtener el id
+            const idReceta = recetaPartes[0].trim();
+            let Unidad = await GetUnidadByIdReceta(idReceta);
 
             let txtClientes = document.getElementById("<%= TxtClientes.ClientID %>");
             let txtFechaHoy = document.getElementById("<%= txtFechaHoy.ClientID %>");
@@ -297,6 +328,7 @@
 
             let ProductoDescripcionColumna = "<td> " + ProductoDescripcion + "</td>";
             let CantidadColumna = "<td style='text-align: right;'>" + Cantidad + "</td>";
+            let UnidadColumna = "<td style='text-align: right;'>" + Unidad + "</td>";
             let btneliminarColumna = "<td> " + btneliminar + "</td>"
 
 
@@ -304,6 +336,7 @@
             let appendfinal = "<tr id=" + "ContentPlaceHolder1_" + numeroInicial + ">" +
                 ProductoDescripcionColumna +
                 CantidadColumna +
+                UnidadColumna +
                 btneliminarColumna +
                 "</tr>";
 
