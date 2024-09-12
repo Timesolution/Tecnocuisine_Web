@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web.Services;
 using System.Web.UI.WebControls;
 using Tecnocuisine_API.Controladores;
 
@@ -18,7 +19,7 @@ namespace Tecnocuisine.Formularios.Maestros
             VerificarLogin();
             ObtenerParametros();
             MostrarDescripcionSector();
-            CargarTabla();
+            CargarTabla_General();
         }
 
         private void MostrarDescripcionSector()
@@ -78,13 +79,13 @@ namespace Tecnocuisine.Formularios.Maestros
             }
         }
 
-        public void CargarTabla()
+        public void CargarTabla_General()
         {
-            CargarTablaProductos();
-            CargarTablaRecetas();
+            CargarProductos();
+            CargarRecetas();
         }
 
-        private void CargarTablaProductos()
+        private void CargarProductos()
         {
             try
             {
@@ -95,6 +96,12 @@ namespace Tecnocuisine.Formularios.Maestros
                     //fila
                     TableRow tr = new TableRow();
                     //tr.ID = sector.id.ToString();
+
+                    TableCell cellTipo = new TableCell();
+                    cellTipo.Text = "Producto";
+                    cellTipo.VerticalAlign = VerticalAlign.Middle;
+                    cellTipo.HorizontalAlign = HorizontalAlign.Left;
+                    cellTipo.Style.Add("display","none");
 
                     TableCell cellDescripcion = new TableCell();
                     cellDescripcion.Text = stock.Productos.descripcion;
@@ -111,9 +118,23 @@ namespace Tecnocuisine.Formularios.Maestros
                     cellUnidad.VerticalAlign = VerticalAlign.Middle;
                     cellUnidad.HorizontalAlign = HorizontalAlign.Left;
 
+
+                    LinkButton btnDetalle = new LinkButton();
+                    btnDetalle.ID = "btnDetalle_" + sector.id;
+                    btnDetalle.CssClass = "btn btn-xs";
+                    //btnDetalle.Click += new EventHandler(this.verEvolucionReceta);
+                    btnDetalle.Text = "<span><i style='color:black' class='fa fa-list'></i></span>";
+                    btnDetalle.Attributes.Add("title", "Ver Detalle");
+
+                    TableCell celAccion = new TableCell();
+                    celAccion.Controls.Add(btnDetalle);
+                    celAccion.Attributes.Add("style", "padding-bottom: 1px !important; text-align:end");
+
+                    tr.Cells.Add(cellTipo);
                     tr.Cells.Add(cellDescripcion);
                     tr.Cells.Add(cellStock);
                     tr.Cells.Add(cellUnidad);
+                    tr.Cells.Add(celAccion);
 
                     phItems.Controls.Add(tr);
                 }
@@ -123,7 +144,8 @@ namespace Tecnocuisine.Formularios.Maestros
 
             }
         }
-        private void CargarTablaRecetas()
+
+        private void CargarRecetas()
         {
             try
             {
@@ -134,6 +156,12 @@ namespace Tecnocuisine.Formularios.Maestros
                     //fila
                     TableRow tr = new TableRow();
                     //tr.ID = sector.id.ToString();
+
+                    TableCell cellTipo = new TableCell();
+                    cellTipo.Text = "Receta";
+                    cellTipo.VerticalAlign = VerticalAlign.Middle;
+                    cellTipo.HorizontalAlign = HorizontalAlign.Left;
+                    cellTipo.Style.Add("display", "none");
 
                     TableCell cellDescripcion = new TableCell();
                     cellDescripcion.Text = stock.Recetas.descripcion;
@@ -150,9 +178,22 @@ namespace Tecnocuisine.Formularios.Maestros
                     cellUnidad.VerticalAlign = VerticalAlign.Middle;
                     cellUnidad.HorizontalAlign = HorizontalAlign.Left;
 
+                    LinkButton btnDetalle = new LinkButton();
+                    btnDetalle.ID = "btnDetalle_" + sector.id;
+                    btnDetalle.CssClass = "btn btn-xs";
+                    //btnDetalle.Click += new EventHandler(this.verEvolucionReceta);
+                    btnDetalle.Text = "<span><i style='color:black' class='fa fa-list'></i></span>";
+                    btnDetalle.Attributes.Add("title", "Ver Detalle");
+
+                    TableCell celAccion = new TableCell();
+                    celAccion.Controls.Add(btnDetalle);
+                    celAccion.Attributes.Add("style", "padding-bottom: 1px !important; text-align:end");
+
+                    tr.Cells.Add(cellTipo);
                     tr.Cells.Add(cellDescripcion);
                     tr.Cells.Add(cellStock);
                     tr.Cells.Add(cellUnidad);
+                    tr.Cells.Add(celAccion);
 
                     phItems.Controls.Add(tr);
                 }
@@ -162,5 +203,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
             }
         }
+
+
     }
 }

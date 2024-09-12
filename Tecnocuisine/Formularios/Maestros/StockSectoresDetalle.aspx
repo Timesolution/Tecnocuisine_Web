@@ -17,21 +17,28 @@
                                         <div class="col-md-12">
                                             <div style="display: flex; width: 100%">
 
-                                                <h1 style="font-size: 2rem; font-weight: bold">
-                                                    Stock del Sector: <asp:Label runat="server" ID="lblSector" Style="font-size: 2rem; font-weight: bold"></asp:Label>
+                                                <h1 style="font-size: 2rem; font-weight: bold">Stock del Sector:
+                                                    <asp:Label runat="server" ID="lblSector" Style="font-size: 2rem; font-weight: bold"></asp:Label>
                                                 </h1>
 
-                                                <%--<div style="width: 50%; height: 120px;">
-                                                        <div style="width:100%; height:100%">
-                                                            <canvas id="costChart" style="float: right; width: 100%"></canvas>
-                                                        </div>
-                                                    </div>--%>
                                             </div>
 
-                                            <div class="input-group m-b">
-                                                <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
-                                                <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                                            <div class="col-md-12" style="display: flex; width: 100%; column-gap: 1rem">
+                                                <div class="input-group m-b col-md-5">
+                                                    <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                                                    <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" />
+                                                </div>
+
+                                                <div class="input-group m-b col-md-1">
+                                                </div>
+
+                                                <div class="input-group m-b col-md-6" style="display: flex; justify-content: flex-end;">
+                                                    <button id="btnVerTodo" class="btn btn-sm btn-primary m-t-n-xs" style="font-weight:bold; margin-left: 1rem; margin-bottom: 5px; margin-top: 5px;">Todo</button>
+                                                    <button id="btnVerRecetas" class="btn btn-sm btn-primary m-t-n-xs" style="font-weight:bold; margin-left: 1rem; margin-bottom: 5px; margin-top: 5px;">Recetas</button>
+                                                    <button id="btnVerProductos" class="btn btn-sm btn-primary m-t-n-xs" style="font-weight:bold; margin-left: 1rem; margin-bottom: 5px; margin-top: 5px;">Productos</button>
+                                                </div>
                                             </div>
+
                                         </div>
                                     </div>
 
@@ -39,15 +46,20 @@
                                         <thead>
                                             <tr>
                                                 <%--<th style="display:none"></th>--%>
+                                                <th style="display:none">Tipo</th>
                                                 <th>Descripcion</th>
                                                 <th>Stock</th>
                                                 <th>U. Medida</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <asp:PlaceHolder ID="phItems" runat="server"></asp:PlaceHolder>
                                         </tbody>
+
                                     </table>
+
+                                    <a href="StockSectores.aspx" class="btn btn-sm btn-default pull-left m-t-n-xs" style="font-weight:bold; margin-left: 1rem; margin-bottom: 5px; margin-top: 5px;">Volver al listado</a>
                                 </div>
                             </div>
 
@@ -73,7 +85,7 @@
                 responsive: true,
                 dom: 'T<"clear">lfrtip',
                 order: [[0, 'desc']],
-                pageLength: 25,
+                pageLength: 10,
                 language: {
                     url: '//cdn.datatables.net/plug-ins/2.1.5/i18n/es-ES.json',
                 },
@@ -120,6 +132,36 @@
             // Configura el campo de búsqueda personalizado
             $('#txtBusqueda').on('keyup', function () {
                 oTable.search(this.value).draw();
+            });
+
+            // Configurar la búsqueda de Recetas al hacer clic en el botón
+            $('#btnVerTodo').on('click', function () {
+                // Prevenir el comportamiento predeterminado del botón (para que no recargue la pagina)
+                event.preventDefault();
+                // Obtener el valor del filtro
+                var textoABuscar = "";
+                // Realizar la búsqueda en la primer columna
+                oTable.column(0).search(textoABuscar).draw();
+            });
+
+            // Configurar la búsqueda de PRODUCTOS al hacer clic en el botón
+            $('#btnVerProductos').on('click', function () {
+                // Prevenir el comportamiento predeterminado del botón (para que no recargue la pagina)
+                event.preventDefault();
+                // Obtener el valor del filtro
+                var textoABuscar = "Producto";
+                // Realizar la búsqueda en la primer columna
+                oTable.column(0).search(textoABuscar).draw();
+            });
+
+            // Configurar la búsqueda de Recetas al hacer clic en el botón
+            $('#btnVerRecetas').on('click', function () {
+                // Prevenir el comportamiento predeterminado del botón (para que no recargue la pagina)
+                event.preventDefault();
+                // Obtener el valor del filtro
+                var textoABuscar = "Receta";
+                // Realizar la búsqueda en la primer columna
+                oTable.column(0).search(textoABuscar).draw();
             });
         });
     </script>
