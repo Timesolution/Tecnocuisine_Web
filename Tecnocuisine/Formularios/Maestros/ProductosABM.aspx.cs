@@ -735,10 +735,10 @@ namespace Tecnocuisine.Formularios.Maestros
                 List<Productos_Presentacion> PresentacionProd = new List<Productos_Presentacion>();
                 if (Presentacion.Trim() == "")
                 {
-                    Productos_Presentacion pp = new Productos_Presentacion();
-                    pp.idPresentacion = 1;
+                    //Productos_Presentacion pp = new Productos_Presentacion();
+                    //pp.idPresentacion = 1;
 
-                    PresentacionProd.Add(pp);
+                    //PresentacionProd.Add(pp);
                 }
                 else
                 {
@@ -760,12 +760,12 @@ namespace Tecnocuisine.Formularios.Maestros
                 List<Marca_Productos> marca_Productos = new List<Marca_Productos>();
                 if (Marca.Trim() == "")
                 {
-                    Marca_Productos pp = new Marca_Productos();
-                    pp.id_marca = 1;
-                    pp.estado = 1;
-                    pp.FechaCreacion = DateTime.Now;
+                    //Marca_Productos pp = new Marca_Productos();
+                    //pp.id_marca = 1;
+                    //pp.estado = 1;
+                    //pp.FechaCreacion = DateTime.Now;
 
-                    marca_Productos.Add(pp);
+                    //marca_Productos.Add(pp);
 
                 }
                 else
