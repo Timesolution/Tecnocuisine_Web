@@ -1,6 +1,10 @@
-﻿using System;
+﻿using Microsoft.Reporting.WebForms;
+using System;
+using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Web.Services;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using Tecnocuisine_API.Controladores;
 
@@ -8,7 +12,7 @@ namespace Tecnocuisine.Formularios.Maestros
 {
     public partial class StockSectoresDetalle : System.Web.UI.Page
     {
-        private int sectorId;
+        protected int sectorId;
         private ControladorSectorProductivo cSectorProductivo = new ControladorSectorProductivo();
         private Tecnocuisine_API.Entitys.SectorProductivo sector = new Tecnocuisine_API.Entitys.SectorProductivo();
         private ControladorStockProducto cStockProducto = new ControladorStockProducto();
@@ -101,7 +105,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     cellTipo.Text = "Producto";
                     cellTipo.VerticalAlign = VerticalAlign.Middle;
                     cellTipo.HorizontalAlign = HorizontalAlign.Left;
-                    cellTipo.Style.Add("display","none");
+                    cellTipo.Style.Add("display", "none");
 
                     TableCell cellDescripcion = new TableCell();
                     cellDescripcion.Text = stock.Productos.descripcion;
@@ -120,7 +124,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
 
                     LinkButton btnDetalle = new LinkButton();
-                    btnDetalle.ID = "btnDetalle_" + sector.id;
+                    //btnDetalle.ID = "btnDetalle_" + sector.id;
                     btnDetalle.CssClass = "btn btn-xs";
                     //btnDetalle.Click += new EventHandler(this.verEvolucionReceta);
                     btnDetalle.Text = "<span><i style='color:black' class='fa fa-list'></i></span>";
@@ -179,7 +183,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     cellUnidad.HorizontalAlign = HorizontalAlign.Left;
 
                     LinkButton btnDetalle = new LinkButton();
-                    btnDetalle.ID = "btnDetalle_" + sector.id;
+                    //btnDetalle.ID = "btnDetalle_" + sector.id;
                     btnDetalle.CssClass = "btn btn-xs";
                     //btnDetalle.Click += new EventHandler(this.verEvolucionReceta);
                     btnDetalle.Text = "<span><i style='color:black' class='fa fa-list'></i></span>";
@@ -203,7 +207,6 @@ namespace Tecnocuisine.Formularios.Maestros
 
             }
         }
-
 
     }
 }

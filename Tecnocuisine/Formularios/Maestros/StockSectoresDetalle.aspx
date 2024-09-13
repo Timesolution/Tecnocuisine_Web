@@ -33,9 +33,13 @@
                                                 </div>
 
                                                 <div class="input-group m-b col-md-6" style="display: flex; justify-content: flex-end;">
-                                                    <button id="btnVerTodo" class="btn btn-sm btn-primary m-t-n-xs" style="font-weight:bold; margin-left: 1rem; margin-bottom: 5px; margin-top: 5px;">Todo</button>
-                                                    <button id="btnVerRecetas" class="btn btn-sm btn-primary m-t-n-xs" style="font-weight:bold; margin-left: 1rem; margin-bottom: 5px; margin-top: 5px;">Recetas</button>
-                                                    <button id="btnVerProductos" class="btn btn-sm btn-primary m-t-n-xs" style="font-weight:bold; margin-left: 1rem; margin-bottom: 5px; margin-top: 5px;">Productos</button>
+                                                    <button id="btnVerTodo" class="btn btn-sm btn-primary m-t-n-xs" style="font-weight: bold; margin-left: 1rem; margin-bottom: 5px; margin-top: 5px;">Todo</button>
+                                                    <button id="btnVerRecetas" class="btn btn-sm btn-primary m-t-n-xs" style="font-weight: bold; margin-left: 1rem; margin-bottom: 5px; margin-top: 5px;">Recetas</button>
+                                                    <button id="btnVerProductos" class="btn btn-sm btn-primary m-t-n-xs" style="font-weight: bold; margin-left: 1rem; margin-bottom: 5px; margin-top: 5px;">Productos</button>
+                                                    <div style="margin-left: 1rem; border: 1px solid #dddddd"></div>
+                                                    <button id="btnImprimir" onclick="imprimirTabla()" class="btn btn-sm btn-primary m-t-n-xs" data-toggle="tooltip" title="Imprimir" Style="font-weight: bold; margin-left: 1rem; margin-bottom: 5px; margin-top: 5px;">
+                                                        <i class="fa fa-print" aria-hidden="true"></i>
+                                                    </button>
                                                 </div>
                                             </div>
 
@@ -46,7 +50,7 @@
                                         <thead>
                                             <tr>
                                                 <%--<th style="display:none"></th>--%>
-                                                <th style="display:none">Tipo</th>
+                                                <th style="display: none">Tipo</th>
                                                 <th>Descripcion</th>
                                                 <th>Stock</th>
                                                 <th>U. Medida</th>
@@ -59,7 +63,7 @@
 
                                     </table>
 
-                                    <a href="StockSectores.aspx" class="btn btn-sm btn-default pull-left m-t-n-xs" style="font-weight:bold; margin-left: 1rem; margin-bottom: 5px; margin-top: 5px;">Volver al listado</a>
+                                    <a href="StockSectores.aspx" class="btn btn-sm btn-default pull-left m-t-n-xs" style="font-weight: bold; margin-left: 1rem; margin-bottom: 5px; margin-top: 5px;">Volver al listado</a>
                                 </div>
                             </div>
 
@@ -166,4 +170,14 @@
         });
     </script>
 
+    <script>
+        function imprimirTabla() {
+            // Prevenir el comportamiento predeterminado del botón (para que no recargue la pagina)
+            event.preventDefault();
+
+            let sectorId = '<%= sectorId %>';
+            let url = "ImpresionStockSectoresDetalle.aspx?sector=" + sectorId;
+            window.open(url, "_blank");
+        }
+    </script>
 </asp:Content>
