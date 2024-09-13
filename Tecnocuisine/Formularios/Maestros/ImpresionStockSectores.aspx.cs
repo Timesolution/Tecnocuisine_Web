@@ -1,13 +1,16 @@
 ﻿using Microsoft.Reporting.WebForms;
+using PdfSharp.Pdf.IO;
+using PdfSharp.Pdf;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using Tecnocuisine_API.Controladores;
 
 namespace Tecnocuisine.Formularios.Maestros
 {
-    public partial class ImpresionStockSectoresDetalle : System.Web.UI.Page
+    public partial class ImpresionStockSectores : System.Web.UI.Page
     {
         private ReportViewer ReportViewer1 = new ReportViewer();
         private ControladorStockProducto cStockProducto = new ControladorStockProducto();
@@ -19,10 +22,6 @@ namespace Tecnocuisine.Formularios.Maestros
         protected void Page_Load(object sender, EventArgs e)
         {
             VerificarLogin();
-
-            sectorId = Convert.ToInt32(Request.QueryString["sector"].ToString());
-            sectorDescripcion = cSectorProductivo.ObtenerSectorProductivoId(sectorId).descripcion;
-
             generarReporte();
         }
 
@@ -102,46 +101,87 @@ namespace Tecnocuisine.Formularios.Maestros
             return dataTable;
         }
 
+        /// <summary>
+        /// Genera un reporte de stock por cada sector y lo devuelve en un unico pdf que contiene el stock de todos los sectores
+        /// </summary>
         private void generarReporte()
         {
             try
             {
-                var stocksProductos = cStockProducto.ObtenerStockSectoresByIdSector(sectorId);
-                var stocksRecetas = cStockReceta.ObtenerStockSectoresByIdSector(sectorId);
+                // Crear una lista para almacenar todos los PDF generados
+                List<byte[]> pdfList = new List<byte[]>();
 
-                DataTable dt = GetListasCombinadasEnDT(stocksProductos, stocksRecetas);
+                var sectores = new ControladorSectorProductivo().ObtenerTodosSectorProductivo();
 
-                this.ReportViewer1.ProcessingMode = ProcessingMode.Local;
-                this.ReportViewer1.LocalReport.ReportPath = Server.MapPath("StockSectorDetalle.rdlc");
-                this.ReportViewer1.LocalReport.EnableExternalImages = true;
+                foreach (var sector in sectores)
+                {
+                    var stocksProductos = cStockProducto.ObtenerStockSectoresByIdSector(sector.id);
+                    var stocksRecetas = cStockReceta.ObtenerStockSectoresByIdSector(sector.id);
 
-                ReportDataSource rds = new ReportDataSource("dsDatosPedidos", dt);
+                    DataTable dt = GetListasCombinadasEnDT(stocksProductos, stocksRecetas);
 
-                this.ReportViewer1.LocalReport.DataSources.Clear();
-                this.ReportViewer1.LocalReport.DataSources.Add(rds);
+                    this.ReportViewer1.ProcessingMode = ProcessingMode.Local;
+                    this.ReportViewer1.LocalReport.ReportPath = Server.MapPath("StockSectores.rdlc");
+                    this.ReportViewer1.LocalReport.EnableExternalImages = true;
 
-                ReportParameter paramFecha = new ReportParameter("Fecha", DateTime.Now.ToShortDateString());
-                ReportParameter paramSector = new ReportParameter("Sector", sectorDescripcion);
-                this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { paramFecha });
-                this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { paramSector });
+                    ReportDataSource rds = new ReportDataSource("dsDatosPedidos", dt);
 
-                this.ReportViewer1.LocalReport.Refresh();
+                    this.ReportViewer1.LocalReport.DataSources.Clear();
+                    this.ReportViewer1.LocalReport.DataSources.Add(rds);
 
-                Warning[] warnings;
-                string mimeType, encoding, fileNameExtension;
-                string[] streams;
-                Byte[] pdfContent = this.ReportViewer1.LocalReport.Render("PDF", null, out mimeType, out encoding, out fileNameExtension, out streams, out warnings);
+                    ReportParameter paramFecha = new ReportParameter("Fecha", DateTime.Now.ToShortDateString());
+                    ReportParameter paramSector = new ReportParameter("Sector", sector.descripcion);
+                    this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { paramFecha });
+                    this.ReportViewer1.LocalReport.SetParameters(new ReportParameter[] { paramSector });
 
+                    this.ReportViewer1.LocalReport.Refresh();
+
+                    Warning[] warnings;
+                    string mimeType, encoding, fileNameExtension;
+                    string[] streams;
+                    Byte[] pdfContent = this.ReportViewer1.LocalReport.Render("PDF", null, out mimeType, out encoding, out fileNameExtension, out streams, out warnings);
+
+                    // Agregar el PDF generado a la lista
+                    pdfList.Add(pdfContent);
+                }
+
+                // Combinar los PDFs en uno solo
+                byte[] finalPdf = CombinarPDFs(pdfList);
+
+                // Enviar el PDF combinado al navegador
                 this.Response.Clear();
                 this.Response.Buffer = true;
                 this.Response.ContentType = "application/pdf";
-                this.Response.AddHeader("content-length", pdfContent.Length.ToString());
-                this.Response.BinaryWrite(pdfContent);
+                this.Response.AddHeader("content-length", finalPdf.Length.ToString());
+                this.Response.BinaryWrite(finalPdf);
                 this.Response.End();
             }
             catch (Exception ex)
             {
 
+            }
+        }
+
+        private byte[] CombinarPDFs(List<byte[]> pdfList)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                PdfDocument outputDocument = new PdfDocument();
+
+                foreach (var pdf in pdfList)
+                {
+                    PdfDocument inputDocument = PdfReader.Open(new MemoryStream(pdf), PdfDocumentOpenMode.Import);
+
+                    // Agregar cada página de los PDFs individuales al PDF final
+                    for (int i = 0; i < inputDocument.PageCount; i++)
+                    {
+                        outputDocument.AddPage(inputDocument.Pages[i]);
+                    }
+                }
+
+                // Guardar el PDF combinado en el MemoryStream
+                outputDocument.Save(ms);
+                return ms.ToArray();
             }
         }
     }

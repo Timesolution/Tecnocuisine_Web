@@ -14,22 +14,17 @@
 
                                 <div class="ibox-content">
                                     <div style="margin-left: 0px; margin-right: 0px;" class="row">
-                                        <div class="col-md-12">
-                                            <div style="display: flex; width: 100%">
-                                                <%--<h1 style="font-size: 2rem; font-weight: bold">Stock del sector
-                                                        <label runat="server">X</label>
-                                                </h1>--%>
+                                        <div class="col-md-12" style="display: flex; width: 100%; column-gap: 1rem">
 
-                                                <%--<div style="width: 50%; height: 120px;">
-                                                            <div style="width:100%; height:100%">
-                                                                <canvas id="costChart" style="float: right; width: 100%"></canvas>
-                                                            </div>
-                                                        </div>--%>
+                                            <div class="input-group m-b col-md-5">
+                                                <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                                                <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" />
                                             </div>
 
-                                            <div class="input-group m-b">
-                                                <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
-                                                <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" style="width: 90%" />
+                                            <div class="input-group m-b col-md-7" style="display: flex; justify-content: flex-end;">
+                                                <button id="btnImprimir" onclick="imprimir()" class="btn btn-sm btn-primary m-t-n-xs" data-toggle="tooltip" title="Imprimir" style="font-weight: bold; margin-left: 1rem; margin-bottom: 5px; margin-top: 5px;">
+                                                    <i class="fa fa-print" aria-hidden="true"></i>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -38,9 +33,9 @@
                                         <thead>
                                             <tr>
                                                 <%--<th style="display:none"></th>--%>
-                                                <th style="width:15%">Codigo</th>
+                                                <th style="width: 15%">Codigo</th>
                                                 <th>Nombre</th>
-                                                <th style="width:15%"></th>
+                                                <th style="width: 15%"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -72,7 +67,7 @@
                 responsive: true,
                 dom: 'T<"clear">lfrtip',
                 order: [[0, 'desc']],
-                pageLength: 25,
+                pageLength: 10,
                 language: {
                     url: '//cdn.datatables.net/plug-ins/2.1.5/i18n/es-ES.json',
                 },
@@ -121,6 +116,16 @@
                 oTable.search(this.value).draw();
             });
         });
+    </script>
+
+    <script>
+        function imprimir() {
+            // Prevenir el comportamiento predeterminado del botón (para que no recargue la pagina)
+            event.preventDefault();
+
+            let url = "ImpresionStockSectores.aspx";
+            window.open(url, "_blank");
+        }
     </script>
 
 </asp:Content>

@@ -381,16 +381,12 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value> Emisión: </Value>
-                    <Style>
-                      <Format>dd/MM/yyyy</Format>
-                    </Style>
+                    <Value>Emitido: </Value>
+                    <Style />
                   </TextRun>
                   <TextRun>
                     <Value>=Parameters!Fecha.Value</Value>
-                    <Style>
-                      <Format>dd/MM/yyyy</Format>
-                    </Style>
+                    <Style />
                   </TextRun>
                 </TextRuns>
                 <Style>
@@ -399,10 +395,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Fecha</rd:DefaultName>
-            <Top>0.1794cm</Top>
-            <Left>12.64274cm</Left>
-            <Height>0.6726cm</Height>
-            <Width>6.2465cm</Width>
+            <Top>0.27846cm</Top>
+            <Left>14.37841cm</Left>
+            <Height>0.6cm</Height>
+            <Width>4.51083cm</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
