@@ -1589,18 +1589,15 @@
     </script>
     <script>
         async function verDetalleRemitoInternoModal(idRemito, recepcionado) {
-            // Mostrar u ocultar boton para recepcionar dependiendo su estado
-            if (recepcionado) { // Ya fue recepcionado
-                document.getElementById('<%= btnRecepcion.ClientID %>').style.display = 'none'; 
-            } else {
-                document.getElementById('<%= btnRecepcion.ClientID %>').style.display = 'inline-block';
-            }
-
-            // Habilitar o deshabilitar inputs dependiendo si ya fue recepcionado
-            cambiarEstadoInputs_RemitoInternoModal(recepcionado);
-
             document.getElementById('<%= HFIdRemitoInterno.ClientID %>').value = idRemito;
             getItemsRemitosInternos(idRemito);
+
+            // Mostrar u ocultar boton para recepcionar dependiendo su estado
+            document.getElementById('<%= btnRecepcion.ClientID %>').style.display = recepcionado ? 'none' : 'inline-block';
+
+            // Habilitar o deshabilitar inputs dependiendo si ya fue recepcionado
+            await cambiarEstadoInputs_RemitoInternoModal(recepcionado);
+
             $('#modalDetalleRemitoInterno').modal('show');
         }
     </script>
@@ -1627,6 +1624,25 @@
     </script>
 
     <script>
+        function validarTextBox(input) {
+            // Obtener el valor del input
+            var valor = input.value;
+
+            // Expresión regular para validar que solo contenga números y '.'
+            var regex = /^[0-9.]+$/;
+
+            // Validar el valor
+            if (!regex.test(valor)) {
+                // Mostrar un mensaje de error o tomar alguna acción
+                alert("La cantidad debe contener solo números y el carácter '.'");
+                // Establecer el estado a false si es necesario
+                estado = false;
+            } else {
+                // Establecer el estado a true si es válido
+                estado = true;
+            }
+        }
+
         function getItemsRemitosInternos(idRemito) {
             $.ajax({
                 method: "POST",
@@ -1666,15 +1682,10 @@
             }); // Cierre del $.ajax()
         }
 
-        // Si estadoInputs es true, se habilitaran los inputs
-        function cambiarEstadoInputs_RemitoInternoModal(estadoInputs) {
-            var tabla = document.getElementById('tableDetalleRemitosInternos');
-            var inputs = tabla.getElementsByTagName('input');
-
-            // Cambiar el estado de habilitación/deshabilitación de cada input
-            for (var i = 0; i < inputs.length; i++) {
-                inputs[i].disabled = !estadoInputs;
-            }
+        // Si estadoInputs es true, se deshabilitaran los inputs
+        async function cambiarEstadoInputs_RemitoInternoModal(estadoInputs) {
+            // Cambiar el estado de los inputs dentro del tbody de la tabla
+            $('#tableDetalleRemitosInternos' + ' input').attr('disabled', estadoInputs);
         }
     </script>
 
