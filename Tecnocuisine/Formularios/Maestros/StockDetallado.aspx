@@ -78,7 +78,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <%--<div class="row">
         <div class="col-md-6">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
@@ -137,9 +137,9 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>--%>
     <div class="row">
-        <div class="col-md-6">
+        <%--<div class="col-md-6">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Stock Marcas</h5>
@@ -168,7 +168,7 @@
                     <asp:HiddenField ID="NombreProd" runat="server"/>
                 </div>
             </div>
-        </div>
+        </div>--%>
 
     </div>
     <script>
