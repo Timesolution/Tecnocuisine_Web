@@ -121,9 +121,9 @@
                                 <table class="table table-striped table-bordered table-hover " id="tableRecepcion">
                                     <thead>
                                         <tr>
-                                            <th style="width: 15%">Sector Destino</th>
-                                            <th style="width: 15%">Numero</th>
                                             <th style="width: 15%">Fecha</th>
+                                            <th style="width: 15%">Sector Origen</th>
+                                            <th style="width: 15%">Numero</th>
                                             <th style="width: 15%">Acciones</th>
                                         </tr>
                                     </thead>
@@ -154,9 +154,9 @@
                                     <table class="table table-striped table-bordered table-hover " style="width: 100%" id="tableProduccion">
                                         <thead>
                                             <tr>
+                                                <th style="width: 15%">Fecha</th>
                                                 <th style="width: 35%">Producto</th>
                                                 <th style="width: 15%">Cantidad</th>
-                                                <th style="width: 15%">Fecha</th>
                                                 <th style="width: 15%">Acciones</th>
                                                 <th style="width: 0%"></th>
                                             </tr>

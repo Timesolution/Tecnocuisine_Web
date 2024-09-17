@@ -1,26 +1,16 @@
-﻿using Disipar.Models;
-using Gestion_Api.Entitys;
-using Gestion_Api.Modelo;
-using Microsoft.Ajax.Utilities;
-using Microsoft.Reporting.WebForms;
+﻿using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Tecnocuisine.Formularios.Administrador;
-using Tecnocuisine.Formularios.Maestros;
-using Tecnocuisine.Modelos;
 using Tecnocuisine_API.Controladores;
 using Tecnocuisine_API.Entitys;
-using static Tecnocuisine.Formularios.Ventas.PedidosOrdenes;
 
 namespace Tecnocuisine.Formularios.Ventas
 {
@@ -114,6 +104,13 @@ namespace Tecnocuisine.Formularios.Ventas
                     TableRow tr = new TableRow();
                     tr.ID = cont.ToString();
 
+                    TableCell celFecha = new TableCell();
+                    celFecha.Text = dr["fecha"].ToString();
+                    celFecha.VerticalAlign = VerticalAlign.Middle;
+                    celFecha.HorizontalAlign = HorizontalAlign.Left;
+                    celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
+                    tr.Cells.Add(celFecha);
+
                     //Celdas
                     TableCell celProducto = new TableCell();
                     celProducto.Text = dr["productoOrigen"].ToString();
@@ -130,12 +127,7 @@ namespace Tecnocuisine.Formularios.Ventas
                     celCantidad.Attributes.Add("style", "padding-bottom: 1px !important;");
                     tr.Cells.Add(celCantidad);
 
-                    TableCell celFecha = new TableCell();
-                    celFecha.Text = dr["fecha"].ToString();
-                    celFecha.VerticalAlign = VerticalAlign.Middle;
-                    celFecha.HorizontalAlign = HorizontalAlign.Left;
-                    celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celFecha);
+                   
 
                     TableCell celAccion = new TableCell();
                     LinkButton btnProducir = new LinkButton();
@@ -325,12 +317,30 @@ namespace Tecnocuisine.Formularios.Ventas
                     tr.Style.Add("color", "green");
 
                 //Celdas
-                TableCell celSectorDestino = new TableCell();
-                celSectorDestino.Text = remito.sectorDestino;
-                celSectorDestino.VerticalAlign = VerticalAlign.Middle;
-                celSectorDestino.HorizontalAlign = HorizontalAlign.Left;
-                celSectorDestino.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celSectorDestino);
+                //TableCell celSectorDestino = new TableCell();
+                //celSectorDestino.Text = remito.sectorDestino;
+                //celSectorDestino.VerticalAlign = VerticalAlign.Middle;
+                //celSectorDestino.HorizontalAlign = HorizontalAlign.Left;
+                //celSectorDestino.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //tr.Cells.Add(celSectorDestino);
+
+                TableCell celFecha = new TableCell();
+                celFecha.Text = remito.fecha.ToShortDateString();
+                celFecha.VerticalAlign = VerticalAlign.Middle;
+                celFecha.HorizontalAlign = HorizontalAlign.Left;
+                celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celFecha);
+
+                //string sectorOrigen = string.Empty;
+                //if(remito.idSectorOrigen!=null)
+                //    sectorOrigen = new ControladorSectorProductivo().ObtenerSectorProductivoId((int)remito.idSectorOrigen).descripcion;
+
+                TableCell celSectorOrigen = new TableCell();
+                celSectorOrigen.Text = remito.SectorProductivo?.descripcion??"";
+                celSectorOrigen.VerticalAlign = VerticalAlign.Middle;
+                celSectorOrigen.HorizontalAlign = HorizontalAlign.Left;
+                celSectorOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celSectorOrigen);
 
                 TableCell celNumero = new TableCell();
                 celNumero.Text = remito.numero;
@@ -339,12 +349,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celNumero);
 
-                TableCell celFecha = new TableCell();
-                celFecha.Text = remito.fecha.ToShortDateString();
-                celFecha.VerticalAlign = VerticalAlign.Middle;
-                celFecha.HorizontalAlign = HorizontalAlign.Left;
-                celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celFecha);
+                
 
                 TableCell celAccion = new TableCell();
                 //LinkButton btnDetalle = new LinkButton();
