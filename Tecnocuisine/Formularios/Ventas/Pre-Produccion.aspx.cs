@@ -365,7 +365,9 @@ namespace Tecnocuisine.Formularios.Ventas
                 btnDetalleRemitoInterno.Attributes.Add("data-toggle", "modal");
                 btnDetalleRemitoInterno.Attributes.Add("href", "#modalConfirmacion2");
                 btnDetalleRemitoInterno.Text = "<span title='Ver pedidos'><i class='fa fa-tasks' style='color: black;'></i></span>";
-                btnDetalleRemitoInterno.Attributes.Add("onclick", "verDetalleRemitoInternoModal('" + remito.id + "');");
+                bool recepcionado = remito.recepcionado ?? false;
+                btnDetalleRemitoInterno.Attributes.Add("onclick", "verDetalleRemitoInternoModal('" + remito.id + "', " + recepcionado.ToString().ToLower() + ");");
+
                 celAccion.Controls.Add(btnDetalleRemitoInterno);
                 tr.Cells.Add(celAccion);
 

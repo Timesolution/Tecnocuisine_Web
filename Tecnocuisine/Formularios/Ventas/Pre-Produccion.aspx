@@ -15,7 +15,7 @@
                                 <div class="wrapper wrapper-content animated fadeInRight">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <div class="ibox float-e-margins" style="margin-bottom:0">
+                                            <div class="ibox float-e-margins" style="margin-bottom: 0">
                                                 <div class="ibox-content">
                                                     <div style="margin-left: 0px; margin-right: 0px;"
                                                         class="row">
@@ -142,14 +142,14 @@
             </asp:UpdatePanel>
         </div>
         <div class="tab-pane fade" id="Produccion">
-            <asp:UpdatePanel ID="UpdatePanel3" UpdateMode="Always" runat="server" style="width: 100%" >
+            <asp:UpdatePanel ID="UpdatePanel3" UpdateMode="Always" runat="server" style="width: 100%">
                 <ContentTemplate>
                     <div id="validation-form" role="form" class="form-horizontal col-md-10">
-                        <fieldset style="width: 100%" >
+                        <fieldset style="width: 100%">
                             <div class="row" style="margin-top: 10px">
                                 <div class="col-lg-12">
 
-                                    <asp:Button runat="server" OnClick="btnImprimirProduccion_Click" class="btn btn-primary pull-right" Text="Imprimir"/>
+                                    <asp:Button runat="server" OnClick="btnImprimirProduccion_Click" class="btn btn-primary pull-right" Text="Imprimir" />
 
                                     <table class="table table-striped table-bordered table-hover " style="width: 100%" id="tableProduccion">
                                         <thead>
@@ -185,7 +185,7 @@
                                     <table class="table table-striped table-bordered table-hover " id="tableEnvios">
                                         <thead>
                                             <tr>
-                                                <th style="width:15%">Fecha</th>
+                                                <th style="width: 15%">Fecha</th>
                                                 <th style="">Sector Origen</th>
                                                 <th style="">Sector Destino</th>
                                                 <%--<th style="width: 15%">Producto</th>--%>
@@ -417,10 +417,10 @@
                                         <table class="table table-hover no-margins table-bordered" id="tablePedidos">
                                             <thead>
                                                 <tr>
-                                                    <td style="display:none; width:0"><strong>Id Sector Origen</strong></td>
+                                                    <td style="display: none; width: 0"><strong>Id Sector Origen</strong></td>
                                                     <td><strong>Sector Origen</strong></td>
                                                     <td><strong>Sector Destino</strong></td>
-                                                    <td style="display:none; width:0"><strong>Id Producto</strong></td>
+                                                    <td style="display: none; width: 0"><strong>Id Producto</strong></td>
                                                     <td><strong>Producto</strong></td>
                                                     <td class="text-right"><strong>Cantidad</strong></td>
                                                     <td class="text-right"><strong>Cantidad confirmada</strong></td>
@@ -1588,7 +1588,17 @@
         }
     </script>
     <script>
-        function verDetalleRemitoInternoModal(idRemito) {
+        async function verDetalleRemitoInternoModal(idRemito, recepcionado) {
+            // Mostrar u ocultar boton para recepcionar dependiendo su estado
+            if (recepcionado) { // Ya fue recepcionado
+                document.getElementById('<%= btnRecepcion.ClientID %>').style.display = 'none'; 
+            } else {
+                document.getElementById('<%= btnRecepcion.ClientID %>').style.display = 'inline-block';
+            }
+
+            // Habilitar o deshabilitar inputs dependiendo si ya fue recepcionado
+            cambiarEstadoInputs_RemitoInternoModal(recepcionado);
+
             document.getElementById('<%= HFIdRemitoInterno.ClientID %>').value = idRemito;
             getItemsRemitosInternos(idRemito);
             $('#modalDetalleRemitoInterno').modal('show');
@@ -1655,38 +1665,49 @@
                 }
             }); // Cierre del $.ajax()
         }
+
+        // Si estadoInputs es true, se habilitaran los inputs
+        function cambiarEstadoInputs_RemitoInternoModal(estadoInputs) {
+            var tabla = document.getElementById('tableDetalleRemitosInternos');
+            var inputs = tabla.getElementsByTagName('input');
+
+            // Cambiar el estado de habilitación/deshabilitación de cada input
+            for (var i = 0; i < inputs.length; i++) {
+                inputs[i].disabled = !estadoInputs;
+            }
+        }
     </script>
 
 
-        <script>
-            $(document).ready(function () {
-                document.getElementById("lblSiteMap").innerText = "Produccion / Pre-Produccion";
-            });
-        </script>
+    <script>
+        $(document).ready(function () {
+            document.getElementById("lblSiteMap").innerText = "Produccion / Pre-Produccion";
+        });
+    </script>
 
 
-        <script>
-            // Esta funcion cambiara el valor de los inputs de fecha agregandole los dias que indique el boton seleccionado
-            function setFecha(diasASumar) {
-                // Obtener la fecha actual
-                var fecha = new Date();
+    <script>
+        // Esta funcion cambiara el valor de los inputs de fecha agregandole los dias que indique el boton seleccionado
+        function setFecha(diasASumar) {
+            // Obtener la fecha actual
+            var fecha = new Date();
 
-                // Sumar los días especificados
-                fecha.setDate(fecha.getDate() + diasASumar);
+            // Sumar los días especificados
+            fecha.setDate(fecha.getDate() + diasASumar);
 
-                // Formatear la fecha a YYYY-MM-DD
-                var dia = ('0' + fecha.getDate()).slice(-2);
-                var mes = ('0' + (fecha.getMonth() + 1)).slice(-2);
-                var anio = fecha.getFullYear();
+            // Formatear la fecha a YYYY-MM-DD
+            var dia = ('0' + fecha.getDate()).slice(-2);
+            var mes = ('0' + (fecha.getMonth() + 1)).slice(-2);
+            var anio = fecha.getFullYear();
 
-                // Establecer el valor del textbox de fecha
-                var txtFechaDesde = document.getElementById('<%=txtFechaHoy.ClientID%>');
+            // Establecer el valor del textbox de fecha
+            var txtFechaDesde = document.getElementById('<%=txtFechaHoy.ClientID%>');
             var txtFechaHasta = document.getElementById('<%=txtFechaVencimiento.ClientID%>');
 
-                txtFechaDesde.value = anio.toString() + "-" + mes.toString() + "-" + dia.toString();
-                txtFechaHasta.value = anio.toString() + "-" + mes.toString() + "-" + dia.toString();
-            }
+            txtFechaDesde.value = anio.toString() + "-" + mes.toString() + "-" + dia.toString();
+            txtFechaHasta.value = anio.toString() + "-" + mes.toString() + "-" + dia.toString();
+        }
 
-        </script>
+    </script>
 
 </asp:Content>
