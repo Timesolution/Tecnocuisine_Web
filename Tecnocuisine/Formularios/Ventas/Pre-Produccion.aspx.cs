@@ -127,7 +127,7 @@ namespace Tecnocuisine.Formularios.Ventas
                     celCantidad.Attributes.Add("style", "padding-bottom: 1px !important;");
                     tr.Cells.Add(celCantidad);
 
-                   
+
 
                     TableCell celAccion = new TableCell();
                     LinkButton btnProducir = new LinkButton();
@@ -336,7 +336,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 //    sectorOrigen = new ControladorSectorProductivo().ObtenerSectorProductivoId((int)remito.idSectorOrigen).descripcion;
 
                 TableCell celSectorOrigen = new TableCell();
-                celSectorOrigen.Text = remito.SectorProductivo?.descripcion??"";
+                celSectorOrigen.Text = remito.SectorProductivo?.descripcion ?? "";
                 celSectorOrigen.VerticalAlign = VerticalAlign.Middle;
                 celSectorOrigen.HorizontalAlign = HorizontalAlign.Left;
                 celSectorOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
@@ -349,7 +349,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celNumero);
 
-                
+
 
                 TableCell celAccion = new TableCell();
                 //LinkButton btnDetalle = new LinkButton();
@@ -1946,7 +1946,7 @@ namespace Tecnocuisine.Formularios.Ventas
                                   "\"Id\":\"" + remitoInterno.id + "\"," +
                                   "\"Producto\":\"" + remitoInterno.Producto + "\"," +
                                   "\"cantidadEnviada\":\"" + remitoInterno.cantidadEnviada + "\"," +
-                                  "\"cantidadRecepcionada\":\"" + remitoInterno.cantidadEnviada + "\"" +
+                                  "\"cantidadRecepcionada\":\"" + remitoInterno.cantidadRecepcionada + "\"" +
                                   "}");
                 }
 
@@ -1971,8 +1971,10 @@ namespace Tecnocuisine.Formularios.Ventas
 
             RemitosInternos remitoInterno = contRemitosInternos.getRemitosInternosById(idRemitoInterno).FirstOrDefault();
             remitoInterno.recepcionado = true;
-            //TODO: NO SE GUARDA LA CANTIDAD RECEPCIONADA
             contRemitosInternos.UpdateRemitosInternos(remitoInterno);
+
+            // Guardar cantidad recepcionada en registros de itemsremitosinternos
+            GuardarCantidadesRecepcionadas();
 
             //ACTUALIZAR STOCKS DEL SECTOR X PRODUCTO (AUMENTAR STOCK EN EL SECTOR DESTINO)
             ActualizarStockSectorXProductos(remitoInterno.sectorDestino);
@@ -1985,6 +1987,26 @@ namespace Tecnocuisine.Formularios.Ventas
             //    cTransferencia.updateEstadoTransferenciasAEnviar(Convert.ToInt32(dr["id"].ToString()));
 
             Response.Redirect(Request.RawUrl);
+        }
+
+        /// <summary>
+        /// Obtiene el id de cada itemsRemitosInternos involucrado en la recepcion y actualiza un valor en la columna "cantidadRecepcionada"
+        /// </summary>
+        private void GuardarCantidadesRecepcionadas()
+        {
+            ControladorItemsRemitosInternos cItemsRemitosInternos = new ControladorItemsRemitosInternos();
+
+            string[] itemsRemitosInternos = HFItems.Value.Split(';');
+            foreach (var item in itemsRemitosInternos)
+            {
+                string[] itemSpliteado = item.Split('&');
+                int id = Convert.ToInt32(itemSpliteado[0]);
+                decimal cantidadRecepcionada = Convert.ToDecimal(itemSpliteado[3], CultureInfo.InvariantCulture);
+
+                var itemRemitoInterno = cItemsRemitosInternos.getItemRemitoInternoById(id);
+                itemRemitoInterno.cantidadRecepcionada = cantidadRecepcionada;
+                cItemsRemitosInternos.Update(itemRemitoInterno);
+            }
         }
 
         private void ActualizarStockSectorXProductos(string sector)
@@ -2000,8 +2022,8 @@ namespace Tecnocuisine.Formularios.Ventas
             foreach (var item in itemsRemitosInternos)
             {
                 string[] itemSpliteado = item.Split('&');
-                string descripcion = itemSpliteado[0];
-                string cantidadRecepcionada = itemSpliteado[2];
+                string descripcion = itemSpliteado[1];
+                decimal cantidadRecepcionada = Convert.ToDecimal(itemSpliteado[3], CultureInfo.InvariantCulture);
 
                 //buscar el producto en la tabla productos
                 var idItem = new ControladorProducto().ObtenerProductoByDescripcion(descripcion).id;
@@ -2017,12 +2039,12 @@ namespace Tecnocuisine.Formularios.Ventas
                 if (esProducto)
                 {
                     //Aumentar Stock en el sector destino (sector que recepciona)
-                    AumentarStockSector_Producto(idItem, idSectorDestino, decimal.Parse(cantidadRecepcionada));           
+                    AumentarStockSector_Producto(idItem, idSectorDestino, cantidadRecepcionada);
                 }
                 else
                 {
                     //Aumentar Stock en el sector destino (sector que recepciona)
-                    AumentarStockSector_Receta(idItem, idSectorDestino, decimal.Parse(cantidadRecepcionada));
+                    AumentarStockSector_Receta(idItem, idSectorDestino, cantidadRecepcionada);
                 }
             }
         }

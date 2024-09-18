@@ -343,6 +343,7 @@
                                         <table class="table table-hover no-margins table-bordered" id="DetalleRemitosInternos">
                                             <thead>
                                                 <tr>
+                                                    <td style="display:none"></td>
                                                     <%--                                                    <td><strong>Sector Origen</strong></td>
                                                     <td><strong>Sector Destino</strong></td>--%>
                                                     <td><strong>Producto</strong></td>
@@ -1608,11 +1609,12 @@
             var HFItems = document.getElementById('<%= HFItems.ClientID %>');
 
             for (var i = 1; i < document.getElementById(tableName).rows.length; i++) {
-                let producto = document.getElementById(tableName).rows[i].cells[0].innerText;
-                let cantEnviada = document.getElementById(tableName).rows[i].cells[1].innerText;
-                let cantRecepcionada = document.getElementById(tableName).rows[i].cells[2].querySelector('input').value;
+                let idItemRemitoInterno = document.getElementById(tableName).rows[i].cells[0].innerText;
+                let producto = document.getElementById(tableName).rows[i].cells[1].innerText;
+                let cantEnviada = document.getElementById(tableName).rows[i].cells[2].innerText;
+                let cantRecepcionada = document.getElementById(tableName).rows[i].cells[3].querySelector('input').value;
 
-                HFItems.value += producto + "&" + cantEnviada + "&" + cantRecepcionada + ";";
+                HFItems.value += idItemRemitoInterno + "&" + producto + "&" + cantEnviada + "&" + cantRecepcionada + ";";
             }
 
             //eliminar ultimo ;
@@ -1666,6 +1668,7 @@
                           oninput="validarTextBox(this);" />`;
 
                             placeHolderItemRemitosInternos += `<tr>
+                                                               <td style="display:none">${element.Id}</td>
                                                                <td >${element.Producto}</td>
                                                                <td class="text-right">${element.cantidadEnviada}</td>
                                                                <td class="text-right">${cantidadRecepcionada}</td>
