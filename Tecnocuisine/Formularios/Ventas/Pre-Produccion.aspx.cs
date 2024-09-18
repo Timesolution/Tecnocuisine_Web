@@ -1664,7 +1664,7 @@ namespace Tecnocuisine.Formularios.Ventas
         }
 
         /// <summary>
-        /// Guardar los datos del envio realizado
+        /// Esta funcion se ejecuta al realizar un envio
         /// </summary>
         /// <param name="tableData"></param>
         /// <returns></returns>
@@ -1731,7 +1731,7 @@ namespace Tecnocuisine.Formularios.Ventas
 
                 //cambiar el estado de las transferencias involucradas en el envio
                 DataTable dtId = new DataTable();
-                dtId = cTransferencia.getidTransferenciasConfirmadas(tableData[0].sectorDestino); //TODO VER ESTO
+                dtId = cTransferencia.getidTransferenciasConfirmadas(tableData[0].sectorDestino); //TODO: VER ESTO
 
                 foreach (DataRow dr in dtId.Rows)
                     cTransferencia.updateEstadoTransferenciasAEnviar(Convert.ToInt32(dr["id"].ToString()));
@@ -1867,16 +1867,20 @@ namespace Tecnocuisine.Formularios.Ventas
             decimal stock = 0;
             int idItem = Convert.ToInt32(row.idProducto);
             string descripcion = row.producto;
+            int idSectorOrigen = Convert.ToInt32(row.idSectorOrigen);
 
             if (cProducto.ExisteProducto(idItem, descripcion))
             {
-                StockProducto stockProducto = new ControladorStockProducto().ObtenerStockProducto(idItem);
-                stock = stockProducto?.stock ?? 0;
+                //El stock debe validarse contra el sector que quiere enviar
+                Tecnocuisine_API.Entitys.StockSectores stockSector = new ControladorStockProducto().ObtenerStockSectores(idItem, idSectorOrigen);
+                //StockProducto stockProducto = new ControladorStockProducto().ObtenerStockProducto(idItem);
+                stock = stockSector?.stock ?? 0;
             }
             else // Es Receta
             {
-                StockReceta stockReceta = new ControladorStockReceta().ObtenerStockReceta(idItem);
-                stock = stockReceta?.stock ?? 0;
+                Tecnocuisine_API.Entitys.stockSectoresReceta stockSector = new ControladorStockReceta().ObtenerStockSectoresReceta(idItem, idSectorOrigen);
+                //StockReceta stockReceta = new ControladorStockReceta().ObtenerStockReceta(idItem);
+                stock = stockSector?.stock ?? 0;
             }
 
             if (stock == 0)
@@ -1967,10 +1971,18 @@ namespace Tecnocuisine.Formularios.Ventas
 
             RemitosInternos remitoInterno = contRemitosInternos.getRemitosInternosById(idRemitoInterno).FirstOrDefault();
             remitoInterno.recepcionado = true;
+            //TODO: NO SE GUARDA LA CANTIDAD RECEPCIONADA
             contRemitosInternos.UpdateRemitosInternos(remitoInterno);
 
             //ACTUALIZAR STOCKS DEL SECTOR X PRODUCTO (AUMENTAR STOCK EN EL SECTOR DESTINO)
             ActualizarStockSectorXProductos(remitoInterno.sectorDestino);
+
+            ////Actualizar estado de las transferencias
+            //DataTable dtId = new DataTable();
+            //dtId = cTransferencia.getidTransferenciasConfirmadas(tableData[0].sectorDestino); //TODO: VER ESTO
+
+            //foreach (DataRow dr in dtId.Rows)
+            //    cTransferencia.updateEstadoTransferenciasAEnviar(Convert.ToInt32(dr["id"].ToString()));
 
             Response.Redirect(Request.RawUrl);
         }

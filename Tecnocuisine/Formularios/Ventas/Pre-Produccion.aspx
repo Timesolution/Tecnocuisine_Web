@@ -658,7 +658,7 @@
 
                     }
                     else if (response.d == -2) {
-                        toastr.error("La transferencia no pudo ser confirmada, no hay stock cargado para uno de los productos.", "Error");
+                        toastr.error("Hay productos o recetas con stock insuficiente.", "Error");
 
                     }
                     else if (response.d == -3) {
