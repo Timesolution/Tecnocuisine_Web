@@ -1724,6 +1724,8 @@ namespace Tecnocuisine.Formularios.Ventas
                         itemRemitosInternos.fecha = DateTime.Now;
                         itemRemitosInternos.estado = true;
                         cItemsRemitosInternos.addItemsRemitosInternos(itemRemitosInternos);
+
+                        DescontarStockSector(row);
                     }
                 }
 
@@ -1967,13 +1969,13 @@ namespace Tecnocuisine.Formularios.Ventas
             remitoInterno.recepcionado = true;
             contRemitosInternos.UpdateRemitosInternos(remitoInterno);
 
-            //ACTUALIZAR STOCKS DEL SECTOR X PRODUCTO (DESCONTAR STOCK EN EL SECTOR ORIGEN Y AUMENTAR STOCK EN EL SECTOR DESTINO)
-            ActualizarStockSectorXProductos((int)remitoInterno.idSectorOrigen, remitoInterno.sectorDestino);
+            //ACTUALIZAR STOCKS DEL SECTOR X PRODUCTO (AUMENTAR STOCK EN EL SECTOR DESTINO)
+            ActualizarStockSectorXProductos(remitoInterno.sectorDestino);
 
             Response.Redirect(Request.RawUrl);
         }
 
-        private void ActualizarStockSectorXProductos(int idSectorOrigen, string sector)
+        private void ActualizarStockSectorXProductos(string sector)
         {
             string[] itemsRemitosInternos = HFItems.Value.Split(';');
 
@@ -2002,21 +2004,11 @@ namespace Tecnocuisine.Formularios.Ventas
 
                 if (esProducto)
                 {
-                    //Descontar Stock en el sector origen (sector que hizo el envio)
-                    Tecnocuisine_API.Entitys.StockSectores stockSectorOrigen = controladorStockProducto.ObtenerStockSectores(idItem, idSectorOrigen);
-                    stockSectorOrigen.stock -= decimal.Parse(cantidadRecepcionada);
-                    controladorStockProducto.EditarStockSectores(stockSectorOrigen);
-
                     //Aumentar Stock en el sector destino (sector que recepciona)
                     AumentarStockSector_Producto(idItem, idSectorDestino, decimal.Parse(cantidadRecepcionada));           
                 }
                 else
                 {
-                    //Descontar Stock en el sector origen (sector que hizo el envio)
-                    stockSectoresReceta stockSectorOrigen = controladorStockReceta.ObtenerStockSectoresReceta(idItem, idSectorOrigen);
-                    stockSectorOrigen.stock -= decimal.Parse(cantidadRecepcionada);
-                    controladorStockReceta.EditarStockSectoresReceta(stockSectorOrigen);
-
                     //Aumentar Stock en el sector destino (sector que recepciona)
                     AumentarStockSector_Receta(idItem, idSectorDestino, decimal.Parse(cantidadRecepcionada));
                 }
