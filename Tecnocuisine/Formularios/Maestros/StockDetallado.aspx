@@ -17,8 +17,7 @@
             <%--EMPIEZA STOCK FINAL--%>
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Stock Final</h5>
-
+                    <b style="font-size: 1.8rem">Stock Final</b>
                 </div>
                 <div class="ibox-content">
                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
@@ -26,7 +25,7 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th style="width: 10%">#</th>
+                                        <%--<th style="width: 10%">#</th>--%>
                                         <th>Unidad</th>
                                         <th style="text-align: end">Stock</th>
 
@@ -49,8 +48,7 @@
             <%-- STOCK SECTOR--%>
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Stock Sector</h5>
-
+                    <b style="font-size: 1.8rem">Stock Sector</b>
                 </div>
                 <div class="ibox-content">
                     <asp:UpdatePanel ID="UpdatePanel3" runat="server">
@@ -59,7 +57,7 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th style="width: 10%">#</th>
+                                        <%--<th style="width: 10%">#</th>--%>
                                         <th>Sector</th>
                                         <th>Unidad</th>
                                         <th style="text-align: end">Stock</th>
@@ -169,8 +167,41 @@
                 </div>
             </div>
         </div>--%>
+    </div>
+
+    <div class="row">
+        <%-- EN TRANSITO --%>
+        <div class="col-md-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <b style="font-size: 1.8rem">En Transito</b>
+                </div>
+                <div class="ibox-content">
+                    <asp:UpdatePanel ID="UpdatePanel5" runat="server">
+                        <ContentTemplate>
+
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: left">Cantidad</th>
+                                        <%--<th></th>--%>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <asp:PlaceHolder ID="PHTransito" runat="server"></asp:PlaceHolder>
+                                </tbody>
+                            </table>
+
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
+                    <%--<asp:HiddenField ID="NombreProd" runat="server" />--%>
+                </div>
+            </div>
+        </div>
+        <%-- FIN --%>
 
     </div>
+
     <script>
         $(document).ready(function () {
             document.getElementById("lblSiteMap").innerText += " / " + document.getElementById("ContentPlaceHolder1_NombreProd").value;

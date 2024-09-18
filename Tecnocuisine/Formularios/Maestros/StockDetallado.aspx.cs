@@ -16,7 +16,7 @@ namespace Tecnocuisine.Formularios.Maestros
         ControladorProducto ControladorProducto = new ControladorProducto();
         ControladorReceta ControladorReceta = new ControladorReceta();
         ControladorUnidad cu = new ControladorUnidad();
-            int id  ;
+        int id;
         int tipo;
         CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
 
@@ -24,20 +24,23 @@ namespace Tecnocuisine.Formularios.Maestros
         {
             if (!IsPostBack)
             {
-                id= Convert.ToInt32(Request.QueryString["i"]);
+                id = Convert.ToInt32(Request.QueryString["i"]);
                 tipo = Convert.ToInt32(Request.QueryString["t"]);
                 CargarTablaStockTotal();
 
             }
         }
 
-     
 
+        /// <summary>
+        /// Verifica el tipo de item (1-producto, 2-receta), obtiene sus stocks correspondientes y los dibuja en tablas
+        /// </summary>
         private void CargarTablaStockTotal()
         {
             try
             {
-                if(tipo == 1) // 1= producto, 2= receta
+                // Es Producto
+                if (tipo == 1)
                 {
                     var ListStockTotal = ControladorStockProducto.ObtenerStockProducto(id);
 
@@ -52,12 +55,18 @@ namespace Tecnocuisine.Formularios.Maestros
 
                     var listStockLotes = ControladorStockProducto.ObtenerStockLotesByIdProducto(id);
 
+                    // Son las cantidades que fueron enviadas entre sectores y que aun no han sido recepcionadas pero siguen siendo parte del stock
+                    var stockEnTransito = ControladorStockProducto.ObtenerStockEnTransitoByDescripcion(prod.descripcion);
+
                     //var ListStockMarcas = ControladorStockProducto.ObtenerStockMarcaByIDProducto(id);
 
                     if (ListStockTotal != null)
                     {
                         CargarPhFinal(ListStockTotal);
                     }
+
+                    CargarStockEnTransito(stockEnTransito);
+
                     //if (listStockPresentaciones != null)
                     //{
                     //    foreach (var i in listStockPresentaciones)
@@ -66,7 +75,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     //    CargarPhPresentaciones(i);
                     //    }
                     //}
-                    if(listStockSector!= null)
+                    if (listStockSector != null)
                     {
                         foreach (var i in listStockSector)
                         {
@@ -88,13 +97,14 @@ namespace Tecnocuisine.Formularios.Maestros
                     //    }
                     //}
                 }
+                // Es Receta
                 else
                 {
                     var ListStockTotal = controladorStockRecetas.ObtenerStockReceta(id);
                     //var listStockPresentaciones = controladorStockRecetas.ObtenerStockPresentacionesByIdReceta(id);
                     var listStockSector = controladorStockRecetas.ObtenerStockSectoresRecetaByIdReceta(id);
                     //var listStockLotes = controladorStockRecetas.ObtenerStockLotesRecetaByIdReceta(id);
-                    var listStockMarcas = controladorStockRecetas.ObtenerStockMarcasRecetasByIdReceta(id);
+                    //var listStockMarcas = controladorStockRecetas.ObtenerStockMarcasRecetasByIdReceta(id);
                     var receta = ControladorReceta.ObtenerRecetaId(id);
 
                     //NombreProd.Value = receta.descripcion;
@@ -138,6 +148,51 @@ namespace Tecnocuisine.Formularios.Maestros
 
             }
         }
+
+        private void CargarStockEnTransito(decimal stockEnTransito)
+        {
+            try
+            {
+                TableRow tr = new TableRow();
+                //tr.ID = listStockTotal.id.ToString();
+
+                //TableCell celProductoCod = new TableCell();
+                //celProductoCod.Text = listStockTotal.Productos.id.ToString();
+                //celProductoCod.Font.Bold = true;
+                //celProductoCod.VerticalAlign = VerticalAlign.Middle;
+                //celProductoCod.HorizontalAlign = HorizontalAlign.Left;
+                //celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //tr.Cells.Add(celProductoCod);
+
+
+                //string UnidadMedida = cu.ObtenerUnidadId(listStockTotal.Productos.unidadMedida).descripcion;
+
+                //TableCell celUM = new TableCell();
+                //celUM.Text = UnidadMedida;
+                ////celUM.Font.Bold = true;
+                //celUM.VerticalAlign = VerticalAlign.Middle;
+                //celUM.HorizontalAlign = HorizontalAlign.Left;
+                //celUM.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //tr.Cells.Add(celUM);
+
+                TableCell celStock = new TableCell();
+                celStock.Text = stockEnTransito.ToString("N", culture);
+                celStock.VerticalAlign = VerticalAlign.Middle;
+                celStock.HorizontalAlign = HorizontalAlign.Left;
+                celStock.Width = Unit.Percentage(5);
+                celStock.Attributes.Add("style", "text-align:left");
+                tr.Cells.Add(celStock);
+                //agrego fila a tabla
+
+                PHTransito.Controls.Add(tr);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
         //private void CargarPhLotes2(Tecnocuisine_API.Entitys.StockLotesReceta i)
         //{
         //    try
@@ -394,17 +449,17 @@ namespace Tecnocuisine.Formularios.Maestros
                 TableRow tr = new TableRow();
                 tr.ID = i.id.ToString();
 
-                TableCell celProductoCod = new TableCell();
-                celProductoCod.Text = "";
-                celProductoCod.Font.Bold = true;
-                celProductoCod.VerticalAlign = VerticalAlign.Middle;
-                celProductoCod.HorizontalAlign = HorizontalAlign.Left;
-                celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celProductoCod);
+                //TableCell celProductoCod = new TableCell();
+                //celProductoCod.Text = "";
+                //celProductoCod.Font.Bold = true;
+                //celProductoCod.VerticalAlign = VerticalAlign.Middle;
+                //celProductoCod.HorizontalAlign = HorizontalAlign.Left;
+                //celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //tr.Cells.Add(celProductoCod);
 
                 TableCell celPresentaciones = new TableCell();
                 celPresentaciones.Text = i.SectorProductivo.descripcion;
-                celPresentaciones.Font.Bold = true;
+                //celPresentaciones.Font.Bold = true;
                 celPresentaciones.VerticalAlign = VerticalAlign.Middle;
                 celPresentaciones.HorizontalAlign = HorizontalAlign.Left;
                 celPresentaciones.Attributes.Add("style", "padding-bottom: 1px !important;");
@@ -414,7 +469,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 TableCell celUM = new TableCell();
                 celUM.Text = UnidadMedida;
-                celUM.Font.Bold = true;
+                //celUM.Font.Bold = true;
                 celUM.VerticalAlign = VerticalAlign.Middle;
                 celUM.HorizontalAlign = HorizontalAlign.Left;
                 celUM.Attributes.Add("style", "padding-bottom: 1px !important;");
@@ -460,7 +515,7 @@ namespace Tecnocuisine.Formularios.Maestros
         //        celPresentaciones.HorizontalAlign = HorizontalAlign.Left;
         //        celPresentaciones.Attributes.Add("style", "padding-bottom: 1px !important;");
         //        tr.Cells.Add(celPresentaciones);
-              
+
         //        TableCell celStock = new TableCell();
         //        celStock.Text = i.stock.Value.ToString("N", culture);
         //        celStock.VerticalAlign = VerticalAlign.Middle;
@@ -570,27 +625,27 @@ namespace Tecnocuisine.Formularios.Maestros
                 TableRow tr = new TableRow();
                 tr.ID = listStockTotal.id.ToString();
 
-                TableCell celProductoCod = new TableCell();
-                celProductoCod.Text = listStockTotal.Productos.id.ToString();
-                celProductoCod.Font.Bold = true;
-                celProductoCod.VerticalAlign = VerticalAlign.Middle;
-                celProductoCod.HorizontalAlign = HorizontalAlign.Left;
-                celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celProductoCod);
+                //TableCell celProductoCod = new TableCell();
+                //celProductoCod.Text = listStockTotal.Productos.id.ToString();
+                //celProductoCod.Font.Bold = true;
+                //celProductoCod.VerticalAlign = VerticalAlign.Middle;
+                //celProductoCod.HorizontalAlign = HorizontalAlign.Left;
+                //celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //tr.Cells.Add(celProductoCod);
 
 
-               string UnidadMedida = cu.ObtenerUnidadId(listStockTotal.Productos.unidadMedida).descripcion;
+                string UnidadMedida = cu.ObtenerUnidadId(listStockTotal.Productos.unidadMedida).descripcion;
 
                 TableCell celUM = new TableCell();
-                celUM.Text = UnidadMedida ;
-                celUM.Font.Bold = true;
+                celUM.Text = UnidadMedida;
+                //celUM.Font.Bold = true;
                 celUM.VerticalAlign = VerticalAlign.Middle;
                 celUM.HorizontalAlign = HorizontalAlign.Left;
                 celUM.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celUM);
 
                 TableCell celStock = new TableCell();
-                celStock.Text = listStockTotal.stock.Value.ToString("N",culture);
+                celStock.Text = listStockTotal.stock.Value.ToString("N", culture);
                 celStock.VerticalAlign = VerticalAlign.Middle;
                 celStock.HorizontalAlign = HorizontalAlign.Left;
                 celStock.Width = Unit.Percentage(5);

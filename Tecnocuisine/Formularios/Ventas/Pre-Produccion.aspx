@@ -198,9 +198,9 @@
                                             <asp:PlaceHolder ID="phEnvio" runat="server"></asp:PlaceHolder>
                                         </tbody>
                                     </table>
-                                    <asp:LinkButton ID="btnEnviar" runat="server" Text="Enviar"> 
+                                    <%--<asp:LinkButton ID="btnEnviar" runat="server" Text="Enviar"> 
 
-                                    </asp:LinkButton>
+                                    </asp:LinkButton>--%>
                                     <asp:HiddenField ID="FechaDesde" runat="server"></asp:HiddenField>
                                     <asp:HiddenField ID="FechaHasta" runat="server"></asp:HiddenField>
                                     <asp:HiddenField ID="ddlSectorSelecionado" runat="server"></asp:HiddenField>

@@ -1701,6 +1701,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 remitosInternos.numero = NuevoNumeroRemitoInterno();
                 remitosInternos.fecha = DateTime.Now;
                 remitosInternos.estado = true;
+                remitosInternos.recepcionado = false;
 
                 int r = cRemitosInternos.addRemitosInternos(remitosInternos);
 
@@ -1716,16 +1717,13 @@ namespace Tecnocuisine.Formularios.Ventas
 
                         ItemsRemitosInternos itemRemitosInternos = new ItemsRemitosInternos();
                         itemRemitosInternos.idRemito = r;
-                        itemRemitosInternos.Producto = row.producto;
+                        itemRemitosInternos.Producto = row.producto; //TODO: Que pasa si es una receta? los nombres deberian ser unicos, otra opcion es crear una tabla de itemsremitos para recetas
                         itemRemitosInternos.cantidad = cantidad;
                         itemRemitosInternos.cantidadConfirmada = cantidadConfirmada;
                         itemRemitosInternos.cantidadEnviada = cantidadEnviada;
                         itemRemitosInternos.fecha = DateTime.Now;
                         itemRemitosInternos.estado = true;
                         cItemsRemitosInternos.addItemsRemitosInternos(itemRemitosInternos);
-
-                        //DescontarStockSector(row);
-                        //AumentarStockSector(row);
                     }
                 }
 
