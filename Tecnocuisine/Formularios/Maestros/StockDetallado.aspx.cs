@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Tecnocuisine_API.Controladores;
+using Tecnocuisine_API.Entitys;
 
 namespace Tecnocuisine.Formularios.Maestros
 {
@@ -53,7 +54,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                     var listStockSector = ControladorStockProducto.ObtenerStockSectoresByIdProducto(id);
 
-                    var listStockLotes = ControladorStockProducto.ObtenerStockLotesByIdProducto(id);
+                    //var listStockLotes = ControladorStockProducto.ObtenerStockLotesByIdProducto(id);
 
                     // Son las cantidades que fueron enviadas entre sectores y que aun no han sido recepcionadas pero siguen siendo parte del stock
                     var stockEnTransito = ControladorStockProducto.ObtenerStockEnTransitoByDescripcion(prod.descripcion);
@@ -65,7 +66,7 @@ namespace Tecnocuisine.Formularios.Maestros
                         CargarPhFinal(ListStockTotal);
                     }
 
-                    CargarStockEnTransito(stockEnTransito);
+                    CargarStockEnTransito(stockEnTransito, prod.unidadMedida);
 
                     //if (listStockPresentaciones != null)
                     //{
@@ -100,18 +101,25 @@ namespace Tecnocuisine.Formularios.Maestros
                 // Es Receta
                 else
                 {
+                    var receta = ControladorReceta.ObtenerRecetaId(id);
+
                     var ListStockTotal = controladorStockRecetas.ObtenerStockReceta(id);
                     //var listStockPresentaciones = controladorStockRecetas.ObtenerStockPresentacionesByIdReceta(id);
                     var listStockSector = controladorStockRecetas.ObtenerStockSectoresRecetaByIdReceta(id);
                     //var listStockLotes = controladorStockRecetas.ObtenerStockLotesRecetaByIdReceta(id);
                     //var listStockMarcas = controladorStockRecetas.ObtenerStockMarcasRecetasByIdReceta(id);
-                    var receta = ControladorReceta.ObtenerRecetaId(id);
+
+                    // Son las cantidades que fueron enviadas entre sectores y que aun no han sido recepcionadas pero siguen siendo parte del stock
+                    var stockEnTransito = controladorStockRecetas.ObtenerStockEnTransitoByDescripcion(receta.descripcion);
 
                     //NombreProd.Value = receta.descripcion;
                     if (ListStockTotal != null)
                     {
                         CargarPhFinal2(ListStockTotal);
                     }
+
+                    CargarStockEnTransito(stockEnTransito, (int)receta.UnidadMedida);
+
                     //if (listStockPresentaciones != null)
                     //{
                     //    foreach (var i in listStockPresentaciones)
@@ -149,40 +157,28 @@ namespace Tecnocuisine.Formularios.Maestros
             }
         }
 
-        private void CargarStockEnTransito(decimal stockEnTransito)
+        private void CargarStockEnTransito(decimal stockEnTransito, int unidadId)
         {
             try
             {
                 TableRow tr = new TableRow();
                 //tr.ID = listStockTotal.id.ToString();
 
-                //TableCell celProductoCod = new TableCell();
-                //celProductoCod.Text = listStockTotal.Productos.id.ToString();
-                //celProductoCod.Font.Bold = true;
-                //celProductoCod.VerticalAlign = VerticalAlign.Middle;
-                //celProductoCod.HorizontalAlign = HorizontalAlign.Left;
-                //celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
-                //tr.Cells.Add(celProductoCod);
-
-
-                //string UnidadMedida = cu.ObtenerUnidadId(listStockTotal.Productos.unidadMedida).descripcion;
-
-                //TableCell celUM = new TableCell();
-                //celUM.Text = UnidadMedida;
-                ////celUM.Font.Bold = true;
-                //celUM.VerticalAlign = VerticalAlign.Middle;
-                //celUM.HorizontalAlign = HorizontalAlign.Left;
-                //celUM.Attributes.Add("style", "padding-bottom: 1px !important;");
-                //tr.Cells.Add(celUM);
+                TableCell celUM = new TableCell();
+                celUM.Text = cu.ObtenerUnidadId(unidadId).descripcion;
+                celUM.VerticalAlign = VerticalAlign.Middle;
+                celUM.HorizontalAlign = HorizontalAlign.Left;
+                celUM.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celUM);
 
                 TableCell celStock = new TableCell();
                 celStock.Text = stockEnTransito.ToString("N", culture);
                 celStock.VerticalAlign = VerticalAlign.Middle;
                 celStock.HorizontalAlign = HorizontalAlign.Left;
                 celStock.Width = Unit.Percentage(5);
-                celStock.Attributes.Add("style", "text-align:left");
+                celStock.Attributes.Add("style", "text-align:end");
+
                 tr.Cells.Add(celStock);
-                //agrego fila a tabla
 
                 PHTransito.Controls.Add(tr);
             }
@@ -296,18 +292,18 @@ namespace Tecnocuisine.Formularios.Maestros
                 TableRow tr = new TableRow();
                 tr.ID = i.id.ToString();
 
-                TableCell celProductoCod = new TableCell();
-                celProductoCod.Text = "";
-                celProductoCod.Font.Bold = true;
-                celProductoCod.VerticalAlign = VerticalAlign.Middle;
-                celProductoCod.HorizontalAlign = HorizontalAlign.Left;
-                celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celProductoCod);
+                //TableCell celProductoCod = new TableCell();
+                //celProductoCod.Text = "";
+                //celProductoCod.Font.Bold = true;
+                //celProductoCod.VerticalAlign = VerticalAlign.Middle;
+                //celProductoCod.HorizontalAlign = HorizontalAlign.Left;
+                //celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //tr.Cells.Add(celProductoCod);
 
 
                 TableCell celPresentaciones = new TableCell();
                 celPresentaciones.Text = i.SectorProductivo.descripcion;
-                celPresentaciones.Font.Bold = true;
+                //celPresentaciones.Font.Bold = true;
                 celPresentaciones.VerticalAlign = VerticalAlign.Middle;
                 celPresentaciones.HorizontalAlign = HorizontalAlign.Left;
                 celPresentaciones.Attributes.Add("style", "padding-bottom: 1px !important;");
@@ -317,7 +313,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 TableCell celUM = new TableCell();
                 celUM.Text = UnidadMedida;
-                celUM.Font.Bold = true;
+                //celUM.Font.Bold = true;
                 celUM.VerticalAlign = VerticalAlign.Middle;
                 celUM.HorizontalAlign = HorizontalAlign.Left;
                 celUM.Attributes.Add("style", "padding-bottom: 1px !important;");
@@ -580,20 +576,20 @@ namespace Tecnocuisine.Formularios.Maestros
                 TableRow tr = new TableRow();
                 tr.ID = listStockTotal.id.ToString();
 
-                TableCell celProductoCod = new TableCell();
-                celProductoCod.Text = listStockTotal.Recetas.id.ToString();
-                celProductoCod.Font.Bold = true;
-                celProductoCod.VerticalAlign = VerticalAlign.Middle;
-                celProductoCod.HorizontalAlign = HorizontalAlign.Left;
-                celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celProductoCod);
+                //TableCell celProductoCod = new TableCell();
+                //celProductoCod.Text = listStockTotal.Recetas.id.ToString();
+                //celProductoCod.Font.Bold = true;
+                //celProductoCod.VerticalAlign = VerticalAlign.Middle;
+                //celProductoCod.HorizontalAlign = HorizontalAlign.Left;
+                //celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //tr.Cells.Add(celProductoCod);
 
 
                 string UnidadMedida = cu.ObtenerUnidadId(listStockTotal.Recetas.UnidadMedida.Value).descripcion;
 
                 TableCell celUM = new TableCell();
                 celUM.Text = UnidadMedida;
-                celUM.Font.Bold = true;
+                //celUM.Font.Bold = true;
                 celUM.VerticalAlign = VerticalAlign.Middle;
                 celUM.HorizontalAlign = HorizontalAlign.Left;
                 celUM.Attributes.Add("style", "padding-bottom: 1px !important;");

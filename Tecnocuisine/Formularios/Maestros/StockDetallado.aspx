@@ -183,7 +183,8 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th style="text-align: left">Cantidad</th>
+                                        <th style="text-align: left">Unidad</th>
+                                        <th style="text-align: end">Stock</th>
                                         <%--<th></th>--%>
                                     </tr>
                                 </thead>
