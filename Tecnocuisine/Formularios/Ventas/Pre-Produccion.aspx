@@ -359,7 +359,7 @@
 
 
                                         <div style="text-align: right; margin-top: 10px">
-                                            <asp:Button ID="btnRecepcion" runat="server" OnClientClick="btnRecepcion_ClientClick()"
+                                            <asp:Button ID="btnRecepcion" runat="server" OnClientClick="return btnRecepcion_ClientClick()"
                                                 OnClick="btnRecepcion_Click" class="btn btn-primary"
                                                 title="Enviar" Text="Recepcionar" />
                                         </div>
@@ -1614,6 +1614,12 @@
                 let cantEnviada = document.getElementById(tableName).rows[i].cells[2].innerText;
                 let cantRecepcionada = document.getElementById(tableName).rows[i].cells[3].querySelector('input').value;
 
+                // Si falta cantidad Recepcionada, cancelar el click del servidor
+                if (cantRecepcionada === "") {
+                    toastr.warning("Ingrese la cantidad recepcionada en todas las filas.", "Error");
+                    return false;  // Esto cancela el OnClick del servidor
+                }
+
                 HFItems.value += idItemRemitoInterno + "&" + producto + "&" + cantEnviada + "&" + cantRecepcionada + ";";
             }
 
@@ -1622,6 +1628,8 @@
 
             console.log("DetalleRemitosInternos");
             console.log(HFItems.value);
+
+            return true;
         }
     </script>
 
