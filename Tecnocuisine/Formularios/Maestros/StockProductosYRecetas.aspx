@@ -33,11 +33,11 @@
                                                     <thead>
                                                         <tr>
 
-                                                            <th style="max-width: 100px">cod.Producto</th>
+                                                            <th style="max-width: 100px; display:none">cod.Producto</th>
                                                             <th>Producto/Receta </th>
-                                                            <th>U. Medida</th>
-                                                            <th>Costo</th>
-                                                            <th>Stock</th>
+                                                            <th style="width:10%; text-align:end">U. Medida</th>
+                                                            <th style="width:12%; text-align:end">Costo</th>
+                                                            <th style="width:12%; text-align:end">Stock</th>
 
                                                             <th style="max-width: 100px"></th>
                                                         </tr>

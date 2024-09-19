@@ -101,7 +101,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 celNumero.Text = producto.id.ToString();
                 celNumero.VerticalAlign = VerticalAlign.Middle;
                 celNumero.HorizontalAlign = HorizontalAlign.Right;
-                celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celNumero.Attributes.Add("style", "padding-bottom: 1px !important; display:none");
 
                 tr.Cells.Add(celNumero);
 
@@ -116,7 +116,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 ControladorUnidad cu = new ControladorUnidad();
                 string UnidadMedida = "";
-                UnidadMedida = cu.ObtenerUnidadId(producto.unidadMedida).descripcion;
+                UnidadMedida = cu.ObtenerUnidadId(producto.unidadMedida).abreviacion;
                 TableCell celUM = new TableCell();
                 celUM.Text = UnidadMedida;
                 celUM.VerticalAlign = VerticalAlign.Middle;
@@ -125,7 +125,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 tr.Cells.Add(celUM);
 
                 TableCell celCosto = new TableCell();
-                celCosto.Text = producto.costo.ToString().Replace(',', '.');
+                celCosto.Text = "$ "+producto.costo.ToString().Replace(',', '.');
                 celCosto.VerticalAlign = VerticalAlign.Middle;
                 celCosto.HorizontalAlign = HorizontalAlign.Left;
                 celCosto.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
@@ -138,7 +138,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 if (stockR != null)
                     celStock.Text = stockR.stock.Value.ToString();
                 else
-                    celStock.Text = "0";
+                    celStock.Text = "0.00";
                 celStock.VerticalAlign = VerticalAlign.Middle;
                 celStock.HorizontalAlign = HorizontalAlign.Left;
                 celStock.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
@@ -214,7 +214,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 celNumero.Text = Receta.id.ToString();
                 celNumero.VerticalAlign = VerticalAlign.Middle;
                 celNumero.HorizontalAlign = HorizontalAlign.Right;
-                celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celNumero.Attributes.Add("style", "padding-bottom: 1px !important; display:none");
 
                 tr.Cells.Add(celNumero);
 
@@ -226,7 +226,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 tr.Cells.Add(celDescripcion);
                 ControladorUnidad cu = new ControladorUnidad();
                 string UnidadMedida = "";
-                UnidadMedida = cu.ObtenerUnidadId(Receta.UnidadMedida.Value).descripcion;
+                UnidadMedida = cu.ObtenerUnidadId(Receta.UnidadMedida.Value).abreviacion;
 
                 TableCell celUM = new TableCell();
                 celUM.Text = UnidadMedida;
@@ -236,7 +236,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 tr.Cells.Add(celUM);
 
                 TableCell celCosto = new TableCell();
-                celCosto.Text = FormatearNumero((decimal)Receta.Costo);
+                celCosto.Text = "$ "+ FormatearNumero((decimal)Receta.Costo);
                 celCosto.VerticalAlign = VerticalAlign.Middle;
                 celCosto.HorizontalAlign = HorizontalAlign.Left;
                 celCosto.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
