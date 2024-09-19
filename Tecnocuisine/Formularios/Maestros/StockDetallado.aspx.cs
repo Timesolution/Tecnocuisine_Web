@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Gestion_Api.Entitys;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Tecnocuisine_API.Controladores;
@@ -28,7 +31,6 @@ namespace Tecnocuisine.Formularios.Maestros
                 id = Convert.ToInt32(Request.QueryString["i"]);
                 tipo = Convert.ToInt32(Request.QueryString["t"]);
                 CargarTablaStockTotal();
-
             }
         }
 
@@ -66,7 +68,7 @@ namespace Tecnocuisine.Formularios.Maestros
                         CargarPhFinal(ListStockTotal);
                     }
 
-                    CargarStockEnTransito(stockEnTransito, prod.unidadMedida);
+                    CargarStockEnTransito(stockEnTransito, prod.unidadMedida, prod.descripcion);
 
                     //if (listStockPresentaciones != null)
                     //{
@@ -118,7 +120,7 @@ namespace Tecnocuisine.Formularios.Maestros
                         CargarPhFinal2(ListStockTotal);
                     }
 
-                    CargarStockEnTransito(stockEnTransito, (int)receta.UnidadMedida);
+                    CargarStockEnTransito(stockEnTransito, (int)receta.UnidadMedida, receta.descripcion);
 
                     //if (listStockPresentaciones != null)
                     //{
@@ -157,7 +159,7 @@ namespace Tecnocuisine.Formularios.Maestros
             }
         }
 
-        private void CargarStockEnTransito(decimal stockEnTransito, int unidadId)
+        private void CargarStockEnTransito(decimal stockEnTransito, int unidadId, string descripcion)
         {
             try
             {
@@ -178,7 +180,21 @@ namespace Tecnocuisine.Formularios.Maestros
                 celStock.Width = Unit.Percentage(5);
                 celStock.Attributes.Add("style", "text-align:end");
 
+                TableCell celAccion = new TableCell();
+                celAccion.Style.Add("text-align", "end");
+
+                LinkButton btnDetalle = new LinkButton();
+                //btnDetalle.ID = "btnVerPedidos_" + cont.ToString();
+                btnDetalle.CssClass = "btn btn-xs";
+                btnDetalle.Style.Add("background-color", "transparent");
+                btnDetalle.Attributes.Add("data-toggle", "modal");
+                btnDetalle.Attributes.Add("href", "#modalConfirmacion2");
+                btnDetalle.Text = "<span title='Ver Detalle'><i class='fa fa-file-text' style='color: black;'></i></span>";
+                btnDetalle.Attributes.Add("onclick", "verDetalleTransito('" + descripcion + "');");
+                celAccion.Controls.Add(btnDetalle);
+
                 tr.Cells.Add(celStock);
+                tr.Cells.Add(celAccion);
 
                 PHTransito.Controls.Add(tr);
             }
@@ -186,6 +202,34 @@ namespace Tecnocuisine.Formularios.Maestros
             {
 
                 throw;
+            }
+        }
+
+
+        [WebMethod]
+        public static string verDetalleTransito(string descripcion)
+        {
+            try
+            {
+                ControladorStockProducto ControladorStockProducto = new ControladorStockProducto();
+                // Son las cantidades que fueron enviadas entre sectores y que aun no han sido recepcionadas pero siguen siendo parte del stock
+                var transitos = ControladorStockProducto.ObtenerStockEnTransitoByDescripcionAgrupadoPorSectores(descripcion);
+                
+                string detalle = string.Empty;
+
+                foreach (var transito in transitos)
+                {
+                    detalle +=
+                        transito.SectorOrigen + "," +
+                        transito.SectorDestino + "," +
+                        transito.CantidadEnTransito.ToString().Replace(",", ".") + ";";
+                }
+
+                return detalle;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
 
