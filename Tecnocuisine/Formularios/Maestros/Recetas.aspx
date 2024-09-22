@@ -45,9 +45,9 @@
                                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                                     <thead>
                                                         <tr>
-                                                            <th style="width: 10%">#</th>
-                                                            <th style="width: 77%">Descripcion</th>
-                                                            <th style="width: 13%"></th>
+                                                            <th style="display:none">#</th>
+                                                            <th style="width: auto">Descripcion</th>
+                                                            <th style="width: auto;"></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>

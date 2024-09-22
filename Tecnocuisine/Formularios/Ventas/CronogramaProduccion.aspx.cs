@@ -32,65 +32,28 @@ namespace Tecnocuisine.Formularios.Ventas
         public Dictionary<string, DataTable> sectorTables;
         public Dictionary<string, DataTable> sectorTablesGroupByFechas = new Dictionary<string, DataTable>();
         public int cantMax = 0;
-
         public List<int> numeros = new List<int>();
         public int cont = 0;
         public DateTime fechaOrdenDeProduccion;
         //public List<string> fechasHead = new List<string>();
         public HashSet<string> fechasHead = new HashSet<string>();
+
+        private string idsQueryString;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
-                string idsQueryString = Request.QueryString["ids"]; //Esta variable obtiene todos los ids de todas las ordenes de produccion seleccionadas
-                
-                if(string.IsNullOrWhiteSpace(idsQueryString))
+                idsQueryString = Request.QueryString["ids"]; //Esta variable obtiene todos los ids de todas las ordenes de produccion seleccionadas
+
+                if (string.IsNullOrWhiteSpace(idsQueryString))
                     Response.Redirect("OrdenesDeProduccion.aspx", false);
 
-                int Nivel = 1;
-                ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
-
-                //Esta funcion obtiene todas los ingredientes de todas las ordenes de produccion de nivel 1
-                dt = cOrdenDeProduccion.GetAllIngredientesOrdenesProduccionGroupBySector(idsQueryString);
-
-
-                DataTable dtCopia = cOrdenDeProduccion.getRecipesFromSelectedOrders(idsQueryString);
-
-                foreach (DataRow dr in dtCopia.Rows)
-                {
-                    DataTable dtingredietesNivel1 = obtenerIngredientesReceta(Convert.ToInt32(dr["id"].ToString()), dr["OPNumero"].ToString(), dr["Producto"].ToString(), Convert.ToInt32(dr["idReceta"].ToString()),
-                        dr["cantidad"].ToString(), dr["fechaEntrega"].ToString(), Convert.ToInt32(dr["id5"].ToString()), dr["descripcion1"].ToString(), dr["razonSocial"].ToString());
-                    //aca tengo que obtener el set de datos necesito 
-                    DataTable dtSubRecetas = obtenerSubRecetasOrdenes(Convert.ToInt32(dr["id"].ToString()), dr["OPNumero"].ToString(), dr["Producto"].ToString(), Convert.ToInt32(dr["idReceta"].ToString()),
-                          dr["cantidad"].ToString(), dr["fechaEntrega"].ToString(), Convert.ToInt32(dr["id5"].ToString()), dr["descripcion1"].ToString(), dr["razonSocial"].ToString());
-
-
-                    foreach (DataRow drNivel1 in dtSubRecetas.Rows)
-                    {
-                        DataTable dtingredietesNivel2 = obtenerIngredientesReceta(Convert.ToInt32(drNivel1["idOrdenProduccion"].ToString()), drNivel1["OPNumero"].ToString(), drNivel1["descripcion"].ToString(), Convert.ToInt32(drNivel1["idProductoOReceta"].ToString()),
-                        drNivel1["cantidad"].ToString(), drNivel1["FechaEntregaOrden"].ToString(), Convert.ToInt32(drNivel1["idSector"].ToString()), drNivel1["sectorProductivo"].ToString(), dr["razonSocial"].ToString());
-
-                        DataTable dtSubrecetasNivel2 = obtenerSubRecetasOrdenes(Convert.ToInt32(drNivel1["idOrdenProduccion"].ToString()), drNivel1["OPNumero"].ToString(), drNivel1["descripcion"].ToString(), Convert.ToInt32(drNivel1["idProductoOReceta"].ToString()),
-                        drNivel1["cantidad"].ToString(), drNivel1["FechaEntregaOrden"].ToString(), Convert.ToInt32(drNivel1["idSector"].ToString()), drNivel1["sectorProductivo"].ToString(), dr["razonSocial"].ToString());
-
-                        foreach (DataRow drNivel2 in dtSubrecetasNivel2.Rows)
-                        {
-                            DataTable dtingredietesNivel3 = obtenerIngredientesReceta(Convert.ToInt32(drNivel2["idOrdenProduccion"].ToString()), drNivel2["OPNumero"].ToString(), drNivel2["descripcion"].ToString(), Convert.ToInt32(drNivel2["idProductoOReceta"].ToString()),
-                            drNivel2["cantidad"].ToString(), drNivel2["FechaEntregaOrden"].ToString(), Convert.ToInt32(drNivel2["idSector"].ToString()), drNivel2["sectorProductivo"].ToString(), dr["razonSocial"].ToString());
-
-                            DataTable dtSubrecetasNivel3 = obtenerSubRecetasOrdenes(Convert.ToInt32(drNivel2["idOrdenProduccion"].ToString()), drNivel2["OPNumero"].ToString(), drNivel2["descripcion"].ToString(), Convert.ToInt32(drNivel2["idProductoOReceta"].ToString()),
-                            drNivel2["cantidad"].ToString(), drNivel2["FechaEntregaOrden"].ToString(), Convert.ToInt32(drNivel2["idSector"].ToString()), drNivel2["sectorProductivo"].ToString(), dr["razonSocial"].ToString());
-                        }
-                    }
-                }
-
-
-
+                GenerarCronograma();
 
                 //dtOrdenDeProduccionRecetas_recetas = cOrdenDeProduccion.GetAllIngredientesRecetasOrdenesProduccionGroupBySector(idsQueryString);
                 //dtGlobal.DefaultView.Sort = "SectorProductivo ASC";
                 //dtGlobal = dt.DefaultView.ToTable();
-
 
                 DataView dv = dtGlobal.DefaultView;
                 dv.Sort = "sectorProductivo ASC, fechaProducto ASC";
@@ -102,18 +65,168 @@ namespace Tecnocuisine.Formularios.Ventas
 
                 separarSectoresEnTablas();
 
-
                 // fechaOrdenDeProduccion = obtenerFechaOrden(idsQueryString);
                 // dtCantidadRecetasPorCadaOrden = cOrdenDeProduccion.GetAllCantidadProductosGroupByProductoColumn(idsQueryString);
 
                 obtenerOPNumeros(idsQueryString);
 
+                // Si alguna orden tiene estado "A producir", ocultar los botones para evitar duplicar la produccion de la orden
+                if (HayOrdenesProducidas(idsQueryString))
+                {
+                    btnProducir.Visible = false;
+                    btnCancelar.Visible = false;
+                }
             }
             catch (Exception ex)
             {
                 Response.Redirect("OrdenesDeProduccion.aspx", false);
             }
+        }
 
+        private bool HayOrdenesProducidas(string idsQueryString)
+        {
+            ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
+
+            try
+            {
+                var idsArray = idsQueryString.Split(',');
+                foreach (string id in idsArray)
+                {
+                    if (string.IsNullOrEmpty(id)) continue;
+
+                    var orden = cOrdenDeProduccion.GetOneOrdenesDeProduccionById(Convert.ToInt32(id));
+                    if (orden?.estadoDeLaOrden == 1) // Si tiene estado y es "a producir"
+                        return true;
+                }
+
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private void GenerarCronograma()
+        {
+            ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
+            DataTable dtRecetasFinalesOrdenes = cOrdenDeProduccion.GetRecetasDeOrdenesSeleccionadas(idsQueryString);
+
+            foreach (DataRow dr in dtRecetasFinalesOrdenes.Rows)
+            {
+                int id = Convert.ToInt32(dr["id"].ToString());
+                string OPNumero = dr["OPNumero"].ToString();
+                string producto = dr["Producto"].ToString();
+                int idReceta = Convert.ToInt32(dr["idReceta"].ToString());
+                string cantidad = dr["cantidad"].ToString();
+                string fechaEntrega = dr["fechaEntrega"].ToString();
+                int idSector = Convert.ToInt32(dr["id5"].ToString());
+                string sector = dr["descripcion1"].ToString();
+                string razonSocial = dr["razonSocial"].ToString();
+
+                /// Obtener los ingredientes de la receta recorrida 
+                DataTable dtingredietesNivel1 = obtenerIngredientesReceta(id, OPNumero, producto, idReceta, cantidad, fechaEntrega, idSector, sector, razonSocial);
+                dtGlobal.Merge(dtingredietesNivel1); // no mover de aca!!
+
+                /// Insertar en la tabla la receta final que se esta recorriendo
+                DataRow rowRecetaOrden = CrearRowRecetaOrden(dr);
+                dtGlobal.Rows.Add(rowRecetaOrden);
+
+                /// Obtener las subrecetas de la receta recorrida
+                DataTable dtSubRecetas = obtenerSubRecetasOrdenes(id, OPNumero, producto, idReceta, cantidad, fechaEntrega, idSector, sector, razonSocial);
+                dtGlobal.Merge(dtSubRecetas);
+
+                /// Recorrer los ingredientes y recetas de cada subreceta
+                RecorrerSubrecetas(dtSubRecetas);
+            }
+        }
+
+        private void RecorrerSubrecetas(DataTable dtRecetas)
+        {
+            // Cada subreceta puede tener infinitas subrecetas (por eso se usa while preguntando si la receta tiene mas subrecetas dentro)
+            while (dtRecetas.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dtRecetas.Rows)
+                {
+                    DateTime fechaSubrecetaPadre = Convert.ToDateTime(dr["fechaProducto"].ToString());
+
+                    int idOrdenProduccion = Convert.ToInt32(dr["idOrdenProduccion"].ToString());
+                    string OPNumero = dr["OPNumero"].ToString();
+                    string descripcion = dr["descripcion"].ToString();
+                    int idProductoReceta = Convert.ToInt32(dr["idProductoOReceta"].ToString());
+                    string cantidad = dr["cantidad"].ToString();
+                    string fechaEntregaOrden = dr["FechaEntregaOrden"].ToString();
+                    int idSector = Convert.ToInt32(dr["idSector"].ToString());
+                    string sector = dr["sectorProductivo"].ToString();
+                    string razonSocial = dr["razonSocial"].ToString();
+
+                    // Ingredientes: Aceite,oregano,cebolla...
+                    DataTable dtingredientes = obtenerIngredientesReceta(idOrdenProduccion, OPNumero, descripcion, idProductoReceta, cantidad, fechaEntregaOrden, idSector, sector, razonSocial);
+                    // Recorrer cada ingrediente y cambiarle la fecha teniendo en cuenta su tiempo de elaboracion y la fecha del padre
+                    SetFechasElaboracion(dtingredientes, fechaSubrecetaPadre);
+
+                    //Subrecetas
+                    DataTable dtSubrecetas = obtenerSubRecetasOrdenes(idOrdenProduccion, OPNumero, descripcion, idProductoReceta, cantidad, fechaEntregaOrden, idSector, sector, razonSocial);
+                    // Recorrer cada subreceta y cambiarle la fecha teniendo en cuenta su tiempo de elaboracion y la fecha del padre:
+                    SetFechasElaboracion(dtSubrecetas, fechaSubrecetaPadre);
+
+                    dtGlobal.Merge(dtingredientes);
+                    dtGlobal.Merge(dtSubrecetas);
+
+                    if (dtSubrecetas.Rows.Count > 0)
+                    {
+                        dtRecetas = dtSubrecetas; // Cambiar la fuente a las nuevas subrecetas encontradas
+                        break; // Romper el foreach actual para comenzar de nuevo con la nueva fuente
+                    }
+                    //Cuando la receta procesada ya no tenga subrecetas, seguimos con la siguiente receta
+                    else
+                    {
+                        dtRecetas.Rows.RemoveAt(0);
+                        break;
+                    }
+                }
+            }
+
+        }
+
+        private void SetFechasElaboracion(DataTable dt, DateTime fechaSubrecetaPadre)
+        {
+            // Calculo: fecha del padre - tiempo elaboracion = fecha del ingrediente
+            foreach (DataRow dr in dt.Rows)
+            {
+                dr["fechaProducto"] = fechaSubrecetaPadre.AddDays(-(int)dr["Tiempo"]);
+            }
+        }
+
+        /// <summary>
+        /// Devuelve una fila para la datatable "dtGlobal" con la informacion de una receta de la orden de produccion (producto final)
+        /// </summary>
+        /// <param name="rowRecetasOrden">
+        /// </param>
+        /// <returns></returns>
+        private DataRow CrearRowRecetaOrden(DataRow rowRecetasOrden)
+        {
+            DataRow newRow = dtGlobal.NewRow();
+            newRow["idOrdenProduccion"] = rowRecetasOrden["idOrdenDeProduccion"];
+            newRow["OPNumero"] = rowRecetasOrden["OPNumero"];
+            newRow["Column1"] = rowRecetasOrden["Producto"];
+            newRow["idRecetaPadre"] = rowRecetasOrden["idReceta"];
+            newRow["CantidadPadre"] = rowRecetasOrden["cantidad"];
+            newRow["FechaEntregaOrden"] = rowRecetasOrden["fechaEntrega"];
+            newRow["idSectorPadre"] = rowRecetasOrden["id5"];
+            newRow["sectorPadre"] = rowRecetasOrden["descripcion1"];
+            newRow["idProductoOReceta"] = rowRecetasOrden["idReceta"];
+            newRow["descripcion"] = rowRecetasOrden["descripcion"];
+            newRow["cantidad"] = rowRecetasOrden["cantidad"];
+            newRow["idSector"] = rowRecetasOrden["id5"];
+            newRow["sectorProductivo"] = rowRecetasOrden["descripcion1"];
+            newRow["fechaProducto"] = rowRecetasOrden["fechaEntrega"];
+            newRow["ingredienteOreceta"] = "Receta";
+            newRow["RazonSocial"] = rowRecetasOrden["razonSocial"];
+            newRow["unidadMedida"] = rowRecetasOrden["abreviacion"];
+            newRow["SectorPadre"] = rowRecetasOrden["descripcion1"];
+
+            return newRow;
         }
 
         public void separarSectoresEnTablas()
@@ -229,7 +342,7 @@ namespace Tecnocuisine.Formularios.Ventas
             {
                 ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
                 DataTable dt = cOrdenDeProduccion.getRecipesFromRecipes(id, OPNumero, Producto, idReceta, cantidad, fechaEntrega, idSector, sectorPadre, RazonSocialCliente);
-                dtGlobal.Merge(dt);
+
                 return dt;
 
             }
@@ -244,10 +357,10 @@ namespace Tecnocuisine.Formularios.Ventas
         public DataTable obtenerIngredientesReceta(int id, string OPNumero, string Producto, int idReceta, string cantidad, string fechaEntrega, int idSector, string SectorPadre, string RazonSocialCliente)
         {
             try
-            {   
+            {
                 ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
                 DataTable dt = cOrdenDeProduccion.getIngredientsRecipes(id, OPNumero, Producto, idReceta, cantidad, fechaEntrega, idSector, SectorPadre, RazonSocialCliente);
-                dtGlobal.Merge(dt);
+
                 return dt;
 
             }
@@ -544,7 +657,7 @@ namespace Tecnocuisine.Formularios.Ventas
                         }
 
                         //aca quiero convertirlo en una datatable
-                        controladorDatosTransferencias cDatosTransferencias = new controladorDatosTransferencias();   
+                        controladorDatosTransferencias cDatosTransferencias = new controladorDatosTransferencias();
                         foreach (var key in sumaCantidadPorGrupo)
                         {
                             datosTransferencias datosTransferencias = new datosTransferencias();

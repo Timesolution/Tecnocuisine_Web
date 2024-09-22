@@ -49,7 +49,7 @@ namespace Tecnocuisine.Formularios.Compras
                 CargarSectores();
                 //ObtenerPresentaciones();
                 txtFechaEntrega.Text = DateTime.Now.ToString("dd/MM/yyyy");
-                txtFechaVencimiento.Text = DateTime.Now.AddDays(31).ToString("dd/MM/yyyy");
+                //txtFechaVencimiento.Text = DateTime.Now.AddDays(31).ToString("dd/MM/yyyy");
                 //DateTime.Now.AddMonths(1).ToString("dd/MM/yyyy");
                 if (accion == 2)
                 {
@@ -774,7 +774,8 @@ namespace Tecnocuisine.Formularios.Compras
                                         productoNuevo.idMarca = Convert.ToInt32(id_Marca);
                                         productoNuevo.Cantidad = Convert.ToDecimal(Cantidad);
                                         productoNuevo.Precio = precio;
-                                        ControladorEntregas.AgregarEntrega_Producto(productoNuevo, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(Presentaciones));
+                                        ControladorEntregas.AgregarEntrega_Producto(productoNuevo, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(Presentaciones));                                      
+                                        controladorProducto.ActualizarCosto((int)productoNuevo.idProductos);                        
                                     }
                                     else
                                     {
@@ -784,7 +785,11 @@ namespace Tecnocuisine.Formularios.Compras
                                         RecetaNuevo.Cantidad = Convert.ToDecimal(Cantidad);
                                         RecetaNuevo.Precio = precio;
                                         RecetaNuevo.idSector = idSector;
+                                        RecetaNuevo.idPresentacion = Convert.ToInt32(Presentaciones);
+                                        RecetaNuevo.FechaVencimiento = fechaVencimientoItem;
+                                        RecetaNuevo.idMarca = Convert.ToInt32(id_Marca);
                                         ControladorEntregas.AgregarEntrega_Receta(RecetaNuevo, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(Presentaciones));
+                                        ControladorReceta.ActualizarCosto((int)RecetaNuevo.idRecetas);
                                     }
                                 }
                             }
@@ -802,6 +807,8 @@ namespace Tecnocuisine.Formularios.Compras
                 {
                     m.ShowToastr(Page, "Algun dato no se ingreso correctamente", "Error", "warning");
                 }
+
+                txtNroFactura.Text = string.Empty;
             }
             catch (Exception ex)
             {
@@ -850,6 +857,7 @@ namespace Tecnocuisine.Formularios.Compras
                 //txtUnidadMed.Text = "";
                 txtObservaciones.Text = "";
                 idProductosRecetas.Value = "";
+                txtNroFactura.Text = "";
             }
             catch (Exception ex)
             {
@@ -982,6 +990,7 @@ namespace Tecnocuisine.Formularios.Compras
                 if (receta.SectorP_Recetas == null)
                     return -1;
 
+                // TODO: sacar for
                 foreach (var sector in receta.SectorP_Recetas)
                     return sector.idSectorP ?? -1;
 
@@ -997,33 +1006,55 @@ namespace Tecnocuisine.Formularios.Compras
         //OBTENER TODAS LAS MARCAS
 
         [WebMethod]
-        public static List<PresentacionClass> GetMarca(int idProd)
+        public static List<PresentacionClass> GetMarca(int idItem, int tipo)
         {
             try
             {
                 ControladorMarca controladorMarca = new ControladorMarca();
-                var marcas = controladorMarca.ObtenerMarcaPorIDProducto(idProd);
                 List<PresentacionClass> listaFInal = new List<PresentacionClass>();
-                if (marcas.Count > 0)
+
+                // Es Producto
+                if (tipo == 1)
                 {
-                    foreach (var item in marcas)
+                    var marcas = controladorMarca.ObtenerMarcaPorIDProducto(idItem);
+
+                    if (marcas.Count > 0)
                     {
-                        PresentacionClass pc = new PresentacionClass();
-                        pc.id = item.Articulos_Marcas.id;
-                        pc.descripcion = item.Articulos_Marcas.descripcion;
-                        listaFInal.Add(pc);
+                        foreach (var item in marcas)
+                        {
+                            PresentacionClass pc = new PresentacionClass();
+                            pc.id = item.Articulos_Marcas.id;
+                            pc.descripcion = item.Articulos_Marcas.descripcion;
+                            listaFInal.Add(pc);
+                        }                        
                     }
+
                     return listaFInal;
                 }
+
+                // Es Receta
                 else
                 {
-                    return new List<PresentacionClass>();
+                    var marcas = controladorMarca.ObtenerMarcasPorIDReceta(idItem);
+
+                    if (marcas.Count > 0)
+                    {
+                        foreach (var item in marcas)
+                        {
+                            PresentacionClass pc = new PresentacionClass();
+                            pc.id = item.Articulos_Marcas.id;
+                            pc.descripcion = item.Articulos_Marcas.descripcion;
+                            listaFInal.Add(pc);
+                        }
+                    }
+
+                    return listaFInal;
                 }
+                
             }
             catch (Exception)
             {
                 return new List<PresentacionClass>();
-
             }
         }
         public class PresentacionClass

@@ -76,7 +76,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 }
             }
             ObtenerGruposArticulos();
-            
+
             //ObtenerSubGruposArticulos(Convert.ToInt32(ListGrupo.SelectedValue));
             ObtenerPresentaciones();
             ObtenerMarca();
@@ -322,9 +322,9 @@ namespace Tecnocuisine.Formularios.Maestros
                     if (producto.idRubro != null)
                     {
                         var rubro = new ControladorRubros().ObtenerRubrosId((int)producto.idRubro);
-                        ListRubro.Text = producto.idRubro + " - " + rubro.descripcion;                       
+                        ListRubro.Text = producto.idRubro + " - " + rubro.descripcion;
                     }
-                    
+
                     //btnAtributos.Attributes.Remove("disabled");
 
                 }
@@ -603,12 +603,21 @@ namespace Tecnocuisine.Formularios.Maestros
         }
 
         [WebMethod]
-        public static string GuardarPresentacion(string descripcion, string Cantidad)
+        public static void GuardarPresentacion(string descripcion, string Cantidad)
         {
+            var response = new { success = false, message = "" };
+
             try
             {
-                Tecnocuisine_API.Entitys.Presentaciones presentacion = new Tecnocuisine_API.Entitys.Presentaciones();
                 ControladorPresentacion controladorPresentacion = new ControladorPresentacion();
+                Tecnocuisine_API.Entitys.Presentaciones presentacion = new Tecnocuisine_API.Entitys.Presentaciones();
+
+                if (controladorPresentacion.ExistePresentacion(descripcion))
+                {
+                    response = new { success = false, message = "Ya existe una presentación con la misma descripción." };
+                    throw new Exception(response.message);
+                }
+
                 presentacion.descripcion = descripcion;
                 presentacion.cantidad = Convert.ToDecimal(Cantidad);
                 presentacion.estado = 1;
@@ -617,18 +626,30 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 if (resultado > 0)
                 {
-                    return resultado + "-" + descripcion;
+                    string option = resultado + "-" + descripcion;
+                    response = new { success = true, message = option };
+                    HttpContext.Current.Response.StatusCode = 200;
                 }
                 else
                 {
-                    return "";
+                    response = new { success = false, message = "Ocurrió un error al guardar la presentación." };
+                    throw new Exception(response.message);
                 }
+
             }
             catch (Exception ex)
             {
-                return "";
+                response = new { success = false, message = ex.Message };
+                HttpContext.Current.Response.StatusCode = 500;
             }
-
+            finally
+            {
+                HttpContext.Current.Response.ContentType = "application/json";
+                HttpContext.Current.Response.Write(new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(response));
+                HttpContext.Current.Response.Flush(); // Ensure the response is sent immediately
+                HttpContext.Current.Response.SuppressContent = true; // Suppress any further content
+                HttpContext.Current.ApplicationInstance.CompleteRequest(); // Complete the request
+            }
         }
 
         [WebMethod]
@@ -714,10 +735,10 @@ namespace Tecnocuisine.Formularios.Maestros
                 List<Productos_Presentacion> PresentacionProd = new List<Productos_Presentacion>();
                 if (Presentacion.Trim() == "")
                 {
-                    Productos_Presentacion pp = new Productos_Presentacion();
-                    pp.idPresentacion = 1;
+                    //Productos_Presentacion pp = new Productos_Presentacion();
+                    //pp.idPresentacion = 1;
 
-                    PresentacionProd.Add(pp);
+                    //PresentacionProd.Add(pp);
                 }
                 else
                 {
@@ -739,12 +760,12 @@ namespace Tecnocuisine.Formularios.Maestros
                 List<Marca_Productos> marca_Productos = new List<Marca_Productos>();
                 if (Marca.Trim() == "")
                 {
-                    Marca_Productos pp = new Marca_Productos();
-                    pp.id_marca = 1;
-                    pp.estado = 1;
-                    pp.FechaCreacion = DateTime.Now;
+                    //Marca_Productos pp = new Marca_Productos();
+                    //pp.id_marca = 1;
+                    //pp.estado = 1;
+                    //pp.FechaCreacion = DateTime.Now;
 
-                    marca_Productos.Add(pp);
+                    //marca_Productos.Add(pp);
 
                 }
                 else
@@ -770,7 +791,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
 
                 //Set Sector
-                if(sectorId == "-1")
+                if (sectorId == "-1")
                     producto.idSectorProductivo = null;
                 else
                     producto.idSectorProductivo = int.Parse(sectorId);
@@ -1040,7 +1061,7 @@ namespace Tecnocuisine.Formularios.Maestros
         [WebMethod]
         public static string GuardarReceta2(string descripcion, string codigo, /*string Categoria,*/ string Sector, /*string Atributos,*/ string Unidad,
             string Tipo, string rinde, string prVenta, string idProductosRecetas, string BrutoT, string CostoT, string BrutoU, string CostoU,
-            string FoodCost, string ContMarg, string BuenasPract, string InfoNut, string idPasosRecetas, string Presentaciones, bool ProdFinal, bool Comprable, string Rubro)
+            string FoodCost, string ContMarg, string BuenasPract, string InfoNut, string idPasosRecetas, string Presentaciones, bool ProdFinal, bool Comprable, string Rubro, string Marcas)
         {
             try
             {
@@ -1048,7 +1069,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 ControladorProducto controladorProducto = new ControladorProducto();
                 ControladorAtributo controladorAtributo = new ControladorAtributo();
                 Tecnocuisine_API.Entitys.Recetas Receta = new Tecnocuisine_API.Entitys.Recetas();
-                
+
                 //Esta parte se encarga de guardar los datos de la receta, es decir la primera parte de la receta
                 Receta.descripcion = descripcion;
                 Receta.Codigo = codigo;
@@ -1096,6 +1117,9 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 if (resultado > 0)
                 {
+                    if (Receta.PorcFoodCost != null && controladorReceta.DebeGenerarAlerta((decimal)Receta.PorcFoodCost))
+                        controladorReceta.GenerarAlerta(Receta);
+
                     string[] items = idProductosRecetas.Split(';');
                     int idProducto = 0;
                     foreach (var pr in items)
@@ -1148,6 +1172,24 @@ namespace Tecnocuisine.Formularios.Maestros
                                 }
                             }
 
+                            decimal factorParte = 1;
+                            foreach (string elemento in producto)
+                            {
+                                Match match = Regex.Match(elemento, @"Factor_(.+)");  // Expresión regular para capturar todo después del guion bajo
+
+                                if (match.Success)
+                                {
+                                    // Si se encuentra una coincidencia, extrae el número y almacénalo en la variable
+                                    string numeroStr = match.Groups[1].Value;
+                                    if (decimal.TryParse(numeroStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal numero))
+                                    {
+                                        factorParte = Math.Round(numero, 2); // Redondear a 2 decimales para coincidir con el tipo de dato en la base de datos
+                                        break; // Rompe el bucle una vez que se encuentra el número
+                                    }
+                                }
+                            }
+
+
 
                             //-----------------------------------------------------------------------------------------
 
@@ -1162,7 +1204,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                 productoNuevo.cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
                                 productoNuevo.idSectorProductivo = numeroEncontrado;
                                 productoNuevo.Tiempo = tiempoParte;
-
+                                productoNuevo.Factor = factorParte;
 
                                 controladorReceta.AgregarReceta_Producto(productoNuevo);
                             }
@@ -1205,6 +1247,23 @@ namespace Tecnocuisine.Formularios.Maestros
                                     }
                                 }
 
+                                decimal factorParteRecetes_Recetas = 1;
+                                foreach (string elemento in producto)
+                                {
+                                    Match match = Regex.Match(elemento, @"Factor_(.+)");  // Expresión regular para capturar todo después del guion bajo
+
+                                    if (match.Success)
+                                    {
+                                        // Si se encuentra una coincidencia, extrae el número y almacénalo en la variable
+                                        string numeroStr = match.Groups[1].Value;
+                                        if (decimal.TryParse(numeroStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal numero))
+                                        {
+                                            factorParteRecetes_Recetas = Math.Round(numero, 2); // Redondear a 2 decimales para coincidir con el tipo de dato en la base de datos
+                                            break; // Rompe el bucle una vez que se encuentra el número
+                                        }
+                                    }
+                                }
+
                                 //Guarda la receta usada como ingrediente
                                 Recetas_Receta recetaNueva = new Recetas_Receta();
                                 recetaNueva.idReceta = Receta.id;
@@ -1212,6 +1271,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                 recetaNueva.cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
                                 recetaNueva.idSectorProductivo = idSectorProductivo;
                                 recetaNueva.Tiempo = tiempoParteRecetes_Recetas;
+                                recetaNueva.Factor = factorParteRecetes_Recetas;
                                 controladorReceta.AgregarReceta_Receta(recetaNueva);
 
                             }
@@ -1242,29 +1302,29 @@ namespace Tecnocuisine.Formularios.Maestros
 
                     //try
                     //{
-                        //string[] itemsA;
-                        //if (Atributos.Contains(","))
-                        //    itemsA = Atributos.Split(',');
-                        //else
-                        //    itemsA = Atributos.Split(';');
-                        //int idAtributo = 0;
-                        //foreach (var pr in itemsA)
-                        //{
-                        //    if (pr != "")
-                        //    {
-                        //        string[] Atributo = pr.Split('-');
-                        //        if (Atributo[1] != "")
-                        //        {
-                        //            Recetas_Atributo AtributoNuevo = new Recetas_Atributo();
-                        //            AtributoNuevo.idReceta = resultado;
-                        //            AtributoNuevo.idAtributo = Convert.ToInt32(Atributo[0]);
-                        //            idAtributo = AtributoNuevo.idAtributo.Value;
+                    //string[] itemsA;
+                    //if (Atributos.Contains(","))
+                    //    itemsA = Atributos.Split(',');
+                    //else
+                    //    itemsA = Atributos.Split(';');
+                    //int idAtributo = 0;
+                    //foreach (var pr in itemsA)
+                    //{
+                    //    if (pr != "")
+                    //    {
+                    //        string[] Atributo = pr.Split('-');
+                    //        if (Atributo[1] != "")
+                    //        {
+                    //            Recetas_Atributo AtributoNuevo = new Recetas_Atributo();
+                    //            AtributoNuevo.idReceta = resultado;
+                    //            AtributoNuevo.idAtributo = Convert.ToInt32(Atributo[0]);
+                    //            idAtributo = AtributoNuevo.idAtributo.Value;
 
-                        //            controladorReceta.AgregarReceta_Atributo(AtributoNuevo);
-                        //        }
+                    //            controladorReceta.AgregarReceta_Atributo(AtributoNuevo);
+                    //        }
 
-                        //    }
-                        //}
+                    //    }
+                    //}
                     //}
                     //catch { }
 
@@ -1309,6 +1369,7 @@ namespace Tecnocuisine.Formularios.Maestros
                         else
                             itemsS = Sector.Split(';');
 
+                        // TODO: Quitar for porque solo entrara una vez
                         foreach (var pr in itemsS)
                         {
                             if (pr != "")
@@ -1324,7 +1385,6 @@ namespace Tecnocuisine.Formularios.Maestros
                                     controladorReceta.EliminarSectorProductivoRecetaByIdReceta(resultado); //Eliminar sector anterior si tiene
                                     controladorReceta.AgregarSectorProductivoReceta(sectorP_);
                                 }
-
                             }
                         }
                     }
@@ -1351,8 +1411,6 @@ namespace Tecnocuisine.Formularios.Maestros
                                     Recetas_Presentacion Rec_Pres = new Recetas_Presentacion();
                                     Rec_Pres.idPresentacion = Convert.ToInt32(PRess[0]);
                                     Rec_Pres.idRecetas = resultado;
-
-
                                     controladorReceta.AgregarPresentacionReceta(Rec_Pres);
                                 }
 
@@ -1361,8 +1419,35 @@ namespace Tecnocuisine.Formularios.Maestros
                     }
                     catch (Exception)
                     {
+                    }
 
+                    //Guardar marcas
+                    try
+                    {
+                        string[] itemsMarcas;
 
+                        if (Marcas.Contains(","))
+                            itemsMarcas = Marcas.Split(',');
+                        else
+                            itemsMarcas = Marcas.Split(';');
+
+                        foreach (var mr in itemsMarcas)
+                        {
+                            if (mr != "")
+                            {
+                                string[] marcaArray = mr.Split('-');
+                                if (marcaArray[1] != "")
+                                {
+                                    Marca_Recetas Marca_Receta = new Marca_Recetas();
+                                    Marca_Receta.id_marca = Convert.ToInt32(marcaArray[0].Trim());
+                                    Marca_Receta.id_Receta = resultado;
+                                    controladorReceta.AgregarMarcaReceta(Marca_Receta);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
                     }
 
                     JavaScriptSerializer javaScript = new JavaScriptSerializer();
@@ -1392,7 +1477,7 @@ namespace Tecnocuisine.Formularios.Maestros
         [WebMethod]
         public static string EditarReceta2(string descripcion, string codigo, /*string Categoria,*/ string Sector, /*string Atributos,*/ string Unidad,
            string Tipo, string rinde, string prVenta, string idProductosRecetas, string BrutoT, string CostoT, string BrutoU, string CostoU,
-           string FoodCost, string ContMarg, string BuenasPract, string InfoNut, string idPasosRecetas, string idReceta, string Presentaciones, bool ProdFinal, bool Comprable, string Rubro)
+           string FoodCost, string ContMarg, string BuenasPract, string InfoNut, string idPasosRecetas, string idReceta, string Presentaciones, bool ProdFinal, bool Comprable, string Rubro, string Marcas)
         {
             try
             {
@@ -1437,6 +1522,9 @@ namespace Tecnocuisine.Formularios.Maestros
                 //Si los datos de la primera parte de la receta se puedieron editar entonces entrea al if
                 if (resultado > 0)
                 {
+                    if (Receta.PorcFoodCost != null && controladorReceta.DebeGenerarAlerta((decimal)Receta.PorcFoodCost))
+                        controladorReceta.GenerarAlerta(Receta);
+
                     //Elimina todos los productos y tambien las recetas usadas como ingrediente que pertenezcan a la receta
                     //Esto lo hace porque los va a agregar nuevamente, es como si los pisara
                     controladorReceta.EliminarIngredientes(Receta.id);
@@ -1483,6 +1571,23 @@ namespace Tecnocuisine.Formularios.Maestros
                                 }
                             }
 
+                            decimal factorParte = 1;
+                            foreach (string elemento in producto)
+                            {
+                                Match match = Regex.Match(elemento, @"Factor_(.+)");  // Expresión regular para capturar todo después del guion bajo
+
+                                if (match.Success)
+                                {
+                                    // Si se encuentra una coincidencia, extrae el número y almacénalo en la variable
+                                    string numeroStr = match.Groups[1].Value;
+                                    if (decimal.TryParse(numeroStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal numero))
+                                    {
+                                        factorParte = Math.Round(numero, 2); // Redondear a 2 decimales para coincidir con el tipo de dato en la base de datos
+                                        break; // Rompe el bucle una vez que se encuentra el número
+                                    }
+                                }
+                            }
+
                             //Valida si el elemento es producto o una receta usada como ingrediente
                             if (producto[1] == "Producto")
                             {
@@ -1494,6 +1599,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                 //productoNuevo.idSectorProductivo = Convert.ToInt32(1);
                                 productoNuevo.idSectorProductivo = numeroEncontrado;
                                 productoNuevo.Tiempo = tiempoParte;
+                                productoNuevo.Factor = factorParte;
                                 //Guarda el producto
                                 controladorReceta.AgregarReceta_Producto(productoNuevo);
                             }
@@ -1538,6 +1644,22 @@ namespace Tecnocuisine.Formularios.Maestros
                                     }
                                 }
 
+                                decimal factorParteRecetes_Recetas = 1;
+                                foreach (string elemento in producto)
+                                {
+                                    Match match = Regex.Match(elemento, @"Factor_(.+)");  // Expresión regular para capturar todo después del guion bajo
+
+                                    if (match.Success)
+                                    {
+                                        // Si se encuentra una coincidencia, extrae el número y almacénalo en la variable
+                                        string numeroStr = match.Groups[1].Value;
+                                        if (decimal.TryParse(numeroStr, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out decimal numero))
+                                        {
+                                            factorParteRecetes_Recetas = Math.Round(numero, 2); // Redondear a 2 decimales para coincidir con el tipo de dato en la base de datos
+                                            break; // Rompe el bucle una vez que se encuentra el número
+                                        }
+                                    }
+                                }
 
 
                                 //Obtiene los datos de la receta
@@ -1547,6 +1669,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                 recetaNueva.cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
                                 recetaNueva.idSectorProductivo = idSectorProductivo;
                                 recetaNueva.Tiempo = tiempoParteRecetes_Recetas;
+                                recetaNueva.Factor = factorParteRecetes_Recetas;
                                 //Guarda la receta usada como ingrediente
                                 controladorReceta.AgregarReceta_Receta(recetaNueva);
                             }
@@ -1660,11 +1783,43 @@ namespace Tecnocuisine.Formularios.Maestros
                                 }
 
                             }
-                        }                      
-                    }               
+                        }
+                    }
                     catch (Exception)
                     {
                         throw new Exception();
+                    }
+
+                    // Editar marcas
+                    try
+                    {
+                        string[] itemsMarcas;
+
+                        if (Marcas.Contains(","))
+                            itemsMarcas = Marcas.Split(',');
+                        else
+                            itemsMarcas = Marcas.Split(';');
+
+                        // Limpiar las asignaciones que tenia para reemplazarlas por las nuevas
+                        controladorReceta.EliminarTodasMarcaReceta(Receta.id);
+
+                        foreach (var mr in itemsMarcas)
+                        {
+                            if (mr != "")
+                            {
+                                string[] marcaArray = mr.Split('-');
+                                if (marcaArray[1] != "")
+                                {
+                                    Marca_Recetas Marca_Receta = new Marca_Recetas();
+                                    Marca_Receta.id_marca = Convert.ToInt32(marcaArray[0].Trim());
+                                    Marca_Receta.id_Receta = Receta.id;
+                                    controladorReceta.AgregarMarcaReceta(Marca_Receta);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
                     }
 
                     JavaScriptSerializer javaScript = new JavaScriptSerializer();

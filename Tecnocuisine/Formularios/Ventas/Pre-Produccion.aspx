@@ -15,53 +15,67 @@
                                 <div class="wrapper wrapper-content animated fadeInRight">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <div class="ibox float-e-margins">
+                                            <div class="ibox float-e-margins" style="margin-bottom: 0">
                                                 <div class="ibox-content">
                                                     <div style="margin-left: 0px; margin-right: 0px;"
                                                         class="row">
-                                                        <div class="row" style="display: flex">
-                                                            <%-- Label de la ddl --%>
-                                                            <div class="col-md-1" style="margin-left: 15px; margin-right: 15px;">
-                                                                <label class="col-sm-2 control-label">Sector</label>
-                                                            </div>
-                                                            <%-- Ddl sectores --%>
-                                                            <div class="col-md-2">
-                                                                <asp:DropDownList ID="ddlSector" runat="server"
-                                                                    CssClass="chosen-select form-control"
-                                                                    DataTextField="CountryName" DataValueField="CountryCode"
-                                                                    Data-placeholder="Seleccione Rubro..." Width="100%">
-                                                                    <asp:ListItem Text="Select" Value=""></asp:ListItem>
-                                                                </asp:DropDownList>
-                                                            </div>
-                                                            <%-- boton ayer --%>
-                                                            <a id="btnAyer" onclick="filtrartTransferenciasAyer()" class="btn btn-default"
-                                                                title="filtrar ayer" style="height: 32px; margin-left: 10px">Ayer
-                                                            </a>
-                                                            <%-- boton hoy --%>
-                                                            <a id="btnHoy" onclick="filtrartTransferenciasHoy()" class="btn btn-default"
-                                                                title="filtrar hoy" style="height: 32px; margin-left: 10px">Hoy
-                                                            </a>
-                                                            <a id="btnMañana" onclick="filtrartTransferenciasMañana()" class="btn btn-default"
-                                                                title="filtrar hoy" style="height: 32px; margin-left: 10px">Mañana
-                                                            </a>
-                                                            <a id="btnPasado" onclick="filtrartTransferenciasPasado()" class="btn btn-default"
-                                                                title="filtrar hoy" style="height: 32px; margin-left: 10px">Pasado 
-                                                            </a>
+                                                        <div class="row" style="display: flex; flex-wrap: wrap; padding-bottom: 2rem">
 
-                                                            <label style="margin-left: 40px; margin-top: 5px">Desde</label>
-                                                            <div>
-                                                                <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy"
-                                                                    data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;">
-                                                                </asp:TextBox>
+                                                            <div class="" style="margin-left: 15px; margin-right: 15px;">
+                                                                <%-- Label de la ddl --%>
+                                                                <div class="">
+                                                                    <label class="col-sm-2 control-label">Sector</label>
+                                                                </div>
+                                                                <%-- Ddl sectores --%>
+                                                                <div class="" style="margin-left: 15px; margin-right: 15px;">
+                                                                    <asp:DropDownList ID="ddlSector" runat="server"
+                                                                        CssClass="chosen-select form-control"
+                                                                        DataTextField="CountryName" DataValueField="CountryCode"
+                                                                        Data-placeholder="Seleccione Rubro..." Width="100%">
+                                                                        <asp:ListItem Text="Select" Value=""></asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                </div>
                                                             </div>
-                                                            <label style="margin-top: 5px; margin-left: 10px">Hasta</label>
-                                                            <div>
-                                                                <asp:TextBox class="form-control" runat="server" type="date"
-                                                                    ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy"
-                                                                    Style="margin-left: 0px; width: 100%;">
-                                                                </asp:TextBox>
+
+                                                            <div style="align-content: end">
+                                                                <div style="display: block; width: 100%">
+                                                                    <%-- boton ayer --%>
+                                                                    <a id="btnAyer" onclick="setFecha(-1); return false;" class="btn btn-default"
+                                                                        title="filtrar ayer" style="height: 32px; margin-left: 10px">Ayer
+                                                                    </a>
+                                                                    <%-- boton hoy --%>
+                                                                    <a id="btnHoy" onclick="setFecha(0); return false;" class="btn btn-default"
+                                                                        title="filtrar hoy" style="height: 32px; margin-left: 10px">Hoy
+                                                                    </a>
+                                                                    <a id="btnMañana" onclick="setFecha(1); return false;" class="btn btn-default"
+                                                                        title="filtrar mañana" style="height: 32px; margin-left: 10px">Mañana
+                                                                    </a>
+                                                                    <a id="btnPasado" onclick="setFecha(2); return false;" class="btn btn-default"
+                                                                        title="filtrar pasado" style="height: 32px; margin-left: 10px">Pasado 
+                                                                    </a>
+                                                                </div>
                                                             </div>
-                                                            <div class="col-md-2">
+
+                                                            <div style="margin-left: 20px">
+                                                                <label>Desde</label>
+                                                                <div style="align-content: end">
+                                                                    <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy"
+                                                                        data-date-format="dd/mm/yyyy" Style="margin-left: 0px; width: 100%;">
+                                                                    </asp:TextBox>
+                                                                </div>
+                                                            </div>
+
+                                                            <div style="margin-left: 20px">
+                                                                <label>Hasta</label>
+                                                                <div style="align-content: end">
+                                                                    <asp:TextBox class="form-control" runat="server" type="date"
+                                                                        ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy"
+                                                                        Style="margin-left: 0px; width: 100%;">
+                                                                    </asp:TextBox>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="" style="align-content: end; margin-left: 20px">
                                                                 <asp:Button ID="btnSector" runat="server" class="btn btn-primary pull-right" OnClientClick="filtrarSectorOrigen(); return false" Text="Buscar" />
                                                             </div>
 
@@ -107,9 +121,9 @@
                                 <table class="table table-striped table-bordered table-hover " id="tableRecepcion">
                                     <thead>
                                         <tr>
-                                            <th style="width: 15%">Sector Destino</th>
-                                            <th style="width: 15%">Numero</th>
                                             <th style="width: 15%">Fecha</th>
+                                            <th style="width: 15%">Sector Origen</th>
+                                            <th style="width: 15%">Numero</th>
                                             <th style="width: 15%">Acciones</th>
                                         </tr>
                                     </thead>
@@ -128,19 +142,23 @@
             </asp:UpdatePanel>
         </div>
         <div class="tab-pane fade" id="Produccion">
-            <asp:UpdatePanel ID="UpdatePanel3" UpdateMode="Always" runat="server">
+            <asp:UpdatePanel ID="UpdatePanel3" UpdateMode="Always" runat="server" style="width: 100%">
                 <ContentTemplate>
                     <div id="validation-form" role="form" class="form-horizontal col-md-10">
-                        <fieldset>
-                            <div class="row" style="margin-top: 20px">
+                        <fieldset style="width: 100%">
+                            <div class="row" style="margin-top: 10px">
                                 <div class="col-lg-12">
-                                    <table class="table table-striped table-bordered table-hover " id="tableProduccion">
+
+                                    <asp:Button runat="server" OnClick="btnImprimirProduccion_Click" class="btn btn-primary pull-right" Text="Imprimir" />
+
+                                    <table class="table table-striped table-bordered table-hover " style="width: 100%" id="tableProduccion">
                                         <thead>
                                             <tr>
+                                                <th style="width: 15%">Fecha</th>
                                                 <th style="width: 35%">Producto</th>
                                                 <th style="width: 15%">Cantidad</th>
-                                                <th style="width: 15%">Fecha</th>
                                                 <th style="width: 15%">Acciones</th>
+                                                <th style="width: 0%"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -167,21 +185,22 @@
                                     <table class="table table-striped table-bordered table-hover " id="tableEnvios">
                                         <thead>
                                             <tr>
-                                                <th style="width: 15%">Sector Origen</th>
-                                                <th style="width: 15%">Sector Destino</th>
+                                                <th style="width: 15%">Fecha</th>
+                                                <th style="">Sector Origen</th>
+                                                <th style="">Sector Destino</th>
                                                 <%--<th style="width: 15%">Producto</th>--%>
                                                 <%--<th style="width: 15%">Confirmada</th>--%>
                                                 <%--<th style="width: 15%">Enviada</th>--%>
-                                                <th style="width: 15%">Acciones</th>
+                                                <th style="">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody id="detallesTransferenciasConfirmadas">
                                             <asp:PlaceHolder ID="phEnvio" runat="server"></asp:PlaceHolder>
                                         </tbody>
                                     </table>
-                                    <asp:LinkButton ID="btnEnviar" runat="server" Text="Enviar"> 
+                                    <%--<asp:LinkButton ID="btnEnviar" runat="server" Text="Enviar"> 
 
-                                    </asp:LinkButton>
+                                    </asp:LinkButton>--%>
                                     <asp:HiddenField ID="FechaDesde" runat="server"></asp:HiddenField>
                                     <asp:HiddenField ID="FechaHasta" runat="server"></asp:HiddenField>
                                     <asp:HiddenField ID="ddlSectorSelecionado" runat="server"></asp:HiddenField>
@@ -324,6 +343,7 @@
                                         <table class="table table-hover no-margins table-bordered" id="DetalleRemitosInternos">
                                             <thead>
                                                 <tr>
+                                                    <td style="display:none"></td>
                                                     <%--                                                    <td><strong>Sector Origen</strong></td>
                                                     <td><strong>Sector Destino</strong></td>--%>
                                                     <td><strong>Producto</strong></td>
@@ -339,7 +359,7 @@
 
 
                                         <div style="text-align: right; margin-top: 10px">
-                                            <asp:Button ID="btnRecepcion" runat="server" OnClientClick="btnRecepcion_ClientClick()"
+                                            <asp:Button ID="btnRecepcion" runat="server" OnClientClick="return btnRecepcion_ClientClick()"
                                                 OnClick="btnRecepcion_Click" class="btn btn-primary"
                                                 title="Enviar" Text="Recepcionar" />
                                         </div>
@@ -398,10 +418,10 @@
                                         <table class="table table-hover no-margins table-bordered" id="tablePedidos">
                                             <thead>
                                                 <tr>
-                                                    <td><strong>Id Sector Origen</strong></td>
+                                                    <td style="display: none; width: 0"><strong>Id Sector Origen</strong></td>
                                                     <td><strong>Sector Origen</strong></td>
                                                     <td><strong>Sector Destino</strong></td>
-                                                    <td><strong>Id Producto</strong></td>
+                                                    <td style="display: none; width: 0"><strong>Id Producto</strong></td>
                                                     <td><strong>Producto</strong></td>
                                                     <td class="text-right"><strong>Cantidad</strong></td>
                                                     <td class="text-right"><strong>Cantidad confirmada</strong></td>
@@ -631,14 +651,15 @@
                         let r = response.d;
                         toastr.success("Transferencia confirmada con exito!", "Exito");
                         //imprimirRemitoEnviado(r);
-                        window.open('ImpresionRemitos.aspx?r=' + r, '_blank');
+                        //window.open('ImpresionRemitos.aspx?r=' + r, '_blank');
+                        location.reload();
                     }
                     else if (response.d == -1) {
                         toastr.error("La transferencia no pudo ser confirmada.", "Error");
 
                     }
                     else if (response.d == -2) {
-                        toastr.error("La transferencia no pudo ser confirmada, no hay stock cargado para uno de los productos.", "Error");
+                        toastr.error("Hay productos o recetas con stock insuficiente.", "Error");
 
                     }
                     else if (response.d == -3) {
@@ -695,8 +716,10 @@
             let sector = ddlSector.options[ddlSector.selectedIndex].text;
 
             let ddlSectorValue = document.getElementById('<%=ddlSector.ClientID%>').value;
+            let fDesde = document.getElementById('<%=txtFechaHoy.ClientID%>').value;
+            let fHasta = document.getElementById('<%=txtFechaVencimiento.ClientID%>').value;
             //la o en la url es de origen
-            window.location.href = "Pre-produccion.aspx?O=" + sector + "&OV=" + ddlSectorValue;
+            window.location.href = "Pre-produccion.aspx?O=" + sector + "&OV=" + ddlSectorValue + "&fDesde=" + fDesde + "&fHasta=" + fHasta;
         }
 
         function verDetalleTranferencia(idTransferencia, productoDescripcion) {
@@ -857,24 +880,31 @@
         }
     </script>
 
+    <script>
+        function precargarFiltros() {
+            //let fechad = document.getElementById("ContentPlaceHolder1_FechaDesde").value
+            //let fechah = document.getElementById("ContentPlaceHolder1_FechaHasta").value
+            //let ddlSectorProductivo = document.getElementById("ContentPlaceHolder1_ddlSector").value
+            //ddlSectorProductivo.value;
+
+            //if (fechad != "" && fechah != "" && ddlSectorProductivo.value != "") {
+
+            //    establecerFechasSeleccionadas();
+            //    establecerSectorSeleccionado();
+            //} else {
+
+            //    establecerDiaHoy();
+            //}
+
+
+        }
+    </script>
 
     <script>
 
         $(document).ready(function () {
 
-            let fechad = document.getElementById("ContentPlaceHolder1_FechaDesde").value
-            let fechah = document.getElementById("ContentPlaceHolder1_FechaHasta").value
-            let ddlSectorProductivo = document.getElementById("ContentPlaceHolder1_ddlSector").value
-            ddlSectorProductivo.value;
-
-            if (fechad != "" && fechah != "" && ddlSectorProductivo.value != "") {
-
-                establecerFechasSeleccionadas();
-                establecerSectorSeleccionado();
-            } else {
-
-                establecerDiaHoy();
-            }
+            precargarFiltros();
 
             //Este codigo esta para la barra buscadora de recepcion
             // var oTable = $('#idTablaRecepcionSector').dataTable({
@@ -1456,8 +1486,7 @@
                 error: function (error) {
                     console.log("Error");
                 },
-                success: function (data)
-                {
+                success: function (data) {
                     const arraydetalleProduccion = data.d.split(";").filter(Boolean);
 
                     document.getElementById('tableDetalleProduccion').innerHTML = "";
@@ -1470,14 +1499,14 @@
                         const producto = partesDetalle[1];
                         const cantidad = partesDetalle[2];
 
-                        let plantillaDetalleProduccion= `
+                        let plantillaDetalleProduccion = `
                           <tr>
                               <td>${sectorDestino}</td>
                               <td>${producto}</td>
                               <td style="text-align: right;">${cantidad}</td>
                           </tr>
                       `;
-                        
+
                         document.getElementById('tableDetalleProduccion').innerHTML += plantillaDetalleProduccion;
                     });
 
@@ -1488,11 +1517,11 @@
     </script>
 
     <script>
-        function getDatosTransferenciaBySectorDestino(sectorOrigen, sectorDestino) {
+        function getDatosTransferenciaDetalle(sectorOrigen, sectorDestino, fecha) {
             $.ajax({
                 method: "POST",
-                url: "Pre-Produccion.aspx/getDatosTransferenciaBySectorDestino",
-                data: JSON.stringify({ sectorOrigen: sectorOrigen, sectorDestino: sectorDestino }),
+                url: "Pre-Produccion.aspx/getDatosTransferenciaDetalle",
+                data: JSON.stringify({ sectorOrigen: sectorOrigen, sectorDestino: sectorDestino, fecha: fecha }),
                 contentType: "application/json",
                 dataType: "json",
                 async: false,
@@ -1515,10 +1544,10 @@
 
                             if (element.tieneStock == "True") {
                                 filaProducto = `<tr>
-                                                <td>${element.idSectorOrigen}</td>
+                                                <td style="display:none">${element.idSectorOrigen}</td>
                                                 <td>${element.sectorOrigen}</td>
                                                 <td>${element.sectorDestino}</td>
-                                                <td>${element.idProducto}</td>
+                                                <td style="display:none">${element.idProducto}</td>
                                                 <td>${element.producto}</td>
                                                 <td class="text-right">${element.cantidad}</td>
                                                 <td class="text-right">${element.cantidadConfirmada}</td>
@@ -1527,10 +1556,10 @@
                             }
                             else {
                                 filaProducto = `<tr>
-                                                <td style="color:red">${element.idSectorOrigen}</td>
+                                                <td style="color:red; display:none">${element.idSectorOrigen}</td>
                                                 <td style="color:red">${element.sectorOrigen}</td>
                                                 <td style="color:red">${element.sectorDestino}</td>
-                                                <td style="color:red">${element.idProducto}</td>
+                                                <td style="color:red; display:none">${element.idProducto}</td>
                                                 <td style="color:red">${element.producto}</td>
                                                 <td style="color:red" class="text-right">${element.cantidad}</td>
                                                 <td style="color:red" class="text-right">${element.cantidadConfirmada}</td>
@@ -1556,13 +1585,20 @@
     <script>
         function verDetalleRemitoInternoPdf(idRemito) {
             //window.open("ImpresionRemitos2.aspx?r=" + r, "_blank");
-            /*window.open("../Ventas/ImpresionRemitos.aspx?r=" + r, "_blank");*/
+            window.open("../Ventas/ImpresionRemitos.aspx?r=" + idRemito, "_blank");
         }
     </script>
     <script>
-        function verDetalleRemitoInternoModal(idRemito) {
+        async function verDetalleRemitoInternoModal(idRemito, recepcionado) {
             document.getElementById('<%= HFIdRemitoInterno.ClientID %>').value = idRemito;
             getItemsRemitosInternos(idRemito);
+
+            // Mostrar u ocultar boton para recepcionar dependiendo su estado
+            document.getElementById('<%= btnRecepcion.ClientID %>').style.display = recepcionado ? 'none' : 'inline-block';
+
+            // Habilitar o deshabilitar inputs dependiendo si ya fue recepcionado
+            await cambiarEstadoInputs_RemitoInternoModal(recepcionado);
+
             $('#modalDetalleRemitoInterno').modal('show');
         }
     </script>
@@ -1573,11 +1609,18 @@
             var HFItems = document.getElementById('<%= HFItems.ClientID %>');
 
             for (var i = 1; i < document.getElementById(tableName).rows.length; i++) {
-                let producto = document.getElementById(tableName).rows[i].cells[0].innerText;
-                let cantEnviada = document.getElementById(tableName).rows[i].cells[1].innerText;
-                let cantRecepcionada = document.getElementById(tableName).rows[i].cells[2].querySelector('input').value;
+                let idItemRemitoInterno = document.getElementById(tableName).rows[i].cells[0].innerText;
+                let producto = document.getElementById(tableName).rows[i].cells[1].innerText;
+                let cantEnviada = document.getElementById(tableName).rows[i].cells[2].innerText;
+                let cantRecepcionada = document.getElementById(tableName).rows[i].cells[3].querySelector('input').value;
 
-                HFItems.value += producto + "&" + cantEnviada + "&" + cantRecepcionada + ";";
+                // Si falta cantidad Recepcionada, cancelar el click del servidor
+                if (cantRecepcionada === "") {
+                    toastr.warning("Ingrese la cantidad recepcionada en todas las filas.", "Error");
+                    return false;  // Esto cancela el OnClick del servidor
+                }
+
+                HFItems.value += idItemRemitoInterno + "&" + producto + "&" + cantEnviada + "&" + cantRecepcionada + ";";
             }
 
             //eliminar ultimo ;
@@ -1585,10 +1628,31 @@
 
             console.log("DetalleRemitosInternos");
             console.log(HFItems.value);
+
+            return true;
         }
     </script>
 
     <script>
+        function validarTextBox(input) {
+            // Obtener el valor del input
+            var valor = input.value;
+
+            // Expresión regular para validar que solo contenga números y '.'
+            var regex = /^[0-9.]+$/;
+
+            // Validar el valor
+            if (!regex.test(valor)) {
+                // Mostrar un mensaje de error o tomar alguna acción
+                alert("La cantidad debe contener solo números y el carácter '.'");
+                // Establecer el estado a false si es necesario
+                estado = false;
+            } else {
+                // Establecer el estado a true si es válido
+                estado = true;
+            }
+        }
+
         function getItemsRemitosInternos(idRemito) {
             $.ajax({
                 method: "POST",
@@ -1612,6 +1676,7 @@
                           oninput="validarTextBox(this);" />`;
 
                             placeHolderItemRemitosInternos += `<tr>
+                                                               <td style="display:none">${element.Id}</td>
                                                                <td >${element.Producto}</td>
                                                                <td class="text-right">${element.cantidadEnviada}</td>
                                                                <td class="text-right">${cantidadRecepcionada}</td>
@@ -1627,12 +1692,44 @@
                 }
             }); // Cierre del $.ajax()
         }
+
+        // Si estadoInputs es true, se deshabilitaran los inputs
+        async function cambiarEstadoInputs_RemitoInternoModal(estadoInputs) {
+            // Cambiar el estado de los inputs dentro del tbody de la tabla
+            $('#tableDetalleRemitosInternos' + ' input').attr('disabled', estadoInputs);
+        }
     </script>
 
 
+    <script>
+        $(document).ready(function () {
+            document.getElementById("lblSiteMap").innerText = "Produccion / Pre-Produccion";
+        });
+    </script>
 
 
+    <script>
+        // Esta funcion cambiara el valor de los inputs de fecha agregandole los dias que indique el boton seleccionado
+        function setFecha(diasASumar) {
+            // Obtener la fecha actual
+            var fecha = new Date();
 
+            // Sumar los días especificados
+            fecha.setDate(fecha.getDate() + diasASumar);
 
+            // Formatear la fecha a YYYY-MM-DD
+            var dia = ('0' + fecha.getDate()).slice(-2);
+            var mes = ('0' + (fecha.getMonth() + 1)).slice(-2);
+            var anio = fecha.getFullYear();
+
+            // Establecer el valor del textbox de fecha
+            var txtFechaDesde = document.getElementById('<%=txtFechaHoy.ClientID%>');
+            var txtFechaHasta = document.getElementById('<%=txtFechaVencimiento.ClientID%>');
+
+            txtFechaDesde.value = anio.toString() + "-" + mes.toString() + "-" + dia.toString();
+            txtFechaHasta.value = anio.toString() + "-" + mes.toString() + "-" + dia.toString();
+        }
+
+    </script>
 
 </asp:Content>

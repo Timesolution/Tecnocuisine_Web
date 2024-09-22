@@ -16,25 +16,14 @@ using System.Web.WebSockets;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
 using System.Data.Entity;
+using System.EnterpriseServices.Internal;
 
 namespace Tecnocuisine.Formularios.Ventas
 {
     public partial class PedidosOrdenes : System.Web.UI.Page
     {
-        public Dictionary<string, DataTable> transferenciasDiccionario;
         public DataTable dt;
         public int idRow = 0;
-        string FechaD = "";
-        string FechaH = "";
-        string fechaAyer = "";
-        string fechaHoy = "";
-        string fechaMañana = "";
-        string fechaPasado = "";
-        string origen = "";
-        string destino = "";
-        int estado = -1;
-        string sector = "";
-
 
         public class RowData
         {
@@ -51,107 +40,13 @@ namespace Tecnocuisine.Formularios.Ventas
             ControladorTransferencia cTransferencia = new ControladorTransferencia();
             if (!IsPostBack)
             {
-                cargarTransferenciasByFecha(DateTime.Now);
                 cargarOrigen();
                 cargarDestino();
                 cargarEstadosOrdenes();
                 //cargarSectorUsuario();
-                var tranferencias = cTransferencia.getListTransferencias();
-
-                foreach (var item in tranferencias)
-                {
-
-                }
-            }
-
-            if (Request.QueryString["FechaD"] != null)
-            {
-                this.FechaD = Request.QueryString["FechaD"].ToString();
-                this.FechaH = Request.QueryString["FechaH"].ToString();
-                //    this.origen = Request.QueryString["Origen"].ToString();
-                //    this.destino = Request.QueryString["Destino"].ToString();
-                this.sector = Request.QueryString["sector"].ToString();
-                this.estado = Convert.ToInt32(Request.QueryString["estado"].ToString());
-            }
-
-            //if (Request.QueryString["FechaAyer"] != null)
-            //{
-            //    this.fechaAyer = Request.QueryString["FechaAyer"].ToString();
-            //    this.origen = Request.QueryString["Origen"].ToString();
-            //    this.destino = Request.QueryString["Destino"].ToString();
-            //    this.estado = Convert.ToInt32(Request.QueryString["estado"].ToString());
-            //    this.sector = Request.QueryString["sector"].ToString();
-            //}
-
-
-            if (Request.QueryString["FechaHoy"] != null)
-            {
-                this.fechaHoy = Request.QueryString["FechaHoy"].ToString();
-                this.origen = Request.QueryString["Origen"].ToString();
-                this.destino = Request.QueryString["Destino"].ToString();
-                this.estado = Convert.ToInt32(Request.QueryString["estado"].ToString());
-                this.sector = Request.QueryString["sector"].ToString();
-
-            }
-
-
-            if (Request.QueryString["FechaMañana"] != null)
-            {
-                this.fechaMañana = Request.QueryString["FechaMañana"].ToString();
-                this.origen = Request.QueryString["Origen"].ToString();
-                this.destino = Request.QueryString["Destino"].ToString();
-                this.estado = Convert.ToInt32(Request.QueryString["estado"].ToString());
-                this.sector = Request.QueryString["sector"].ToString();
-
-            }
-
-
-            if (Request.QueryString["FechaPasado"] != null)
-            {
-                this.fechaPasado = Request.QueryString["FechaPasado"].ToString();
-                this.origen = Request.QueryString["Origen"].ToString();
-                this.destino = Request.QueryString["Destino"].ToString();
-                this.estado = Convert.ToInt32(Request.QueryString["estado"].ToString());
-                this.sector = Request.QueryString["sector"].ToString();
-
-            }
-
-
-
-            if (FechaD != "")
-            {
-                filtrarTransferencias(this.FechaD, this.FechaH, this.sector, this.estado);
-            }
-
-
-            if (fechaAyer != "")
-            {
-                filtrarTransferenciasAyer(this.fechaAyer, this.origen, this.destino, this.estado, this.sector);
-            }
-
-
-            if (fechaHoy != "")
-            {
-                filtrarTransferenciasHoy(this.fechaHoy, this.origen, this.destino, this.estado, this.sector);
-            }
-
-
-            if (fechaMañana != "")
-            {
-                filtrarTransferenciasMañana(this.fechaMañana, this.origen, this.destino, this.estado, this.sector);
-            }
-
-
-            if (fechaPasado != "")
-            {
-                filtrarTransferenciasPasado(this.fechaPasado, this.origen, this.destino, this.estado, this.sector);
-            }
-
-
-            //this.origen = Request.QueryString["Origen"].ToString();
-
+            }         
         }
-
+     
         private void VerificarLogin()
         {
             try
@@ -195,7 +90,6 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
 
-
         public void cargarEstadosOrdenes()
         {
             controladorEstadoTransferencia cEstadoTransferencia = new controladorEstadoTransferencia();
@@ -212,6 +106,7 @@ namespace Tecnocuisine.Formularios.Ventas
 
             this.ddlEstado.SelectedIndex = 0;
         }
+
         public void cargarOrigen()
         {
             try
@@ -250,8 +145,6 @@ namespace Tecnocuisine.Formularios.Ventas
             }
 
         }
-
-
 
         public void cargarDestino()
         {
@@ -330,617 +223,190 @@ namespace Tecnocuisine.Formularios.Ventas
         //    }
 
         //}
-        public void cargarTransferenciasByFecha(DateTime fecha)
+   
+        [WebMethod]
+        public static object GetTransferencias()
         {
             controladorPedidosTranferencia cTranferencia = new controladorPedidosTranferencia();
-            //var tranferencias = cTranferencia.getAllTransferencias();
-            var tranferencias = cTranferencia.getAllTransferenciasByFecha(fecha);
-
-            foreach (var item in tranferencias)
-            {
-                idRow++;
-                TableRow tr = new TableRow();
-                tr.ID = idRow.ToString();
-
-                //Celdas
-                TableCell celFecha = new TableCell();
-                celFecha.Text = item.fecha.ToString();
-                celFecha.VerticalAlign = VerticalAlign.Middle;
-                celFecha.HorizontalAlign = HorizontalAlign.Left;
-                celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celFecha);
-
-
-                TableCell celOrigen = new TableCell();
-                celOrigen.Text = item.origen.ToString();
-                celOrigen.VerticalAlign = VerticalAlign.Middle;
-                celOrigen.HorizontalAlign = HorizontalAlign.Left;
-                celOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celOrigen);
-
-
-                TableCell celDestino = new TableCell();
-                celDestino.Text = item.destino.ToString();
-                celDestino.VerticalAlign = VerticalAlign.Middle;
-                celDestino.HorizontalAlign = HorizontalAlign.Left;
-                celDestino.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celDestino);
-
-
-
-                TableCell celOrden = new TableCell();
-                celOrden.Text = item.orden.ToString();
-                celOrden.VerticalAlign = VerticalAlign.Middle;
-                celOrden.HorizontalAlign = HorizontalAlign.Left;
-                celOrden.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celOrden);
-
-
-                TableCell celEstadoTransferencia = new TableCell();
-                celEstadoTransferencia.Text = item.estadoTransferencias.descripcion;
-                celEstadoTransferencia.VerticalAlign = VerticalAlign.Middle;
-                celEstadoTransferencia.HorizontalAlign = HorizontalAlign.Left;
-                celEstadoTransferencia.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celEstadoTransferencia);
-
-
-                TableCell celAccion = new TableCell();
-                LinkButton btnEliminar = new LinkButton();
-                btnEliminar.ID = "btnVerPedidos_" + item.id.ToString();
-                btnEliminar.CssClass = "btn btn-xs";
-                btnEliminar.Style.Add("background-color", "transparent");
-                btnEliminar.Attributes.Add("data-toggle", "modal");
-                btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                btnEliminar.Text = "<span title='Ver pedidos'><i class='fa fa-exchange' style='color: black;'></i></span>";
-                btnEliminar.Attributes.Add("onclick", "verDetalleTranferencia('" + item.id.ToString() + "');");
-                celAccion.Controls.Add(btnEliminar);
-
-
-                tr.Cells.Add(celAccion);
-
-                transferencias.Value += item.fecha.ToString() + "," +
-                item.origen.ToString() + "," + item.destino.ToString() + "," +
-                item.orden.ToString() + "," + item.estadoTransferencias.descripcion + ";";
-
-                phTransferencias.Controls.Add(tr);
-            }
-
+            var transferencias = cTranferencia.GetTransferencias();
+            return transferencias;
         }
 
-        public void cargarTodasLasTranfericas()
-        {
-            foreach (var kvp in transferenciasDiccionario)
-            {
-                //cargarTransferencias(kvp.Key);
-                cargarPedidosEnPH(kvp);
-            }
-            //foreach (DataRow dr in dt.Rows)
-            //{
-            //    //cargarTransferencias(kvp.Key);
-            //    cargarPedidosEnPH(dt);
-            //}
-
-        }
-
-        public void cargarTransferencias(string clave)
-        {
-            idRow++;
-            TableRow tr = new TableRow();
-            tr.ID = idRow.ToString();
-
-            //Celdas
-            TableCell celproductoOrigen = new TableCell();
-            celproductoOrigen.Text = clave;
-            celproductoOrigen.VerticalAlign = VerticalAlign.Middle;
-            celproductoOrigen.HorizontalAlign = HorizontalAlign.Right;
-            celproductoOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
-            tr.Cells.Add(celproductoOrigen);
-
-
-            TableCell celcantidadOrigen = new TableCell();
-            celcantidadOrigen.Text = clave;
-            celcantidadOrigen.VerticalAlign = VerticalAlign.Middle;
-            celcantidadOrigen.HorizontalAlign = HorizontalAlign.Right;
-            celcantidadOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
-            tr.Cells.Add(celcantidadOrigen);
-
-
-            phTransferencias.Controls.Add(tr);
-
-        }
-        public void cargarPedidosEnPH(KeyValuePair<string, DataTable> kvp)
-        {
-            idRow++;
-            int flag = 0;
-            foreach (System.Data.DataRow dr in kvp.Value.DefaultView.Table.Rows)
-            {
-                //if (flag == 0)
-                //{
-                //    flag++;
-
-                //    TableRow trTransferencia = new TableRow();
-                //    trTransferencia.ID = idRow.ToString();
-
-                //    //Celdas
-                //    TableCell celTranferencia = new TableCell();
-                //    celTranferencia.Text = dr["id"].ToString();
-                //    celTranferencia.VerticalAlign = VerticalAlign.Middle;
-                //    celTranferencia.HorizontalAlign = HorizontalAlign.Left;
-                //    celTranferencia.Attributes.Add("style", "padding-bottom: 1px !important;");
-                //    trTransferencia.Cells.Add(celTranferencia);
-
-
-                //    TableCell celTranferencia2 = new TableCell();
-                //    celTranferencia2.Text = dr["ProductoDestinodestino"].ToString();
-                //    celTranferencia2.VerticalAlign = VerticalAlign.Middle;
-                //    celTranferencia2.HorizontalAlign = HorizontalAlign.Right;
-                //    celTranferencia2.Attributes.Add("style", "padding-bottom: 1px !important;");
-                //    trTransferencia.Cells.Add(celTranferencia2);
-
-
-                //    phTransferencias.Controls.Add(trTransferencia);
-
-                //}
-                //else
-                //{
-
-                TableRow tr = new TableRow();
-                tr.ID = idRow.ToString();
-
-                //Celdas
-                TableCell celproductoOrigen = new TableCell();
-                celproductoOrigen.Text = dr["fecha"].ToString();
-                celproductoOrigen.VerticalAlign = VerticalAlign.Middle;
-                celproductoOrigen.HorizontalAlign = HorizontalAlign.Left;
-                celproductoOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celproductoOrigen);
-
-
-                TableCell celidOrden = new TableCell();
-                celidOrden.Text = dr["id"].ToString();
-                celidOrden.VerticalAlign = VerticalAlign.Middle;
-                celidOrden.HorizontalAlign = HorizontalAlign.Left;
-                celidOrden.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celidOrden);
-
-
-                TableCell celcantidadOrigen = new TableCell();
-                celcantidadOrigen.Text = dr["cantidadOrigen"].ToString();
-                celcantidadOrigen.VerticalAlign = VerticalAlign.Middle;
-                celcantidadOrigen.HorizontalAlign = HorizontalAlign.Left;
-                celcantidadOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celcantidadOrigen);
-
-
-                phTransferencias.Controls.Add(tr);
-                //}
-                //}
-            }
-        }
-        public void filtrarTransferenciasAyer(string fechaAyer, string origen, string destino, int estadoTransferencia, string sector)
-        {
-            try
-            {
-                ControladorTransferencia cTransferencia = new ControladorTransferencia();
-                var transferenciasAyer = cTransferencia.filtrarTransferenciasAyer(fechaAyer, origen, destino, estadoTransferencia, sector);
-
-                phTransferencias.Controls.Clear();
-                transferencias.Value = "";
-                foreach (var item in transferenciasAyer)
-                {
-                    idRow++;
-                    TableRow tr = new TableRow();
-                    tr.ID = idRow.ToString();
-
-                    //Celdas
-                    TableCell celFecha = new TableCell();
-                    celFecha.Text = item.fecha.ToString();
-                    celFecha.VerticalAlign = VerticalAlign.Middle;
-                    celFecha.HorizontalAlign = HorizontalAlign.Left;
-                    celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celFecha);
-
-
-                    TableCell celOrigen = new TableCell();
-                    celOrigen.Text = item.origen.ToString();
-                    celOrigen.VerticalAlign = VerticalAlign.Middle;
-                    celOrigen.HorizontalAlign = HorizontalAlign.Left;
-                    celOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celOrigen);
-
-
-                    TableCell celDestino = new TableCell();
-                    celDestino.Text = item.destino.ToString();
-                    celDestino.VerticalAlign = VerticalAlign.Middle;
-                    celDestino.HorizontalAlign = HorizontalAlign.Left;
-                    celDestino.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celDestino);
-
-
-
-                    TableCell celOrden = new TableCell();
-                    celOrden.Text = item.orden.ToString();
-                    celOrden.VerticalAlign = VerticalAlign.Middle;
-                    celOrden.HorizontalAlign = HorizontalAlign.Left;
-                    celOrden.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celOrden);
-
-
-                    TableCell celEstadoTransferencia = new TableCell();
-                    celEstadoTransferencia.Text = item.estadoTransferencias.descripcion;
-                    celEstadoTransferencia.VerticalAlign = VerticalAlign.Middle;
-                    celEstadoTransferencia.HorizontalAlign = HorizontalAlign.Left;
-                    celEstadoTransferencia.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celEstadoTransferencia);
-
-
-                    TableCell celAccion = new TableCell();
-                    LinkButton btnEliminar = new LinkButton();
-                    btnEliminar.ID = "btnEliminarReceta_" + item.id.ToString();
-                    btnEliminar.CssClass = "btn btn-xs";
-                    btnEliminar.Style.Add("background-color", "transparent");
-                    btnEliminar.Attributes.Add("data-toggle", "modal");
-                    btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                    btnEliminar.Text = "<span title='Eliminar'><i class='fa fa-exchange' style='color: black;'></i></span>";
-                    btnEliminar.Attributes.Add("onclick", "verDetalleTranferencia('" + item.id.ToString() + "');");
-                    celAccion.Controls.Add(btnEliminar);
-
-
-                    tr.Cells.Add(celAccion);
-
-                    transferencias.Value += item.fecha.ToString() + "," +
-                    item.origen.ToString() + "," + item.destino.ToString() + "," +
-                    item.orden.ToString() + "," + item.estadoTransferencias.descripcion + ";";
-
-                    phTransferencias.Controls.Add(tr);
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
-        public void filtrarTransferenciasHoy(string fechaHoy, string origen, string destino, int estadoTransferencia, string sector)
-        {
-            try
-            {
-                ControladorTransferencia cTransferencia = new ControladorTransferencia();
-                var transferenciasAyer = cTransferencia.filtrarTransferenciasHoy(fechaHoy, origen, destino, estadoTransferencia, sector);
-
-                phTransferencias.Controls.Clear();
-                transferencias.Value = "";
-                foreach (var item in transferenciasAyer)
-                {
-                    idRow++;
-                    TableRow tr = new TableRow();
-                    tr.ID = idRow.ToString();
-
-                    //Celdas
-                    TableCell celFecha = new TableCell();
-                    celFecha.Text = item.fecha.ToString();
-                    celFecha.VerticalAlign = VerticalAlign.Middle;
-                    celFecha.HorizontalAlign = HorizontalAlign.Left;
-                    celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celFecha);
-
-
-                    TableCell celOrigen = new TableCell();
-                    celOrigen.Text = item.origen.ToString();
-                    celOrigen.VerticalAlign = VerticalAlign.Middle;
-                    celOrigen.HorizontalAlign = HorizontalAlign.Left;
-                    celOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celOrigen);
-
-
-                    TableCell celDestino = new TableCell();
-                    celDestino.Text = item.destino.ToString();
-                    celDestino.VerticalAlign = VerticalAlign.Middle;
-                    celDestino.HorizontalAlign = HorizontalAlign.Left;
-                    celDestino.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celDestino);
-
-
-
-                    TableCell celOrden = new TableCell();
-                    celOrden.Text = item.orden.ToString();
-                    celOrden.VerticalAlign = VerticalAlign.Middle;
-                    celOrden.HorizontalAlign = HorizontalAlign.Left;
-                    celOrden.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celOrden);
-
-
-                    TableCell celEstadoTransferencia = new TableCell();
-                    celEstadoTransferencia.Text = item.estadoTransferencias.descripcion;
-                    celEstadoTransferencia.VerticalAlign = VerticalAlign.Middle;
-                    celEstadoTransferencia.HorizontalAlign = HorizontalAlign.Left;
-                    celEstadoTransferencia.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celEstadoTransferencia);
-
-
-                    TableCell celAccion = new TableCell();
-                    LinkButton btnEliminar = new LinkButton();
-                    btnEliminar.ID = "btnEliminarReceta_" + item.id.ToString();
-                    btnEliminar.CssClass = "btn btn-xs";
-                    btnEliminar.Style.Add("background-color", "transparent");
-                    btnEliminar.Attributes.Add("data-toggle", "modal");
-                    btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                    btnEliminar.Text = "<span title='Eliminar'><i class='fa fa-exchange' style='color: black;'></i></span>";
-                    btnEliminar.Attributes.Add("onclick", "verDetalleTranferencia('" + item.id.ToString() + "');");
-                    celAccion.Controls.Add(btnEliminar);
-
-
-                    tr.Cells.Add(celAccion);
-
-
-                    transferencias.Value += item.fecha.ToString() + "," +
-                    item.origen.ToString() + "," + item.destino.ToString() + "," +
-                    item.orden.ToString() + "," + item.estadoTransferencias.descripcion + ";";
-
-                    phTransferencias.Controls.Add(tr);
-                }
-            }
-            catch (Exception ex)
-            {
-            }
-        }
-        public void filtrarTransferenciasMañana(string fechaAyer, string origen, string destino, int estadoTransferencia, string sector)
-        {
-            try
-            {
-                ControladorTransferencia cTransferencia = new ControladorTransferencia();
-                var transferenciasAyer = cTransferencia.filtrarTransferenciasMañana(fechaAyer, origen, destino, estadoTransferencia, sector);
-
-                phTransferencias.Controls.Clear();
-                foreach (var item in transferenciasAyer)
-                {
-                    idRow++;
-                    TableRow tr = new TableRow();
-                    tr.ID = idRow.ToString();
-
-                    //Celdas
-                    TableCell celFecha = new TableCell();
-                    celFecha.Text = item.fecha.ToString();
-                    celFecha.VerticalAlign = VerticalAlign.Middle;
-                    celFecha.HorizontalAlign = HorizontalAlign.Left;
-                    celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celFecha);
-
-
-                    TableCell celOrigen = new TableCell();
-                    celOrigen.Text = item.origen.ToString();
-                    celOrigen.VerticalAlign = VerticalAlign.Middle;
-                    celOrigen.HorizontalAlign = HorizontalAlign.Left;
-                    celOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celOrigen);
-
-
-                    TableCell celDestino = new TableCell();
-                    celDestino.Text = item.destino.ToString();
-                    celDestino.VerticalAlign = VerticalAlign.Middle;
-                    celDestino.HorizontalAlign = HorizontalAlign.Left;
-                    celDestino.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celDestino);
-
-
-
-                    TableCell celOrden = new TableCell();
-                    celOrden.Text = item.orden.ToString();
-                    celOrden.VerticalAlign = VerticalAlign.Middle;
-                    celOrden.HorizontalAlign = HorizontalAlign.Left;
-                    celOrden.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celOrden);
-
-
-                    TableCell celEstadoTransferencia = new TableCell();
-                    celEstadoTransferencia.Text = item.estadoTransferencias.descripcion;
-                    celEstadoTransferencia.VerticalAlign = VerticalAlign.Middle;
-                    celEstadoTransferencia.HorizontalAlign = HorizontalAlign.Left;
-                    celEstadoTransferencia.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celEstadoTransferencia);
-
-
-                    TableCell celAccion = new TableCell();
-                    LinkButton btnEliminar = new LinkButton();
-                    btnEliminar.ID = "btnEliminarReceta_" + item.id.ToString();
-                    btnEliminar.CssClass = "btn btn-xs";
-                    btnEliminar.Style.Add("background-color", "transparent");
-                    btnEliminar.Attributes.Add("data-toggle", "modal");
-                    btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                    btnEliminar.Text = "<span title='Eliminar'><i class='fa fa-exchange' style='color: black;'></i></span>";
-                    btnEliminar.Attributes.Add("onclick", "verDetalleTranferencia('" + item.id.ToString() + "');");
-                    celAccion.Controls.Add(btnEliminar);
-
-
-                    tr.Cells.Add(celAccion);
-
-                    phTransferencias.Controls.Add(tr);
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
-
-        public void filtrarTransferenciasPasado(string fechaAyer, string origen, string destino, int estadoTransferencia, string sector)
-        {
-            try
-            {
-                ControladorTransferencia cTransferencia = new ControladorTransferencia();
-                var transferenciasAyer = cTransferencia.filtrarTransferenciasPasado(fechaAyer, origen, destino, estadoTransferencia, sector);
-
-                phTransferencias.Controls.Clear();
-                foreach (var item in transferenciasAyer)
-                {
-                    idRow++;
-                    TableRow tr = new TableRow();
-                    tr.ID = idRow.ToString();
-
-                    //Celdas
-                    TableCell celFecha = new TableCell();
-                    celFecha.Text = item.fecha.ToString();
-                    celFecha.VerticalAlign = VerticalAlign.Middle;
-                    celFecha.HorizontalAlign = HorizontalAlign.Left;
-                    celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celFecha);
-
-
-                    TableCell celOrigen = new TableCell();
-                    celOrigen.Text = item.origen.ToString();
-                    celOrigen.VerticalAlign = VerticalAlign.Middle;
-                    celOrigen.HorizontalAlign = HorizontalAlign.Left;
-                    celOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celOrigen);
-
-
-                    TableCell celDestino = new TableCell();
-                    celDestino.Text = item.destino.ToString();
-                    celDestino.VerticalAlign = VerticalAlign.Middle;
-                    celDestino.HorizontalAlign = HorizontalAlign.Left;
-                    celDestino.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celDestino);
-
-
-
-                    TableCell celOrden = new TableCell();
-                    celOrden.Text = item.orden.ToString();
-                    celOrden.VerticalAlign = VerticalAlign.Middle;
-                    celOrden.HorizontalAlign = HorizontalAlign.Left;
-                    celOrden.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celOrden);
-
-
-                    TableCell celEstadoTransferencia = new TableCell();
-                    celEstadoTransferencia.Text = item.estadoTransferencias.descripcion;
-                    celEstadoTransferencia.VerticalAlign = VerticalAlign.Middle;
-                    celEstadoTransferencia.HorizontalAlign = HorizontalAlign.Left;
-                    celEstadoTransferencia.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celEstadoTransferencia);
-
-
-                    TableCell celAccion = new TableCell();
-                    LinkButton btnEliminar = new LinkButton();
-                    btnEliminar.ID = "btnEliminarReceta_" + item.id.ToString();
-                    btnEliminar.CssClass = "btn btn-xs";
-                    btnEliminar.Style.Add("background-color", "transparent");
-                    btnEliminar.Attributes.Add("data-toggle", "modal");
-                    btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                    btnEliminar.Text = "<span title='Eliminar'><i class='fa fa-exchange' style='color: black;'></i></span>";
-                    btnEliminar.Attributes.Add("onclick", "verDetalleTranferencia('" + item.id.ToString() + "');");
-                    celAccion.Controls.Add(btnEliminar);
-
-
-                    tr.Cells.Add(celAccion);
-
-                    phTransferencias.Controls.Add(tr);
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
-        public void filtrarTransferencias(string FechaD, string FechaH, string sector, int estadoTransferencia)
-        {
-            try
-            {
-                ControladorTransferencia cTransferencia = new ControladorTransferencia();
-                DataTable dt = cTransferencia.filtrarTransferenciasDT(FechaD, FechaH, sector, estadoTransferencia);
-
-                phTransferencias.Controls.Clear();
-                foreach (DataRow dr in dt.Rows)
-                {
-                    idRow++;
-                    TableRow tr = new TableRow();
-                    tr.ID = idRow.ToString();
-
-                    //Celdas
-                    TableCell celFecha = new TableCell();
-                    celFecha.Text = dr["fecha"].ToString();
-                    celFecha.VerticalAlign = VerticalAlign.Middle;
-                    celFecha.HorizontalAlign = HorizontalAlign.Left;
-                    celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celFecha);
-
-
-                    TableCell celOrigen = new TableCell();
-                    celOrigen.Text = dr["origen"].ToString();
-                    celOrigen.VerticalAlign = VerticalAlign.Middle;
-                    celOrigen.HorizontalAlign = HorizontalAlign.Left;
-                    celOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celOrigen);
-
-
-                    TableCell celDestino = new TableCell();
-                    celDestino.Text = dr["destino"].ToString();
-                    celDestino.VerticalAlign = VerticalAlign.Middle;
-                    celDestino.HorizontalAlign = HorizontalAlign.Left;
-                    celDestino.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celDestino);
-
-
-
-                    TableCell celOrden = new TableCell();
-                    celOrden.Text = dr["orden"].ToString();
-                    celOrden.VerticalAlign = VerticalAlign.Middle;
-                    celOrden.HorizontalAlign = HorizontalAlign.Left;
-                    celOrden.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celOrden);
-
-
-                    TableCell celEstadoTransferencia = new TableCell();
-                    celEstadoTransferencia.Text = dr["descripcion"].ToString();
-                    celEstadoTransferencia.VerticalAlign = VerticalAlign.Middle;
-                    celEstadoTransferencia.HorizontalAlign = HorizontalAlign.Left;
-                    celEstadoTransferencia.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celEstadoTransferencia);
-
-
-                    TableCell celAccion = new TableCell();
-                    LinkButton btnEliminar = new LinkButton();
-                    btnEliminar.ID = "btnEliminarReceta_" + dr["id"].ToString();
-                    btnEliminar.CssClass = "btn btn-xs";
-                    btnEliminar.Style.Add("background-color", "transparent");
-                    btnEliminar.Attributes.Add("data-toggle", "modal");
-                    btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                    btnEliminar.Text = "<span title='Eliminar'><i class='fa fa-exchange' style='color: black;'></i></span>";
-                    btnEliminar.Attributes.Add("onclick", "verDetalleTranferencia('" + dr["id"].ToString() + "');");
-                    celAccion.Controls.Add(btnEliminar);
-
-
-                    tr.Cells.Add(celAccion);
-
-                    phTransferencias.Controls.Add(tr);
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-
-        }
-        public void obtenerTodasLasTransferencias()
-        {
-            controladorPedidosTranferencia cPedidosTransferencia = new controladorPedidosTranferencia();
-            dt = cPedidosTransferencia.ObtenerTodasLasTransferenciasDT();
-            transferenciasDiccionario = new Dictionary<string, DataTable>();
-
-            foreach (DataRow row in dt.Rows)
-            {
-                string transferencia = row["idTransferencia"].ToString();
-                if (!transferenciasDiccionario.ContainsKey(transferencia))
-                {
-                    DataTable newTable = dt.Clone();
-                    newTable.TableName = transferencia;
-                    transferenciasDiccionario.Add(transferencia, newTable);
-                }
-                transferenciasDiccionario[transferencia].ImportRow(row);
-            }
-
-
-
-        }
-
+        //public void cargarTransferencias(string clave)
+        //{
+        //    idRow++;
+        //    TableRow tr = new TableRow();
+        //    tr.ID = idRow.ToString();
+
+        //    //Celdas
+        //    TableCell celproductoOrigen = new TableCell();
+        //    celproductoOrigen.Text = clave;
+        //    celproductoOrigen.VerticalAlign = VerticalAlign.Middle;
+        //    celproductoOrigen.HorizontalAlign = HorizontalAlign.Right;
+        //    celproductoOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //    tr.Cells.Add(celproductoOrigen);
+
+
+        //    TableCell celcantidadOrigen = new TableCell();
+        //    celcantidadOrigen.Text = clave;
+        //    celcantidadOrigen.VerticalAlign = VerticalAlign.Middle;
+        //    celcantidadOrigen.HorizontalAlign = HorizontalAlign.Right;
+        //    celcantidadOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //    tr.Cells.Add(celcantidadOrigen);
+
+
+        //    phTransferencias.Controls.Add(tr);
+
+        //}
+        //public void cargarPedidosEnPH(KeyValuePair<string, DataTable> kvp)
+        //{
+        //    idRow++;
+        //    int flag = 0;
+        //    foreach (System.Data.DataRow dr in kvp.Value.DefaultView.Table.Rows)
+        //    {
+        //        //if (flag == 0)
+        //        //{
+        //        //    flag++;
+
+        //        //    TableRow trTransferencia = new TableRow();
+        //        //    trTransferencia.ID = idRow.ToString();
+
+        //        //    //Celdas
+        //        //    TableCell celTranferencia = new TableCell();
+        //        //    celTranferencia.Text = dr["id"].ToString();
+        //        //    celTranferencia.VerticalAlign = VerticalAlign.Middle;
+        //        //    celTranferencia.HorizontalAlign = HorizontalAlign.Left;
+        //        //    celTranferencia.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        //    trTransferencia.Cells.Add(celTranferencia);
+
+
+        //        //    TableCell celTranferencia2 = new TableCell();
+        //        //    celTranferencia2.Text = dr["ProductoDestinodestino"].ToString();
+        //        //    celTranferencia2.VerticalAlign = VerticalAlign.Middle;
+        //        //    celTranferencia2.HorizontalAlign = HorizontalAlign.Right;
+        //        //    celTranferencia2.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        //    trTransferencia.Cells.Add(celTranferencia2);
+
+
+        //        //    phTransferencias.Controls.Add(trTransferencia);
+
+        //        //}
+        //        //else
+        //        //{
+
+        //        TableRow tr = new TableRow();
+        //        tr.ID = idRow.ToString();
+
+        //        //Celdas
+        //        TableCell celproductoOrigen = new TableCell();
+        //        celproductoOrigen.Text = dr["fecha"].ToString();
+        //        celproductoOrigen.VerticalAlign = VerticalAlign.Middle;
+        //        celproductoOrigen.HorizontalAlign = HorizontalAlign.Left;
+        //        celproductoOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celproductoOrigen);
+
+
+        //        TableCell celidOrden = new TableCell();
+        //        celidOrden.Text = dr["id"].ToString();
+        //        celidOrden.VerticalAlign = VerticalAlign.Middle;
+        //        celidOrden.HorizontalAlign = HorizontalAlign.Left;
+        //        celidOrden.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celidOrden);
+
+
+        //        TableCell celcantidadOrigen = new TableCell();
+        //        celcantidadOrigen.Text = dr["cantidadOrigen"].ToString();
+        //        celcantidadOrigen.VerticalAlign = VerticalAlign.Middle;
+        //        celcantidadOrigen.HorizontalAlign = HorizontalAlign.Left;
+        //        celcantidadOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celcantidadOrigen);
+
+
+        //        phTransferencias.Controls.Add(tr);
+        //        //}
+        //        //}
+        //    }
+        //}
+      
+        //public void filtrarTransferencias(string FechaD, string FechaH, string sector, int estadoTransferencia)
+        //{
+        //    try
+        //    {
+        //        ControladorTransferencia cTransferencia = new ControladorTransferencia();
+        //        DataTable dt = cTransferencia.filtrarTransferenciasDT(FechaD, FechaH, sector, estadoTransferencia);
+
+        //        phTransferencias.Controls.Clear();
+        //        foreach (DataRow dr in dt.Rows)
+        //        {
+        //            idRow++;
+        //            TableRow tr = new TableRow();
+        //            tr.ID = idRow.ToString();
+
+        //            //Celdas
+        //            TableCell celFecha = new TableCell();
+        //            celFecha.Text = dr["fecha"].ToString();
+        //            celFecha.VerticalAlign = VerticalAlign.Middle;
+        //            celFecha.HorizontalAlign = HorizontalAlign.Left;
+        //            celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //            tr.Cells.Add(celFecha);
+
+
+        //            TableCell celOrigen = new TableCell();
+        //            celOrigen.Text = dr["origen"].ToString();
+        //            celOrigen.VerticalAlign = VerticalAlign.Middle;
+        //            celOrigen.HorizontalAlign = HorizontalAlign.Left;
+        //            celOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //            tr.Cells.Add(celOrigen);
+
+
+        //            TableCell celDestino = new TableCell();
+        //            celDestino.Text = dr["destino"].ToString();
+        //            celDestino.VerticalAlign = VerticalAlign.Middle;
+        //            celDestino.HorizontalAlign = HorizontalAlign.Left;
+        //            celDestino.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //            tr.Cells.Add(celDestino);
+
+
+
+        //            TableCell celOrden = new TableCell();
+        //            celOrden.Text = dr["orden"].ToString();
+        //            celOrden.VerticalAlign = VerticalAlign.Middle;
+        //            celOrden.HorizontalAlign = HorizontalAlign.Left;
+        //            celOrden.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //            tr.Cells.Add(celOrden);
+
+
+        //            TableCell celEstadoTransferencia = new TableCell();
+        //            celEstadoTransferencia.Text = dr["descripcion"].ToString();
+        //            celEstadoTransferencia.VerticalAlign = VerticalAlign.Middle;
+        //            celEstadoTransferencia.HorizontalAlign = HorizontalAlign.Left;
+        //            celEstadoTransferencia.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //            tr.Cells.Add(celEstadoTransferencia);
+
+
+        //            TableCell celAccion = new TableCell();
+        //            LinkButton btnEliminar = new LinkButton();
+        //            btnEliminar.ID = "btnEliminarReceta_" + dr["id"].ToString();
+        //            btnEliminar.CssClass = "btn btn-xs";
+        //            btnEliminar.Style.Add("background-color", "transparent");
+        //            btnEliminar.Attributes.Add("data-toggle", "modal");
+        //            btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
+        //            btnEliminar.Text = "<span title='Detalle'><i class='fa fa-exchange' style='color: black;'></i></span>";
+        //            btnEliminar.Attributes.Add("onclick", "verDetalleTranferencia('" + dr["id"].ToString() + "', '" + celFecha.Text + "');");
+        //            celAccion.Controls.Add(btnEliminar);
+
+
+        //            tr.Cells.Add(celAccion);
+
+        //            phTransferencias.Controls.Add(tr);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    }
+
+        //}
 
         [WebMethod]
         public static string verDetallesTransferencia(int idTransferencia)
@@ -971,8 +437,6 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
 
-
-
         [WebMethod]
         public static string verDetallesPedidos(int idTransferencia, string ProductoOrigen)
         {
@@ -1002,7 +466,6 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
 
-
         [WebMethod]
         public static string cambiarEstadoTransferencia(int idTransferencia)
         {
@@ -1018,16 +481,24 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
 
-
-
+        [WebMethod]
+        public static int GetEstadoTransferencia(int idTransferencia)
+        {
+            ControladorTransferencia cTransferencia = new ControladorTransferencia();
+            var transferencia = cTransferencia.getTransferenciaById(idTransferencia);
+            return (int)(transferencia?.estadoTransferencia);
+        }
 
         [WebMethod]
         public static int guardarDatosTransferencia(string idsPedidos, string cantidadesPedidos, string idTransferencia)
         {
             try
             {
-
                 int id = Convert.ToInt32(idTransferencia);
+
+                // Si el estado es distinto a "A confirmar", no permitir confirmar la transferencia
+                if (GetEstadoTransferencia(id) != 2) return -1;
+
                 ControladorTransferencia cTransferencia = new ControladorTransferencia();
                 int r = cTransferencia.CambiarEstadoTransferencia(id);
 
@@ -1052,20 +523,22 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
 
-
-
         [WebMethod]
         public static int confirmarTransferencia(string idTransferencia, List<RowData> tableData)
         {
             try
             {
-
                 int id = Convert.ToInt32(idTransferencia);
+
+                // Si el estado es distinto a "A confirmar", no permitir confirmar la transferencia
+                if(GetEstadoTransferencia(id) != 2) return -1;
+
                 ControladorTransferencia cTransferencia = new ControladorTransferencia();
                 int r = cTransferencia.CambiarEstadoTransferencia(id);
                 // Usar expresiones regulares para extraer filas de la tabla
                 controladorDatosTransferencias cDatosTransferencias = new controladorDatosTransferencias();
                 datosTransferencias DatosTransferencias = new datosTransferencias();
+
                 foreach (var row in tableData)
                 {
                     string rowId = row.Id;
@@ -1076,21 +549,16 @@ namespace Tecnocuisine.Formularios.Ventas
                     DatosTransferencias.id = Convert.ToInt32(rowId);
                     DatosTransferencias.cantidadConfirmada = Convert.ToDecimal(confirmada, CultureInfo.InvariantCulture);
                     cDatosTransferencias.updateDatosTransferenciaCantidadEnviada(DatosTransferencias);
-
                 }
 
-
                 saveSumaDatosTransferencia();
-
                 return r;
-
             }
             catch (Exception ex)
             {
                 return -1;
             }
         }
-
 
         public static void saveSumaDatosTransferencia()
         {
@@ -1109,7 +577,6 @@ namespace Tecnocuisine.Formularios.Ventas
                 csumaDatosTransferencia.addsumaDatosTransferencia(sumaDatosTransferencia);
             }
         }
-
 
         public static string ObtenerValorInput(string inputHTML)
         {
@@ -1141,48 +608,21 @@ namespace Tecnocuisine.Formularios.Ventas
             // ScriptManager.RegisterClientScriptBlock(this.UpdatePanel2, UpdatePanel2.GetType(), "alert", "$.msgbox(\"Cambios guardados con exito!.\", {type: \"info\",buttons: [{ type: \"submit\", value: \"Aceptar\"},]});$('#MainContent_AgendaDatePickerDesde').datepicker({ dateFormat: 'dd/mm/yy' });$('#MainContent_AgendaDatePickerHasta').datepicker({ dateFormat: 'dd/mm/yy' });", true);
 
         }
-
-        protected void btnPrueba_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void btnAyer_Click(object sender, EventArgs e)
-        {
-            cargarTransferenciasByFecha(DateTime.Now.AddDays(-1));
-        }
-
-        protected void btnHoy_Click(object sender, EventArgs e)
-        {
-            cargarTransferenciasByFecha(DateTime.Now);
-        }
-
-        protected void btnMañana_Click(object sender, EventArgs e)
-        {
-            cargarTransferenciasByFecha(DateTime.Now.AddDays(1));
-        }
-
-        protected void btnPasado_Click(object sender, EventArgs e)
-        {
-            cargarTransferenciasByFecha(DateTime.Now.AddDays(2));
-        }
-
-        protected void btnfiltrar_Click(object sender, EventArgs e)
+     
+        protected void GetTransferenciasConFiltros()
         {
             try
             {
                 //Obtener valores para filtro
-                DateTime fechaDesde = DateTime.ParseExact(txtFechaHoy.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                DateTime fechaHasta = DateTime.ParseExact(txtFechaVencimiento.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture);
                 string origen = ddlOrigen.SelectedValue != "-1" ? ddlOrigen.SelectedItem.Text : "";
                 string destino = ddlDestino.SelectedValue != "-1" ? ddlDestino.SelectedItem.Text : "";
                 int estado = int.Parse(ddlEstado.SelectedValue);
 
                 //Obtener transferencias filtradas
-                var transferencias = new ControladorTransferencia().filtrarTransferencias(fechaDesde, fechaHasta, origen, destino, estado);
+                var transferencias = new ControladorTransferencia().filtrarTransferencias(txtFechaHoy.Text, txtFechaVencimiento.Text, origen, destino, estado);
 
                 //Mostrar
-                LoadTableTransferencias(transferencias);              
+                //LoadTableTransferencias(transferencias);
             }
             catch (FormatException)
             {
@@ -1193,72 +633,78 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
 
-        private void LoadTableTransferencias(List<Transferencia> transferenciasFiltradas)
-        {
-            phTransferencias.Controls.Clear();
-            transferencias.Value = "";
+        //private void LoadTableTransferencias(List<Transferencia> transferenciasFiltradas)
+        //{
+        //    phTransferencias.Controls.Clear();
+        //    transferencias.Value = "";
 
-            foreach (var item in transferenciasFiltradas)
-            {
-                idRow++;
-                TableRow tr = new TableRow();
-                tr.ID = idRow.ToString();
+        //    foreach (var item in transferenciasFiltradas)
+        //    {
+        //        idRow++;
+        //        TableRow tr = new TableRow();
+        //        tr.ID = idRow.ToString();
 
-                //Celdas
-                TableCell celFecha = new TableCell();
-                celFecha.Text = item.fecha.ToString();
-                celFecha.VerticalAlign = VerticalAlign.Middle;
-                celFecha.HorizontalAlign = HorizontalAlign.Left;
-                celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celFecha);
+        //        //Celdas
+        //        TableCell celFecha = new TableCell();
+        //        DateTime soloFecha;
+        //        if (DateTime.TryParse(item.fecha.ToString(), out soloFecha))
+        //        {
+        //            celFecha.Text = soloFecha.ToString("dd/MM/yyyy");
+        //        }
 
-                TableCell celOrigen = new TableCell();
-                celOrigen.Text = item.origen.ToString();
-                celOrigen.VerticalAlign = VerticalAlign.Middle;
-                celOrigen.HorizontalAlign = HorizontalAlign.Left;
-                celOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celOrigen);
+        //        celFecha.VerticalAlign = VerticalAlign.Middle;
+        //        celFecha.HorizontalAlign = HorizontalAlign.Left;
+        //        celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celFecha);
 
-                TableCell celDestino = new TableCell();
-                celDestino.Text = item.destino.ToString();
-                celDestino.VerticalAlign = VerticalAlign.Middle;
-                celDestino.HorizontalAlign = HorizontalAlign.Left;
-                celDestino.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celDestino);
+        //        TableCell celOrigen = new TableCell();
+        //        celOrigen.Text = item.origen.ToString();
+        //        celOrigen.VerticalAlign = VerticalAlign.Middle;
+        //        celOrigen.HorizontalAlign = HorizontalAlign.Left;
+        //        celOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celOrigen);
 
-                TableCell celOrden = new TableCell();
-                celOrden.Text = item.orden.ToString();
-                celOrden.VerticalAlign = VerticalAlign.Middle;
-                celOrden.HorizontalAlign = HorizontalAlign.Left;
-                celOrden.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celOrden);
+        //        TableCell celDestino = new TableCell();
+        //        celDestino.Text = item.destino.ToString();
+        //        celDestino.VerticalAlign = VerticalAlign.Middle;
+        //        celDestino.HorizontalAlign = HorizontalAlign.Left;
+        //        celDestino.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celDestino);
 
-                TableCell celEstadoTransferencia = new TableCell();
-                celEstadoTransferencia.Text = item.estadoTransferencias.descripcion;
-                celEstadoTransferencia.VerticalAlign = VerticalAlign.Middle;
-                celEstadoTransferencia.HorizontalAlign = HorizontalAlign.Left;
-                celEstadoTransferencia.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celEstadoTransferencia);
+        //        TableCell celOrden = new TableCell();
+        //        celOrden.Text = item.orden.ToString();
+        //        celOrden.VerticalAlign = VerticalAlign.Middle;
+        //        celOrden.HorizontalAlign = HorizontalAlign.Left;
+        //        celOrden.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celOrden);
 
-                TableCell celAccion = new TableCell();
-                LinkButton btnEliminar = new LinkButton();
-                btnEliminar.ID = "btnEliminarReceta_" + item.id.ToString();
-                btnEliminar.CssClass = "btn btn-xs";
-                btnEliminar.Style.Add("background-color", "transparent");
-                btnEliminar.Attributes.Add("data-toggle", "modal");
-                btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
-                btnEliminar.Text = "<span title='Eliminar'><i class='fa fa-exchange' style='color: black;'></i></span>";
-                btnEliminar.Attributes.Add("onclick", "verDetalleTranferencia('" + item.id.ToString() + "');");
-                celAccion.Controls.Add(btnEliminar);
+        //        TableCell celEstadoTransferencia = new TableCell();
+        //        celEstadoTransferencia.Text = item.estadoTransferencias.descripcion;
+        //        celEstadoTransferencia.VerticalAlign = VerticalAlign.Middle;
+        //        celEstadoTransferencia.HorizontalAlign = HorizontalAlign.Left;
+        //        celEstadoTransferencia.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celEstadoTransferencia);
 
-                tr.Cells.Add(celAccion);
+        //        TableCell celAccion = new TableCell();
+        //        LinkButton btnEliminar = new LinkButton();
+        //        btnEliminar.ID = "btnEliminarReceta_" + item.id.ToString();
+        //        btnEliminar.CssClass = "btn btn-xs";
+        //        btnEliminar.Style.Add("background-color", "transparent");
+        //        btnEliminar.Attributes.Add("data-toggle", "modal");
+        //        btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
+        //        btnEliminar.Text = "<span title='Detalle'><i class='fa fa-exchange' style='color: black;'></i></span>";
+        //        btnEliminar.Attributes.Add("onclick", "verDetalleTranferencia('" + item.id.ToString() + "', '" + celFecha.Text + "');");
 
-                transferencias.Value += item.fecha.ToString() + "," +
-                item.origen.ToString() + "," + item.destino.ToString() + "," +
-                item.orden.ToString() + "," + item.estadoTransferencias.descripcion + ";";
+        //        celAccion.Controls.Add(btnEliminar);
 
-                phTransferencias.Controls.Add(tr);
-            }
-        }
+        //        tr.Cells.Add(celAccion);
+
+        //        transferencias.Value += item.fecha.ToString() + "," +
+        //        item.origen.ToString() + "," + item.destino.ToString() + "," +
+        //        item.orden.ToString() + "," + item.estadoTransferencias.descripcion + ";";
+
+        //        phTransferencias.Controls.Add(tr);
+        //    }
+        //}
     }
 }

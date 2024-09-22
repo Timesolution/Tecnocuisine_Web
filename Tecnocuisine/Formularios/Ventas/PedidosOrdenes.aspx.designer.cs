@@ -15,15 +15,6 @@ namespace Tecnocuisine.Formularios.Ventas
     {
 
         /// <summary>
-        /// Control UpdatePanel2.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
-
-        /// <summary>
         /// Control btnAyer.
         /// </summary>
         /// <remarks>
@@ -78,15 +69,6 @@ namespace Tecnocuisine.Formularios.Ventas
         protected global::System.Web.UI.WebControls.TextBox txtFechaVencimiento;
 
         /// <summary>
-        /// Control ddlEstado.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlEstado;
-
-        /// <summary>
         /// Control ddlOrigen.
         /// </summary>
         /// <remarks>
@@ -105,31 +87,13 @@ namespace Tecnocuisine.Formularios.Ventas
         protected global::System.Web.UI.WebControls.DropDownList ddlDestino;
 
         /// <summary>
-        /// Control btnfiltrar.
+        /// Control ddlEstado.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnfiltrar;
-
-        /// <summary>
-        /// Control UpdatePanel1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
-
-        /// <summary>
-        /// Control phTransferencias.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phTransferencias;
+        protected global::System.Web.UI.WebControls.DropDownList ddlEstado;
 
         /// <summary>
         /// Control idsDatosTransferencias.

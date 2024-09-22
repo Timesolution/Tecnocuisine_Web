@@ -7,19 +7,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<<<<<<< HEAD
-    <title>Media Solution +</title>
-=======
     <title>Tecnocuisine</title>
 
     <script src="/../js/jquery-2.1.1.js"></script>
 
->>>>>>> 43abe9e (Se agregaron Categorias,Atributos,Tipos de Atributo,Unidades de medida y Presentaciones)
 
-    <script src="/../js/jquery-2.1.1.js"></script>
     <link href="/../css/bootstrap.min.css" rel="stylesheet" />
     <link href="/../font-awesome/css/font-awesome.css" rel="stylesheet" />
 
+    <link href="/../css/plugins/jsTree/style.min.css" rel="stylesheet" />
     <!-- Morris -->
     <link href="/../css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
 
@@ -27,197 +23,414 @@
     <link href="/../js/plugins/gritter/jquery.gritter.css" rel="stylesheet" />
 
     <link href="/../css/animate.css" rel="stylesheet" />
-    <link href="/../css/style.css" rel="stylesheet"/>
+    <link href="/../css/style.css" rel="stylesheet" />
+    <%--<link rel="Stylesheet" href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/themes/redmond/jquery-ui.css" />--%>
 
-    <link href="/../css/plugins/iCheck/custom.css" rel="stylesheet"/>
 
-    <link href="/../css/plugins/chosen/chosen.css" rel="stylesheet"/>
+    <link href="/../css/plugins/iCheck/custom.css" rel="stylesheet" />
 
-    <link href="/../css/plugins/colorpicker/bootstrap-colorpicker.min.css" rel="stylesheet"/>
+    <link href="/../css/plugins/chosen/chosen.css" rel="stylesheet" />
 
-    <link href="/../css/plugins/cropper/cropper.min.css" rel="stylesheet"/>
+    <link href="/../css/plugins/colorpicker/bootstrap-colorpicker.min.css" rel="stylesheet" />
 
-    <link href="/../css/plugins/switchery/switchery.css" rel="stylesheet"/>
+    <link href="/../css/plugins/cropper/cropper.min.css" rel="stylesheet" />
 
-    <link href="/../css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet"/>
+    <link href="/../css/plugins/switchery/switchery.css" rel="stylesheet" />
 
-    <link href="/../css/plugins/nouslider/jquery.nouislider.css" rel="stylesheet"/>
+    <link href="/../css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet" />
 
-    <link href="/../css/plugins/datapicker/datepicker3.css" rel="stylesheet"/>
+    <link href="/../css/plugins/nouslider/jquery.nouislider.css" rel="stylesheet" />
 
-    <link href="/../css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet"/>
-    <link href="/../css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet"/>
+    <link href="/../css/plugins/datapicker/datepicker3.css" rel="stylesheet" />
 
-    <link href="/../css/animate.css" rel="stylesheet"/>
-    <link href="/../css/style.css" rel="stylesheet"/>
+    <link href="/../css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet" />
+    <link href="/../css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
+
+
     <!-- Toastr style -->
-    <link href="/../css/plugins/toastr/toastr.min.css" rel="stylesheet"/>
+    <link href="/../css/plugins/toastr/toastr.min.css" rel="stylesheet" />
 
-<<<<<<< HEAD
-    <link href="/../css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="/../font-awesome/css/font-awesome.css" rel="stylesheet"/>
-    <link href="/../css/plugins/iCheck/custom.css" rel="stylesheet"/>
-    <link href="/../css/plugins/steps/jquery.steps.css" rel="stylesheet"/>
-    <link href="/../css/animate.css" rel="stylesheet"/>
-    <link href="/../css/style.css" rel="stylesheet"/>
-=======
     <link href="/../css/bootstrap.min.css" rel="stylesheet" />
     <link href="/../font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="/../css/plugins/iCheck/custom.css" rel="stylesheet" />
     <link href="/../css/plugins/steps/jquery.steps.css" rel="stylesheet" />
     <link href="/../css/animate.css" rel="stylesheet" />
-    <link href="css/style.css" rel="stylesheet" />
+    <link href="/../css/style.css" rel="stylesheet" />
 
     <link href="/../css/plugins/summernote/summernote.css" rel="stylesheet" />
     <link href="/../css/plugins/summernote/summernote-bs3.css" rel="stylesheet" />
     <!-- Custom and plugin javascript -->
-<!-- Mainly scripts -->
+    <!-- Mainly scripts -->
 
-<script src="/../js/bootstrap.min.js"></script>
-<script src="/../js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="/../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
-<!-- Custom and plugin javascript -->
+    <!-- Mainly scripts -->
+
+    <script src="/../js/bootstrap.min.js"></script>
+    <script src="/../js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/../js/plugins/jeditable/jquery.jeditable.js"></script>
+
+    <!-- Peity -->
+    <%--<script src="js/plugins/peity/jquery.peity.min.js"></script>--%>
+
+
+    <!-- Custom and plugin javascript -->
     <script src="/../js/inspinia.js"></script>
-<script src="/../js/plugins/pace/pace.min.js"></script>
+    <script src="/../js/plugins/pace/pace.min.js"></script>
 
     <script src="/../js/plugins/nestable/jquery.nestable.js"></script>
 
     <!-- Nestable List -->
-<script src="/../js/plugins/datapicker/bootstrap-datepicker.js"></script>
-<script src="/../js/plugins/toastr/toastr.min.js"></script>
-<script src="/../js/plugins/iCheck/icheck.min.js"></script>
-<!-- SUMMERNOTE -->
-<%--<script src="/..js/plugins/summernote/summernote.min.js"></script>--%>
->>>>>>> 43abe9e (Se agregaron Categorias,Atributos,Tipos de Atributo,Unidades de medida y Presentaciones)
+    <script src="/../js/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <script src="/../js/plugins/toastr/toastr.min.js"></script>
+    <script src="/../js/plugins/iCheck/icheck.min.js"></script>
+    <!-- SUMMERNOTE -->
+    <%--<script src="/..js/plugins/summernote/summernote.min.js"></script>--%>
+    <!-- Data Tables -->
+    <script src="/../js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="/../js/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="/../js/plugins/dataTables/dataTables.responsive.js"></script>
+    <script src="/../js/plugins/dataTables/dataTables.tableTools.min.js"></script>
+    <script src="/../js/plugins/dataTables/dataTables.tableTools.min.js"></script>
+    <script src="/../js/daypilot-modal-2.0.js"></script>
 
-    <%--<link href="/../css/plugins/summernote/summernote.css" rel="stylesheet">
-    <link href="/../css/plugins/summernote/summernote-bs3.css" rel="stylesheet">--%>
+    <script src="/../js/plugins/chosen/chosen.jquery.js"></script>
+
+    <!-- Sorttable-->
+    <script src="/../js/plugins/fullcalendar/moment.min.js"></script>
+    <script src="/../js/plugins/sorting/datetime-moment.js"></script>
+    <!-- JSKnob -->
+    <script src="/../js/plugins/jsKnob/jquery.knob.js"></script>
+
+    <!-- Input Mask-->
+    <script src="/../js/plugins/jasny/jasny-bootstrap.min.js"></script>
+
+    <!-- Autonumeric-->
+    <%--<script src="/../Scripts/autoNumeric/autoNumeric-min.js"></script>--%>
+    <script src="/../Scripts/autoNumeric/autoNumeric.js"></script>
+
+    <style>
+        .text-white {
+            color: white !important;
+        }
+
+        .nav > li > a:hover, .nav > li > a:focus {
+            background-color: rgba(238,238,238,0.5);
+        }
+    </style>
+
 </head>
 <body>
-
-    <div id="wrapper">
-        <nav class="navbar-default navbar-static-side" role="navigation">
-            <div class="sidebar-collapse">
-                <ul class="nav" id="side-menu">
-                    <li class="nav-header">
-                        <div class="dropdown profile-element">
-                            <span>
-                                <%--<img alt="image" class="img-circle" src="/../img/profile_small.jpg" />--%>
-                            </span>
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                <%--<span class="clear"><span class="block m-t-xs"><strong class="font-bold">Dra. Adriana Montello</strong>
-                                </span><span class="text-muted text-xs block">Mediadora<b class="caret"></b></span></span></a>--%>
+    <form id="form1" runat="server">
+        <div id="wrapper">
+            <nav class="navbar-default navbar-static-side" style="height: 100%;" role="navigation">
+                <div class="sidebar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="nav-header">
+                            <div class="dropdown profile-element">
+                                <span>
+                                    <img alt="image" class="img-circle" src="/../img/Logo.jpg" />
+                                </span>
+                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                    <span class="clear"><span class="block m-t-xs"><strong class="font-bold">Tecnocuisine</strong>
+                                    </span><span class="text-muted text-xs block"><b class="caret"></b></span></span></a>
                                 <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                                    <%--<li><a href="login.html">Cerrar Cesión</a></li>--%>
+                                    <li><a href="/Default.aspx">Inicio</a></li>
                                 </ul>
-                        </div>
-                        <div class="logo-element">
-                            TC
-                        </div>
-                    </li>
-                    <li class="active">
-                        <%--<a href="/../Default.aspx"><i class="fa fa-th-large"></i><span class="nav-label">Escritorio</span> </a>--%>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-user"></i><span class="nav-label">Maestro</span><span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-<<<<<<< HEAD
-                            <li><a href="../Formularios/InsumosF.aspx">Tipos de Atributos</a></li>
-                            <li><a href="../Formularios/Categorias.aspx">Categorias</a></li>
-=======
-                            <li><a href="../../Formularios/Maestros/Atributos.aspx">Atributos</a></li>
-                            <li><a href="../../Formularios/Maestros/Categorias.aspx">Categorias</a></li>
-                            <li><a href="../../Formularios/Maestros/IVA.aspx">IVA</a></li>
-                            <li><a href="../../Formularios/Maestros/Presentaciones.aspx">Presentaciones</a></li>
-                            <li><a href="../../Formularios/Maestros/Productos.aspx">Productos/Recetas</a></li>
-                            <li><a href="../../Formularios/Maestros/InsumosF.aspx">Tipos de Atributos</a></li>
-                            <li><a href="../../Formularios/Maestros/Unidades.aspx">Unidades de medida</a></li>
->>>>>>> 43abe9e (Se agregaron Categorias,Atributos,Tipos de Atributo,Unidades de medida y Presentaciones)
-                            <%--<li><a href="../Contactos/MediadoresABM.aspx?a=1">Mediador</a></li>--%>
-                            <%--<li><a href="../Contactos/Contactos.aspx?t=6">Asistentes</a></li>--%>
-                            <%--t=6 refiere al tipo de contacto = Asistente--%>
-                            <%--<li><a href="../Contactos/Contactos.aspx?t=2">Compañías</a></li>--%>
-                            <%--t=2 refiere al tipo de contacto = compañia--%>
-                            <%--<li><a href="../Contactos/Contactos.aspx?t=4">Requeridos</a></li>--%>
-                            <%--t=4 refiere al tipo de contacto = requeridos--%>
-                            <%--<li><a href="../Contactos/Contactos.aspx?t=3">Requirentes</a></li>--%>
-                            <%--t=3 refiere al tipo de contacto = requirentes--%>
-                            <%--<li><a href="../Contactos/Contactos.aspx?t=5">Letrados</a></li>--%>
-                            <%--t=5 refiere al tipo de contacto = Letrado--%>
-                        </ul>
-                    </li>
-
-                </ul>
-
-            </div>
-        </nav>
-        <div id="page-wrapper" class="gray-bg dashbard-1">
-            <div class="row border-bottom">
-                <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-            <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
-                <div class="form-group">
-                                <asp:Label ID="lblSiteMap"  Text="text" class="form-control" runat="server" />
-                </div>
-            </form>
-        </div>
-            <ul class="nav navbar-top-links navbar-right">
-                <li>
-                    <span class="m-r-sm text-muted welcome-message">Bienvenido a Tecnocuisine.</span>
-                </li>
-                
-
-
-                <li>
-                    <a href="login.html">
-                        <i class="fa fa-sign-out"></i> Cerrar Sesión
-                    </a>
-                </li>
-            </ul>
-
-        </nav>
-                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-                    <div class="navbar-header">
-                        <%--                        <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
-                            <div class="form-group">
-                                <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
                             </div>
-                        </form>--%>
-                    </div>
-            </nav>
+                            <div class="logo-element">
+                                TC
+                            </div>
+                        </li>
+                        <li class="active">
+                            <%--<a href="/../Default.aspx"><i class="fa fa-th-large"></i><span class="nav-label">Escritorio</span> </a>--%>
+                        </li>
 
-                <div class="footer">
-                    <div>
-                        <strong>Copyright </strong><a href="http://web.timesolution.com.ar/" target="_blank">&nbsp Time Solution Software &copy; 2015</a>
+                        <%--  VENTAS--%>
+
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-usd text-white"></i>
+                                <span class="nav-label " style="color: white;">Ventas</span>
+                                <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-second-level">
+
+                                <li>
+                                    <a style="color: white !important;" href="../../Formularios/Maestros/Articulos.aspx">Artículos</a>
+                                </li>
+                                <li>
+                                    <a style="color: white !important;" href="../../Formularios/Ventas/CuentaCorriente.aspx">Cuenta Corriente</a>
+
+                                </li>
+                                <li>
+                                    <a style="color: white !important;" href="../../Formularios/Maestros/Vendedores.aspx">Vendedores</a>
+                                </li>
+                                <li>
+                                    <a style="color: white !important;" href="../..\Formularios\Ventas\Ventas.aspx">Ventas</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <%--CLIENTES--%>
+
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-user text-white"></i>
+                                <span class="nav-label " style="color: white;">Clientes</span>
+                                <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-second-level">
+
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Clientes.aspx">Clientes</a></li>
+
+
+                            </ul>
+                        </li>
+
+                        <%--CAJA--%>
+
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-money text-white"></i>
+                                <span class="nav-label " style="color: white;">Valores</span>
+                                <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/Contado.aspx">Caja</a></li>
+
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/Cashflow.aspx">Cashflow</a></li>
+
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/ChequesCobros.aspx">Cheques</a></li>
+
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/Cobros.aspx">Cobros</a></li>
+
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/CobrosRealizados.aspx">Cobros Realizados</a></li>
+
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/EstadoDeResultado.aspx">Estado de resultado</a></li>
+
+                                <li><a style="color: white !important;" href="../../Formularios/Caja/TarjetaDeCredito.aspx">Tarjeta de Crédito</a></li>
+                            </ul>
+                        </li>
+
+                        <%--COMPRAS--%>
+
+
+
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-shopping-cart text-white"></i>
+                                <span class="nav-label " style="color: white;">Compras</span>
+                                <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Compras/CuentaCorriente.aspx">Cuenta Corriente</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Compras/FacturaCompras.aspx">Factura Compras</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Marcas.aspx">Marcas</a></li>
+                                <li><a style="color: white !important;">Ordenes de compra</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Compras/Pagos.aspx">Pagos</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Compras/PagosRealizados.aspx">Pagos Realizados</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Presentaciones.aspx">Presentaciones</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Productos.aspx">Productos</a></li>
+                                <li><a style="color: white !important;" href="../..\Formularios\Compras\ProveedoresP.aspx">Proveedores</a></li>
+                                <li><a style="color: white !important;" href="../..\Formularios\Compras\EntregasE.aspx">Recepcion de Compras</a></li>
+                            </ul>
+                        </li>
+
+
+
+                        <%-- STOCK--%>
+
+
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-calculator text-white"></i>
+                                <span class="nav-label " style="color: white;">Stock</span>
+                                <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/StockProductosYRecetas.aspx">Stock</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/StockSectores.aspx">Stock Sectores</a></li>
+                            </ul>
+                        </li>
+
+
+
+                        <%--PRODUCCION--%>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-cutlery text-white"></i>
+                                <span class="nav-label " style="color: white;">Produccion</span>
+                                <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a style="color: white !important;" href="../..\Formularios\Ventas\OrdenesDeProduccion.aspx">Ordenes de produccion </a>
+                                </li>
+                                <li>
+                                    <a style="color: white !important;" href="../../Formularios/Ventas/PedidosOrdenes.aspx">Pedidos</a>
+                                </li>
+                                <li>
+                                    <a style="color: white !important;" href="../..\Formularios\Ventas\Pre-Produccion.aspx">Pre-Produccion </a>
+                                </li>
+                                <li>
+                                    <a style="color: white !important;" href="../..\Formularios\Ventas\Produccion.aspx">Producción </a>
+                                </li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Recetas.aspx">Recetas</a></li>
+                            </ul>
+                        </li>
+
+
+                        <%-- MAESTROS--%>
+
+
+                        <li>
+
+                            <a href="#"><i class="fa fa-user text-white"></i><span class="nav-label " style="color: white;">Maestro</span><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <ul>
+                                        <li>
+                                            <a class="tooltip text-white" href="#"><i class="fa fa-user"></i><span class="nav-label tooltiptext">Maestro</span><span class="fa arrow"></span></a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Atributos.aspx">Atributos</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Categorias.aspx">Categorias</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Conceptos.aspx">Conceptos CashFlow</a></li>
+                                <li>
+                                    <a style="color: white !important;" href="../../Formularios/Administrador/CuentasBancarias.aspx">Cuentas Bancarias</a>
+                                </li>
+                                <li>
+                                    <a style="color: white !important;" href="../../Formularios/Administrador/EntidadesBancarias.aspx">Entidades Bancarias</a>
+                                </li>
+                                <li>
+                                    <a style="color: white !important;" href="../../Formularios/Maestros/Entidades.aspx">Entidades Tarjetas de Credito</a>
+                                </li>
+                                <li><a style="color: white !important;" href="../../Formularios/Contabilidad/PlanDeCuentas.aspx">Plan de cuentas</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Rubros.aspx">Rubros</a></li>
+                                <li>
+                                    <a style="color: white !important;" href="../../Formularios/Maestros/Tarjetas.aspx">Tarjetas</a>
+                                </li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/TiposReceta.aspx">Tipos de Receta</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/InsumosF.aspx">Tipos de Atributos</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Unidades.aspx">Unidades de medida</a></li>
+
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Grupos.aspx">Grupos</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Subgrupos.aspx">Subgrupos</a></li>
+                            </ul>
+                        </li>
+
+
+                        <%-- Gestion--%>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-bar-chart text-white"></i>
+                                <span class="nav-label " style="color: white;">Gestion</span>
+                                <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Gestion/AlertasFoodCost.aspx">Alertas</a></li>
+                            </ul>
+                        </li>
+
+
+                        <%-- CONFIGURACION--%>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-gears text-white"></i>
+                                <span class="nav-label " style="color: white;">Configuracion</span>
+                                <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-second-level">
+                                <li><a style="color: white !important;" href="../../Formularios/Administrador/Precios.aspx">Precios</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/Alicuotas.aspx">Alicuotas IVA</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Administrador/Empresas.aspx">Empresas</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/EstadoClientes.aspx">Estados de clientes</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Administrador/Paises.aspx">Países</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Administrador/PanelDeControl.aspx">Panel de Control</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Administrador/PuntosDeVenta.aspx">Puntos de Venta</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Administrador/Sectores.aspx">Sectores</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Maestros/SectorProductivo.aspx">Sector Productivo</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Administrador/Sucursales.aspx">Sucursales</a></li>
+                                <%--       <li><a style="color: white !important;" href="../../Formularios/Maestros/Clasificaciones.aspx">Clasificaciones</a></li>--%>
+                            </ul>
+                        </li>
+
+
+
+                    </ul>
+
+                </div>
+            </nav>
+            <div id="page-wrapper" class="gray-bg dashbard-1">
+                <div class="row border-bottom">
+                    <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0; background-color: rgb(35,54,69)!important;">
+                        <div class="navbar-header">
+                            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#" onclick="ChangeNavBar()"><i class="fa fa-bars"></i></a>
+                            <div class="navbar-form-custom">
+                                <asp:Label ID="lblSiteMap" Style="font-size: 20px; color: white" Text="text" class="form-control" runat="server" />
+                            </div>
+                        </div>
+                        <ul class="nav navbar-top-links navbar-right">
+
+
+
+
+                            <li>
+                                <a href="login.html">
+                                    <i style="color: white" class="fa fa-sign-out"></i>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </nav>
+                    <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                        <div class="navbar-header">
+                            <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
+                            </form>
+                        </div>
+                    </nav>
+
+                    <div class="footer">
+                        <div>
+                            <strong>Copyright </strong><a href="http://web.timesolution.com.ar/" target="_blank">&nbsp Time Solution Software &copy; 2015</a>
+                        </div>
                     </div>
+
                 </div>
 
-            </div>
 
-
-            <form id="form1" runat="server">
                 <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
                 <div>
                     <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
                     </asp:ContentPlaceHolder>
                 </div>
 
-            </form>
+            </div>
         </div>
-    </div>
-
- 
+    </form>
 
 </body>
+<script>
+    $(document).ready(function () {
+        $("body").toggleClass("pace-done pace-done");
+        SmoothlyMenu();
+    });
 
-<<<<<<< HEAD
+    function ChangeNavBar() {
+        if ($("body").hasClass("pace-done pace-done")) {
 
-<!-- Custom and plugin javascript -->
-<!-- Mainly scripts -->
-=======
->>>>>>> 43abe9e (Se agregaron Categorias,Atributos,Tipos de Atributo,Unidades de medida y Presentaciones)
+            $("body").toggleClass
+                ("mini-navbar");
+        } else {
+            $("body").toggleClass
+                ("pace-done pace-done");
+        }
+
+    }
+</script>
 
 
 </html>

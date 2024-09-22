@@ -18,130 +18,133 @@
                 <div class="ibox float-e-margins">
 
                     <div class="ibox-content">
-                        <div class="row" style="padding-left: 15px;">
-                            <div class="row">
-                                <%-- Columna 1--%>
-                                <div class="col-lg-6">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label style="margin-left: 5%">Número de orden</label>
-                                        </div>
-                                        <div class="col-md-8" runat="server">
-                                            <asp:Label ID="lblOPNumero" runat="server" Text=""></asp:Label>
-                                        </div>
-                                    </div>
+                        <div class="row" style="padding-left: 15px; padding-right: 15px; padding-bottom: 15px">
 
-                                    <div class="row" style="margin-top: 3%">
-                                        <div class="col-md-4">
-                                            <label style="margin-left: 5%">Cliente</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <datalist id="ListaNombreCliente" runat="server">
-                                            </datalist>
-                                            <asp:TextBox ID="TxtClientes"
-                                                class="form-control num required" runat="server"
-                                                list="ContentPlaceHolder1_ListaNombreCliente"
-                                                Style="margin-left: 0px; width: 100%;" />
-                                            <p id="ValivaDescripcion"
-                                                class="text-danger text-hide">
-                                                Tienes que ingresar un cliente
-                                            </p>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="row" style="margin-top: 3%">
-                                        <div class="col-md-4">
-                                            <label style="margin-left: 5%">Fecha de entrega</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="form-group" id="data_1">
-                                                <div class="input-group date">
-                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                    <asp:TextBox class="form-control" runat="server"
-                                                        ID="txtFechaHoy" Style="margin-left: 0px; width: 100%;"></asp:TextBox>
-                                                    <p id="ValidaFecha"
-                                                        class="text-danger text-hide">
-                                                        Tienes que ingresar una fecha
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div class="row" style="padding-left: 15px; padding-right: 15px">
+                                <div class="col-md-12">
+                                    <h3>Número de orden:
+                                        <asp:Label ID="lblOPNumero" runat="server" Style="font-weight: 500" Text=""></asp:Label></h3>
 
                                 </div>
-                                <%--Columna 2--%>
-                                <div class="col-lg-6" style="margin-bottom: 20px;">
+                            </div>
+
+                            <br />
+
+                            <div class="row" style="padding-left: 15px; padding-right: 15px">
+                                <%--Cliente--%>
+                                <div class="col-md-6">
                                     <div>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <label>Producto</label>
-                                            </div>
+                                        <label>Cliente</label>
+                                    </div>
+                                    <div>
+                                        <datalist id="ListaNombreCliente" runat="server">
+                                        </datalist>
+                                        <asp:TextBox ID="TxtClientes"
+                                            class="form-control num required" runat="server"
+                                            list="ContentPlaceHolder1_ListaNombreCliente" />
+                                        <p id="ValivaDescripcion"
+                                            class="text-danger text-hide">
+                                            Tienes que ingresar un cliente
+                                        </p>
+                                    </div>
+                                </div>
 
-                                            <div class="col-md-6">
-                                                <datalist id="ListaNombreProd" runat="server">
-                                                </datalist>
-                                                <asp:TextBox runat="server" ID="txtDescripcionProductos"
-                                                    list="ContentPlaceHolder1_ListaNombreProd"
-                                                    class="form-control" Style="margin-left: 15px; width: 95%" />
-                                                <p id="ValidaProducto"
+                                <%--Fecha de entrega--%>
+                                <div class="col-md-3">
+                                    <div>
+                                        <label>Fecha de entrega</label>
+                                    </div>
+                                    <div>
+                                        <div class="form-group" id="data_1">
+                                            <div class="input-group date">
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                <asp:TextBox class="form-control" runat="server"
+                                                    ID="txtFechaHoy"></asp:TextBox>
+                                                <p id="ValidaFecha"
                                                     class="text-danger text-hide">
-                                                    Tienes que ingresar un producto
-                                                </p>
-                                                <asp:HiddenField ID="Hiddentipo" runat="server" />
-                                                <asp:HiddenField ID="HiddenUnidad" runat="server" />
-
-                                            </div>
-                                            <div class="col-md-1" style="margin-top: 8px;">
-                                                <a id="StockChange" target="_blank" data-toggle="tooltip" data-placement="top" title data-original-title="Stock" style="color: black;">
-                                                    <h5 id="StockDisponible"></h5>
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                        <div class="row" style="margin-top: 3%">
-                                            <div class="col-md-4">
-                                                <label>Cantidad</label>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <asp:TextBox runat="server" ID="NCantidad" type="number"
-                                                    class="form-control" Style="margin-left: 15px; width: 70%;" min="1" />
-                                                <p id="ValidaCantidad"
-                                                    class="text-danger text-hide">
-                                                    Tienes que ingresar una cantidad
-                                                </p>
-                                                <p id="ValidaCantidadMayorAcero"
-                                                    class="text-danger text-hide">
-                                                    La canitdad de la orden debe ser mayor a 0
+                                                    Tienes que ingresar una fecha
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <%-- Aca terminan los inputs --%>
+
+                            </div>
 
 
-                                <%-- Este es el boton para agregar una receta a la tabla de abajo --%>
-                                <button class="btn btn-sm btn-primary pull-right m-t-n-xs"
-                                    style="margin-right: 166px; margin-bottom: 5px; margin-top: 5px;"
-                                    data-toggle="tooltip" data-placement="top"
-                                    data-original-title="Agregar productos"
-                                    text="Confirmar Venta" validationgroup="AgregarEntregas"
-                                    id="btnGuardar" onclick="agregarProductoPH(); return false;">
-                                    Agregar productos
-                                </button>
+                            <div class="row" id="row2" style="padding-left: 15px; padding-right: 15px">
+
+                                <div class="col-md-6">
+                                    <div>
+                                        <label>Producto/Receta</label>
+                                    </div>
+
+                                    <div>
+                                        <datalist id="ListaNombreProd" runat="server">
+                                        </datalist>
+                                        <asp:TextBox runat="server" ID="txtDescripcionProductos"
+                                            list="ContentPlaceHolder1_ListaNombreProd"
+                                            class="form-control" />
+                                        <p id="ValidaProducto"
+                                            class="text-danger text-hide">
+                                            Tienes que ingresar un producto
+                                        </p>
+                                        <asp:HiddenField ID="Hiddentipo" runat="server" />
+                                        <asp:HiddenField ID="HiddenUnidad" runat="server" />
+
+                                    </div>
+                                    <div class="col-md-2" style="margin-top: 8px;">
+                                        <a id="StockChange" target="_blank" data-toggle="tooltip" data-placement="top" title data-original-title="Stock" style="color: black;">
+                                            <h5 id="StockDisponible"></h5>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div>
+                                        <label>Cantidad</label>
+                                    </div>
+                                    <div>
+                                        <asp:TextBox runat="server" ID="NCantidad" type="number"
+                                            class="form-control" min="1" />
+                                        <p id="ValidaCantidad"
+                                            class="text-danger text-hide">
+                                            Tienes que ingresar una cantidad
+                                        </p>
+                                        <p id="ValidaCantidadMayorAcero"
+                                            class="text-danger text-hide">
+                                            La cantidad de la orden debe ser mayor a '0'
+                                        </p>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-2">
+                                    <div>
+                                        <label style="visibility: hidden">Agregar</label>
+                                    </div>
+                                    <%-- Este es el boton para agregar una receta a la tabla de abajo --%>
+                                    <button class="btn btn-md btn-primary m-t-n-xs"
+                                        data-toggle="tooltip" data-placement="top"
+                                        data-original-title="Agregar producto"
+                                        text="Confirmar Venta" validationgroup="AgregarEntregas"
+                                        id="btnGuardar" onclick="agregarProductoPH(); return false;" style="height: 100%; margin-top: 0">
+                                        <i style="color: white" class="fa fa-check"></i>
+                                    </button>
+                                </div>
                             </div>
 
 
                             <%-- Aca empieza la tabla en la que se cargan las recetas para la orden de produccion --%>
-                            <div class="row">
-                                <div class="col-lg-11" style="margin-left: 10px">
-                                    <table class="table table-striped table-bordered table-hover " id="editable">
+                            <div class="row" style="padding: 10px">
+                                <div class="col-lg-12">
+                                    <table class="table table-striped table-bordered table-hover" id="editable">
                                         <thead>
                                             <tr>
-                                                <th style="width: 35%">Producto</th>
-                                                <th style="text-align: right; width: 25%; padding-right: 5px;">Cantidad</th>
-                                                <th style="width: 5%"></th>
+                                                <th>Producto</th>
+                                                <th style="text-align: right; width: 20%; padding-right: 5px;">Cantidad</th>
+                                                <th style="text-align: right; width: 20%; padding-right: 5px;">U. Medida</th>
+                                                <th style="width: 15%"></th>
                                             </tr>
                                         </thead>
                                         <tbody id="tableOrdenesProduccion">
@@ -154,10 +157,12 @@
 
                             <%-- Este es el boton para guardar la orden de produccion --%>
                             <asp:LinkButton runat="server" class="btn btn-sm btn-primary pull-right m-t-n-xs"
-                                Style="margin-right: 145px; margin-bottom: 5px; margin-top: 5px;" data-toggle="tooltip"
-                                data-placement="top" data-original-title="Guardan orden de producción" Text="Guardar orden de producción"
+                                Style="margin-bottom: 5px; margin-top: 5px; margin-right: 10px" Text="Guardar orden de producción"
                                 ValidationGroup="AgregarEntregas" ID="btnGuardarOrdenDeCompra" OnClientClick="guardarOrden(); return false;">
                             </asp:LinkButton>
+
+                            <a href="OrdenesDeProduccion.aspx" class="btn btn-sm btn-default pull-left m-t-n-xs" style="margin-left: 1rem; margin-bottom: 5px; margin-top: 5px;">Volver al listado
+                            </a>
 
                             <%-- Estas son textboxOcultas que se usan para varias cosas --%>
                             <asp:TextBox runat="server" ID="DatosProductos" Text="" Style="display: none;" />
@@ -186,7 +191,7 @@
                 autoclose: true,
                 format: 'dd/mm/yyyy'
             });
-    
+
 
             //Esto desactiva el filtro que tiene por defecto la tabla 
             $("#editable_filter").css('display', 'none');
@@ -198,7 +203,7 @@
                 ).draw();
             });
 
-       
+
 
         });
 
@@ -213,77 +218,86 @@
 
 
 
-       function guardarOrden()
-       {
-           // Contar filas de la tabla
-           let rowCountTable = $("#editable tbody tr").length;
-         
-           // Contar filas del PlaceHolder
-           let rowCountPlaceHolder = $("#phRecetasOrdenProduccion tr").length;
-         
-           // Sumar las filas de la tabla y del PlaceHolder
-           let totalRowCount = rowCountTable + rowCountPlaceHolder;
+        function guardarOrden() {
+            let rowCountTable = $("#editable tbody tr").length; // Contar filas de la tabla           
+            let rowCountPlaceHolder = $("#phRecetasOrdenProduccion tr").length; // Contar filas del PlaceHolder          
+            let totalRowCount = rowCountTable + rowCountPlaceHolder; // Sumar las filas de la tabla y del PlaceHolder
 
-           let Cliente = document.getElementById("<%= Cliente.ClientID %>").value
+            if (totalRowCount <= 0) return;
 
-         
-           console.log("Cantidad total de filas: " + totalRowCount);
+            let params = new URLSearchParams(window.location.search);
+            let accion = params.get('Accion');
 
-           //if(totalRowCount > 0){
-                 let url = window.location.href;
-                  if (!url.includes("Accion=2")) {
-                    console.log("Se esta agregando");
-                    let OrdenNumero = document.getElementById("<%= lblOPNumero.ClientID %>").innerHTML;
+            if (accion !== '1' && accion !== '2') return; 
 
-                    let textoLabel = OrdenNumero.innerText;
+            let idOrdenParam = params.get('id');
 
-                    let fechaEntrega = document.getElementById("<%= fechaEntrega.ClientID %>").value
+            let Cliente = document.getElementById("<%= TxtClientes.ClientID %>").value;
+            let OrdenNumero = document.getElementById("<%= lblOPNumero.ClientID %>").innerHTML;
+            let textoLabel = OrdenNumero.innerText;
+            let fechaEntrega = document.getElementById("<%= txtFechaHoy.ClientID %>").value
+            let DatosProductos = document.getElementById("<%= DatosProductos.ClientID %>").value
 
-                    console.log(typeof fechaEntrega);
+            fetch('OrdenesDeProduccionABM.aspx/btnGuardarOrdenDeCompra_Click', {
+                method: 'POST',
+                body: JSON.stringify({ idOrdenParam: idOrdenParam, accion: accion, OrdenNumero: OrdenNumero, fechaEntrega: fechaEntrega, Cliente: Cliente, DatosProductos: DatosProductos }),
+                headers: { 'Content-Type': 'application/json' }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    window.location.href = "OrdenesDeProduccion.aspx";
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
 
-                    let DatosProductos = document.getElementById("<%= DatosProductos.ClientID %>").value
 
-                    if(totalRowCount > 0){
-                         fetch('OrdenesDeProduccionABM.aspx/btnGuardarOrdenDeCompra_Click', {
-                         method: 'POST',
-                         body: JSON.stringify({OrdenNumero: OrdenNumero, fechaEntrega: fechaEntrega, Cliente: Cliente, DatosProductos: DatosProductos}),
-                         headers: { 'Content-Type': 'application/json' }
-                         })
-                         .then(response => response.json())
-                         .then(data => { 
-                             window.location.href="OrdenesDeProduccion.aspx";
-                         })
-                         .catch(error => {
-                             console.error('Error:', error);
-                         });
-                    }
+        async function GetUnidadByIdReceta(idReceta) {
+            try {
+                // Hacer la solicitud fetch con await
+                const response = await fetch('OrdenesDeProduccionABM.aspx/GetUnidadByIdReceta', {
+                    method: 'POST',
+                    body: JSON.stringify({ idReceta: idReceta }),
+                    headers: { 'Content-Type': 'application/json' }
+                });
 
-                    else{
-                        console.log("No se pudo guardar la orden")
-                    }
+                // Verificar si la respuesta es válida
+                if (!response.ok) {
+                    return null;
+                }
 
-                  
-                  }
+                const data = await response.json();
 
-       }
-
+                return data.d;
+            } catch (error) {
+                console.error('Error:', error);
+                return null;
+            }
+        }
 
 
         //Esta es la funcion que se ejecuta al hacer click en el boton btnGuardar, 
         //lo que hace es agregar la receta en la tabla
-        function agregarProductoPH() {
+        async function agregarProductoPH() {
 
-              var i = ValidarForm();
-              if (i == false) {
-                  return false
-              }
+            var i = ValidarForm();
+            if (i == false) {
+                return false
+            }
 
             let ProductoDescripcion = ContentPlaceHolder1_txtDescripcionProductos.value;
             let Cantidad = ContentPlaceHolder1_NCantidad.value;
 
+            // Dividir la cadena por el guion
+            const recetaPartes = ProductoDescripcion.split('-');
+            // Obtener el id
+            const idReceta = recetaPartes[0].trim();
+            let Unidad = await GetUnidadByIdReceta(idReceta);
+
             let txtClientes = document.getElementById("<%= TxtClientes.ClientID %>");
             let txtFechaHoy = document.getElementById("<%= txtFechaHoy.ClientID %>");
-            
+
             VaciarInputs(); //Esta funcion vacia los inputs cada vez que se agrega alguna receta a la tabla
             GuardarInputs();
 
@@ -303,31 +317,33 @@
 
             //console.log(numeroInicial)
 
-          
+
             let btneliminar = "<div style=\"display: flex; align-items: center;\">" +
-            " <a style=\"padding: 0% 5% 2% 5.5%; background-color: transparent; margin-left: 3px;\" class=\"btn btn-xs\" onclick=\"javascript: return borrarDocumentoSelect('" + "ContentPlaceHolder1_" + numeroInicial + "');\" title=\"Eliminar\">" +
-            "<i class=\"fa fa-trash-o\" style=\"color: red;\"></i> </a> " +
-            "</div>";
+                " <a style=\"padding: 0% 5% 2% 5.5%; background-color: transparent; margin-left: 3px;\" class=\"btn btn-xs\" onclick=\"javascript: return borrarDocumentoSelect('" + "ContentPlaceHolder1_" + numeroInicial + "');\" title=\"Eliminar\">" +
+                "<i class=\"fa fa-trash-o\" style=\"color: red;\"></i> </a> " +
+                "</div>";
 
 
 
 
             let ProductoDescripcionColumna = "<td> " + ProductoDescripcion + "</td>";
             let CantidadColumna = "<td style='text-align: right;'>" + Cantidad + "</td>";
+            let UnidadColumna = "<td style='text-align: right;'>" + Unidad + "</td>";
             let btneliminarColumna = "<td> " + btneliminar + "</td>"
 
 
-           
+
             let appendfinal = "<tr id=" + "ContentPlaceHolder1_" + numeroInicial + ">" +
                 ProductoDescripcionColumna +
                 CantidadColumna +
+                UnidadColumna +
                 btneliminarColumna +
                 "</tr>";
 
-            $('#tableOrdenesProduccion').append(appendfinal);      
+            $('#tableOrdenesProduccion').append(appendfinal);
 
 
-    
+
         }
 
         //Esta funcioo guarda los inputs cliente y fecha en variables de tipo textbox, para poder
@@ -340,7 +356,7 @@
 
             let txtFechaEntrega = document.getElementById("<%= txtFechaHoy.ClientID %>").value;
             document.getElementById("<%= fechaEntrega.ClientID %>").value = txtFechaEntrega
-      
+
         }
 
         //Esta funcion vacia los inputs cantidad y producto 
@@ -397,37 +413,37 @@
             var Recetas = document.getElementById('<%=DatosProductos.ClientID%>').value.split(';');
             var nuevasRecetas = "";
             for (var x = 0; x < Recetas.length; x++) {
-            if (Recetas[x] != "") {
-            if (!Recetas[x].includes(ID)) {
-               nuevasRecetas += Recetas[x] + ";";
-               console.log("Entre al if")
+                if (Recetas[x] != "") {
+                    if (!Recetas[x].includes(ID)) {
+                        nuevasRecetas += Recetas[x] + ";";
+                        console.log("Entre al if")
+                    }
+                    else {
+
+                    }
+
+
+                }
+
+
             }
-           else {
-           
-           }
-
-       
-             }  
-
-      
-             }
-          document.getElementById('<%=DatosProductos.ClientID%>').value = nuevasRecetas
+            document.getElementById('<%=DatosProductos.ClientID%>').value = nuevasRecetas
             console.log(document.getElementById('<%=DatosProductos.ClientID%>').value)
 
         }
 
 
-     function ValidarForm() {
-      let formValido = true
+        function ValidarForm() {
+            let formValido = true
 
-       // Descripcion
-       let des = document.getElementById('<%=TxtClientes.ClientID%>')
-       if (des.value.length < 1) {
-           document.getElementById('ValivaDescripcion').className = 'text-danger'
-           formValido = false;
-       } else {
-           document.getElementById('ValivaDescripcion').className = "text-danger text-hide"
-       }
+            // Descripcion
+            let des = document.getElementById('<%=TxtClientes.ClientID%>')
+            if (des.value.length < 1) {
+                document.getElementById('ValivaDescripcion').className = 'text-danger'
+                formValido = false;
+            } else {
+                document.getElementById('ValivaDescripcion').className = "text-danger text-hide"
+            }
 
 <%--      let fecha = document.getElementById('<%=/txtFechaHoy.ClientID%>')
       if (fecha.value.length < 1) {
@@ -438,34 +454,55 @@
       }--%>
 
 
-      let Pro = document.getElementById('<%=txtDescripcionProductos.ClientID%>')
-      if (Pro.value.length < 1) {
-          document.getElementById('ValidaProducto').className = 'text-danger'
-          formValido = false;
-      } else {
-          document.getElementById('ValidaProducto').className = "text-danger text-hide"
-      }
+            let Pro = document.getElementById('<%=txtDescripcionProductos.ClientID%>')
+            if (Pro.value.length < 1) {
+                document.getElementById('ValidaProducto').className = 'text-danger'
+                formValido = false;
+            } else {
+                document.getElementById('ValidaProducto').className = "text-danger text-hide"
+            }
 
-       let cant = document.getElementById('<%=NCantidad.ClientID%>')
-       if (cant.value.length < 1) {
-           document.getElementById('ValidaCantidad').className = 'text-danger'
-          formValido = false;
-       } else {
-           document.getElementById('ValidaCantidad').className = "text-danger text-hide"
-       }
+            let cant = document.getElementById('<%=NCantidad.ClientID%>')
+            if (cant.value.length < 1) {
+                document.getElementById('ValidaCantidad').className = 'text-danger'
+                formValido = false;
+            } else {
+                document.getElementById('ValidaCantidad').className = "text-danger text-hide"
+            }
 
-   
-       if(cant.value <= 0) {
-          document.getElementById('ValidaCantidadMayorAcero').className = 'text-danger'
-          formValido = false;
-       } else {
-           document.getElementById('ValidaCantidadMayorAcero').className = "text-danger text-hide"
-       }
 
-       return formValido;
-     
-   }
+            if (cant.value <= 0) {
+                document.getElementById('ValidaCantidadMayorAcero').className = 'text-danger'
+                formValido = false;
+            } else {
+                document.getElementById('ValidaCantidadMayorAcero').className = "text-danger text-hide"
+            }
 
+            return formValido;
+
+        }
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            document.getElementById("lblSiteMap").innerText = "Produccion / Nueva Orden";
+        });
+    </script>
+
+    <script type="text/javascript">
+        function deshabilitarCampos() {
+            // Obtén referencias a los controles por sus IDs
+            var txtFechaHoy = document.getElementById('<%= txtFechaHoy.ClientID %>');
+            var txtClientes = document.getElementById('<%= TxtClientes.ClientID %>');
+            var row2 = document.getElementById('row2');
+            var btnGuardar = document.getElementById('ContentPlaceHolder1_btnGuardarOrdenDeCompra');
+            
+            txtFechaHoy.disabled = 'true';
+            txtClientes.disabled = 'true';
+            row2.remove(); // Eliminarlo del dom  
+            btnGuardar.remove(); // Eliminarlo del dom   
+        }
     </script>
 
 </asp:Content>

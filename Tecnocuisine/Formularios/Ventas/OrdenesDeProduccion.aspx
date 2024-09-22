@@ -397,4 +397,10 @@
         }
 
     </script>
+
+        <script>
+            $(document).ready(function () {
+                document.getElementById("lblSiteMap").innerText = "Produccion / Ordenes";
+            });
+        </script>
 </asp:Content>

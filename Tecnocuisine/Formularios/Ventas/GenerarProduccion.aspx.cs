@@ -1,57 +1,36 @@
-﻿using Gestion_Api.Entitys;
-using Gestion_Api.Modelo;
-using Microsoft.ReportingServices.ReportProcessing.ReportObjectModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Data;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Web;
-using System.Web.Optimization;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using System.Web.WebSockets;
-using System.Xml.Linq;
 using Tecnocuisine.Modelos;
 using Tecnocuisine_API.Controladores;
 using Tecnocuisine_API.Entitys;
-using Tecnocuisine_API.Modelos;
-using static Gestion_Api.Auxiliares.PushNotification.AppCenterPush;
 
 namespace Tecnocuisine.Formularios.Ventas
 {
     public partial class GenerarProduccion : System.Web.UI.Page
     {
-        Mensaje m = new Mensaje();
-        ControladorProducto controladorProducto = new ControladorProducto();
-        ControladorSectorProductivo ControladorSector = new ControladorSectorProductivo();
-        ControladorUnidad controladorUnidad = new ControladorUnidad();
-        ControladorProveedores ControladorProveedores = new ControladorProveedores();
-        ControladorEntregas ControladorEntregas = new ControladorEntregas();
-        ControladorReceta ControladorReceta = new ControladorReceta();
-        ControladorMarca controladorMarca = new ControladorMarca();
-        ControladorPresentacion controladorPresentacion1 = new ControladorPresentacion();
-        CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+        private Mensaje m = new Mensaje();
+        private ControladorProducto controladorProducto = new ControladorProducto();
+        private ControladorSectorProductivo ControladorSector = new ControladorSectorProductivo();
+        private ControladorUnidad controladorUnidad = new ControladorUnidad();
+        private ControladorReceta ControladorReceta = new ControladorReceta();
+        private ControladorMarca controladorMarca = new ControladorMarca();
+        private ControladorPresentacion controladorPresentacion1 = new ControladorPresentacion();
+        private int accion;
+        private int id;
+        private int Mensaje;
 
-        int accion;
-        int id;
-        int Mensaje;
-        int PPro;
-        string sector;
         protected void Page_Load(object sender, EventArgs e)
         {
             this.Mensaje = Convert.ToInt32(Request.QueryString["m"]);
             accion = Convert.ToInt32(Request.QueryString["a"]);
             id = Convert.ToInt32(Request.QueryString["i"]);
-            PPro = Convert.ToInt32(Request.QueryString["PPro"]);
-
-            if(Request.QueryString["s"]!=null)
-                sector = Request.QueryString["s"].ToString();
 
             if (!IsPostBack)
             {
@@ -79,8 +58,6 @@ namespace Tecnocuisine.Formularios.Ventas
             CargarProducto();
             CargarDLLProductos();
         }
-
-
         public void PrecargarProductosYRecetas(string DescripcionReceta, string Cantidad)
         {
             ControladorReceta cReceta = new ControladorReceta();
@@ -179,8 +156,6 @@ namespace Tecnocuisine.Formularios.Ventas
 
             }
         }
-
-
         public void CargarTablaPHRecetas(Recetas_Receta item)
         {
             try
@@ -324,7 +299,6 @@ namespace Tecnocuisine.Formularios.Ventas
 
             }
         }
-
         public void CargarTablaPHProductos(Recetas_Producto item)
         {
             try
@@ -480,8 +454,6 @@ namespace Tecnocuisine.Formularios.Ventas
 
             }
         }
-
-
         private void CargarDLL()
         {
             var presentacion = controladorPresentacion1.ObtenerTodosPresentaciones();
@@ -592,7 +564,6 @@ namespace Tecnocuisine.Formularios.Ventas
             {
             }
         }
-
         private void CargaSectorOptions(List<Tecnocuisine_API.Entitys.SectorProductivo> sector)
         {
             try
@@ -643,7 +614,6 @@ namespace Tecnocuisine.Formularios.Ventas
             {
             }
         }
-
         private void CargarRecetasOptions(List<Tecnocuisine_API.Entitys.Recetas> recetas)
         {
             try
@@ -696,9 +666,6 @@ namespace Tecnocuisine.Formularios.Ventas
                 return "";
             }
         }
-
-
-
         [WebMethod]
         public static string GetStockProdRect(string idProd)
         {
@@ -724,8 +691,6 @@ namespace Tecnocuisine.Formularios.Ventas
                 return "";
             }
         }
-
-
         [WebMethod]
         public static string GetReceta(int idProd)
         {
@@ -747,10 +712,6 @@ namespace Tecnocuisine.Formularios.Ventas
                 return "";
             }
         }
-
-
-
-
         [WebMethod]
         public static string GetProducto(int idProd)
         {
@@ -775,9 +736,6 @@ namespace Tecnocuisine.Formularios.Ventas
                 return "";
             }
         }
-
-
-
         [WebMethod]
         public static string GetProductoChange(string idProd)
         {
@@ -802,8 +760,6 @@ namespace Tecnocuisine.Formularios.Ventas
                 return "";
             }
         }
-
-
         public void ObtenerProductos()
         {
             try
@@ -850,9 +806,6 @@ namespace Tecnocuisine.Formularios.Ventas
             {
             }
         }
-
-
-
         public void AgregarNuevoProductoVenta(string prod, int idsector, string fecha)
         {
             Tecnocuisine_API.Entitys.ProductoVentas newProductoVentas = new Tecnocuisine_API.Entitys.ProductoVentas();
@@ -873,8 +826,6 @@ namespace Tecnocuisine.Formularios.Ventas
             newProductoVentas.FechaVencimiento = Convert.ToDateTime(fecha);
             controladorProductoVenta.AgregarProductosVentas(newProductoVentas);
         }
-
-
         [WebMethod]
         public static List<PresentacionClass> GetPresentaciones(int idProd, int tipo)
         {
@@ -939,7 +890,6 @@ namespace Tecnocuisine.Formularios.Ventas
 
             }
         }
-
         [WebMethod]
         public static string ObtenerListaHistoricoCambio(string idProd, string Type)
         {
@@ -974,8 +924,6 @@ namespace Tecnocuisine.Formularios.Ventas
                 return "";
             }
         }
-
-
         [WebMethod]
         public static string GetProductosEnRecetas(string idProd)
         {
@@ -1042,19 +990,16 @@ namespace Tecnocuisine.Formularios.Ventas
                 return "";
             }
         }
-
         [WebMethod]
         public static string GenerarProduccionFinal(string List, string Marca, string Presentacion, string UnidadMedida, string Sector, string Lote, string CantidadProducida, string idReceta, string ListStock, string ListHistoricoCambio, string ListCostoCambios, string CostoTotal)
-
         {
             try
             {
-                string ERROR = "";
                 ControladorStockReceta controladorStockReceta = new ControladorStockReceta();
-                ControladorUnidad cu = new ControladorUnidad();
-                ControladorReceta cr = new ControladorReceta();
                 ControladorReceta controladorReceta = new ControladorReceta();
                 ControladorPresentacion controladorPresentacion = new ControladorPresentacion();
+
+                string ERROR = "";
                 var item = List.Split(';');
                 int marcaid = Convert.ToInt16(Marca.Split('-')[0].Trim());
                 int presentacionid = Convert.ToInt16(Presentacion.Split('-')[0].Trim());
@@ -1092,7 +1037,7 @@ namespace Tecnocuisine.Formularios.Ventas
                             p.Cantidad = Convert.ToDecimal(CantidadProducida);
                             p.idEntregas = null;
 
-                            int i2 = controladorStockReceta.AgregarStockAll_Receta(p, sectorid, Lote, fecha, presentacionid, marcaid);
+                            controladorStockReceta.AgregarStockAll_Receta(p, sectorid, Lote, fecha, presentacionid, marcaid);
                         }
                         else
                         {
@@ -1102,7 +1047,6 @@ namespace Tecnocuisine.Formularios.Ventas
                             stockreceta.stock = sr.stock + Convert.ToDecimal(CantidadProducida);
                             stockreceta.id = sr.id;
                             controladorStockReceta.EditarStockReceta(stockreceta);
-
 
                             // STOCK PRESENTACIONES
                             var SP = controladorStockReceta.ObtenerStockPresentacionesReceta(receta.id, presentacionid);
@@ -1125,12 +1069,9 @@ namespace Tecnocuisine.Formularios.Ventas
                                 spr.idPresentacion = SP.idPresentacion;
                                 spr.stock = pres.cantidad * Convert.ToDecimal(CantidadProducida) + SP.stock;
                                 controladorStockReceta.EditarStockPresentacionesReceta(spr);
-
                             }
 
-
                             // STOCK MARCAS 
-
                             var SM = controladorStockReceta.ObtenerStockMarcasRecetas(receta.id, marcaid);
                             if (SM == null)
                             {
@@ -1150,10 +1091,7 @@ namespace Tecnocuisine.Formularios.Ventas
                                 controladorStockReceta.EditarStockMarcasReceta(smr);
                             }
 
-
                             // STOCK LOTES
-
-
                             var SL = controladorStockReceta.ObtenerStockLotesReceta(receta.id, Lote);
                             if (SL == null)
                             {
@@ -1164,8 +1102,6 @@ namespace Tecnocuisine.Formularios.Ventas
                                 slr.idPresentacion = presentacionid;
                                 slr.FechaVencimiento = DateTime.Now;
                                 controladorStockReceta.AgregarStockLotesReceta(slr);
-
-
                             }
                             else
                             {
@@ -1178,10 +1114,7 @@ namespace Tecnocuisine.Formularios.Ventas
                                 controladorStockReceta.EditarStockLotesReceta(slr);
                             }
 
-
                             // STOCK SECTOR
-
-
                             var SS = controladorStockReceta.ObtenerStockSectoresReceta(receta.id, sectorid);
                             if (SS == null)
                             {
@@ -1190,8 +1123,6 @@ namespace Tecnocuisine.Formularios.Ventas
                                 ssr.idSector = sectorid;
                                 ssr.stock = Convert.ToDecimal(CantidadProducida);
                                 controladorStockReceta.AgregarStockSectoresReceta(ssr);
-
-
                             }
                             else
                             {
@@ -1202,10 +1133,7 @@ namespace Tecnocuisine.Formularios.Ventas
                                 ssr.stock = Convert.ToDecimal(CantidadProducida) + SS.stock;
                                 controladorStockReceta.EditarStockSectoresReceta(ssr);
                             }
-
                         }
-
-
                     }
                     catch (Exception)
                     {
@@ -1289,7 +1217,6 @@ namespace Tecnocuisine.Formularios.Ventas
                 return 0;
             }
         }
-
         public static void ActualizarCostoTotalReceta(int idReceta)
         {
             try
@@ -1415,7 +1342,6 @@ namespace Tecnocuisine.Formularios.Ventas
 
             }
         }
-
         public static int CrearHistoricoCambios(string[] list)
         {
             try
@@ -1626,8 +1552,6 @@ namespace Tecnocuisine.Formularios.Ventas
                 return 0;
             }
         }
-
-
         public static int VaciarStockDefinidos(string[] list)
         {
             try
@@ -1762,7 +1686,6 @@ namespace Tecnocuisine.Formularios.Ventas
                 return 0;
             }
         }
-
         public static void ReducirStockReceta(Tecnocuisine_API.Entitys.Recetas receta, string[] array)
         {
             ControladorStockReceta controladorStockReceta = new ControladorStockReceta();
@@ -2049,8 +1972,6 @@ namespace Tecnocuisine.Formularios.Ventas
 
             }
         }
-
-
         public static void ReducirStockProducto(Tecnocuisine_API.Entitys.Productos prod, string[] array)
         {
             ControladorStockProducto controladorStockProducto = new ControladorStockProducto();
@@ -2330,17 +2251,7 @@ namespace Tecnocuisine.Formularios.Ventas
 
             }
         }
-
-
-
-
-
-
-
-
-
-
-        bool ObtenerPruductoDeLaReceta(int idReceta)
+        private bool ObtenerPruductoDeLaReceta(int idReceta)
         {
             ControladorReceta controlador = new ControladorReceta();
             ControladorUnidad cu = new ControladorUnidad();
@@ -2412,21 +2323,16 @@ namespace Tecnocuisine.Formularios.Ventas
                 return false;
             }
         }
-
-        decimal RevertirNumero(string numeroFormateado)
+        private decimal RevertirNumero(string numeroFormateado)
         {
             string numeroSinComas = numeroFormateado.Replace(",", "");
             decimal numero = decimal.Parse(numeroSinComas, CultureInfo.InvariantCulture);
             return numero;
         }
-
-        string FormatearNumero(decimal numero)
+        private string FormatearNumero(decimal numero)
         {
             return numero.ToString("N2", new CultureInfo("en-US"));
         }
-
-
-
         public class PresentacionClass
         {
             public int id { get; set; }

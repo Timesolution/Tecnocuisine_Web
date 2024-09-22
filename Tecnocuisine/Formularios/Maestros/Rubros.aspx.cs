@@ -23,20 +23,22 @@ namespace Tecnocuisine
         protected void Page_Load(object sender, EventArgs e)
         {
             VerificarLogin();
-    
+
             this.Mensaje = Convert.ToInt32(Request.QueryString["m"]);
             this.accion = Convert.ToInt32(Request.QueryString["a"]);
             this.idRubro = Convert.ToInt32(Request.QueryString["i"]);
 
+
             if (!IsPostBack)
             {
-        
+                CargarDdlCuentasContables();
+
                 if (accion == 2)
                 {
                     CargarRubros();
                 }
 
-                if(Mensaje == 1)
+                if (Mensaje == 1)
                 {
                     this.m.ShowToastr(this.Page, "Proceso concluido con Exito!", "Exito");
                 }
@@ -51,8 +53,18 @@ namespace Tecnocuisine
 
             }
 
+
             ObtenerPresentaciones();
 
+        }
+
+        private void CargarDdlCuentasContables()
+        {
+            ddlCuentasContables.DataSource = new ControladorPlanDeCuentas().GetAllPlanDeCuentas();
+            ddlCuentasContables.DataTextField = "Descripcion";
+            ddlCuentasContables.DataValueField = "id";
+            ddlCuentasContables.DataBind();
+            ddlCuentasContables.Items.Insert(0, new ListItem("Seleccione...", "-1"));
         }
 
         private void VerificarLogin()
@@ -130,6 +142,7 @@ namespace Tecnocuisine
                 {
                     hiddenEditar.Value = presentacion.id.ToString();
                     txtDescripcionPresentacion.Text = presentacion.descripcion;
+                    ddlCuentasContables.SelectedValue = presentacion.PlanDeCuentasId.ToString();
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
 
 
@@ -158,7 +171,7 @@ namespace Tecnocuisine
                 celNumero.Text = rubro.id.ToString();
                 celNumero.VerticalAlign = VerticalAlign.Middle;
                 celNumero.HorizontalAlign = HorizontalAlign.Right;
-                celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celNumero.Attributes.Add("style", "padding-bottom: 1px !important; display:none");
 
                 tr.Cells.Add(celNumero);
 
@@ -169,6 +182,12 @@ namespace Tecnocuisine
                 celNombre.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celNombre);
 
+                TableCell celCuentaContable = new TableCell();
+                celCuentaContable.Text = rubro.PlanDeCuentas.Descripcion;
+                celCuentaContable.VerticalAlign = VerticalAlign.Middle;
+                celCuentaContable.HorizontalAlign = HorizontalAlign.Left;
+                celCuentaContable.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celCuentaContable);
 
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
@@ -264,6 +283,7 @@ namespace Tecnocuisine
 
                 rubro.descripcion = txtDescripcionPresentacion.Text;
                 rubro.estado = true;
+                rubro.PlanDeCuentasId = Convert.ToInt32(ddlCuentasContables.SelectedValue);
 
                 int resultado = controladorRubros.AgregarRubros(rubro);
 
@@ -273,7 +293,7 @@ namespace Tecnocuisine
                 }
                 else
                 {
-                    this.m.ShowToastr(this.Page, "No se pudo agregar el Rubro", "warning");
+                    this.m.ShowToastrError(this.Page, "No se pudo agregar el Rubro", "Error");
                 }
             }
             catch (Exception ex)
@@ -287,12 +307,18 @@ namespace Tecnocuisine
         {
             try
             {
+                if (ddlCuentasContables.SelectedValue == "-1")
+                {
+                    this.m.ShowToastrError(this.Page, "No se pudo editar el Rubro", "Error");
+                    return;
+                }
+
                 Tecnocuisine_API.Entitys.Rubros rubro = new Tecnocuisine_API.Entitys.Rubros();
 
                 rubro.id = this.idRubro;
                 rubro.descripcion = txtDescripcionPresentacion.Text;
                 rubro.estado = true;
-
+                rubro.PlanDeCuentasId = Convert.ToInt32(ddlCuentasContables.SelectedValue);
 
                 int resultado = controladorRubros.EditarRubros(rubro);
 
@@ -303,13 +329,13 @@ namespace Tecnocuisine
                 }
                 else
                 {
-                    this.m.ShowToastr(this.Page, "No se pudo editar el Rubro", "warning");
+                    this.m.ShowToastrError(this.Page, "No se pudo editar el Rubro", "Error");
                 }
 
             }
             catch (Exception ex)
             {
-
+                this.m.ShowToastrError(this.Page, "No se pudo editar el Rubro", "Error");
             }
         }
 

@@ -117,7 +117,7 @@
                                         <asp:HiddenField ID="idProducto" runat="server" />
                                         <div>
                                             <label>Cantidad</label>
-                                            <asp:TextBox ID="txtCantidad" onchange="ValidadCantidad()" Text="0" onkeypress="javascript:return validarNro(event)" Style="text-align: right;" class="form-control money" runat="server" />
+                                            <asp:TextBox ID="txtCantidad" MaxLength="10" onchange="ValidadCantidad()" Text="0" onkeypress="javascript:return validarNro(event)" Style="text-align: right;" class="form-control money" runat="server" />
                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage=""
                                                 SetFocusOnError="false" ForeColor="Red" Font-Bold="false"
                                                 ValidationGroup="AgregarProductos" ControlToValidate="txtCantidad">
@@ -130,7 +130,7 @@
                                         <asp:HiddenField ID="HiddenField1" runat="server" />
                                         <div>
                                             <label>Precio</label>
-                                            <asp:TextBox ID="txtPrecio" onchange="ValidarPrecio()" Text="0" onkeypress="javascript:return validarNro(event)" Style="text-align: right;" class="form-control money" runat="server" />
+                                            <asp:TextBox ID="txtPrecio" MaxLength="10" onchange="ValidarPrecio()" Text="0" onkeypress="javascript:return validarNro(event)" Style="text-align: right;" class="form-control money" runat="server" />
                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ErrorMessage=""
                                                 SetFocusOnError="false" ForeColor="Red" Font-Bold="false"
                                                 ValidationGroup="AgregarProductos" ControlToValidate="txtPrecio">
@@ -197,14 +197,14 @@
                                         <tr>
                                             <%--<th style="width: 6%">Cod Producto</th>--%>
                                             <th style="width: 10%">Descripcion</th>
-                                            <th style="width: 5%; text-align: right">Cantidad</th>
-                                            <th style="width: 5%; text-align: right">Precio</th>
-                                            <th style="width: 5%; text-align: right">Total</th>
                                             <th style="width: 10%">Deposito</th>
                                             <th style="width: 6%">Marca</th>
                                             <th style="width: 9%">Presentacion</th>
-                                            <th style="width: 5%">Lote</th>
-                                            <th style="width: 5%">Vencimiento</th>
+                                            <th style="width: 5%; text-align: right">Cantidad</th>
+                                            <th style="width: 5%; text-align: right">Precio</th>
+                                            <th style="width: 5%; text-align: right">Total</th>
+                                            <%--<th style="width: 5%">Lote</th>
+                                            <th style="width: 5%">Vencimiento</th>--%>
                                             <th style="width: 3%"></th>
                                         </tr>
                                     </thead>
@@ -221,7 +221,7 @@
 
                                     <div style="display: inline-block; font-size: 2rem; font-weight: bold;">
                                         <span>$</span>
-                                        <span id="total">0</span>
+                                        <span id="total">0.00</span>
                                     </div>
                                 </div>
 
@@ -421,16 +421,18 @@
                     agregarReceta(idOption, costo)
                     CargarDepositos(txtProd.split('-')[0].trim(), 2);
                     CargarOptionsDllPresentaciones(txtProd.split('-')[0].trim(), 2);
-                    CargarOptionDllMarcas(txtProd.split('-')[0].trim(), 1);
+                    CargarOptionDllMarcas(txtProd.split('-')[0].trim(), 2);
                 }
             }
         }
 
         function CargarOptionDllMarcas(id, tipo) {
+            document.getElementById('<%=ddlMarca.ClientID%>').removeAttribute('disabled');
+
             $.ajax({
                 method: "POST",
                 url: "Entregas.aspx/GetMarca",
-                data: '{idProd: "' + id + '"}',
+                data: '{idItem: "' + id + '", tipo:"' + tipo + '"}',
                 contentType: "application/json",
                 dataType: "json",
                 dataType: "json",
@@ -441,25 +443,29 @@
                 success: function (respuesta) {
                     //quito los options que pudiera tener previamente el combo
                     $("#<%=ddlMarca.ClientID%>").html("");
-                    //recorro cada item que devuelve el servicio web y lo aÃ±ado como un opcion
+
                     if (respuesta.d.length > 0) {
                         $.each(respuesta.d, function () {
                             $("#<%=ddlMarca.ClientID%>").append($("<option></option>").attr("value", this.id).text(this.descripcion))
                         });
 
                     } else {
-                        $("#<%=ddlMarca.ClientID%>").append($("<option></option>").attr("value", 0).text("No Existen Marcas"))
+                        toastr.error("El producto o receta no tiene marcas asignadas.", "Error", {
+                            "positionClass": "toast-bottom-right"
+                        });
+
+                        // Deshabilitar boton para agregar el item
+                        document.getElementById('btnAgregarProducto').setAttribute('disabled', 'true');
                     }
                 }
             });
-
         }
 
         function CargarDepositos(id, tipo) {
             $.ajax({
                 method: "POST",
                 url: "Entregas.aspx/GetIdSectorByIdProd",
-                data: '{idProd: "' + id + '",tipo:"' + tipo + '"}',
+                data: '{idProd: "' + id + '", tipo:"' + tipo + '"}',
                 contentType: "application/json",
                 dataType: "json",
                 dataType: "json",
@@ -512,8 +518,8 @@
 
             if (deposito.value != "-1")
                 deposito.style.border = "1px solid #e5e6e7";
-            else 
-                deposito.style.border = "1px solid red";          
+            else
+                deposito.style.border = "1px solid red";
         }
 
         function ComprobarFecha(date, DiaIngresado) {
@@ -532,8 +538,16 @@
 
         }
 
-        function agregarProductoPH() {
+        // Función para convertir cadena formateada a número
+        function parseNumber(str) {
+            const cleaned = str.replace(/,/g, '');
+            return parseFloat(cleaned);
+        }
 
+
+        let idRow = 0;
+
+        function agregarProductoPH() {
             // Validaciones
             let ValDias = ValidarDias();
             if (ValDias == false) {
@@ -570,7 +584,7 @@
                 deposito.style.border = "1px solid #e5e6e7";
             }
             else {
-                deposito.style.border = "1px solid red"; 
+                deposito.style.border = "1px solid red";
                 return false
             }
 
@@ -586,12 +600,16 @@
             let styleCorrect = "";
             let unidad = document.getElementById('ContentPlaceHolder1_ddlPresentaciones').selectedOptions[0].text;
 
+            let cantidadNum = parseNumber(cantidad);
+            let precioNum = parseNumber(precioFormated);
+            let totalProducto = cantidadNum * precioNum;
+
             //costototal = costototal.toString().replace('.', ',');
 
             let tdDescripcion = "<td> " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
-            let tdCantidad = "<td style=\" text-align: right\"> " + myFormat(cantidad) + "</td>";
-            let tdPrecio = "<td style=\" text-align: right\"> $ " + myFormat(precioFormated) + "</td>";
-            let tdTotalProducto = "<td style=\" text-align: right\"> $ " + (myFormat(cantidad) * myFormat(precioFormated)).toFixed(2) + "</td>";
+            let tdCantidad = "<td style=\" text-align: right\"> " + myFormat2(cantidad) + "</td>";
+            let tdPrecio = "<td style=\" text-align: right\"> $ " + myFormat2(precioFormated) + "</td>";
+            let tdTotalProducto = "<td style=\"text-align: right\"> $ " + myFormat2(totalProducto.toString()) + "</td>";
             let tdUnidad = "<td> " + unidad + "</td>";
             let btnRec = "";
 
@@ -599,33 +617,35 @@
             idMarca = document.getElementById('<%=ddlMarca.ClientID%>').value.trim()
 
             if (!document.getElementById('<%= idProductosRecetas.ClientID%>').value.includes(tipo + '_' + codigo + "," + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value)) {
+
+                idRow += 1;
                 $('#tableProductos').append(
-                    "<tr id=" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value.trim() + ">" +
+                    "<tr id=" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value.trim() + "_" + idRow + ">" +
                     /*"<td style=\" text-align: right\"> " + codigo + "</td>" +*/
                     tdDescripcion +
-                    tdCantidad +
-                    tdPrecio +
-                    tdTotalProducto +
                     tdDeposito +
                     marca +
                     //"<td ondblclick=\"CargarmodalRecetaDetalle('" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0]+"')\" > " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>" +
                     tdUnidad +
-                    "<td style=\" text-align: center\"> " + document.getElementById('<%=txtLote.ClientID%>').value + "</td>" +
-                    "<td style=\" text-align: center\"> " + document.getElementById('<%=txtFechaVencimiento.ClientID%>').value + "</td>" +
+                    <%--"<td style=\" text-align: center\"> " + document.getElementById('<%=txtLote.ClientID%>').value + "</td>" +
+                    "<td style=\" text-align: center\"> " + document.getElementById('<%=txtFechaVencimiento.ClientID%>').value + "</td>" +--%>
 
+                    tdCantidad +
+                    tdPrecio +
+                    tdTotalProducto +
 
                     "<td style=\" text-align: center\">" +
-                    " <a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent; " + styleCorrect + "\" class=\"btn  btn-xs \" onclick=\"javascript: return borrarProd('" + tipo + "_" + codigo.trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "', " + (myFormat(cantidad) * myFormat(precioFormated)).toFixed(2) + ");\" >" +
+                    " <a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent; " + styleCorrect + "\" class=\"btn  btn-xs \" onclick=\"javascript: return borrarProd(event,'" + tipo + "_" + codigo.trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "_" + idRow + "', " + (totalProducto*-1) + ");\" >" +
                     "<i class=\"fa fa-trash - o\" style=\"color: black\"></i> </a> " +
                     btnRec
                     + "</td > " +
                     "</tr>"
                 );
                 if (document.getElementById('<%= idProductosRecetas.ClientID%>').value == "") {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += (codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%= txtFechaVencimiento.ClientID%>').value + "%" + precioFormated + "%" + deposito.value).replaceAll(".", ",");
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += (codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%= txtFechaVencimiento.ClientID%>').value + "%" + precioFormated + "%" + deposito.value + "%" + idRow).replaceAll(".", ",");
                 }
                 else {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += (";" + codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%=txtFechaVencimiento.ClientID%>').value + "%" + precioFormated + "%" + deposito.value).replaceAll(".", ",");;
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += (";" + codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%=txtFechaVencimiento.ClientID%>').value + "%" + precioFormated + "%" + deposito.value + "%" + idRow).replaceAll(".", ",");
                 }
 
                 // Aumentar total general
@@ -634,11 +654,7 @@
                 //document.getElementById('total').textContent = totalActual;
 
                 // Aumentar total general
-                let total = document.getElementById('total');
-                let totalActual = parseFloat(total.textContent);
-                totalActual += parseFloat(precio.value).toFixed(2) * parseFloat(cantidad).toFixed(3);
-                total.textContent = totalActual.toFixed(2);
-
+                updateTotalGeneral(totalProducto);
 
                 // Limpiar campos
                 prod.value = "";
@@ -647,7 +663,6 @@
                 lot.value = "";
                 fechaVencimiento.value = "";
                 unidad = "";
-                document.getElementById('ContentPlaceHolder1_txtNroFactura').value = "";
 
                 $("#<%=ddlDepositos.ClientID%>").val("-1");;
 
@@ -658,6 +673,18 @@
 
                 document.getElementById('<%= btnGuardar.ClientID %>').disabled = false;
             }
+        }
+
+        // Actualizar el total general
+        function updateTotalGeneral(newTotalProducto) {
+            let totalGeneralElement = document.getElementById("total");
+            let currentTotalGeneral = parseNumber(totalGeneralElement.textContent);
+            let newTotalGeneral = currentTotalGeneral + newTotalProducto;
+
+            if (newTotalGeneral <= 0)
+                newTotalGeneral = 0.00;
+
+            totalGeneralElement.textContent = myFormat2(newTotalGeneral.toString());
         }
 
         function agregarProducto(clickedId, costo) {
@@ -690,16 +717,28 @@
             document.getElementById('<%=txtCantidad.ClientID%>').focus();
         }
 
-        function borrarProd(idprod, totalToRemove) {
+        function borrarProd(event, idprod, totalToRemove) {
             event.preventDefault();
 
+            // Obtener el id de la row a eliminar
+            let idRowToDelete = idprod.split("_")[3].trim();
+            // Eliminar la fila del producto de la interfaz de usuario
             $('#' + idprod).remove();
-            var productos = ContentPlaceHolder1_idProductosRecetas.value.split(';');
 
+            // Obtener la lista de productos del campo oculto
+            var productos = ContentPlaceHolder1_idProductosRecetas.value.split(';');
+            console.log(productos);
+
+             // Crear una nueva lista de productos sin el producto eliminado
             var nuevosProductos = "";
             for (var x = 0; x < productos.length; x++) {
                 if (productos[x] != "") {
-                    if (!productos[x].includes(idprod)) {
+                    // Dividir la cadena en partes usando '%' como delimitador
+                    var productoPartes = productos[x].split('%');
+                    // Obtener el último valor
+                    let idRow = productoPartes[productoPartes.length - 1];
+
+                    if (idRow !== idRowToDelete) {
                         nuevosProductos += productos[x] + ";";
                     }
                     else {
@@ -713,6 +752,10 @@
                     }
                 }
             }
+
+            console.log("Nuevos: ");
+            console.log(nuevosProductos);
+
             ContentPlaceHolder1_idProductosRecetas.value = nuevosProductos;
 
             if (nuevosProductos == "") {
@@ -721,11 +764,7 @@
 
 
             // Descontar en total general
-            let totalElement = document.getElementById('total');
-            let totalActual = parseFloat(totalElement.textContent);
-            console.log(totalToRemove);
-            totalActual -= totalToRemove;
-            totalElement.textContent = totalActual.toFixed(2);
+            updateTotalGeneral(totalToRemove);
 
         }
     </script>
@@ -798,6 +837,44 @@
         function myFormat(str) {
             //const cleaned = str.replace(/[^\d,]/g, '').replace(",", ".")
             return Number(str).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 })
+        }
+        //function myFormat2(str) {
+        //    // Eliminar espacios en blanco alrededor del número
+        //    str = str.trim();
+
+        //    // Reemplazar comas con nada para los separadores de miles
+        //    // y los puntos con nada para los separadores de miles en notación europea
+        //    const cleaned = str.replace(/,/g, '').replace(/\./g, '');
+
+        //    // Intentar convertir la cadena limpiada a un número
+        //    const number = parseFloat(cleaned);
+
+        //    // Verificar si la conversión fue exitosa
+        //    if (isNaN(number)) {
+        //        return "Invalid number";
+        //    }
+
+        //    // Formatear el número con la configuración de locales en-US
+        //    return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+        //}
+        function myFormat2(str) {
+            // Eliminar espacios en blanco alrededor del número
+            str = str.trim();
+
+            // Reemplazar comas con nada para los separadores de miles
+            // pero dejar los puntos para los decimales
+            const cleaned = str.replace(/,/g, '');
+
+            // Intentar convertir la cadena limpiada a un número
+            const number = parseFloat(cleaned);
+
+            // Verificar si la conversión fue exitosa
+            if (isNaN(number)) {
+                return "Invalid number";
+            }
+
+            // Formatear el número con la configuración de locales en-US
+            return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 });
         }
         function ValidadCantidad() {
             let cant = document.getElementById('<%=txtCantidad.ClientID%>')

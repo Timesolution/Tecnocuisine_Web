@@ -1,11 +1,15 @@
-﻿using System;
+﻿using Gestion_Api.Entitys;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Tecnocuisine_API.Controladores;
+using Tecnocuisine_API.Entitys;
 
 namespace Tecnocuisine.Formularios.Maestros
 {
@@ -16,7 +20,7 @@ namespace Tecnocuisine.Formularios.Maestros
         ControladorProducto ControladorProducto = new ControladorProducto();
         ControladorReceta ControladorReceta = new ControladorReceta();
         ControladorUnidad cu = new ControladorUnidad();
-            int id  ;
+        int id;
         int tipo;
         CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
 
@@ -24,92 +28,108 @@ namespace Tecnocuisine.Formularios.Maestros
         {
             if (!IsPostBack)
             {
-                id= Convert.ToInt32(Request.QueryString["i"]);
+                id = Convert.ToInt32(Request.QueryString["i"]);
                 tipo = Convert.ToInt32(Request.QueryString["t"]);
                 CargarTablaStockTotal();
-
             }
         }
 
-     
 
+        /// <summary>
+        /// Verifica el tipo de item (1-producto, 2-receta), obtiene sus stocks correspondientes y los dibuja en tablas
+        /// </summary>
         private void CargarTablaStockTotal()
         {
             try
             {
-                if(tipo == 1) // 1= producto, 2= receta
+                // Es Producto
+                if (tipo == 1)
                 {
                     var ListStockTotal = ControladorStockProducto.ObtenerStockProducto(id);
 
                     var prod = ControladorProducto.ObtenerProductoId(id);
 
-                    NombreProd.Value = prod.descripcion;
+                    //NombreProd.Value = prod.descripcion;
 
 
-                    var listStockPresentaciones = ControladorStockProducto.ObtenerStockPresentacionesByIdProducto(id);
+                    //var listStockPresentaciones = ControladorStockProducto.ObtenerStockPresentacionesByIdProducto(id);
 
                     var listStockSector = ControladorStockProducto.ObtenerStockSectoresByIdProducto(id);
 
-                    var listStockLotes = ControladorStockProducto.ObtenerStockLotesByIdProducto(id);
+                    //var listStockLotes = ControladorStockProducto.ObtenerStockLotesByIdProducto(id);
 
-                    var ListStockMarcas = ControladorStockProducto.ObtenerStockMarcaByIDProducto(id);
+                    // Son las cantidades que fueron enviadas entre sectores y que aun no han sido recepcionadas pero siguen siendo parte del stock
+                    var stockEnTransito = ControladorStockProducto.ObtenerStockEnTransitoByDescripcion(prod.descripcion);
+
+                    //var ListStockMarcas = ControladorStockProducto.ObtenerStockMarcaByIDProducto(id);
 
                     if (ListStockTotal != null)
                     {
                         CargarPhFinal(ListStockTotal);
                     }
-                    if (listStockPresentaciones != null)
-                    {
-                        foreach (var i in listStockPresentaciones)
-                        {
 
-                        CargarPhPresentaciones(i);
-                        }
-                    }
-                    if(listStockSector!= null)
+                    CargarStockEnTransito(stockEnTransito, prod.unidadMedida, prod.descripcion);
+
+                    //if (listStockPresentaciones != null)
+                    //{
+                    //    foreach (var i in listStockPresentaciones)
+                    //    {
+
+                    //    CargarPhPresentaciones(i);
+                    //    }
+                    //}
+                    if (listStockSector != null)
                     {
                         foreach (var i in listStockSector)
                         {
                             CargarPhSectores(i);
                         }
                     }
-                    if (listStockLotes != null)
-                    {
-                        foreach (var i in listStockLotes)
-                        {
-                            CargarPhLotes(i);
-                        }
-                    }
-                    if (ListStockMarcas != null)
-                    {
-                          foreach (var i in ListStockMarcas)
-                        {
-                            CargarPhMarcas(i);
-                        }
-                    }
+                    //if (listStockLotes != null)
+                    //{
+                    //    foreach (var i in listStockLotes)
+                    //    {
+                    //        CargarPhLotes(i);
+                    //    }
+                    //}
+                    //if (ListStockMarcas != null)
+                    //{
+                    //      foreach (var i in ListStockMarcas)
+                    //    {
+                    //        CargarPhMarcas(i);
+                    //    }
+                    //}
                 }
+                // Es Receta
                 else
                 {
-                    var ListStockTotal = controladorStockRecetas.ObtenerStockReceta(id);
-                    var listStockPresentaciones = controladorStockRecetas.ObtenerStockPresentacionesByIdReceta(id);
-                    var listStockSector = controladorStockRecetas.ObtenerStockSectoresRecetaByIdReceta(id);
-                    var listStockLotes = controladorStockRecetas.ObtenerStockLotesRecetaByIdReceta(id);
-                    var listStockMarcas = controladorStockRecetas.ObtenerStockMarcasRecetasByIdReceta(id);
                     var receta = ControladorReceta.ObtenerRecetaId(id);
 
-                    NombreProd.Value = receta.descripcion;
+                    var ListStockTotal = controladorStockRecetas.ObtenerStockReceta(id);
+                    //var listStockPresentaciones = controladorStockRecetas.ObtenerStockPresentacionesByIdReceta(id);
+                    var listStockSector = controladorStockRecetas.ObtenerStockSectoresRecetaByIdReceta(id);
+                    //var listStockLotes = controladorStockRecetas.ObtenerStockLotesRecetaByIdReceta(id);
+                    //var listStockMarcas = controladorStockRecetas.ObtenerStockMarcasRecetasByIdReceta(id);
+
+                    // Son las cantidades que fueron enviadas entre sectores y que aun no han sido recepcionadas pero siguen siendo parte del stock
+                    var stockEnTransito = controladorStockRecetas.ObtenerStockEnTransitoByDescripcion(receta.descripcion);
+
+                    //NombreProd.Value = receta.descripcion;
                     if (ListStockTotal != null)
                     {
                         CargarPhFinal2(ListStockTotal);
                     }
-                    if (listStockPresentaciones != null)
-                    {
-                        foreach (var i in listStockPresentaciones)
-                        {
 
-                            CargarPhPresentaciones2(i);
-                        }
-                    }
+                    CargarStockEnTransito(stockEnTransito, (int)receta.UnidadMedida, receta.descripcion);
+
+                    //if (listStockPresentaciones != null)
+                    //{
+                    //    foreach (var i in listStockPresentaciones)
+                    //    {
+
+                    //        CargarPhPresentaciones2(i);
+                    //    }
+                    //}
                     if (listStockSector != null)
                     {
                         foreach (var i in listStockSector)
@@ -117,20 +137,20 @@ namespace Tecnocuisine.Formularios.Maestros
                             CargarPhSectores2(i);
                         }
                     }
-                    if (listStockLotes != null)
-                    {
-                        foreach (var i in listStockLotes)
-                        {
-                            CargarPhLotes2(i);
-                        }
-                    }
-                    if (listStockMarcas != null)
-                    {
-                        foreach (var i in listStockMarcas)
-                        {
-                            CargarPhMarcas2(i);
-                        }
-                    }
+                    //if (listStockLotes != null)
+                    //{
+                    //    foreach (var i in listStockLotes)
+                    //    {
+                    //        CargarPhLotes2(i);
+                    //    }
+                    //}
+                    //if (listStockMarcas != null)
+                    //{
+                    //    foreach (var i in listStockMarcas)
+                    //    {
+                    //        CargarPhMarcas2(i);
+                    //    }
+                    //}
                 }
             }
             catch (Exception)
@@ -138,102 +158,177 @@ namespace Tecnocuisine.Formularios.Maestros
 
             }
         }
-        private void CargarPhLotes2(Tecnocuisine_API.Entitys.StockLotesReceta i)
+
+        private void CargarStockEnTransito(decimal stockEnTransito, int unidadId, string descripcion)
         {
             try
             {
                 TableRow tr = new TableRow();
-                tr.ID = i.id.ToString();
+                //tr.ID = listStockTotal.id.ToString();
 
-                TableCell celProductoCod = new TableCell();
-                celProductoCod.Text = "";
-                celProductoCod.Font.Bold = true;
-                celProductoCod.VerticalAlign = VerticalAlign.Middle;
-                celProductoCod.HorizontalAlign = HorizontalAlign.Left;
-                celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celProductoCod);
-
-
-                TableCell celPresentaciones = new TableCell();
-                celPresentaciones.Text = i.Presentaciones.descripcion;
-                celPresentaciones.Font.Bold = true;
-                celPresentaciones.VerticalAlign = VerticalAlign.Middle;
-                celPresentaciones.HorizontalAlign = HorizontalAlign.Left;
-                celPresentaciones.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celPresentaciones);
-
-                TableCell celLotes = new TableCell();
-                celLotes.Text = i.Lote;
-                celLotes.Font.Bold = true;
-                celLotes.VerticalAlign = VerticalAlign.Middle;
-                celLotes.HorizontalAlign = HorizontalAlign.Left;
-                celLotes.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celLotes);
+                TableCell celUM = new TableCell();
+                celUM.Text = cu.ObtenerUnidadId(unidadId).descripcion;
+                celUM.VerticalAlign = VerticalAlign.Middle;
+                celUM.HorizontalAlign = HorizontalAlign.Left;
+                celUM.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celUM);
 
                 TableCell celStock = new TableCell();
-                celStock.Text = i.stock.Value.ToString("N", culture);
+                celStock.Text = stockEnTransito.ToString("N", culture);
                 celStock.VerticalAlign = VerticalAlign.Middle;
                 celStock.HorizontalAlign = HorizontalAlign.Left;
                 celStock.Width = Unit.Percentage(5);
                 celStock.Attributes.Add("style", "text-align:end");
-                tr.Cells.Add(celStock);
-                //agrego fila a tabla
 
-                PHLotes.Controls.Add(tr);
+                TableCell celAccion = new TableCell();
+                celAccion.Style.Add("text-align", "end");
+
+                LinkButton btnDetalle = new LinkButton();
+                //btnDetalle.ID = "btnVerPedidos_" + cont.ToString();
+                btnDetalle.CssClass = "btn btn-xs";
+                btnDetalle.Style.Add("background-color", "transparent");
+                btnDetalle.Attributes.Add("data-toggle", "modal");
+                btnDetalle.Attributes.Add("href", "#modalConfirmacion2");
+                btnDetalle.Text = "<span title='Ver Detalle'><i class='fa fa-file-text' style='color: black;'></i></span>";
+                btnDetalle.Attributes.Add("onclick", "verDetalleTransito('" + descripcion + "');");
+                celAccion.Controls.Add(btnDetalle);
+
+                tr.Cells.Add(celStock);
+                tr.Cells.Add(celAccion);
+
+                PHTransito.Controls.Add(tr);
             }
             catch (Exception ex)
             {
 
+                throw;
             }
         }
-        private void CargarPhLotes(Tecnocuisine_API.Entitys.StockLotes i)
+
+
+        [WebMethod]
+        public static string verDetalleTransito(string descripcion)
         {
             try
             {
-                TableRow tr = new TableRow();
-                tr.ID = i.id.ToString();
+                ControladorStockProducto ControladorStockProducto = new ControladorStockProducto();
+                // Son las cantidades que fueron enviadas entre sectores y que aun no han sido recepcionadas pero siguen siendo parte del stock
+                var transitos = ControladorStockProducto.ObtenerStockEnTransitoByDescripcionAgrupadoPorSectores(descripcion);
+                
+                string detalle = string.Empty;
 
-                TableCell celProductoCod = new TableCell();
-                celProductoCod.Text = "";
-                celProductoCod.Font.Bold = true;
-                celProductoCod.VerticalAlign = VerticalAlign.Middle;
-                celProductoCod.HorizontalAlign = HorizontalAlign.Left;
-                celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celProductoCod);
+                foreach (var transito in transitos)
+                {
+                    detalle +=
+                        transito.SectorOrigen + "," +
+                        transito.SectorDestino + "," +
+                        transito.CantidadEnTransito.ToString().Replace(",", ".") + ";";
+                }
 
-
-                TableCell celPresentaciones = new TableCell();
-                celPresentaciones.Text = i.Presentaciones.descripcion;
-                celPresentaciones.Font.Bold = true;
-                celPresentaciones.VerticalAlign = VerticalAlign.Middle;
-                celPresentaciones.HorizontalAlign = HorizontalAlign.Left;
-                celPresentaciones.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celPresentaciones);
-
-                TableCell celLotes = new TableCell();
-                celLotes.Text = i.Lote;
-                celLotes.Font.Bold = true;
-                celLotes.VerticalAlign = VerticalAlign.Middle;
-                celLotes.HorizontalAlign = HorizontalAlign.Left;
-                celLotes.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celLotes);
-
-                TableCell celStock = new TableCell();
-                celStock.Text = i.stock.Value.ToString("N", culture);
-                celStock.VerticalAlign = VerticalAlign.Middle;
-                celStock.HorizontalAlign = HorizontalAlign.Left;
-                celStock.Width = Unit.Percentage(5);
-                celStock.Attributes.Add("style", "text-align:end");
-                tr.Cells.Add(celStock);
-                //agrego fila a tabla
-
-                PHLotes.Controls.Add(tr);
+                return detalle;
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
         }
+
+        //private void CargarPhLotes2(Tecnocuisine_API.Entitys.StockLotesReceta i)
+        //{
+        //    try
+        //    {
+        //        TableRow tr = new TableRow();
+        //        tr.ID = i.id.ToString();
+
+        //        TableCell celProductoCod = new TableCell();
+        //        celProductoCod.Text = "";
+        //        celProductoCod.Font.Bold = true;
+        //        celProductoCod.VerticalAlign = VerticalAlign.Middle;
+        //        celProductoCod.HorizontalAlign = HorizontalAlign.Left;
+        //        celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celProductoCod);
+
+
+        //        TableCell celPresentaciones = new TableCell();
+        //        celPresentaciones.Text = i.Presentaciones.descripcion;
+        //        celPresentaciones.Font.Bold = true;
+        //        celPresentaciones.VerticalAlign = VerticalAlign.Middle;
+        //        celPresentaciones.HorizontalAlign = HorizontalAlign.Left;
+        //        celPresentaciones.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celPresentaciones);
+
+        //        TableCell celLotes = new TableCell();
+        //        celLotes.Text = i.Lote;
+        //        celLotes.Font.Bold = true;
+        //        celLotes.VerticalAlign = VerticalAlign.Middle;
+        //        celLotes.HorizontalAlign = HorizontalAlign.Left;
+        //        celLotes.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celLotes);
+
+        //        TableCell celStock = new TableCell();
+        //        celStock.Text = i.stock.Value.ToString("N", culture);
+        //        celStock.VerticalAlign = VerticalAlign.Middle;
+        //        celStock.HorizontalAlign = HorizontalAlign.Left;
+        //        celStock.Width = Unit.Percentage(5);
+        //        celStock.Attributes.Add("style", "text-align:end");
+        //        tr.Cells.Add(celStock);
+        //        //agrego fila a tabla
+
+        //        PHLotes.Controls.Add(tr);
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    }
+        //}
+        //private void CargarPhLotes(Tecnocuisine_API.Entitys.StockLotes i)
+        //{
+        //    try
+        //    {
+        //        TableRow tr = new TableRow();
+        //        tr.ID = i.id.ToString();
+
+        //        TableCell celProductoCod = new TableCell();
+        //        celProductoCod.Text = "";
+        //        celProductoCod.Font.Bold = true;
+        //        celProductoCod.VerticalAlign = VerticalAlign.Middle;
+        //        celProductoCod.HorizontalAlign = HorizontalAlign.Left;
+        //        celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celProductoCod);
+
+
+        //        TableCell celPresentaciones = new TableCell();
+        //        celPresentaciones.Text = i.Presentaciones.descripcion;
+        //        celPresentaciones.Font.Bold = true;
+        //        celPresentaciones.VerticalAlign = VerticalAlign.Middle;
+        //        celPresentaciones.HorizontalAlign = HorizontalAlign.Left;
+        //        celPresentaciones.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celPresentaciones);
+
+        //        TableCell celLotes = new TableCell();
+        //        celLotes.Text = i.Lote;
+        //        celLotes.Font.Bold = true;
+        //        celLotes.VerticalAlign = VerticalAlign.Middle;
+        //        celLotes.HorizontalAlign = HorizontalAlign.Left;
+        //        celLotes.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celLotes);
+
+        //        TableCell celStock = new TableCell();
+        //        celStock.Text = i.stock.Value.ToString("N", culture);
+        //        celStock.VerticalAlign = VerticalAlign.Middle;
+        //        celStock.HorizontalAlign = HorizontalAlign.Left;
+        //        celStock.Width = Unit.Percentage(5);
+        //        celStock.Attributes.Add("style", "text-align:end");
+        //        tr.Cells.Add(celStock);
+        //        //agrego fila a tabla
+
+        //        PHLotes.Controls.Add(tr);
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    }
+        //}
         private void CargarPhSectores2(Tecnocuisine_API.Entitys.stockSectoresReceta i)
         {
             try
@@ -241,18 +336,18 @@ namespace Tecnocuisine.Formularios.Maestros
                 TableRow tr = new TableRow();
                 tr.ID = i.id.ToString();
 
-                TableCell celProductoCod = new TableCell();
-                celProductoCod.Text = "";
-                celProductoCod.Font.Bold = true;
-                celProductoCod.VerticalAlign = VerticalAlign.Middle;
-                celProductoCod.HorizontalAlign = HorizontalAlign.Left;
-                celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celProductoCod);
+                //TableCell celProductoCod = new TableCell();
+                //celProductoCod.Text = "";
+                //celProductoCod.Font.Bold = true;
+                //celProductoCod.VerticalAlign = VerticalAlign.Middle;
+                //celProductoCod.HorizontalAlign = HorizontalAlign.Left;
+                //celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //tr.Cells.Add(celProductoCod);
 
 
                 TableCell celPresentaciones = new TableCell();
                 celPresentaciones.Text = i.SectorProductivo.descripcion;
-                celPresentaciones.Font.Bold = true;
+                //celPresentaciones.Font.Bold = true;
                 celPresentaciones.VerticalAlign = VerticalAlign.Middle;
                 celPresentaciones.HorizontalAlign = HorizontalAlign.Left;
                 celPresentaciones.Attributes.Add("style", "padding-bottom: 1px !important;");
@@ -262,7 +357,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 TableCell celUM = new TableCell();
                 celUM.Text = UnidadMedida;
-                celUM.Font.Bold = true;
+                //celUM.Font.Bold = true;
                 celUM.VerticalAlign = VerticalAlign.Middle;
                 celUM.HorizontalAlign = HorizontalAlign.Left;
                 celUM.Attributes.Add("style", "padding-bottom: 1px !important;");
@@ -285,108 +380,108 @@ namespace Tecnocuisine.Formularios.Maestros
             }
         }
 
-        private void CargarPhMarcas2(Tecnocuisine_API.Entitys.StockMarcaReceta i)
-        {
-            try
-            {
-                TableRow tr = new TableRow();
-                tr.ID = i.id.ToString();
+        //private void CargarPhMarcas2(Tecnocuisine_API.Entitys.StockMarcaReceta i)
+        //{
+        //    try
+        //    {
+        //        TableRow tr = new TableRow();
+        //        tr.ID = i.id.ToString();
 
-                TableCell celProductoCod = new TableCell();
-                celProductoCod.Text = "";
-                celProductoCod.Font.Bold = true;
-                celProductoCod.VerticalAlign = VerticalAlign.Middle;
-                celProductoCod.HorizontalAlign = HorizontalAlign.Left;
-                celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celProductoCod);
-
-
-
-                TableCell celMarcas = new TableCell();
-                celMarcas.Text = i.Articulos_Marcas.descripcion;
-                celMarcas.Font.Bold = true;
-                celMarcas.VerticalAlign = VerticalAlign.Middle;
-                celMarcas.HorizontalAlign = HorizontalAlign.Left;
-                celMarcas.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celMarcas);
-
-                string UnidadMedida = cu.ObtenerUnidadId((int)i.Recetas.UnidadMedida).descripcion;
-
-                TableCell celUM = new TableCell();
-                celUM.Text = UnidadMedida;
-                celUM.Font.Bold = true;
-                celUM.VerticalAlign = VerticalAlign.Middle;
-                celUM.HorizontalAlign = HorizontalAlign.Left;
-                celUM.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celUM);
+        //        TableCell celProductoCod = new TableCell();
+        //        celProductoCod.Text = "";
+        //        celProductoCod.Font.Bold = true;
+        //        celProductoCod.VerticalAlign = VerticalAlign.Middle;
+        //        celProductoCod.HorizontalAlign = HorizontalAlign.Left;
+        //        celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celProductoCod);
 
 
-                TableCell celStock = new TableCell();
-                celStock.Text = i.stock.Value.ToString("N", culture);
-                celStock.VerticalAlign = VerticalAlign.Middle;
-                celStock.HorizontalAlign = HorizontalAlign.Left;
-                celStock.Width = Unit.Percentage(5);
-                celStock.Attributes.Add("style", "text-align:end");
-                tr.Cells.Add(celStock);
-                //agrego fila a tabla
 
-                PHMarcas.Controls.Add(tr);
-            }
-            catch (Exception ex)
-            {
+        //        TableCell celMarcas = new TableCell();
+        //        celMarcas.Text = i.Articulos_Marcas.descripcion;
+        //        celMarcas.Font.Bold = true;
+        //        celMarcas.VerticalAlign = VerticalAlign.Middle;
+        //        celMarcas.HorizontalAlign = HorizontalAlign.Left;
+        //        celMarcas.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celMarcas);
 
-            }
-        }
-        private void CargarPhMarcas(Tecnocuisine_API.Entitys.StockMarca i)
-        {
-            try
-            {
-                TableRow tr = new TableRow();
-                tr.ID = i.id.ToString();
+        //        string UnidadMedida = cu.ObtenerUnidadId((int)i.Recetas.UnidadMedida).descripcion;
 
-                TableCell celProductoCod = new TableCell();
-                celProductoCod.Text = "";
-                celProductoCod.Font.Bold = true;
-                celProductoCod.VerticalAlign = VerticalAlign.Middle;
-                celProductoCod.HorizontalAlign = HorizontalAlign.Left;
-                celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celProductoCod);
-
-                TableCell celMarcas = new TableCell();
-                celMarcas.Text = i.Articulos_Marcas.descripcion;
-                celMarcas.Font.Bold = true;
-                celMarcas.VerticalAlign = VerticalAlign.Middle;
-                celMarcas.HorizontalAlign = HorizontalAlign.Left;
-                celMarcas.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celMarcas);
-
-                string UnidadMedida = cu.ObtenerUnidadId(i.Productos.unidadMedida).descripcion;
-
-                TableCell celUM = new TableCell();
-                celUM.Text = UnidadMedida;
-                celUM.Font.Bold = true;
-                celUM.VerticalAlign = VerticalAlign.Middle;
-                celUM.HorizontalAlign = HorizontalAlign.Left;
-                celUM.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celUM);
+        //        TableCell celUM = new TableCell();
+        //        celUM.Text = UnidadMedida;
+        //        celUM.Font.Bold = true;
+        //        celUM.VerticalAlign = VerticalAlign.Middle;
+        //        celUM.HorizontalAlign = HorizontalAlign.Left;
+        //        celUM.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celUM);
 
 
-                TableCell celStock = new TableCell();
-                celStock.Text = i.stock.Value.ToString("N", culture);
-                celStock.VerticalAlign = VerticalAlign.Middle;
-                celStock.HorizontalAlign = HorizontalAlign.Left;
-                celStock.Width = Unit.Percentage(5);
-                celStock.Attributes.Add("style", "text-align:end");
-                tr.Cells.Add(celStock);
-                //agrego fila a tabla
+        //        TableCell celStock = new TableCell();
+        //        celStock.Text = i.stock.Value.ToString("N", culture);
+        //        celStock.VerticalAlign = VerticalAlign.Middle;
+        //        celStock.HorizontalAlign = HorizontalAlign.Left;
+        //        celStock.Width = Unit.Percentage(5);
+        //        celStock.Attributes.Add("style", "text-align:end");
+        //        tr.Cells.Add(celStock);
+        //        //agrego fila a tabla
 
-                PHMarcas.Controls.Add(tr);
-            }
-            catch (Exception ex)
-            {
+        //        PHMarcas.Controls.Add(tr);
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-            }
-        }
+        //    }
+        //}
+        //private void CargarPhMarcas(Tecnocuisine_API.Entitys.StockMarca i)
+        //{
+        //    try
+        //    {
+        //        TableRow tr = new TableRow();
+        //        tr.ID = i.id.ToString();
+
+        //        TableCell celProductoCod = new TableCell();
+        //        celProductoCod.Text = "";
+        //        celProductoCod.Font.Bold = true;
+        //        celProductoCod.VerticalAlign = VerticalAlign.Middle;
+        //        celProductoCod.HorizontalAlign = HorizontalAlign.Left;
+        //        celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celProductoCod);
+
+        //        TableCell celMarcas = new TableCell();
+        //        celMarcas.Text = i.Articulos_Marcas.descripcion;
+        //        celMarcas.Font.Bold = true;
+        //        celMarcas.VerticalAlign = VerticalAlign.Middle;
+        //        celMarcas.HorizontalAlign = HorizontalAlign.Left;
+        //        celMarcas.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celMarcas);
+
+        //        string UnidadMedida = cu.ObtenerUnidadId(i.Productos.unidadMedida).descripcion;
+
+        //        TableCell celUM = new TableCell();
+        //        celUM.Text = UnidadMedida;
+        //        celUM.Font.Bold = true;
+        //        celUM.VerticalAlign = VerticalAlign.Middle;
+        //        celUM.HorizontalAlign = HorizontalAlign.Left;
+        //        celUM.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celUM);
+
+
+        //        TableCell celStock = new TableCell();
+        //        celStock.Text = i.stock.Value.ToString("N", culture);
+        //        celStock.VerticalAlign = VerticalAlign.Middle;
+        //        celStock.HorizontalAlign = HorizontalAlign.Left;
+        //        celStock.Width = Unit.Percentage(5);
+        //        celStock.Attributes.Add("style", "text-align:end");
+        //        tr.Cells.Add(celStock);
+        //        //agrego fila a tabla
+
+        //        PHMarcas.Controls.Add(tr);
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    }
+        //}
         private void CargarPhSectores(Tecnocuisine_API.Entitys.StockSectores i)
         {
             try
@@ -394,17 +489,17 @@ namespace Tecnocuisine.Formularios.Maestros
                 TableRow tr = new TableRow();
                 tr.ID = i.id.ToString();
 
-                TableCell celProductoCod = new TableCell();
-                celProductoCod.Text = "";
-                celProductoCod.Font.Bold = true;
-                celProductoCod.VerticalAlign = VerticalAlign.Middle;
-                celProductoCod.HorizontalAlign = HorizontalAlign.Left;
-                celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celProductoCod);
+                //TableCell celProductoCod = new TableCell();
+                //celProductoCod.Text = "";
+                //celProductoCod.Font.Bold = true;
+                //celProductoCod.VerticalAlign = VerticalAlign.Middle;
+                //celProductoCod.HorizontalAlign = HorizontalAlign.Left;
+                //celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //tr.Cells.Add(celProductoCod);
 
                 TableCell celPresentaciones = new TableCell();
                 celPresentaciones.Text = i.SectorProductivo.descripcion;
-                celPresentaciones.Font.Bold = true;
+                //celPresentaciones.Font.Bold = true;
                 celPresentaciones.VerticalAlign = VerticalAlign.Middle;
                 celPresentaciones.HorizontalAlign = HorizontalAlign.Left;
                 celPresentaciones.Attributes.Add("style", "padding-bottom: 1px !important;");
@@ -414,7 +509,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 TableCell celUM = new TableCell();
                 celUM.Text = UnidadMedida;
-                celUM.Font.Bold = true;
+                //celUM.Font.Bold = true;
                 celUM.VerticalAlign = VerticalAlign.Middle;
                 celUM.HorizontalAlign = HorizontalAlign.Left;
                 celUM.Attributes.Add("style", "padding-bottom: 1px !important;");
@@ -437,87 +532,87 @@ namespace Tecnocuisine.Formularios.Maestros
 
             }
         }
-        private void CargarPhPresentaciones2(Tecnocuisine_API.Entitys.stockpresentacionesReceta i)
-        {
-            try
-            {
-                TableRow tr = new TableRow();
-                tr.ID = i.id.ToString();
+        //private void CargarPhPresentaciones2(Tecnocuisine_API.Entitys.stockpresentacionesReceta i)
+        //{
+        //    try
+        //    {
+        //        TableRow tr = new TableRow();
+        //        tr.ID = i.id.ToString();
 
-                TableCell celProductoCod = new TableCell();
-                celProductoCod.Text = "";
-                celProductoCod.Font.Bold = true;
-                celProductoCod.VerticalAlign = VerticalAlign.Middle;
-                celProductoCod.HorizontalAlign = HorizontalAlign.Left;
-                celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celProductoCod);
-
-
-                TableCell celPresentaciones = new TableCell();
-                celPresentaciones.Text = i.Presentaciones.descripcion;
-                celPresentaciones.Font.Bold = true;
-                celPresentaciones.VerticalAlign = VerticalAlign.Middle;
-                celPresentaciones.HorizontalAlign = HorizontalAlign.Left;
-                celPresentaciones.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celPresentaciones);
-              
-                TableCell celStock = new TableCell();
-                celStock.Text = i.stock.Value.ToString("N", culture);
-                celStock.VerticalAlign = VerticalAlign.Middle;
-                celStock.HorizontalAlign = HorizontalAlign.Left;
-                celStock.Width = Unit.Percentage(5);
-                celStock.Attributes.Add("style", "text-align:end");
-                tr.Cells.Add(celStock);
-                //agrego fila a tabla
-
-                PHPresentaciones.Controls.Add(tr);
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
-
-        private void CargarPhPresentaciones(Tecnocuisine_API.Entitys.StockPresentaciones i)
-        {
-            try
-            {
-                TableRow tr = new TableRow();
-                tr.ID = i.id.ToString();
-
-                TableCell celProductoCod = new TableCell();
-                celProductoCod.Text = "";
-                celProductoCod.Font.Bold = true;
-                celProductoCod.VerticalAlign = VerticalAlign.Middle;
-                celProductoCod.HorizontalAlign = HorizontalAlign.Left;
-                celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celProductoCod);
+        //        TableCell celProductoCod = new TableCell();
+        //        celProductoCod.Text = "";
+        //        celProductoCod.Font.Bold = true;
+        //        celProductoCod.VerticalAlign = VerticalAlign.Middle;
+        //        celProductoCod.HorizontalAlign = HorizontalAlign.Left;
+        //        celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celProductoCod);
 
 
-                TableCell celPresentaciones = new TableCell();
-                celPresentaciones.Text = i.Presentaciones.descripcion;
-                celPresentaciones.Font.Bold = true;
-                celPresentaciones.VerticalAlign = VerticalAlign.Middle;
-                celPresentaciones.HorizontalAlign = HorizontalAlign.Left;
-                celPresentaciones.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celPresentaciones);
+        //        TableCell celPresentaciones = new TableCell();
+        //        celPresentaciones.Text = i.Presentaciones.descripcion;
+        //        celPresentaciones.Font.Bold = true;
+        //        celPresentaciones.VerticalAlign = VerticalAlign.Middle;
+        //        celPresentaciones.HorizontalAlign = HorizontalAlign.Left;
+        //        celPresentaciones.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celPresentaciones);
 
-                TableCell celStock = new TableCell();
-                celStock.Text = i.stock.Value.ToString("N", culture);
-                celStock.VerticalAlign = VerticalAlign.Middle;
-                celStock.HorizontalAlign = HorizontalAlign.Left;
-                celStock.Width = Unit.Percentage(5);
-                celStock.Attributes.Add("style", "text-align:end");
-                tr.Cells.Add(celStock);
-                //agrego fila a tabla
+        //        TableCell celStock = new TableCell();
+        //        celStock.Text = i.stock.Value.ToString("N", culture);
+        //        celStock.VerticalAlign = VerticalAlign.Middle;
+        //        celStock.HorizontalAlign = HorizontalAlign.Left;
+        //        celStock.Width = Unit.Percentage(5);
+        //        celStock.Attributes.Add("style", "text-align:end");
+        //        tr.Cells.Add(celStock);
+        //        //agrego fila a tabla
 
-                PHPresentaciones.Controls.Add(tr);
-            }
-            catch (Exception ex)
-            {
+        //        PHPresentaciones.Controls.Add(tr);
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-            }
-        }
+        //    }
+        //}
+
+        //private void CargarPhPresentaciones(Tecnocuisine_API.Entitys.StockPresentaciones i)
+        //{
+        //    try
+        //    {
+        //        TableRow tr = new TableRow();
+        //        tr.ID = i.id.ToString();
+
+        //        TableCell celProductoCod = new TableCell();
+        //        celProductoCod.Text = "";
+        //        celProductoCod.Font.Bold = true;
+        //        celProductoCod.VerticalAlign = VerticalAlign.Middle;
+        //        celProductoCod.HorizontalAlign = HorizontalAlign.Left;
+        //        celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celProductoCod);
+
+
+        //        TableCell celPresentaciones = new TableCell();
+        //        celPresentaciones.Text = i.Presentaciones.descripcion;
+        //        celPresentaciones.Font.Bold = true;
+        //        celPresentaciones.VerticalAlign = VerticalAlign.Middle;
+        //        celPresentaciones.HorizontalAlign = HorizontalAlign.Left;
+        //        celPresentaciones.Attributes.Add("style", "padding-bottom: 1px !important;");
+        //        tr.Cells.Add(celPresentaciones);
+
+        //        TableCell celStock = new TableCell();
+        //        celStock.Text = i.stock.Value.ToString("N", culture);
+        //        celStock.VerticalAlign = VerticalAlign.Middle;
+        //        celStock.HorizontalAlign = HorizontalAlign.Left;
+        //        celStock.Width = Unit.Percentage(5);
+        //        celStock.Attributes.Add("style", "text-align:end");
+        //        tr.Cells.Add(celStock);
+        //        //agrego fila a tabla
+
+        //        PHPresentaciones.Controls.Add(tr);
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    }
+        //}
         private void CargarPhFinal2(Tecnocuisine_API.Entitys.StockReceta listStockTotal)
         {
             try
@@ -525,20 +620,20 @@ namespace Tecnocuisine.Formularios.Maestros
                 TableRow tr = new TableRow();
                 tr.ID = listStockTotal.id.ToString();
 
-                TableCell celProductoCod = new TableCell();
-                celProductoCod.Text = listStockTotal.Recetas.id.ToString();
-                celProductoCod.Font.Bold = true;
-                celProductoCod.VerticalAlign = VerticalAlign.Middle;
-                celProductoCod.HorizontalAlign = HorizontalAlign.Left;
-                celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celProductoCod);
+                //TableCell celProductoCod = new TableCell();
+                //celProductoCod.Text = listStockTotal.Recetas.id.ToString();
+                //celProductoCod.Font.Bold = true;
+                //celProductoCod.VerticalAlign = VerticalAlign.Middle;
+                //celProductoCod.HorizontalAlign = HorizontalAlign.Left;
+                //celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //tr.Cells.Add(celProductoCod);
 
 
                 string UnidadMedida = cu.ObtenerUnidadId(listStockTotal.Recetas.UnidadMedida.Value).descripcion;
 
                 TableCell celUM = new TableCell();
                 celUM.Text = UnidadMedida;
-                celUM.Font.Bold = true;
+                //celUM.Font.Bold = true;
                 celUM.VerticalAlign = VerticalAlign.Middle;
                 celUM.HorizontalAlign = HorizontalAlign.Left;
                 celUM.Attributes.Add("style", "padding-bottom: 1px !important;");
@@ -570,27 +665,27 @@ namespace Tecnocuisine.Formularios.Maestros
                 TableRow tr = new TableRow();
                 tr.ID = listStockTotal.id.ToString();
 
-                TableCell celProductoCod = new TableCell();
-                celProductoCod.Text = listStockTotal.Productos.id.ToString();
-                celProductoCod.Font.Bold = true;
-                celProductoCod.VerticalAlign = VerticalAlign.Middle;
-                celProductoCod.HorizontalAlign = HorizontalAlign.Left;
-                celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
-                tr.Cells.Add(celProductoCod);
+                //TableCell celProductoCod = new TableCell();
+                //celProductoCod.Text = listStockTotal.Productos.id.ToString();
+                //celProductoCod.Font.Bold = true;
+                //celProductoCod.VerticalAlign = VerticalAlign.Middle;
+                //celProductoCod.HorizontalAlign = HorizontalAlign.Left;
+                //celProductoCod.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //tr.Cells.Add(celProductoCod);
 
 
-               string UnidadMedida = cu.ObtenerUnidadId(listStockTotal.Productos.unidadMedida).descripcion;
+                string UnidadMedida = cu.ObtenerUnidadId(listStockTotal.Productos.unidadMedida).descripcion;
 
                 TableCell celUM = new TableCell();
-                celUM.Text = UnidadMedida ;
-                celUM.Font.Bold = true;
+                celUM.Text = UnidadMedida;
+                //celUM.Font.Bold = true;
                 celUM.VerticalAlign = VerticalAlign.Middle;
                 celUM.HorizontalAlign = HorizontalAlign.Left;
                 celUM.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celUM);
 
                 TableCell celStock = new TableCell();
-                celStock.Text = listStockTotal.stock.Value.ToString("N",culture);
+                celStock.Text = listStockTotal.stock.Value.ToString("N", culture);
                 celStock.VerticalAlign = VerticalAlign.Middle;
                 celStock.HorizontalAlign = HorizontalAlign.Left;
                 celStock.Width = Unit.Percentage(5);

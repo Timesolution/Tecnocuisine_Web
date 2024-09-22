@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Gestion_Api.Entitys;
+using Gestion_Api.Modelo;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web.Script.Serialization;
 using System.Web.Services;
 using System.Web.UI;
@@ -33,7 +36,7 @@ namespace Tecnocuisine.Formularios.Maestros
         CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
         protected void Page_Load(object sender, EventArgs e)
         {
-            //VerificarLogin();
+            VerificarLogin();
 
             this.Mensaje = Convert.ToInt32(Request.QueryString["m"]);
             this.accion = Convert.ToInt32(Request.QueryString["a"]);
@@ -44,12 +47,14 @@ namespace Tecnocuisine.Formularios.Maestros
             ObtenerRecetas();
             ObtenerProductos();
             ObtenerPresentaciones();
+            ObtenerMarcas();
             if (!IsPostBack)
             {
                 CargarRubros();
                 CargarUnidadesMedida();
                 CargarListaCategoriasSoloHijas();
                 CargarSectoresProductivodDDL();
+                CargarTipos();
                 //cargarNestedListCategorias();
                 //cargarNestedListAtributos();
                 if (accion == 2)
@@ -76,9 +81,17 @@ namespace Tecnocuisine.Formularios.Maestros
                 {
                     this.m.ShowToastr(this.Page, "Proceso concluido con Exito!", "Exito");
                 }
-
             }
+        }
 
+        private void CargarTipos()
+        {
+            ControladorTiposDeReceta cTiposDeReceta = new ControladorTiposDeReceta();
+            this.ddlTipoReceta.DataSource = cTiposDeReceta.ObtenerTodosTiposDeReceta();
+            this.ddlTipoReceta.DataValueField = "id";
+            this.ddlTipoReceta.DataTextField = "tipo";
+            this.ddlTipoReceta.DataBind();
+            ddlTipoReceta.Items.Insert(0, new ListItem("Tipo de Receta", "-1"));
         }
 
         public void CargarRubros()
@@ -239,19 +252,13 @@ namespace Tecnocuisine.Formularios.Maestros
 
                     //}
 
-                    try
-                    {
-                        var Presentacionreceta = controladorReceta.ObtenerPresentacionByIdReceta(idReceta);
-                        if (Presentacionreceta != null)
-                        {
-                            hfPresentaciones.Value = Presentacionreceta.FirstOrDefault().idPresentacion.ToString() + " - " + Presentacionreceta.FirstOrDefault().Presentaciones.descripcion;
-                            txtPresentaciones.Text = Presentacionreceta.FirstOrDefault().idPresentacion.ToString() + " - " + Presentacionreceta.FirstOrDefault().Presentaciones.descripcion;
-                        }
-                    }
-                    catch (Exception)
-                    {
+                    PrecargarPresentaciones();
+                    PrecargarMarcas();
 
-                    }
+                    // Si tiene un tipo de receta inactivo, agregarlo al select
+                    TiposDeReceta tipo = new ControladorTiposDeReceta().ObtenerTipoDeRecetaById((int)Receta.Tipo);
+                    if (!tipo.estado)
+                        ddlTipoReceta.Items.Insert(1, new ListItem(tipo.tipo, tipo.id.ToString()));
 
                     ddlTipoReceta.SelectedValue = Receta.Tipo.ToString();
                     ddlUnidadMedida.SelectedValue = Receta.UnidadMedida.ToString();
@@ -262,7 +269,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     txtCostoTotal.Text = Receta.Costo.Value.ToString("N", culture);
                     txtCostoxPorcion.Text = Receta.CostoU.Value.ToString("N", culture);
                     txtPrVenta.Text = Receta.PrVenta.Value.ToString("N", culture);
-                    txtPFoodCost.Text = Receta.PorcFoodCost.Value.ToString("N", culture);
+                    txtPFoodCost.Text = Receta.PorcFoodCost.Value.ToString("N", culture) + "%";
                     txtContMarg.Text = Receta.CostMarginal.Value.ToString("N", culture);
 
 
@@ -284,6 +291,41 @@ namespace Tecnocuisine.Formularios.Maestros
             catch (Exception ex)
             {
 
+            }
+        }
+
+        private void PrecargarPresentaciones()
+        {
+            try
+            {
+                var Presentacionreceta = controladorReceta.ObtenerPresentacionByIdReceta(idReceta);
+                if (Presentacionreceta != null)
+                {
+                    hfPresentaciones.Value = Presentacionreceta.FirstOrDefault().idPresentacion.ToString() + " - " + Presentacionreceta.FirstOrDefault().Presentaciones.descripcion;
+                    txtPresentaciones.Text = Presentacionreceta.FirstOrDefault().idPresentacion.ToString() + " - " + Presentacionreceta.FirstOrDefault().Presentaciones.descripcion;
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void PrecargarMarcas()
+        {
+            ControladorMarca controladorMarca = new ControladorMarca();
+
+            // Obtener todas las marcas asignadas a la receta
+            var marcasReceta = controladorReceta.ObtenerMarcasRecetaByIdReceta(this.idReceta);
+
+            if (marcasReceta != null)
+            {
+                foreach (Marca_Recetas marcaReceta in marcasReceta)
+                {
+                    Articulos_Marcas marca = controladorMarca.ObtenerMarcaId((int)marcaReceta.id_marca);
+
+                    if (marca != null)
+                        txtMarcas.Text += marca.id + " - " + marca.descripcion + ", ";
+                }
             }
         }
 
@@ -525,6 +567,27 @@ namespace Tecnocuisine.Formularios.Maestros
 
             }
         }
+
+        public void ObtenerMarcas()
+        {
+            try
+            {
+                ControladorMarca controladorMarca = new ControladorMarca();
+                var marcas = controladorMarca.ObtenerTodasMarcas();
+
+                if (marcas.Count > 0)
+                {
+                    foreach (var marca in marcas)
+                    {
+                        CargarMarcasPH(marca);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
         public void CargarPresentacionesPH(Tecnocuisine_API.Entitys.Presentaciones presentacion)
         {
 
@@ -589,6 +652,77 @@ namespace Tecnocuisine.Formularios.Maestros
 
             }
 
+        }
+
+        [WebMethod]
+        public static int GetIdSectorByIdProd(int idProd, int tipo)
+        {
+            try
+            {
+                ControladorSectorProductivo cSector = new ControladorSectorProductivo();
+
+                // Es producto
+                if (tipo == 1)
+                {
+                    ControladorProducto cProducto = new ControladorProducto();
+                    Tecnocuisine_API.Entitys.Productos producto = cProducto.ObtenerProductoId(idProd);
+                    return producto.idSectorProductivo ?? -1;
+                }
+
+                // Es receta
+                ControladorReceta cReceta = new ControladorReceta();
+                Tecnocuisine_API.Entitys.Recetas receta = cReceta.ObtenerRecetaId(idProd);
+
+                if (receta.SectorP_Recetas == null)
+                    return -1;
+
+                // TODO: sacar for
+                foreach (var sector in receta.SectorP_Recetas)
+                    return sector.idSectorP ?? -1;
+
+                return -1;
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+        }
+
+        public void CargarMarcasPH(Tecnocuisine_API.Entitys.Articulos_Marcas marca)
+        {
+            try
+            {
+                //fila
+                TableRow tr = new TableRow();
+                tr.ID = "marca_" + marca.id.ToString();
+
+                //Celdas
+
+                TableCell celNombre = new TableCell();
+                celNombre.Text = marca.descripcion;
+                celNombre.VerticalAlign = VerticalAlign.Middle;
+                celNombre.HorizontalAlign = HorizontalAlign.Left;
+                celNombre.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
+                tr.Cells.Add(celNombre);
+
+                //agrego fila a tabla
+                TableCell celAccion = new TableCell();
+                HtmlGenericControl cbxAgregar = new HtmlGenericControl("input");
+                cbxAgregar.Attributes.Add("class", "presentacion radio btn btn-primary btn-xs pull-right");
+                cbxAgregar.Attributes.Add("type", "checkbox");
+                //cbxAgregar.Attributes.Add("value", "1");
+                cbxAgregar.ID = "btnSelecPres_" + marca.id + " - " + marca.descripcion;
+                celAccion.Controls.Add(cbxAgregar);
+
+                celAccion.Width = Unit.Percentage(5);
+                celAccion.Attributes.Add("style", "padding-bottom: 0px !important; padding-top:   0px; vertical-align: middle;");
+                tr.Cells.Add(celAccion);
+
+                phMarcas.Controls.Add(tr);
+            }
+            catch (Exception ex)
+            {
+            }
         }
 
         protected void btnGuardar_Click(object sender, EventArgs e)
@@ -827,7 +961,9 @@ namespace Tecnocuisine.Formularios.Maestros
                 foreach (var prod in productos)
                 {
                     string UnidadMedida = "";
-                    UnidadMedida = cu.ObtenerUnidadId(prod.unidadMedida).descripcion;
+                    var unidad = cu.ObtenerUnidadId(prod.unidadMedida);
+                    UnidadMedida = unidad.abreviacion;
+
                     builder.Append(String.Format("<option value='{0}' id='c_p_" + prod.id + "_" + prod.descripcion + "_" + UnidadMedida + "_" + prod.costo.ToString().Replace(',', '.') + "'>", prod.id + " - " + prod.descripcion));
                 }
 
@@ -855,7 +991,8 @@ namespace Tecnocuisine.Formularios.Maestros
                         if (rec.UnidadMedida.Value == -1)
                             rec.UnidadMedida = 1;
 
-                        UnidadMedida = cu.ObtenerUnidadId(rec.UnidadMedida.Value).descripcion;
+                        var unidad = cu.ObtenerUnidadId(rec.UnidadMedida.Value);
+                        UnidadMedida = unidad.abreviacion;
                         builder.Append(String.Format("<option value='{0}' id='c_r_" + rec.id + "_" + rec.descripcion + "_" + UnidadMedida + "_" + rec.Costo.ToString().Replace(',', '.') + "'>", rec.id + " - " + rec.descripcion));
                     }
                     else
@@ -931,7 +1068,8 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 ControladorUnidad cu = new ControladorUnidad();
                 string UnidadMedida = "";
-                UnidadMedida = cu.ObtenerUnidadId(producto.unidadMedida).descripcion;
+                var unidad = cu.ObtenerUnidadId(producto.unidadMedida);
+                UnidadMedida = unidad.abreviacion;
 
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
@@ -995,13 +1133,27 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 ControladorUnidad cu = new ControladorUnidad();
                 string UnidadMedida = "";
-                UnidadMedida = cu.ObtenerUnidadId(prodRec.FirstOrDefault().Productos.unidadMedida).descripcion;
+                var unidad = cu.ObtenerUnidadId(prodRec.FirstOrDefault().Productos.unidadMedida);
+                UnidadMedida = unidad.abreviacion;
+
 
                 TableCell celUM = new TableCell();
                 celUM.Text = UnidadMedida;
                 celUM.VerticalAlign = VerticalAlign.Middle;
                 celUM.HorizontalAlign = HorizontalAlign.Left;
                 tr.Cells.Add(celUM);
+
+                TableCell celFactor = new TableCell();
+                celFactor.Text = prodRec.FirstOrDefault().Factor.ToString().Replace(',', '.');
+                celFactor.VerticalAlign = VerticalAlign.Middle;
+                celFactor.HorizontalAlign = HorizontalAlign.Left;
+                tr.Cells.Add(celFactor);
+
+                TableCell celCantBruta = new TableCell();
+                celCantBruta.Text = (prodRec.FirstOrDefault().cantidad * Convert.ToDecimal(prodRec.FirstOrDefault().Factor)).ToString("N", culture);
+                celCantBruta.VerticalAlign = VerticalAlign.Middle;
+                celCantBruta.HorizontalAlign = HorizontalAlign.Left;
+                tr.Cells.Add(celCantBruta);
 
                 TableCell celCosto = new TableCell();
                 celCosto.Text = prodRec.FirstOrDefault().Productos.costo.ToString("N", culture);
@@ -1011,7 +1163,8 @@ namespace Tecnocuisine.Formularios.Maestros
                 tr.Cells.Add(celCosto);
 
                 TableCell celCostoTotal = new TableCell();
-                celCostoTotal.Text = (prodRec.FirstOrDefault().Productos.costo * prodRec.FirstOrDefault().cantidad).ToString("N", culture);
+                decimal factor = prodRec.FirstOrDefault().Factor != null ? (decimal)prodRec.FirstOrDefault().Factor : 1;
+                celCostoTotal.Text = (prodRec.FirstOrDefault().Productos.costo * prodRec.FirstOrDefault().cantidad * factor).ToString("N", culture);
                 celCostoTotal.VerticalAlign = VerticalAlign.Middle;
                 celCostoTotal.HorizontalAlign = HorizontalAlign.Left;
                 celCostoTotal.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
@@ -1033,7 +1186,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 celSectorProductivo.VerticalAlign = VerticalAlign.Middle;
                 celSectorProductivo.HorizontalAlign = HorizontalAlign.Left;
-                celSectorProductivo.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
+                celSectorProductivo.Attributes.Add("style", "padding-bottom: 1px !important; text-align: left;");
                 tr.Cells.Add(celSectorProductivo);
 
 
@@ -1087,7 +1240,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 phProductos.Controls.Add(tr);
 
-                idProductosRecetas.Value += producto.id.ToString() + " ,Producto," + prodRec.FirstOrDefault().cantidad.ToString().Replace(',', '.') + ", ContentPlaceHolder1_Producto_" + producto.id.ToString() + "," + "idSectorProductivo_" + prodRec.FirstOrDefault().SectorProductivo.id + "," + "Tiempo_" + prodRec.FirstOrDefault().Tiempo + ";";
+                idProductosRecetas.Value += producto.id.ToString() + " ,Producto," + prodRec.FirstOrDefault().cantidad.ToString().Replace(',', '.') + ", ContentPlaceHolder1_Producto_" + producto.id.ToString() + "," + "idSectorProductivo_" + prodRec.FirstOrDefault().SectorProductivo.id + "," + "Tiempo_" + prodRec.FirstOrDefault().Tiempo + "," + "Factor_" + prodRec.FirstOrDefault().Factor.ToString().Replace(',', '.') + ";";
 
             }
             catch (Exception ex)
@@ -1173,12 +1326,6 @@ namespace Tecnocuisine.Formularios.Maestros
             return resultadoJSON;
         }
 
-
-
-
-
-
-
         private void agregarArticulo(object sender, EventArgs e)
         {
             try
@@ -1212,13 +1359,9 @@ namespace Tecnocuisine.Formularios.Maestros
 
         public void CargarRecetasPHModal(Tecnocuisine_API.Entitys.Recetas Receta)
         {
-
             try
             {
-
                 //fila
-
-
                 TableRow tr = new TableRow();
                 tr.ID = "Recetas_" + Receta.id.ToString() + "_" + Receta.UnidadMedida;
 
@@ -1228,7 +1371,6 @@ namespace Tecnocuisine.Formularios.Maestros
                 celNumero.VerticalAlign = VerticalAlign.Middle;
                 celNumero.HorizontalAlign = HorizontalAlign.Right;
                 celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
-
                 tr.Cells.Add(celNumero);
 
                 TableCell celDescripcion = new TableCell();
@@ -1247,7 +1389,8 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 ControladorUnidad cu = new ControladorUnidad();
                 string UnidadMedida = "";
-                UnidadMedida = cu.ObtenerUnidadId(Receta.UnidadMedida.Value).descripcion;
+                var unidad = cu.ObtenerUnidadId(Receta.UnidadMedida.Value);
+                UnidadMedida = unidad.abreviacion;
 
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
@@ -1266,8 +1409,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 celAccion.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celAccion);
 
-                phProductosAgregar.Controls.Add(tr);
-
+                phRecetasModal.Controls.Add(tr);
             }
             catch (Exception ex)
             {
@@ -1279,10 +1421,8 @@ namespace Tecnocuisine.Formularios.Maestros
         //Esta funcion se encarga de precargar las recetas que se usan como ingredientes para la receta
         public void CargarRecetasPHModal2(Tecnocuisine_API.Entitys.Recetas_Receta Receta)
         {
-
             try
             {
-
                 //fila
                 var RecetaingredienteI = controladorReceta.ObtenerRecetaId(Receta.idRecetaIngrediente);
 
@@ -1318,7 +1458,8 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 ControladorUnidad cu = new ControladorUnidad();
                 string UnidadMedida = "";
-                UnidadMedida = cu.ObtenerUnidadId(Receta.Recetas.UnidadMedida.Value).descripcion;
+                var unidad = cu.ObtenerUnidadId(Receta.Recetas.UnidadMedida.Value);
+                UnidadMedida = unidad.abreviacion;
 
                 TableCell celUM = new TableCell();
                 celUM.Text = "<div id=\"jstree_UM" + RecetaingredienteI.id + "\"> <ul><li id='RecetaUM_LI_" + RecetaingredienteI.id + "' class=\"jstree-open\">" + UnidadMedida + ObtenerrecetaString(Receta.idRecetaIngrediente, 3, 0) + "</li></ul></div>";
@@ -1326,6 +1467,18 @@ namespace Tecnocuisine.Formularios.Maestros
                 celUM.HorizontalAlign = HorizontalAlign.Left;
                 //celUM.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celUM);
+
+                TableCell celFactor = new TableCell();
+                celFactor.Text = Receta.Factor?.ToString().Replace(',', '.');
+                celFactor.VerticalAlign = VerticalAlign.Middle;
+                celFactor.HorizontalAlign = HorizontalAlign.Left;
+                tr.Cells.Add(celFactor);
+
+                TableCell celCantBruta = new TableCell();
+                celCantBruta.Text = (Receta.cantidad * Convert.ToDecimal(Receta.Factor)).ToString("N", culture);
+                celCantBruta.VerticalAlign = VerticalAlign.Middle;
+                celCantBruta.HorizontalAlign = HorizontalAlign.Left;
+                tr.Cells.Add(celCantBruta);
 
                 TableCell celCosto = new TableCell();
                 celCosto.Text = "<div id=\"jstree_CS" + RecetaingredienteI.id + "\"> <ul><li id='RecetaCS_LI_" + RecetaingredienteI.id + "' class=\"jstree-open\">" + Receta.Recetas.Costo.Value.ToString("N", culture) + ObtenerrecetaString(Receta.idRecetaIngrediente, 4, 0) + "</li></ul></div>";
@@ -1335,7 +1488,8 @@ namespace Tecnocuisine.Formularios.Maestros
                 tr.Cells.Add(celCosto);
 
                 TableCell celCostoTotal = new TableCell();
-                celCostoTotal.Text = "<div id=\"jstree_CST" + RecetaingredienteI.id + "\"> <ul><li id='RecetaCST_LI_" + RecetaingredienteI.id + "' class=\"jstree-open\">" + (Receta.Recetas.Costo.Value * Receta.cantidad).ToString("N", culture) + ObtenerrecetaString(Receta.idRecetaIngrediente, 5, 0) + "</li></ul></div>";
+                decimal factor = Receta.Factor != null ? (decimal)Receta.Factor : 1;
+                celCostoTotal.Text = "<div id=\"jstree_CST" + RecetaingredienteI.id + "\"> <ul><li id='RecetaCST_LI_" + RecetaingredienteI.id + "' class=\"jstree-open\">" + (Receta.Recetas.Costo.Value * Receta.cantidad * factor).ToString("N", culture) + ObtenerrecetaString(Receta.idRecetaIngrediente, 5, 0) + "</li></ul></div>";
                 celCostoTotal.VerticalAlign = VerticalAlign.Middle;
                 celCostoTotal.HorizontalAlign = HorizontalAlign.Left;
                 //celCostoTotal.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
@@ -1407,7 +1561,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 //idProductosRecetas.Value += RecetaingredienteI.id.ToString() + " ,Receta," + Receta.cantidad.ToString().Replace(',', '.') + ", ContentPlaceHolder1_Receta_" + RecetaingredienteI.id.ToString() + ";";
 
-                idProductosRecetas.Value += RecetaingredienteI.id.ToString() + " ,Receta," + Receta.cantidad.ToString().Replace(',', '.') + ", ContentPlaceHolder1_Receta_" + RecetaingredienteI.id.ToString() + "idSectorProductivoRecetas_recetas_" + Receta.idSectorProductivo + "," + "Tiempo_" + Receta.Tiempo + ";";
+                idProductosRecetas.Value += RecetaingredienteI.id.ToString() + " ,Receta," + Receta.cantidad.ToString().Replace(',', '.') + ", ContentPlaceHolder1_Receta_" + RecetaingredienteI.id.ToString() + "idSectorProductivoRecetas_recetas_" + Receta.idSectorProductivo + "," + "Tiempo_" + Receta.Tiempo + "," + "Factor_" + Receta.Factor.ToString().Replace(',', '.') + ";";
 
 
             }

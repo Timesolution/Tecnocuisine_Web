@@ -2,128 +2,136 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
+
+    <style>
+    </style>
+
     <div class="wrapper wrapper-content">
         <div class="container-fluid">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
-                    <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Always">
-                        <ContentTemplate>
-                            <div class="wrapper wrapper-content animated fadeInRight">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-content">
-                                                <div style="margin-left: 0px; margin-right: 0px;">
-                                                    <div style="display: flex; justify-content: space-between; column-gap: 5rem; margin-bottom: 3rem; padding-right: 1rem;">
+                    <div class="wrapper wrapper-content animated fadeInRight">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="ibox float-e-margins" style="padding: 1rem">
+                                    <div class="ibox-content">
+                                        <div style="margin-left: 0px; margin-right: 0px;">
+                                            <div style="display: flex; justify-content: space-between; column-gap: 5rem; margin-bottom: 3rem; padding-right: 1rem; flex-wrap: nowrap">
 
-                                                        <%--Seccion busqueda rapida--%>
-                                                        <div>
+                                                <%--Seccion filtros--%>
+                                                <div style="width: 100%">
 
-                                                            <strong style="margin-left: 1rem; font-size: 1.6rem">Busqueda rapida</strong>
+                                                    <strong style="font-size: 2rem">Filtrar</strong>
 
-                                                            <div style="margin-left: 1rem; margin-top: 1rem">
-                                                                <div class="input-group m-b">
-                                                                    <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
-                                                                    <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" />
-                                                                </div>
-                                                            </div>
+                                                    <div style="margin-top: 1rem; display: none">
+                                                        <div class="input-group m-b">
+                                                            <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
+                                                            <input type="text" id="txtBusqueda" placeholder="Busqueda..." class="form-control" />
+                                                        </div>
+                                                    </div>
 
-                                                            <div>
-                                                                <%--<a id="btnAyer" onclick="filtrartTransferenciasAyer()" class="btn btn-warning"
+                                                    <%--Botones ayer hoy mañana pasado--%>
+                                                    <div>
+                                                        <%--<a id="btnAyer" onclick="filtrartTransferenciasAyer()" class="btn btn-warning"
                                                                     title="filtrar ayer" style="height: 32px; margin-left: 10px">Ayer
                                                                 </a>--%>
-                                                                <asp:Button runat="server" ID="btnAyer" OnClick="btnAyer_Click" class="btn btn-warning"
-                                                                    title="filtrar ayer" Style="height: 32px; margin-left: 10px" Text="Ayer"></asp:Button>
+                                                        <asp:Button runat="server" ID="btnAyer" OnClientClick="setFecha(-1); return false" class="btn btn-default"
+                                                            title="filtrar ayer" Style="height: 32px;" Text="Ayer"></asp:Button>
 
-                                                                <%--<a id="btnHoy" onclick="filtrartTransferenciasHoy()" class="btn btn-warning"
+                                                        <%--<a id="btnHoy" onclick="filtrartTransferenciasHoy()" class="btn btn-warning"
                                                                     title="filtrar hoy" style="height: 32px; margin-left: 10px">Hoy
                                                                 </a>--%>
-                                                                <asp:Button runat="server" ID="btnHoy" OnClick="btnHoy_Click" class="btn btn-warning"
-                                                                    title="filtrar hoy" Style="height: 32px; margin-left: 10px" Text="Hoy"></asp:Button>
+                                                        <asp:Button runat="server" ID="btnHoy" OnClientClick="setFecha(0); return false" class="btn btn-default"
+                                                            title="filtrar hoy" Style="height: 32px;" Text="Hoy"></asp:Button>
 
-                                                                <%--<a id="btnMañana" onclick="filtrartTransferenciasMañana()" class="btn btn-warning"
+                                                        <%--<a id="btnMañana" onclick="filtrartTransferenciasMañana()" class="btn btn-warning"
                                                                     title="filtrar mañana" style="height: 32px; margin-left: 10px">Mañana
                                                                 </a>--%>
-                                                                <asp:Button runat="server" ID="btnMañana" OnClick="btnMañana_Click" class="btn btn-warning"
-                                                                    title="filtrar mañana" Style="height: 32px; margin-left: 10px" Text="Mañana"></asp:Button>
+                                                        <asp:Button runat="server" ID="btnMañana" OnClientClick="setFecha(1); return false" class="btn btn-default"
+                                                            title="filtrar mañana" Style="height: 32px;" Text="Mañana"></asp:Button>
 
-                                                                <%--<a id="btnPasado" onclick="filtrartTransferenciasPasado()" class="btn btn-warning"
+                                                        <%--<a id="btnPasado" onclick="filtrartTransferenciasPasado()" class="btn btn-warning"
                                                                     title="filtrar pasado" style="height: 32px; margin-left: 10px">Pasado 
                                                                 </a>--%>
-                                                                <asp:Button runat="server" ID="btnPasado" OnClick="btnPasado_Click" class="btn btn-warning"
-                                                                    title="filtrar pasado" Style="height: 32px; margin-left: 10px" Text="Pasado"></asp:Button>
-                                                            </div>
+                                                        <asp:Button runat="server" ID="btnPasado" OnClientClick="setFecha(2); return false" class="btn btn-default"
+                                                            title="filtrar pasado" Style="height: 32px;" Text="Pasado"></asp:Button>
+                                                    </div>
 
+                                                    <%--Fila--%>
+                                                    <div style="display: flex; justify-content: flex-start; column-gap: 2rem; width: 100%">
+
+                                                        <%--Fecha Desde--%>
+                                                        <div style="width: 33%">
+                                                            <label style="margin-top: 5px;">Desde:</label>
+                                                            <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy"
+                                                                data-date-format="dd/mm/yyyy">
+                                                            </asp:TextBox>
                                                         </div>
 
-                                                        <%--Seccion busqueda avanzada--%>
-                                                        <div style="width: 50%">
+                                                        <%--Fecha Hasta--%>
+                                                        <div style="width: 33%">
+                                                            <label style="margin-top: 5px;">Hasta:</label>
+                                                            <asp:TextBox class="form-control" runat="server" type="date"
+                                                                ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy">
+                                                            </asp:TextBox>
+                                                        </div>
 
-                                                            <strong style="font-size: 1.6rem">Busqueda avanzada</strong>
-
-                                                            <%--Fila 1--%>
-                                                            <div style="display: flex; justify-content: flex-start; column-gap: 2rem; width:100%">
-
-                                                                <%--Fecha Desde--%>
-                                                                <div style="width:33%">
-                                                                    <label style="margin-top: 5px;">Desde:</label>
-                                                                    <asp:TextBox class="form-control" type="date" runat="server" ID="txtFechaHoy"
-                                                                        data-date-format="dd/mm/yyyy">
-                                                                    </asp:TextBox>
-                                                                </div>
-
-                                                                <%--Fecha Hasta--%>
-                                                                <div style="width:33%">
-                                                                    <label style="margin-top: 5px;">Hasta:</label>
-                                                                    <asp:TextBox class="form-control" runat="server" type="date"
-                                                                        ID="txtFechaVencimiento" data-date-format="dd/mm/yyyy">
-                                                                    </asp:TextBox>
-                                                                </div>
-
-                                                                <%--Estado--%>
-                                                                <div style="width:33%">
-                                                                    <label style="margin-top: 5px;">Estado</label>
-                                                                    <asp:DropDownList ID="ddlEstado" runat="server"
-                                                                        CssClass="chosen-select form-control"
-                                                                        DataTextField="CountryName" DataValueField="CountryCode"
-                                                                        Data-placeholder="Seleccione Estado..." Width="100%">
-                                                                        <asp:ListItem Text="Select" Value=""></asp:ListItem>
-                                                                    </asp:DropDownList>
-                                                                </div>
-
+                                                        <%--Origen--%>
+                                                        <div style="width: 31%">
+                                                            <label style="margin-top: 5px;">Origen</label>
+                                                            <div>
+                                                                <asp:DropDownList ID="ddlOrigen" runat="server"
+                                                                    CssClass="chosen-select form-control"
+                                                                    DataTextField="CountryName" DataValueField="CountryCode"
+                                                                    Data-placeholder="Seleccione Origen..." Width="100%">
+                                                                    <asp:ListItem Text="Select" Value=""></asp:ListItem>
+                                                                </asp:DropDownList>
                                                             </div>
+                                                        </div>
+
+                                                        <%--Destino--%>
+                                                        <div style="width: 31%">
+                                                            <label style="margin-top: 5px;">Destino</label>
+                                                            <div>
+                                                                <asp:DropDownList ID="ddlDestino" runat="server"
+                                                                    CssClass="chosen-select form-control"
+                                                                    DataTextField="CountryName" DataValueField="CountryCode"
+                                                                    Data-placeholder="Seleccione Origen..." Width="100%">
+                                                                    <asp:ListItem Text="Select" Value=""></asp:ListItem>
+                                                                </asp:DropDownList>
+                                                            </div>
+                                                        </div>
+
+                                                        <%--Estado--%>
+                                                        <div style="width: 33%">
+                                                            <label style="margin-top: 5px;">Estado</label>
+                                                            <asp:DropDownList ID="ddlEstado" runat="server"
+                                                                CssClass="chosen-select form-control"
+                                                                DataTextField="CountryName" DataValueField="CountryCode"
+                                                                Data-placeholder="Seleccione Estado..." Width="100%">
+                                                                <asp:ListItem Text="Select" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+
+                                                        <%--Boton Filtrar--%>
+                                                        <div style="align-self: flex-end; justify-self: flex-start">
+                                                            <%--<a id="btnfiltrar" onclick="filtrarordenesproduccion()" class="btn btn-primary" title="filtrar" style="width: 100%">
+                                                               <i class="fa fa-search"></i>&nbsp;Filtrar
+                                                           </a>--%>
+                                                            <%--<asp:LinkButton ID="btnfiltrar" runat="server" OnClick="btnfiltrar_Click" OnClientClick="limpiarUrl()" title="filtrar" Style="width: 100%; margin-bottom: 0" CssClass="btn btn-primary btn-with-icon">
+                                                                         <i class="fa fa-search"></i>
+                                                            </asp:LinkButton>--%>
+                                                        </div>
+
+                                                    </div>
 
 
-                                                            <%--Fila 2--%>
-                                                            <div style="display: flex; justify-content: flex-start; column-gap: 2rem; width:100%">
+                                                    <%--Fila 2--%>
+                                                    <div style="display: flex; justify-content: flex-start; column-gap: 2rem; width: 100%">
 
-                                                                <%--Origen--%>
-                                                                <div style="width: 31%">
-                                                                    <label style="margin-top: 5px;">Origen</label>
-                                                                    <div>
-                                                                        <asp:DropDownList ID="ddlOrigen" runat="server"
-                                                                            CssClass="chosen-select form-control"
-                                                                            DataTextField="CountryName" DataValueField="CountryCode"
-                                                                            Data-placeholder="Seleccione Origen..." Width="100%">
-                                                                            <asp:ListItem Text="Select" Value=""></asp:ListItem>
-                                                                        </asp:DropDownList>
-                                                                    </div>
-                                                                </div>
 
-                                                                <%--Destino--%>
-                                                                <div style="width: 31%">
-                                                                    <label style="margin-top: 5px;">Destino</label>
-                                                                    <div>
-                                                                        <asp:DropDownList ID="ddlDestino" runat="server"
-                                                                            CssClass="chosen-select form-control"
-                                                                            DataTextField="CountryName" DataValueField="CountryCode"
-                                                                            Data-placeholder="Seleccione Origen..." Width="100%">
-                                                                            <asp:ListItem Text="Select" Value=""></asp:ListItem>
-                                                                        </asp:DropDownList>
-                                                                    </div>
-                                                                </div>
 
-                                                                <%--<label style="margin-top: 5px; margin-left: 10px; margin-right: 10px">Sector</label>
+                                                        <%--<label style="margin-top: 5px; margin-left: 10px; margin-right: 10px">Sector</label>
                                                                 <div>
                                                                     <asp:DropDownList ID="ddlSectorUsuario" runat="server"
                                                                         CssClass="chosen-select form-control"
@@ -132,24 +140,16 @@
                                                                         <asp:ListItem Text="Select" Value=""></asp:ListItem>
                                                                     </asp:DropDownList>
                                                                 </div>--%>
-
-                                                                <%--Boton Filtrar--%>
-                                                                <div style="width: 31%; align-self: flex-end; justify-self:flex-start">
-                                                                    <%--<a id="btnfiltrar" onclick="filtrarordenesproduccion()" class="btn btn-primary" title="filtrar" style="width: 100%">
-                                                                        <i class="fa fa-search"></i>&nbsp;Filtrar
-                                                                    </a>--%>                                          
-                                                                    <asp:LinkButton ID="btnfiltrar" runat="server" OnClick="btnfiltrar_Click" title="filtrar" Style="width: 100%" CssClass="btn btn-primary btn-with-icon">
-                                                                        <i class="fa fa-search"></i>&nbsp;Filtrar
-                                                                    </asp:LinkButton>
-
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
                                                     </div>
 
-                                                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                                </div>
+
+                                                <%--Seccion busqueda avanzada--%>
+                                                <%--    <div style="width: 50%">
+                                                        </div>--%>
+                                            </div>
+
+                                            <%--<asp:UpdatePanel ID="UpdatePanel1" runat="server">
                                                         <ContentTemplate>
                                                             <table class="table table-hover no-margins table-bordered" style="width: 100%; margin-top: 30px" id="editable">
                                                                 <thead>
@@ -168,15 +168,30 @@
                                                             </table>
 
                                                         </ContentTemplate>
-                                                    </asp:UpdatePanel>
-                                                </div>
-                                            </div>
+                                                    </asp:UpdatePanel>--%>
+
+                                            <table class="table table-hover no-margins table-bordered" style="width: 100%; margin-top: 30px" id="editable">
+                                                <thead>
+                                                    <tr style="height: 20px">
+                                                        <th style="width: 5%; margin-top: 20px; height: 10px; padding-left: 4px">Fecha</th>
+                                                        <th style="width: 5%; margin-top: 20px; padding-left: 4px">Origen</th>
+                                                        <th style="width: 5%; margin-top: 20px; padding-left: 4px">Destino</th>
+                                                        <th style="width: 5%; margin-top: 20px; padding-left: 4px">Orden</th>
+                                                        <th style="width: 5%; margin-top: 20px; padding-left: 4px">Estado</th>
+                                                        <th style="width: 5%; margin-top: 20px; padding-left: 4px">Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tableTransferencias">
+                                                </tbody>
+                                            </table>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </ContentTemplate>
-                    </asp:UpdatePanel>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -199,7 +214,10 @@
                                 <div class="ibox float-e-margins">
                                     <!-- Agregar la clase "collapsed" aquí -->
                                     <div class="ibox-title">
-                                        <h5>Origen</h5>
+                                        <div style="display: flex; justify-content: space-between">
+                                            <h5>Origen</h5>
+                                            <h5 id="modalOrigenDestino_fecha"></h5>
+                                        </div>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-down"></i>
@@ -215,14 +233,14 @@
                                     </div>
                                     <div class="ibox-content">
 
-                                        <table class="table table-hover no-margins table-bordered" id="tableDatosTransferencia">
+                                        <table class="table table-hover no-margins table-bordered" style="" id="tableDatosTransferencia">
                                             <thead>
                                                 <tr>
-                                                    <td><strong>Sector Productivo</strong></td>
-                                                    <td><strong>Producto</strong></td>
-                                                    <td class="text-right"><strong>Cantidad</strong></td>
-                                                    <td class="text-right"><strong>Confirmada</strong></td>
-                                                    <td><strong>Acciones</strong></td>
+                                                    <td style="width: 25%"><strong>Sector Productivo</strong></td>
+                                                    <td style="width: 35%"><strong>Producto</strong></td>
+                                                    <td class="text-right" style="width: 14%"><strong>Cantidad</strong></td>
+                                                    <td class="text-right" style="width: 14%"><strong>Confirmada</strong></td>
+                                                    <td style="width: 10%"><strong>Acciones</strong></td>
                                                     <%--<td><strong>SectorDestino</strong></td>--%>
                                                     <%--<td><strong>Orden destino</strong></td>--%>
                                                     <%--<td><strong>Cliente destino</strong></td>--%>
@@ -325,29 +343,97 @@
 
 
     <script src="../../js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/2.1.5/i18n/es-ES.json"></script>
 
     <script>
         $(document).ready(function () {
             $("body").tooltip({ selector: '[data-toggle=tooltip]' });
-            establecerDiaHoy();
+            //establecerDiaHoy();
 
-            // var oTable = $('#editable').dataTable({
-            //     "bLengthChange": false,
-            //     "pageLength": 100,
-            //     "lengthMenu": [25, 50, 87, 100]
-            // });
-
-
-            $("#editable_filter").css('display', 'none');
-            $('#txtBusqueda').on('keyup', function () {
-                $('#editable').DataTable().search(this.value).draw();
+            var table = $('#editable').DataTable({
+                "ajax": {
+                    "url": "PedidosOrdenes.aspx/GetTransferencias",
+                    "type": "POST",
+                    "dataType": "json",
+                    contentType: "application/json; charset=utf-8",
+                    "dataSrc": function (json) {
+                        // Accede al array dentro de data.d.data
+                        return json.d.data; // Aquí especificas que los datos están en json.d.data
+                    },
+                    "error": function (xhr, status, error) {
+                        console.log('Error:', error);
+                        //console.log('Response Text:', xhr.responseText);
+                    }
+                },
+                "columns": [
+                    { "data": "fecha" },
+                    { "data": "origen" },
+                    { "data": "destino" },
+                    { "data": "orden" },
+                    { "data": "estado" },
+                    {
+                        "data": "id",
+                        "render": function (data, type, row) {
+                            return "<button style='background-color: transparent' class='btn btn-xs btnVerDetalle' onclick='verDetalleTranferencia(\"" + data + "\", \"" + row.fecha + "\"); return false;'>"
+                                + "<span title='Detalle'><i class='fa fa-exchange' style='color: black;'></i></span>"
+                                + "</button>";
+                        }
+                    }
+                ],
+                "order": [[0, 'desc']], // Ordenar por la primera columna (fecha) en orden descendente
+                "searching": true, // Ocultar el buscador
+                "lengthChange": false, // Ocultar el filtro de cantidad de registros
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/2.1.5/i18n/es-ES.json',
+                },
+                "initComplete": function (settings, json) {
+                    $('#editable_filter').hide(); // Ocultar el campo de búsqueda global después de la inicialización
+                }
             });
+
+            ////////////////////////////////////////
+
+            // Filtro personalizado
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var fechaDesde = $('#<%= txtFechaHoy.ClientID %>').val();
+                    var fechaHasta = $('#<%= txtFechaVencimiento.ClientID %>').val();
+                    var origenText = $('#<%= ddlOrigen.ClientID %> option:selected').text();
+                    var destinoText = $('#<%= ddlDestino.ClientID %> option:selected').text();
+                    var estadoText = $('#<%= ddlEstado.ClientID %> option:selected').text();
+
+                    var fecha = data[0]; // columna Fecha, fecha de la fila recorrida (ej 31/08/2024)
+                    var origen = data[1]; // columna Origen
+                    var destino = data[2]; // columna Destino
+                    var estado = data[4]; // columna Estado
+
+                    var fechaFilaAISO = formatDateToISO(fecha); // Se convierte la fecha de la fila a formato ISO (2024-08-31) para compararla con los filtros
+
+                    // Comprobar rango de fechas
+                    var dateInRange = (!fechaDesde || fechaFilaAISO >= fechaDesde) && (!fechaHasta || fechaFilaAISO <= fechaHasta);
+
+                    // Comparar origen, destino y estado
+                    var origenMatch = (origenText === "Seleccione..." || origenText === origen);
+                    var destinoMatch = (destinoText === "Seleccione..." || destinoText === destino);
+                    var estadoMatch = (estadoText === "Seleccione..." || estadoText === estado);
+
+                    return dateInRange && origenMatch && destinoMatch && estadoMatch;
+                }
+            );
+
+            // Aplicar filtros cuando cambian
+            $('#<%= txtFechaHoy.ClientID %>, #<%= txtFechaVencimiento.ClientID %>, #<%= ddlOrigen.ClientID %>, #<%= ddlDestino.ClientID %>, #<%= ddlEstado.ClientID %>').on('change', function () {
+                table.draw();
+            });
+
+            ////////////////////////////////////
+
 
             var updateOutput = function (e) {
                 var list = e.length ? e : $(e.target),
                     output = list.data('output');
                 if (window.JSON) {
-                    output.val(window.JSON.stringify(list.nestable('serialize')));
+                    //output.val(window.JSON.stringify(list.nestable('serialize')));
                 } else {
                     output.val('JSON browser support required for this demo.');
                 }
@@ -376,45 +462,42 @@
             });
         });
 
-     //   function confirmarTransferencia() {
-     //        //document.getElementById('tableTransferencias').innerHTML = "";
-     //
-     //       let idTransferencia = document.getElementById('<%= idTransferencia.ClientID %>').value;
-     //       //let transferencias = document.getElementById('<%= transferencias.ClientID %>').value;
-        //
-        //       $.ajax({
-        //           method: "POST",
-        //           url: "PedidosOrdenes.aspx/cambiarEstadoTransferencia",
-        //           data: JSON.stringify({ idTransferencia: idTransferencia }),
-        //           contentType: "application/json",
-        //           dataType: "json",
-        //           error: function(error) {
-        //               console.log("Error:", error);
-        //           },
-        //           success: function(data) {
-        //              // const arrayTransferencias = transferencias.split(";").filter(Boolean);
-        //              // arrayTransferencias.forEach(function(detalleTransferencia) {
-        //              //     const partesDetalle = detalleTransferencia.split(",").filter(Boolean);
-        //              //     const fecha = partesDetalle[0];
-        //              //     const origen = partesDetalle[1];
-        //              //     const destino = partesDetalle[2];
-        //              //     const orden = partesDetalle[3];
-        //              //     const estadoTransferencias = partesDetalle[4];
-        //              //
-        //              //     let plantillaTransferencia = `
-        //              //         <tr>
-        //              //             <td>${fecha}</td>
-        //              //             <td>${origen}</td>
-        //              //             <td>${destino}</td>
-        //              //             <td>${orden}</td>
-        //              //             <td>${estadoTransferencias}</td>
-        //              //         </tr>
-        //              //     `;
-        //              //     document.getElementById('editable').innerHTML += plantillaTransferencia;
-        //            //   });
-        //           }
-        //         });
-        //   }
+
+        // Función para convertir fecha en formato dd/mm/yyyy o dd-mm-yyyy a objeto Date
+        function parseDate(dateString) {
+            var parts = dateString.split(/[/\-]/); // Dividir por / o -
+            // Asegúrate de ajustar el año si es necesario
+            return new Date(parts[2], parts[1] - 1, parts[0]); // Meses en JavaScript van de 0 a 11
+        }
+
+        /**
+ * Convierte una fecha en formato 'dd/mm/yyyy' o 'dd-mm-yyyy' a 'yyyy-mm-dd'.
+ * @param {string} dateString - La fecha en formato 'dd/mm/yyyy' o 'dd-mm-yyyy'.
+ * @returns {string} La fecha en formato 'yyyy-mm-dd'.
+ */
+        function formatDateToISO(dateString) {
+            // Dividir la fecha en partes usando '/' o '-'
+            var parts = dateString.split(/[/\-]/);
+
+            // Verificar que la fecha tiene las partes correctas
+            if (parts.length !== 3) {
+                throw new Error('Formato de fecha inválido. Use "dd/mm/yyyy" o "dd-mm-yyyy".');
+            }
+
+            var day = parts[0];
+            var month = parts[1];
+            var year = parts[2];
+
+            // Asegurarse de que el mes sea 2 dígitos
+            month = month.length === 1 ? '0' + month : month;
+
+            // Asegurarse de que el día sea 2 dígitos
+            day = day.length === 1 ? '0' + day : day;
+
+            // Devolver la fecha en formato 'yyyy-mm-dd'
+            return `${year}-${month}-${day}`;
+        }
+
 
         function establecerDiaHoy() {
             var fechas = obtenerRangoFechas();
@@ -441,137 +524,12 @@
             };
         }
 
-        function filtrarordenesproduccion() {
-            let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value
-            let FechaH = document.getElementById("ContentPlaceHolder1_txtFechaVencimiento").value
 
-            let ddlOrigen = document.getElementById("ContentPlaceHolder1_ddlOrigen");
-            let origen = ddlOrigen.options[ddlOrigen.selectedIndex].text;
-
-            let ddlDestino = document.getElementById("ContentPlaceHolder1_ddlDestino");
-            let destino = ddlDestino.options[ddlDestino.selectedIndex].text;
-
-            let estado = document.getElementById("ContentPlaceHolder1_ddlEstado").value;
-
-            let ddlSector = document.getElementById("ContentPlaceHolder1_ddlSectorUsuario");
-            let sector = ddlSector.options[ddlSector.selectedIndex].text;
-
-            window.location.href = "PedidosOrdenes.aspx?FechaD=" + FechaD + "&FechaH=" + FechaH + "&sector=" + sector + "&Estado=" + estado;
-        }
+        async function verDetalleTranferencia(idTransferencia, fecha) {
+            // Espera el resultado de la función VisibilidadBotonConfirmar
+            const disabledInputs = await VisibilidadBotonConfirmar(idTransferencia);
 
 
-        function filtrartTransferenciasAyer() {
-
-            let ddlOrigen = document.getElementById("ContentPlaceHolder1_ddlOrigen");
-            let origen = ddlOrigen.options[ddlOrigen.selectedIndex].text;
-
-            let ddlDestino = document.getElementById("ContentPlaceHolder1_ddlDestino");
-            let destino = ddlDestino.options[ddlDestino.selectedIndex].text;
-
-            let estado = document.getElementById("ContentPlaceHolder1_ddlEstado").value;
-
-            let ddlSectorUsuario = document.getElementById("ContentPlaceHolder1_ddlSectorUsuario");
-            let sector = ddlSectorUsuario.options[ddlSectorUsuario.selectedIndex].text;
-
-            let yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-            let year = yesterday.getFullYear();
-            let month = (yesterday.getMonth() + 1).toString().padStart(2, '0');
-            let day = yesterday.getDate().toString().padStart(2, '0');
-            let fechaAyer = year + "/" + month + "/" + day;
-
-
-            let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value
-
-            window.location.href = "PedidosOrdenes.aspx?FechaAyer=" + FechaD + "&Origen=" + origen + "&Destino=" + destino + "&Estado=" + estado + "&sector=" + sector;
-        }
-
-
-
-        function filtrartTransferenciasHoy() {
-
-            let ddlOrigen = document.getElementById("ContentPlaceHolder1_ddlOrigen");
-            let origen = ddlOrigen.options[ddlOrigen.selectedIndex].text;
-
-            let ddlDestino = document.getElementById("ContentPlaceHolder1_ddlDestino");
-            let destino = ddlDestino.options[ddlDestino.selectedIndex].text;
-
-            let estado = document.getElementById("ContentPlaceHolder1_ddlEstado").value;
-
-            let ddlSectorUsuario = document.getElementById("ContentPlaceHolder1_ddlSectorUsuario");
-            let sector = ddlSectorUsuario.options[ddlSectorUsuario.selectedIndex].text;
-
-            let yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-            let year = yesterday.getFullYear();
-            let month = (yesterday.getMonth() + 1).toString().padStart(2, '0');
-            let day = yesterday.getDate().toString().padStart(2, '0');
-            let fechaAyer = year + "/" + month + "/" + day;
-
-
-            let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value
-
-            window.location.href = "PedidosOrdenes.aspx?FechaHoy=" + FechaD + "&Origen=" + origen + "&Destino=" + destino + "&Estado=" + estado + "&sector=" + sector;
-        }
-
-
-
-        function filtrartTransferenciasMañana() {
-
-            let ddlOrigen = document.getElementById("ContentPlaceHolder1_ddlOrigen");
-            let origen = ddlOrigen.options[ddlOrigen.selectedIndex].text;
-
-            let ddlDestino = document.getElementById("ContentPlaceHolder1_ddlDestino");
-            let destino = ddlDestino.options[ddlDestino.selectedIndex].text;
-
-            let estado = document.getElementById("ContentPlaceHolder1_ddlEstado").value;
-
-            let ddlSectorUsuario = document.getElementById("ContentPlaceHolder1_ddlSectorUsuario");
-            let sector = ddlSectorUsuario.options[ddlSectorUsuario.selectedIndex].text;
-
-
-            let yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-            let year = yesterday.getFullYear();
-            let month = (yesterday.getMonth() + 1).toString().padStart(2, '0');
-            let day = yesterday.getDate().toString().padStart(2, '0');
-            let fechaAyer = year + "/" + month + "/" + day;
-
-
-            let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value
-
-            window.location.href = "PedidosOrdenes.aspx?FechaMañana=" + FechaD + "&Origen=" + origen + "&Destino=" + destino + "&Estado=" + estado + "&sector=" + sector;
-        }
-
-
-        function filtrartTransferenciasPasado() {
-
-            let ddlOrigen = document.getElementById("ContentPlaceHolder1_ddlOrigen");
-            let origen = ddlOrigen.options[ddlOrigen.selectedIndex].text;
-
-            let ddlDestino = document.getElementById("ContentPlaceHolder1_ddlDestino");
-            let destino = ddlDestino.options[ddlDestino.selectedIndex].text;
-
-            let estado = document.getElementById("ContentPlaceHolder1_ddlEstado").value;
-
-            let ddlSectorUsuario = document.getElementById("ContentPlaceHolder1_ddlSectorUsuario");
-            let sector = ddlSectorUsuario.options[ddlSectorUsuario.selectedIndex].text;
-
-            let yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-            let year = yesterday.getFullYear();
-            let month = (yesterday.getMonth() + 1).toString().padStart(2, '0');
-            let day = yesterday.getDate().toString().padStart(2, '0');
-            let fechaAyer = year + "/" + month + "/" + day;
-
-
-            let FechaD = document.getElementById("ContentPlaceHolder1_txtFechaHoy").value
-
-            window.location.href = "PedidosOrdenes.aspx?FechaPasado=" + FechaD + "&Origen=" + origen + "&Destino=" + destino + "&Estado=" + estado + "&sector=" + sector;
-        }
-
-
-        function verDetalleTranferencia(idTransferencia) {
             $.ajax({
                 method: "POST",
                 url: "PedidosOrdenes.aspx/verDetallesTransferencia",
@@ -582,7 +540,6 @@
                     console.log("Error");
                 },
                 success: function (data) {
-
                     const arraydetalleTransferencia = data.d.split(";").filter(Boolean);
                     document.getElementById('tableOrigen').innerHTML = "";
                     document.getElementById('<%= idTransferencia.ClientID %>').value = idTransferencia;
@@ -599,7 +556,9 @@
                         const cantidadAConfirmar = "<input id=\"cantAproducir_" + cont + "\" " +
                             "style=\"width: 100%; text-align: right;\" " +
                             "placeholder=\"Cantidad\" " +
-                            "value=\"" + partesDetalle[4] + "\" />";
+                            "value=\"" + partesDetalle[4] + "\" " +
+                            (disabledInputs ? "disabled" : "") + " />";
+
 
 
                         let btnVerDetalle =
@@ -620,6 +579,10 @@
 
                         document.getElementById('tableOrigen').innerHTML += plantillaDetalleTransferencia;
                     });
+
+                    //TODO: traer fecha de la data
+                    document.getElementById('modalOrigenDestino_fecha').innerHTML = 'Fecha: ' + fecha;
+
                     $("#modalOrigenDestino").modal("hide");
                     setTimeout(function () {
                         $("#modalOrigenDestino").modal("show");
@@ -628,6 +591,34 @@
             });
         }
 
+        // Mostrar boton confirmar solo si el estado de la transferencia es "A confirmar"
+        function VisibilidadBotonConfirmar(idTransferencia) {
+            return GetIdEstadoTransferencia(idTransferencia).then(function (response) {
+                var estadoTransferencia = response.d;
+
+                if (estadoTransferencia === 2) { // A Confirmar
+                    document.getElementById('<%= btnConfirmar.ClientID %>').style.display = 'inline-block';
+            return false; 
+        } else {
+            document.getElementById('<%= btnConfirmar.ClientID %>').style.display = 'none';
+            return true;
+        }
+    }).fail(function (xhr, status, error) {
+        console.error("Error al llamar al método del servidor: ", error);
+        return true; // Retornar false en caso de error
+    });
+        }
+
+
+        function GetIdEstadoTransferencia(idTransferencia) {
+            return $.ajax({
+                method: "POST",
+                url: "PedidosOrdenes.aspx/GetEstadoTransferencia",
+                data: JSON.stringify({ idTransferencia: idTransferencia }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json"
+            });
+        }
 
         function verDetallePedidos(idTransferencia, ProductoOrigen) {
             $.ajax({
@@ -775,6 +766,13 @@
         }
 
 
+        function limpiarUrl() {
+            // Obtener la URL actual sin parámetros
+            var urlBase = window.location.pathname;
+            window.history.replaceState({}, document.title, urlBase);
+        }
+
+
         function validarTextBox(input) {
             // Obtener el valor del input
             var valor = input.value;
@@ -795,7 +793,7 @@
         }
 
         function confirmarTransferencia() {
-            document.getElementById('<%= btnConfirmar.ClientID %>').disabled = true;
+            //document.getElementById('<%= btnConfirmar.ClientID %>').disabled = true;
             let idTransferencia = document.getElementById('<%= idTransferencia.ClientID %>').value;
 
             var rows = document.querySelectorAll('#tableOrigen tr');
@@ -830,22 +828,61 @@
                 dataType: "json",
                 error: function (error) {
                     toastr.error("La transferencia no pudo ser confirmada.", "Error");
-                    document.getElementById('<%= btnConfirmar.ClientID %>').disabled = false;
                 },
                 success: function (response) {
 
                     if (response.d > 0) {
+                        var table = $('#editable').DataTable();
+                        table.ajax.reload(null, false); // El segundo parámetro false evita reiniciar la paginación
+
                         toastr.success("Transferencia confirmada con exito!", "Exito")
 
+                        // Obtener la URL actual
+                        <%--var urlActual = window.location.href;
+                        var urlSinParametros = urlActual.split('?')[0];
 
-                        setTimeout(function () {
-                            window.location.reload();
-                        }, 1000);
+                        var parametros =
+                            "a=1" + "&" +
+                            "fDesde=" + document.getElementById('<%=txtFechaHoy.ClientID%>').value + "&" +
+                            "fHasta=" + document.getElementById('<%=txtFechaVencimiento.ClientID%>').value + "&" +
+                            "origen=" + document.getElementById('<%=ddlOrigen.ClientID%>').value + "&" +
+                            "destino=" + document.getElementById('<%=ddlDestino.ClientID%>').value + "&" +
+                            "estado=" + document.getElementById('<%=ddlEstado.ClientID%>').value;
+                        // Recargar la página con la nueva URL
+                        window.location.href = urlSinParametros + "?" + parametros;--%>
+
+
+                        //OTRA MANERA
+                        <%--// RECARGAR TABLA
+                        var data = {
+                            fDesde: document.getElementById('<%=txtFechaHoy.ClientID%>').value,
+                            fHasta: document.getElementById('<%=txtFechaVencimiento.ClientID%>').value,
+                            origen: document.getElementById('<%=ddlOrigen.ClientID%>').value,
+                            destino: document.getElementById('<%=ddlDestino.ClientID%>').value,
+                            estado: document.getElementById('<%=ddlEstado.ClientID%>').value,
+                        };
+                        $.ajax({
+                            method: "POST",
+                            url: "PedidosOrdenes.aspx/GetTransferenciasConFiltros",
+                            data: JSON.stringify(data),
+                            contentType: "application/json",
+                            dataType: "json",
+                            error: function (error) {
+                            },
+                            success: function (response) {
+                                if (response.d > 0) {
+                                }
+                                else {
+                                }
+                            }
+                        });--%>
+
+                        //dibujar en js la tabla
+
+                        $("#modalOrigenDestino").modal("hide");
                     }
                     else {
                         toastr.error("La transferencia no pudo ser confirmada.", "Error");
-                        document.getElementById('<%= btnConfirmar.ClientID %>').disabled = false;
-
                     }
                 }
             });
@@ -853,5 +890,41 @@
 
         }
 
+    </script>
+
+    <script>
+        // Esta funcion cambiara el valor de los inputs de fecha agregandole los dias que indique el boton seleccionado
+        function setFecha(diasASumar) {
+            // Obtener la fecha actual
+            var fecha = new Date();
+
+            // Sumar los días especificados
+            fecha.setDate(fecha.getDate() + diasASumar);
+
+            // Formatear la fecha a YYYY-MM-DD
+            var dia = ('0' + fecha.getDate()).slice(-2);
+            var mes = ('0' + (fecha.getMonth() + 1)).slice(-2);
+            var anio = fecha.getFullYear();
+
+            // Establecer el valor del textbox de fecha
+            var txtFechaDesde = document.getElementById('<%=txtFechaHoy.ClientID%>');
+            var txtFechaHasta = document.getElementById('<%=txtFechaVencimiento.ClientID%>');
+
+            txtFechaDesde.value = anio.toString() + "-" + mes.toString() + "-" + dia.toString();
+            txtFechaHasta.value = anio.toString() + "-" + mes.toString() + "-" + dia.toString();
+
+
+            // Llamar al evento onchange del select
+            var event = new Event('change');
+            txtFechaDesde.dispatchEvent(event);
+            txtFechaHasta.dispatchEvent(event);
+        }
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            document.getElementById("lblSiteMap").innerText = "Produccion / Pedidos";
+        });
     </script>
 </asp:Content>

@@ -1,25 +1,16 @@
-﻿using Disipar.Models;
-using Gestion_Api.Entitys;
-using Gestion_Api.Modelo;
-using Microsoft.Ajax.Utilities;
-using Microsoft.Reporting.WebForms;
+﻿using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Tecnocuisine.Formularios.Administrador;
-using Tecnocuisine.Modelos;
 using Tecnocuisine_API.Controladores;
 using Tecnocuisine_API.Entitys;
-using static Tecnocuisine.Formularios.Ventas.PedidosOrdenes;
 
 namespace Tecnocuisine.Formularios.Ventas
 {
@@ -27,8 +18,8 @@ namespace Tecnocuisine.Formularios.Ventas
     {
 
         ControladorSectorProductivo sectorProductivo = new ControladorSectorProductivo();
-        string FechaD = "";
-        string FechaH = "";
+        string fDesde;
+        string fHasta;
         int idSectorProductivo = -1;
         DataTable dt;
         DataTable dt2;
@@ -36,6 +27,7 @@ namespace Tecnocuisine.Formularios.Ventas
         int ultimoID = -1;
         string sector = "";
         string sectorValue = "";
+        ReportViewer ReportViewer1 = new ReportViewer();
         public class RowClass
         {
             public string Id { get; set; }
@@ -53,25 +45,55 @@ namespace Tecnocuisine.Formularios.Ventas
         {
             VerificarLogin();
             CargarSectoresProductivodDDL();
-            filtrarDatosTransferenciasBySectorOrigen();
-            filtrarProduccionBySector();
-            filtrarRemitosInternos();
+            SetParametros();
+
             if (!IsPostBack)
             {
             }
+
+            filtrarRemitosInternos();
+            filtrarProduccion();
+            filtrarDatosTransferenciasEnvios();
+            PrecargarFiltros();
         }
 
-        public void filtrarProduccionBySector()
+        private void PrecargarFiltros()
         {
+            if (!HayBusqueda()) return;
+
+            txtFechaHoy.Text = fDesde.ToString();
+            txtFechaVencimiento.Text = fHasta.ToString();
+            ddlSector.SelectedValue = sectorValue;
+        }
+
+        private void SetParametros()
+        {
+            if (!HayBusqueda()) return;
+
+            sectorValue = Request.QueryString["OV"].ToString();
+            sector = Request.QueryString["O"].ToString();
+            fDesde = Request.QueryString["fDesde"].ToString();
+            fHasta = Request.QueryString["fHasta"].ToString();
+        }
+
+        public void filtrarProduccion()
+        {
+            if (!HayBusqueda())
+                return;
+            // Si no hay ningun filtro/parametro
+            if (sectorValue == "-1" && string.IsNullOrEmpty(fDesde) && string.IsNullOrEmpty(fHasta))
+                return;
+
             string sectorId = string.Empty;
             if (Request.QueryString["OV"] != null)
                 sectorId = Request.QueryString["OV"].ToString();
 
             if (Request.QueryString["O"] != null)
             {
-                sector = Request.QueryString["O"].ToString();
+                this.sector = this.sectorValue != "-1" ? Request.QueryString["O"].ToString() : "";
+
                 ControladorTransferencia cTransferencia = new ControladorTransferencia();
-                DataTable dt = cTransferencia.getTransferenciasBySector(sector);
+                DataTable dt = cTransferencia.getTransferenciasByFiltros(sector, fDesde, fHasta);
 
                 OrdenarRecetas(dt);
 
@@ -81,6 +103,13 @@ namespace Tecnocuisine.Formularios.Ventas
                     cont++;
                     TableRow tr = new TableRow();
                     tr.ID = cont.ToString();
+
+                    TableCell celFecha = new TableCell();
+                    celFecha.Text = dr["fecha"].ToString();
+                    celFecha.VerticalAlign = VerticalAlign.Middle;
+                    celFecha.HorizontalAlign = HorizontalAlign.Left;
+                    celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
+                    tr.Cells.Add(celFecha);
 
                     //Celdas
                     TableCell celProducto = new TableCell();
@@ -98,12 +127,7 @@ namespace Tecnocuisine.Formularios.Ventas
                     celCantidad.Attributes.Add("style", "padding-bottom: 1px !important;");
                     tr.Cells.Add(celCantidad);
 
-                    TableCell celFecha = new TableCell();
-                    celFecha.Text = dr["fecha"].ToString();
-                    celFecha.VerticalAlign = VerticalAlign.Middle;
-                    celFecha.HorizontalAlign = HorizontalAlign.Left;
-                    celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celFecha);
+
 
                     TableCell celAccion = new TableCell();
                     LinkButton btnProducir = new LinkButton();
@@ -116,18 +140,29 @@ namespace Tecnocuisine.Formularios.Ventas
                     celAccion.Controls.Add(btnProducir);
                     tr.Cells.Add(celAccion);
 
-                    TableCell celAccion2 = new TableCell();
+
                     LinkButton btnDetalle = new LinkButton();
                     btnDetalle.ID = "btnVerPedidos_" + cont.ToString();
                     btnDetalle.CssClass = "btn btn-xs";
                     btnDetalle.Style.Add("background-color", "transparent");
                     btnDetalle.Attributes.Add("data-toggle", "modal");
                     btnDetalle.Attributes.Add("href", "#modalConfirmacion2");
-                    btnDetalle.Text = "<span title='Ver Detalle'><i class='fa fa-eye' style='color: black;'></i></span>";
+                    btnDetalle.Text = "<span title='Ver Detalle'><i class='fa fa-file-text' style='color: black;'></i></span>";
                     btnDetalle.Attributes.Add("onclick", "verDetalleProduccion('" + sector + "', '" + dr["id"].ToString() + "', '" + dr["fecha"].ToString() + "');");
 
                     celAccion.Controls.Add(btnDetalle);
-                    tr.Cells.Add(celAccion2);
+
+                    //LinkButton btnImprimir = new LinkButton();
+                    ////btnDetalle.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
+                    //btnImprimir.CssClass = "btn btn-xs";
+                    //btnImprimir.Style.Add("background-color", "transparent");
+                    //btnImprimir.Text = "<span title='Imprimir'><i class='fa fa-print' style='color: black;'></i></span>";
+                    //btnImprimir.Attributes.Add("href", $"ImpresionProduccion.aspx?id=" + dr["id"].ToString() + "&&sector=" + sector + "&&fecha=" + dr["fecha"].ToString());
+                    //btnImprimir.Attributes.Add("target", "_blank");
+                    ////btnDetalle.Attributes.Add("onclick", "impresionProduccion('" + sector + "', '" + dr["id"].ToString() + "', '" + dr["fecha"].ToString() + "');");
+
+                    //celAccion.Controls.Add(btnImprimir);
+
 
                     phProduccion.Controls.Add(tr);
                 }
@@ -136,28 +171,78 @@ namespace Tecnocuisine.Formularios.Ventas
 
         }
 
+        /// <summary>
+        /// Genera un RDLC en otra pestaña con los registros de produccion filtrados
+        /// </summary>
+        protected void btnImprimirProduccion_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string url = $"ImpresionProduccion.aspx?sector={Server.UrlEncode(sector)}&fDesde={Server.UrlEncode(fDesde)}&fHasta={Server.UrlEncode(fHasta)}";
+                string script = $"window.open('{url}', '_blank');";
+                ScriptManager.RegisterStartupScript(this, GetType(), "OpenNewTab", script, true);
+                //Response.Redirect($"ImpresionProduccion.aspx?sector={sector}&&fDesde={fDesde}&&fHasta={fHasta}");
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
         private void OrdenarRecetas(DataTable dt)
         {
             ControladorReceta cReceta = new ControladorReceta();
             int idR1, idR2;
+            DataTable dtAux = dt.Copy();
 
-            ///Por cada receta, pregunto en toda la tabla si es requerida por otra receta 
+            // Recorrer las filas de recetas 
             foreach (DataRow r1 in dt.Rows)
             {
                 idR1 = int.Parse(r1["id"].ToString());
 
-                ///Ver si r1 es usada por otra receta de la tabla
-                ///comparando si existen los ids concatenados en db
+                // Comparar la receta con todas las recetas de la tabla
+                DataRow copiaR2 = null;
+                int indexR2 = 0;
+
                 foreach (DataRow r2 in dt.Rows)
                 {
                     idR2 = int.Parse(r2["id"].ToString());
 
                     if (cReceta.EsSubReceta(idR1, idR2))
                     {
-                        bool r = true;
-                        //DataRow auxR2 = r2;
-                        //dt.Rows[0] = auxR2;
+                        //Si tiene hijos
+                        //do
+                        //{
+                        //    foreach (DataRow r3 in dt.Rows)
+                        //    {
+
+                        //    }
+                        //} while ();
+
+                        //mover r2 al final porque es padre de una receta
+                        copiaR2 = r2;
+                        break; // Sale de este for
                     }
+                    // Es receta final
+                    else
+                    {
+
+                    }
+
+                    indexR2++;
+                }
+
+                // Si no es subreceta se coloca al final. El orden es: primero subrecetas y al final recetas
+                if (copiaR2 != null)
+                {
+                    // Crear una copia de la fila
+                    DataRow nuevaFila = dt.NewRow();
+                    nuevaFila.ItemArray = copiaR2.ItemArray.Clone() as object[];
+
+                    // Eliminar la fila de su posición actual
+                    //dtAux.Rows.RemoveAt(indexR2);
+                    // Insertar la fila al final
+                    // dtAux.Rows.Add(nuevaFila);
                 }
             }
         }
@@ -208,87 +293,112 @@ namespace Tecnocuisine.Formularios.Ventas
         //Esta funcion filtra los remitos internos en la pestaña de recepcion
         public void filtrarRemitosInternos()
         {
-            if (Request.QueryString["O"] != null)
+            if (!HayBusqueda())
+                return;
+            // Si no hay ningun filtro/parametro
+            if (sectorValue == "-1" && string.IsNullOrEmpty(fDesde) && string.IsNullOrEmpty(fHasta))
+                return;
+
+            ControladorRemitosInternos cRemitosInternos = new ControladorRemitosInternos();
+            //var remitosInternos = cRemitosInternos.getRemitosInternosBySectorDestino(sector);
+            var remitosInternos = cRemitosInternos.getRemitosInternosByFiltros(sector, fDesde, fHasta);
+
+            if (remitosInternos == null) return;
+            //Session["remitosInternosRecepcion"] = remitosInternos;
+
+            foreach (var remito in remitosInternos)
             {
-                sector = Request.QueryString["O"].ToString();
-                ControladorRemitosInternos cRemitosInternos = new ControladorRemitosInternos();
-                var remitosInternos = cRemitosInternos.getRemitosInternosBySectorDestino(sector);
+                int cont = 0;
 
+                cont++;
+                TableRow tr = new TableRow();
+                tr.ID = cont.ToString();
+                if (remito.recepcionado != null && remito.recepcionado == true)
+                    tr.Style.Add("color", "green");
 
-                //Session["remitosInternosRecepcion"] = remitosInternos;
+                //Celdas
+                //TableCell celSectorDestino = new TableCell();
+                //celSectorDestino.Text = remito.sectorDestino;
+                //celSectorDestino.VerticalAlign = VerticalAlign.Middle;
+                //celSectorDestino.HorizontalAlign = HorizontalAlign.Left;
+                //celSectorDestino.Attributes.Add("style", "padding-bottom: 1px !important;");
+                //tr.Cells.Add(celSectorDestino);
 
-                foreach (var remito in remitosInternos)
-                {
+                TableCell celFecha = new TableCell();
+                celFecha.Text = remito.fecha.ToShortDateString();
+                celFecha.VerticalAlign = VerticalAlign.Middle;
+                celFecha.HorizontalAlign = HorizontalAlign.Left;
+                celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celFecha);
 
-                    int cont = 0;
+                //string sectorOrigen = string.Empty;
+                //if(remito.idSectorOrigen!=null)
+                //    sectorOrigen = new ControladorSectorProductivo().ObtenerSectorProductivoId((int)remito.idSectorOrigen).descripcion;
 
-                    cont++;
-                    TableRow tr = new TableRow();
-                    tr.ID = cont.ToString();
+                TableCell celSectorOrigen = new TableCell();
+                celSectorOrigen.Text = remito.SectorProductivo?.descripcion ?? "";
+                celSectorOrigen.VerticalAlign = VerticalAlign.Middle;
+                celSectorOrigen.HorizontalAlign = HorizontalAlign.Left;
+                celSectorOrigen.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celSectorOrigen);
 
-                    //Celdas
-                    TableCell celSectorDestino = new TableCell();
-                    celSectorDestino.Text = remito.sectorDestino;
-                    celSectorDestino.VerticalAlign = VerticalAlign.Middle;
-                    celSectorDestino.HorizontalAlign = HorizontalAlign.Left;
-                    celSectorDestino.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celSectorDestino);
-
-
-                    TableCell celNumero = new TableCell();
-                    celNumero.Text = remito.numero;
-                    celNumero.VerticalAlign = VerticalAlign.Middle;
-                    celNumero.HorizontalAlign = HorizontalAlign.Left;
-                    celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celNumero);
-
-
-
-                    TableCell celFecha = new TableCell();
-                    celFecha.Text = remito.fecha.ToString();
-                    celFecha.VerticalAlign = VerticalAlign.Middle;
-                    celFecha.HorizontalAlign = HorizontalAlign.Left;
-                    celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
-                    tr.Cells.Add(celFecha);
-
-
-
-                    TableCell celAccion = new TableCell();
-                    LinkButton btnDetalle = new LinkButton();
-                    btnDetalle.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
-                    btnDetalle.CssClass = "btn btn-xs";
-                    btnDetalle.Style.Add("background-color", "transparent");
-                    btnDetalle.Attributes.Add("data-toggle", "modal");
-                    btnDetalle.Attributes.Add("href", "#modalConfirmacion2");
-                    btnDetalle.Text = "<span title='Ver pedidos'><i class='fa fa-search' style='color: black;'></i></span>";
-                    btnDetalle.Attributes.Add("onclick", "verDetalleRemitoInternoPdf('" + remito.id + "');");
-                    celAccion.Controls.Add(btnDetalle);
-                    tr.Cells.Add(celAccion);
+                TableCell celNumero = new TableCell();
+                celNumero.Text = remito.numero;
+                celNumero.VerticalAlign = VerticalAlign.Middle;
+                celNumero.HorizontalAlign = HorizontalAlign.Left;
+                celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celNumero);
 
 
 
-
-                    LinkButton btnDetalleRemitoInterno = new LinkButton();
-                    btnDetalleRemitoInterno.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
-                    btnDetalleRemitoInterno.CssClass = "btn btn-xs";
-                    btnDetalleRemitoInterno.Style.Add("background-color", "transparent");
-                    btnDetalleRemitoInterno.Attributes.Add("data-toggle", "modal");
-                    btnDetalleRemitoInterno.Attributes.Add("href", "#modalConfirmacion2");
-                    btnDetalleRemitoInterno.Text = "<span title='Ver pedidos'><i class='fa fa-tasks' style='color: black;'></i></span>";
-                    btnDetalleRemitoInterno.Attributes.Add("onclick", "verDetalleRemitoInternoModal('" + remito.id + "');");
-                    celAccion.Controls.Add(btnDetalleRemitoInterno);
-
-                    phRecepcion.Controls.Add(tr);
-                }
+                TableCell celAccion = new TableCell();
+                //LinkButton btnDetalle = new LinkButton();
+                //btnDetalle.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
+                //btnDetalle.CssClass = "btn btn-xs";
+                //btnDetalle.Style.Add("background-color", "transparent");
+                //btnDetalle.Attributes.Add("data-toggle", "modal");
+                //btnDetalle.Attributes.Add("href", "#modalConfirmacion2");
+                //btnDetalle.Text = "<span title='Ver pedidos'><i class='fa fa-search' style='color: black;'></i></span>";
+                //btnDetalle.Attributes.Add("onclick", "verDetalleRemitoInternoPdf('" + remito.id + "');");
+                //celAccion.Controls.Add(btnDetalle);
 
 
+                LinkButton btnDetalleRemitoInterno = new LinkButton();
+                btnDetalleRemitoInterno.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
+                btnDetalleRemitoInterno.CssClass = "btn btn-xs";
+                btnDetalleRemitoInterno.Style.Add("background-color", "transparent");
+                btnDetalleRemitoInterno.Attributes.Add("data-toggle", "modal");
+                btnDetalleRemitoInterno.Attributes.Add("href", "#modalConfirmacion2");
+                btnDetalleRemitoInterno.Text = "<span title='Ver pedidos'><i class='fa fa-tasks' style='color: black;'></i></span>";
+                bool recepcionado = remito.recepcionado ?? false;
+                btnDetalleRemitoInterno.Attributes.Add("onclick", "verDetalleRemitoInternoModal('" + remito.id + "', " + recepcionado.ToString().ToLower() + ");");
 
+                celAccion.Controls.Add(btnDetalleRemitoInterno);
+                tr.Cells.Add(celAccion);
+
+                phRecepcion.Controls.Add(tr);
             }
-
         }
 
-        public void filtrarDatosTransferenciasBySectorOrigen()
+        /// <summary>
+        /// Verifica que esten en la URL los parametros enviados al hacer una busqueda
+        /// </summary>
+        /// <returns></returns>
+        private bool HayBusqueda()
         {
+            return Request.QueryString["O"] != null &&
+                    Request.QueryString["fDesde"] != null &&
+                    Request.QueryString["fHasta"] != null;
+        }
+
+        public void filtrarDatosTransferenciasEnvios()
+        {
+            if (!HayBusqueda())
+                return;
+            // Si no hay ningun filtro/parametro
+            if (sectorValue == "-1" && string.IsNullOrEmpty(fDesde) && string.IsNullOrEmpty(fHasta))
+                return;
+
             if (Request.QueryString["O"] != null)
             {
                 sector = Request.QueryString["O"].ToString();
@@ -301,7 +411,7 @@ namespace Tecnocuisine.Formularios.Ventas
 
 
                 controladorDatosTransferencias cTransferencias = new controladorDatosTransferencias();
-                DataTable dt = cTransferencias.getDatosTransferenciaGroupBySectorDestino(sector);
+                DataTable dt = cTransferencias.getDatosTransferenciaGroupByFiltros(sector, fDesde, fHasta);
 
                 cargarDatosTransferenciasEnPh(dt);
             }
@@ -440,6 +550,15 @@ namespace Tecnocuisine.Formularios.Ventas
                 tr.ID = cont.ToString();
 
                 //Celdas
+                TableCell celFecha = new TableCell();
+                DateTime fecha = Convert.ToDateTime(dr["fecha"]);
+                celFecha.Text = fecha.ToString("dd/MM/yyyy");
+                celFecha.VerticalAlign = VerticalAlign.Middle;
+                celFecha.HorizontalAlign = HorizontalAlign.Left;
+                celFecha.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celFecha);
+
+                //Celdas
                 TableCell celSectorOrigen = new TableCell();
                 celSectorOrigen.Text = dr["sectorOrigen"].ToString();
                 celSectorOrigen.VerticalAlign = VerticalAlign.Middle;
@@ -560,8 +679,27 @@ namespace Tecnocuisine.Formularios.Ventas
                 btnDetalle.Attributes.Add("data-toggle", "modal");
                 btnDetalle.Attributes.Add("href", "#modalConfirmacion2");
                 btnDetalle.Text = "<span title='Ver pedidos'><i class='fa fa-eye' style='color: black;'></i></span>";
-                btnDetalle.Attributes.Add("onclick", "getDatosTransferenciaBySectorDestino('" + dr["sectorOrigen"].ToString() + "', '" + dr["sectorDestino"].ToString() + "');");
+                btnDetalle.Attributes.Add("onclick", "getDatosTransferenciaDetalle('" + dr["sectorOrigen"].ToString() + "', '" + dr["sectorDestino"].ToString() + "', '" + fecha.ToString("yyyy-MM-dd") + "');");
                 celAccion.Controls.Add(btnDetalle);
+
+                //LinkButton btnRemito = new LinkButton();
+                //btnRemito.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
+                //btnRemito.CssClass = "btn btn-xs";
+                //btnRemito.Style.Add("background-color", "transparent");
+                //btnRemito.Text = "<span title='Imprimir'><i class='fa fa-search' style='color: black;'></i></span>";
+                //// btnRemito.Attributes.Add("onclick", "verDetalleRemitoInternoPdf('" + remito.id + "');");
+                //celAccion.Controls.Add(btnRemito);
+
+                LinkButton btnImprimir = new LinkButton();
+                //btnDetalle.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
+                btnImprimir.CssClass = "btn btn-xs";
+                btnImprimir.Style.Add("background-color", "transparent");
+                btnImprimir.Text = "<span title='Imprimir'><i class='fa fa-print' style='color: black;'></i></span>";
+                btnImprimir.Attributes.Add("href", $"ImpresionEnvio.aspx?sectorO={dr["sectorOrigen"]}&&sectorD={dr["sectorDestino"]}&&fecha={fecha.ToString("yyyy-MM-dd")}");
+                btnImprimir.Attributes.Add("target", "_blank");
+                //btnDetalle.Attributes.Add("onclick", "impresionProduccion('" + sector + "', '" + dr["id"].ToString() + "', '" + dr["fecha"].ToString() + "');");
+
+                celAccion.Controls.Add(btnImprimir);
 
 
                 tr.Cells.Add(celAccion);
@@ -1164,14 +1302,15 @@ namespace Tecnocuisine.Formularios.Ventas
 
 
         [WebMethod]
-        public static string getDatosTransferenciaBySectorDestino(string sectorOrigen, string sectorDestino)
+        public static string getDatosTransferenciaDetalle(string sectorOrigen, string sectorDestino, DateTime fecha)
         {
             try
             {
-                controladorDatosTransferencias cTransferencias = new controladorDatosTransferencias();
-                controladorsumaDatosTransferencia csumaDatosTransferencia = new controladorsumaDatosTransferencia();
+                //controladorDatosTransferencias cTransferencias = new controladorDatosTransferencias();
                 //DataTable dt = cTransferencias.getDatosTransferenciaBySectorDestino(sectorOrigen, sectorDestino);
-                DataTable dt2 = csumaDatosTransferencia.getDatosTransferencias(sectorOrigen);
+
+                controladorsumaDatosTransferencia csumaDatosTransferencia = new controladorsumaDatosTransferencia();
+                DataTable dt2 = csumaDatosTransferencia.getDatosTransferenciasDetalle(sectorOrigen, sectorDestino, fecha);
 
                 //HttpContext.Current.Session["datosAEnviar"] = dt2;
 
@@ -1181,15 +1320,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 foreach (DataRow dr in dt2.Rows)
                 {
                     //Verificar si tiene stock
-                    int idProducto = Convert.ToInt32(dr["idProducto"].ToString());
-                    int idSector = Convert.ToInt32(dr["idSectorOrigen"].ToString());
-                    StockSectores stockSector = new ControladorStockProducto().ObtenerStockSectores(idProducto, idSector);
-
-                    bool tieneStock = true;
-                    decimal cantConfirmada = Convert.ToDecimal(dr["cantidadConfirmada"].ToString().Replace(",", "."), CultureInfo.InvariantCulture);
-
-                    if (stockSector == null || stockSector.stock < cantConfirmada)
-                        tieneStock = false;
+                    bool tieneStock = TieneStock(dr);
 
                     cantidadConfirmada = dr["cantidadConfirmada"].ToString().Replace(",", ".");
                     cantidad = dr["cantidad"].ToString().Replace(",", ".");
@@ -1223,6 +1354,35 @@ namespace Tecnocuisine.Formularios.Ventas
             catch (Exception ex)
             {
                 return "[]";
+            }
+        }
+
+        private static bool TieneStock(DataRow dr)
+        {
+            string descripcionItem = dr["producto"].ToString();
+            int idItem = Convert.ToInt32(dr["idProducto"].ToString());
+            int idSector = Convert.ToInt32(dr["idSectorOrigen"].ToString());
+            decimal cantidadAEnviar = Convert.ToDecimal(dr["cantidadConfirmada"].ToString().Replace(",", "."), CultureInfo.InvariantCulture);
+
+            ControladorProducto controladorProducto = new ControladorProducto();
+
+            // Si es producto se verifica su stock en su tabla correspondiente
+            if (controladorProducto.ExisteProducto(idItem, descripcionItem))
+            {
+                Tecnocuisine_API.Entitys.StockSectores stockSector = new ControladorStockProducto().ObtenerStockSectores(idItem, idSector);
+                if (stockSector == null || cantidadAEnviar > stockSector.stock)
+                    return false;
+
+                return true;
+            }
+            // Si es receta se verifica su stock en su tabla correspondiente
+            else
+            {
+                stockSectoresReceta stockSector = new ControladorStockReceta().ObtenerStockSectoresReceta(idItem, idSector);
+                if (stockSector == null || cantidadAEnviar > stockSector.stock)
+                    return false;
+
+                return true;
             }
         }
 
@@ -1399,10 +1559,10 @@ namespace Tecnocuisine.Formularios.Ventas
                 {
 
                     string[] item = items.Split(',');
-                    StockSectores stockSectoresSectorFiltrado = controladorStockProducto.ObtenerStockSectores(Convert.ToInt32(item[0]), idSectorProductivo);
+                    Tecnocuisine_API.Entitys.StockSectores stockSectoresSectorFiltrado = controladorStockProducto.ObtenerStockSectores(Convert.ToInt32(item[0]), idSectorProductivo);
                     if (stockSectoresSectorFiltrado == null)
                     {
-                        StockSectores stockSectores2 = new StockSectores();
+                        Tecnocuisine_API.Entitys.StockSectores stockSectores2 = new Tecnocuisine_API.Entitys.StockSectores();
                         stockSectores2.idProducto = Convert.ToInt32(item[0]);
                         stockSectores2.idSector = idSectorProductivo;
                         stockSectores2.stock = Convert.ToDecimal(item[1], CultureInfo.InvariantCulture);
@@ -1503,72 +1663,75 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
 
-
+        /// <summary>
+        /// Esta funcion se ejecuta al realizar un envio
+        /// </summary>
+        /// <param name="tableData"></param>
+        /// <returns></returns>
         [WebMethod]
         public static int guardarDatosTransferencia(List<RowClass> tableData)
         {
-
             try
             {
                 controladorsumaDatosTransferencia csumaDatosTransferencia = new controladorsumaDatosTransferencia();
                 ControladorTransferencia cTransferencia = new ControladorTransferencia();
                 sumaDatosTransferencia sumaDatosTransferencia = new sumaDatosTransferencia();
                 ControladorStockProducto controladorStockProducto = new ControladorStockProducto();
+                ControladorProducto controladorProducto = new ControladorProducto();
+                ControladorSectorProductivo cSectorProductivo = new ControladorSectorProductivo();
 
+                // Validar que todos los items a enviar tengan stock suficiente
                 foreach (var row in tableData)
                 {
-                    int result = ValidateRow(row);
+                    int result = ValidarStock(row);
 
-                    //if(result != 1)
-                    //{
-                    //    Exception ex = new Exception();
-                    //    ex.Data["ErrorCode"] = result;
-                    //    throw ex;
-                    //}
+                    if (result != 1)
+                    {
+                        Exception ex = new Exception();
+                        ex.Data["ErrorCode"] = result;
+                        throw ex;
+                    }
                 }
 
-                //1-Guardo el remito interno 
+                // 1-Generar remito interno 
                 ControladorRemitosInternos cRemitosInternos = new ControladorRemitosInternos();
-                var primerElemento = tableData[0];
-                string SectorDestino = primerElemento.sectorDestino;
                 RemitosInternos remitosInternos = new RemitosInternos();
-                remitosInternos.sectorDestino = SectorDestino;
+                remitosInternos.idSectorOrigen = Convert.ToInt32(tableData[0].idSectorOrigen);
+                remitosInternos.sectorDestino = tableData[0].sectorDestino;
                 remitosInternos.numero = NuevoNumeroRemitoInterno();
                 remitosInternos.fecha = DateTime.Now;
                 remitosInternos.estado = true;
+                remitosInternos.recepcionado = false;
 
                 int r = cRemitosInternos.addRemitosInternos(remitosInternos);
 
-                //2-Si el remito interno se guardo, guardo sus items
+                // 2-Si el remito interno se guardo, guardo sus items
                 if (r > 0)
                 {
                     ControladorItemsRemitosInternos cItemsRemitosInternos = new ControladorItemsRemitosInternos();
                     foreach (var row in tableData)
                     {
+                        var cantidad = Convert.ToDecimal(row.cantidad, CultureInfo.InvariantCulture);
+                        var cantidadConfirmada = Convert.ToDecimal(row.cantidadConfirmada, CultureInfo.InvariantCulture);
+                        var cantidadEnviada = Convert.ToDecimal(row.cantidadEnviada, CultureInfo.InvariantCulture);
+
                         ItemsRemitosInternos itemRemitosInternos = new ItemsRemitosInternos();
                         itemRemitosInternos.idRemito = r;
-                        itemRemitosInternos.Producto = row.producto;
-                        itemRemitosInternos.cantidad = Convert.ToDecimal(row.cantidad, CultureInfo.InvariantCulture);
-                        itemRemitosInternos.cantidadConfirmada = Convert.ToDecimal(row.cantidadConfirmada, CultureInfo.InvariantCulture);
-                        itemRemitosInternos.cantidadEnviada = Convert.ToDecimal(row.cantidadEnviada, CultureInfo.InvariantCulture);
+                        itemRemitosInternos.Producto = row.producto; //TODO: Que pasa si es una receta? los nombres deberian ser unicos, otra opcion es crear una tabla de itemsremitos para recetas
+                        itemRemitosInternos.cantidad = cantidad;
+                        itemRemitosInternos.cantidadConfirmada = cantidadConfirmada;
+                        itemRemitosInternos.cantidadEnviada = cantidadEnviada;
                         itemRemitosInternos.fecha = DateTime.Now;
                         itemRemitosInternos.estado = true;
+                        cItemsRemitosInternos.addItemsRemitosInternos(itemRemitosInternos);
 
-                        StockSectores stockSectores = controladorStockProducto.ObtenerStockSectores(Convert.ToInt32(row.idProducto), Convert.ToInt32(row.idSectorOrigen));
-
-                        if (stockSectores != null)
-                        {
-                            cItemsRemitosInternos.addItemsRemitosInternos(itemRemitosInternos);
-
-                            stockSectores.stock -= itemRemitosInternos.cantidadEnviada;
-                            controladorStockProducto.EditarStockSectores(stockSectores);
-                        }
+                        DescontarStockSector(row);
                     }
                 }
 
                 //cambiar el estado de las transferencias involucradas en el envio
                 DataTable dtId = new DataTable();
-                dtId = cTransferencia.getidTransferenciasConfirmadas(SectorDestino);
+                dtId = cTransferencia.getidTransferenciasConfirmadas(tableData[0].sectorDestino); //TODO: VER ESTO
 
                 foreach (DataRow dr in dtId.Rows)
                     cTransferencia.updateEstadoTransferenciasAEnviar(Convert.ToInt32(dr["id"].ToString()));
@@ -1599,18 +1762,134 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
 
-        private static int ValidateRow(RowClass row)
+        private static void DescontarStockSector(RowClass row)
         {
-            var cantidadAEnviar = Convert.ToDecimal(row.cantidadEnviada, CultureInfo.InvariantCulture);
-            StockSectores stockSector = new ControladorStockProducto().ObtenerStockSectores(Convert.ToInt32(row.idProducto), Convert.ToInt32(row.idSectorOrigen));
+            int idItem = Convert.ToInt32(row.idProducto);
+            int idSectorOrigen = Convert.ToInt32(row.idSectorOrigen);
+            string descripcion = row.producto;
+            var cantidadEnviada = Convert.ToDecimal(row.cantidadEnviada, CultureInfo.InvariantCulture);
 
+            // Si es Producto
+            if (new ControladorProducto().ExisteProducto(idItem, descripcion))
+            {
+                ControladorStockProducto cStockProducto = new ControladorStockProducto();
+                Tecnocuisine_API.Entitys.StockSectores stockSector = cStockProducto.ObtenerStockSectores(idItem, idSectorOrigen);
+                stockSector.stock -= cantidadEnviada;
+                cStockProducto.EditarStockSectores(stockSector);
+            }
+            // Si es Receta
+            else
+            {
+                ControladorStockReceta cStockReceta = new ControladorStockReceta();
+                stockSectoresReceta stockSector = cStockReceta.ObtenerStockSectoresReceta(idItem, idSectorOrigen);
+                stockSector.stock -= cantidadEnviada;
+                cStockReceta.EditarStockSectoresReceta(stockSector);
+            }
+        }
+
+        private static void AumentarStockSector(RowClass row)
+        {
+            ControladorProducto controladorProducto = new ControladorProducto();
+            ControladorSectorProductivo cSectorProductivo = new ControladorSectorProductivo();
+
+            int idItem = Convert.ToInt32(row.idProducto);
+            string descripcion = row.producto;
+            int idSectorDestino = cSectorProductivo.ObtenerSectorProductivoByNombre(row.sectorDestino).id;
+            var cantidadEnviada = Convert.ToDecimal(row.cantidadEnviada, CultureInfo.InvariantCulture);
+
+            // Si es Producto
+            if (controladorProducto.ExisteProducto(idItem, descripcion))
+            {
+                AumentarStockSector_Producto(idItem, idSectorDestino, cantidadEnviada);
+            }
+            // Si es Receta
+            else
+            {
+                AumentarStockSector_Receta(idItem, idSectorDestino, cantidadEnviada);
+            }
+        }
+
+        private static void AumentarStockSector_Producto(int idProducto, int idSectorDestino, decimal cantidad)
+        {
+            ControladorStockProducto cStockProducto = new ControladorStockProducto();
+            Tecnocuisine_API.Entitys.StockSectores stockSector = cStockProducto.ObtenerStockSectores(idProducto, idSectorDestino);
+
+            // Si no existe el registro crearlo
             if (stockSector == null)
+            {
+                stockSector = new Tecnocuisine_API.Entitys.StockSectores
+                {
+                    idProducto = idProducto,
+                    idSector = idSectorDestino,
+                    stock = cantidad,
+                };
+
+                cStockProducto.AgregarStockSectores(stockSector);
+            }
+            else
+            {
+                stockSector.stock += cantidad;
+                cStockProducto.EditarStockSectores(stockSector);
+            }
+        }
+
+        private static void AumentarStockSector_Receta(int idItem, int idSectorDestino, decimal cantidad)
+        {
+            ControladorStockReceta cStockReceta = new ControladorStockReceta();
+            stockSectoresReceta stockSector = cStockReceta.ObtenerStockSectoresReceta(idItem, idSectorDestino);
+            stockSector.stock -= cantidad;
+            cStockReceta.EditarStockSectoresReceta(stockSector);
+
+            // Si no existe el registro crearlo
+            if (stockSector == null)
+            {
+                stockSector = new stockSectoresReceta
+                {
+                    idReceta = idItem,
+                    idSector = idSectorDestino,
+                    stock = cantidad
+                };
+
+                cStockReceta.AgregarStockSectoresReceta(stockSector);
+            }
+            else
+            {
+                stockSector.stock += cantidad;
+                cStockReceta.EditarStockSectoresReceta(stockSector);
+            }
+        }
+
+        private static int ValidarStock(RowClass row)
+        {
+            ControladorProducto cProducto = new ControladorProducto();
+            ControladorReceta cReceta = new ControladorReceta();
+            var cantidadAEnviar = Convert.ToDecimal(row.cantidadEnviada, CultureInfo.InvariantCulture);
+            decimal stock = 0;
+            int idItem = Convert.ToInt32(row.idProducto);
+            string descripcion = row.producto;
+            int idSectorOrigen = Convert.ToInt32(row.idSectorOrigen);
+
+            if (cProducto.ExisteProducto(idItem, descripcion))
+            {
+                //El stock debe validarse contra el sector que quiere enviar
+                Tecnocuisine_API.Entitys.StockSectores stockSector = new ControladorStockProducto().ObtenerStockSectores(idItem, idSectorOrigen);
+                //StockProducto stockProducto = new ControladorStockProducto().ObtenerStockProducto(idItem);
+                stock = stockSector?.stock ?? 0;
+            }
+            else // Es Receta
+            {
+                Tecnocuisine_API.Entitys.stockSectoresReceta stockSector = new ControladorStockReceta().ObtenerStockSectoresReceta(idItem, idSectorOrigen);
+                //StockReceta stockReceta = new ControladorStockReceta().ObtenerStockReceta(idItem);
+                stock = stockSector?.stock ?? 0;
+            }
+
+            if (stock == 0)
                 return 2;
 
             else if (cantidadAEnviar == 0)
                 return 3;
 
-            else if (cantidadAEnviar > stockSector.stock)
+            else if (cantidadAEnviar > stock)
                 return 4;
 
             return 1;
@@ -1647,11 +1926,6 @@ namespace Tecnocuisine.Formularios.Ventas
             return $"{prefijo}-{nuevoNumero}";
         }
 
-        private static void DescontarStockSectorOrigen(string idSectorOrigen, string idProducto, string cantidadEnviada)
-        {
-
-        }
-
         [WebMethod]
         public static string getItemsRemitosInternos(int idRemito)
         {
@@ -1672,7 +1946,7 @@ namespace Tecnocuisine.Formularios.Ventas
                                   "\"Id\":\"" + remitoInterno.id + "\"," +
                                   "\"Producto\":\"" + remitoInterno.Producto + "\"," +
                                   "\"cantidadEnviada\":\"" + remitoInterno.cantidadEnviada + "\"," +
-                                  "\"cantidadRecepcionada\":\"" + remitoInterno.cantidadEnviada + "\"" +
+                                  "\"cantidadRecepcionada\":\"" + remitoInterno.cantidadRecepcionada + "\"" +
                                   "}");
                 }
 
@@ -1699,10 +1973,40 @@ namespace Tecnocuisine.Formularios.Ventas
             remitoInterno.recepcionado = true;
             contRemitosInternos.UpdateRemitosInternos(remitoInterno);
 
-            //ACTUALIZAR STOCKS DEL SECTOR X PRODUCTO
+            // Guardar cantidad recepcionada en registros de itemsremitosinternos
+            GuardarCantidadesRecepcionadas();
+
+            //ACTUALIZAR STOCKS DEL SECTOR X PRODUCTO (AUMENTAR STOCK EN EL SECTOR DESTINO)
             ActualizarStockSectorXProductos(remitoInterno.sectorDestino);
 
+            ////Actualizar estado de las transferencias
+            //DataTable dtId = new DataTable();
+            //dtId = cTransferencia.getidTransferenciasConfirmadas(tableData[0].sectorDestino); //TODO: VER ESTO
+
+            //foreach (DataRow dr in dtId.Rows)
+            //    cTransferencia.updateEstadoTransferenciasAEnviar(Convert.ToInt32(dr["id"].ToString()));
+
             Response.Redirect(Request.RawUrl);
+        }
+
+        /// <summary>
+        /// Obtiene el id de cada itemsRemitosInternos involucrado en la recepcion y actualiza un valor en la columna "cantidadRecepcionada"
+        /// </summary>
+        private void GuardarCantidadesRecepcionadas()
+        {
+            ControladorItemsRemitosInternos cItemsRemitosInternos = new ControladorItemsRemitosInternos();
+
+            string[] itemsRemitosInternos = HFItems.Value.Split(';');
+            foreach (var item in itemsRemitosInternos)
+            {
+                string[] itemSpliteado = item.Split('&');
+                int id = Convert.ToInt32(itemSpliteado[0]);
+                decimal cantidadRecepcionada = Convert.ToDecimal(itemSpliteado[3], CultureInfo.InvariantCulture);
+
+                var itemRemitoInterno = cItemsRemitosInternos.getItemRemitoInternoById(id);
+                itemRemitoInterno.cantidadRecepcionada = cantidadRecepcionada;
+                cItemsRemitosInternos.Update(itemRemitoInterno);
+            }
         }
 
         private void ActualizarStockSectorXProductos(string sector)
@@ -1718,31 +2022,29 @@ namespace Tecnocuisine.Formularios.Ventas
             foreach (var item in itemsRemitosInternos)
             {
                 string[] itemSpliteado = item.Split('&');
-                string descripcion = itemSpliteado[0];
-                string cantidadRecepcionada = itemSpliteado[2];
+                string descripcion = itemSpliteado[1];
+                decimal cantidadRecepcionada = Convert.ToDecimal(itemSpliteado[3], CultureInfo.InvariantCulture);
 
                 //buscar el producto en la tabla productos
-                var idProducto = new ControladorProducto().ObtenerProductoByDescripcion(descripcion).id;
+                var idItem = new ControladorProducto().ObtenerProductoByDescripcion(descripcion).id;
                 bool esProducto = true;
 
                 ////si no existe, buscarlo en la tabla recetas
-                if (idProducto == 0)
+                if (idItem == 0)
                 {
-                    idProducto = new ControladorReceta().ObtenerRecetaByDescripcion(descripcion).id;
+                    idItem = new ControladorReceta().ObtenerRecetaByDescripcion(descripcion).id;
                     esProducto = false;
                 }
 
                 if (esProducto)
                 {
-                    StockSectores stockSectores = controladorStockProducto.ObtenerStockSectores(idProducto, idSectorDestino);
-                    stockSectores.stock += decimal.Parse(cantidadRecepcionada);
-                    controladorStockProducto.EditarStockSectores(stockSectores);
+                    //Aumentar Stock en el sector destino (sector que recepciona)
+                    AumentarStockSector_Producto(idItem, idSectorDestino, cantidadRecepcionada);
                 }
                 else
                 {
-                    stockSectoresReceta stockReceta = controladorStockReceta.ObtenerStockSectoresReceta(idProducto, idSectorDestino);
-                    stockReceta.stock += decimal.Parse(cantidadRecepcionada);
-                    controladorStockReceta.EditarStockSectoresReceta(stockReceta);
+                    //Aumentar Stock en el sector destino (sector que recepciona)
+                    AumentarStockSector_Receta(idItem, idSectorDestino, cantidadRecepcionada);
                 }
             }
         }
@@ -1836,6 +2138,11 @@ namespace Tecnocuisine.Formularios.Ventas
             {
                 return -1;
             }
+        }
+
+        protected void btnImprimirProduccion_Click1(object sender, EventArgs e)
+        {
+            int a = 0;
         }
     }
 }

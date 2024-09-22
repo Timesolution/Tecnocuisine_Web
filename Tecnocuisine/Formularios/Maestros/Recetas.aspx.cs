@@ -371,7 +371,7 @@ namespace Tecnocuisine
                 celNumero.Text = Receta.id.ToString();
                 celNumero.VerticalAlign = VerticalAlign.Middle;
                 celNumero.HorizontalAlign = HorizontalAlign.Right;
-                celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celNumero.Attributes.Add("style", "padding-bottom: 1px !important; display:none;");
 
                 tr.Cells.Add(celNumero);
 
@@ -392,6 +392,7 @@ namespace Tecnocuisine
                 btnInfo.ID = "btnInfoReceta_" + Receta.id + "_";
                 btnInfo.Text = "<span><i style='color:black' class='fa fa-search'></i></span>";
                 btnInfo.Click += new EventHandler(this.infoReceta);
+                btnInfo.Attributes.Add("title", "Ver");
                 celAccion.Controls.Add(btnInfo);
 
                 Literal l3 = new Literal();
@@ -407,6 +408,7 @@ namespace Tecnocuisine
                 btnDetalles.ID = "btnSelecReceta_" + Receta.id + "_";
                 btnDetalles.Text = "<span><i style='color:black;' class='fa fa-pencil'></i></span>";
                 btnDetalles.Click += new EventHandler(this.editarReceta);
+                btnDetalles.Attributes.Add("title", "Editar");
                 celAccion.Controls.Add(btnDetalles);
 
                 Literal l2 = new Literal();
@@ -421,6 +423,7 @@ namespace Tecnocuisine
                 btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
                 btnEliminar.Text = "<span><i style='color:black' class='fa fa-trash - o'></i></span>";
                 btnEliminar.OnClientClick = "abrirdialog(" + Receta.id + ");";
+                btnEliminar.Attributes.Add("title", "Eliminar");
                 celAccion.Controls.Add(btnEliminar);
 
                 Literal l4 = new Literal();
@@ -434,6 +437,7 @@ namespace Tecnocuisine
                 btnSubAtributos.Attributes.Add("onclick", "actualizarBotonAtributo("+Receta.id+")");
                 btnSubAtributos.Text = "<span><i style='color:black' class='fa fa-wrench - o'></i></span>";
                 btnSubAtributos.OnClientClick = "abrirdialog(" + Receta.id + ");";
+                btnSubAtributos.Attributes.Add("title", "Ver Atributos");
                 celAccion.Controls.Add(btnSubAtributos);
 
                 //LinkButton btnArticulos = new LinkButton();
@@ -444,10 +448,17 @@ namespace Tecnocuisine
                 //btnArticulos.Click += new EventHandler(this.agregarArticulo);
                 //celAccion.Controls.Add(btnArticulos);
 
+                LinkButton btnEvolucion = new LinkButton();
+                btnEvolucion.ID = "btnEvolucion_" + Receta.id;
+                btnEvolucion.CssClass = "btn btn-xs";
+                btnEvolucion.Click += new EventHandler(this.verEvolucionReceta);
+                btnEvolucion.Text = "<span><i style='color:black' class='fa fa-line-chart'></i></span>";
+                btnEvolucion.Attributes.Add("title", "Ver Evolucion");
+                celAccion.Controls.Add(btnEvolucion);
 
 
                 celAccion.Width = Unit.Percentage(25);
-                celAccion.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celAccion.Attributes.Add("style", "padding-bottom: 1px !important; text-align:end");
                 tr.Cells.Add(celAccion);
 
                 phRecetas.Controls.Add(tr);
@@ -796,6 +807,21 @@ namespace Tecnocuisine
                 string[] id = lb.ID.Split('_');
 
                 Response.Redirect("RecetasABM.aspx?a=2&i=" + id[1]);
+            }
+            catch (Exception Ex)
+            {
+
+            }
+        }
+
+        protected void verEvolucionReceta(object sender, EventArgs e)
+        {
+            try
+            {
+                LinkButton lb = sender as LinkButton;
+                string[] id = lb.ID.Split('_');
+
+                Response.Redirect("RecetaEvolucion.aspx?id=" + id[1]);
             }
             catch (Exception Ex)
             {

@@ -43,7 +43,16 @@
 
         .wizard > .content > .body {
             width: 100%;
+    /*        white-space: normal !important;*/
         }
+
+/*
+        td ul, td a, td li{
+            white-space: normal !important;
+        }
+        .jstree-default .jstree-anchor {
+            white-space: normal !important;
+        }*/
     </style>
    
 
@@ -80,7 +89,7 @@
                                                 <div class="form-group">
                                                     <label>Receta *</label>
                                                     <%--<input id="ProdDescripcion" onchange="ActualizarLabels()" name="ProdDescripcion" type="text" class="form-control required" />--%>
-                                                    <asp:TextBox ID="txtDescripcionReceta" Style="max-width: 500px;" MaxLength="100"
+                                                    <asp:TextBox ID="txtDescripcionReceta" Style="max-width: 300px;" MaxLength="100"
                                                         onchange="ActualizarLabels()" class="form-control required" runat="server" />
                                                     <asp:HiddenField ID="Hiddentipo" runat="server" />
                                                     <asp:HiddenField ID="HiddenUnidad" runat="server" />
@@ -91,7 +100,7 @@
                                                                                                 <%--Producto final--%>
                                                 <div class="row" style="margin-top: 2%;">
                                                     <div class="form-check">
-                                                        <div class="col-sm-3">
+                                                        <div class="col-sm-4">
                                                             <label class="form-check-label" for="CheckProductoFinal">Se puede vender</label>
                                                         </div>                                 
                                                         <asp:CheckBox ID="CheckProductoFinal" style="transform: scale(1.4);" runat="server" data-toggle="tooltip" data-placement="top" data-original-title="Selecionar como Producto Final" />
@@ -101,7 +110,7 @@
                                                 <%--Se puede comprar--%>
                                                 <div class="row" style="margin-top: 2%">
                                                     <div class="form-check">
-                                                        <div class="col-sm-3">
+                                                        <div class="col-sm-4">
                                                           <label class="form-check-label" for="CheckSePuedeComprar">Se puede comprar</label>
                                                         </div>
                                                         <asp:CheckBox ID="CheckSePuedeComprar" style="transform: scale(1.4);" runat="server" data-toggle="tooltip" data-placement="top" data-original-title="" />
@@ -177,103 +186,127 @@
                                 <h1>INGREDIENTES</h1>
                                 <fieldset style="position: relative;padding-top: 10px;display: block;padding-bottom: 0px;"">
                                     <h1>
-                                        <label id="lblDescripcion1"></label>
+                                        <label id="lblDescripcion1" style="font-size:2rem"></label>
                                     </h1>
-                                    <div class="row">
-
-                                        <label class="col-md-1 control-label editable" style="margin-top: 2%">Propiedades</label>
-                                        <div class="col-md-2" style="margin-top: 1.5%">
+                                    <%--<div class="row">
+                                        <label class="control-label editable" style="padding-left:15px">Propiedades</label>
+                                    </div>--%>
+                                    <div class="row" style="display:flex; flex-wrap:wrap; row-gap:1rem">
+                                        <%--Tipo de receta--%>
+                                        <div class="col-md-2" style="padding-right:0;">
                                             <asp:DropDownList ID="ddlTipoReceta" runat="server" class="form-control" onchange="EsTipoRecetaValido()">
-                                                <asp:ListItem Value="-1" Text="Tipo receta"> </asp:ListItem>
+                                                <%--<asp:ListItem Value="-1" Text="Tipo receta"> </asp:ListItem>
                                                 <asp:ListItem Value="1" Text="Baño"></asp:ListItem>
                                                 <asp:ListItem Value="2" Text="Cartoon"></asp:ListItem>
                                                 <asp:ListItem Value="3" Text="Glaseada"></asp:ListItem>
                                                 <asp:ListItem Value="4" Text="Masa"></asp:ListItem>
                                                 <asp:ListItem Value="5" Text="Relleno"></asp:ListItem>
-                                                <asp:ListItem Value="6" Text="Salsa"></asp:ListItem>
+                                                <asp:ListItem Value="6" Text="Salsa"></asp:ListItem>--%>
                                             </asp:DropDownList>
                                              <p id="error-tipo" class="text-danger text-hide">
                                                 *Seleccione un Tipo de Receta.
                                             </p>
                                         </div>
-                                        <div class="col-md-2" style="margin-top: 1.5%">
+                                        <%--Unidad de medida--%>
+                                        <div class="col-md-2" style="padding-right:0; margin-right:1rem">
                                             <asp:DropDownList ID="ddlUnidadMedida" onchange="ActualizarUnidades()" runat="server" class="form-control">
                                             </asp:DropDownList>
                                              <p id="valiva" class="text-danger text-hide">
                                                 *Seleccione Unidad de medida.
                                             </p>
                                         </div>
-                                        <div class="col-md-2" style="text-align: left;">
-                                            <label id="lblBrutoTotal" style="margin-bottom: auto;">Kg Br. Total</label>
-                                            <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtKgBrutTotal" class="form-control" runat="server" />
+                                        <%--Rubro--%>
+                                        <div class="col-md-2" style="padding-right:0;padding-left:0;">
+                                             <asp:DropDownList ID="ddlRubros" runat="server" class="form-control" onchange="EsRubroValido()">
+                                             </asp:DropDownList>
+                                              <p id="errorRubro" class="text-danger text-hide">
+                                                 *Seleccione un Rubro.
+                                             </p>
+                                         </div>
+                                        <%--Sector--%>
+                                        <div class="col-md-3" style="padding-right:0;">
+                                            <asp:HiddenField id="HFRecetas" runat="server" />
+                                                <div class="input-group">
+                                                    <asp:TextBox ID="txtSector" disabled="disabled" placeholder="Sector" class="form-control" runat="server" />
+                                                    <span class="input-group-btn">
+                                                        <asp:LinkButton runat="server" ID="btnSectores" class="btn btn-primary dim" onclientclick="FocusSearch()" data-toggle="modal" data-backdrop="static" data-target="#modalSectores"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
+                                                    </span>
+                                                </div>                                                                                          
                                         </div>
-                                        <div class="col-md-1" style="text-align: left;">
-                                            <label style="margin-bottom: auto;">Costo total</label>
-                                            <asp:TextBox Text="0.00" disabled="disabled" Style="text-align: right;" ID="txtCostoTotal" class="form-control" runat="server" />
+                                        
+                                        
+                                    </div>
+
+                                    <div class="row">
+                                        <%--Presentaciones--%>
+                                        <div class="col-sm-4" style="padding-right:0;">
+                                            <div class="input-group">
+                                                <asp:TextBox ID="txtPresentaciones" disabled="disabled" placeholder="Presentaciones" class="form-control" runat="server" />
+                                                <span class="input-group-btn">
+                                                 <asp:LinkButton runat="server" ID="LinkButton1" class="btn btn-primary dim" data-toggle="modal"  data-keyboard="false" data-backdrop="static" href="#modalPresentacion"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
+
+                                                     <%--<button  class="btn btn-primary" data-toggle="modal" data-backdrop="static" data-target="#modalPresentacion"> <i style="color: white" class="fa fa-plus"></i></button>--%>
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div class="col-md-1" style="text-align: left;">
-                                            <label id="lblTotalUnidad" style="margin-bottom: auto;margin-top: -25%;"> Rinde </label>
-                                            <asp:TextBox Style="text-align: right;" Text="0" ID="txtRinde" onkeyUp="ActualizarxPorcion()" class="form-control" runat="server" />
-                                        </div>
-                                        <div class="col-md-1" style="text-align: left;">
-                                            <label id="lblBrutoUnidad" style="margin-bottom: auto;margin-top: -25%;">Kg Br.</label>
-                                            <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtKgxPorcion" class="form-control" runat="server" />
-                                        </div>
-                                        <div class="col-md-1" style="text-align: left;">
-                                            <label id="lblCosto" style="margin-bottom: auto;margin-top: -25%;">Costo</label>
-                                            <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtCostoxPorcion" class="form-control" runat="server" />
+                                        <%--Marcas--%>
+                                        <div class="col-sm-4" style="padding-right:0;">
+                                            <div class="input-group">
+                                                <asp:TextBox ID="txtMarcas" disabled="disabled" placeholder="Marcas" class="form-control" runat="server" />
+                                                <span class="input-group-btn">
+                                                 <asp:LinkButton runat="server" ID="LinkButton2" class="btn btn-primary dim" data-toggle="modal" data-keyboard="false" data-backdrop="static" data-target="#modalMarca"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
+
+                                                     <%--<button  class="btn btn-primary" data-toggle="modal" data-backdrop="static" data-target="#modalPresentacion"> <i style="color: white" class="fa fa-plus"></i></button>--%>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
-                                       <div class="row" >
+
+                                    <br />
                                    
-                                        <label class="col-sm-1 control-label editable" ></label>
-                                           <div class="col-sm-2" style="margin-top: 1.5%">
 
-                                           <div class="input-group">
-                                               <asp:TextBox ID="txtPresentaciones" disabled="disabled" placeholder="Presentaciones" class="form-control" runat="server" />
-                                               <span class="input-group-btn">
-                                                <asp:LinkButton runat="server" ID="LinkButton1" class="btn btn-primary dim" data-toggle="modal"  data-keyboard="false" data-backdrop="static" href="#modalPresentacion"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
+                                       <div class="row" style="padding-left:15px; display:flex">
 
-                                                    <%--<button  class="btn btn-primary" data-toggle="modal" data-backdrop="static" data-target="#modalPresentacion"> <i style="color: white" class="fa fa-plus"></i></button>--%>
-                                               </span>
-                                           </div>
-                                           </div>
-                                            <div class="col-md-2" style="margin-top: 1.5%">
-                                           <asp:HiddenField id="HFRecetas" runat="server" />
-                                                        <div class="input-group">
-                                                            <asp:TextBox ID="txtSector" disabled="disabled" placeholder="Sector" class="form-control" runat="server" />
-                                                            <span class="input-group-btn">
-                                                                <asp:LinkButton runat="server" ID="btnSectores" class="btn btn-primary dim" onclientclick="FocusSearch()" data-toggle="modal" data-backdrop="static" data-target="#modalSectores"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
-
-                                                            </span>
-                                                        </div>
-                                                    
-                                        
-                                        </div>
-                                           <div class="col-md-2" style="margin-top: 1.5%">
-                                                <asp:DropDownList ID="ddlRubros" runat="server" class="form-control" onchange="EsRubroValido()">
-                                                </asp:DropDownList>
-                                                 <p id="errorRubro" class="text-danger text-hide">
-                                                    *Seleccione un Rubro.
-                                                </p>
+                                           <div class="col-md-1" style="text-align: left; margin-right:1rem">
+                                                <label id="lblBrutoTotal" style="margin-bottom: auto;">Kg Br. Total</label>
+                                                <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtKgBrutTotal" class="form-control" runat="server" />
                                             </div>
+                                            <div class="col-md-1" style="text-align: left; margin-right:1rem">
+                                                <label style="margin-bottom: auto;">Costo total</label>
+                                                <asp:TextBox Text="0.00" disabled="disabled" Style="text-align: right;" ID="txtCostoTotal" class="form-control" runat="server" />
+                                            </div>
+                                            <div class="col-md-1" style="text-align: left; margin-right:1rem">
+                                                <label id="lblTotalUnidad" style="margin-bottom: auto;margin-top: -25%;"> Rinde </label>
+                                                <asp:TextBox Style="text-align: right;" Text="0" ID="txtRinde" onkeyUp="ActualizarxPorcion()" class="form-control" runat="server" />
+                                            </div>
+                                            <div class="col-md-1" style="text-align: left; margin-right:1rem">
+                                                <label id="lblBrutoUnidad" style="margin-bottom: auto;margin-top: -25%;">Kg Br.</label>
+                                                <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtKgxPorcion" class="form-control" runat="server" />
+                                            </div>
+                                            <div class="col-md-1" style="text-align: left; margin-right:1rem"">
+                                                <label id="lblCosto" style="margin-bottom: auto;margin-top: -25%;">Costo</label>
+                                                <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtCostoxPorcion" class="form-control" runat="server" />
+                                            </div>
+                                   
+
+                                                                                                                               
   
-                                        <div class="col-md-1" style="text-align: left;">
+                                        <div class="col-md-1" style="text-align: left; margin-right:1rem"">
                                             <label id="rxrt" style="margin-bottom:0px">Pr.Venta</label>
                                             <asp:TextBox Text="0" Style="text-align: right;" ID="txtPrVenta"  onkeyUp="ActualizarxPrVenta()" class="form-control" runat="server" />
                                         </div>
-                                        <div class="col-md-2" style="text-align: left;">
+                                        <div class="col-md-1" style="text-align: left; margin-right:1rem"">
                                             <label style="margin-bottom: auto;">Food Cost</label>
-                                            <asp:TextBox Text="0.00" disabled="disabled" Style="text-align: right;" ID="txtPFoodCost" class="form-control" runat="server" />
+                                            <asp:TextBox Text="0%" disabled="disabled" Style="text-align: right;" ID="txtPFoodCost" class="form-control" runat="server" />
                                         </div>
-                                        <div class="col-md-1" style="text-align: left;">
+                                        <div class="col-md-1" style="text-align: left; margin-right:1rem"">
                                             <label id="erwt" style="margin-bottom: auto;margin-top: -25%;"> Cont. Marg. </label>
                                             <asp:TextBox Style="text-align: right;" disabled="disabled" Text="0.00" ID="txtContMarg" class="form-control" runat="server" />
                                         </div>
                                         
                                     </div>
 
-                                    <div class="well"style="margin-top:1%;margin-right: -15px;margin-left: -15px;">
+                                    <div class="well"style="margin-top:2%;margin-right: -15px;margin-left: -15px;">
                                     <div class="row" style="margin-top: 0.5%; margin-bottom: 2%; display:flex;flex-wrap:nowrap;justify-content:space-between">
                                         <div class="col-md-3">
                                           
@@ -300,7 +333,7 @@
                                             <asp:TextBox ID="txtCantidad" Text="0" onkeydown="PasarAFactor(event)" onchange="CalcularCantBruta()" onkeypress="javascript:return validarNro(event)" Style="text-align: right" class="form-control money" runat="server" />
                                         </div>
                                         <div class="col-md-1" style="text-align: left;">
-                                            <label style="margin-bottom: auto;">U. Med.</label>
+                                            <label style="margin-bottom: auto;">U. Medida.</label>
 
                                             <asp:TextBox ID="txtUnidadMed" disabled="disabled" Style="text-align: right" class="form-control" runat="server" />
                                         </div>
@@ -315,7 +348,7 @@
                                             <asp:TextBox disabled="disabled" ID="txtCantBruta" Style="text-align: right" class="form-control" runat="server" />
                                         </div>
                                         <div class="col-md-1" style="text-align: left;">
-                                            <label style="margin-bottom: auto; vertical-align: middle">$ Kg limpio</label>
+                                            <label style="margin-bottom: auto; vertical-align: middle">Kg limpio $</label>
                                             <asp:TextBox ID="txtCostoLimpio" disabled="disabled" 
                                                 onkeypress="javascript:return validarNro(event)" 
                                                 Style="text-align: right" class="form-control" runat="server" />
@@ -344,16 +377,18 @@
                                     <asp:HiddenField runat="server" ID="hiddenReceta" />
                                     <table class="table table-bordered table-hover" id="tableProductos">
                                         <thead>
-                                            <tr>
-                                                <th style="width: 5%">Cod. Producto</th>
-                                                <th style="width: 15%">Descripcion</th>
-                                                <th style="width: 10%; text-align:right">Cantidad</th>
-                                                <th style="width: 10%">Unidad Medida</th>
-                                                <th style="width: 10%;text-align:right">Costo $</th>
-                                                <th style="width: 10%;text-align:right">Costo Total $</th>
-                                                <th style="width: 10%;text-align:right">Sector Productivo</th>
-                                                <th style="width: 10%;text-align:right">Tiempo(dias)</th>
-                                                <th style="width: 5%">Acciones</th>
+                                            <tr style="white-space:normal">
+                                                <th style="width: 0%;"></th> <!--Codigo-->
+                                                <th style="width: 25%">Descripcion</th>
+                                                <th style="width: auto; text-align:right">Cantidad</th>
+                                                <th style="width: auto">Unidad</th>
+                                                <th style="width: auto">Factor</th>
+                                                <th style="width: auto">C. Bruta</th>
+                                                <th style="width: auto; text-align:right">Costo</th>
+                                                <th style="width: auto; text-align:right">C. Total</th>
+                                                <th style="width: auto; text-align:left">Sector</th>
+                                                <th style="width: auto; text-align:right">Tiempo</th>
+                                                <th style="width: auto"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -539,8 +574,9 @@
                                             <table class="table table-bordered table-hover" id="editable3">
                                                 <thead>
                                                     <tr>
-                                                        <th style="width: 10%">Cod. Receta</th>
+                                                        <th style="width: 10%">Cod.</th>
                                                         <th style="width: 20%">Descripcion</th>
+                                                        <th style="width: 20%">Costo $</th>
                                                         <th style="width: 10%"></th>
                                                     </tr>
                                                 </thead>
@@ -801,7 +837,62 @@
             </div>
         </div>
 
-               <div id="modalPresentacion" class="modal" role="dialog">
+    <%-- Modal MARCAS--%>
+        <div id="modalMarca" class="modal" tabindex="-2" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Elegir Marca</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="ibox-content">
+                            <asp:UpdatePanel ID="UpdatePanel7" runat="server">
+                                <ContentTemplate>
+
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="ibox ">
+                                                <asp:UpdatePanel ID="UpdatePanel8" runat="server">
+                                                    <ContentTemplate>
+                                                        <div class="table-responsive">
+                                                            <table class="table table-striped table-bordered table-hover " id="tableMarcas">
+
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Descripcion</th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="tbodyMarcas">
+                                                                    <asp:PlaceHolder ID="phMarcas" runat="server"></asp:PlaceHolder>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+                                                    </ContentTemplate>
+
+                                                </asp:UpdatePanel>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    </div>
+                                </ContentTemplate>
+
+                            </asp:UpdatePanel>
+                        </div>
+                        <div class="modal-footer">
+                            <a id="btnAgregarMarca" onclick="agregarMarcas()" class=" btn btn-primary"><i class="fa fa-check"></i>&nbsp;Agregar </a>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+                            <asp:HiddenField runat="server" ID="hfMarcas" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modalPresentacion" class="modal" role="dialog">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -976,16 +1067,44 @@
             if (txtProd.includes(' - ')) {
 
                 const idOption = document.querySelector('option[value="' + txtProd + '"]').id;
-                let costo = idOption.split("_")[5];
+                let costo = idOption.split("_")[5].trim();
                 //let prod = document.getElementById('ContentPlaceHolder1_Productos_' + idOption.split("_")[1] + "_" + idOption.split("_")[2]).children[0].innerHTML;
                 //let costo = document.getElementById('ContentPlaceHolder1_Productos_' + idOption.split("_")[1] + "_" + idOption.split("_")[2]).children[1].innerHTML;
-                if (idOption.includes("c_p_"))
+                const itemId = idOption.split('_')[2].trim();
+
+                if (idOption.includes("c_p_")) {
                     agregarProducto(idOption, costo);
-                else if (idOption.includes("c_r_"))
+                    CargarDepositos(itemId, 1);
+                }
+                else if (idOption.includes("c_r_")) {
                     agregarReceta(idOption, costo)
+                    CargarDepositos(itemId, 2);
+                }
             }
         }
     </script>
+
+    <script>
+        function CargarDepositos(id, tipo) {
+            $.ajax({
+                method: "POST",
+                url: "RecetasABM.aspx/GetIdSectorByIdProd",
+                data: '{idProd: "' + id + '", tipo:"' + tipo + '"}',
+                contentType: "application/json",
+                dataType: "json",
+                dataType: "json",
+                async: false,
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                },
+                success: function (respuesta) {
+                    var ddlDepositos = $("#<%=ddlSector.ClientID%>");
+                    ddlDepositos.val(respuesta.d);
+                }
+            });
+                }
+    </script>
+
     <script>
         function agregarPresentaciones() {
             //let table1 = $('#editable1').DataTable();
@@ -1219,7 +1338,7 @@
                                     + '" , CostoT: "' + document.getElementById('<%=txtCostoTotal.ClientID%>').value
                                     + '" , BrutoU: "' + document.getElementById('<%=txtKgxPorcion.ClientID%>').value
                                     + '" , CostoU: "' + document.getElementById('<%=txtCostoxPorcion.ClientID%>').value
-                                    + '" , FoodCost: "' + document.getElementById('<%=txtPFoodCost.ClientID%>').value
+                                    + '" , FoodCost: "' + document.getElementById('<%=txtPFoodCost.ClientID%>').value.replace('%','')
                                     + '" , ContMarg: "' + document.getElementById('<%=txtContMarg.ClientID%>').value
                                     + '" , BuenasPract: "' + document.getElementById('<%=txtObservaciones.ClientID%>').value
                                     + '" , InfoNut: "' + document.getElementById('<%=txtInfoNutr.ClientID%>').value
@@ -1228,6 +1347,7 @@
                                     + '" , ProdFinal: "' + document.getElementById('ContentPlaceHolder1_CheckProductoFinal').checked
                                     + '" , Comprable: "' + document.getElementById('ContentPlaceHolder1_CheckSePuedeComprar').checked
                                     + '" , Rubro: "' + selectRubro.selectedOptions[0].value
+                                    + '" , Marcas: "' + document.getElementById('<%=txtMarcas.ClientID%>').value
                                     + '"}',
                                 contentType: "application/json",
                                 dataType: 'json',
@@ -1269,7 +1389,7 @@
                                 + '" , CostoT: "' + document.getElementById('<%=txtCostoTotal.ClientID%>').value
                                 + '" , BrutoU: "' + document.getElementById('<%=txtKgxPorcion.ClientID%>').value
                                 + '" , CostoU: "' + document.getElementById('<%=txtCostoxPorcion.ClientID%>').value
-                                + '" , FoodCost: "' + document.getElementById('<%=txtPFoodCost.ClientID%>').value
+                                + '" , FoodCost: "' + document.getElementById('<%=txtPFoodCost.ClientID%>').value.replace('%', '')
                                 + '" , ContMarg: "' + document.getElementById('<%=txtContMarg.ClientID%>').value
                                 + '" , BuenasPract: "' + document.getElementById('<%=txtObservaciones.ClientID%>').value
                                 + '" , InfoNut: "' + document.getElementById('<%=txtInfoNutr.ClientID%>').value
@@ -1279,6 +1399,7 @@
                                 + '" , ProdFinal: "' + document.getElementById('ContentPlaceHolder1_CheckProductoFinal').checked
                                 + '" , Comprable: "' + document.getElementById('ContentPlaceHolder1_CheckSePuedeComprar').checked
                                 + '" , Rubro: "' + document.getElementById('<%=ddlRubros.ClientID%>').selectedOptions[0].value
+                                + '" , Marcas: "' + document.getElementById('<%=txtMarcas.ClientID%>').value
                                 + '"}',
                             contentType: "application/json",
                             dataType: 'json',
@@ -1886,10 +2007,10 @@
             let ContMarg = parseFloat(document.getElementById('<%=txtContMarg.ClientID%>').value);
             if (PRVenta > 0) {
 
-                document.getElementById('<%=txtPFoodCost.ClientID%>').value = myFormat(Math.round10(costototal / PRVenta * 100));
+                document.getElementById('<%=txtPFoodCost.ClientID%>').value = myFormat(Math.round10(costototal / PRVenta)) +'%';
                 document.getElementById('<%=txtContMarg.ClientID%>').value = myFormat(Math.round10(PRVenta - costototal));
             } else {
-                document.getElementById('<%=txtPFoodCost.ClientID%>').value = "0.00";
+                document.getElementById('<%=txtPFoodCost.ClientID%>').value = "0%";
                 document.getElementById('<%=txtContMarg.ClientID%>').value = "0.00";
             }
         }
@@ -2115,6 +2236,11 @@
 
             let costAux = parseFloat(costo.replace(',', '.'));
             let CantAux = parseFloat(cantidad);
+
+            let factorValue = parseFloat(document.getElementById('<%= txtFactor.ClientID %>').value);
+            let factor = factorValue.toFixed(2);
+
+            let cantBruta = document.getElementById('<%= txtCantBruta.ClientID %>').value;
             let costototal = 0;
             let ddlSector = document.getElementById('<%= ddlSector.ClientID %>');
             let Tiempo = document.getElementById('<%= TiempoDePreparacion.ClientID %>').value;
@@ -2165,6 +2291,7 @@
 
 
             costototal = Math.round10(costAux * CantAux, -3);
+            costototal *= factor; // Multiplicar por factor
             let auxCostoTotal = myFormat(costototal.toString());
             if (!auxCostoTotal.includes('.'))
                 auxCostoTotal += ".00";
@@ -2178,6 +2305,7 @@
             let listaCostototalDesplegable = "";
             let listaDdlSectorProductivoDesplegable = "";
             let ListaTiempo = "";
+            let cellFactor = "";
             //Si lo que se esta agregando a la tabla de productos es una receta entra a este if 
             if (tipo == "Receta") {
                 btnRec = "<a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent;\" class=\"btn  btn-xs \" onclick=\"javascript: return CargarmodalRecetaDetalle('" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "');\" >" +
@@ -2191,10 +2319,12 @@
                 listaDesplegable = "<td> <div id=\"jstree" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaLI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</li></ul></div></td>";
                 listaCantidadDesplegable = "<td> <div id=\"jstree_C" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaC_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + myFormat(cantidad) + "</li></ul></div></td>";
                 listaUnidadesDesplegable = "<td> <div id=\"jstree_UM" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaUM_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + unidad + "</li></ul></div></td>";
+                cellFactor = "<td> <div <ul><li 'class=\"jstree-open\">" + factor + "</li></ul></div></td>";
+                cellCantBruta = "<td> <div <ul><li 'class=\"jstree-open\">" + cantBruta + "</li></ul></div></td>";
                 listaCostosDesplegable = "<td> <div id=\"jstree_CS" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaCS_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + costo + "</li></ul></div></td>";
                 listaCostototalDesplegable = "<td> <div id=\"jstree_CST" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaCST_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + auxCostoTotal + "</li></ul></div></td>";
                 listaDdlSectorProductivoDesplegable = "<td> <div id=\"jstree_SP" + ContentPlaceHolder1_ddlSector.value.split('-')[0].trim() + "\"> <ul><li id='RecetaSP_LI_" + ContentPlaceHolder1_ddlSector.value.split('-')[0].trim() + "' class=\"jstree-open\">" + opcionSeleccionada + "</li></ul></div></td>";
-                ListaTiempo = "<td> <div id=\"jstree_T" + ContentPlaceHolder1_TiempoDePreparacion.value.split('-')[0].trim() + "\"> <ul><li id='RecetaT_LI_" + ContentPlaceHolder1_TiempoDePreparacion.value.split('-')[0].trim() + "' class=\"jstree-open\">" + Tiempo + "</li></ul></div></td>";
+                ListaTiempo = "<td style=\" text-align:right;\"> <div id=\"jstree_T" + ContentPlaceHolder1_TiempoDePreparacion.value.split('-')[0].trim() + "\"> <ul><li id='RecetaT_LI_" + ContentPlaceHolder1_TiempoDePreparacion.value.split('-')[0].trim() + "' class=\"jstree-open\">" + Tiempo + "</li></ul></div></td>";
 
             }
             //Si es un producto, entonces viene por el else
@@ -2203,11 +2333,12 @@
                 listaDesplegable = "<td> " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
                 listaCantidadDesplegable = "<td style=\" text-align: right\"> " + myFormat(cantidad) + "</td>";
                 listaUnidadesDesplegable = "<td> " + unidad + "</td>";
+                cellFactor = "<td> " + factor + "</td>";
+                cellCantBruta = "<td> " + cantBruta + "</td>";
                 listaCostosDesplegable = "<td style=\" text-align:right;\"> " + costo + "</td>";
                 listaCostototalDesplegable = "<td style=\" text-align:right;\"> " + auxCostoTotal + "</td>";
                 listaDdlSectorProductivoDesplegable = "<td style=\" text-align:right;\"> " + opcionSeleccionada + "</td>";
                 ListaTiempo = "<td style=\" text-align:right;\"> " + Tiempo + "</td>";
-
             }
             if (!document.getElementById('<%= idProductosRecetas.ClientID%>').value.includes(tipo + '_' + codigo)) {
                 //Agrega un registro a la tabla de productos 
@@ -2217,6 +2348,8 @@
                     listaDesplegable +
                     listaCantidadDesplegable +
                     listaUnidadesDesplegable +
+                    cellFactor +
+                    cellCantBruta +
                     listaCostosDesplegable +
                     listaCostototalDesplegable +
                     listaDdlSectorProductivoDesplegable +
@@ -2249,10 +2382,10 @@
                 document.getElementById('<%=txtKgBrutTotal.ClientID%>').value = myFormat(KgBrutoTotal);
 
                 if (document.getElementById('<%= idProductosRecetas.ClientID%>').value == "") {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "," + "idSectorProductivo_" + ddlSectoridSectorProductivo + "," + "Tiempo_" + Tiempo;
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "," + "idSectorProductivo_" + ddlSectoridSectorProductivo + "," + "Tiempo_" + Tiempo + "," + "Factor_" + factor;
                 }
                 else {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += ";" + codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "," + "idSectorProductivo_" + ddlSectoridSectorProductivo + "," + "Tiempo_" + Tiempo;
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += ";" + codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "," + "idSectorProductivo_" + ddlSectoridSectorProductivo + "," + "Tiempo_" + Tiempo + "," + "Factor_" + factor;
                 }
                 if (!document.getElementById('<%= txtRinde.ClientID%>').value == "") {
                     let rinde = parseFloat(document.getElementById('<%= txtRinde.ClientID%>').value);
@@ -2906,6 +3039,29 @@
             $('#modalSectores').modal('hide');
         }
 
+        function agregarMarcas() {
+            //ContentPlaceHolder1_txtSector.value = id.split('_')[2] + ' - ' + id.split('_')[3];
+
+            let table = document.getElementById('tableMarcas');
+            let body = document.getElementById("tbodyMarcas");
+            let max = table.rows.length;
+            let listaMarcas = '';
+            //document.getElementById("btnAgregarPresentacion").children[0].className = "fa fa-check"; 
+            for (let i = 1; i < max; i++) {
+                /*if (i > 1) {*/
+                if (table.rows[i].cells[1].children[0].checked) {
+                    let id = table.rows[i].id.split("_")[2]
+                    listaMarcas += id + " - " + table.rows[i].cells[0].innerHTML + ', ';
+                }
+            }
+            document.getElementById('ContentPlaceHolder1_txtMarcas').value = listaMarcas.replace(/,\s*$/, '');
+
+            /*document.getElementById('ContentPlaceHolder1_txtSector').value = presentacionFinal.trimEnd(', ');*/
+            //document.getElementById('btnAgregarSectores').classList.remove("buttonLoading");
+            /*  document.querySelector('#txtBusquedaSector').value = '';*/
+            $('#modalMarca').modal('hide');
+        }
+
         //Esta funcion se encarga de borrar el producto de la receta
         function borrarProd(idprod) {
             event.preventDefault();
@@ -3084,6 +3240,30 @@
                 }
             });
 
+            $('#editable3').DataTable({
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay información",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "searchPlaceholder": "Escriba su busqueda",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
+
             $('#editable6').DataTable({
                 language: {
                     "decimal": "",
@@ -3120,6 +3300,13 @@
             $('.dataTables_filter').hide();
             $('#txtBusquedaIngredientes').on('keyup', function () {
                 $('#editable2').DataTable().search(
+                    this.value
+                ).draw();
+            });
+
+            $('.dataTables_filter').hide();
+            $('#txtBusquedaIngredientes').on('keyup', function () {
+                $('#editable3').DataTable().search(
                     this.value
                 ).draw();
             });

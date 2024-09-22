@@ -29,13 +29,13 @@ namespace Tecnocuisine
 
             if (!IsPostBack)
             {
-       
+
                 if (accion == 2)
                 {
                     CargarUnidad();
                 }
 
-                if(Mensaje == 1)
+                if (Mensaje == 1)
                 {
                     this.m.ShowToastr(this.Page, "Proceso concluido con Exito!", "Exito");
                 }
@@ -127,10 +127,9 @@ namespace Tecnocuisine
                 {
                     hiddenEditar.Value = unidad.id.ToString();
                     txtDescripcionUnidad.Text = unidad.descripcion;
+                    txtAbreviacion.Text = unidad.abreviacion ?? "";
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "openModal();", true);
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -153,7 +152,7 @@ namespace Tecnocuisine
                 celNumero.Text = unidad.id.ToString();
                 celNumero.VerticalAlign = VerticalAlign.Middle;
                 celNumero.HorizontalAlign = HorizontalAlign.Right;
-                celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celNumero.Attributes.Add("style", "padding-bottom: 1px !important; display:none");
 
                 tr.Cells.Add(celNumero);
 
@@ -163,6 +162,13 @@ namespace Tecnocuisine
                 celNombre.HorizontalAlign = HorizontalAlign.Left;
                 celNombre.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celNombre);
+
+                TableCell celabreviacion = new TableCell();
+                celabreviacion.Text = unidad.abreviacion ?? "No asignada";
+                celabreviacion.VerticalAlign = VerticalAlign.Middle;
+                celabreviacion.HorizontalAlign = HorizontalAlign.Left;
+                celabreviacion.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celabreviacion);
 
                 //agrego fila a tabla
                 TableCell celAccion = new TableCell();
@@ -242,6 +248,7 @@ namespace Tecnocuisine
             try
             {
                 txtDescripcionUnidad.Text = "";
+                txtAbreviacion.Text = "";
             }
             catch (Exception ex)
             {
@@ -254,10 +261,13 @@ namespace Tecnocuisine
         {
             try
             {
-                Tecnocuisine_API.Entitys.Unidades unidad = new Tecnocuisine_API.Entitys.Unidades();
+                if (string.IsNullOrEmpty(txtAbreviacion.Text) || string.IsNullOrEmpty(txtDescripcionUnidad.Text)) throw new Exception();
+                if (txtAbreviacion.Text.Length > 5) throw new Exception();
 
-                unidad.descripcion = txtDescripcionUnidad.Text;
+                Tecnocuisine_API.Entitys.Unidades unidad = new Tecnocuisine_API.Entitys.Unidades();
+                unidad.descripcion = txtDescripcionUnidad.Text.Trim();
                 unidad.estado = 1;
+                unidad.abreviacion = txtAbreviacion.Text.Trim();
 
                 int resultado = controladorUnidad.AgregarUnidad(unidad);
 
@@ -267,12 +277,12 @@ namespace Tecnocuisine
                 }
                 else
                 {
-                    this.m.ShowToastr(this.Page, "No se pudo agregar el unidad", "warning");
+                    this.m.ShowToastrError(this.Page, "No se pudo agregar la unidad", "Error");
                 }
             }
             catch (Exception ex)
             {
-
+                this.m.ShowToastrError(this.Page, "No se pudo agregar la unidad", "Error");
             }
 
         }
@@ -286,6 +296,7 @@ namespace Tecnocuisine
                 unidad.id = this.idUnidad;
                 unidad.descripcion = txtDescripcionUnidad.Text;
                 unidad.estado = 1;
+                unidad.abreviacion = txtAbreviacion.Text.Trim() != string.Empty ? txtAbreviacion.Text.Trim() : null;
 
                 int resultado = controladorUnidad.EditarUnidad(unidad);
 

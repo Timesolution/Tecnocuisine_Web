@@ -1187,30 +1187,29 @@
                 $.ajax({
                     method: "POST",
                     url: "ProductosABM.aspx/GuardarPresentacion",
-                    data: '{ descripcion: "' + txtDescripcion
-                        + '" , Cantidad: "' + txtCantidad
-                        + '"}',
+                    data: JSON.stringify({
+                        descripcion: txtDescripcion.trim(),
+                        Cantidad: txtCantidad
+                    }),
                     contentType: "application/json",
                     dataType: 'json',
-                    error: (error) => {
-                        console.log(JSON.stringify(error));
+                    error: function (xhr, status, error) {
+                        var response = JSON.parse(xhr.responseText);
+                        console.log(response.message);
+                        toastr.error(response.message);
                     },
-                    success: (result) => {
+                    success: function (response) {
                         $('#modalCrearPresentaciones').modal('hide');
-                        if (result.d != "") {
-
-                            let list = document.getElementById("ContentPlaceHolder1_ListOptionsPresentacion")
-                            let arr = result.d.split("-");
-
-                            let newOption = `<option value="${arr[1]}" id="PresentacionID_${arr[0]}_${txtCantidad}"></option>`
-
+                        if (response.success) {
+                            let list = document.getElementById("ContentPlaceHolder1_ListOptionsPresentacion");
+                            let arr = response.message.split("-");
+                            let newOption = `<option value="${arr[1]}" id="PresentacionID_${arr[0]}_${txtCantidad}"></option>`;
                             list.innerHTML += newOption;
-                            toastr.success(arr[0]);
+                            toastr.success("Presentación creada con éxito!");
                         } else {
-                            toastr.error("Error, intente de nuevo");
+                            toastr.error("Error, inténtelo de nuevo");
                         }
                     }
-
                 });
             } else {
                 toastr.error("Faltan Datos");
