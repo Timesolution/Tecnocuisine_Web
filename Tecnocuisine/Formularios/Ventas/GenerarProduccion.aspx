@@ -1717,8 +1717,27 @@
                     CargarDllReceta(Number(id));
                     CargarTablaReceta(Number(id));
                 }
+
+                CargarSectorReceta(id);
             }
         }
+
+        function CargarSectorReceta(id) {
+            $.ajax({
+                method: "POST",
+                url: "GenerarProduccion.aspx/GetIdSectorByIdReceta",
+                data: JSON.stringify({idReceta: id}),
+                contentType: "application/json",
+                dataType: "json",
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                },
+                success: function (respuesta) {
+                    var sector = $("#<%=NSector.ClientID%>");
+                    sector.val(respuesta.d);
+                }
+            });
+                }
 
         function RecargarLaTabla() {
             var resume_table = document.getElementById("tableProductos");
@@ -2247,6 +2266,17 @@
 
         function GenerarProduccion(event, Actualizar = "none") {
             event.preventDefault();
+
+            CantidadProducida = document.getElementById("ContentPlaceHolder1_NCantidadProducida").value;
+            if (CantidadProducida === "" || CantidadProducida < 0) {
+                document.getElementById("ContentPlaceHolder1_NCantidadProducida").style.border = "1px solid red";
+                return;
+            }
+            else {
+                document.getElementById("ContentPlaceHolder1_NCantidadProducida").style.border = "none";
+            }
+
+
             if (Actualizar != "none") {
                 $("#modalVerificacion").modal("hide")
             }
@@ -2316,7 +2346,8 @@
             UnidadMedida = document.getElementById("ContentPlaceHolder1_NUnidadMedida").value;
             Sector = document.getElementById("ContentPlaceHolder1_NSector").value;
             Lote = document.getElementById("ContentPlaceHolder1_NLote").value;
-            CantidadProducida = document.getElementById("ContentPlaceHolder1_NCantidadProducida").value;
+
+
             if (Actualizar != "Actualizar") {
                 ListaCostoCambiados.value = ""
             }

@@ -7,6 +7,7 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Tecnocuisine.Formularios.Administrador;
 using Tecnocuisine.Modelos;
 using Tecnocuisine_API.Controladores;
 using Tecnocuisine_API.Entitys;
@@ -736,6 +737,33 @@ namespace Tecnocuisine.Formularios.Ventas
                 return "";
             }
         }
+
+        [WebMethod]
+        public static string GetIdSectorByIdReceta(string idReceta)
+        {
+            try
+            {
+                ControladorSectorProductivo cSector = new ControladorSectorProductivo();
+                ControladorReceta cReceta = new ControladorReceta();
+                Tecnocuisine_API.Entitys.Recetas receta = cReceta.ObtenerRecetaId(Convert.ToInt32(idReceta));
+
+                if (receta.SectorP_Recetas != null)
+                {
+                    foreach (var sector in receta.SectorP_Recetas)
+                    {
+                        var sectorP = cSector.ObtenerSectorProductivoId((int)sector.idSectorP);
+                        return sectorP.id + " - " + sectorP.descripcion;
+                    }
+                }
+                    
+                return string.Empty;
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
+
         [WebMethod]
         public static string GetProductoChange(string idProd)
         {
@@ -1001,8 +1029,8 @@ namespace Tecnocuisine.Formularios.Ventas
 
                 string ERROR = "";
                 var item = List.Split(';');
-                int marcaid = Convert.ToInt16(Marca.Split('-')[0].Trim());
-                int presentacionid = Convert.ToInt16(Presentacion.Split('-')[0].Trim());
+                int marcaid = 1; //Convert.ToInt16(Marca.Split('-')[0].Trim()); //TODO: Marca por defecto para que no pinche, luego cambiarlo
+                int presentacionid = 1; //Convert.ToInt16(Presentacion.Split('-')[0].Trim()); //TODO: Presentacion por defecto para que no pinche, luego cambiarlo
                 int sectorid = Convert.ToInt16(Sector.Split('-')[0].Trim());
                 int unidadid = Convert.ToInt16(UnidadMedida.Split('-')[0].Trim());
                 int idreceta = Convert.ToInt16(idReceta);
@@ -1022,6 +1050,7 @@ namespace Tecnocuisine.Formularios.Ventas
                     }
                 }
 
+                // AUMENTAR STOCK RECETA
                 var receta = controladorReceta.ObtenerRecetaId(Convert.ToInt16(idReceta));
                 if (receta != null)
                 {
@@ -1164,6 +1193,133 @@ namespace Tecnocuisine.Formularios.Ventas
             }
 
         }
+
+        //public void AumentarStockReceta()
+        //{
+        //    ControladorReceta controladorReceta = new ControladorReceta();
+        //    var receta = controladorReceta.ObtenerRecetaId(Convert.ToInt16(idReceta));
+        //    if (receta != null)
+        //    {
+        //        try
+        //        {
+        //            ControladorStockReceta controladorStockReceta = new ControladorStockReceta();
+
+        //            // Stock Receta General
+        //            var sr = controladorStockReceta.ObtenerStockReceta(receta.id);
+        //            string fecha = DateTime.Now.ToString();
+        //            if (sr == null)
+        //            {
+        //                Entregas_Recetas p = new Entregas_Recetas();
+        //                p.idRecetas = receta.id;
+        //                p.Cantidad = Convert.ToDecimal(CantidadProducida);
+        //                p.idEntregas = null;
+
+        //                controladorStockReceta.AgregarStockAll_Receta(p, sectorid, Lote, fecha, presentacionid, marcaid);
+        //            }
+        //            else
+        //            {
+        //                // STOCK FINAL
+        //                StockReceta stockreceta = new StockReceta();
+        //                stockreceta.idReceta = sr.idReceta;
+        //                stockreceta.stock = sr.stock + Convert.ToDecimal(CantidadProducida);
+        //                stockreceta.id = sr.id;
+        //                controladorStockReceta.EditarStockReceta(stockreceta);
+
+        //                // STOCK PRESENTACIONES
+        //                var SP = controladorStockReceta.ObtenerStockPresentacionesReceta(receta.id, presentacionid);
+        //                if (SP == null)
+        //                {
+        //                    var pres = controladorPresentacion.ObtenerPresentacionId(presentacionid);
+        //                    stockpresentacionesReceta spr = new stockpresentacionesReceta();
+        //                    spr.idReceta = receta.id;
+        //                    spr.idPresentacion = presentacionid;
+        //                    spr.stock = pres.cantidad * Convert.ToDecimal(CantidadProducida);
+        //                    controladorStockReceta.AgregarStockPresentacionReceta(spr);
+        //                }
+        //                else
+        //                {
+        //                    var pres = controladorPresentacion.ObtenerPresentacionId(SP.idPresentacion);
+
+        //                    stockpresentacionesReceta spr = new stockpresentacionesReceta();
+        //                    spr.idReceta = SP.idReceta;
+        //                    spr.id = SP.id;
+        //                    spr.idPresentacion = SP.idPresentacion;
+        //                    spr.stock = pres.cantidad * Convert.ToDecimal(CantidadProducida) + SP.stock;
+        //                    controladorStockReceta.EditarStockPresentacionesReceta(spr);
+        //                }
+
+        //                // STOCK MARCAS 
+        //                var SM = controladorStockReceta.ObtenerStockMarcasRecetas(receta.id, marcaid);
+        //                if (SM == null)
+        //                {
+        //                    StockMarcaReceta smr = new StockMarcaReceta();
+        //                    smr.idReceta = receta.id;
+        //                    smr.idMarca = marcaid;
+        //                    smr.stock = Convert.ToDecimal(CantidadProducida);
+        //                    controladorStockReceta.AgregarStockMarcasReceta(smr);
+        //                }
+        //                else
+        //                {
+        //                    StockMarcaReceta smr = new StockMarcaReceta();
+        //                    smr.idReceta = SM.idReceta;
+        //                    smr.id = SM.id;
+        //                    smr.idMarca = SM.idMarca;
+        //                    smr.stock = Convert.ToDecimal(CantidadProducida) + SM.stock;
+        //                    controladorStockReceta.EditarStockMarcasReceta(smr);
+        //                }
+
+        //                // STOCK LOTES
+        //                var SL = controladorStockReceta.ObtenerStockLotesReceta(receta.id, Lote);
+        //                if (SL == null)
+        //                {
+        //                    StockLotesReceta slr = new StockLotesReceta();
+        //                    slr.idReceta = receta.id;
+        //                    slr.Lote = Lote;
+        //                    slr.stock = Convert.ToDecimal(CantidadProducida);
+        //                    slr.idPresentacion = presentacionid;
+        //                    slr.FechaVencimiento = DateTime.Now;
+        //                    controladorStockReceta.AgregarStockLotesReceta(slr);
+        //                }
+        //                else
+        //                {
+        //                    StockLotesReceta slr = new StockLotesReceta();
+        //                    slr.idReceta = SL.idReceta;
+        //                    slr.id = SL.id;
+        //                    slr.Lote = SL.Lote;
+        //                    slr.stock = Convert.ToDecimal(CantidadProducida) + SL.stock;
+        //                    slr.idPresentacion = SL.idPresentacion;
+        //                    controladorStockReceta.EditarStockLotesReceta(slr);
+        //                }
+
+        //                // STOCK SECTOR
+        //                var SS = controladorStockReceta.ObtenerStockSectoresReceta(receta.id, sectorid);
+        //                if (SS == null)
+        //                {
+        //                    stockSectoresReceta ssr = new stockSectoresReceta();
+        //                    ssr.idReceta = receta.id;
+        //                    ssr.idSector = sectorid;
+        //                    ssr.stock = Convert.ToDecimal(CantidadProducida);
+        //                    controladorStockReceta.AgregarStockSectoresReceta(ssr);
+        //                }
+        //                else
+        //                {
+        //                    stockSectoresReceta ssr = new stockSectoresReceta();
+        //                    ssr.idReceta = SL.idReceta;
+        //                    ssr.id = SS.id;
+        //                    ssr.idSector = SS.idSector;
+        //                    ssr.stock = Convert.ToDecimal(CantidadProducida) + SS.stock;
+        //                    controladorStockReceta.EditarStockSectoresReceta(ssr);
+        //                }
+        //            }
+        //        }
+        //        catch (Exception)
+        //        {
+        //            ERROR += "-3" + ",";
+        //        }
+
+        //    }
+        //}
+
         public static int ModificarCostos(string[] list)
         {
             try
