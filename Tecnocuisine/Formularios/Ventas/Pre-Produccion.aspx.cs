@@ -1942,11 +1942,13 @@ namespace Tecnocuisine.Formularios.Ventas
                 List<string> itemsList = new List<string>();
                 foreach (var remitoInterno in itemsRemitoInterno)
                 {
+                    var cantidadRecepcionada = remitoInterno.cantidadRecepcionada ?? remitoInterno.cantidadEnviada;
+
                     itemsList.Add("{" +
                                   "\"Id\":\"" + remitoInterno.id + "\"," +
                                   "\"Producto\":\"" + remitoInterno.Producto + "\"," +
                                   "\"cantidadEnviada\":\"" + remitoInterno.cantidadEnviada + "\"," +
-                                  "\"cantidadRecepcionada\":\"" + remitoInterno.cantidadRecepcionada + "\"" +
+                                  "\"cantidadRecepcionada\":\"" + cantidadRecepcionada + "\"" +
                                   "}");
                 }
 
