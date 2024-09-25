@@ -90,7 +90,7 @@
                                                 <h5 style="margin-left: 5%">Sector:</h5>
                                             </div>
                                             <div class="col-md-8">
-                                                <asp:TextBox runat="server" ID="NSector" list="ContentPlaceHolder1_ListaDLLSector" class="form-control" Style="margin-left: 15px; width: 70%" />
+                                                <asp:TextBox onchange="onChangeSector()" runat="server" ID="NSector" list="ContentPlaceHolder1_ListaDLLSector" class="form-control" Style="margin-left: 15px; width: 70%" />
                                             </div>
                                         </div>
 
@@ -925,6 +925,17 @@
             ChangeTableCantidad();
         });
 
+        function onChangeSector() {
+            let txtProd = document.getElementById('ContentPlaceHolder1_txtDescripcionProductos').value
+
+            if (txtProd.includes(' - ')) {
+                let array = txtProd.split("-")
+                let id = array[0].trim()
+                CargarTablaReceta(Number(id));
+                ChangeTableCantidad();
+            }
+        }
+
 
         function CambiarCosto(e) {
             e.preventDefault();
@@ -1714,7 +1725,7 @@
 
         }
 
-        function handle(e) {
+        async function handle(e) {
             let txtProd = document.getElementById('ContentPlaceHolder1_txtDescripcionProductos').value
             document.getElementById("ContentPlaceHolder1_HiddenCantidadAnterior").value = "";
             if (txtProd.includes(' - ')) {
@@ -1725,12 +1736,14 @@
 
                 if (type == "Receta") {
                     CargarDllReceta(Number(id));
-                    CargarSectorReceta(id);
-                    CargarTablaReceta(Number(id));
+                    await CargarSectorRecetaAsync(id);
+                    CargarTablaReceta(Number(id));            
                 }
                 else {
-                    CargarSectorReceta(id);
+                    await CargarSectorRecetaAsync(id);
                 }
+
+                ChangeTableCantidad();
 
             }
         }
@@ -1751,6 +1764,30 @@
                 }
             });
         }
+
+        async function CargarSectorRecetaAsync(id) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    method: "POST",
+                    url: "GenerarProduccion.aspx/GetIdSectorByIdReceta",
+                    data: JSON.stringify({ idReceta: id }),
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (response) {
+                        var sector = $("#<%=NSector.ClientID%>");
+                        sector.val(response.d);
+
+                        resolve(response); // Resolviendo la promesa cuando todo esté listo
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(JSON.stringify(error));
+                        reject(error); // Si ocurre un error
+                    }
+                });
+            });
+        }
+
+
 
         function RecargarLaTabla() {
             var resume_table = document.getElementById("tableProductos");
@@ -1867,12 +1904,12 @@
                     console.log(JSON.stringify(error));
                 },
                 success: (respuesta) => {
-                    document.getElementById("ContentPlaceHolder1_NCantidad").value = "";
+                    //document.getElementById("ContentPlaceHolder1_NCantidad").value = "";
                     document.getElementById("ContentPlaceHolder1_NSector").value = "";
                     document.getElementById("ContentPlaceHolder1_txtPresentacion").value = "";
                     document.getElementById("ContentPlaceHolder1_NLote").value = "";
                     document.getElementById("ContentPlaceHolder1_NMarca").value = "";
-                    document.getElementById("ContentPlaceHolder1_NCantidadProducida").value = "";
+                    //document.getElementById("ContentPlaceHolder1_NCantidadProducida").value = "";
 
                     RellenarCampos(respuesta.d.split(";"))
                 }
