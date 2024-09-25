@@ -11,6 +11,7 @@
 
     <%-- NUEVA TABLAS--%>
 
+    <asp:Label runat="server" ID="NombreProd" style="display:none"></asp:Label>
 
     <div class="row">
         <div class="col-md-6">
@@ -240,7 +241,7 @@
 
     <script>
         $(document).ready(function () {
-            //document.getElementById("lblSiteMap").innerText += " / " + document.getElementById("ContentPlaceHolder1_NombreProd").value;
+            document.getElementById("lblSiteMap").innerText += " / " + document.getElementById("ContentPlaceHolder1_NombreProd").textContent;
         });
     </script>
 

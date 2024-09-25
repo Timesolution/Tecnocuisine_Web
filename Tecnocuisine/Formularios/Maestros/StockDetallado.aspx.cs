@@ -50,6 +50,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     var prod = ControladorProducto.ObtenerProductoId(id);
 
                     //NombreProd.Value = prod.descripcion;
+                    NombreProd.Text = prod.descripcion;
 
 
                     //var listStockPresentaciones = ControladorStockProducto.ObtenerStockPresentacionesByIdProducto(id);
@@ -115,6 +116,8 @@ namespace Tecnocuisine.Formularios.Maestros
                     var stockEnTransito = controladorStockRecetas.ObtenerStockEnTransitoByDescripcion(receta.descripcion);
 
                     //NombreProd.Value = receta.descripcion;
+                    NombreProd.Text = receta.descripcion;
+
                     if (ListStockTotal != null)
                     {
                         CargarPhFinal2(ListStockTotal);

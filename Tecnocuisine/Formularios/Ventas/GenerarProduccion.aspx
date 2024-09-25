@@ -45,11 +45,11 @@
                                 <div class="col-lg-6">
                                     <div>
                                         <div class="row">
-                                            <div class="col-md-4">
-                                                <h5 style="margin-left: 5%">Produccion Numero:</h5>
+                                            <div class="col-md-12" style="display: flex; gap: 1rem">
+                                                <h4>Produccion Numero:</h4>
+                                                <span id="lblProdNum" runat="server"></span>
                                             </div>
-                                            <div class="col-md-8" id="lblProdNum" runat="server">
-                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -64,7 +64,7 @@
                                                 <h5 style="margin-left: 5%">Cantidad a Producir:</h5>
                                             </div>
                                             <div class="col-md-8">
-                                                <asp:TextBox runat="server" onChange="ChangeTableCantidad()" 
+                                                <asp:TextBox runat="server" onChange="ChangeTableCantidad()"
                                                     ID="NCantidad" type="number" class="form-control" Style="margin-left: 15px; width: 70%;" />
                                             </div>
 
@@ -99,7 +99,7 @@
                                 <%-- Columna 2--%>
                                 <div class="col-lg-6">
                                     <div>
-                                        <div>
+                                        <div style="display: none">
                                             <div class="row" style="margin-top: 2%">
                                                 <div class="col-md-4">
                                                     <h5 style="margin-left: 5%">Presentacion:</h5>
@@ -109,7 +109,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div>
+                                        <div style="display: none">
 
                                             <div class="row" style="margin-top: 2%">
                                                 <div class="col-md-4">
@@ -120,7 +120,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div>
+                                        <div style="display: none">
                                             <div class="row" style="margin-top: 2%">
                                                 <div class="col-md-4">
                                                     <h5 style="margin-left: 5%">Marca:</h5>
@@ -157,7 +157,7 @@
                                                 <th style="width: 4%; text-align: left;">Unidad de Medida</th>
                                                 <th style="width: 5%; text-align: center;">
                                                     <div class="row">
-                                                        Unidad Real
+                                                        Cantidad Real
 
                                                         <div style="float: right; margin-right: 15px;">
 
@@ -875,46 +875,54 @@
             }
             $("#form").find("a[href='#finish']").hide();
 
+
+            // PRECARGAR FORMULARIO
             let url = new URL(window.location.href);
-
             let PPro = url.searchParams.get('PPro');
-
-            // Obtener el valor del parámetro 'PR'
             let PR = url.searchParams.get('PR');
-
-            // Obtener el valor del parámetro 'C'
             let C = url.searchParams.get('C');
-                
-
             let ID = url.searchParams.get('i');
 
-
-                
-            if(PR != null)
-            {         
-                 let DescripcionProducto = document.getElementById('<%=txtDescripcionProductos.ClientID%>').value = PR;
-                 document.getElementById('<%=txtDescripcionProductos.ClientID%>').value = ID + " - " + PR + " - " + "Receta";
+            if (PR != null) {
+                let DescripcionProducto = document.getElementById('<%=txtDescripcionProductos.ClientID%>').value = PR;
+                document.getElementById('<%=txtDescripcionProductos.ClientID%>').value = ID + " - " + PR + " - " + "Receta";
             }
 
-            handle();
-            C = C.replace(',', '.');
-            document.getElementById('<%=NCantidad.ClientID%>').value = C;
+            // Precargar Receta
+            if (url.searchParams.get('i') != null) {
+                CargarDllRecetaPrecargar(Number(ID));
+                document.getElementById('<%=txtDescripcionProductos.ClientID%>').disabled = true;
+            }
+
+            // Precargar cantidades a producir
+            if (url.searchParams.get('C') != null) {
+                C = C.replace(',', '.');
+                document.getElementById('<%=NCantidad.ClientID%>').value = C;
+                document.getElementById('<%=NCantidad.ClientID%>').disabled = true;
+
+                document.getElementById('<%=NCantidadProducida.ClientID%>').value = C;
+            }
 
 
+            //handle();
+
+            // Precargar Sector
             let sector = "";
-
             if (url.searchParams.get('s') != null) {
                 sector = url.searchParams.get('s');
-
                 let sectorId = url.searchParams.get('sid');
-
                 document.getElementById('<%=NSector.ClientID%>').value = sectorId + " - " + sector;
             }
 
-            ChangeTableCantidad();
-                 //idReceta.ToString() + " - " + DescripcionReceta + " - " + "Receta";
-           
+            CargarTablaReceta(Number(ID));
 
+<%--            // Precargar Sector
+            if (url.searchParams.get('s') != null) {
+                let sectorId = url.searchParams.get('sid');
+                document.getElementById('<%=NSector.ClientID%>').value = sectorId + " - " + sector;
+            }--%>
+
+            ChangeTableCantidad();
         });
 
 
@@ -1713,12 +1721,17 @@
                 let array = txtProd.split("-")
                 let type = array[2].trim()
                 let id = array[0].trim()
+
+
                 if (type == "Receta") {
                     CargarDllReceta(Number(id));
+                    CargarSectorReceta(id);
                     CargarTablaReceta(Number(id));
                 }
+                else {
+                    CargarSectorReceta(id);
+                }
 
-                CargarSectorReceta(id);
             }
         }
 
@@ -1726,7 +1739,7 @@
             $.ajax({
                 method: "POST",
                 url: "GenerarProduccion.aspx/GetIdSectorByIdReceta",
-                data: JSON.stringify({idReceta: id}),
+                data: JSON.stringify({ idReceta: id }),
                 contentType: "application/json",
                 dataType: "json",
                 error: (error) => {
@@ -1737,7 +1750,7 @@
                     sector.val(respuesta.d);
                 }
             });
-                }
+        }
 
         function RecargarLaTabla() {
             var resume_table = document.getElementById("tableProductos");
@@ -1803,12 +1816,14 @@
         }
 
         function CargarTablaReceta(id) {
+            let sectorText = document.getElementById('<%=NSector.ClientID%>').value;
+            let idSectorAProducir = sectorText.split(" - ")[0];
+
             $.ajax({
                 method: "POST",
                 url: "GenerarProduccion.aspx/GetProductosEnRecetas",
-                data: '{idProd: "' + id + '"}',
-                contentType: "application/json",
-                dataType: "json",
+                data: JSON.stringify({ idProd: id, idSectorAProducir: idSectorAProducir }),
+                contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 async: false,
                 error: (error) => {
@@ -1864,6 +1879,31 @@
             });
         }
 
+        function CargarDllRecetaPrecargar(id) {
+            $.ajax({
+                method: "POST",
+                url: "GenerarProduccion.aspx/GetReceta",
+                data: '{idProd: "' + id + '"}',
+                contentType: "application/json",
+                dataType: "json",
+                dataType: "json",
+                async: false,
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                },
+                success: (respuesta) => {
+                    //document.getElementById("ContentPlaceHolder1_NCantidad").value = "";
+                    //document.getElementById("ContentPlaceHolder1_NSector").value = "";
+                    //document.getElementById("ContentPlaceHolder1_txtPresentacion").value = "";
+                    //document.getElementById("ContentPlaceHolder1_NLote").value = "";
+                    //document.getElementById("ContentPlaceHolder1_NMarca").value = "";
+                    //document.getElementById("ContentPlaceHolder1_NCantidadProducida").value = "";
+
+                    RellenarCampos(respuesta.d.split(";"))
+                }
+            });
+        }
+
 
         function ChangeTableCantidad() {
             let cant = document.getElementById("ContentPlaceHolder1_NCantidad").value;
@@ -1885,6 +1925,7 @@
                 let costoNuevo = 0;
                 let id;
                 let nombre;
+
                 for (var j = 0, col; col = row.cells[j]; j++) {
                     //alert(col[j].innerText);
 
@@ -1914,6 +1955,12 @@
                         } else {
                             document.getElementById(idFinal).style.color = "red"
                         }
+                    }
+
+                    if (j == 6) {
+                        // Busca el elemento input dentro de la celda
+                        let inputElement = col.querySelector('input');
+                        inputElement.value = cantidadNueva;
                     }
                 }
             }
@@ -2406,7 +2453,7 @@
                 },
             });
         }
- 
+
 
         function formatearNumero(numero) {
             return numero.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });

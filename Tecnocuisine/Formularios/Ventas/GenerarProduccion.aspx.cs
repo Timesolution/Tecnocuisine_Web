@@ -953,7 +953,7 @@ namespace Tecnocuisine.Formularios.Ventas
             }
         }
         [WebMethod]
-        public static string GetProductosEnRecetas(string idProd)
+        public static string GetProductosEnRecetas(string idProd, int idSectorAProducir)
         {
             try
             {
@@ -969,7 +969,8 @@ namespace Tecnocuisine.Formularios.Ventas
                 {
                     foreach (var item in listProd)
                     {
-                        var stock = controladorStockProducto.ObtenerStockProducto(item.idProducto);
+                        //var stock = controladorStockProducto.ObtenerStockProducto(item.idProducto);
+                        var stock = controladorStockProducto.ObtenerStockSectores(item.idProducto, idSectorAProducir);
                         if (stock != null)
                         {
                             ListFinal += item.idProducto + "," + item.Productos.descripcion + "," + item.cantidad.ToString().Replace(",", ".") + "," + stock.stock.ToString().Replace(",", ".") + "," + controladorUnidad.ObtenerUnidadId(item.Productos.unidadMedida).descripcion + "," + "Producto" + "," + item.Productos.costo.ToString().Replace(',', '.') + "; ";
@@ -988,7 +989,7 @@ namespace Tecnocuisine.Formularios.Ventas
                         var receta = controladorReceta.ObtenerRecetaId(item.idRecetaIngrediente);
                         if (receta != null)
                         {
-                            var CantStock = controladorStockReceta.ObtenerStockReceta(item.idRecetaIngrediente);
+                            var CantStock = controladorStockReceta.ObtenerStockSectoresReceta(item.idRecetaIngrediente, idSectorAProducir);
                             decimal stock;
                             if (CantStock == null)
                             {
@@ -1173,18 +1174,18 @@ namespace Tecnocuisine.Formularios.Ventas
 
 
 
-                int i = CrearHistoricoProduccion(item, marcaid, presentacionid, sectorid, Lote, cantProducida, unidadid, idreceta, CostoTotal);
+                //int i = CrearHistoricoProduccion(item, marcaid, presentacionid, sectorid, Lote, cantProducida, unidadid, idreceta, CostoTotal);
                 string[] ListCambios = ListHistoricoCambio.Split('%');
                 CrearHistoricoCambios(ListCambios);
                 if (ListCostoCambios.Trim() != "")
                 {
                     ModificarCostos(ListCostoCambios.Split('/'));
                 }
-                if (i < 0)
-                {
-                    return ERROR += i + ",";
+                //if (i < 0)
+                //{
+                //    return ERROR += i + ",";
 
-                }
+                //}
                 return "1,";
             }
             catch (Exception)
@@ -1660,46 +1661,47 @@ namespace Tecnocuisine.Formularios.Ventas
 
                 string type = list[0];
                 string id = list[1];
-                bool DescontarStockPredefinido = false;
-                foreach (var itemstock in ArrayStock)
-                {
-                    if (itemstock != "")
-                    {
 
-                        string Arr = itemstock.Split(';')[0];
-                        var idComparar = Arr.Split('-')[0];
-                        var typeComparar = Arr.Split('-')[1];
-                        var letra = type.Substring(0, 1);
-                        if (idComparar == id && typeComparar == letra)
-                        {
-                            DescontarStockPredefinido = true;
-                            VaciarStockDefinidos(itemstock.Split(';'));
-                        }
-                        else
-                        {
-                            DescontarStockPredefinido = false;
-                        }
+                // COMMENT AUTHOR: JUAN
+                //bool DescontarStockPredefinido = false;
+                //foreach (var itemstock in ArrayStock)
+                //{
+                //    if (itemstock != "")
+                //    {
+
+                //        string Arr = itemstock.Split(';')[0];
+                //        var idComparar = Arr.Split('-')[0];
+                //        var typeComparar = Arr.Split('-')[1];
+                //        var letra = type.Substring(0, 1);
+                //        if (idComparar == id && typeComparar == letra)
+                //        {
+                //            DescontarStockPredefinido = true;
+                //            VaciarStockDefinidos(itemstock.Split(';'));
+                //        }
+                //        else
+                //        {
+                //            DescontarStockPredefinido = false;
+                //        }
 
 
-                    }
+                //    }
 
-                }
-                if (DescontarStockPredefinido == true)
-                {
-                    return 1;
-                }
+                //}
+                //if (DescontarStockPredefinido == true)
+                //{
+                //    return 1;
+                //}
+
                 if (type == "Producto")
                 {
-
-                    ReducirStockProducto(cp.ObtenerProductoId(Convert.ToInt32(id)), list);
+                    var producto = cp.ObtenerProductoId(Convert.ToInt32(id));
+                    ReducirStockProducto(producto, list);
                 }
                 else
                 {
-
-                    ReducirStockReceta(controladorReceta.ObtenerRecetaId(Convert.ToInt32(id)), list);
+                    var receta = controladorReceta.ObtenerRecetaId(Convert.ToInt32(id));
+                    ReducirStockReceta(receta, list);
                 }
-
-
 
                 return 1;
             }
