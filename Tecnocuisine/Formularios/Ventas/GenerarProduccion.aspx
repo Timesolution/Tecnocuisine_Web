@@ -923,6 +923,10 @@
             }--%>
 
             ChangeTableCantidad();
+
+            if (C !== null) {
+                CargarDatosDeLaTabla();
+            }
         });
 
         function onChangeSector() {
@@ -1737,7 +1741,7 @@
                 if (type == "Receta") {
                     CargarDllReceta(Number(id));
                     await CargarSectorRecetaAsync(id);
-                    CargarTablaReceta(Number(id));            
+                    CargarTablaReceta(Number(id));
                 }
                 else {
                     await CargarSectorRecetaAsync(id);
@@ -2000,6 +2004,10 @@
                         inputElement.value = cantidadNueva;
                     }
                 }
+            }
+
+            if (cant !== "") {
+                CargarDatosDeLaTabla();
             }
         }
         function VaciarCampos() {
