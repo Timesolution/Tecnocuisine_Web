@@ -136,7 +136,7 @@
                                                     <h5 style="margin-left: 5%">Cantidad Producida:</h5>
                                                 </div>
                                                 <div class="col-md-8">
-                                                    <asp:TextBox runat="server" ID="NCantidadProducida" class="form-control" Style="margin-left: 15px; width: 70%; text-align: right;" />
+                                                    <asp:TextBox type="number" runat="server" ID="NCantidadProducida" class="form-control" Style="margin-left: 15px; width: 70%; text-align: right;" />
                                                 </div>
                                             </div>
                                         </div>

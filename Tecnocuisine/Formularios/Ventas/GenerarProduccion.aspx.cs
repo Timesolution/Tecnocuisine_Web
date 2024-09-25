@@ -1043,7 +1043,7 @@ namespace Tecnocuisine.Formularios.Ventas
                     try
                     {
                         if (i3 != "")
-                            VaciarStockProductos(i3.Split('%'), ArrayStock);
+                            VaciarStockProductos(i3.Split('%'), ArrayStock, sectorid);
                     }
                     catch (Exception)
                     {
@@ -1647,7 +1647,7 @@ namespace Tecnocuisine.Formularios.Ventas
             var result2 = value2.ToString("D" + decimalLength.ToString());
             return result2;
         }
-        public static int VaciarStockProductos(string[] list, string[] ArrayStock)
+        public static int VaciarStockProductos(string[] list, string[] ArrayStock, int sectorid)
         {
             try
             {
@@ -1695,12 +1695,12 @@ namespace Tecnocuisine.Formularios.Ventas
                 if (type == "Producto")
                 {
                     var producto = cp.ObtenerProductoId(Convert.ToInt32(id));
-                    ReducirStockProducto(producto, list);
+                    ReducirStockProducto(producto, list, sectorid);
                 }
                 else
                 {
                     var receta = controladorReceta.ObtenerRecetaId(Convert.ToInt32(id));
-                    ReducirStockReceta(receta, list);
+                    ReducirStockReceta(receta, list, sectorid);
                 }
 
                 return 1;
@@ -1844,7 +1844,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 return 0;
             }
         }
-        public static void ReducirStockReceta(Tecnocuisine_API.Entitys.Recetas receta, string[] array)
+        public static void ReducirStockReceta(Tecnocuisine_API.Entitys.Recetas receta, string[] array, int sectorid)
         {
             ControladorStockReceta controladorStockReceta = new ControladorStockReceta();
             ControladorUnidad cu = new ControladorUnidad();
@@ -1858,269 +1858,267 @@ namespace Tecnocuisine.Formularios.Ventas
                 string id = array[1];
                 decimal CantVendida = Convert.ToDecimal(array[3]);
 
-
                 // StockFinal 
-
                 var StockFinal = controladorStockReceta.ObtenerStockReceta(receta.id);
-
                 if (StockFinal == null)
                 {
-
                     Entregas_Recetas p = new Entregas_Recetas();
                     p.idRecetas = Convert.ToInt16(id);
                     p.Cantidad = -CantVendida;
                     p.idEntregas = null;
                     string fecha = DateTime.Now.ToString();
-                    int i = controladorStockReceta.AgregarStockAll_Receta(p, 1, "No Existe Lote", fecha, 1, 1);
-
+                    int i = controladorStockReceta.AgregarStockAll_Receta(p, sectorid, "No Existe Lote", fecha, 1, 1);
                 }
                 else
                 {
-
-
                     var sf = new StockReceta();
                     sf.id = StockFinal.id;
                     sf.idReceta = StockFinal.idReceta;
                     sf.stock = StockFinal.stock - CantVendida;
-
                     controladorStockReceta.EditarStockReceta(sf);
-
-                    stockpresentacionesReceta Pres = new stockpresentacionesReceta();
-                    var RP = controladorReceta.ObtenerUnaPresentacionByIdReceta(receta.id);
-                    var ListStockPresentaciones = controladorStockReceta.ObtenerStockPresentacionesByIdReceta(receta.id);
-                    decimal totalCantidadPresentacion = CantVendida;
-                    // Presentaciones //
-                    foreach (var item in ListStockPresentaciones)
-                    {
-                        if (totalCantidadPresentacion > 0)
-                        {
-
-
-                            var presentaciones = controladorPresentacion.ObtenerPresentacionId(item.idPresentacion);
-                            decimal divisor = presentaciones.cantidad;
-                            if (presentaciones.cantidad < 1)
-                            {
-                                divisor = 1 / presentaciones.cantidad;
-                            }
-
-                            Pres.id = item.id;
-                            Pres.idPresentacion = item.idPresentacion;
-                            Pres.idReceta = item.idReceta;
-
-                            if (presentaciones.cantidad > 1)
-                            {
-                                decimal totalkg = (decimal)(presentaciones.cantidad * item.stock);
-                                if (totalkg > CantVendida && totalCantidadPresentacion > 0)
-                                {
-                                    totalkg = (totalkg - CantVendida) / presentaciones.cantidad;
-                                    totalCantidadPresentacion = 0;
-                                    Pres.stock = totalkg;
-                                }
-                                else
-                                {
-                                    totalkg = 0;
-                                    totalCantidadPresentacion = CantVendida - totalkg;
-                                    Pres.stock = 0;
-                                }
-                            }
-                            else if (presentaciones.cantidad < 1 && totalCantidadPresentacion > 0)
-                            {
-                                decimal totalKG = (decimal)(presentaciones.cantidad * item.stock);
-                                if (totalKG > CantVendida && totalCantidadPresentacion > 0)
-                                {
-                                    totalKG = (totalKG - CantVendida) * divisor;
-                                    totalCantidadPresentacion = 0;
-                                    Pres.stock = totalKG;
-                                }
-                                else
-                                {
-                                    totalKG = 0;
-                                    totalCantidadPresentacion = CantVendida - totalKG;
-                                    Pres.stock = 0;
-                                }
-                            }
-                            else if (totalCantidadPresentacion > item.stock)
-                            {
-                                totalCantidadPresentacion = (decimal)(totalCantidadPresentacion - item.stock);
-                                Pres.stock = 0;
-                            }
-                            else
-                            {
-                                if (presentaciones.cantidad > 1)
-                                {
-                                    Pres.stock = (decimal)(item.stock - totalCantidadPresentacion) / divisor;
-                                }
-                                else
-                                {
-                                    Pres.stock = (decimal)(item.stock - totalCantidadPresentacion) * divisor;
-
-                                }
-                                totalCantidadPresentacion = 0;
-                            }
-
-                            controladorStockReceta.EditarStockPresentacionesReceta(Pres);
-
-                        }
-
-                    }
-                    // Si TotalCantidadPresentaciones es mayor a 0 osea que no se saldo todo el stock hay que crear stock negativo
-                    if (totalCantidadPresentacion > 0)
-                    {
-                        stockpresentacionesReceta Pres2 = new stockpresentacionesReceta();
-                        Pres2.idReceta = Convert.ToInt16(id);
-                        Pres2.idPresentacion = 1;
-                        Pres2.stock = totalCantidadPresentacion * -1;
-                        totalCantidadPresentacion = 0;
-                        controladorStockReceta.AgregarStockPresentacionReceta(Pres);
-
-
-                    }
-
-                    var ListStockMarcas = controladorStockReceta.ObtenerStockMarcasRecetasByIdReceta(receta.id);
-                    // Marcas //
-                    StockMarcaReceta Marc = new StockMarcaReceta();
-                    decimal totalCantidadMarca = CantVendida;
-                    foreach (var item in ListStockMarcas)
-                    {
-                        if (totalCantidadMarca >= 0)
-                        {
-
-                            Marc.idMarca = item.idMarca;
-                            Marc.id = item.id;
-                            Marc.idReceta = item.idReceta;
-                            if (item.stock >= CantVendida)
-                            {
-                                Marc.stock = item.stock - CantVendida;
-                                totalCantidadMarca = 0;
-                            }
-                            else
-                            {
-                                if (item.stock < 0)
-                                {
-                                    decimal totalNegativo = totalCantidadMarca * -1;
-                                    totalCantidadMarca = (decimal)(totalNegativo + item.stock);
-                                    Marc.stock = totalCantidadMarca;
-                                }
-                                else
-                                {
-                                    totalCantidadMarca = (decimal)(CantVendida - item.stock);
-                                    Marc.stock = 0;
-                                }
-                            }
-                            controladorStockReceta.EditarStockMarcasReceta(Marc);
-                        }
-
-                    }
-
-                    if (totalCantidadMarca > 0)
-                    {
-                        StockMarcaReceta Marc2 = new StockMarcaReceta();
-                        Marc2.idMarca = 1;
-                        Marc2.idReceta = Convert.ToInt16(id);
-                        Marc2.stock = totalCantidadMarca * -1;
-
-                        controladorStockReceta.AgregarStockMarcasReceta(Marc2);
-                    }
-
-
-                    // Lotes // 
-                    var ListStockLotes = controladorStockReceta.ObtenerStockLotesRecetaByIdReceta(receta.id);
-                    StockLotesReceta Lotes = new StockLotesReceta();
-                    decimal TotalCantLotes = CantVendida;
-                    foreach (var item in ListStockLotes)
-                    {
-                        if (TotalCantLotes > 0)
-                        {
-                            var presentacion = controladorPresentacion.ObtenerPresentacionId(item.idPresentacion);
-                            Lotes.Lote = item.Lote;
-                            Lotes.id = item.id;
-                            Lotes.idReceta = item.idReceta;
-                            Lotes.idPresentacion = item.idPresentacion;
-                            decimal totalKg = (decimal)(item.stock * presentacion.cantidad);
-                            decimal divisor = presentacion.cantidad;
-                            if (presentacion.cantidad < 1)
-                            {
-                                divisor = 1 / presentacion.cantidad;
-                            }
-                            if (totalKg >= TotalCantLotes)
-                            {
-                                if (presentacion.cantidad > 1)
-                                {
-
-                                    Lotes.stock = (totalKg - TotalCantLotes) / divisor;
-                                }
-                                else
-                                {
-                                    Lotes.stock = (totalKg - TotalCantLotes) * divisor;
-                                }
-                                TotalCantLotes = 0;
-                            }
-                            else
-                            {
-                                TotalCantLotes = (decimal)(TotalCantLotes - totalKg);
-                                Lotes.stock = 0;
-                            }
-                            controladorStockReceta.EditarStockLotesReceta(Lotes);
-                        }
-
-                    }
-
-
-                    if (TotalCantLotes > 0)
-                    {
-                        StockLotesReceta Lotes2 = new StockLotesReceta();
-                        Lotes.idPresentacion = 1;
-                        Lotes.idReceta = Convert.ToInt16(id);
-                        Lotes.stock = TotalCantLotes * -1;
-                        Lotes.Lote = "No Existe Lote";
-                        controladorStockReceta.AgregarStockLotesReceta(Lotes2);
-                    }
 
 
                     // Sector //
-                    var ListStockSector = controladorStockReceta.ObtenerStockSectoresRecetaByIdReceta(receta.id);
-                    stockSectoresReceta Sector = new stockSectoresReceta();
-                    decimal TotalCantSector = CantVendida;
-                    foreach (var item in ListStockSector)
-                    {
-                        if (TotalCantSector > 0)
-                        {
-                            Sector.id = item.id;
-                            Sector.idReceta = item.idReceta;
-                            Sector.idSector = item.idSector;
-                            if (item.stock >= CantVendida)
-                            {
-                                Sector.stock = item.stock - TotalCantSector;
-                                TotalCantSector = 0;
-                            }
-                            else
-                            {
-                                if (item.stock < 0)
-                                {
-                                    decimal totalNegativo = TotalCantSector * -1;
-                                    TotalCantSector = (decimal)(totalNegativo + item.stock);
-                                    Sector.stock = TotalCantSector;
-                                }
-                                else
-                                {
-                                    TotalCantSector = (decimal)(CantVendida - item.stock);
-                                    Sector.stock = 0;
-                                }
-                            }
-                            controladorStockReceta.EditarStockSectoresReceta(Sector);
-                        }
+                    stockSectoresReceta SSector = controladorStockReceta.ObtenerStockSectoresReceta(Convert.ToInt16(id), sectorid);
+                    SSector.stock = SSector.stock - (CantVendida);
+                    controladorStockReceta.EditarStockSectoresReceta(SSector);
 
-                    }
+                    //stockpresentacionesReceta Pres = new stockpresentacionesReceta();
+                    //var RP = controladorReceta.ObtenerUnaPresentacionByIdReceta(receta.id);
+                    //var ListStockPresentaciones = controladorStockReceta.ObtenerStockPresentacionesByIdReceta(receta.id);
+                    //decimal totalCantidadPresentacion = CantVendida;
+                    //// Presentaciones //
+                    //foreach (var item in ListStockPresentaciones)
+                    //{
+                    //    if (totalCantidadPresentacion > 0)
+                    //    {
 
 
-                    if (TotalCantSector > 0)
-                    {
-                        stockSectoresReceta Sector2 = new stockSectoresReceta();
-                        Sector2.idReceta = Convert.ToInt16(id);
-                        Sector2.stock = TotalCantLotes * -1;
-                        Sector2.idSector = 1;
-                        controladorStockReceta.AgregarStockSectoresReceta(Sector2);
-                    }
+                    //        var presentaciones = controladorPresentacion.ObtenerPresentacionId(item.idPresentacion);
+                    //        decimal divisor = presentaciones.cantidad;
+                    //        if (presentaciones.cantidad < 1)
+                    //        {
+                    //            divisor = 1 / presentaciones.cantidad;
+                    //        }
+
+                    //        Pres.id = item.id;
+                    //        Pres.idPresentacion = item.idPresentacion;
+                    //        Pres.idReceta = item.idReceta;
+
+                    //        if (presentaciones.cantidad > 1)
+                    //        {
+                    //            decimal totalkg = (decimal)(presentaciones.cantidad * item.stock);
+                    //            if (totalkg > CantVendida && totalCantidadPresentacion > 0)
+                    //            {
+                    //                totalkg = (totalkg - CantVendida) / presentaciones.cantidad;
+                    //                totalCantidadPresentacion = 0;
+                    //                Pres.stock = totalkg;
+                    //            }
+                    //            else
+                    //            {
+                    //                totalkg = 0;
+                    //                totalCantidadPresentacion = CantVendida - totalkg;
+                    //                Pres.stock = 0;
+                    //            }
+                    //        }
+                    //        else if (presentaciones.cantidad < 1 && totalCantidadPresentacion > 0)
+                    //        {
+                    //            decimal totalKG = (decimal)(presentaciones.cantidad * item.stock);
+                    //            if (totalKG > CantVendida && totalCantidadPresentacion > 0)
+                    //            {
+                    //                totalKG = (totalKG - CantVendida) * divisor;
+                    //                totalCantidadPresentacion = 0;
+                    //                Pres.stock = totalKG;
+                    //            }
+                    //            else
+                    //            {
+                    //                totalKG = 0;
+                    //                totalCantidadPresentacion = CantVendida - totalKG;
+                    //                Pres.stock = 0;
+                    //            }
+                    //        }
+                    //        else if (totalCantidadPresentacion > item.stock)
+                    //        {
+                    //            totalCantidadPresentacion = (decimal)(totalCantidadPresentacion - item.stock);
+                    //            Pres.stock = 0;
+                    //        }
+                    //        else
+                    //        {
+                    //            if (presentaciones.cantidad > 1)
+                    //            {
+                    //                Pres.stock = (decimal)(item.stock - totalCantidadPresentacion) / divisor;
+                    //            }
+                    //            else
+                    //            {
+                    //                Pres.stock = (decimal)(item.stock - totalCantidadPresentacion) * divisor;
+
+                    //            }
+                    //            totalCantidadPresentacion = 0;
+                    //        }
+
+                    //        controladorStockReceta.EditarStockPresentacionesReceta(Pres);
+
+                    //    }
+
+                    //}
+                    //// Si TotalCantidadPresentaciones es mayor a 0 osea que no se saldo todo el stock hay que crear stock negativo
+                    //if (totalCantidadPresentacion > 0)
+                    //{
+                    //    stockpresentacionesReceta Pres2 = new stockpresentacionesReceta();
+                    //    Pres2.idReceta = Convert.ToInt16(id);
+                    //    Pres2.idPresentacion = 1;
+                    //    Pres2.stock = totalCantidadPresentacion * -1;
+                    //    totalCantidadPresentacion = 0;
+                    //    controladorStockReceta.AgregarStockPresentacionReceta(Pres);
+
+
+                    //}
+
+                    //var ListStockMarcas = controladorStockReceta.ObtenerStockMarcasRecetasByIdReceta(receta.id);
+                    //// Marcas //
+                    //StockMarcaReceta Marc = new StockMarcaReceta();
+                    //decimal totalCantidadMarca = CantVendida;
+                    //foreach (var item in ListStockMarcas)
+                    //{
+                    //    if (totalCantidadMarca >= 0)
+                    //    {
+
+                    //        Marc.idMarca = item.idMarca;
+                    //        Marc.id = item.id;
+                    //        Marc.idReceta = item.idReceta;
+                    //        if (item.stock >= CantVendida)
+                    //        {
+                    //            Marc.stock = item.stock - CantVendida;
+                    //            totalCantidadMarca = 0;
+                    //        }
+                    //        else
+                    //        {
+                    //            if (item.stock < 0)
+                    //            {
+                    //                decimal totalNegativo = totalCantidadMarca * -1;
+                    //                totalCantidadMarca = (decimal)(totalNegativo + item.stock);
+                    //                Marc.stock = totalCantidadMarca;
+                    //            }
+                    //            else
+                    //            {
+                    //                totalCantidadMarca = (decimal)(CantVendida - item.stock);
+                    //                Marc.stock = 0;
+                    //            }
+                    //        }
+                    //        controladorStockReceta.EditarStockMarcasReceta(Marc);
+                    //    }
+
+                    //}
+
+                    //if (totalCantidadMarca > 0)
+                    //{
+                    //    StockMarcaReceta Marc2 = new StockMarcaReceta();
+                    //    Marc2.idMarca = 1;
+                    //    Marc2.idReceta = Convert.ToInt16(id);
+                    //    Marc2.stock = totalCantidadMarca * -1;
+
+                    //    controladorStockReceta.AgregarStockMarcasReceta(Marc2);
+                    //}
+
+
+                    //// Lotes // 
+                    //var ListStockLotes = controladorStockReceta.ObtenerStockLotesRecetaByIdReceta(receta.id);
+                    //StockLotesReceta Lotes = new StockLotesReceta();
+                    //decimal TotalCantLotes = CantVendida;
+                    //foreach (var item in ListStockLotes)
+                    //{
+                    //    if (TotalCantLotes > 0)
+                    //    {
+                    //        var presentacion = controladorPresentacion.ObtenerPresentacionId(item.idPresentacion);
+                    //        Lotes.Lote = item.Lote;
+                    //        Lotes.id = item.id;
+                    //        Lotes.idReceta = item.idReceta;
+                    //        Lotes.idPresentacion = item.idPresentacion;
+                    //        decimal totalKg = (decimal)(item.stock * presentacion.cantidad);
+                    //        decimal divisor = presentacion.cantidad;
+                    //        if (presentacion.cantidad < 1)
+                    //        {
+                    //            divisor = 1 / presentacion.cantidad;
+                    //        }
+                    //        if (totalKg >= TotalCantLotes)
+                    //        {
+                    //            if (presentacion.cantidad > 1)
+                    //            {
+
+                    //                Lotes.stock = (totalKg - TotalCantLotes) / divisor;
+                    //            }
+                    //            else
+                    //            {
+                    //                Lotes.stock = (totalKg - TotalCantLotes) * divisor;
+                    //            }
+                    //            TotalCantLotes = 0;
+                    //        }
+                    //        else
+                    //        {
+                    //            TotalCantLotes = (decimal)(TotalCantLotes - totalKg);
+                    //            Lotes.stock = 0;
+                    //        }
+                    //        controladorStockReceta.EditarStockLotesReceta(Lotes);
+                    //    }
+
+                    //}
+
+
+                    //if (TotalCantLotes > 0)
+                    //{
+                    //    StockLotesReceta Lotes2 = new StockLotesReceta();
+                    //    Lotes.idPresentacion = 1;
+                    //    Lotes.idReceta = Convert.ToInt16(id);
+                    //    Lotes.stock = TotalCantLotes * -1;
+                    //    Lotes.Lote = "No Existe Lote";
+                    //    controladorStockReceta.AgregarStockLotesReceta(Lotes2);
+                    //}
+
+
+                    //// Sector //
+                    //var ListStockSector = controladorStockReceta.ObtenerStockSectoresRecetaByIdReceta(receta.id);
+                    //stockSectoresReceta Sector = new stockSectoresReceta();
+                    //decimal TotalCantSector = CantVendida;
+                    //foreach (var item in ListStockSector)
+                    //{
+                    //    if (TotalCantSector > 0)
+                    //    {
+                    //        Sector.id = item.id;
+                    //        Sector.idReceta = item.idReceta;
+                    //        Sector.idSector = item.idSector;
+                    //        if (item.stock >= CantVendida)
+                    //        {
+                    //            Sector.stock = item.stock - TotalCantSector;
+                    //            TotalCantSector = 0;
+                    //        }
+                    //        else
+                    //        {
+                    //            if (item.stock < 0)
+                    //            {
+                    //                decimal totalNegativo = TotalCantSector * -1;
+                    //                TotalCantSector = (decimal)(totalNegativo + item.stock);
+                    //                Sector.stock = TotalCantSector;
+                    //            }
+                    //            else
+                    //            {
+                    //                TotalCantSector = (decimal)(CantVendida - item.stock);
+                    //                Sector.stock = 0;
+                    //            }
+                    //        }
+                    //        controladorStockReceta.EditarStockSectoresReceta(Sector);
+                    //    }
+
+                    //}
+
+
+                    //if (TotalCantSector > 0)
+                    //{
+                    //    stockSectoresReceta Sector2 = new stockSectoresReceta();
+                    //    Sector2.idReceta = Convert.ToInt16(id);
+                    //    Sector2.stock = TotalCantLotes * -1;
+                    //    Sector2.idSector = 1;
+                    //    controladorStockReceta.AgregarStockSectoresReceta(Sector2);
+                    //}
 
                 }
 
@@ -2130,7 +2128,7 @@ namespace Tecnocuisine.Formularios.Ventas
 
             }
         }
-        public static void ReducirStockProducto(Tecnocuisine_API.Entitys.Productos prod, string[] array)
+        public static void ReducirStockProducto(Tecnocuisine_API.Entitys.Productos prod, string[] array, int sectorid)
         {
             ControladorStockProducto controladorStockProducto = new ControladorStockProducto();
             ControladorUnidad cu = new ControladorUnidad();
@@ -2152,27 +2150,27 @@ namespace Tecnocuisine.Formularios.Ventas
                     p.idProducto = Convert.ToInt16(id);
                     p.stock = CantVendida * -1;
                     controladorStockProducto.AgregarStockProducto(p);
-                    StockPresentaciones Present = new StockPresentaciones();
-                    Present.idProducto = Convert.ToInt16(id);
-                    Present.idPresentaciones = 1;
-                    Present.stock = CantVendida * -1;
-                    controladorStockProducto.AgregarStockPresentacion(Present);
-                    StockLotes SLotes = new StockLotes();
-                    SLotes.idProducto = Convert.ToInt16(id);
-                    SLotes.Lote = "No Existe Lote";
-                    SLotes.stock = CantVendida * -1;
-                    SLotes.idPresentacion = 1;
-                    controladorStockProducto.AgregarStockLotes(SLotes);
+                    //StockPresentaciones Present = new StockPresentaciones();
+                    //Present.idProducto = Convert.ToInt16(id);
+                    //Present.idPresentaciones = 1;
+                    //Present.stock = CantVendida * -1;
+                    //controladorStockProducto.AgregarStockPresentacion(Present);
+                    //StockLotes SLotes = new StockLotes();
+                    //SLotes.idProducto = Convert.ToInt16(id);
+                    //SLotes.Lote = "No Existe Lote";
+                    //SLotes.stock = CantVendida * -1;
+                    //SLotes.idPresentacion = 1;
+                    //controladorStockProducto.AgregarStockLotes(SLotes);
                     StockSectores SSector = new StockSectores();
                     SSector.idProducto = Convert.ToInt16(id);
-                    SSector.idSector = 1;
+                    SSector.idSector = sectorid;
                     SSector.stock = CantVendida * -1;
                     controladorStockProducto.AgregarStockSectores(SSector);
-                    StockMarca SMarca = new StockMarca();
-                    SMarca.idMarca = 1;
-                    SMarca.idProducto = Convert.ToInt16(id);
-                    SMarca.stock = CantVendida * -1;
-                    controladorStockProducto.AgregarStockMarca(SMarca);
+                    //StockMarca SMarca = new StockMarca();
+                    //SMarca.idMarca = 1;
+                    //SMarca.idProducto = Convert.ToInt16(id);
+                    //SMarca.stock = CantVendida * -1;
+                    //controladorStockProducto.AgregarStockMarca(SMarca);
                 }
                 else
                 {
@@ -2181,226 +2179,229 @@ namespace Tecnocuisine.Formularios.Ventas
                     sf.id = StockFinal.id;
                     sf.idProducto = StockFinal.idProducto;
                     sf.stock = StockFinal.stock - CantVendida;
-
                     controladorStockProducto.EditarStockProducto(sf);
 
-                    StockPresentaciones Pres = new StockPresentaciones();
-                    var ListStockPresentaciones = controladorStockProducto.ObtenerStockPresentacionesByIdProducto(prod.id);
-                    decimal totalCantidadPresentacion = CantVendida;
-                    // Presentaciones //
-                    foreach (var item in ListStockPresentaciones)
-                    {
-                        if (totalCantidadPresentacion > 0)
-                        {
-                            var presentaciones = controladorPresentacion.ObtenerPresentacionId(item.idPresentaciones);
-                            decimal total = 0;
-                            decimal divisor = presentaciones.cantidad;
-                            if (presentaciones.cantidad < 1)
-                            {
-                                divisor = 1 / presentaciones.cantidad;
-                            }
-                            if (presentaciones.cantidad < 1)
-                            {
-                                total = CantVendida / presentaciones.cantidad;
+                    //StockPresentaciones Pres = new StockPresentaciones();
+                    //var ListStockPresentaciones = controladorStockProducto.ObtenerStockPresentacionesByIdProducto(prod.id);
+                    //decimal totalCantidadPresentacion = CantVendida;
+                    //// Presentaciones //
+                    //foreach (var item in ListStockPresentaciones)
+                    //{
+                    //    if (totalCantidadPresentacion > 0)
+                    //    {
+                    //        var presentaciones = controladorPresentacion.ObtenerPresentacionId(item.idPresentaciones);
+                    //        decimal total = 0;
+                    //        decimal divisor = presentaciones.cantidad;
+                    //        if (presentaciones.cantidad < 1)
+                    //        {
+                    //            divisor = 1 / presentaciones.cantidad;
+                    //        }
+                    //        if (presentaciones.cantidad < 1)
+                    //        {
+                    //            total = CantVendida / presentaciones.cantidad;
 
-                            }
-                            else
-                            {
-                                total = presentaciones.cantidad * CantVendida;
-                            }
-                            Pres.id = item.id;
-                            Pres.idPresentaciones = item.idPresentaciones;
-                            Pres.idProducto = item.idProducto;
-                            if (presentaciones.cantidad > 1)
-                            {
-                                decimal totalkg = (decimal)(presentaciones.cantidad * item.stock);
-                                if (totalkg > CantVendida && totalCantidadPresentacion > 0)
-                                {
-                                    totalkg = (totalkg - CantVendida) / presentaciones.cantidad;
-                                    totalCantidadPresentacion = 0;
-                                    Pres.stock = totalkg;
-                                }
-                                else
-                                {
-                                    totalkg = 0;
-                                    totalCantidadPresentacion = CantVendida - totalkg;
-                                    Pres.stock = 0;
-                                }
-                            }
-                            else if (presentaciones.cantidad < 1 && totalCantidadPresentacion > 0)
-                            {
-                                decimal totalKG = (decimal)(presentaciones.cantidad * item.stock);
-                                if (totalKG > totalCantidadPresentacion && totalCantidadPresentacion > 0)
-                                {
-                                    totalKG = (totalKG - CantVendida) / divisor;
-                                    totalCantidadPresentacion = 0;
-                                    Pres.stock = totalKG;
-                                }
-                                else
-                                {
-                                    totalCantidadPresentacion = CantVendida - totalKG;
-                                    Pres.stock = 0;
-                                }
-                            }
-                            else if (totalCantidadPresentacion > 0)
-                            {
-                                if ((item.stock * presentaciones.cantidad) >= CantVendida)
-                                {
-                                    Pres.stock = (item.stock - totalCantidadPresentacion) * divisor;
-                                    totalCantidadPresentacion = 0;
-                                }
-                                else
-                                {
-                                    Pres.stock = 0;
-                                    totalCantidadPresentacion = (decimal)(totalCantidadPresentacion - (decimal)(presentaciones.cantidad * item.stock));
-                                }
-                            }
-                            controladorStockProducto.EditarStockPresentaciones(Pres);
+                    //        }
+                    //        else
+                    //        {
+                    //            total = presentaciones.cantidad * CantVendida;
+                    //        }
+                    //        Pres.id = item.id;
+                    //        Pres.idPresentaciones = item.idPresentaciones;
+                    //        Pres.idProducto = item.idProducto;
+                    //        if (presentaciones.cantidad > 1)
+                    //        {
+                    //            decimal totalkg = (decimal)(presentaciones.cantidad * item.stock);
+                    //            if (totalkg > CantVendida && totalCantidadPresentacion > 0)
+                    //            {
+                    //                totalkg = (totalkg - CantVendida) / presentaciones.cantidad;
+                    //                totalCantidadPresentacion = 0;
+                    //                Pres.stock = totalkg;
+                    //            }
+                    //            else
+                    //            {
+                    //                totalkg = 0;
+                    //                totalCantidadPresentacion = CantVendida - totalkg;
+                    //                Pres.stock = 0;
+                    //            }
+                    //        }
+                    //        else if (presentaciones.cantidad < 1 && totalCantidadPresentacion > 0)
+                    //        {
+                    //            decimal totalKG = (decimal)(presentaciones.cantidad * item.stock);
+                    //            if (totalKG > totalCantidadPresentacion && totalCantidadPresentacion > 0)
+                    //            {
+                    //                totalKG = (totalKG - CantVendida) / divisor;
+                    //                totalCantidadPresentacion = 0;
+                    //                Pres.stock = totalKG;
+                    //            }
+                    //            else
+                    //            {
+                    //                totalCantidadPresentacion = CantVendida - totalKG;
+                    //                Pres.stock = 0;
+                    //            }
+                    //        }
+                    //        else if (totalCantidadPresentacion > 0)
+                    //        {
+                    //            if ((item.stock * presentaciones.cantidad) >= CantVendida)
+                    //            {
+                    //                Pres.stock = (item.stock - totalCantidadPresentacion) * divisor;
+                    //                totalCantidadPresentacion = 0;
+                    //            }
+                    //            else
+                    //            {
+                    //                Pres.stock = 0;
+                    //                totalCantidadPresentacion = (decimal)(totalCantidadPresentacion - (decimal)(presentaciones.cantidad * item.stock));
+                    //            }
+                    //        }
+                    //        controladorStockProducto.EditarStockPresentaciones(Pres);
 
-                        }
-                    }
+                    //    }
+                    //}
 
-                    if (totalCantidadPresentacion > 0)
-                    {
-                        StockPresentaciones Present = new StockPresentaciones();
-                        Present.idProducto = Convert.ToInt16(id);
-                        Present.idPresentaciones = 1;
-                        Present.stock = totalCantidadPresentacion * -1;
-                        controladorStockProducto.AgregarStockPresentacion(Present);
-                    }
+                    //if (totalCantidadPresentacion > 0)
+                    //{
+                    //    StockPresentaciones Present = new StockPresentaciones();
+                    //    Present.idProducto = Convert.ToInt16(id);
+                    //    Present.idPresentaciones = 1;
+                    //    Present.stock = totalCantidadPresentacion * -1;
+                    //    controladorStockProducto.AgregarStockPresentacion(Present);
+                    //}
 
-                    var ListStockMarcas = controladorStockProducto.ObtenerStockMarcaByIDProducto(prod.id);
-                    // Marcas //
-                    StockMarca Marc = new StockMarca();
-                    decimal totalCantidadMarca = CantVendida;
-                    foreach (var item in ListStockMarcas)
-                    {
-                        if (totalCantidadMarca >= 0)
-                        {
+                    //var ListStockMarcas = controladorStockProducto.ObtenerStockMarcaByIDProducto(prod.id);
+                    //// Marcas //
+                    //StockMarca Marc = new StockMarca();
+                    //decimal totalCantidadMarca = CantVendida;
+                    //foreach (var item in ListStockMarcas)
+                    //{
+                    //    if (totalCantidadMarca >= 0)
+                    //    {
 
-                            Marc.idMarca = item.idMarca;
-                            Marc.id = item.id;
-                            Marc.idProducto = item.idProducto;
-                            if (item.stock > totalCantidadMarca)
-                            {
-                                Marc.stock = item.stock - totalCantidadMarca;
-                                totalCantidadMarca = 0;
-                            }
-                            else if (item.stock < 0)
-                            {
-                                decimal totalNegativo = totalCantidadMarca * -1;
-                                totalCantidadMarca = (decimal)(totalNegativo + item.stock);
-                                Marc.stock = totalCantidadMarca;
-                            }
-                            else
-                            {
-                                totalCantidadMarca = (decimal)(totalCantidadMarca - item.stock);
-                                Marc.stock = 0;
-                            }
-                            controladorStockProducto.EditarStockMarca(Marc);
-                        }
+                    //        Marc.idMarca = item.idMarca;
+                    //        Marc.id = item.id;
+                    //        Marc.idProducto = item.idProducto;
+                    //        if (item.stock > totalCantidadMarca)
+                    //        {
+                    //            Marc.stock = item.stock - totalCantidadMarca;
+                    //            totalCantidadMarca = 0;
+                    //        }
+                    //        else if (item.stock < 0)
+                    //        {
+                    //            decimal totalNegativo = totalCantidadMarca * -1;
+                    //            totalCantidadMarca = (decimal)(totalNegativo + item.stock);
+                    //            Marc.stock = totalCantidadMarca;
+                    //        }
+                    //        else
+                    //        {
+                    //            totalCantidadMarca = (decimal)(totalCantidadMarca - item.stock);
+                    //            Marc.stock = 0;
+                    //        }
+                    //        controladorStockProducto.EditarStockMarca(Marc);
+                    //    }
 
-                    }
+                    //}
 
-                    if (totalCantidadMarca > 0)
-                    {
-                        StockMarca SMarca = new StockMarca();
-                        SMarca.idMarca = 1;
-                        SMarca.idProducto = Convert.ToInt16(id);
-                        SMarca.stock = totalCantidadMarca * -1;
-                        controladorStockProducto.AgregarStockMarca(SMarca);
-                    }
-                    // Lotes // 
-                    var ListStockLotes = controladorStockProducto.ObtenerStockLotesByIdProducto(prod.id);
-                    StockLotes Lotes = new StockLotes();
-                    decimal TotalCantLotes = CantVendida;
-                    foreach (var item in ListStockLotes)
-                    {
-                        if (TotalCantLotes > 0)
-                        {
-                            var presentacion = controladorPresentacion.ObtenerPresentacionId(item.idPresentacion);
-                            Lotes.Lote = item.Lote;
-                            Lotes.id = item.id;
-                            Lotes.idProducto = item.idProducto;
-                            Lotes.idPresentacion = item.idPresentacion;
-                            decimal totalKg = (decimal)(item.stock * presentacion.cantidad);
-                            decimal divisor = presentacion.cantidad;
-                            if (presentacion.cantidad < 1)
-                            {
-                                divisor = 1 / presentacion.cantidad;
-                            }
-                            if (totalKg >= TotalCantLotes)
-                            {
-                                if (presentacion.cantidad > 1)
-                                {
+                    //if (totalCantidadMarca > 0)
+                    //{
+                    //    StockMarca SMarca = new StockMarca();
+                    //    SMarca.idMarca = 1;
+                    //    SMarca.idProducto = Convert.ToInt16(id);
+                    //    SMarca.stock = totalCantidadMarca * -1;
+                    //    controladorStockProducto.AgregarStockMarca(SMarca);
+                    //}
+                    //// Lotes // 
+                    //var ListStockLotes = controladorStockProducto.ObtenerStockLotesByIdProducto(prod.id);
+                    //StockLotes Lotes = new StockLotes();
+                    //decimal TotalCantLotes = CantVendida;
+                    //foreach (var item in ListStockLotes)
+                    //{
+                    //    if (TotalCantLotes > 0)
+                    //    {
+                    //        var presentacion = controladorPresentacion.ObtenerPresentacionId(item.idPresentacion);
+                    //        Lotes.Lote = item.Lote;
+                    //        Lotes.id = item.id;
+                    //        Lotes.idProducto = item.idProducto;
+                    //        Lotes.idPresentacion = item.idPresentacion;
+                    //        decimal totalKg = (decimal)(item.stock * presentacion.cantidad);
+                    //        decimal divisor = presentacion.cantidad;
+                    //        if (presentacion.cantidad < 1)
+                    //        {
+                    //            divisor = 1 / presentacion.cantidad;
+                    //        }
+                    //        if (totalKg >= TotalCantLotes)
+                    //        {
+                    //            if (presentacion.cantidad > 1)
+                    //            {
 
-                                    Lotes.stock = (totalKg - TotalCantLotes) / divisor;
-                                }
-                                else
-                                {
-                                    Lotes.stock = (totalKg - TotalCantLotes) * divisor;
-                                }
-                                TotalCantLotes = 0;
-                            }
-                            else
-                            {
-                                TotalCantLotes = (decimal)(TotalCantLotes - totalKg);
-                                Lotes.stock = 0;
-                            }
-                            controladorStockProducto.EditarStockLotes(Lotes);
-                        }
+                    //                Lotes.stock = (totalKg - TotalCantLotes) / divisor;
+                    //            }
+                    //            else
+                    //            {
+                    //                Lotes.stock = (totalKg - TotalCantLotes) * divisor;
+                    //            }
+                    //            TotalCantLotes = 0;
+                    //        }
+                    //        else
+                    //        {
+                    //            TotalCantLotes = (decimal)(TotalCantLotes - totalKg);
+                    //            Lotes.stock = 0;
+                    //        }
+                    //        controladorStockProducto.EditarStockLotes(Lotes);
+                    //    }
 
-                    }
+                    //}
 
-                    if (TotalCantLotes > 0)
-                    {
-                        StockLotes SLotes = new StockLotes();
-                        SLotes.idProducto = Convert.ToInt16(id);
-                        SLotes.Lote = "No Existe Lote";
-                        SLotes.stock = TotalCantLotes * -1;
-                        SLotes.idPresentacion = 1;
-                        controladorStockProducto.AgregarStockLotes(SLotes);
-                    }
+                    //if (TotalCantLotes > 0)
+                    //{
+                    //    StockLotes SLotes = new StockLotes();
+                    //    SLotes.idProducto = Convert.ToInt16(id);
+                    //    SLotes.Lote = "No Existe Lote";
+                    //    SLotes.stock = TotalCantLotes * -1;
+                    //    SLotes.idPresentacion = 1;
+                    //    controladorStockProducto.AgregarStockLotes(SLotes);
+                    //}
+
                     // Sector //
-                    var ListStockSector = controladorStockProducto.ObtenerStockSectoresByIdProducto(prod.id);
-                    StockSectores Sector = new StockSectores();
-                    decimal TotalCantSector = CantVendida;
-                    foreach (var item in ListStockSector)
-                    {
-                        if (TotalCantSector > 0)
-                        {
-                            Sector.id = item.id;
-                            Sector.idProducto = item.idProducto;
-                            Sector.idSector = item.idSector;
-                            if (item.stock >= TotalCantSector)
-                            {
-                                Sector.stock = item.stock - TotalCantSector;
-                                TotalCantSector = 0;
-                            }
-                            else if (item.stock < 0)
-                            {
-                                decimal totalNegativo = TotalCantSector * -1;
-                                TotalCantSector = (decimal)(totalNegativo + item.stock);
-                                Sector.stock = TotalCantSector;
-                            }
-                            else
-                            {
-                                TotalCantLotes = (decimal)(TotalCantSector - item.stock);
-                                Lotes.stock = 0;
-                            }
-                            controladorStockProducto.EditarStockSectores(Sector);
-                        }
+                    StockSectores SSector = controladorStockProducto.ObtenerStockSectores(prod.id, sectorid);
+                    SSector.stock = SSector.stock - (CantVendida);
+                    controladorStockProducto.EditarStockSectores(SSector);
+                    //var ListStockSector = controladorStockProducto.ObtenerStockSectoresByIdProducto(prod.id);
+                    //StockSectores Sector = new StockSectores();
+                    //decimal TotalCantSector = CantVendida;
+                    //foreach (var item in ListStockSector)
+                    //{
+                    //    if (TotalCantSector > 0)
+                    //    {
+                    //        Sector.id = item.id;
+                    //        Sector.idProducto = item.idProducto;
+                    //        Sector.idSector = item.idSector;
+                    //        if (item.stock >= TotalCantSector)
+                    //        {
+                    //            Sector.stock = item.stock - TotalCantSector;
+                    //            TotalCantSector = 0;
+                    //        }
+                    //        else if (item.stock < 0)
+                    //        {
+                    //            decimal totalNegativo = TotalCantSector * -1;
+                    //            TotalCantSector = (decimal)(totalNegativo + item.stock);
+                    //            Sector.stock = TotalCantSector;
+                    //        }
+                    //        else
+                    //        {
+                    //            //TotalCantLotes = (decimal)(TotalCantSector - item.stock);
+                    //            //Lotes.stock = 0;
+                    //        }
+                    //        controladorStockProducto.EditarStockSectores(Sector);
+                    //    }
 
-                    }
+                    //}
 
-                    if (TotalCantSector > 0)
-                    {
-                        StockSectores SSector = new StockSectores();
-                        SSector.idProducto = Convert.ToInt16(id);
-                        SSector.idSector = 1;
-                        SSector.stock = TotalCantSector * -1;
-                        controladorStockProducto.AgregarStockSectores(SSector);
-                    }
+                    //if (TotalCantSector > 0)
+                    //{
+                    //    StockSectores SSector = new StockSectores();
+                    //    SSector.idProducto = Convert.ToInt16(id);
+                    //    SSector.idSector = 1;
+                    //    SSector.stock = TotalCantSector * -1;
+                    //    controladorStockProducto.AgregarStockSectores(SSector);
+                    //}
                 }
 
             }
