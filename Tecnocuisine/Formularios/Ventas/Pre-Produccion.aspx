@@ -188,6 +188,7 @@
                                                 <th style="width: 15%">Fecha</th>
                                                 <th style="">Sector Origen</th>
                                                 <th style="">Sector Destino</th>
+                                                <th style="">Estado</th>
                                                 <%--<th style="width: 15%">Producto</th>--%>
                                                 <%--<th style="width: 15%">Confirmada</th>--%>
                                                 <%--<th style="width: 15%">Enviada</th>--%>

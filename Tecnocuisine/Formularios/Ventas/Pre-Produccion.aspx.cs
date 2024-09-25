@@ -1,4 +1,5 @@
-﻿using Microsoft.Reporting.WebForms;
+﻿using Gestion_Api.Modelo;
+using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -314,7 +315,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 TableRow tr = new TableRow();
                 tr.ID = cont.ToString();
                 if (remito.recepcionado != null && remito.recepcionado == true)
-                    tr.Style.Add("color", "green");
+                    tr.Style.Add("color", "DarkGreen");
 
                 //Celdas
                 //TableCell celSectorDestino = new TableCell();
@@ -549,6 +550,19 @@ namespace Tecnocuisine.Formularios.Ventas
                 TableRow tr = new TableRow();
                 tr.ID = cont.ToString();
 
+                switch (dr["estadoId"].ToString())
+                {
+                    case "3":
+                        tr.Style.Add("color", "Chocolate");
+                        break;
+                    case "4":
+                        tr.Style.Add("color", "DarkGreen");
+                        break;
+                    default:
+                        break;
+                }
+                  
+
                 //Celdas
                 TableCell celFecha = new TableCell();
                 DateTime fecha = Convert.ToDateTime(dr["fecha"]);
@@ -573,6 +587,13 @@ namespace Tecnocuisine.Formularios.Ventas
                 celSectorDestino.HorizontalAlign = HorizontalAlign.Left;
                 celSectorDestino.Attributes.Add("style", "padding-bottom: 1px !important;");
                 tr.Cells.Add(celSectorDestino);
+
+                TableCell celEstado = new TableCell();
+                celEstado.Text = dr["estado"].ToString().ToUpper();
+                celEstado.VerticalAlign = VerticalAlign.Middle;
+                celEstado.HorizontalAlign = HorizontalAlign.Left;
+                celEstado.Attributes.Add("style", "padding-bottom: 1px !important;");
+                tr.Cells.Add(celEstado);
 
 
                 //TableCell celProducto = new TableCell();
