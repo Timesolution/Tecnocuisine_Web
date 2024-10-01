@@ -148,7 +148,7 @@
                                                 {
                                                     //cant += decimal.Parse(partes[j]);
                                                     decimal value;
-                                                    if (decimal.TryParse(partes[j], System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.InvariantCulture, out value))
+                                                    if (decimal.TryParse(partes[j], System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.CurrentCulture, out value))
                                                     {
                                                         cant += value;
                                                     }
@@ -157,7 +157,7 @@
                                             }
                                             else
                                             {
-                                                cant = Convert.ToDecimal(key2.Value.Rows[i]["cantidad"].ToString(), System.Globalization.CultureInfo.InvariantCulture);
+                                                cant = Convert.ToDecimal(key2.Value.Rows[i]["cantidad"].ToString());
                                             }
 
                                         %>

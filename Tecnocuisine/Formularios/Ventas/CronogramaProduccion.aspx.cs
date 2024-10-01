@@ -118,23 +118,42 @@ namespace Tecnocuisine.Formularios.Ventas
                 string OPNumero = dr["OPNumero"].ToString();
                 string producto = dr["Producto"].ToString();
                 int idReceta = Convert.ToInt32(dr["idReceta"].ToString());
-                string cantidad = dr["cantidad"].ToString();
+                string cantidadPadre = dr["cantidad"].ToString();
+                string rindePadre = dr["rinde"].ToString();
                 string fechaEntrega = dr["fechaEntrega"].ToString();
                 int idSector = Convert.ToInt32(dr["id5"].ToString());
                 string sector = dr["descripcion1"].ToString();
                 string razonSocial = dr["razonSocial"].ToString();
 
+                var divisor = Math.Round(Convert.ToDecimal(cantidadPadre) / Convert.ToDecimal(rindePadre),2, MidpointRounding.AwayFromZero);
+
+
                 /// Obtener los ingredientes de la receta recorrida 
-                DataTable dtingredietesNivel1 = obtenerIngredientesReceta(id, OPNumero, producto, idReceta, cantidad, fechaEntrega, idSector, sector, razonSocial);
+                DataTable dtingredietesNivel1 = obtenerIngredientesReceta(id, OPNumero, producto, idReceta, cantidadPadre, fechaEntrega, idSector, sector, razonSocial);
+                /// Acomodar cantidad en base a los valores del padre
+                for (int i = 0; i < dtingredietesNivel1.Rows.Count; i++)
+                {
+                    var cantidadProducto = Convert.ToDecimal(dtingredietesNivel1.Rows[i]["cantidad"], CultureInfo.InvariantCulture);        
+                    dtingredietesNivel1.Rows[i]["cantidad"] = Math.Round(cantidadProducto * divisor, 2);
+                }
                 dtGlobal.Merge(dtingredietesNivel1); // no mover de aca!!
+
 
                 /// Insertar en la tabla la receta final que se esta recorriendo
                 DataRow rowRecetaOrden = CrearRowRecetaOrden(dr);
                 dtGlobal.Rows.Add(rowRecetaOrden);
 
+
                 /// Obtener las subrecetas de la receta recorrida
-                DataTable dtSubRecetas = obtenerSubRecetasOrdenes(id, OPNumero, producto, idReceta, cantidad, fechaEntrega, idSector, sector, razonSocial);
+                DataTable dtSubRecetas = obtenerSubRecetasOrdenes(id, OPNumero, producto, idReceta, cantidadPadre, fechaEntrega, idSector, sector, razonSocial);
+                /// Acomodar cantidad en base a los valores del padre
+                for (int i = 0; i < dtSubRecetas.Rows.Count; i++)
+                {
+                    var cantidadReceta = Convert.ToDecimal(dtSubRecetas.Rows[i]["cantidad"], CultureInfo.InvariantCulture);
+                    dtSubRecetas.Rows[i]["cantidad"] = Math.Round(cantidadReceta * divisor, 2);
+                }
                 dtGlobal.Merge(dtSubRecetas);
+
 
                 /// Recorrer los ingredientes y recetas de cada subreceta
                 RecorrerSubrecetas(dtSubRecetas);
@@ -160,15 +179,36 @@ namespace Tecnocuisine.Formularios.Ventas
                     string sector = dr["sectorProductivo"].ToString();
                     string razonSocial = dr["razonSocial"].ToString();
 
+                    string rindePadre = dr["rinde"].ToString();
+                    string cantidadPadre = dr["cantidadPadre"].ToString();
+
+                    var divisor = Math.Round(Convert.ToDecimal(cantidadPadre) / Convert.ToDecimal(rindePadre), 2, MidpointRounding.AwayFromZero);
+
                     // Ingredientes: Aceite,oregano,cebolla...
                     DataTable dtingredientes = obtenerIngredientesReceta(idOrdenProduccion, OPNumero, descripcion, idProductoReceta, cantidad, fechaEntregaOrden, idSector, sector, razonSocial);
                     // Recorrer cada ingrediente y cambiarle la fecha teniendo en cuenta su tiempo de elaboracion y la fecha del padre
                     SetFechasElaboracion(dtingredientes, fechaSubrecetaPadre);
 
+                    /// Acomodar cantidad en base a los valores del padre
+                    for (int i = 0; i < dtingredientes.Rows.Count; i++)
+                    {
+                        var cantidadProducto = Convert.ToDecimal(dtingredientes.Rows[i]["cantidad"], CultureInfo.InvariantCulture);
+                        dtingredientes.Rows[i]["cantidad"] = Math.Round(cantidadProducto * divisor, 2);
+                    }
+
+
+
                     //Subrecetas
                     DataTable dtSubrecetas = obtenerSubRecetasOrdenes(idOrdenProduccion, OPNumero, descripcion, idProductoReceta, cantidad, fechaEntregaOrden, idSector, sector, razonSocial);
                     // Recorrer cada subreceta y cambiarle la fecha teniendo en cuenta su tiempo de elaboracion y la fecha del padre:
                     SetFechasElaboracion(dtSubrecetas, fechaSubrecetaPadre);
+                    /// Acomodar cantidad en base a los valores del padre
+                    for (int i = 0; i < dtSubrecetas.Rows.Count; i++)
+                    {
+                        var cantidadReceta = Convert.ToDecimal(dtSubrecetas.Rows[i]["cantidad"], CultureInfo.InvariantCulture);
+                        dtSubrecetas.Rows[i]["cantidad"] = Math.Round(cantidadReceta * divisor, 2);
+                    }
+
 
                     dtGlobal.Merge(dtingredientes);
                     dtGlobal.Merge(dtSubrecetas);
@@ -360,7 +400,6 @@ namespace Tecnocuisine.Formularios.Ventas
             {
                 ControladorOrdenDeProduccion cOrdenDeProduccion = new ControladorOrdenDeProduccion();
                 DataTable dt = cOrdenDeProduccion.getIngredientsRecipes(id, OPNumero, Producto, idReceta, cantidad, fechaEntrega, idSector, SectorPadre, RazonSocialCliente);
-
                 return dt;
 
             }
