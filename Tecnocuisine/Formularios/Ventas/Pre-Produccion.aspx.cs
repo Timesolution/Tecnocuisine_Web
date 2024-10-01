@@ -1994,6 +1994,7 @@ namespace Tecnocuisine.Formularios.Ventas
 
             RemitosInternos remitoInterno = contRemitosInternos.getRemitosInternosById(idRemitoInterno).FirstOrDefault();
             remitoInterno.recepcionado = true;
+            remitoInterno.fechaRecepcion = DateTime.Now;
             contRemitosInternos.UpdateRemitosInternos(remitoInterno);
 
             // Guardar cantidad recepcionada en registros de itemsremitosinternos

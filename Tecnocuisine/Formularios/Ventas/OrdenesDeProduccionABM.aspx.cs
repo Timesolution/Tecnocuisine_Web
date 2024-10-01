@@ -493,6 +493,7 @@ namespace Tecnocuisine.Formularios.Ventas
         {
             ordenesDeProduccion ordDeProduccion = new ordenesDeProduccion();
             ordDeProduccion.OPNumero = OrdenNumero;
+            ordDeProduccion.fechaCreacion = DateTime.Now;
             ordDeProduccion.fechaEntrega = Convert.ToDateTime(fechaEntrega);
 
             //string clienteTexto = TxtClientes.Text;
