@@ -2460,7 +2460,7 @@
             let listStock = document.getElementById("ContentPlaceHolder1_StockAlteradoFinal").textContent.replaceAll(".", ",");
             let historicoProduccion = document.getElementById("ContentPlaceHolder1_HistoricoProduccion").innerText;
             let listCostoCambios = document.getElementById("ContentPlaceHolder1_ListaCostoCambiado").value.replaceAll(".", ",");
-            let costoTotal = document.getElementById("CostoFinalTotal").innerText.split("$")[1].replaceAll(".", ",");
+            let costoTotal = document.getElementById("CostoFinalTotal").innerText.split("$")[1];
 
             $.ajax({
                 method: "POST",

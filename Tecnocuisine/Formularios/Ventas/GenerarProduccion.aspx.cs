@@ -1038,6 +1038,7 @@ namespace Tecnocuisine.Formularios.Ventas
                 decimal cantProducida = Convert.ToDecimal(CantidadProducida);
                 var ArrayStock = ListStock.Split('_');
 
+                // DESCONTAR STOCK DE INGREDIENTES UTILIZADOS
                 foreach (var i3 in item)
                 {
                     try
@@ -1174,7 +1175,7 @@ namespace Tecnocuisine.Formularios.Ventas
 
 
 
-                //int i = CrearHistoricoProduccion(item, marcaid, presentacionid, sectorid, Lote, cantProducida, unidadid, idreceta, CostoTotal);
+                int i = CrearHistoricoProduccion(item, marcaid, presentacionid, sectorid, Lote, cantProducida, unidadid, idreceta, CostoTotal);
                 string[] ListCambios = ListHistoricoCambio.Split('%');
                 CrearHistoricoCambios(ListCambios);
                 if (ListCostoCambios.Trim() != "")
@@ -1584,7 +1585,8 @@ namespace Tecnocuisine.Formularios.Ventas
                 VD.idUnidadMedida = unidad;
                 VD.idSector = sector;
                 VD.idReceta = idreceta;
-                VD.CostoTotal = Convert.ToDecimal(CostoTotal.Replace(".", ","));
+                //VD.CostoTotal = Convert.ToDecimal(CostoTotal.Replace(".", ","));
+                VD.CostoTotal = decimal.Parse(CostoTotal, NumberStyles.AllowThousands | NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
 
 
 
