@@ -1037,7 +1037,7 @@
             toastr.options = { "positionClass": "toast-bottom-right" };
 
             if (obj == null) {
-                alert('Obj es null');
+                //alert('Obj es null');
                 //return;
             } else if (obj.toUpperCase().includes("ERROR")) {
                 toastr.error(obj, "Error");

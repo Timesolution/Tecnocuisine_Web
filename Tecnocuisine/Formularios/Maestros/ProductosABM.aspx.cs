@@ -709,6 +709,14 @@ namespace Tecnocuisine.Formularios.Maestros
             try
             {
                 ControladorProducto controladorProducto = new ControladorProducto();
+                if (controladorProducto.ObtenerProductoByDescripcion(descripcion) != null)
+                {
+                    JavaScriptSerializer javaScript = new JavaScriptSerializer();
+                    javaScript.MaxJsonLength = 5000000;
+                    string resultadoJSON = javaScript.Serialize("ERROR. Descripcion ya utilizada.");
+                    return resultadoJSON;
+                }
+
                 ControladorStock controladorStock = new ControladorStock();
                 Tecnocuisine_API.Entitys.Productos producto = new Tecnocuisine_API.Entitys.Productos();
 
