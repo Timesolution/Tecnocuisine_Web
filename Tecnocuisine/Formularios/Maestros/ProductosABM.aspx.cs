@@ -80,8 +80,31 @@ namespace Tecnocuisine.Formularios.Maestros
             //ObtenerSubGruposArticulos(Convert.ToInt32(ListGrupo.SelectedValue));
             ObtenerPresentaciones();
             ObtenerMarca();
+            CargarProductosOptions();
         }
 
+
+        private void CargarProductosOptions()
+        {
+            try
+            {
+                var productos = controladorProducto.ObtenerTodosProductos();
+                var builder = new System.Text.StringBuilder();
+
+                if (productos.Count == 0) return;
+
+                foreach (var prod in productos)
+                {
+                    builder.Append(String.Format("<option value='{0}' id='c_p_" + prod.id + "'>", prod.descripcion));
+                }
+
+                ListaNombreProd.InnerHtml += builder.ToString();
+
+            }
+            catch (Exception ex)
+            {
+            }
+        }
 
         public void CargarRubros()
         {

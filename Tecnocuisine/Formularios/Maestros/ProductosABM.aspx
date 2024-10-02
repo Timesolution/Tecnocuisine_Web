@@ -74,8 +74,10 @@
                                                     <div class="col-md-8">
                                                         <%-- <asp:TextBox ID="ProdDescripcion" runat="server" class="form-control required" 
                                                             pattern="[a-zA-Z0-9-]+" title="Solo se permiten letras, números y el guion -" ></asp:TextBox>--%>
+                                                        <datalist id="ListaNombreProd" runat="server">
+                                                        </datalist>
 
-                                                        <asp:TextBox ID="ProdDescripcion" runat="server" class="form-control required"
+                                                        <asp:TextBox ID="ProdDescripcion" runat="server" class="form-control required" list="ContentPlaceHolder1_ListaNombreProd"
                                                             title="Solo se permiten letras, números y el guion -" onchange="ActualizarLabels()"></asp:TextBox>
 
 
@@ -766,14 +768,14 @@
         }
 
 
-            //table2 = document.getElementById('tbodyEditable1');
-            //max = table2.rows.length;
-            //for (let i = 0; i < max; i++) {
-            //    id = table2.rows[i].cells[0].innerHTML
-            //    descripcion = table2.rows[i].cells[1].innerHTML
+        //table2 = document.getElementById('tbodyEditable1');
+        //max = table2.rows.length;
+        //for (let i = 0; i < max; i++) {
+        //    id = table2.rows[i].cells[0].innerHTML
+        //    descripcion = table2.rows[i].cells[1].innerHTML
 
-            //    console.log(id + " - " + descripcion);
-            //}
+        //    console.log(id + " - " + descripcion);
+        //}
 
     </script>
     <script>
@@ -884,7 +886,7 @@
                     let selectRubro = document.getElementById('<%=ListRubro.ClientID%>');
                     let selectSectores = document.getElementById('<%=ddlSectores.ClientID%>');
                     let url = window.location.href;
-                   
+
                     ulFinal.className = "disabled"
 
                     EliminarRepetidos()
@@ -904,7 +906,7 @@
                                 + '" , cbxGestion: "' + document.getElementById('ContentPlaceHolder1_cbxGestion').checked
                                 + '" , Rubro: "' + selectRubro.value.split("-")[0].replace(" ", "")
                                 + '" , img: "' + ""
-                                + '" , sectorId: "' + selectSectores.selectedOptions[0].value                        
+                                + '" , sectorId: "' + selectSectores.selectedOptions[0].value
                                 + '"}',
                             contentType: "application/json",
                             dataType: 'json',
@@ -942,7 +944,7 @@
                                 + '" , cbxGestion: "' + document.getElementById('ContentPlaceHolder1_cbxGestion').checked
                                 + '" , Rubro: "' + selectRubro.value.split("-")[0].replace(" ", "")
                                 + '" , idProducto: "' + idProd
-                                + '" , sectorId: "' + selectSectores.selectedOptions[0].value  
+                                + '" , sectorId: "' + selectSectores.selectedOptions[0].value
                                 + '"}',
                             contentType: "application/json",
                             dataType: 'json',
