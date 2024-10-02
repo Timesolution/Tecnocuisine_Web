@@ -363,7 +363,7 @@
                                                </asp:DropDownList>                                            
                                         </div>
                                             <div class="col-md-1" style="text-align: left;">
-                                             <label id="TiempoPreparacion" style="margin-bottom:0px">Tiempo</label>
+                                             <label id="TiempoPreparacion" style="margin-bottom:0px">Dias Previos</label>
                                                <asp:TextBox Text="0" Style="text-align: right;" ID="TiempoDePreparacion"  
                                                     class="form-control" runat="server" onkeypress="javascript:return validarNro(event)"/>
                                              </div>
@@ -2423,6 +2423,8 @@
                 document.getElementById('<%=txtCantBruta.ClientID%>').value = "0";
                 document.getElementById('<%=txtCostoLimpio.ClientID%>').value = "";
                 document.getElementById('<%=txtUnidadMed.ClientID%>').value = "";
+                document.getElementById('<%=TiempoDePreparacion.ClientID%>').value = "";
+                document.getElementById('<%=ddlSector.ClientID%>').value = "-1";
                 document.getElementById('ContentPlaceHolder1_txtDescripcionProductos').focus();
 
             }
