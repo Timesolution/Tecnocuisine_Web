@@ -32,7 +32,7 @@
                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                     <thead>
                                         <tr>
-                                            <th style="width: 20%">Codigo</th>
+                                            <th style="width: 20%; display:none">Codigo</th>
                                             <th style="width: 40%">Descripcion</th>
                                             <th style="width: 30%"></th>
                                         </tr>
@@ -209,7 +209,7 @@
                         $('#modalEditar').modal('hide')
                     }
                     else if (response.d == 5) {
-                        toastr.error('Ya existe un tipo de receta con esa descripcion.', 'Error')
+                        toastr.error('No se puede utilizar esa descripcion.', 'Error')
                         $('#modalEditar').modal('hide')
                     }
 

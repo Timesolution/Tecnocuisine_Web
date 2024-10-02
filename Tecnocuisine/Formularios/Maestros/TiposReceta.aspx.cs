@@ -144,34 +144,45 @@ namespace Tecnocuisine.Formularios.Maestros
         {
             try
             {
-                TiposDeReceta tipo = new TiposDeReceta();
-                tipo.tipo = txtDescripcionTipo.Text;
-                tipo.estado = true;
-
-                if (!cTiposDeReceta.Existe(tipo.tipo)) // Si no existe, lo crea
+                if (string.IsNullOrEmpty(txtDescripcionTipo.Text.Trim()))
                 {
-                    int resultado = cTiposDeReceta.AgregarTipoDeReceta(tipo);
-                    if (resultado > 0)
-                    {
-                        Session["toastrTipos"] = "1";
-                        Response.Redirect("TiposReceta.aspx");
-                    }
-                    else
-                    {
-                        this.m.ShowToastrError(this.Page, "No se pudo agregar el tipo de receta", "Error");
-                    }
+                    m.ShowToastrError(this.Page, "La descripción no puede estar vacía", "Error");
+                    return;
+                }
+
+                int result;
+                var tipoDb = cTiposDeReceta.ObtenerTipoDeRecetaByDescripcion(txtDescripcionTipo.Text);
+
+                // Si no existe, lo crea
+                if (tipoDb == null)
+                {
+                    TiposDeReceta tipo = new TiposDeReceta();
+                    tipo.tipo = txtDescripcionTipo.Text;
+                    tipo.estado = true;
+                    result = cTiposDeReceta.AgregarTipoDeReceta(tipo);
+                }
+                // Si ya existe, actualiza su estado
+                else
+                {
+                    tipoDb.estado = true;
+                    result = cTiposDeReceta.EditarTipoDeReceta(tipoDb);
+                }
+
+                // Mostrar resultado
+                if (result > 0)
+                {
+                    Session["toastrTipos"] = "1";
+                    Response.Redirect("TiposReceta.aspx");
                 }
                 else
                 {
-                    this.m.ShowToastrError(this.Page, "Ya existe un tipo de receta con esa descripcion", "Error");
+                    this.m.ShowToastrError(this.Page, "No se pudo agregar el tipo de receta", "Error");
                 }
-
             }
             catch (Exception ex)
             {
                 this.m.ShowToastrError(this.Page, "No se pudo agregar el insumo", "warning");
             }
-
         }
 
         protected void btnEliminar_Click(object sender, EventArgs e)
@@ -212,7 +223,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 celNumero.VerticalAlign = VerticalAlign.Middle;
                 celNumero.HorizontalAlign = HorizontalAlign.Left;
                 celNumero.Width = Unit.Percentage(20);
-                celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celNumero.Attributes.Add("style", "padding-bottom: 1px !important; display:none");
                 tr.Cells.Add(celNumero);
 
                 TableCell celNombre = new TableCell();
@@ -262,6 +273,8 @@ namespace Tecnocuisine.Formularios.Maestros
             }
         }
 
+        
+
         [WebMethod]
         public static string EditarTipo(int idTipo, string Descripcion)
         {
@@ -273,7 +286,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 tipo.tipo = Descripcion;
                 tipo.estado = true;
 
-                if (!cTiposDeReceta.Existe(tipo.tipo)) // Si no existe esa descripcion, deja editarlo
+                if (!cTiposDeReceta.Existe(tipo.tipo))
                 {
                     int r = new ControladorTiposDeReceta().EditarTipoDeReceta(tipo);
                     if (r > 0)
