@@ -550,18 +550,21 @@ namespace Tecnocuisine.Formularios.Ventas
                 TableRow tr = new TableRow();
                 tr.ID = cont.ToString();
 
-                switch (dr["estadoId"].ToString())
+                string estadoId = dr["estadoId"].ToString();
+
+                switch (estadoId)
                 {
+                    // En transito
                     case "3":
                         tr.Style.Add("color", "Chocolate");
                         break;
+                    // Recepcionado
                     case "4":
                         tr.Style.Add("color", "DarkGreen");
                         break;
                     default:
                         break;
                 }
-                  
 
                 //Celdas
                 TableCell celFecha = new TableCell();
@@ -693,16 +696,20 @@ namespace Tecnocuisine.Formularios.Ventas
 
 
                 TableCell celAccion = new TableCell();
-                LinkButton btnDetalle = new LinkButton();
-                btnDetalle.ID = "btnVerPedidos_" + cont.ToString();
-                btnDetalle.CssClass = "btn btn-xs";
-                btnDetalle.Style.Add("background-color", "transparent");
-                btnDetalle.Attributes.Add("data-toggle", "modal");
-                btnDetalle.Attributes.Add("href", "#modalConfirmacion2");
-                btnDetalle.Text = "<span title='Ver pedidos'><i class='fa fa-eye' style='color: black;'></i></span>";
-                btnDetalle.Attributes.Add("onclick", "getDatosTransferenciaDetalle('" + dr["sectorOrigen"].ToString() + "', '" + dr["sectorDestino"].ToString() + "', '" + fecha.ToString("yyyy-MM-dd") + "');");
-                celAccion.Controls.Add(btnDetalle);
 
+                if (estadoId.Equals("6"))
+                {
+                    LinkButton btnDetalle = new LinkButton();
+                    btnDetalle.ID = "btnVerPedidos_" + cont.ToString();
+                    btnDetalle.CssClass = "btn btn-xs";
+                    btnDetalle.Style.Add("background-color", "transparent");
+                    btnDetalle.Attributes.Add("data-toggle", "modal");
+                    btnDetalle.Attributes.Add("href", "#modalConfirmacion2");
+                    btnDetalle.Text = "<span title='Ver pedidos'><i class='fa fa-eye' style='color: black;'></i></span>";
+                    btnDetalle.Attributes.Add("onclick", "getDatosTransferenciaDetalle('" + dr["sectorOrigen"].ToString() + "', '" + dr["sectorDestino"].ToString() + "', '" + fecha.ToString("yyyy-MM-dd") + "');");
+                    celAccion.Controls.Add(btnDetalle);
+                }
+                
                 //LinkButton btnRemito = new LinkButton();
                 //btnRemito.ID = "btnVerDetalleRemitoInterno_" + cont.ToString();
                 //btnRemito.CssClass = "btn btn-xs";
