@@ -379,7 +379,7 @@
                                         <thead>
                                             <tr style="white-space:normal">
                                                 <th style="width: 0%;"></th> <!--Codigo-->
-                                                <th style="width: 25%">Descripcion</th>
+                                                <th style="width: 25%">Descripción</th>
                                                 <th style="width: auto; text-align:right">Cantidad</th>
                                                 <th style="width: auto">Unidad</th>
                                                 <th style="width: auto">Factor</th>

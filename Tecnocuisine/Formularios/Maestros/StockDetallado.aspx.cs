@@ -223,6 +223,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 foreach (var transito in transitos)
                 {
                     detalle +=
+                        transito.Fecha.ToString("dd/MM/yyyy HH:mm") + "," +
                         transito.SectorOrigen + "," +
                         transito.SectorDestino + "," +
                         transito.CantidadEnTransito.ToString().Replace(",", ".") + ";";

@@ -221,6 +221,7 @@
                                     <table class="table table-hover no-margins table-bordered" id="tableModalTransito">
                                         <thead>
                                             <tr>
+                                                <td><strong>Fecha</strong></td>
                                                 <td><strong>Sector Origen</strong></td>
                                                 <td><strong>Sector Destino</strong></td>
                                                 <td class="text-right"><strong>Cantidad</strong></td>
@@ -264,12 +265,14 @@
                     arrayDetalleTransito.forEach(function (detalleTransito) {
                         const partesDetalle = detalleTransito.split(",").filter(Boolean);
 
-                        const sectorOrigen = partesDetalle[0];
-                        const sectorDestino = partesDetalle[1];
-                        const cantidad = partesDetalle[2];
+                        const fecha = partesDetalle[0];
+                        const sectorOrigen = partesDetalle[1];
+                        const sectorDestino = partesDetalle[2];
+                        const cantidad = partesDetalle[3];
 
                         let plantillaDetalleTransito = `
                         <tr>
+                            <td>${fecha}</td>
                             <td>${sectorOrigen}</td>
                             <td>${sectorDestino}</td>
                             <td style="text-align: right;">${cantidad}</td>
