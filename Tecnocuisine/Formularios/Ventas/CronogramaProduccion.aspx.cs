@@ -705,8 +705,8 @@ namespace Tecnocuisine.Formularios.Ventas
                                 datosTransferencias.sectorOrigen = col1["sectorProductivo"].ToString();
                                 datosTransferencias.sectorDestino = col1["sectorPadre"].ToString();
                                 datosTransferencias.producto = col1["descripcion"].ToString();
-                                datosTransferencias.cantidad += Convert.ToDecimal(col1["cantidad"].ToString(), CultureInfo.InvariantCulture);
-                                datosTransferencias.cantidadConfirmada += Convert.ToDecimal(col1["cantidad"].ToString(), CultureInfo.InvariantCulture);
+                                datosTransferencias.cantidad += Convert.ToDecimal(col1["cantidad"].ToString(), new CultureInfo("es-AR"));
+                                datosTransferencias.cantidadConfirmada += Convert.ToDecimal(col1["cantidad"].ToString(), new CultureInfo("es-AR"));
                                 datosTransferencias.idTransferencia = id;
                                 datosTransferencias.estado = true;
 
