@@ -1303,6 +1303,15 @@
 
                     //----------------------------------------------------------------------------- REVISAR
 
+                    let rinde = document.getElementById('<%=txtRinde.ClientID%>').value;
+                    //Validar Sector Productivo
+                    if (rinde === "" || rinde <= 0) {
+                        document.getElementById('<%= txtRinde.ClientID %>').classList.add('invalid');
+                        return false;
+                    }
+                    else {
+                        document.getElementById('<%= txtRinde.ClientID %>').classList.remove('invalid');
+                    }
 
                     if (!EsTipoRecetaValido()) return false;
 
