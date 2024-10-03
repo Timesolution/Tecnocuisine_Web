@@ -227,10 +227,13 @@
                                         <div class="col-md-3" style="padding-right:0;">
                                             <asp:HiddenField id="HFRecetas" runat="server" />
                                                 <div class="input-group">
-                                                    <asp:TextBox ID="txtSector" disabled="disabled" placeholder="Sector" class="form-control" runat="server" />
+                                                    <%--<asp:TextBox ID="txtSector" disabled="disabled" placeholder="Sector" class="form-control" runat="server" />
                                                     <span class="input-group-btn">
                                                         <asp:LinkButton runat="server" ID="btnSectores" class="btn btn-primary dim" onclientclick="FocusSearch()" data-toggle="modal" data-backdrop="static" data-target="#modalSectores"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
-                                                    </span>
+                                                    </span>--%>
+
+                                                    <asp:DropDownList ID="ddlSectorProductivo" runat="server" class="form-control">
+                                                    </asp:DropDownList>
                                                 </div>                                                                                          
                                         </div>
                                         
@@ -1378,7 +1381,7 @@
                             data: '{ descripcion: "' + document.getElementById('<%=txtDescripcionReceta.ClientID%>').value
                                 + '" , codigo: "' + document.getElementById('<%=txtCodigo.ClientID%>').value
                                 <%--+ '" , Categoria: "' + document.getElementById('<%=txtDescripcionCategoria.ClientID%>').value--%>
-                                + '" , Sector: "' + document.getElementById('<%=txtSector.ClientID%>').value
+                                + '" , Sector: "' + document.getElementById('<%=ddlSectorProductivo.ClientID%>').value
                                 <%--+ '" , Atributos: "' + document.getElementById('<%=txtDescripcionAtributo.ClientID%>').value--%>
                                 + '" , Unidad: "' + selectUnidadMedida.selectedOptions[0].value
                                 + '" , Tipo: "' + selectTipoReceta.selectedOptions[0].value

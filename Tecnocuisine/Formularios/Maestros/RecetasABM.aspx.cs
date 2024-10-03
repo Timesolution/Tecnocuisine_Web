@@ -138,11 +138,15 @@ namespace Tecnocuisine.Formularios.Maestros
                 this.ddlSector.DataSource = sortedTable;
                 this.ddlSector.DataValueField = "id";
                 this.ddlSector.DataTextField = "descripcion";
-
                 this.ddlSector.DataBind();
-
                 this.ddlSector.SelectedValue = "-1";
 
+
+                this.ddlSectorProductivo.DataSource = sortedTable;
+                this.ddlSectorProductivo.DataValueField = "id";
+                this.ddlSectorProductivo.DataTextField = "descripcion";
+                this.ddlSectorProductivo.DataBind();
+                this.ddlSectorProductivo.SelectedValue = "-1";
             }
             catch (Exception ex)
             {
@@ -234,8 +238,8 @@ namespace Tecnocuisine.Formularios.Maestros
                     {
                         var sec = controladorSector.ObtenerSectorProductivoId(sector.idSectorP.Value);
                         if (sec != null)
-
-                            txtSector.Text += sec.id + " - " + sec.descripcion /*+ ", "*/;
+                            ddlSectorProductivo.SelectedValue = sec.id.ToString();
+                            //txtSector.Text += sec.id + " - " + sec.descripcion /*+ ", "*/;
                     }
 
 
