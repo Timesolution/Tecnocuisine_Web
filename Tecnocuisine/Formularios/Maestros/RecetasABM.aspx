@@ -43,10 +43,10 @@
 
         .wizard > .content > .body {
             width: 100%;
-    /*        white-space: normal !important;*/
+            /*        white-space: normal !important;*/
         }
 
-/*
+        /*
         td ul, td a, td li{
             white-space: normal !important;
         }
@@ -54,7 +54,7 @@
             white-space: normal !important;
         }*/
     </style>
-   
+
 
     <div class="row wrapper border-bottom white-bg page-heading" style="padding-bottom: 0px;">
 
@@ -132,7 +132,7 @@
                                                         </label>
                                                         <%--<input type="file" accept="image/*" name="file2" id="inputImage2" class="hide">--%>
                                                         <%--<input type="file" id="inputImage2" name="file2" class="hide" accept="image/*" onchange="cargarImagen()"/>--%>
-                                                        <asp:FileUpload ID="inputImage2" runat="server" CssClass="hide" />
+                                                        <input type="file" id="inputImage2" accept="image/*"/>
                                                     </div>
                                                 </div>
 
@@ -310,7 +310,7 @@
                                     </div>
 
                                     <div class="well"style="margin-top:2%;margin-right: -15px;margin-left: -15px;">
-                                    <div class="row" style="margin-top: 0.5%; margin-bottom: 2%; display:flex;flex-wrap:nowrap;justify-content:space-between">
+                                    <div id="containerAddItem" class="row" style="margin-top: 0.5%; margin-bottom: 2%; display:flex;flex-wrap:nowrap;justify-content:space-between">
                                         <div class="col-md-3">
                                           
                                             <label  style="margin-bottom: 0px;"> Ingredientes </label>
@@ -340,12 +340,12 @@
 
                                             <asp:TextBox ID="txtUnidadMed" disabled="disabled" Style="text-align: right" class="form-control" runat="server" />
                                         </div>
-                                        <div class="col-md-1" style="text-align: left;">
+                                        <div class="col-md-1" style="text-align: left; display:none">
                                             <label style="margin-bottom: auto;">Factor</label>
 
                                             <asp:TextBox ID="txtFactor" Text="1" onkeyUp="CalcularCantBruta()" Style="text-align: right" class="form-control" runat="server" />
                                         </div>
-                                        <div class="col-md-1" style="text-align: left;">
+                                        <div class="col-md-1" style="text-align: left; ">
                                             <label style="margin-bottom: auto;">Cant. Bruta</label>
 
                                             <asp:TextBox disabled="disabled" ID="txtCantBruta" Style="text-align: right" class="form-control" runat="server" />
@@ -385,8 +385,8 @@
                                                 <th style="width: 25%">Descripción</th>
                                                 <th style="width: auto; text-align:right">Cantidad</th>
                                                 <th style="width: auto">Unidad</th>
-                                                <th style="width: auto">Factor</th>
-                                                <th style="width: auto">C. Bruta</th>
+                                                <%--<th style="width: auto">Factor</th>--%>
+                                                <%--<th style="width: auto">C. Bruta</th>--%>
                                                 <th style="width: auto; text-align:right">Costo</th>
                                                 <th style="width: auto; text-align:right">C. Total</th>
                                                 <th style="width: auto; text-align:left">Sector</th>
@@ -1105,7 +1105,7 @@
                     ddlDepositos.val(respuesta.d);
                 }
             });
-                }
+        }
     </script>
 
     <script>
@@ -1185,7 +1185,7 @@
         "use strict";
         var $image = $("#imgDocF")
 
-        var $inputImageF = $("#<%=inputImage2.ClientID%>");
+        var $inputImageF = document.getElementById('inputImage2');
 
         if (window.FileReader) {
             //inputImageF.addEventListener("change",
@@ -1986,7 +1986,8 @@
             else
                 Factor = parseFloat(document.getElementById('<%= txtFactor.ClientID%>').value);
 
-            let CantBruta = Cantidad * Factor;
+            //let CantBruta = Cantidad * Factor;
+            let CantBruta = Cantidad;
             document.getElementById('<%=txtCantBruta.ClientID%>').value = myFormat(Math.round10(CantBruta, -3));
         }
         function ValidationCategoria() {
@@ -2312,7 +2313,8 @@
             let costAux = parseFloat(costo.replace(',', '.'));
             let CantAux = parseFloat(cantidad);
 
-            let factorValue = parseFloat(document.getElementById('<%= txtFactor.ClientID %>').value);
+            ////////let factorValue = parseFloat(document.getElementById('<%= txtFactor.ClientID %>').value);
+            let factorValue = 1;
             let factor = factorValue.toFixed(2);
 
             let cantBruta = document.getElementById('<%= txtCantBruta.ClientID %>').value;
@@ -2394,7 +2396,7 @@
                 listaDesplegable = "<td> <div id=\"jstree" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaLI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</li></ul></div></td>";
                 listaCantidadDesplegable = "<td> <div id=\"jstree_C" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaC_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + myFormat(cantidad) + "</li></ul></div></td>";
                 listaUnidadesDesplegable = "<td> <div id=\"jstree_UM" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaUM_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + unidad + "</li></ul></div></td>";
-                cellFactor = "<td> <div <ul><li 'class=\"jstree-open\">" + factor + "</li></ul></div></td>";
+                //cellFactor = "<td> <div <ul><li 'class=\"jstree-open\">" + factor + "</li></ul></div></td>";
                 cellCantBruta = "<td> <div <ul><li 'class=\"jstree-open\">" + cantBruta + "</li></ul></div></td>";
                 listaCostosDesplegable = "<td> <div id=\"jstree_CS" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaCS_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + costo + "</li></ul></div></td>";
                 listaCostototalDesplegable = "<td> <div id=\"jstree_CST" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaCST_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + auxCostoTotal + "</li></ul></div></td>";
@@ -2423,8 +2425,8 @@
                     listaDesplegable +
                     listaCantidadDesplegable +
                     listaUnidadesDesplegable +
-                    cellFactor +
-                    cellCantBruta +
+                    //cellFactor +
+                    //cellCantBruta +
                     listaCostosDesplegable +
                     listaCostototalDesplegable +
                     listaDdlSectorProductivoDesplegable +
@@ -3287,7 +3289,7 @@
         function PasarAFactor(event) {
             if (event.which == 13) {
 
-                document.getElementById('<%=txtFactor.ClientID%>').focus();
+                ////////document.getElementById('<%=txtFactor.ClientID%>').focus();
             }
         }
     </script>

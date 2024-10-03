@@ -68,7 +68,7 @@ namespace Tecnocuisine
             }
 
             ObtenerRecetas();
-            ObtenerProductos();
+            //ObtenerProductos();
         }
 
         private void VerificarLogin()
@@ -248,7 +248,7 @@ namespace Tecnocuisine
                     foreach (var item in Recetas)
                     {
                         CargarRecetasPHPrincipal(item);
-                        CargarRecetasPHModal(item);
+                        //CargarRecetasPHModal(item);
 
                     }
                 }
