@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Web;
 using System.Web.Script.Serialization;
 using System.Web.Services;
 using System.Web.UI;
@@ -1156,13 +1158,13 @@ namespace Tecnocuisine.Formularios.Maestros
                 celFactor.Text = prodRec.FirstOrDefault().Factor.ToString().Replace(',', '.');
                 celFactor.VerticalAlign = VerticalAlign.Middle;
                 celFactor.HorizontalAlign = HorizontalAlign.Left;
-                tr.Cells.Add(celFactor);
+                //tr.Cells.Add(celFactor);
 
                 TableCell celCantBruta = new TableCell();
                 celCantBruta.Text = (prodRec.FirstOrDefault().cantidad * Convert.ToDecimal(prodRec.FirstOrDefault().Factor)).ToString("N", culture);
                 celCantBruta.VerticalAlign = VerticalAlign.Middle;
                 celCantBruta.HorizontalAlign = HorizontalAlign.Left;
-                tr.Cells.Add(celCantBruta);
+                //tr.Cells.Add(celCantBruta);
 
                 TableCell celCosto = new TableCell();
                 celCosto.Text = prodRec.FirstOrDefault().Productos.costo.ToString("N", culture);
@@ -1481,13 +1483,13 @@ namespace Tecnocuisine.Formularios.Maestros
                 celFactor.Text = Receta.Factor?.ToString().Replace(',', '.');
                 celFactor.VerticalAlign = VerticalAlign.Middle;
                 celFactor.HorizontalAlign = HorizontalAlign.Left;
-                tr.Cells.Add(celFactor);
+                //tr.Cells.Add(celFactor);
 
                 TableCell celCantBruta = new TableCell();
                 celCantBruta.Text = (Receta.cantidad * Convert.ToDecimal(Receta.Factor)).ToString("N", culture);
                 celCantBruta.VerticalAlign = VerticalAlign.Middle;
                 celCantBruta.HorizontalAlign = HorizontalAlign.Left;
-                tr.Cells.Add(celCantBruta);
+                //tr.Cells.Add(celCantBruta);
 
                 TableCell celCosto = new TableCell();
                 celCosto.Text = "<div id=\"jstree_CS" + RecetaingredienteI.id + "\"> <ul><li id='RecetaCS_LI_" + RecetaingredienteI.id + "' class=\"jstree-open\">" + Receta.Recetas.Costo.Value.ToString("N", culture) + ObtenerrecetaString(Receta.idRecetaIngrediente, 4, 0) + "</li></ul></div>";
