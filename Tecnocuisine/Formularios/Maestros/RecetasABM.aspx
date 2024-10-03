@@ -1319,18 +1319,18 @@
                         let rowsCount = document.getElementById('tableProductos').value
                         if (selectUM != -1) {
 
-
                             /* alert("esta en onfinished!");*/
 
                             //Este ajax se ejecuta cuando se esta guardando la receta por primera vez, lo que que hace es guardar la recetas
                             //con todos los datos de la receta y ademas guarda todos los productos de la receta
+
                             $.ajax({
                                 method: "POST",
                                 url: "ProductosABM.aspx/GuardarReceta2",
                                 data: '{ descripcion: "' + document.getElementById('<%=txtDescripcionReceta.ClientID%>').value
                                     + '" , codigo: "' + document.getElementById('<%=txtCodigo.ClientID%>').value
                                     <%--+ '" , Categoria: "' + document.getElementById('<%=txtDescripcionCategoria.ClientID%>').value--%>
-                                    + '" , Sector: "' + document.getElementById('<%=txtSector.ClientID%>').value
+                                    + '" , Sector: "' + document.getElementById('<%=ddlSectorProductivo.ClientID%>').value
                                     <%--+ '" , Atributos: "' + document.getElementById('<%=txtDescripcionAtributo.ClientID%>').value--%>
                                     + '" , Unidad: "' + selectUnidadMedida.selectedOptions[0].value
                                     + '" , Tipo: "' + selectTipoReceta.selectedOptions[0].value
@@ -1790,6 +1790,17 @@
                 }
             }
 
+
+            if (url.includes('b=1')) {
+                var btnGuardar = document.querySelector('a[href="#finish"]');
+                btnGuardar.style.display = 'none';
+
+                var btnCancelar = document.querySelector('a[href="#cancel"]');
+                btnCancelar.innerHTML = 'Salir';
+
+                var btnContainerAddItem = document.getElementById('containerAddItem');
+                btnContainerAddItem.style.display = 'none';
+            }
         });
 
         //var config = {

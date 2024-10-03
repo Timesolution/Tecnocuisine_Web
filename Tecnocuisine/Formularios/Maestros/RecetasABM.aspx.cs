@@ -161,6 +161,7 @@ namespace Tecnocuisine.Formularios.Maestros
             {
                 txtCodigo.Attributes.Add("disabled", "disabled");
                 txtDescripcionReceta.Attributes.Add("disabled", "disabled");
+                ddlRubros.Attributes.Add("disabled", "disabled");
                 //txtDescripcionCategoria.Attributes.Add("disabled", "disabled");
                 ddlTipoReceta.Attributes.Add("disabled", "disabled");
                 ddlUnidadMedida.Attributes.Add("disabled", "disabled");
@@ -175,7 +176,11 @@ namespace Tecnocuisine.Formularios.Maestros
                 //btnAgregarProducto.Attributes.Add("disabled", "disabled");
                 //btnCategorias.Attributes.Add("disabled", "disabled");
                 btnProductos.Attributes.Add("disabled", "disabled");
-                btnSectores.Attributes.Add("disabled", "disabled");
+                ddlSectorProductivo.Attributes.Add("disabled", "disabled");
+                txtDescripcionProductos.Attributes.Add("disabled", "disabled");
+                ddlSector.Attributes.Add("disabled", "disabled");
+                TiempoDePreparacion.Attributes.Add("disabled", "disabled");
+
             }
             catch (Exception ex)
             {

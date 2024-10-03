@@ -123,22 +123,13 @@ namespace Tecnocuisine.Formularios.Maestros
         protected global::System.Web.UI.WebControls.HiddenField HFRecetas;
 
         /// <summary>
-        /// Control txtSector.
+        /// Control ddlSectorProductivo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSector;
-
-        /// <summary>
-        /// Control btnSectores.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnSectores;
+        protected global::System.Web.UI.WebControls.DropDownList ddlSectorProductivo;
 
         /// <summary>
         /// Control txtPresentaciones.
