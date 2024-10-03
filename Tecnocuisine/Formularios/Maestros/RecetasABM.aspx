@@ -280,7 +280,7 @@
                                             </div>
                                             <div class="col-md-1" style="text-align: left; margin-right:1rem">
                                                 <label id="lblTotalUnidad" style="margin-bottom: auto;margin-top: -25%;"> Rinde </label>
-                                                <asp:TextBox Style="text-align: right;" Text="0" ID="txtRinde" onkeyUp="ActualizarxPorcion()" class="form-control" runat="server" />
+                                                <asp:TextBox Style="text-align: right;" Text="0" type="number" min="0" ID="txtRinde" onkeyUp="ActualizarxPorcion()" class="form-control" runat="server" />
                                             </div>
                                             <div class="col-md-1" style="text-align: left; margin-right:1rem">
                                                 <label id="lblBrutoUnidad" style="margin-bottom: auto;margin-top: -25%;">Kg Br.</label>
@@ -1210,10 +1210,12 @@
     </script>
     <script>
         $(document).ready(function () {
+
             let url = window.location.href;
             if (url.includes("a=2")) {
                 ActualizarLabels();
             }
+
             $("#wizard").steps();
             $("#form").steps({
 
@@ -1350,7 +1352,7 @@
                                     + '" , CostoT: "' + document.getElementById('<%=txtCostoTotal.ClientID%>').value
                                     + '" , BrutoU: "' + document.getElementById('<%=txtKgxPorcion.ClientID%>').value
                                     + '" , CostoU: "' + document.getElementById('<%=txtCostoxPorcion.ClientID%>').value
-                                    + '" , FoodCost: "' + document.getElementById('<%=txtPFoodCost.ClientID%>').value.replace('%','')
+                                    + '" , FoodCost: "' + document.getElementById('<%=txtPFoodCost.ClientID%>').value.replace('%', '')
                                     + '" , ContMarg: "' + document.getElementById('<%=txtContMarg.ClientID%>').value
                                     + '" , BuenasPract: "' + document.getElementById('<%=txtObservaciones.ClientID%>').value
                                     + '" , InfoNut: "' + document.getElementById('<%=txtInfoNutr.ClientID%>').value
@@ -1367,7 +1369,16 @@
                                     console.log(JSON.stringify(error));
                                     $.msgbox("No se pudo cargar la tabla", { type: "error" });
                                 },
-                                success: recargarPagina
+                                success: function (response) {
+                                    var data = response.d;
+                                    data = JSON.parse(data); // Convierte la cadena a objeto
+                                    //guardar imagen
+
+                                    // Se guardara la imagen con nombre de id de la receta creada
+                                    //guardarImagen();
+
+                                    recargarPagina(data.mensaje)
+                                }
                             });
 
 
@@ -1841,25 +1852,66 @@
         //for (var selector in config) {
         //    $(selector).chosen(config[selector]);
         //}
+
+
+
+
     </script>
 
+
+    <script>
+        function guardarImagen() {
+            // Crear un objeto FormData
+            var formData = new FormData();
+            var fileInput = document.getElementById('inputImage2');
+
+            // Verificar si se ha seleccionado un archivo
+            if (fileInput.files.length === 0) {
+                alert("Por favor, selecciona un archivo de imagen.");
+                return; // Salir de la función si no hay archivo
+            }
+
+            //formData.append("imagen", fileInput.files[0]); // Agregar la imagen al FormData
+
+            $.ajax({
+                type: "POST",
+                url: "RecetasABM.aspx/GuardarImagen",
+                data: formData,
+                contentType: false, // Evitar que jQuery establezca el Content-Type
+                processData: false, // Evitar que jQuery procese los datos
+                dataType: "json", // Esperar un JSON como respuesta
+                success: function (response) {
+                    console.log(response);
+                    alert("Imagen guardada exitosamente.");
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error(textStatus, errorThrown);
+                    alert("Error al guardar la imagen.");
+                }
+            });
+
+        }
+    </script>
+
+
     <script>         
-        function recargarPagina(response) {
+        function recargarPagina(mensaje) {
             //toastr.success("guardado con exito!", "Exito")
             //window.location.href = 'RecetasABM.aspx?m=1';
 
-            var obj = JSON.parse(response.d);
+            //var obj = JSON.parse(response.d);
             toastr.options = { "positionClass": "toast-bottom-right" };
-            if (obj == null) {
-                alert('Obj es null');
+
+            if (mensaje == "") {
+                /*alert('Obj es null');*/
                 //return;
             }
             else {
-                if (obj.toUpperCase().includes("ERROR")) {
-                    toastr.error(obj, "Error");
+                if (mensaje.toUpperCase().includes("ERROR")) {
+                    toastr.error(mensaje, "Error");
                 }
                 else {
-                    console.log(obj);
+                    //console.log(obj);
                     window.location.href = 'RecetasABM.aspx?m=1';
                 }
             }
@@ -2030,7 +2082,7 @@
             let ContMarg = parseFloat(document.getElementById('<%=txtContMarg.ClientID%>').value);
             if (PRVenta > 0) {
 
-                document.getElementById('<%=txtPFoodCost.ClientID%>').value = myFormat(Math.round10(costototal / PRVenta)) +'%';
+                document.getElementById('<%=txtPFoodCost.ClientID%>').value = myFormat(Math.round10(costototal / PRVenta)) + '%';
                 document.getElementById('<%=txtContMarg.ClientID%>').value = myFormat(Math.round10(PRVenta - costototal));
             } else {
                 document.getElementById('<%=txtPFoodCost.ClientID%>').value = "0%";

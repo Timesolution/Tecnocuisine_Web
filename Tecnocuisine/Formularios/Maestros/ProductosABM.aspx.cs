@@ -1144,9 +1144,9 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 //Receta.presentacion = Convert.ToInt32(ListPresentaciones.SelectedValue);
 
-                int resultado = controladorReceta.AgregarReceta(Receta); //Guarda los datos de la primera parte de la receta
+                int idCreado = controladorReceta.AgregarReceta(Receta); //Guarda los datos de la primera parte de la receta
 
-                if (resultado > 0)
+                if (idCreado > 0)
                 {
                     if (Receta.PorcFoodCost != null && controladorReceta.DebeGenerarAlerta((decimal)Receta.PorcFoodCost))
                         controladorReceta.GenerarAlerta(Receta);
@@ -1229,7 +1229,7 @@ namespace Tecnocuisine.Formularios.Maestros
                             if (producto[1] == "Producto")
                             {
                                 Recetas_Producto productoNuevo = new Recetas_Producto();
-                                productoNuevo.idReceta = resultado;
+                                productoNuevo.idReceta = idCreado;
                                 productoNuevo.idProducto = Convert.ToInt32(producto[0]);
                                 idProducto = productoNuevo.idProducto;
                                 productoNuevo.cantidad = decimal.Parse(producto[2], CultureInfo.InvariantCulture);
@@ -1374,7 +1374,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                 if (Pasos[1] != "")
                                 {
                                     Recetas_Pasos PasosNuevo = new Recetas_Pasos();
-                                    PasosNuevo.idReceta = resultado;
+                                    PasosNuevo.idReceta = idCreado;
                                     PasosNuevo.numpaso = Pasos[0];
                                     PasosNuevo.paso = Pasos[1];
                                     PasosNuevo.estado = 1;
@@ -1393,31 +1393,39 @@ namespace Tecnocuisine.Formularios.Maestros
 
                     try
                     {
-                        string[] itemsS;
+                        //string[] itemsS;
 
-                        if (Sector.Contains(","))
-                            itemsS = Sector.Split(',');
-                        else
-                            itemsS = Sector.Split(';');
+                        //if (Sector.Contains(","))
+                        //    itemsS = Sector.Split(',');
+                        //else
+                        //    itemsS = Sector.Split(';');
 
                         // TODO: Quitar for porque solo entrara una vez
-                        foreach (var pr in itemsS)
-                        {
-                            if (pr != "")
-                            {
-                                string[] Sect = pr.Split('-');
-                                if (Sect[1] != "")
-                                {
-                                    SectorP_Recetas sectorP_ = new SectorP_Recetas();
-                                    sectorP_.idReceta = resultado;
-                                    sectorP_.idSectorP = Convert.ToInt32(Sect[0]);
-                                    sectorP_.estado = 1;
+                        //foreach (var pr in itemsS)
+                        //{
+                        //    if (pr != "")
+                        //    {
+                        //        string[] Sect = pr.Split('-');
+                        //        if (Sect[1] != "")
+                        //        {
+                        //            SectorP_Recetas sectorP_ = new SectorP_Recetas();
+                        //            sectorP_.idReceta = idCreado;
+                        //            sectorP_.idSectorP = Convert.ToInt32(Sect[0]);
+                        //            sectorP_.estado = 1;
 
-                                    controladorReceta.EliminarSectorProductivoRecetaByIdReceta(resultado); //Eliminar sector anterior si tiene
-                                    controladorReceta.AgregarSectorProductivoReceta(sectorP_);
-                                }
-                            }
-                        }
+                        //            controladorReceta.EliminarSectorProductivoRecetaByIdReceta(idCreado); //Eliminar sector anterior si tiene
+                        //            controladorReceta.AgregarSectorProductivoReceta(sectorP_);
+                        //        }
+                        //    }
+                        //}
+
+                        SectorP_Recetas sectorP_ = new SectorP_Recetas();
+                        sectorP_.idReceta = idCreado;
+                        sectorP_.idSectorP = Convert.ToInt32(Sector);
+                        sectorP_.estado = 1;
+
+                        controladorReceta.EliminarSectorProductivoRecetaByIdReceta(idCreado); //Eliminar sector anterior si tiene
+                        controladorReceta.AgregarSectorProductivoReceta(sectorP_);
                     }
                     catch (Exception)
                     {
@@ -1441,7 +1449,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                 {
                                     Recetas_Presentacion Rec_Pres = new Recetas_Presentacion();
                                     Rec_Pres.idPresentacion = Convert.ToInt32(PRess[0]);
-                                    Rec_Pres.idRecetas = resultado;
+                                    Rec_Pres.idRecetas = idCreado;
                                     controladorReceta.AgregarPresentacionReceta(Rec_Pres);
                                 }
 
@@ -1471,7 +1479,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                 {
                                     Marca_Recetas Marca_Receta = new Marca_Recetas();
                                     Marca_Receta.id_marca = Convert.ToInt32(marcaArray[0].Trim());
-                                    Marca_Receta.id_Receta = resultado;
+                                    Marca_Receta.id_Receta = idCreado;
                                     controladorReceta.AgregarMarcaReceta(Marca_Receta);
                                 }
                             }
@@ -1481,24 +1489,54 @@ namespace Tecnocuisine.Formularios.Maestros
                     {
                     }
 
+                    // Dentro de tu método
                     JavaScriptSerializer javaScript = new JavaScriptSerializer();
                     javaScript.MaxJsonLength = 5000000;
-                    string resultadoJSON = javaScript.Serialize("Exito guardando la Receta.");
+
+                    // Crear un objeto anónimo con un mensaje y un valor adicional
+                    var data = new
+                    {
+                        mensaje = "Éxito guardando la receta.",
+                        id = idCreado
+                    };
+
+                    // Serializar el objeto
+                    string resultadoJSON = javaScript.Serialize(data);
                     return resultadoJSON;
                 }
                 else
                 {
+                    // Dentro de tu método
                     JavaScriptSerializer javaScript = new JavaScriptSerializer();
                     javaScript.MaxJsonLength = 5000000;
-                    string resultadoJSON = javaScript.Serialize("Hubo un error al guardar la receta.");
+
+                    // Crear un objeto anónimo con un mensaje y un valor adicional
+                    var data = new
+                    {
+                        mensaje = "Error. No se pudo guardar la receta.",
+                        id = -1
+                    };
+
+                    // Serializar el objeto
+                    string resultadoJSON = javaScript.Serialize(data);
                     return resultadoJSON;
                 }
             }
             catch (Exception ex)
             {
+                // Dentro de tu método
                 JavaScriptSerializer javaScript = new JavaScriptSerializer();
                 javaScript.MaxJsonLength = 5000000;
-                string resultadoJSON = javaScript.Serialize(" Error al guardar la Receta. ex:" + ex.Message);
+
+                // Crear un objeto anónimo con un mensaje y un valor adicional
+                var data = new
+                {
+                    mensaje = "Error. No se pudo guardar la receta.",
+                    id = -1
+                };
+
+                // Serializar el objeto
+                string resultadoJSON = javaScript.Serialize(data);
                 return resultadoJSON;
             }
 
@@ -1764,26 +1802,34 @@ namespace Tecnocuisine.Formularios.Maestros
 
                     try
                     {
-                        string[] itemsS = Sector.Split(',');
+                        //string[] itemsS = Sector.Split(',');
 
-                        foreach (var pr in itemsS)
-                        {
-                            if (pr != "")
-                            {
-                                string[] Sect = pr.Split('-');
-                                if (Sect[1] != "")
-                                {
-                                    SectorP_Recetas sectorP_ = new SectorP_Recetas();
-                                    sectorP_.idReceta = Receta.id;
-                                    sectorP_.idSectorP = Convert.ToInt32(Sect[0]);
-                                    sectorP_.estado = 1;
+                        //foreach (var pr in itemsS)
+                        //{
+                        //    if (pr != "")
+                        //    {
+                        //        string[] Sect = pr.Split('-');
+                        //        if (Sect[1] != "")
+                        //        {
+                        //            SectorP_Recetas sectorP_ = new SectorP_Recetas();
+                        //            sectorP_.idReceta = Receta.id;
+                        //            sectorP_.idSectorP = Convert.ToInt32(Sect[0]);
+                        //            sectorP_.estado = 1;
 
-                                    controladorReceta.EliminarSectorProductivoRecetaByIdReceta(Receta.id); //Eliminar sector anterior si tiene
-                                    controladorReceta.AgregarSectorProductivoReceta(sectorP_);
-                                }
+                        //            controladorReceta.EliminarSectorProductivoRecetaByIdReceta(Receta.id); //Eliminar sector anterior si tiene
+                        //            controladorReceta.AgregarSectorProductivoReceta(sectorP_);
+                        //        }
 
-                            }
-                        }
+                        //    }
+                        //}
+
+                        SectorP_Recetas sectorP_ = new SectorP_Recetas();
+                        sectorP_.idReceta = Receta.id;
+                        sectorP_.idSectorP = Convert.ToInt32(Sector);
+                        sectorP_.estado = 1;
+
+                        controladorReceta.EliminarSectorProductivoRecetaByIdReceta(Receta.id); //Eliminar sector anterior si tiene
+                        controladorReceta.AgregarSectorProductivoReceta(sectorP_);
                     }
                     catch (Exception)
                     {
