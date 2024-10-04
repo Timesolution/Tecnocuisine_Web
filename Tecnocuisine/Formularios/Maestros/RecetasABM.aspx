@@ -68,6 +68,33 @@
         .jstree-default .jstree-anchor {
             white-space: normal !important;
         }*/
+
+
+
+
+        .product-container {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .product {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin: 5px 0;
+            cursor: pointer;
+        }
+
+        .children {
+            /*margin-left: 20px;*/
+            padding: 10px;
+            padding-left: 0;
+            background-color: #e9e9e9;
+        }
+
+        .hidden {
+            display: none;
+        }
     </style>
 
 
@@ -533,6 +560,11 @@
 
                 <asp:HiddenField ID="hiddenidReceta" runat="server" />
             </div>
+
+                                        <div class="product-container" id="">
+        <asp:Literal ID="productContainer" runat="server"></asp:Literal>
+    </div>
+
         </div>
 
 
@@ -1014,12 +1046,14 @@
                                 </ContentTemplate>
 
                             </asp:UpdatePanel>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 
 
 
@@ -1042,6 +1076,23 @@
             $(selector).chosen(config[selector]);
         }
     </script>--%>
+
+
+    <script>
+        function toggleChildren(event) {
+            // Evita que el evento se propague a los elementos padres
+            event.stopPropagation();
+
+            // Obtiene el siguiente elemento hermano que contiene los hijos
+            const children = event.currentTarget.nextElementSibling;
+
+            // Alterna la clase 'hidden' para mostrar o ocultar los hijos
+            if (children) {
+                children.classList.toggle('hidden');
+            }
+        }
+
+    </script>
 
     <script>
         toastr.options = {

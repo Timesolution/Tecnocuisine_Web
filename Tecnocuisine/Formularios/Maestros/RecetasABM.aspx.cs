@@ -1,6 +1,7 @@
 ﻿using Gestion_Api.Entitys;
 using Gestion_Api.Modelo;
 using Microsoft.ReportingServices.Interfaces;
+using PdfSharp.UniversalAccessibility;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -17,6 +18,7 @@ using System.Web.UI.WebControls;
 using Tecnocuisine.Modelos;
 using Tecnocuisine_API.Controladores;
 using Tecnocuisine_API.Entitys;
+using static PdfSharp.Capabilities;
 
 
 namespace Tecnocuisine.Formularios.Maestros
@@ -51,6 +53,7 @@ namespace Tecnocuisine.Formularios.Maestros
             ObtenerProductos();
             ObtenerPresentaciones();
             ObtenerMarcas();
+
             if (!IsPostBack)
             {
                 CargarRubros();
@@ -58,6 +61,9 @@ namespace Tecnocuisine.Formularios.Maestros
                 CargarListaCategoriasSoloHijas();
                 CargarSectoresProductivodDDL();
                 CargarTipos();
+
+                CargarTablaIngredientes();
+
                 //cargarNestedListCategorias();
                 //cargarNestedListAtributos();
                 if (accion == 2)
@@ -247,7 +253,7 @@ namespace Tecnocuisine.Formularios.Maestros
                         var sec = controladorSector.ObtenerSectorProductivoId(sector.idSectorP.Value);
                         if (sec != null)
                             ddlSectorProductivo.SelectedValue = sec.id.ToString();
-                            //txtSector.Text += sec.id + " - " + sec.descripcion /*+ ", "*/;
+                        //txtSector.Text += sec.id + " - " + sec.descripcion /*+ ", "*/;
                     }
 
 
@@ -2180,6 +2186,64 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 return null;
             }
+        }
+
+
+        private void CargarTablaIngredientes()
+        {
+            //Obtener las recetas hijas de la receta visualizada
+            var recetasHijas = controladorReceta.obtenerRecetasbyReceta(this.idReceta); //recetas_recetas
+
+            foreach (var recetaHija in recetasHijas)
+            {
+                productContainer.Text += GenerarHTMLRecetaProducto(recetaHija.idRecetaIngrediente, true);
+            }
+        }
+
+        private string GenerarHTMLRecetaProducto(int idItem, bool esReceta, bool boldStyle=false)
+        {
+            string descripcion;
+
+            if (esReceta)
+            {
+                var receta = controladorReceta.ObtenerRecetaId(idItem);
+                descripcion = receta.descripcion;
+            }
+            else
+            {
+                var producto = controladorProducto.ObtenerProductoId(idItem);
+                descripcion = producto.descripcion;
+            }
+
+            string onclick = esReceta ? "onclick='toggleChildren(event)" : "";
+            string bold = boldStyle ? "font-weight:bold" : "";
+
+            string itemHTML = $@"
+            <div class='product' {onclick}' style='{bold}'>
+                <p>{descripcion}</h3>
+            </div>
+            <div class='children hidden'>";
+
+
+            // Si es receta, ver si dentro tiene mas recetas o productos y dibujarlos anidados
+            if (esReceta)
+            {
+                var recetasInternas = controladorReceta.obtenerRecetasbyReceta(idItem); //recetas_recetas
+                foreach (var ri in recetasInternas)
+                {
+                    itemHTML += GenerarHTMLRecetaProducto(ri.idRecetaIngrediente, true); // Llamada recursiva
+                }
+
+                var productosInternos = controladorReceta.ObtenerProductosByReceta(idItem); //recetas_productos
+                foreach (var pi in productosInternos)
+                {
+                    itemHTML += GenerarHTMLRecetaProducto(pi.idProducto, false); // Llamada recursiva
+                }
+            }
+
+
+            itemHTML += "</div>";
+            return itemHTML;
         }
 
     }

@@ -800,6 +800,7 @@ namespace Tecnocuisine
 
                 var receta = controlador.ObtenerRecetaId(idReceta);
 
+                // TODO: Rompe si el peso es cero
                 decimal PR_Cant = Cant / receta.peso;
                 decimal PesoT = receta.peso * PR_Cant;
 
