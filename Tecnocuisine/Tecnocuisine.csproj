@@ -472,6 +472,7 @@
     <Content Include="js\plugins\fullcalendar\moment.min.js" />
     <Content Include="js\plugins\jsTree\jstree.min.js" />
     <Content Include="js\plugins\justified-gallery\README.md" />
+    <Content Include="Formularios\Maestros\ImageUploadHandler.ashx" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="js\bootstrap.js" />
     <Content Include="js\bootstrap.min.js" />
@@ -1562,6 +1563,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Modelos\ImageUploadHandler.cs" />
     <Compile Include="Modelos\Mensaje.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Mensajes.cs" />
@@ -1598,6 +1600,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Img\Recetas\" />
     <Folder Include="Scripts\plugins\cropper\" />
     <Folder Include="Scripts\plugins\dataTables\" />
     <Folder Include="Scripts\plugins\iCheck\" />
