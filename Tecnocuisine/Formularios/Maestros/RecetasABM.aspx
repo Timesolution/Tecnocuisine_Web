@@ -3,6 +3,21 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <style>
+        .image-container {
+            width: 100px; /* Ancho fijo del contenedor */
+            height: 100px; /* Alto fijo del contenedor */
+            overflow: hidden; /* Oculta cualquier parte de la imagen que exceda el contenedor */
+            position: relative; /* Posiciona de forma relativa para el hijo */
+            border-radius: 10px;
+        }
+        #imgDocF {
+            width: 100%; /* Asegura que la imagen ocupe el 100% del ancho del contenedor */
+            height: 100%; /* Asegura que la imagen ocupe el 100% del alto del contenedor */
+            object-fit: cover; /* Ajusta la imagen para cubrir completamente el contenedor */
+            cursor: pointer; /* Cambia el cursor para indicar que es clickeable */
+
+        }
+
         #step-content {
             position: inherit;
         }
@@ -127,12 +142,15 @@
                                                     <div class="image-crop btn-group">
                                                         <%--<label for="ContentPlaceHolder1_inputImage2" style="display:contents" class="lblImgDocF">--%>
                                                         <label for="ContentPlaceHolder1_inputImage2" style="display: contents" class="lblImgDocF">
-                                                            <img src="../../Img/photo.png" id="imgDocF" width="20%"
-                                                                height="20%" />
+                                                            
                                                         </label>
+
+                                                        <div class="image-container">
+                                                            <img title="" alt="" src="../../Img/photo.png" id="imgDocF" onclick="document.getElementById('inputImage2').click();"/>
+                                                        <input type="file" id="inputImage2" class="hide" accept="image/*" onchange="renderizarImagen(event)"/>
+                                                        </div>
                                                         <%--<input type="file" accept="image/*" name="file2" id="inputImage2" class="hide">--%>
                                                         <%--<input type="file" id="inputImage2" name="file2" class="hide" accept="image/*" onchange="cargarImagen()"/>--%>
-                                                        <input type="file" id="inputImage2" accept="image/*"/>
                                                     </div>
                                                 </div>
 
@@ -1183,29 +1201,81 @@
     </script>
     <script type="text/javascript">
         "use strict";
-        var $image = $("#imgDocF")
+        //var $image = $("#imgDocF")
 
-        var $inputImageF = document.getElementById('inputImage2');
+        //var $inputImageF = document.getElementById('inputImage2');
 
-        if (window.FileReader) {
-            //inputImageF.addEventListener("change",
-            $("#form").on('change', '#ContentPlaceHolder1_inputImage2', function () {
-                var fileReader = new FileReader(),
-                    files = this.files,
-                    file;
-                if (!files.length) {
-                    return;
-                }
-                file = files[0];
-                if (/^image\/\w+$/.test(file.type)) {
-                    fileReader.readAsDataURL(file);
-                    fileReader.onload = function () {
-                        $("#imgDocF").attr("src", this.result)
-                    };
-                } else {
-                    showMessage("Please choose an image file.");
-                }
-            });
+        //if (window.FileReader) {
+        //    //inputImageF.addEventListener("change",
+        //    $("#form").on('change', '#ContentPlaceHolder1_inputImage2', function () {
+        //        var fileReader = new FileReader(),
+        //            files = this.files,
+        //            file;
+        //        if (!files.length) {
+        //            return;
+        //        }
+        //        file = files[0];
+        //        if (/^image\/\w+$/.test(file.type)) {
+        //            fileReader.readAsDataURL(file);
+        //            fileReader.onload = function () {
+        //                $("#imgDocF").attr("src", this.result)
+        //            };
+        //        } else {
+        //            showMessage("Please choose an image file.");
+        //        }
+        //    });
+        //}
+
+
+    </script>
+
+    <script>
+        // Función para renderizar la imagen
+        function renderizarImagen(event) {
+            var file = event.target.files[0]; // Obtiene el archivo seleccionado
+
+            if (file) {
+                var reader = new FileReader(); // Crea una instancia de FileReader
+
+                reader.onload = function (e) {
+                    var img = document.getElementById('imgDocF');
+                    img.src = e.target.result; // Establece la fuente de la imagen
+                    //img.style.display = 'block'; // Muestra la imagen
+                };
+
+                reader.readAsDataURL(file); // Lee el archivo como URL de datos
+            }
+        }
+
+        function precargarImagen() {
+            // Precargar la imagen al cargar la página
+            let url = window.location.href;
+            let parameter = url.split("?")[1]
+            let queryString = new URLSearchParams(parameter);
+            let idReceta = ''
+            for (let pair of queryString.entries()) {
+                if (pair[0] == "i")
+                    idReceta = pair[1];
+            }
+
+            window.onload = function () {
+                var img = document.getElementById('imgDocF');
+
+                // Buscar una imagen enviando el id
+                $.ajax({
+                    method: "POST",
+                    url: "RecetasABM.aspx/GetImagenByIdReceta",
+                    data: '{ idReceta: "' + idReceta + '"}',
+                    contentType: "application/json",
+                    dataType: 'json',
+                    error: (error) => {
+
+                    },
+                    success: function (response) {
+                        img.src = response.d;
+                    }
+                });      
+            };
         }
     </script>
     <script>
@@ -1214,6 +1284,7 @@
             let url = window.location.href;
             if (url.includes("a=2")) {
                 ActualizarLabels();
+                precargarImagen();
             }
 
             $("#wizard").steps();
@@ -1372,10 +1443,9 @@
                                 success: function (response) {
                                     var data = response.d;
                                     data = JSON.parse(data); // Convierte la cadena a objeto
-                                    //guardar imagen
 
                                     // Se guardara la imagen con nombre de id de la receta creada
-                                    guardarImagen(data);
+                                    guardarImagen(data, true);
                                 }
                             });
 
@@ -1428,7 +1498,13 @@
                                 console.log(JSON.stringify(error));
                                 $.msgbox("No se pudo cargar la tabla", { type: "error" });
                             },
-                            success: recargarPagina2()
+                            success: function (response) {
+                                var data = response.d;
+                                data = JSON.parse(data); // Convierte la cadena a objeto
+
+                                // Se guardara la imagen con nombre de id de la receta creada
+                                guardarImagen(data, false);
+                            }
                         });
                     }
                     // Submit form input
@@ -1810,6 +1886,9 @@
 
 
             if (url.includes('b=1')) {
+                var inputImage = document.getElementById('imgDocF');
+                inputImage.removeAttribute('onclick');
+
                 var btnGuardar = document.querySelector('a[href="#finish"]');
                 btnGuardar.style.display = 'none';
 
@@ -1859,7 +1938,7 @@
 
     
 <script>
-    function guardarImagen(data) {
+    function guardarImagen(data, esCreacion) {
         var input = document.getElementById('inputImage2');
         var file = input.files[0];
 
@@ -1876,7 +1955,10 @@
                 .then(response => response.text())
                 .then(result => {
                     //alert(result);
-                    recargarPagina(data.mensaje)
+                    if (esCreacion)
+                        recargarPagina(data.mensaje)
+                    else
+                        recargarPagina2()
                 })
                 .catch(error => {
                     console.error('Error:', error);

@@ -1,5 +1,6 @@
 ﻿using Gestion_Api.Entitys;
 using Gestion_Api.Modelo;
+using Microsoft.ReportingServices.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -303,6 +304,31 @@ namespace Tecnocuisine.Formularios.Maestros
             {
 
             }
+        }
+
+        [WebMethod]
+        public static string GetImagenByIdReceta(string idReceta)
+        {
+            string folderPath = HttpContext.Current.Server.MapPath("~/Img/Recetas/"); // Ruta de la carpeta en el servidor
+            string relativeFolderPath = "/Img/Recetas/"; // Ruta relativa para devolver al cliente
+
+
+            if (!string.IsNullOrEmpty(idReceta))
+            {
+                // Busca el archivo que contenga el nombre dado
+                var files = Directory.GetFiles(folderPath)
+                    .Where(f => Path.GetFileNameWithoutExtension(f) == idReceta); // Filtra por nombre
+
+                // Si se encuentra algún archivo, toma el primero
+                if (files.Any())
+                {
+                    var file = files.First(); // Obtiene la primera coincidencia
+                    string fileName = Path.GetFileName(file); // Obtiene el nombre del archivo con extensión
+                    return relativeFolderPath + fileName; // Devuelve la ruta relativa (para ser usada en el navegador)
+                }
+            }
+
+            return "";
         }
 
         private void PrecargarPresentaciones()
