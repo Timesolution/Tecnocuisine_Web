@@ -226,7 +226,7 @@
     </Reference>
     <Reference Include="Tecnocuisine_API, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TecnocuisineApi\Tecnocuisine_API\bin\Debug\Tecnocuisine_API.dll</HintPath>
+      <HintPath>..\..\Tecnocuisine API\Tecnocuisine_API\bin\Debug\Tecnocuisine_API.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
