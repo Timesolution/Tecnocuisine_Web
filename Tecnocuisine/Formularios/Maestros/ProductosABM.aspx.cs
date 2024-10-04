@@ -1899,25 +1899,55 @@ namespace Tecnocuisine.Formularios.Maestros
                     {
                     }
 
+                    // Dentro de tu método
                     JavaScriptSerializer javaScript = new JavaScriptSerializer();
                     javaScript.MaxJsonLength = 5000000;
-                    string resultadoJSON = javaScript.Serialize("Exito guardando la Receta.");
+
+                    // Crear un objeto anónimo con un mensaje y un valor adicional
+                    var data = new
+                    {
+                        mensaje = "Éxito guardando la receta.",
+                        id = Receta.id,
+                    };
+
+                    // Serializar el objeto
+                    string resultadoJSON = javaScript.Serialize(data);
                     return resultadoJSON;
                 }
                 else
                 {
+                    // Dentro de tu método
                     JavaScriptSerializer javaScript = new JavaScriptSerializer();
                     javaScript.MaxJsonLength = 5000000;
-                    string resultadoJSON = javaScript.Serialize("Hubo un error al guardar la receta.");
+
+                    // Crear un objeto anónimo con un mensaje y un valor adicional
+                    var data = new
+                    {
+                        mensaje = "Error al guardar la Receta.",
+                        id = -1,
+                    };
+
+                    // Serializar el objeto
+                    string resultadoJSON = javaScript.Serialize(data);
                     return resultadoJSON;
                 }
             }
 
             catch (Exception)
             {
+                // Dentro de tu método
                 JavaScriptSerializer javaScript = new JavaScriptSerializer();
                 javaScript.MaxJsonLength = 5000000;
-                string resultadoJSON = javaScript.Serialize("Error al guardar la Receta.");
+
+                // Crear un objeto anónimo con un mensaje y un valor adicional
+                var data = new
+                {
+                    mensaje = "Error al guardar la Receta.",
+                    id = -1,
+                };
+
+                // Serializar el objeto
+                string resultadoJSON = javaScript.Serialize(data);
                 return resultadoJSON;
             }
 

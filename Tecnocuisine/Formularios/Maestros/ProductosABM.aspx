@@ -233,8 +233,7 @@
                                                 <label class="col-sm-4 control-label editable">Costo</label>
                                                 <div class="col-sm-8">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span><asp:TextBox ID="txtCosto" onchange="ActualizarLabelCosto('valiva')" onkeypress="javascript:return validarNro(event)" class="form-control num required" runat="server" Style="text-align: right;" />
-
+                                                        <span class="input-group-addon">$</span><asp:TextBox ID="txtCosto" onchange="ActualizarLabelCosto('valiva')" onkeyup="calcularCostoIva()" class="form-control num required" runat="server" Style="text-align: right;" />
                                                     </div>
                                                     <p id="ValivaCosto" class="text-danger text-hide">Tienes que ingresar un costo.</p>
                                                 </div>
@@ -244,7 +243,7 @@
                                                 <label class="col-sm-4 control-label editable">Alicuota IVA</label>
                                                 <div class="col-sm-8">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">%</span><asp:DropDownList ID="ListAlicuota" onchange="ActualizarLabelIVA()" class="form-control m-b valid" runat="server" Style="text-align: right;">
+                                                        <span class="input-group-addon">%</span><asp:DropDownList ID="ListAlicuota" onchange="ActualizarLabelIVA(); calcularCostoIva();" class="form-control m-b valid" runat="server" Style="text-align: right;">
                                                         </asp:DropDownList>
                                                     </div>
                                                     <p id="valiva" class="text-danger text-hide">
@@ -254,6 +253,14 @@
 
                                             </div>
 
+                                            <div class="row">
+                                                <label class="col-sm-4 control-label editable">Costo + IVA</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">$</span><asp:TextBox ID="txtCostoIva" disabled="disabled" class="form-control num" runat="server" Style="text-align: right;" />
+                                                    </div>
+                                                </div>
+                                            </div>
 
 
                                             <div class="row" style="margin-top: 2%">
@@ -1470,6 +1477,8 @@
         }
         function ActualizarLabelCosto(id) {
             input = document.getElementById(id);
+            if (isNaN(input.value)) return;
+
             num = Number(revertirNumero(input.value));
             newnum = formatearNumero(num);
             input.value = newnum;
@@ -2033,6 +2042,10 @@
             var numero = parseFloat(numeroFormateado.replace(/,/g, ''));
             return numero;
         }
+        // Función para formatear números con comas como separadores de miles
+        function formatearNumeroComas(numero) {
+            return numero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
 
     </script>
     <script src="/../Scripts/autoNumeric/autoNumeric.js"></script>
@@ -2041,6 +2054,32 @@
         $(document).ready(function () {
             $('#ContentPlaceHolder1_txtCosto').autoNumeric('init', { vMin: '0.000', vMax: '99999999999.999', aSign: '', aSep: ',', aPad: false, mDec: '3', aDec: '.', aForm: false })
         })
+
+    </script>
+
+    <script>
+        function calcularCostoIva() {
+            let ddlIva = document.getElementById('<%=ListAlicuota.ClientID%>');
+            // Obtener el costo, eliminar comas y convertir a número
+            let costoStr = document.getElementById('<%=txtCosto.ClientID%>').value;
+            let costo = parseFloat(costoStr.replace(/,/g, '')); // Elimina las comas
+
+            if (isNaN(costo)) {
+                return;
+            }
+
+            // Si no tiene iva, solo mostrar el costo
+            if (ddlIva.value === "-1") {
+                
+                document.getElementById('<%=txtCostoIva.ClientID%>').value = formatearNumeroComas(costo.toFixed(2));
+            }
+            // Si tiene IVA, mostrar costo + iva
+            else {
+                let iva = parseFloat(ddlIva.selectedOptions[0].text);
+                let costoConIva = costo + (costo * (iva / 100));
+                document.getElementById('<%=txtCostoIva.ClientID%>').value = formatearNumeroComas(costoConIva.toFixed(2));
+            }
+        }
 
     </script>
 </asp:Content>
