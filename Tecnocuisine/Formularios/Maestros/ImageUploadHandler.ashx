@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Web;
 using System.Linq;
+using System.Drawing;
 
 public class ImageUploadHandler : IHttpHandler
 {
@@ -27,7 +28,26 @@ public class ImageUploadHandler : IHttpHandler
                 File.Delete(f);
             }
 
-            file.SaveAs(filePath);
+            // Redimensionar la imagen antes de guardarla
+            using (var img = System.Drawing.Image.FromStream(file.InputStream))
+            {
+                // Establecer el nuevo tamaño
+                int newWidth = 100;
+                int newHeight = (int)(img.Height * (newWidth / (float)img.Width));
+
+                // Crear una nueva imagen redimensionada
+                using (var resizedImg = new Bitmap(newWidth, newHeight))
+                {
+                    using (var graphics = Graphics.FromImage(resizedImg))
+                    {
+                        graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                        graphics.DrawImage(img, 0, 0, newWidth, newHeight);
+                    }
+
+                    // Guardar la imagen redimensionada
+                    resizedImg.Save(filePath);
+                }
+            }
 
             context.Response.ContentType = "text/plain";
             context.Response.Write("File uploaded successfully");

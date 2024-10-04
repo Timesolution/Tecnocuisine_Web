@@ -10,12 +10,12 @@
             position: relative; /* Posiciona de forma relativa para el hijo */
             border-radius: 10px;
         }
+
         #imgDocF {
             width: 100%; /* Asegura que la imagen ocupe el 100% del ancho del contenedor */
             height: 100%; /* Asegura que la imagen ocupe el 100% del alto del contenedor */
             object-fit: cover; /* Ajusta la imagen para cubrir completamente el contenedor */
             cursor: pointer; /* Cambia el cursor para indicar que es clickeable */
-
         }
 
         #step-content {
@@ -1272,9 +1272,11 @@
 
                     },
                     success: function (response) {
-                        img.src = response.d;
+                        if (response.d !== "") {
+                            img.src = response.d;
+                        }
                     }
-                });      
+                });
             };
         }
     </script>
