@@ -1375,9 +1375,7 @@
                                     //guardar imagen
 
                                     // Se guardara la imagen con nombre de id de la receta creada
-                                    //guardarImagen();
-
-                                    recargarPagina(data.mensaje)
+                                    guardarImagen(data);
                                 }
                             });
 
@@ -1859,40 +1857,35 @@
     </script>
 
 
-    <script>
-        function guardarImagen() {
-            // Crear un objeto FormData
+    
+<script>
+    function guardarImagen(data) {
+        var input = document.getElementById('inputImage2');
+        var file = input.files[0];
+
+        if (file) {
             var formData = new FormData();
-            var fileInput = document.getElementById('inputImage2');
+            formData.append('image', file);
+            formData.append("idReceta", data.id);
 
-            // Verificar si se ha seleccionado un archivo
-            if (fileInput.files.length === 0) {
-                alert("Por favor, selecciona un archivo de imagen.");
-                return; // Salir de la función si no hay archivo
-            }
 
-            //formData.append("imagen", fileInput.files[0]); // Agregar la imagen al FormData
-
-            $.ajax({
-                type: "POST",
-                url: "RecetasABM.aspx/GuardarImagen",
-                data: formData,
-                contentType: false, // Evitar que jQuery establezca el Content-Type
-                processData: false, // Evitar que jQuery procese los datos
-                dataType: "json", // Esperar un JSON como respuesta
-                success: function (response) {
-                    console.log(response);
-                    alert("Imagen guardada exitosamente.");
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.error(textStatus, errorThrown);
-                    alert("Error al guardar la imagen.");
-                }
-            });
-
+            fetch('ImageUploadHandler.ashx', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.text())
+                .then(result => {
+                    //alert(result);
+                    recargarPagina(data.mensaje)
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        } else {
+            //alert("Por favor, selecciona una imagen.");
         }
-    </script>
-
+    }
+</script>
 
     <script>         
         function recargarPagina(mensaje) {

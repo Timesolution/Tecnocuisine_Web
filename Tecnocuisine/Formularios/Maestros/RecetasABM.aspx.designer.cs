@@ -78,15 +78,6 @@ namespace Tecnocuisine.Formularios.Maestros
         protected global::System.Web.UI.WebControls.CheckBox CheckSePuedeComprar;
 
         /// <summary>
-        /// Control inputImage2.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload inputImage2;
-
-        /// <summary>
         /// Control ddlTipoReceta.
         /// </summary>
         /// <remarks>

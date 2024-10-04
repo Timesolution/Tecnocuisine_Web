@@ -1500,7 +1500,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 TableCell celCostoTotal = new TableCell();
                 decimal factor = Receta.Factor != null ? (decimal)Receta.Factor : 1;
-                celCostoTotal.Text = "<div id=\"jstree_CST" + RecetaingredienteI.id + "\"> <ul><li id='RecetaCST_LI_" + RecetaingredienteI.id + "' class=\"jstree-open\">" + (Receta.Recetas.Costo.Value * Receta.cantidad * factor).ToString("N", culture) + ObtenerrecetaString(Receta.idRecetaIngrediente, 5, 0) + "</li></ul></div>";
+                celCostoTotal.Text = "<div id=\"jstree_CST" + RecetaingredienteI.id + "\"> <ul><li id='RecetaCST_LI_" + RecetaingredienteI.id + "' class=\"jstree-open\">" + (Receta.Recetas.Costo.Value /* Receta.cantidad * factor*/).ToString("N", culture) + ObtenerrecetaString(Receta.idRecetaIngrediente, 5, 0) + "</li></ul></div>";
                 celCostoTotal.VerticalAlign = VerticalAlign.Middle;
                 celCostoTotal.HorizontalAlign = HorizontalAlign.Left;
                 //celCostoTotal.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");

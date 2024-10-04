@@ -832,7 +832,8 @@
             //document.getElementById('editable_length2').children[0].remove();
         });
     </script>
-    <script>
+
+    <%--<script>
         $(document).ready(function () {
 
 
@@ -921,7 +922,7 @@
 
             });
         });
-    </script>
+    </script>--%>
 
 
     <script type="text/javascript">
