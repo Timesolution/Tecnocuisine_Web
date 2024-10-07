@@ -62,7 +62,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 CargarSectoresProductivodDDL();
                 CargarTipos();
 
-                CargarTablaIngredientes();
+                //CargarTablaIngredientes();
 
                 //cargarNestedListCategorias();
                 //cargarNestedListAtributos();
@@ -376,15 +376,25 @@ namespace Tecnocuisine.Formularios.Maestros
         {
             try
             {
-                var listaRR = controladorReceta.obtenerRecetasbyReceta(idReceta); //recetas_recetas
+                var itemsHijos = controladorReceta.obtenerRecetasbyReceta(idReceta); //recetas_recetas
 
-                if (listaRR.Count > 0)
+                // Limpiar el placeholder antes de agregar nuevas filas
+                phProductos.Controls.Clear();
+
+                if (itemsHijos.Count > 0)
                 {
                     //CargarProductosOptions(productos);
 
-                    foreach (var item in listaRR)
+                    foreach (var item in itemsHijos)
                     {
-                        CargarRecetasPHModal2(item);
+                        //CargarRecetasPHModal2(item);
+
+                        // Generar y agregar la fila principal
+                        var filaPadre = GenerarFilaReceta(item, true);
+                        phProductos.Controls.Add(filaPadre);
+
+                        // Generar y agregar las filas hijas (subrecetas o productos) de forma recursiva
+                        GenerarFilasHijas(item.idRecetaIngrediente, 1); // Empezamos en nivel 1
                     }
                 }
 
@@ -393,6 +403,139 @@ namespace Tecnocuisine.Formularios.Maestros
             {
 
             }
+        }
+
+        private TableRow GenerarFilaReceta(Tecnocuisine_API.Entitys.Recetas_Receta Receta_Receta, bool esReceta)
+        {
+            string descripcion, cantidad, unidad, costo, cTotal, sector="", tiempo;
+            int id;
+
+            // Obtener los datos dependiendo si es una receta o producto
+            //if (esReceta)
+            //{
+            var receta = controladorReceta.ObtenerRecetaId(Receta_Receta.idRecetaIngrediente);
+            id = receta.id;
+            descripcion = receta.descripcion;
+            cantidad = Receta_Receta.cantidad.ToString("N", culture);
+            unidad = new ControladorUnidad().ObtenerUnidadId(receta.UnidadMedida.Value).abreviacion;
+            costo = receta.Costo.Value.ToString("N", culture);
+            tiempo = Receta_Receta.Tiempo?.ToString() ?? "0";
+
+            if(Receta_Receta.idSectorProductivo!=null)
+                sector = controladorReceta.obterner_sectorProductivoByIdsectorProductivo((int)Receta_Receta.idSectorProductivo).descripcion;
+
+            var costototal = receta.Costo != null
+                 ? receta.Costo.Value * Receta_Receta.cantidad 
+                 : 0;
+            cTotal = costototal.ToString("N", culture);
+
+            //}
+            //else
+            //{
+            //    var producto = controladorProducto.ObtenerProductoId(Receta.idRecetaIngrediente);
+            //    id = producto.id;
+            //    descripcion = producto.descripcion;
+            //}
+
+            // Crear la fila principal (padre)
+            TableRow parentRow = new TableRow();
+            parentRow.ID = "Receta_" + id.ToString();
+            parentRow.CssClass = "parent"; // Clases para personalizar con CSS
+
+            // Si es receta, agregar el atributo onclick para expandir/contraer las filas hijas
+            //if (esReceta)
+            //{
+            parentRow.Attributes.Add("onclick", "toggleChildren(this)");
+            parentRow.Attributes.Add("style", "cursor: pointer;"); // Cambia el cursor a pointer para indicar que es clicable
+            //}
+
+
+
+            // Crear las celdas y agregarlas a la fila
+            parentRow.Cells.Add(GenerarCelda(id.ToString())); // Espacio vacío para los hijos
+            parentRow.Cells.Add(GenerarCelda(descripcion));
+            parentRow.Cells.Add(GenerarCelda(cantidad, "text-align:right"));
+            parentRow.Cells.Add(GenerarCelda(unidad));
+            parentRow.Cells.Add(GenerarCelda(costo, "text-align:right"));
+            parentRow.Cells.Add(GenerarCelda(cTotal, "text-align:right"));
+            parentRow.Cells.Add(GenerarCelda(sector));
+            parentRow.Cells.Add(GenerarCelda(tiempo, "text-align:right"));
+            parentRow.Cells.Add(GenerarCelda("")); // Última columna vacía (para botones o acciones)
+
+            return parentRow;
+        }
+
+        private void GenerarFilasHijas(int idItem, int nivel)
+        {
+            // Si es receta, ver si tiene más recetas o productos y dibujarlos anidados
+            var recetasInternas = controladorReceta.obtenerRecetasbyReceta(idItem); // recetas_recetas
+            foreach (var ri in recetasInternas)
+            {
+                var recetaHijaDb = controladorReceta.ObtenerRecetaId(ri.idRecetaIngrediente);
+
+                // Crear fila hija
+                TableRow childRow = new TableRow();
+                childRow.CssClass = $"child children hidden nivel-{nivel}"; // Oculto inicialmente, con clase de nivel
+                childRow.Attributes.Add("data-nivel", nivel.ToString());
+
+                childRow.Attributes.Add("onclick", "toggleChildren(this)");
+                childRow.Attributes.Add("style", "cursor: pointer;"); // Cambia el cursor a pointer para indicar que es clicable
+
+                // Crear las celdas para la fila hija
+                childRow.Cells.Add(GenerarCelda("↳")); // Indicador de que es una fila hija
+                childRow.Cells.Add(GenerarCelda("+ " + recetaHijaDb.descripcion)); // Descripción del hijo
+                childRow.Cells.Add(GenerarCelda("1", "text-align:right"));
+                childRow.Cells.Add(GenerarCelda("kg"));
+                childRow.Cells.Add(GenerarCelda("5.00", "text-align:right"));
+                childRow.Cells.Add(GenerarCelda("5.00", "text-align:right"));
+                childRow.Cells.Add(GenerarCelda("Sector B"));
+                childRow.Cells.Add(GenerarCelda("1h", "text-align:right"));
+                childRow.Cells.Add(GenerarCelda("")); // Última columna vacía
+
+                // Agregar la fila hija justo después de la fila padre
+                phProductos.Controls.Add(childRow);
+
+                // Generar las sub-filas recursivamente (si hay más recetas dentro)
+                GenerarFilasHijas(ri.idRecetaIngrediente, nivel + 1); // Recursión aumentando el nivel
+            }
+
+            var productosInternos = controladorReceta.ObtenerProductosByReceta(idItem); // recetas_productos
+            foreach (var pi in productosInternos)
+            {
+                // Crear fila hija para productos
+                TableRow childRow = new TableRow();
+                childRow.CssClass = $"child children hidden nivel-{nivel}"; // Oculto inicialmente, con clase de nivel
+                childRow.Attributes.Add("data-nivel", nivel.ToString());
+
+                // Crear las celdas para la fila hija
+                childRow.Cells.Add(GenerarCelda("↳")); // Indicador de que es una fila hija
+                childRow.Cells.Add(GenerarCelda(pi.Productos.descripcion)); // Descripción del producto hijo
+                childRow.Cells.Add(GenerarCelda("2", "text-align:right"));
+                childRow.Cells.Add(GenerarCelda("unit"));
+                childRow.Cells.Add(GenerarCelda("8.00", "text-align:right"));
+                childRow.Cells.Add(GenerarCelda("16.00", "text-align:right"));
+                childRow.Cells.Add(GenerarCelda("Sector C"));
+                childRow.Cells.Add(GenerarCelda("30m", "text-align:right"));
+                childRow.Cells.Add(GenerarCelda("")); // Última columna vacía
+
+                // Agregar la fila hija justo después de la fila padre
+                phProductos.Controls.Add(childRow);
+            }
+        }
+
+        // Método para generar celdas
+        private TableCell GenerarCelda(string texto, string style = "")
+        {
+            TableCell cell = new TableCell();
+            cell.Text = texto;
+
+            // Si se pasan estilos, se aplican a la celda
+            if (!string.IsNullOrEmpty(style))
+            {
+                cell.Attributes.Add("style", style);
+            }
+
+            return cell;
         }
 
         private void CargarPasos()
@@ -2193,14 +2336,26 @@ namespace Tecnocuisine.Formularios.Maestros
         {
             //Obtener las recetas hijas de la receta visualizada
             var recetasHijas = controladorReceta.obtenerRecetasbyReceta(this.idReceta); //recetas_recetas
+            var productos = controladorReceta.obteneProductosPadres(this.idReceta);
 
+
+            // inicializar el HTML para la tabla
+            productContainer.Text = "<table class='table table-bordered'><tbody>";
+
+            foreach (var p in productos)
+            {
+                productContainer.Text += GenerarHTMLRecetaProducto(p.id, false);
+            }
             foreach (var recetaHija in recetasHijas)
             {
                 productContainer.Text += GenerarHTMLRecetaProducto(recetaHija.idRecetaIngrediente, true);
             }
+
+            // Cerrar la tabla
+            productContainer.Text += "</tbody></table>";
         }
 
-        private string GenerarHTMLRecetaProducto(int idItem, bool esReceta, bool boldStyle=false)
+        private string GenerarHTMLRecetaProducto(int idItem, bool esReceta, bool boldStyle = false)
         {
             string descripcion;
 
@@ -2215,19 +2370,41 @@ namespace Tecnocuisine.Formularios.Maestros
                 descripcion = producto.descripcion;
             }
 
-            string onclick = esReceta ? "onclick='toggleChildren(event)" : "";
+            string onclick = esReceta ? "onclick='toggleChildren(event)'" : "";
+            string pointer = esReceta ? "cursor:pointer" : "";
             string bold = boldStyle ? "font-weight:bold" : "";
 
+            //string itemHTML = $@"
+            //<div class='product' {onclick}' style='{bold}'>
+            //    <p>{descripcion}</h3>
+            //</div>
+            //<div class='children hidden'>";
+
+            // Crear la fila principal (padre) con la descripción
             string itemHTML = $@"
-            <div class='product' {onclick}' style='{bold}'>
-                <p>{descripcion}</h3>
-            </div>
-            <div class='children hidden'>";
+    <tr {onclick} style='{bold}; {pointer}'>
+        <td>{descripcion}</td>
+    </tr>";
+
+
+            //        // Ahora agregamos la fila que contendrá los hijos, con un colspan para abarcar el ancho completo
+            //        itemHTML += $@"
+            //<tr class='children hidden'>
+            //    <td colspan='100%'>
+            //    ";
+
 
 
             // Si es receta, ver si dentro tiene mas recetas o productos y dibujarlos anidados
             if (esReceta)
             {
+                // Abrir la fila hija con colspan
+                itemHTML += $@"
+        <tr class='children hidden'>
+            <td colspan=''>
+            <table class='table table-bordered table-child'>
+                <tbody>";
+
                 var recetasInternas = controladorReceta.obtenerRecetasbyReceta(idItem); //recetas_recetas
                 foreach (var ri in recetasInternas)
                 {
@@ -2239,12 +2416,22 @@ namespace Tecnocuisine.Formularios.Maestros
                 {
                     itemHTML += GenerarHTMLRecetaProducto(pi.idProducto, false); // Llamada recursiva
                 }
+
+                // Cerrar la tabla y la fila hija
+                itemHTML += @"
+                </tbody>
+            </table>
+            </td>
+        </tr>";
             }
 
 
-            itemHTML += "</div>";
+            //itemHTML += "</div>";
+
+            // Cerrar las etiquetas de la fila hija
+            itemHTML += "</td></tr>";
+
             return itemHTML;
         }
-
     }
 }

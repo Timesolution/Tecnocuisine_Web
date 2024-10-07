@@ -70,24 +70,22 @@
         }*/
 
 
-
-
         .product-container {
             border: 1px solid #ccc;
             border-radius: 5px;
-            padding: 10px;
+            padding: 5px;
         }
 
         .product {
-            background-color: #f9f9f9;
-            padding: 10px;
-            margin: 5px 0;
+            /*background-color: #f9f9f9;*/
+            padding: 5px;
+            /*margin: 5px 0;*/
             cursor: pointer;
         }
 
         .children {
             /*margin-left: 20px;*/
-            padding: 10px;
+            /*padding: 10px;*/
             padding-left: 0;
             background-color: #e9e9e9;
         }
@@ -561,7 +559,7 @@
                 <asp:HiddenField ID="hiddenidReceta" runat="server" />
             </div>
 
-                                        <div class="product-container" id="">
+                                        <div class="product-container" style="display:none" id="">
         <asp:Literal ID="productContainer" runat="server"></asp:Literal>
     </div>
 
@@ -1079,18 +1077,57 @@
 
 
     <script>
-        function toggleChildren(event) {
-            // Evita que el evento se propague a los elementos padres
-            event.stopPropagation();
+        //function toggleChildren(event) {
+        //    // Evita que el evento se propague a los elementos padres
+        //    event.stopPropagation();
 
-            // Obtiene el siguiente elemento hermano que contiene los hijos
-            const children = event.currentTarget.nextElementSibling;
+        //    // Obtiene el siguiente elemento hermano que contiene los hijos
+        //    const children = event.currentTarget.nextElementSibling;
 
-            // Alterna la clase 'hidden' para mostrar o ocultar los hijos
-            if (children) {
-                children.classList.toggle('hidden');
+        //    // Alterna la clase 'hidden' para mostrar o ocultar los hijos
+        //    if (children) {
+        //        children.classList.toggle('hidden');
+        //    }
+        //}
+
+        //function toggleChildren(row) {
+        //    var nextRow = row.nextElementSibling;
+
+        //    // Mostrar/ocultar todas las filas hijas que sigan a la fila padre
+        //    while (nextRow && nextRow.classList.contains('child')) {
+        //        nextRow.classList.toggle('hidden');
+        //        nextRow = nextRow.nextElementSibling;
+        //    }
+        //}
+
+        function toggleChildren(row) {
+            // Obtener el nivel actual de la fila expandida
+            var currentLevel = parseInt(row.getAttribute('data-nivel')) || 0; // Por defecto nivel 0 si no está definido
+
+            // Obtener la siguiente fila en la tabla
+            var nextRow = row.nextElementSibling;
+
+            // Mientras haya una fila siguiente y sea un hijo
+            while (nextRow && nextRow.classList.contains('child')) {
+                var rowLevel = parseInt(nextRow.getAttribute('data-nivel')) || 0;
+
+                // Mostrar/Ocultar solo los hijos directos (nivel + 1)
+                if (rowLevel === currentLevel + 1) {
+                    nextRow.classList.toggle('hidden');
+                }
+
+                // Detener el bucle si encontramos una fila de nivel igual o menor (hermana)
+                if (rowLevel <= currentLevel) {
+                    break;
+                }
+
+                // Continuar con la siguiente fila
+                nextRow = nextRow.nextElementSibling;
             }
         }
+
+
+
 
     </script>
 
