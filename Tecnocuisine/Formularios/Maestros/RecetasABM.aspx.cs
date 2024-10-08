@@ -390,11 +390,11 @@ namespace Tecnocuisine.Formularios.Maestros
                         //CargarRecetasPHModal2(item);
 
                         // Generar y agregar la fila principal
-                        var filaPadre = GenerarFilaReceta(item, true);
+                        var filaPadre = GenerarFilaReceta_Edit(item, true);
                         phProductos.Controls.Add(filaPadre);
 
                         // Generar y agregar las filas hijas (subrecetas o productos) de forma recursiva
-                        GenerarFilasHijas(item.idRecetaIngrediente, 1); // Empezamos en nivel 1
+                        GenerarFilasHijas_Edit(item.idRecetaIngrediente, 1); // Empezamos en nivel 1
                     }
                 }
 
@@ -405,9 +405,9 @@ namespace Tecnocuisine.Formularios.Maestros
             }
         }
 
-        private TableRow GenerarFilaReceta(Tecnocuisine_API.Entitys.Recetas_Receta Receta_Receta, bool esReceta)
+        private TableRow GenerarFilaReceta_Edit(Tecnocuisine_API.Entitys.Recetas_Receta Receta_Receta, bool esReceta)
         {
-            string descripcion, cantidad, unidad, costo, cTotal, sector="", tiempo;
+            string descripcion, cantidad, unidad, costo, cTotal, sector = "", tiempo;
             int id;
 
             // Obtener los datos dependiendo si es una receta o producto
@@ -418,16 +418,16 @@ namespace Tecnocuisine.Formularios.Maestros
             descripcion = receta.descripcion;
             cantidad = Receta_Receta.cantidad.ToString("N", culture);
             unidad = new ControladorUnidad().ObtenerUnidadId(receta.UnidadMedida.Value).abreviacion;
-            costo = receta.Costo.Value.ToString("N", culture);
+            costo = receta.Costo.Value.ToString("C", culture);
             tiempo = Receta_Receta.Tiempo?.ToString() ?? "0";
 
-            if(Receta_Receta.idSectorProductivo!=null)
+            if (Receta_Receta.idSectorProductivo != null)
                 sector = controladorReceta.obterner_sectorProductivoByIdsectorProductivo((int)Receta_Receta.idSectorProductivo).descripcion;
 
             var costototal = receta.Costo != null
-                 ? receta.Costo.Value * Receta_Receta.cantidad 
+                 ? receta.Costo.Value * Receta_Receta.cantidad
                  : 0;
-            cTotal = costototal.ToString("N", culture);
+            cTotal = costototal.ToString("C", culture);
 
             //}
             //else
@@ -450,7 +450,6 @@ namespace Tecnocuisine.Formularios.Maestros
             //}
 
 
-
             // Crear las celdas y agregarlas a la fila
             parentRow.Cells.Add(GenerarCelda(id.ToString())); // Espacio vacío para los hijos
             parentRow.Cells.Add(GenerarCelda(descripcion));
@@ -460,12 +459,35 @@ namespace Tecnocuisine.Formularios.Maestros
             parentRow.Cells.Add(GenerarCelda(cTotal, "text-align:right"));
             parentRow.Cells.Add(GenerarCelda(sector));
             parentRow.Cells.Add(GenerarCelda(tiempo, "text-align:right"));
-            parentRow.Cells.Add(GenerarCelda("")); // Última columna vacía (para botones o acciones)
+            //parentRow.Cells.Add(GenerarCelda("")); // Última columna vacía (para botones o acciones)
+
+            //agrego fila a tabla
+            TableCell celAccion = new TableCell();
+
+            if (bloqueados != 1)
+            {
+                LinkButton btnDetalles = new LinkButton();
+                btnDetalles.CssClass = "btn btn-xs";
+                btnDetalles.Attributes.Add("data-toggle", "tooltip");
+
+                // Cambiar el color del icono a rojo
+                btnDetalles.Text = "<span><i style=\"color: red\" class='fa fa-trash'></i></span>";
+
+                btnDetalles.Attributes.Add("class", "btn  btn-xs");
+                btnDetalles.Attributes.Add("style", "padding: 0% 5% 2% 5.5%;background-color: transparent;");
+                // btnDetalles.Attributes.Add("onclick", "borrarProd('ContentPlaceHolder1_Receta_" + Receta.Recetas.id.ToString() + "');");
+                btnDetalles.Attributes.Add("onclick", "borrarProd('ContentPlaceHolder1_Receta_" + id + "');");
+                celAccion.Controls.Add(btnDetalles);
+
+                celAccion.Width = Unit.Percentage(25);
+                celAccion.Attributes.Add("style", "text-align: center");
+                parentRow.Cells.Add(celAccion);
+            }
 
             return parentRow;
         }
 
-        private void GenerarFilasHijas(int idItem, int nivel)
+        private void GenerarFilasHijas_Edit(int idItem, int nivel)
         {
             // Si es receta, ver si tiene más recetas o productos y dibujarlos anidados
             var recetasInternas = controladorReceta.obtenerRecetasbyReceta(idItem); // recetas_recetas
@@ -473,49 +495,87 @@ namespace Tecnocuisine.Formularios.Maestros
             {
                 var recetaHijaDb = controladorReceta.ObtenerRecetaId(ri.idRecetaIngrediente);
 
+                // Obtener valores de las celdas
+                int id = recetaHijaDb.id;
+                string descripcion = recetaHijaDb.descripcion;
+                string cantidad = ri.cantidad.ToString("N", culture);
+                string unidad = new ControladorUnidad().ObtenerUnidadId(recetaHijaDb.UnidadMedida.Value).abreviacion;
+                string costo = recetaHijaDb.Costo.Value.ToString("C", culture);
+                string tiempo = ri.Tiempo?.ToString() ?? "0";
+                string sector = string.Empty;
+                string cTotal;
+
+                var costototal = recetaHijaDb.Costo != null
+                     ? recetaHijaDb.Costo.Value * ri.cantidad
+                     : 0;
+                cTotal = costototal.ToString("C", culture);
+
+                if (ri.idSectorProductivo != null)
+                    sector = controladorReceta.obterner_sectorProductivoByIdsectorProductivo((int)ri.idSectorProductivo).descripcion;
+
+
                 // Crear fila hija
                 TableRow childRow = new TableRow();
                 childRow.CssClass = $"child children hidden nivel-{nivel}"; // Oculto inicialmente, con clase de nivel
                 childRow.Attributes.Add("data-nivel", nivel.ToString());
-
                 childRow.Attributes.Add("onclick", "toggleChildren(this)");
                 childRow.Attributes.Add("style", "cursor: pointer;"); // Cambia el cursor a pointer para indicar que es clicable
 
                 // Crear las celdas para la fila hija
-                childRow.Cells.Add(GenerarCelda("↳")); // Indicador de que es una fila hija
-                childRow.Cells.Add(GenerarCelda("+ " + recetaHijaDb.descripcion)); // Descripción del hijo
-                childRow.Cells.Add(GenerarCelda("1", "text-align:right"));
-                childRow.Cells.Add(GenerarCelda("kg"));
-                childRow.Cells.Add(GenerarCelda("5.00", "text-align:right"));
-                childRow.Cells.Add(GenerarCelda("5.00", "text-align:right"));
-                childRow.Cells.Add(GenerarCelda("Sector B"));
-                childRow.Cells.Add(GenerarCelda("1h", "text-align:right"));
+                childRow.Cells.Add(GenerarCelda(id.ToString())); // Indicador de que es una fila hija
+                childRow.Cells.Add(GenerarCelda("+ " + descripcion)); // Descripción del hijo
+                childRow.Cells.Add(GenerarCelda(cantidad, "text-align:right"));
+                childRow.Cells.Add(GenerarCelda(unidad));
+                childRow.Cells.Add(GenerarCelda(costo, "text-align:right"));
+                childRow.Cells.Add(GenerarCelda(cTotal, "text-align:right"));
+                childRow.Cells.Add(GenerarCelda(sector));
+                childRow.Cells.Add(GenerarCelda(tiempo, "text-align:right"));
                 childRow.Cells.Add(GenerarCelda("")); // Última columna vacía
 
                 // Agregar la fila hija justo después de la fila padre
                 phProductos.Controls.Add(childRow);
 
                 // Generar las sub-filas recursivamente (si hay más recetas dentro)
-                GenerarFilasHijas(ri.idRecetaIngrediente, nivel + 1); // Recursión aumentando el nivel
+                GenerarFilasHijas_Edit(ri.idRecetaIngrediente, nivel + 1); // Recursión aumentando el nivel
             }
 
             var productosInternos = controladorReceta.ObtenerProductosByReceta(idItem); // recetas_productos
             foreach (var pi in productosInternos)
             {
+                // Obtener valores de las celdas
+                int id = pi.Productos.id;
+                string descripcion = pi.Productos.descripcion;
+                string cantidad = pi.cantidad.ToString("N", culture);
+                string unidad = new ControladorUnidad().ObtenerUnidadId(pi.Productos.unidadMedida).abreviacion;
+                string costo = pi.Productos.costo.ToString("C", culture);
+                string tiempo = pi.Tiempo?.ToString() ?? "0";
+                string sector = string.Empty;
+                string cTotal;
+
+                var costototal = pi.Productos.costo != null
+                     ? pi.Productos.costo * pi.cantidad
+                     : 0;
+                cTotal = costototal.ToString("C", culture);
+
+                if (pi.idSectorProductivo != null)
+                    sector = controladorReceta.obterner_sectorProductivoByIdsectorProductivo((int)pi.idSectorProductivo).descripcion;
+
+
+
                 // Crear fila hija para productos
                 TableRow childRow = new TableRow();
                 childRow.CssClass = $"child children hidden nivel-{nivel}"; // Oculto inicialmente, con clase de nivel
                 childRow.Attributes.Add("data-nivel", nivel.ToString());
 
                 // Crear las celdas para la fila hija
-                childRow.Cells.Add(GenerarCelda("↳")); // Indicador de que es una fila hija
-                childRow.Cells.Add(GenerarCelda(pi.Productos.descripcion)); // Descripción del producto hijo
-                childRow.Cells.Add(GenerarCelda("2", "text-align:right"));
-                childRow.Cells.Add(GenerarCelda("unit"));
-                childRow.Cells.Add(GenerarCelda("8.00", "text-align:right"));
-                childRow.Cells.Add(GenerarCelda("16.00", "text-align:right"));
-                childRow.Cells.Add(GenerarCelda("Sector C"));
-                childRow.Cells.Add(GenerarCelda("30m", "text-align:right"));
+                childRow.Cells.Add(GenerarCelda(id.ToString())); // Indicador de que es una fila hija
+                childRow.Cells.Add(GenerarCelda(descripcion)); // Descripción del hijo
+                childRow.Cells.Add(GenerarCelda(cantidad, "text-align:right"));
+                childRow.Cells.Add(GenerarCelda(unidad));
+                childRow.Cells.Add(GenerarCelda(costo, "text-align:right"));
+                childRow.Cells.Add(GenerarCelda(cTotal, "text-align:right"));
+                childRow.Cells.Add(GenerarCelda(sector));
+                childRow.Cells.Add(GenerarCelda(tiempo, "text-align:right"));
                 childRow.Cells.Add(GenerarCelda("")); // Última columna vacía
 
                 // Agregar la fila hija justo después de la fila padre
