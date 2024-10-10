@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Web;
+using System.Web.Razor.Parser.SyntaxTree;
 using System.Web.Script.Serialization;
 using System.Web.Services;
 using System.Web.UI;
@@ -39,6 +40,8 @@ namespace Tecnocuisine.Formularios.Maestros
         int idReceta;
         int bloqueados;
         CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+        static CultureInfo cultureSt = CultureInfo.CreateSpecificCulture("en-US");
+
         protected void Page_Load(object sender, EventArgs e)
         {
             VerificarLogin();
@@ -378,9 +381,6 @@ namespace Tecnocuisine.Formularios.Maestros
             {
                 var itemsHijos = controladorReceta.obtenerRecetasbyReceta(idReceta); //recetas_recetas
 
-                // Limpiar el placeholder antes de agregar nuevas filas
-                phProductos.Controls.Clear();
-
                 if (itemsHijos.Count > 0)
                 {
                     //CargarProductosOptions(productos);
@@ -405,6 +405,12 @@ namespace Tecnocuisine.Formularios.Maestros
             }
         }
 
+        /// <summary>
+        /// Es el metodo principal para precargar los ingredientes de tipo receta
+        /// </summary>
+        /// <param name="Receta_Receta"></param>
+        /// <param name="esReceta"></param>
+        /// <returns></returns>
         private TableRow GenerarFilaReceta_Edit(Tecnocuisine_API.Entitys.Recetas_Receta Receta_Receta, bool esReceta)
         {
             string descripcion, cantidad, unidad, costo, cTotal, sector = "", tiempo;
@@ -416,7 +422,7 @@ namespace Tecnocuisine.Formularios.Maestros
             var receta = controladorReceta.ObtenerRecetaId(Receta_Receta.idRecetaIngrediente);
             id = receta.id;
             descripcion = receta.descripcion;
-            cantidad = Receta_Receta.cantidad.ToString("N", culture);
+            cantidad = Receta_Receta.cantidad.ToString("N3", culture);
             unidad = new ControladorUnidad().ObtenerUnidadId(receta.UnidadMedida.Value).abreviacion;
             costo = receta.Costo.Value.ToString("C", culture);
             tiempo = Receta_Receta.Tiempo?.ToString() ?? "0";
@@ -452,7 +458,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
             // Crear las celdas y agregarlas a la fila
             parentRow.Cells.Add(GenerarCelda(id.ToString())); // Espacio vacío para los hijos
-            parentRow.Cells.Add(GenerarCelda(descripcion));
+            parentRow.Cells.Add(GenerarCelda("<i class='fa fa-plus' style='color:green'></i> &nbsp;" + descripcion));
             parentRow.Cells.Add(GenerarCelda(cantidad, "text-align:right"));
             parentRow.Cells.Add(GenerarCelda(unidad));
             parentRow.Cells.Add(GenerarCelda(costo, "text-align:right"));
@@ -487,6 +493,11 @@ namespace Tecnocuisine.Formularios.Maestros
             return parentRow;
         }
 
+        /// <summary>
+        /// Precarga todas las filas internas de una receta dada
+        /// </summary>
+        /// <param name="idItem"></param>
+        /// <param name="nivel"></param>
         private void GenerarFilasHijas_Edit(int idItem, int nivel)
         {
             // Si es receta, ver si tiene más recetas o productos y dibujarlos anidados
@@ -498,7 +509,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 // Obtener valores de las celdas
                 int id = recetaHijaDb.id;
                 string descripcion = recetaHijaDb.descripcion;
-                string cantidad = ri.cantidad.ToString("N", culture);
+                string cantidad = ri.cantidad.ToString("N3", culture);
                 string unidad = new ControladorUnidad().ObtenerUnidadId(recetaHijaDb.UnidadMedida.Value).abreviacion;
                 string costo = recetaHijaDb.Costo.Value.ToString("C", culture);
                 string tiempo = ri.Tiempo?.ToString() ?? "0";
@@ -515,6 +526,13 @@ namespace Tecnocuisine.Formularios.Maestros
 
 
                 // Crear fila hija
+                // Crear las celdas para la fila hija
+                string margen = string.Empty;
+                for (int i = 0; i < nivel; i++)
+                {
+                    margen += "&nbsp;&nbsp;&nbsp;&nbsp;";
+                }
+
                 TableRow childRow = new TableRow();
                 childRow.CssClass = $"child children hidden nivel-{nivel}"; // Oculto inicialmente, con clase de nivel
                 childRow.Attributes.Add("data-nivel", nivel.ToString());
@@ -523,7 +541,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 // Crear las celdas para la fila hija
                 childRow.Cells.Add(GenerarCelda(id.ToString())); // Indicador de que es una fila hija
-                childRow.Cells.Add(GenerarCelda("+ " + descripcion)); // Descripción del hijo
+                childRow.Cells.Add(GenerarCelda(margen + "<i class='fa fa-plus' style='color:green'></i> &nbsp;" + descripcion)); // Descripción del hijo
                 childRow.Cells.Add(GenerarCelda(cantidad, "text-align:right"));
                 childRow.Cells.Add(GenerarCelda(unidad));
                 childRow.Cells.Add(GenerarCelda(costo, "text-align:right"));
@@ -545,7 +563,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 // Obtener valores de las celdas
                 int id = pi.Productos.id;
                 string descripcion = pi.Productos.descripcion;
-                string cantidad = pi.cantidad.ToString("N", culture);
+                string cantidad = pi.cantidad.ToString("N3", culture);
                 string unidad = new ControladorUnidad().ObtenerUnidadId(pi.Productos.unidadMedida).abreviacion;
                 string costo = pi.Productos.costo.ToString("C", culture);
                 string tiempo = pi.Tiempo?.ToString() ?? "0";
@@ -568,8 +586,15 @@ namespace Tecnocuisine.Formularios.Maestros
                 childRow.Attributes.Add("data-nivel", nivel.ToString());
 
                 // Crear las celdas para la fila hija
+                string margen = string.Empty;
+                for (int i = 0; i < nivel; i++)
+                {
+                    margen += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                    //margen += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                }
+
                 childRow.Cells.Add(GenerarCelda(id.ToString())); // Indicador de que es una fila hija
-                childRow.Cells.Add(GenerarCelda(descripcion)); // Descripción del hijo
+                childRow.Cells.Add(GenerarCelda(margen + descripcion)); // Descripción del hijo
                 childRow.Cells.Add(GenerarCelda(cantidad, "text-align:right"));
                 childRow.Cells.Add(GenerarCelda(unidad));
                 childRow.Cells.Add(GenerarCelda(costo, "text-align:right"));
@@ -597,6 +622,169 @@ namespace Tecnocuisine.Formularios.Maestros
 
             return cell;
         }
+
+
+        /// <summary>
+        /// Devuelve una cadena que representa un elemento <tr> HTML de una receta para la tabla de ingredientes
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="cantidad"></param>
+        /// <param name="costo"></param>
+        /// <param name="idSector"></param>
+        /// <param name="tiempo"></param>
+        /// <returns></returns>
+        [WebMethod]
+        public static string GenerarFilaReceta_Add(string id, string cantidad, string costo, string idSector, string tiempo)
+        {
+            ControladorReceta cReceta = new ControladorReceta();
+
+            // Setear informacion
+            var receta = cReceta.ObtenerRecetaId(Convert.ToInt32(id));
+            string unidad = new ControladorUnidad().ObtenerUnidadId(receta.UnidadMedida.Value).abreviacion;
+            decimal cantidadFormatted = Convert.ToDecimal(cantidad);
+            decimal costoFormatted = Convert.ToDecimal(costo);
+            var costototal = costoFormatted * cantidadFormatted;
+            string sector = string.Empty;
+
+            if (idSector != "-1")
+                sector = cReceta.obterner_sectorProductivoByIdsectorProductivo(Convert.ToInt32(idSector)).descripcion;
+
+
+            // Generar HTML dinamico
+            string rows = $@"
+                <tr id='Receta_{id}' class='parent' onclick='toggleChildren(this)' style='cursor: pointer;'>
+                    <td>{id}</td>
+                    <td><i class='fa fa-plus' style='color:green'></i> &nbsp;{receta.descripcion}</td>
+                    <td style='text-align:right'>{cantidadFormatted:N3}</td>
+                    <td>{unidad}</td>
+                    <td style='text-align:right'>{costoFormatted:C}</td>
+                    <td style='text-align:right'>{costototal:C}</td>
+                    <td>{sector}</td>
+                    <td style='text-align:right'>{tiempo}</td>
+                    <td style='text-align: center;'>
+                        <a href='javascript:void(0);' class='btn btn-xs' data-toggle='tooltip' style='padding: 0% 5% 2% 5.5%; background-color: transparent;' onclick='borrarProd({id});'>
+                           <span><i style='color: red' class='fa fa-trash'></i></span>
+                        </a>
+                    </td>
+                </tr>";
+
+            string filasHijas = string.Empty;
+            rows += GenerarFilasHijas_Add(receta.id, 1, ref filasHijas);
+
+            return rows;
+        }
+
+        public static string childRows = string.Empty;
+        /// <summary>
+        /// Devuelve una cadena que representa varios elementos <tr> HTML que son filas hijas de la receta con el id recibido
+        /// </summary>
+        /// <param name="idItem"></param>
+        /// <param name="nivel"></param>
+        /// <returns></returns>
+        private static string GenerarFilasHijas_Add(int idItem, int nivel, ref string filasAcumuladas)
+        {
+            
+            ControladorReceta cReceta = new ControladorReceta();
+
+            // Si es receta, ver si tiene más recetas o productos y dibujarlos anidados
+            var recetasInternas = cReceta.obtenerRecetasbyReceta(idItem); // recetas_recetas
+            foreach (var ri in recetasInternas)
+            {
+                var recetaHijaDb = cReceta.ObtenerRecetaId(ri.idRecetaIngrediente);
+
+                // Obtener valores de las celdas
+                int id = recetaHijaDb.id;
+                string descripcion = recetaHijaDb.descripcion;
+                string cantidad = ri.cantidad.ToString("N3", cultureSt);
+                string unidad = new ControladorUnidad().ObtenerUnidadId(recetaHijaDb.UnidadMedida.Value).abreviacion;
+                string costo = recetaHijaDb.Costo.Value.ToString("C", cultureSt);
+                string tiempo = ri.Tiempo?.ToString() ?? "0";
+                string sector = string.Empty;
+                string cTotal;
+
+                var costototal = recetaHijaDb.Costo != null
+                     ? recetaHijaDb.Costo.Value * ri.cantidad
+                     : 0;
+                cTotal = costototal.ToString("C", cultureSt);
+
+                if (ri.idSectorProductivo != null)
+                    sector = cReceta.obterner_sectorProductivoByIdsectorProductivo((int)ri.idSectorProductivo).descripcion;
+
+                //// Crear fila hija para productos
+                string margen = string.Empty;
+                for (int i = 0; i < nivel; i++)
+                {
+                    margen += "&nbsp;&nbsp;&nbsp;&nbsp;";
+                }
+
+                filasAcumuladas += $@"
+                <tr class='child children hidden nivel-{nivel}' data-nivel='{nivel}' onclick='toggleChildren(this)' style='cursor: pointer'> 
+                    <td>{id}</td>
+                    <td>{margen}<i class='fa fa-plus' style='color:green'></i> &nbsp;{descripcion}</td>
+                    <td style='text-align:right'>{cantidad:N2}</td>
+                    <td>{unidad}</td>
+                    <td style='text-align:right'>{costo:C}</td>
+                    <td style='text-align:right'>{costototal:C}</td>
+                    <td>{sector}</td>
+                    <td style='text-align:right'>{tiempo}</td>
+                    <td style='text-align: center;'>
+                    </td>
+                </tr>";
+
+                //    // Generar las sub-filas recursivamente (si hay más recetas dentro)
+                GenerarFilasHijas_Add(ri.idRecetaIngrediente, nivel + 1, ref filasAcumuladas); // Recursión aumentando el nivel
+            }
+
+
+            var productosInternos = cReceta.ObtenerProductosByReceta(idItem); // recetas_productos
+            foreach (var pi in productosInternos)
+            {
+                // Obtener valores de las celdas
+                int id = pi.Productos.id;
+                string descripcion = pi.Productos.descripcion;
+                string cantidad = pi.cantidad.ToString("N3", cultureSt);
+                string unidad = new ControladorUnidad().ObtenerUnidadId(pi.Productos.unidadMedida).abreviacion;
+                string costo = pi.Productos.costo.ToString("C", cultureSt);
+                string tiempo = pi.Tiempo?.ToString() ?? "0";
+                string sector = string.Empty;
+                string cTotal;
+
+                var costototal = pi.Productos.costo != null
+                     ? pi.Productos.costo * pi.cantidad
+                     : 0;
+                cTotal = costototal.ToString("C", cultureSt);
+
+                if (pi.idSectorProductivo != null)
+                    sector = cReceta.obterner_sectorProductivoByIdsectorProductivo((int)pi.idSectorProductivo).descripcion;
+
+
+                //// Crear fila hija para productos
+
+                string margen = string.Empty;
+                for (int i = 0; i < nivel; i++)
+                {
+                    margen += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                    //margen += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                }
+
+                filasAcumuladas += $@"
+                <tr class='child children hidden nivel-{nivel}' data-nivel='{nivel}'> 
+                    <td>{id}</td>
+                    <td>{margen}{descripcion}</td>
+                    <td style='text-align:right'>{cantidad:N2}</td>
+                    <td>{unidad}</td>
+                    <td style='text-align:right'>{costo:C}</td>
+                    <td style='text-align:right'>{costototal:C}</td>
+                    <td>{sector}</td>
+                    <td style='text-align:right'>{tiempo}</td>
+                    <td style='text-align: center;'>
+                    </td>
+                </tr>";
+            }
+
+            return filasAcumuladas;
+        }
+
 
         private void CargarPasos()
         {
@@ -1365,7 +1553,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 tr.Cells.Add(celNumero);
 
                 TableCell celDescripcion = new TableCell();
-                celDescripcion.Text = producto.descripcion;
+                celDescripcion.Text = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + producto.descripcion;
                 celDescripcion.VerticalAlign = VerticalAlign.Middle;
                 celDescripcion.HorizontalAlign = HorizontalAlign.Left;
                 tr.Cells.Add(celDescripcion);

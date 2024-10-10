@@ -425,16 +425,16 @@
                                         <thead>
                                             <tr style="white-space:normal">
                                                 <th style="width: 0%;"></th> <!--Codigo-->
-                                                <th style="width: 25%">Descripción</th>
-                                                <th style="width: auto; text-align:right">Cantidad</th>
-                                                <th style="width: auto">Unidad</th>
+                                                <th style="width: 41%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Descripción</th>
+                                                <th style="width: 8%; text-align:right">Cant.</th>
+                                                <th style="width: 6%">Uni.</th>
                                                 <%--<th style="width: auto">Factor</th>--%>
                                                 <%--<th style="width: auto">C. Bruta</th>--%>
-                                                <th style="width: auto; text-align:right">Costo</th>
-                                                <th style="width: auto; text-align:right">C. Total</th>
-                                                <th style="width: auto; text-align:left">Sector</th>
-                                                <th style="width: auto; text-align:right">Tiempo</th>
-                                                <th style="width: auto"></th>
+                                                <th style="width: 10%; text-align:right">Costo</th>
+                                                <th style="width: 11%; text-align:right">C. Total</th>
+                                                <th style="width: 13%; text-align:left">Sector</th>
+                                                <th style="text-align:right; width:7%">Tiempo</th>
+                                                <th style="width:4%; white-space: nowrap;"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -1107,17 +1107,22 @@
             // Obtener la siguiente fila en la tabla
             var nextRow = row.nextElementSibling;
 
-            // Mientras haya una fila siguiente y sea un hijo
-            while (nextRow && nextRow.classList.contains('child')) {
+            // Bandera para alternar el estado (expandir/colapsar)
+            var isExpanding = nextRow && nextRow.classList.contains('hidden');
+
+            // Mientras haya una fila siguiente
+            while (nextRow) {
                 var rowLevel = parseInt(nextRow.getAttribute('data-nivel')) || 0;
 
-                // Mostrar/Ocultar solo los hijos directos (nivel + 1)
-                if (rowLevel === currentLevel + 1) {
-                    nextRow.classList.toggle('hidden');
-                }
-
-                // Detener el bucle si encontramos una fila de nivel igual o menor (hermana)
-                if (rowLevel <= currentLevel) {
+                // Si es un nivel mayor al actual, mostrar/ocultar
+                if (rowLevel > currentLevel) {
+                    if (isExpanding) {
+                        nextRow.classList.remove('hidden'); // Mostrar todas las filas hijas de mayor nivel
+                    } else {
+                        nextRow.classList.add('hidden'); // Ocultar todas las filas hijas de mayor nivel
+                    }
+                } else {
+                    // Si encontramos una fila de nivel igual o menor, detener el bucle
                     break;
                 }
 
@@ -1125,6 +1130,7 @@
                 nextRow = nextRow.nextElementSibling;
             }
         }
+
 
 
 
@@ -1837,7 +1843,10 @@
                             })
                             .jstree({
                                 'core': {
-                                    'check_callback': true
+                                    'check_callback': true,
+                                    'themes': {
+                                        'icons': false // Aquí se deshabilitan los íconos
+                                    }
                                 },
                                 'plugins': ['types', 'dnd'],
                                 'types': {
@@ -1860,11 +1869,15 @@
                                         'icon': 'fa fa-file-text-o'
                                     }
 
-                                }
+                                },
+                                
                             });
                         $('#jstree_C' + document.getElementById('ContentPlaceHolder1_HFRecetas').value.split(',')[i]).jstree({
                             'core': {
-                                'check_callback': true
+                                'check_callback': true,
+                                'themes': {
+                                    'icons': false // Aquí se deshabilitan los íconos
+                                }
                             },
                             'plugins': ['types', 'dnd'],
                             'types': {
@@ -1887,11 +1900,15 @@
                                     'icon': 'fa fa-file-text-o'
                                 }
 
-                            }
+                            },
+                            
                         });
                         $('#jstree_UM' + document.getElementById('ContentPlaceHolder1_HFRecetas').value.split(',')[i]).jstree({
                             'core': {
-                                'check_callback': true
+                                'check_callback': true,
+                                'themes': {
+                                    'icons': false // Aquí se deshabilitan los íconos
+                                }
                             },
                             'plugins': ['types', 'dnd'],
                             'types': {
@@ -1914,11 +1931,15 @@
                                     'icon': 'fa fa-file-text-o'
                                 }
 
-                            }
+                            },
+                            
                         });
                         $('#jstree_CS' + document.getElementById('ContentPlaceHolder1_HFRecetas').value.split(',')[i]).jstree({
                             'core': {
-                                'check_callback': true
+                                'check_callback': true,
+                                'themes': {
+                                    'icons': false // Aquí se deshabilitan los íconos
+                                }
                             },
                             'plugins': ['types', 'dnd'],
                             'types': {
@@ -1941,11 +1962,15 @@
                                     'icon': 'fa fa-file-text-o'
                                 }
 
-                            }
+                            },
+                            
                         });
                         $('#jstree_CST' + document.getElementById('ContentPlaceHolder1_HFRecetas').value.split(',')[i]).jstree({
                             'core': {
-                                'check_callback': true
+                                'check_callback': true,
+                                'themes': {
+                                    'icons': false // Aquí se deshabilitan los íconos
+                                }
                             },
                             'plugins': ['types', 'dnd'],
                             'types': {
@@ -2037,14 +2062,12 @@
             formData.append('image', file);
             formData.append("idReceta", data.id);
 
-
             fetch('ImageUploadHandler.ashx', {
                 method: 'POST',
                 body: formData
             })
                 .then(response => response.text())
                 .then(result => {
-                    //alert(result);
                     if (esCreacion)
                         recargarPagina(data.mensaje)
                     else
@@ -2054,7 +2077,10 @@
                     console.error('Error:', error);
                 });
         } else {
-            //alert("Por favor, selecciona una imagen.");
+            if (esCreacion)
+                recargarPagina(data.mensaje)
+            else
+                recargarPagina2()
         }
     }
 </script>
@@ -2538,6 +2564,7 @@
             if (!auxCostoTotal.includes('.'))
                 auxCostoTotal += ".00";
             //costototal = costototal.toString().replace('.', ',');
+
             let btnRec = "";
             let styleCorrect = "";
             let listaDesplegable = "";
@@ -2550,6 +2577,27 @@
             let cellFactor = "";
             //Si lo que se esta agregando a la tabla de productos es una receta entra a este if 
             if (tipo == "Receta") {
+
+                // Obtener del servidor la cadena para la row a insertar
+                $.ajax({
+                    method: "POST",
+                    url: "RecetasABM.aspx/GenerarFilaReceta_Add",
+                    data: JSON.stringify({ id: codigo.trim(), cantidad: '5', costo: '500', idSector: '1', tiempo: '2' }),
+                    contentType: "application/json",
+                    dataType: 'json',
+                    error: (error) => {
+                        console.log(JSON.stringify(error));
+                    },
+                    success: function (respuesta) {
+                        <%--var ddlDepositos = $("#<%=ddlSector.ClientID%>");
+                        ddlDepositos.val(respuesta.d);--%>
+                        $('#tableProductos tbody').append(respuesta.d);
+                    }
+                });
+
+
+
+
                 btnRec = "<a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent;\" class=\"btn  btn-xs \" onclick=\"javascript: return CargarmodalRecetaDetalle('" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "');\" >" +
                     "<i><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 576 512\" style=\"width: 15px; vertical-align: middle; \">" +
                     "<path d=\"M240 144c0-53-43-96-96-96s-96 43-96 96s43 96 96 96s96-43 96-96zm44.4 32C269.9 240.1 212.5 288 144 288C64.5 288 0 223.5 0 144S64.5 0 144 0c68.5 0 125.9 47.9 140.4 112h71.8c8.8-9.8 21.6-16 35.8-16H496c26.5 0 48 21.5 48 48s-21.5 48-48 48H392c-14.2 0-27-6.2-35.8-16H284.4zM144 208c-35.3 0-64-28.7-64-64s28.7-64 64-64s64 28.7 64 64s-28.7 64-64 64zm256 32c13.3 0 24 10.7 24 24v8h96c13.3 0 24 10.7 24 24s-10.7 24-24 24H280c-13.3 0-24-10.7-24-24s10.7-24 24-24h96v-8c0-13.3 10.7-24 24-24zM288 464V352H512V464c0 26.5-21.5 48-48 48H336c-26.5 0-48-21.5-48-48zM48 320h80 16 32c26.5 0 48 21.5 48 48s-21.5 48-48 48H160c0 17.7-14.3 32-32 32H64c-17.7 0-32-14.3-32-32V336c0-8.8 7.2-16 16-16zm128 64c8.8 0 16-7.2 16-16s-7.2-16-16-16H160v32h16zM24 464H200c13.3 0 24 10.7 24 24s-10.7 24-24 24H24c-13.3 0-24-10.7-24-24s10.7-24 24-24z\" />" +
@@ -2963,7 +3011,10 @@
                         })
                         .jstree({
                             'core': {
-                                'check_callback': true
+                                'check_callback': true,
+                                'themes': {
+                                    'icons': false // Aquí se deshabilitan los íconos
+                                }
                             },
                             'plugins': ['types', 'dnd'],
                             'types': {
@@ -2987,6 +3038,7 @@
                                 }
 
                             }
+        
                             //'open_all': "#j2_2",
                             //'closed_all':"#j2_2"
                         });
@@ -3020,7 +3072,10 @@
 
                     $('#jstree_C' + id).jstree({
                         'core': {
-                            'check_callback': true
+                            'check_callback': true,
+                            'themes': {
+                                'icons': false // Aquí se deshabilitan los íconos
+                            }
                         },
                         'plugins': ['types', 'dnd'],
                         'types': {
@@ -3044,6 +3099,7 @@
                             }
 
                         }
+              
                     });
                 }
             });
@@ -3073,7 +3129,10 @@
 
                     $('#jstree_UM' + id).jstree({
                         'core': {
-                            'check_callback': true
+                            'check_callback': true,
+                            'themes': {
+                                'icons': false // Aquí se deshabilitan los íconos
+                            }
                         },
                         'plugins': ['types', 'dnd'],
                         'types': {
@@ -3097,6 +3156,7 @@
                             }
 
                         }
+                
                     });
                 }
             });
@@ -3126,7 +3186,10 @@
 
                     $('#jstree_CS' + id).jstree({
                         'core': {
-                            'check_callback': true
+                            'check_callback': true,
+                            'themes': {
+                                'icons': false // Aquí se deshabilitan los íconos
+                            }
                         },
                         'plugins': ['types', 'dnd'],
                         'types': {
@@ -3150,6 +3213,7 @@
                             }
 
                         }
+     
                     });
                 }
             });
@@ -3180,7 +3244,10 @@
 
                     $('#jstree_CST' + id).jstree({
                         'core': {
-                            'check_callback': true
+                            'check_callback': true,
+                            'themes': {
+                                'icons': false // Aquí se deshabilitan los íconos
+                            }
                         },
                         'plugins': ['types', 'dnd'],
                         'types': {
@@ -3579,7 +3646,10 @@
 
             $('#jstree1').jstree({
                 'core': {
-                    'check_callback': true
+                    'check_callback': true,
+                    'themes': {
+                        'icons': false // Aquí se deshabilitan los íconos
+                    }
                 },
                 'plugins': ['types', 'dnd'],
                 'types': {
@@ -3688,6 +3758,10 @@
                         'Scripts',
                         'Templates',
                     ]
+                    ,
+                    'themes': {
+                        'icons': false // Aquí se deshabilitan los íconos
+                    }
                 }
             });
 
