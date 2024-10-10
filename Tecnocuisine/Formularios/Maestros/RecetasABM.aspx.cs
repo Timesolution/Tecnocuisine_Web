@@ -634,15 +634,17 @@ namespace Tecnocuisine.Formularios.Maestros
         /// <param name="tiempo"></param>
         /// <returns></returns>
         [WebMethod]
-        public static string GenerarFilaReceta_Add(string id, string cantidad, string costo, string idSector, string tiempo)
+        public static string GenerarFilaReceta_Add(string id, string cantidad, string idSector, string tiempo)
         {
             ControladorReceta cReceta = new ControladorReceta();
 
             // Setear informacion
             var receta = cReceta.ObtenerRecetaId(Convert.ToInt32(id));
             string unidad = new ControladorUnidad().ObtenerUnidadId(receta.UnidadMedida.Value).abreviacion;
-            decimal cantidadFormatted = Convert.ToDecimal(cantidad);
-            decimal costoFormatted = Convert.ToDecimal(costo);
+
+            // Se formatea la cantidad para poder usarlo en el calculo del costo total
+            decimal cantidadFormatted = Convert.ToDecimal(cantidad, CultureInfo.InvariantCulture);
+            decimal costoFormatted = Convert.ToDecimal(receta.Costo);
             var costototal = costoFormatted * cantidadFormatted;
             string sector = string.Empty;
 
@@ -655,7 +657,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 <tr id='Receta_{id}' class='parent' onclick='toggleChildren(this)' style='cursor: pointer;'>
                     <td>{id}</td>
                     <td><i class='fa fa-plus' style='color:green'></i> &nbsp;{receta.descripcion}</td>
-                    <td style='text-align:right'>{cantidadFormatted:N3}</td>
+                    <td style='text-align:right'>{cantidad:N3}</td>
                     <td>{unidad}</td>
                     <td style='text-align:right'>{costoFormatted:C}</td>
                     <td style='text-align:right'>{costototal:C}</td>
@@ -721,7 +723,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 <tr class='child children hidden nivel-{nivel}' data-nivel='{nivel}' onclick='toggleChildren(this)' style='cursor: pointer'> 
                     <td>{id}</td>
                     <td>{margen}<i class='fa fa-plus' style='color:green'></i> &nbsp;{descripcion}</td>
-                    <td style='text-align:right'>{cantidad:N2}</td>
+                    <td style='text-align:right'>{cantidad:N3}</td>
                     <td>{unidad}</td>
                     <td style='text-align:right'>{costo:C}</td>
                     <td style='text-align:right'>{costototal:C}</td>

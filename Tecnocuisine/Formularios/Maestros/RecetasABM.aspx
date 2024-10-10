@@ -2500,14 +2500,11 @@
             var tipo = ContentPlaceHolder1_Hiddentipo.value;
             let unidad = ContentPlaceHolder1_HiddenUnidad.value;
             let costo = ContentPlaceHolder1_HiddenCosto.value;
-
             let costAux = parseFloat(costo.replace(',', '.'));
             let CantAux = parseFloat(cantidad);
-
             ////////let factorValue = parseFloat(document.getElementById('<%= txtFactor.ClientID %>').value);
             let factorValue = 1;
             let factor = factorValue.toFixed(2);
-
             let cantBruta = document.getElementById('<%= txtCantBruta.ClientID %>').value;
             let costototal = 0;
             let ddlSector = document.getElementById('<%= ddlSector.ClientID %>');
@@ -2565,6 +2562,12 @@
                 auxCostoTotal += ".00";
             //costototal = costototal.toString().replace('.', ',');
 
+
+            // Redondear cantidad hacia arriba siempre
+            let cantRedondeadaAux = Math.ceil(CantAux * 1000) / 1000;  // Redondeo hacia arriba
+            let cantRedondeada = cantRedondeadaAux.toFixed(3); // Formato a 3 decimales
+
+
             let btnRec = "";
             let styleCorrect = "";
             let listaDesplegable = "";
@@ -2575,53 +2578,57 @@
             let listaDdlSectorProductivoDesplegable = "";
             let ListaTiempo = "";
             let cellFactor = "";
+
+
             //Si lo que se esta agregando a la tabla de productos es una receta entra a este if 
             if (tipo == "Receta") {
 
-                // Obtener del servidor la cadena para la row a insertar
-                $.ajax({
-                    method: "POST",
-                    url: "RecetasABM.aspx/GenerarFilaReceta_Add",
-                    data: JSON.stringify({ id: codigo.trim(), cantidad: '5', costo: '500', idSector: '1', tiempo: '2' }),
-                    contentType: "application/json",
-                    dataType: 'json',
-                    error: (error) => {
-                        console.log(JSON.stringify(error));
-                    },
-                    success: function (respuesta) {
-                        <%--var ddlDepositos = $("#<%=ddlSector.ClientID%>");
-                        ddlDepositos.val(respuesta.d);--%>
-                        $('#tableProductos tbody').append(respuesta.d);
-                    }
-                });
+                //Verificar que el item no exista en la tabla
+                if (!document.getElementById('<%= idProductosRecetas.ClientID%>').value.includes(tipo + '_' + codigo)) 
+                {
+                    // Obtener del servidor la cadena html cib las rows a insertar
+                    $.ajax({
+                        method: "POST",
+                        url: "RecetasABM.aspx/GenerarFilaReceta_Add",
+                        data: JSON.stringify({ id: codigo.trim(), cantidad: cantRedondeada, idSector: ddlSectoridSectorProductivo, tiempo: Tiempo }),
+                        contentType: "application/json",
+                        dataType: 'json',
+                        error: (error) => {
+                            console.log(JSON.stringify(error));
+                        },
+                        success: function (respuesta) {
+                                <%--var ddlDepositos = $("#<%=ddlSector.ClientID%>");
+                                ddlDepositos.val(respuesta.d);--%>
 
+                                $('#tableProductos tbody').append(respuesta.d);
+                            }
+                        });
+                }
+                
+                //btnRec = "<a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent;\" class=\"btn  btn-xs \" onclick=\"javascript: return CargarmodalRecetaDetalle('" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "');\" >" +
+                //    "<i><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 576 512\" style=\"width: 15px; vertical-align: middle; \">" +
+                //    "<path d=\"M240 144c0-53-43-96-96-96s-96 43-96 96s43 96 96 96s96-43 96-96zm44.4 32C269.9 240.1 212.5 288 144 288C64.5 288 0 223.5 0 144S64.5 0 144 0c68.5 0 125.9 47.9 140.4 112h71.8c8.8-9.8 21.6-16 35.8-16H496c26.5 0 48 21.5 48 48s-21.5 48-48 48H392c-14.2 0-27-6.2-35.8-16H284.4zM144 208c-35.3 0-64-28.7-64-64s28.7-64 64-64s64 28.7 64 64s-28.7 64-64 64zm256 32c13.3 0 24 10.7 24 24v8h96c13.3 0 24 10.7 24 24s-10.7 24-24 24H280c-13.3 0-24-10.7-24-24s10.7-24 24-24h96v-8c0-13.3 10.7-24 24-24zM288 464V352H512V464c0 26.5-21.5 48-48 48H336c-26.5 0-48-21.5-48-48zM48 320h80 16 32c26.5 0 48 21.5 48 48s-21.5 48-48 48H160c0 17.7-14.3 32-32 32H64c-17.7 0-32-14.3-32-32V336c0-8.8 7.2-16 16-16zm128 64c8.8 0 16-7.2 16-16s-7.2-16-16-16H160v32h16zM24 464H200c13.3 0 24 10.7 24 24s-10.7 24-24 24H24c-13.3 0-24-10.7-24-24s10.7-24 24-24z\" />" +
+                //    "</svg>" +
 
-
-
-                btnRec = "<a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent;\" class=\"btn  btn-xs \" onclick=\"javascript: return CargarmodalRecetaDetalle('" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "');\" >" +
-                    "<i><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 576 512\" style=\"width: 15px; vertical-align: middle; \">" +
-                    "<path d=\"M240 144c0-53-43-96-96-96s-96 43-96 96s43 96 96 96s96-43 96-96zm44.4 32C269.9 240.1 212.5 288 144 288C64.5 288 0 223.5 0 144S64.5 0 144 0c68.5 0 125.9 47.9 140.4 112h71.8c8.8-9.8 21.6-16 35.8-16H496c26.5 0 48 21.5 48 48s-21.5 48-48 48H392c-14.2 0-27-6.2-35.8-16H284.4zM144 208c-35.3 0-64-28.7-64-64s28.7-64 64-64s64 28.7 64 64s-28.7 64-64 64zm256 32c13.3 0 24 10.7 24 24v8h96c13.3 0 24 10.7 24 24s-10.7 24-24 24H280c-13.3 0-24-10.7-24-24s10.7-24 24-24h96v-8c0-13.3 10.7-24 24-24zM288 464V352H512V464c0 26.5-21.5 48-48 48H336c-26.5 0-48-21.5-48-48zM48 320h80 16 32c26.5 0 48 21.5 48 48s-21.5 48-48 48H160c0 17.7-14.3 32-32 32H64c-17.7 0-32-14.3-32-32V336c0-8.8 7.2-16 16-16zm128 64c8.8 0 16-7.2 16-16s-7.2-16-16-16H160v32h16zM24 464H200c13.3 0 24 10.7 24 24s-10.7 24-24 24H24c-13.3 0-24-10.7-24-24s10.7-24 24-24z\" />" +
-                    "</svg>" +
-
-                    "</i>  </a> ";
-                styleCorrect = "";
-                //Crea cada columna del registro que se esta agregando, pero como es una receta a cada columna le agrega un desplegable, que muestra los ingredientes, cantidades y demas datos de la receta, todo en desplegables
-                listaDesplegable = "<td> <div id=\"jstree" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaLI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</li></ul></div></td>";
-                listaCantidadDesplegable = "<td> <div id=\"jstree_C" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaC_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + myFormat(cantidad) + "</li></ul></div></td>";
-                listaUnidadesDesplegable = "<td> <div id=\"jstree_UM" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaUM_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + unidad + "</li></ul></div></td>";
-                //cellFactor = "<td> <div <ul><li 'class=\"jstree-open\">" + factor + "</li></ul></div></td>";
-                cellCantBruta = "<td> <div <ul><li 'class=\"jstree-open\">" + cantBruta + "</li></ul></div></td>";
-                listaCostosDesplegable = "<td> <div id=\"jstree_CS" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaCS_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + costo + "</li></ul></div></td>";
-                listaCostototalDesplegable = "<td> <div id=\"jstree_CST" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaCST_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + auxCostoTotal + "</li></ul></div></td>";
-                listaDdlSectorProductivoDesplegable = "<td> <div id=\"jstree_SP" + ContentPlaceHolder1_ddlSector.value.split('-')[0].trim() + "\"> <ul><li id='RecetaSP_LI_" + ContentPlaceHolder1_ddlSector.value.split('-')[0].trim() + "' class=\"jstree-open\">" + opcionSeleccionada + "</li></ul></div></td>";
-                ListaTiempo = "<td style=\" text-align:right;\"> <div id=\"jstree_T" + ContentPlaceHolder1_TiempoDePreparacion.value.split('-')[0].trim() + "\"> <ul><li id='RecetaT_LI_" + ContentPlaceHolder1_TiempoDePreparacion.value.split('-')[0].trim() + "' class=\"jstree-open\">" + Tiempo + "</li></ul></div></td>";
+                //    "</i>  </a> ";
+                //styleCorrect = "";
+                ////Crea cada columna del registro que se esta agregando, pero como es una receta a cada columna le agrega un desplegable, que muestra los ingredientes, cantidades y demas datos de la receta, todo en desplegables
+                //listaDesplegable = "<td> <div id=\"jstree" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaLI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</li></ul></div></td>";
+                //listaCantidadDesplegable = "<td> <div id=\"jstree_C" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaC_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + myFormat(cantidad) + "</li></ul></div></td>";
+                //listaUnidadesDesplegable = "<td> <div id=\"jstree_UM" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaUM_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + unidad + "</li></ul></div></td>";
+                ////cellFactor = "<td> <div <ul><li 'class=\"jstree-open\">" + factor + "</li></ul></div></td>";
+                //cellCantBruta = "<td> <div <ul><li 'class=\"jstree-open\">" + cantBruta + "</li></ul></div></td>";
+                //listaCostosDesplegable = "<td> <div id=\"jstree_CS" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaCS_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + costo + "</li></ul></div></td>";
+                //listaCostototalDesplegable = "<td> <div id=\"jstree_CST" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "\"> <ul><li id='RecetaCST_LI_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "' class=\"jstree-open\">" + auxCostoTotal + "</li></ul></div></td>";
+                //listaDdlSectorProductivoDesplegable = "<td> <div id=\"jstree_SP" + ContentPlaceHolder1_ddlSector.value.split('-')[0].trim() + "\"> <ul><li id='RecetaSP_LI_" + ContentPlaceHolder1_ddlSector.value.split('-')[0].trim() + "' class=\"jstree-open\">" + opcionSeleccionada + "</li></ul></div></td>";
+                //ListaTiempo = "<td style=\" text-align:right;\"> <div id=\"jstree_T" + ContentPlaceHolder1_TiempoDePreparacion.value.split('-')[0].trim() + "\"> <ul><li id='RecetaT_LI_" + ContentPlaceHolder1_TiempoDePreparacion.value.split('-')[0].trim() + "' class=\"jstree-open\">" + Tiempo + "</li></ul></div></td>";
 
             }
-            //Si es un producto, entonces viene por el else
+            //Si es un producto, entonces viene por el else y genera el html de la row a insertar en la tabla
             else {
                 //Aca simplemente agrega cada producto sin desplegables
-                listaDesplegable = "<td> " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
-                listaCantidadDesplegable = "<td style=\" text-align: right\"> " + myFormat(cantidad) + "</td>";
+                listaDesplegable = "<td> &nbsp;&nbsp;&nbsp;&nbsp; " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
+                listaCantidadDesplegable = "<td style=\" text-align: right\"> " + cantRedondeada + "</td>";
                 listaUnidadesDesplegable = "<td> " + unidad + "</td>";
                 cellFactor = "<td> " + factor + "</td>";
                 cellCantBruta = "<td> " + cantBruta + "</td>";
@@ -2630,61 +2637,79 @@
                 listaDdlSectorProductivoDesplegable = "<td style=\" text-align:right;\"> " + opcionSeleccionada + "</td>";
                 ListaTiempo = "<td style=\" text-align:right;\"> " + Tiempo + "</td>";
             }
-            if (!document.getElementById('<%= idProductosRecetas.ClientID%>').value.includes(tipo + '_' + codigo)) {
-                //Agrega un registro a la tabla de productos 
-                $('#tableProductos').append(
-                    "<tr id=" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "\">" +
-                    "<td style=\" text-align: right\"> " + codigo + "</td>" +
-                    listaDesplegable +
-                    listaCantidadDesplegable +
-                    listaUnidadesDesplegable +
-                    //cellFactor +
-                    //cellCantBruta +
-                    listaCostosDesplegable +
-                    listaCostototalDesplegable +
-                    listaDdlSectorProductivoDesplegable +
-                    ListaTiempo +
 
-                    //Crea el boton eliminar de cada producto en la tabla, dicho boton tiene tiene un onclick al cual le pasa dos parametros
-                    "<td style=\" text-align: center\">" +
-                    " <a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent; " + styleCorrect + "\" class=\"btn  btn-xs \" onclick=\"javascript: return borrarProd('" + tipo + "_" + codigo + "');\" >" +
-                    "<i class=\"fa fa-trash - o\" style=\"color: black\"></i> </a> " +
-                    btnRec
-                    + "</td > " +
-                    "</tr>"
-                );
+            // Verifica que el item no exista ya en la tabla
+            if (!document.getElementById('<%= idProductosRecetas.ClientID%>').value.includes(tipo + '_' + codigo)) {
+
+                // Verificar que se este agregando un producto
+                if (tipo !== "Receta") {
+                    // Inserta en la tabla una row con el producto ingresado
+                    $('#tableProductos').append(
+                        "<tr id=" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "\">" +
+                        "<td style=\" text-align: right\"> " + codigo + "</td>" +
+                        listaDesplegable +
+                        listaCantidadDesplegable +
+                        listaUnidadesDesplegable +
+                        //cellFactor +
+                        //cellCantBruta +
+                        listaCostosDesplegable +
+                        listaCostototalDesplegable +
+                        listaDdlSectorProductivoDesplegable +
+                        ListaTiempo +
+
+                        //Crea el boton eliminar de cada producto en la tabla, dicho boton tiene tiene un onclick al cual le pasa dos parametros
+                        "<td style=\" text-align: center\">" +
+                        " <a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent; " + styleCorrect + "\" class=\"btn  btn-xs \" onclick=\"javascript: return borrarProd('" + tipo + "_" + codigo + "');\" >" +
+                        "<i class=\"fa fa-trash - o\" style=\"color: black\"></i> </a> " +
+                        btnRec
+                        + "</td > " +
+                        "</tr>"
+                    );
+                }
+
+                // Actualizar costo total de la receta
                 let CostoTotalFinal = document.getElementById('<%=txtCostoTotal.ClientID%>').value;
                 CostoTotalFinal = CostoTotalFinal.replace(',', '');
                 CostoTotalFinal = parseFloat(CostoTotalFinal);
                 let aux;
-                //Aca obtine el costo total del producto o receta agregado a la tabla y se lo acumula al costo total de la receta
+
+                // Obtiene el costo total del producto o receta agregado a la tabla y se lo acumula al costo total de la receta
                 aux = costototal;
                 CostoTotalFinal += parseFloat(aux);
                 let CostoTotalFinalAux = CostoTotalFinal.toString();
+
                 if (!CostoTotalFinalAux.includes('.'))
                     CostoTotalFinalAux += ".00";
                 document.getElementById('<%=txtCostoTotal.ClientID%>').value = myFormat(CostoTotalFinalAux);
 
-                //Aca obtiene el kg br total y le acumula los kg br total del 
-                //ingrediente o receta que se haya agregado a la tabla
+
+
+                // Obtiene el kg br total y le acumula los kg br total del ingrediente o receta que se haya agregado a la tabla
                 let KgBrutoTotal = parseFloat(document.getElementById('<%=txtKgBrutTotal.ClientID%>').value);
                 KgBrutoTotal += CantAux;
                 document.getElementById('<%=txtKgBrutTotal.ClientID%>').value = myFormat(KgBrutoTotal);
 
-                if (document.getElementById('<%= idProductosRecetas.ClientID%>').value == "") {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "," + "idSectorProductivo_" + ddlSectoridSectorProductivo + "," + "Tiempo_" + Tiempo + "," + "Factor_" + factor;
-                }
+
+                // Agrega el item insertado a una variable que acumula los items en un string
+                ////////if (document.getElementById('<%= idProductosRecetas.ClientID%>').value == "") {
+                document.getElementById('<%= idProductosRecetas.ClientID%>').value += codigo + "," + tipo + "," + cantRedondeada + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "," + "idSectorProductivo_" + ddlSectoridSectorProductivo + "," + "Tiempo_" + Tiempo + "," + "Factor_" + factor + ";";
+                //}
+<%--                // Si no es el primer item insertado en la tabla (se agrega un ';' al inicio)
                 else {
                     document.getElementById('<%= idProductosRecetas.ClientID%>').value += ";" + codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "," + "idSectorProductivo_" + ddlSectoridSectorProductivo + "," + "Tiempo_" + Tiempo + "," + "Factor_" + factor;
-                }
-                if (!document.getElementById('<%= txtRinde.ClientID%>').value == "") {
-                    let rinde = parseFloat(document.getElementById('<%= txtRinde.ClientID%>').value);
-                    if (rinde > 0) {
+                }--%>
 
-                        document.getElementById('<%=txtKgxPorcion.ClientID%>').value = myFormat(myFormat(KgBrutoTotal) / rinde);
-                        document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = myFormat(CostoTotalFinal / rinde);
-                    }
-                }
+
+                ////////if (!document.getElementById('<%= txtRinde.ClientID%>').value == "") {
+                let rinde = parseFloat(document.getElementById('<%= txtRinde.ClientID%>').value);
+                //if (rinde > 0) {
+
+                document.getElementById('<%=txtKgxPorcion.ClientID%>').value = myFormat(myFormat(KgBrutoTotal) / rinde);
+                document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = myFormat(CostoTotalFinal / rinde);
+                //}
+                //}
+
+                // Si hay precio de venta, actualiza las variables relacionadas a este valor (food cost, etc)
                 if (!document.getElementById('<%= txtPrVenta.ClientID%>').value == "") {
                     let prVenta = parseFloat(document.getElementById('<%= txtPrVenta.ClientID%>').value);
                     if (prVenta > 0) {
@@ -2692,33 +2717,39 @@
 
                     }
                 }
+
+
                 if (tipo == "Receta") {
-
-
-                    ObtenerListaIntegradoraDetalleReceta(ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim());
-                    setTimeout(ObtenerListaIntegradoraDetalleCantidadReceta(ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim(), myFormat(cantidad)), 10);
-
-                    setTimeout(ObtenerListaIntegradoraDetalleUnidadesReceta(ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim()), 45);
-
-                    setTimeout(ObtenerListaIntegradoraDetalleCostosReceta(ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim()), 20);
-
-                    setTimeout(ObtenerListaIntegradoraDetalleCostosTotalReceta(ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim(), myFormat(cantidad)), 25);
-
-
-
+                    //ObtenerListaIntegradoraDetalleReceta(ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim());
+                    //setTimeout(ObtenerListaIntegradoraDetalleCantidadReceta(ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim(), myFormat(cantidad)), 10);
+                    //setTimeout(ObtenerListaIntegradoraDetalleUnidadesReceta(ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim()), 45);
+                    //setTimeout(ObtenerListaIntegradoraDetalleCostosReceta(ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim()), 20);
+                    //setTimeout(ObtenerListaIntegradoraDetalleCostosTotalReceta(ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim(), myFormat(cantidad)), 25);
                 }
+
+
+                // Limpiar campos
                 ContentPlaceHolder1_txtDescripcionProductos.value = "";
                 ContentPlaceHolder1_txtCantidad.value = "0";
                 document.getElementById('<%=txtFactor.ClientID%>').value = "1";
                 document.getElementById('<%=txtCantBruta.ClientID%>').value = "0";
                 document.getElementById('<%=txtCostoLimpio.ClientID%>').value = "";
                 document.getElementById('<%=txtUnidadMed.ClientID%>').value = "";
-                document.getElementById('<%=TiempoDePreparacion.ClientID%>').value = "";
+                document.getElementById('<%=TiempoDePreparacion.ClientID%>').value = "0";
                 document.getElementById('<%=ddlSector.ClientID%>').value = "-1";
-                document.getElementById('ContentPlaceHolder1_txtDescripcionProductos').focus();
 
+                document.getElementById('ContentPlaceHolder1_txtDescripcionProductos').focus();
+            }
+            else {
+                if (tipo == "Receta") {
+                    toastr.warning("La receta ya fue ingresada.", "Aviso");
+                }
+                else {
+                    toastr.warning("El producto ya fue ingresado.", "Aviso");
+                }
             }
         }
+
         function CargarmodalRecetaDetalle(id) {
 
             $.ajax({
