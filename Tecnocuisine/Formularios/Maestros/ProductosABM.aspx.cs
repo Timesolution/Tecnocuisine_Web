@@ -2189,7 +2189,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 //cbxAgregar.Attributes.Add("value", "1");
                 cbxAgregar.Style.Add("background-color", "transparent");
                 cbxAgregar.ID = "ContentPlaceHolder1_btnEliminar_" + marcas.id;
-                cbxAgregar.InnerHtml = "<span><i style=\"color: black\" class=\"fa fa-trash - o\"></i></span>";
+                cbxAgregar.InnerHtml = "<span><i style=\"color: darkred\" class=\"fa fa-trash - o\"></i></span>";
                 celAccion.Controls.Add(cbxAgregar);
 
                 celAccion.Width = Unit.Percentage(25);
@@ -2253,7 +2253,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 cbxAgregar.Style.Add("background-color", "transparent");
                 cbxAgregar.ID = "ContentPlaceHolder1_btnEliminar_" + presentacion.id;
-                cbxAgregar.InnerHtml = "<span><i style=\"color: black\" class=\"fa fa-trash - o\"></i></span>";
+                cbxAgregar.InnerHtml = "<span><i style=\"color: darkred\" class=\"fa fa-trash - o\"></i></span>";
                 celAccion.Controls.Add(cbxAgregar);
 
                 celAccion.Width = Unit.Percentage(25);

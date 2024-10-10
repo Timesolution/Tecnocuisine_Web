@@ -462,7 +462,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 LinkButton btnDetalles = new LinkButton();
                 btnDetalles.CssClass = "btn btn-xs";
                 btnDetalles.Attributes.Add("data-toggle", "tooltip");
-                btnDetalles.Text = "<span><i style=\"color: red\" class='fa fa-trash'></i></span>";
+                btnDetalles.Text = "<span><i style=\"color: darkred\" class='fa fa-trash'></i></span>";
                 btnDetalles.Attributes.Add("class", "btn  btn-xs");
                 btnDetalles.Attributes.Add("style", "padding: 0% 5% 2% 5.5%;background-color: transparent;");
                 // btnDetalles.Attributes.Add("onclick", "borrarProd('ContentPlaceHolder1_Receta_" + Receta.Recetas.id.ToString() + "');");
@@ -650,7 +650,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     <td style='text-align:right'>{tiempo}</td>
                     <td style='text-align: center;'>
                         <a href='javascript:void(0);' class='btn btn-xs' data-toggle='tooltip' style='padding: 0% 5% 2% 5.5%; background-color: transparent;' onclick='borrarProd({id});'>
-                           <span><i style='color: red' class='fa fa-trash'></i></span>
+                           <span><i style='color: darkred' class='fa fa-trash'></i></span>
                         </a>
                     </td>
                 </tr>";
@@ -824,7 +824,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 btnDetalles.Attributes.Add("data-toggle", "tooltip");
 
-                btnDetalles.Text = "<span><i style=\"color:black\" class='fa fa-trash'></i></span>";
+                btnDetalles.Text = "<span><i style=\"color:darkred\" class='fa fa-trash'></i></span>";
                 btnDetalles.Attributes.Add("class", "btn  btn-xs");
                 btnDetalles.Attributes.Add("style", "padding: 0% 5% 2% 5.5%;background-color: transparent;");
 
@@ -1546,7 +1546,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 tr.Cells.Add(celDescripcion);
 
                 TableCell celCantidad = new TableCell();
-                celCantidad.Text = prodRec.FirstOrDefault().cantidad.ToString().Replace(',', '.');
+                celCantidad.Text = prodRec.FirstOrDefault().cantidad.ToString("N3").Replace(',', '.');
                 celCantidad.VerticalAlign = VerticalAlign.Middle;
                 celCantidad.HorizontalAlign = HorizontalAlign.Left;
                 celCantidad.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
@@ -1571,13 +1571,13 @@ namespace Tecnocuisine.Formularios.Maestros
                 //tr.Cells.Add(celFactor);
 
                 TableCell celCantBruta = new TableCell();
-                celCantBruta.Text = (prodRec.FirstOrDefault().cantidad * Convert.ToDecimal(prodRec.FirstOrDefault().Factor)).ToString("N", culture);
+                celCantBruta.Text = (prodRec.FirstOrDefault().cantidad * Convert.ToDecimal(prodRec.FirstOrDefault().Factor)).ToString("N3", culture);
                 celCantBruta.VerticalAlign = VerticalAlign.Middle;
                 celCantBruta.HorizontalAlign = HorizontalAlign.Left;
                 //tr.Cells.Add(celCantBruta);
 
                 TableCell celCosto = new TableCell();
-                celCosto.Text = prodRec.FirstOrDefault().Productos.costo.ToString("N", culture);
+                celCosto.Text = prodRec.FirstOrDefault().Productos.costo.ToString("C", culture);
                 celCosto.VerticalAlign = VerticalAlign.Middle;
                 celCosto.HorizontalAlign = HorizontalAlign.Left;
                 celCosto.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
@@ -1585,7 +1585,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 TableCell celCostoTotal = new TableCell();
                 decimal factor = prodRec.FirstOrDefault().Factor != null ? (decimal)prodRec.FirstOrDefault().Factor : 1;
-                celCostoTotal.Text = (prodRec.FirstOrDefault().Productos.costo * prodRec.FirstOrDefault().cantidad * factor).ToString("N", culture);
+                celCostoTotal.Text = (prodRec.FirstOrDefault().Productos.costo * prodRec.FirstOrDefault().cantidad * factor).ToString("C", culture);
                 celCostoTotal.VerticalAlign = VerticalAlign.Middle;
                 celCostoTotal.HorizontalAlign = HorizontalAlign.Left;
                 celCostoTotal.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
@@ -1639,7 +1639,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     btnDetalles.Attributes.Add("data-toggle", "tooltip");
 
                     // Cambiar el color del icono a rojo
-                    btnDetalles.Text = "<span><i style=\"color: red\" class='fa fa-trash'></i></span>";
+                    btnDetalles.Text = "<span><i style=\"color: darkred\" class='fa fa-trash'></i></span>";
 
                     btnDetalles.Attributes.Add("class", "btn btn-xs");
                     btnDetalles.Attributes.Add("style", "padding: 0% 5% 2% 5.5%; background-color: transparent;");
@@ -1965,7 +1965,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     btnDetalles.Attributes.Add("data-toggle", "tooltip");
 
                     // Cambiar el color del icono a rojo
-                    btnDetalles.Text = "<span><i style=\"color: red\" class='fa fa-trash'></i></span>";
+                    btnDetalles.Text = "<span><i style=\"color: darkred\" class='fa fa-trash'></i></span>";
 
                     btnDetalles.Attributes.Add("class", "btn  btn-xs");
                     btnDetalles.Attributes.Add("style", "padding: 0% 5% 2% 5.5%;background-color: transparent;");

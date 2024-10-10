@@ -2108,7 +2108,7 @@
             }
         }
         function recargarPagina2() {
-            toastr.success("guardado con exito!", "Exito")
+            toastr.success("Guardado con exito!", "Exito")
             //window.location.href = 'Recetas.aspx?m=1';
             //alert('Guardado con exito');
         }
@@ -2262,7 +2262,7 @@
             if (porciones > 0) {
 
                 document.getElementById('<%=txtKgxPorcion.ClientID%>').value = myFormat(Math.round10(cantTotal / porciones));
-                document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = myFormat(Math.round10(costototal / porciones));
+                document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = myFormat(costototal / porciones);
             } else {
                 document.getElementById('<%=txtKgxPorcion.ClientID%>').value = "0.00";
                 document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = "0.00";
@@ -2632,8 +2632,8 @@
                 listaUnidadesDesplegable = "<td> " + unidad + "</td>";
                 cellFactor = "<td> " + factor + "</td>";
                 cellCantBruta = "<td> " + cantBruta + "</td>";
-                listaCostosDesplegable = "<td style=\" text-align:right;\"> $ " + costo + "</td>";
-                listaCostototalDesplegable = "<td style=\" text-align:right;\"> $ " + auxCostoTotal + "</td>";
+                listaCostosDesplegable = "<td style=\" text-align:right;\"> $" + costo + "</td>";
+                listaCostototalDesplegable = "<td style=\" text-align:right;\"> $" + auxCostoTotal + "</td>";
                 listaDdlSectorProductivoDesplegable = "<td style=\" text-align:left;\"> " + opcionSeleccionada + "</td>";
                 ListaTiempo = "<td style=\" text-align:right;\"> " + Tiempo + "</td>";
             }
@@ -2660,7 +2660,7 @@
                         //Crea el boton eliminar de cada producto en la tabla, dicho boton tiene tiene un onclick al cual le pasa dos parametros
                         "<td style=\" text-align: center\">" +
                         " <a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent; " + styleCorrect + "\" class=\"btn  btn-xs \" onclick=\"javascript: return borrarProd('" + tipo + "_" + codigo + "');\" >" +
-                        "<i class=\"fa fa-trash - o\" style=\"color: black\"></i> </a> " +
+                        "<i class=\"fa fa-trash - o\" style=\"color: darkred\"></i> </a> " +
                         btnRec
                         + "</td > " +
                         "</tr>"
@@ -2702,11 +2702,10 @@
 
                 ////////if (!document.getElementById('<%= txtRinde.ClientID%>').value == "") {
                 let rinde = parseFloat(document.getElementById('<%= txtRinde.ClientID%>').value);
-                //if (rinde > 0) {
-
-                document.getElementById('<%=txtKgxPorcion.ClientID%>').value = myFormat(myFormat(KgBrutoTotal) / rinde);
-                document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = myFormat(CostoTotalFinal / rinde);
-                //}
+                if (rinde > 0) {
+                    document.getElementById('<%=txtKgxPorcion.ClientID%>').value = myFormat(myFormat(KgBrutoTotal) / rinde);
+                    document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = myFormat(CostoTotalFinal / rinde);
+                }
                 //}
 
                 // Si hay precio de venta, actualiza las variables relacionadas a este valor (food cost, etc)
