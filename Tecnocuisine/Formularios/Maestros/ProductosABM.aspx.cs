@@ -1151,6 +1151,8 @@ namespace Tecnocuisine.Formularios.Maestros
                     if (Receta.PorcFoodCost != null && controladorReceta.DebeGenerarAlerta((decimal)Receta.PorcFoodCost))
                         controladorReceta.GenerarAlerta(Receta);
 
+
+                    // Recorrer cada ingrediente
                     string[] items = idProductosRecetas.Split(';');
                     int idProducto = 0;
                     foreach (var pr in items)
@@ -1594,15 +1596,14 @@ namespace Tecnocuisine.Formularios.Maestros
                     if (Receta.PorcFoodCost != null && controladorReceta.DebeGenerarAlerta((decimal)Receta.PorcFoodCost))
                         controladorReceta.GenerarAlerta(Receta);
 
-                    //Elimina todos los productos y tambien las recetas usadas como ingrediente que pertenezcan a la receta
-                    //Esto lo hace porque los va a agregar nuevamente, es como si los pisara
+                    //Elimina todos los productos y recetas ingredientes que tenia anteriormente la receta que estamos editando para reemplazarlos por nuevos registros de ingredientes
                     controladorReceta.EliminarIngredientes(Receta.id);
+
                     string[] items = idProductosRecetas.Split(';');
                     foreach (var pr in items)
                     {
                         if (!string.IsNullOrEmpty(pr))
                         {
-
                             string[] producto = pr.Split(',');
                             int numeroEncontrado = -1;
                             foreach (string elemento in producto)
@@ -1679,8 +1680,8 @@ namespace Tecnocuisine.Formularios.Maestros
                                 foreach (string elemento in producto)
                                 {
                                     // Utiliza una expresión regular para buscar el patrón "idSectorProductivo_" seguido de un número
-                                    //Match match = Regex.Match(elemento, @"idSectorProductivoRecetas_recetas_(\d+)");
-                                    Match match = Regex.Match(elemento, @"idSectorProductivo_(\d+)");
+                                    Match match = Regex.Match(elemento, @"idSectorProductivoRecetas_recetas_(\d+)");
+                                    //Match match = Regex.Match(elemento, @"idSectorProductivo_(\d+)");
 
                                     if (match.Success)
                                     {

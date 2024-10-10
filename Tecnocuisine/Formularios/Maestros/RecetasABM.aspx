@@ -2632,9 +2632,9 @@
                 listaUnidadesDesplegable = "<td> " + unidad + "</td>";
                 cellFactor = "<td> " + factor + "</td>";
                 cellCantBruta = "<td> " + cantBruta + "</td>";
-                listaCostosDesplegable = "<td style=\" text-align:right;\"> " + costo + "</td>";
-                listaCostototalDesplegable = "<td style=\" text-align:right;\"> " + auxCostoTotal + "</td>";
-                listaDdlSectorProductivoDesplegable = "<td style=\" text-align:right;\"> " + opcionSeleccionada + "</td>";
+                listaCostosDesplegable = "<td style=\" text-align:right;\"> $ " + costo + "</td>";
+                listaCostototalDesplegable = "<td style=\" text-align:right;\"> $ " + auxCostoTotal + "</td>";
+                listaDdlSectorProductivoDesplegable = "<td style=\" text-align:left;\"> " + opcionSeleccionada + "</td>";
                 ListaTiempo = "<td style=\" text-align:right;\"> " + Tiempo + "</td>";
             }
 
@@ -2696,7 +2696,7 @@
                 //}
 <%--                // Si no es el primer item insertado en la tabla (se agrega un ';' al inicio)
                 else {
-                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += ";" + codigo + "," + tipo + "," + cantidad + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "," + "idSectorProductivo_" + ddlSectoridSectorProductivo + "," + "Tiempo_" + Tiempo + "," + "Factor_" + factor;
+                    document.getElementById('<%= idProductosRecetas.ClientID%>').value += ";" + codigo + "," + tipo + "," + cantRedondeada + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "," + "idSectorProductivo_" + ddlSectoridSectorProductivo + "," + "Tiempo_" + Tiempo + "," + "Factor_" + factor;
                 }--%>
 
 

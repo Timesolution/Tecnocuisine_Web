@@ -16,6 +16,7 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 using Tecnocuisine.Modelos;
 using Tecnocuisine_API.Controladores;
 using Tecnocuisine_API.Entitys;
@@ -415,11 +416,9 @@ namespace Tecnocuisine.Formularios.Maestros
         {
             string descripcion, cantidad, unidad, costo, cTotal, sector = "", tiempo;
             int id;
-
-            // Obtener los datos dependiendo si es una receta o producto
-            //if (esReceta)
-            //{
             var receta = controladorReceta.ObtenerRecetaId(Receta_Receta.idRecetaIngrediente);
+
+            // Setear valores
             id = receta.id;
             descripcion = receta.descripcion;
             cantidad = Receta_Receta.cantidad.ToString("N3", culture);
@@ -435,58 +434,44 @@ namespace Tecnocuisine.Formularios.Maestros
                  : 0;
             cTotal = costototal.ToString("C", culture);
 
-            //}
-            //else
-            //{
-            //    var producto = controladorProducto.ObtenerProductoId(Receta.idRecetaIngrediente);
-            //    id = producto.id;
-            //    descripcion = producto.descripcion;
-            //}
+
+            // Agregar receta a la cadena que se enviara al servidor para guardarla
+            idProductosRecetas.Value += id + " ,Receta," + cantidad + ", ContentPlaceHolder1_Receta_" + id + ",idSectorProductivoRecetas_recetas_" + Receta_Receta.idSectorProductivo + "," + "Tiempo_" + tiempo + "," + "Factor_" + Receta_Receta.Factor.ToString().Replace(',', '.') + ";";
 
             // Crear la fila principal (padre)
             TableRow parentRow = new TableRow();
             parentRow.ID = "Receta_" + id.ToString();
             parentRow.CssClass = "parent"; // Clases para personalizar con CSS
-
-            // Si es receta, agregar el atributo onclick para expandir/contraer las filas hijas
-            //if (esReceta)
-            //{
             parentRow.Attributes.Add("onclick", "toggleChildren(this)");
             parentRow.Attributes.Add("style", "cursor: pointer;"); // Cambia el cursor a pointer para indicar que es clicable
-            //}
-
 
             // Crear las celdas y agregarlas a la fila
             parentRow.Cells.Add(GenerarCelda(id.ToString())); // Espacio vacío para los hijos
-            parentRow.Cells.Add(GenerarCelda("<i class='fa fa-plus' style='color:green'></i> &nbsp;" + descripcion));
+            parentRow.Cells.Add(GenerarCelda("<b>+</b> &nbsp;" + descripcion));
             parentRow.Cells.Add(GenerarCelda(cantidad, "text-align:right"));
             parentRow.Cells.Add(GenerarCelda(unidad));
             parentRow.Cells.Add(GenerarCelda(costo, "text-align:right"));
             parentRow.Cells.Add(GenerarCelda(cTotal, "text-align:right"));
             parentRow.Cells.Add(GenerarCelda(sector));
             parentRow.Cells.Add(GenerarCelda(tiempo, "text-align:right"));
-            //parentRow.Cells.Add(GenerarCelda("")); // Última columna vacía (para botones o acciones)
 
-            //agrego fila a tabla
             TableCell celAccion = new TableCell();
-
+            // Verificar si la vista no esta en estado visualizacion
             if (bloqueados != 1)
             {
                 LinkButton btnDetalles = new LinkButton();
                 btnDetalles.CssClass = "btn btn-xs";
                 btnDetalles.Attributes.Add("data-toggle", "tooltip");
-
-                // Cambiar el color del icono a rojo
                 btnDetalles.Text = "<span><i style=\"color: red\" class='fa fa-trash'></i></span>";
-
                 btnDetalles.Attributes.Add("class", "btn  btn-xs");
                 btnDetalles.Attributes.Add("style", "padding: 0% 5% 2% 5.5%;background-color: transparent;");
                 // btnDetalles.Attributes.Add("onclick", "borrarProd('ContentPlaceHolder1_Receta_" + Receta.Recetas.id.ToString() + "');");
                 btnDetalles.Attributes.Add("onclick", "borrarProd('ContentPlaceHolder1_Receta_" + id + "');");
+                
                 celAccion.Controls.Add(btnDetalles);
-
                 celAccion.Width = Unit.Percentage(25);
                 celAccion.Attributes.Add("style", "text-align: center");
+
                 parentRow.Cells.Add(celAccion);
             }
 
@@ -541,7 +526,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 // Crear las celdas para la fila hija
                 childRow.Cells.Add(GenerarCelda(id.ToString())); // Indicador de que es una fila hija
-                childRow.Cells.Add(GenerarCelda(margen + "<i class='fa fa-plus' style='color:green'></i> &nbsp;" + descripcion)); // Descripción del hijo
+                childRow.Cells.Add(GenerarCelda(margen + "<b>+</b> &nbsp;" + descripcion)); // Descripción del hijo
                 childRow.Cells.Add(GenerarCelda(cantidad, "text-align:right"));
                 childRow.Cells.Add(GenerarCelda(unidad));
                 childRow.Cells.Add(GenerarCelda(costo, "text-align:right"));
@@ -656,7 +641,7 @@ namespace Tecnocuisine.Formularios.Maestros
             string rows = $@"
                 <tr id='Receta_{id}' class='parent' onclick='toggleChildren(this)' style='cursor: pointer;'>
                     <td>{id}</td>
-                    <td><i class='fa fa-plus' style='color:green'></i> &nbsp;{receta.descripcion}</td>
+                    <td><b>+</b> &nbsp;{receta.descripcion}</td>
                     <td style='text-align:right'>{cantidad:N3}</td>
                     <td>{unidad}</td>
                     <td style='text-align:right'>{costoFormatted:C}</td>
@@ -722,7 +707,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 filasAcumuladas += $@"
                 <tr class='child children hidden nivel-{nivel}' data-nivel='{nivel}' onclick='toggleChildren(this)' style='cursor: pointer'> 
                     <td>{id}</td>
-                    <td>{margen}<i class='fa fa-plus' style='color:green'></i> &nbsp;{descripcion}</td>
+                    <td>{margen}<b>+</b> &nbsp;{descripcion}</td>
                     <td style='text-align:right'>{cantidad:N3}</td>
                     <td>{unidad}</td>
                     <td style='text-align:right'>{costo:C}</td>
@@ -1997,7 +1982,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 //idProductosRecetas.Value += RecetaingredienteI.id.ToString() + " ,Receta," + Receta.cantidad.ToString().Replace(',', '.') + ", ContentPlaceHolder1_Receta_" + RecetaingredienteI.id.ToString() + ";";
 
-                idProductosRecetas.Value += RecetaingredienteI.id.ToString() + " ,Receta," + Receta.cantidad.ToString().Replace(',', '.') + ", ContentPlaceHolder1_Receta_" + RecetaingredienteI.id.ToString() + "idSectorProductivoRecetas_recetas_" + Receta.idSectorProductivo + "," + "Tiempo_" + Receta.Tiempo + "," + "Factor_" + Receta.Factor.ToString().Replace(',', '.') + ";";
+                idProductosRecetas.Value += RecetaingredienteI.id.ToString() + " ,Receta," + Receta.cantidad.ToString().Replace(',', '.') + ", ContentPlaceHolder1_Receta_" + RecetaingredienteI.id.ToString() + ",idSectorProductivoRecetas_recetas_" + Receta.idSectorProductivo + "," + "Tiempo_" + Receta.Tiempo + "," + "Factor_" + Receta.Factor.ToString().Replace(',', '.') + ";";
 
 
             }
