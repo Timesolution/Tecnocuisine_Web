@@ -479,8 +479,6 @@ namespace Tecnocuisine.Formularios.Maestros
                 parentRow.Cells.Add(celAccion);
             }
 
-            parentRow.Cells.Add(GenerarCelda(cantidad, "text-align:right")); //Esta celda guardara la cantidad original
-
             return parentRow;
         }
 
@@ -540,8 +538,6 @@ namespace Tecnocuisine.Formularios.Maestros
                 childRow.Cells.Add(GenerarCelda(sector));
                 childRow.Cells.Add(GenerarCelda(tiempo, "text-align:right"));
                 childRow.Cells.Add(GenerarCelda("")); // Última columna vacía
-
-                childRow.Cells.Add(GenerarCelda(cantidad, "text-align:right")); // Esta celda guardara la cantidad original/inicial
 
                 // Agregar la fila hija justo después de la fila padre
                 phProductos.Controls.Add(childRow);
@@ -627,7 +623,7 @@ namespace Tecnocuisine.Formularios.Maestros
         /// <param name="tiempo"></param>
         /// <returns></returns>
         [WebMethod]
-        public static string GenerarFilaReceta_Add(string id, string cantidad, string idSector, string tiempo, string rinde)
+        public static string GenerarFilaReceta_Add(string id, string cantidad, string idSector, string tiempo)
         {
             ControladorReceta cReceta = new ControladorReceta();
 
@@ -636,7 +632,7 @@ namespace Tecnocuisine.Formularios.Maestros
             string unidad = new ControladorUnidad().ObtenerUnidadId(receta.UnidadMedida.Value).abreviacion;
 
             // Se formatea la cantidad para poder usarlo en el calculo del costo total
-            decimal cantidadFormatted = Convert.ToDecimal(cantidad, CultureInfo.InvariantCulture); // Cantidad inicial
+            decimal cantidadFormatted = Convert.ToDecimal(cantidad, CultureInfo.InvariantCulture);
             decimal costoFormatted = Convert.ToDecimal(receta.Costo);
             var costototal = costoFormatted * cantidadFormatted;
             string sector = string.Empty;
@@ -644,9 +640,6 @@ namespace Tecnocuisine.Formularios.Maestros
             if (idSector != "-1")
                 sector = cReceta.obterner_sectorProductivoByIdsectorProductivo(Convert.ToInt32(idSector)).descripcion;
 
-
-            decimal rindeFormatted = Convert.ToDecimal(rinde, CultureInfo.InvariantCulture);
-            cantidad = (cantidadFormatted / rindeFormatted).ToString();
 
             // Generar HTML dinamico
             string rows = $@"
@@ -664,7 +657,6 @@ namespace Tecnocuisine.Formularios.Maestros
                            <span><i style='color: darkred' class='fa fa-trash'></i></span>
                         </a>
                     </td>
-                    <td style='text-align:right'>{cantidadFormatted:N3}</td> 
                 </tr>";
 
             string filasHijas = string.Empty;
@@ -728,7 +720,6 @@ namespace Tecnocuisine.Formularios.Maestros
                     <td style='text-align:right'>{tiempo}</td>
                     <td style='text-align: center;'>
                     </td>
-                    <td style='text-align:right'>{cantidad:N3}</td>
                 </tr>";
 
                 //    // Generar las sub-filas recursivamente (si hay más recetas dentro)
@@ -1672,14 +1663,6 @@ namespace Tecnocuisine.Formularios.Maestros
                 celAccion.Width = Unit.Percentage(25);
                 celAccion.Attributes.Add("style", " text-align: center");
                 tr.Cells.Add(celAccion);
-
-
-                TableCell celCantidadOriginal = new TableCell();
-                celCantidadOriginal.Text = prodRec.FirstOrDefault().cantidad.ToString("N3").Replace(',', '.');
-                celCantidadOriginal.VerticalAlign = VerticalAlign.Middle;
-                celCantidadOriginal.HorizontalAlign = HorizontalAlign.Left;
-                celCantidadOriginal.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
-                tr.Cells.Add(celCantidadOriginal); // para guardar la cantidad original dado que la otra se utilizara para dividirla por el rinde
 
                 phProductos.Controls.Add(tr);
 

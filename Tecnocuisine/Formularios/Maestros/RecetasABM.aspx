@@ -435,7 +435,6 @@
                                                 <th style="width: 13%; text-align:left">Sector</th>
                                                 <th style="text-align:right; width:7%">Tiempo</th>
                                                 <th style="width:4%; white-space: nowrap;"></th>
-                                                <th style="width: 0%;"></th> 
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -2269,27 +2268,6 @@
                 document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = "0.00";
             }
         }
-
-        function actualizarCantidadesTabla() {
-            let rindeInput = document.getElementById("ContentPlaceHolder1_txtRinde").value;
-            // Intentar convertir a float
-            let rinde = parseFloat(rindeInput);
-
-            // Si el valor no es un numero o es 0, se asigna 1
-            rinde = isNaN(rinde) || rinde === 0 ? 1 : rinde;
-
-            // Obtener todas las filas (tr) dentro del tbody de la tabla
-            var filas = document.querySelectorAll("#tableProductos tbody tr.parent");
-
-            // Recorrer cada fila
-            filas.forEach(function (fila) {
-                // Se toma el valor original y hace el calculo siempre sobre ese valor
-                var cantidadOriginal = parseFloat(fila.cells[9].textContent); 
-                // Reemplazar valor en la columna Cantidad
-                fila.cells[2].textContent = (cantidadOriginal / rinde).toFixed(3);
-            });
-        }
-
         function ActualizarxPrVenta() {
             let PRVenta = parseFloat(document.getElementById('<%=txtPrVenta.ClientID%>').value.replace(',', ''));
             let costototal = parseFloat(document.getElementById('<%=txtCostoxPorcion.ClientID%>').value.replace(',', ''));
@@ -2517,13 +2495,6 @@
 
         //Esta funcion agrega un registro a la tabla de productos de la receta
         function agregarProductoPH() {
-            let rindeInput = document.getElementById("ContentPlaceHolder1_txtRinde").value;
-            // Intentar convertir a float
-            let rinde = parseFloat(rindeInput);
-            // Si el valor no es un numero o es 0, se asigna 1
-            rinde = isNaN(rinde) || rinde === 0 ? 1 : rinde;
-
-
             var codigo = ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0];
             var cantidad = ContentPlaceHolder1_txtCantidad.value.replace(',', '');
             var tipo = ContentPlaceHolder1_Hiddentipo.value;
@@ -2594,8 +2565,8 @@
 
             // Redondear cantidad hacia arriba siempre
             let cantRedondeadaAux = Math.ceil(CantAux * 1000) / 1000;  // Redondeo hacia arriba
-            let cantRedondeada = cantRedondeadaAux.toFixed(3); // Cantidad inicial
-            let cantFinal = (cantRedondeadaAux / rinde).toFixed(3); // Cantidad proporcional al rinde
+            let cantRedondeada = cantRedondeadaAux.toFixed(3); // Formato a 3 decimales
+
 
             let btnRec = "";
             let styleCorrect = "";
@@ -2606,7 +2577,6 @@
             let listaCostototalDesplegable = "";
             let listaDdlSectorProductivoDesplegable = "";
             let ListaTiempo = "";
-            let listaCantidadInicial = "";
             let cellFactor = "";
 
 
@@ -2620,7 +2590,7 @@
                     $.ajax({
                         method: "POST",
                         url: "RecetasABM.aspx/GenerarFilaReceta_Add",
-                        data: JSON.stringify({ id: codigo.trim(), cantidad: cantRedondeada, idSector: ddlSectoridSectorProductivo, tiempo: Tiempo, rinde: rinde }),
+                        data: JSON.stringify({ id: codigo.trim(), cantidad: cantRedondeada, idSector: ddlSectoridSectorProductivo, tiempo: Tiempo }),
                         contentType: "application/json",
                         dataType: 'json',
                         error: (error) => {
@@ -2657,8 +2627,8 @@
             //Si es un producto, entonces viene por el else y genera el html de la row a insertar en la tabla
             else {
                 //Aca simplemente agrega cada producto sin desplegables
-                listaDesplegable = "<td>&nbsp;&nbsp;&nbsp;&nbsp;" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
-                listaCantidadDesplegable = "<td style=\" text-align: right\"> " + cantFinal + "</td>";
+                listaDesplegable = "<td> &nbsp;&nbsp;&nbsp;&nbsp; " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
+                listaCantidadDesplegable = "<td style=\" text-align: right\"> " + cantRedondeada + "</td>";
                 listaUnidadesDesplegable = "<td> " + unidad + "</td>";
                 cellFactor = "<td> " + factor + "</td>";
                 cellCantBruta = "<td> " + cantBruta + "</td>";
@@ -2666,7 +2636,6 @@
                 listaCostototalDesplegable = "<td style=\" text-align:right;\"> $" + auxCostoTotal + "</td>";
                 listaDdlSectorProductivoDesplegable = "<td style=\" text-align:left;\"> " + opcionSeleccionada + "</td>";
                 ListaTiempo = "<td style=\" text-align:right;\"> " + Tiempo + "</td>";
-                listaCantidadInicial = "<td style=\" text-align:right;\"> " + cantRedondeada + "</td>";
             }
 
             // Verifica que el item no exista ya en la tabla
@@ -2694,7 +2663,6 @@
                         "<i class=\"fa fa-trash - o\" style=\"color: darkred\"></i> </a> " +
                         btnRec
                         + "</td > " +
-                        listaCantidadInicial +
                         "</tr>"
                     );
                 }
@@ -2724,7 +2692,7 @@
 
                 // Agrega el item insertado a una variable que acumula los items en un string
                 ////////if (document.getElementById('<%= idProductosRecetas.ClientID%>').value == "") {
-                document.getElementById('<%= idProductosRecetas.ClientID%>').value += codigo + "," + tipo + "," + cantFinal + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "," + "idSectorProductivo_" + ddlSectoridSectorProductivo + "," + "Tiempo_" + Tiempo + "," + "Factor_" + factor + ";";
+                document.getElementById('<%= idProductosRecetas.ClientID%>').value += codigo + "," + tipo + "," + cantRedondeada + "," + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0] + "," + "idSectorProductivo_" + ddlSectoridSectorProductivo + "," + "Tiempo_" + Tiempo + "," + "Factor_" + factor + ";";
                 //}
 <%--                // Si no es el primer item insertado en la tabla (se agrega un ';' al inicio)
                 else {
@@ -3386,8 +3354,6 @@
             $('#modalTabsProductos').modal('hide');
             document.getElementById('<%=txtCantidad.ClientID%>').value = '';
             document.getElementById('<%=txtCantidad.ClientID%>').focus();
-
-
         }
         function agregarSector() {
             //ContentPlaceHolder1_txtSector.value = id.split('_')[2] + ' - ' + id.split('_')[3];
