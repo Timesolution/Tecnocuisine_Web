@@ -660,7 +660,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 </tr>";
 
             string filasHijas = string.Empty;
-            rows += GenerarFilasHijas_Add(receta.id, 1, ref filasHijas);
+            rows += GenerarFilasHijas_Add(receta.id, 1, ref filasHijas, cantidadFormatted, receta.rinde??1);
 
             return rows;
         }
@@ -672,9 +672,8 @@ namespace Tecnocuisine.Formularios.Maestros
         /// <param name="idItem"></param>
         /// <param name="nivel"></param>
         /// <returns></returns>
-        private static string GenerarFilasHijas_Add(int idItem, int nivel, ref string filasAcumuladas)
-        {
-            
+        private static string GenerarFilasHijas_Add(int idItem, int nivel, ref string filasAcumuladas, decimal cantidadPadre, decimal rindePadre)
+        {  
             ControladorReceta cReceta = new ControladorReceta();
 
             // Si es receta, ver si tiene más recetas o productos y dibujarlos anidados
@@ -686,7 +685,8 @@ namespace Tecnocuisine.Formularios.Maestros
                 // Obtener valores de las celdas
                 int id = recetaHijaDb.id;
                 string descripcion = recetaHijaDb.descripcion;
-                string cantidad = ri.cantidad.ToString("N3", cultureSt);
+                var cantidad = ((ri.cantidad * cantidadPadre) / rindePadre);
+                string cantidadStr = cantidad.ToString("N3", cultureSt);
                 string unidad = new ControladorUnidad().ObtenerUnidadId(recetaHijaDb.UnidadMedida.Value).abreviacion;
                 string costo = recetaHijaDb.Costo.Value.ToString("C", cultureSt);
                 string tiempo = ri.Tiempo?.ToString() ?? "0";
@@ -694,7 +694,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 string cTotal;
 
                 var costototal = recetaHijaDb.Costo != null
-                     ? recetaHijaDb.Costo.Value * ri.cantidad
+                     ? recetaHijaDb.Costo.Value * cantidad
                      : 0;
                 cTotal = costototal.ToString("C", cultureSt);
 
@@ -705,14 +705,14 @@ namespace Tecnocuisine.Formularios.Maestros
                 string margen = string.Empty;
                 for (int i = 0; i < nivel; i++)
                 {
-                    margen += "&nbsp;&nbsp;&nbsp;&nbsp;";
+                    margen += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
                 }
 
                 filasAcumuladas += $@"
                 <tr class='child children hidden nivel-{nivel}' data-nivel='{nivel}' onclick='toggleChildren(this)' style='cursor: pointer'> 
                     <td>{id}</td>
                     <td>{margen}<b>+</b> &nbsp;{descripcion}</td>
-                    <td style='text-align:right'>{cantidad:N3}</td>
+                    <td style='text-align:right'>{cantidadStr:N3}</td>
                     <td>{unidad}</td>
                     <td style='text-align:right'>{costo:C}</td>
                     <td style='text-align:right'>{costototal:C}</td>
@@ -722,8 +722,8 @@ namespace Tecnocuisine.Formularios.Maestros
                     </td>
                 </tr>";
 
-                //    // Generar las sub-filas recursivamente (si hay más recetas dentro)
-                GenerarFilasHijas_Add(ri.idRecetaIngrediente, nivel + 1, ref filasAcumuladas); // Recursión aumentando el nivel
+                // Generar las sub-filas recursivamente (si hay más recetas dentro)
+                GenerarFilasHijas_Add(ri.idRecetaIngrediente, nivel + 1, ref filasAcumuladas, cantidad, recetaHijaDb.rinde??1); // Recursión aumentando el nivel
             }
 
 
@@ -733,7 +733,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 // Obtener valores de las celdas
                 int id = pi.Productos.id;
                 string descripcion = pi.Productos.descripcion;
-                string cantidad = pi.cantidad.ToString("N3", cultureSt);
+                string cantidad = ((pi.cantidad * cantidadPadre) / rindePadre).ToString("N3", cultureSt);
                 string unidad = new ControladorUnidad().ObtenerUnidadId(pi.Productos.unidadMedida).abreviacion;
                 string costo = pi.Productos.costo.ToString("C", cultureSt);
                 string tiempo = pi.Tiempo?.ToString() ?? "0";
@@ -754,7 +754,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 string margen = string.Empty;
                 for (int i = 0; i < nivel; i++)
                 {
-                    margen += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                    margen += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
                     //margen += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
                 }
 
@@ -1545,7 +1545,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 tr.Cells.Add(celNumero);
 
                 TableCell celDescripcion = new TableCell();
-                celDescripcion.Text = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + producto.descripcion;
+                celDescripcion.Text = "&nbsp;&nbsp;&nbsp;&nbsp;" + producto.descripcion;
                 celDescripcion.VerticalAlign = VerticalAlign.Middle;
                 celDescripcion.HorizontalAlign = HorizontalAlign.Left;
                 tr.Cells.Add(celDescripcion);

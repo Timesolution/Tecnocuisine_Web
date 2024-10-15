@@ -323,7 +323,7 @@
                                             </div>
                                             <div class="col-md-1" style="text-align: left; margin-right:1rem">
                                                 <label id="lblTotalUnidad" style="margin-bottom: auto;margin-top: -25%;"> Rinde </label>
-                                                <asp:TextBox Style="text-align: right;" Text="0" type="number" min="0" ID="txtRinde" onkeyUp="" oninput="actualizarCantidadesTabla();ActualizarxPorcion();" class="form-control" runat="server" />
+                                                <asp:TextBox Style="text-align: right;" Text="0" type="number" min="0" ID="txtRinde" onkeyUp="" oninput="ActualizarxPorcion();" class="form-control" runat="server" />
                                             </div>
                                             <div class="col-md-1" style="text-align: left; margin-right:1rem">
                                                 <label id="lblBrutoUnidad" style="margin-bottom: auto;margin-top: -25%;">Kg Br.</label>
@@ -2627,7 +2627,7 @@
             //Si es un producto, entonces viene por el else y genera el html de la row a insertar en la tabla
             else {
                 //Aca simplemente agrega cada producto sin desplegables
-                listaDesplegable = "<td> &nbsp;&nbsp;&nbsp;&nbsp; " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
+                listaDesplegable = "<td>&nbsp;&nbsp;&nbsp;&nbsp; " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
                 listaCantidadDesplegable = "<td style=\" text-align: right\"> " + cantRedondeada + "</td>";
                 listaUnidadesDesplegable = "<td> " + unidad + "</td>";
                 cellFactor = "<td> " + factor + "</td>";
