@@ -323,7 +323,7 @@
                                             </div>
                                             <div class="col-md-1" style="text-align: left; margin-right:1rem">
                                                 <label id="lblTotalUnidad" style="margin-bottom: auto;margin-top: -25%;"> Rinde </label>
-                                                <asp:TextBox Style="text-align: right;" Text="0" type="number" min="0" ID="txtRinde" onkeyUp="" oninput="ActualizarxPorcion();" class="form-control" runat="server" />
+                                                <asp:TextBox Style="text-align: right;" Text="0" type="number" min="0" ID="txtRinde" onkeyUp="" oninput="ActualizarxPorcion();ActualizarxPrVenta();" class="form-control" runat="server" />
                                             </div>
                                             <div class="col-md-1" style="text-align: left; margin-right:1rem">
                                                 <label id="lblBrutoUnidad" style="margin-bottom: auto;margin-top: -25%;">Kg Br.</label>
@@ -2274,11 +2274,11 @@
 
             let costototal = parseFloat(document.getElementById('<%=txtCostoTotal.ClientID%>').value.replace(',', ''));
             let cantTotal = parseFloat(document.getElementById('<%= txtKgBrutTotal.ClientID%>').value.replace(',', ''));
-            let porciones = parseFloat(document.getElementById('<%=txtRinde.ClientID%>').value);
+            let rinde = parseFloat(document.getElementById('<%=txtRinde.ClientID%>').value);
 
-            if (porciones > 0) {
-                document.getElementById('<%=txtKgxPorcion.ClientID%>').value = myFormat(Math.round10(cantTotal / porciones));
-                document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = myFormat(costototal / porciones);
+            if (rinde > 0) {
+                document.getElementById('<%=txtKgxPorcion.ClientID%>').value = myFormat(Math.round10(cantTotal / rinde));
+                document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = (costototal / rinde).toFixed(2);
             } else {
                 document.getElementById('<%=txtKgxPorcion.ClientID%>').value = "0.00";
                 document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = "0.00";
@@ -2286,12 +2286,12 @@
         }
         function ActualizarxPrVenta() {
             let PRVenta = parseFloat(document.getElementById('<%=txtPrVenta.ClientID%>').value.replace(',', ''));
-            let costototal = parseFloat(document.getElementById('<%=txtCostoxPorcion.ClientID%>').value.replace(',', ''));
+            let costoUnitario = parseFloat(document.getElementById('<%=txtCostoxPorcion.ClientID%>').value.replace(',', ''));
             let ContMarg = parseFloat(document.getElementById('<%=txtContMarg.ClientID%>').value);
-            if (PRVenta > 0) {
 
-                document.getElementById('<%=txtPFoodCost.ClientID%>').value = myFormat(Math.round10(costototal / PRVenta)) + '%';
-                document.getElementById('<%=txtContMarg.ClientID%>').value = myFormat(Math.round10(PRVenta - costototal));
+            if (PRVenta > 0) {
+                document.getElementById('<%=txtPFoodCost.ClientID%>').value = (costoUnitario / PRVenta).toFixed(2) + '%';
+                document.getElementById('<%=txtContMarg.ClientID%>').value = (PRVenta - costoUnitario).toFixed(2);
             } else {
                 document.getElementById('<%=txtPFoodCost.ClientID%>').value = "0%";
                 document.getElementById('<%=txtContMarg.ClientID%>').value = "0.00";
