@@ -252,7 +252,7 @@
                                         </div>
                                         <%--Unidad de medida--%>
                                         <div class="col-md-2" style="padding-right:0; margin-right:1rem">
-                                            <asp:DropDownList ID="ddlUnidadMedida" onchange="ActualizarUnidades()" runat="server" class="form-control">
+                                            <asp:DropDownList ID="ddlUnidadMedida" onchange="ActualizarUnidades();cambiarTextoCosto(this);" runat="server" class="form-control">
                                             </asp:DropDownList>
                                              <p id="valiva" class="text-danger text-hide">
                                                 *Seleccione Unidad de medida.
@@ -2223,6 +2223,22 @@
 
         }
 
+        function cambiarTextoCosto(dropdown) {
+            // Obtener el valor seleccionado
+            var selectedIndex = dropdown.selectedIndex;
+
+            // Obtener la abreviación del atributo 'data-abreviacion'
+            var abreviacion = dropdown.options[selectedIndex].getAttribute("data-abreviacion");
+
+            if (abreviacion) {
+                document.getElementById("lblCosto").innerText = "Costo " + abreviacion;
+            }
+            else { 
+                document.getElementById("lblCosto").innerText = "Costo";
+            }
+        }
+
+
         function EsTipoRecetaValido() {
             let select = document.getElementById('<%= ddlTipoReceta.ClientID%>');
 
@@ -2259,8 +2275,8 @@
             let costototal = parseFloat(document.getElementById('<%=txtCostoTotal.ClientID%>').value.replace(',', ''));
             let cantTotal = parseFloat(document.getElementById('<%= txtKgBrutTotal.ClientID%>').value.replace(',', ''));
             let porciones = parseFloat(document.getElementById('<%=txtRinde.ClientID%>').value);
-            if (porciones > 0) {
 
+            if (porciones > 0) {
                 document.getElementById('<%=txtKgxPorcion.ClientID%>').value = myFormat(Math.round10(cantTotal / porciones));
                 document.getElementById('<%=txtCostoxPorcion.ClientID%>').value = myFormat(costototal / porciones);
             } else {

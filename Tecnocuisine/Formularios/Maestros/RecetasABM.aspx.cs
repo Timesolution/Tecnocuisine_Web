@@ -747,9 +747,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 string sector = string.Empty;
                 string cTotal;
 
-                var costototal = pi.Productos.costo != null
-                     ? pi.Productos.costo * cantidad
-                     : 0;
+                var costototal = pi.Productos.costo * cantidad;
                 cTotal = costototal.ToString("C", cultureSt);
 
                 if (pi.idSectorProductivo != null)
@@ -2393,15 +2391,25 @@ namespace Tecnocuisine.Formularios.Maestros
         {
             try
             {
-
                 ControladorUnidad controladorUnidad = new ControladorUnidad();
-                this.ddlUnidadMedida.DataSource = controladorUnidad.ObtenerTodosUnidades();
+                var unidades = controladorUnidad.ObtenerTodosUnidades();
+
+                this.ddlUnidadMedida.DataSource = unidades;
                 this.ddlUnidadMedida.DataValueField = "id";
                 this.ddlUnidadMedida.DataTextField = "descripcion";
                 this.ddlUnidadMedida.DataBind();
                 ddlUnidadMedida.Items.Insert(0, new ListItem("Unidad Medida", "-1"));
 
+                // Agregar a cada option un atributo que guarda la abreviacion (esto es para usarla en el texto de un campo cuando cambia la unidad)
+                for (int i = 0; i < unidades.Count; i++)
+                {
+                    string abreviacion = unidades[i].abreviacion;
 
+                    if (string.IsNullOrEmpty(abreviacion)) 
+                        continue;
+
+                    ddlUnidadMedida.Items[i+1].Attributes["data-abreviacion"] = abreviacion.ToUpper();
+                }
 
             }
             catch (Exception ex)
