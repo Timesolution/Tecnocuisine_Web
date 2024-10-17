@@ -381,25 +381,24 @@ namespace Tecnocuisine.Formularios.Maestros
         {
             try
             {
-                var itemsHijos = controladorReceta.obtenerRecetasbyReceta(idReceta); //recetas_recetas
+                var recetas_receta = controladorReceta.obtenerRecetasbyReceta(idReceta); //recetas_recetas
 
-                if (itemsHijos.Count > 0)
+                if (recetas_receta.Count > 0)
                 {
                     //CargarProductosOptions(productos);
 
-                    foreach (var item in itemsHijos)
+                    foreach (var rr in recetas_receta)
                     {
                         //CargarRecetasPHModal2(item);
 
-                        // Generar y agregar la fila principal
-                        var filaPadre = GenerarFilaReceta_Edit(item, true);
-                        phProductos.Controls.Add(filaPadre);
+                        // Devuelve una cadena html con la receta inicial
+                        var recetaPadre = GenerarFilaReceta_Edit(rr, true);
+                        phProductos.Controls.Add(recetaPadre);
 
-                        // Generar y agregar las filas hijas (subrecetas o productos) de forma recursiva
-                        GenerarFilasHijas_Edit(item.idRecetaIngrediente, 1, item.cantidad, item.Recetas.rinde??1); // Empezamos en nivel 1
+                        // Generar y agregar las filas hijas (subrecetas y productos)
+                        GenerarFilasHijas_Edit(rr.idRecetaIngrediente, 1, rr.cantidad);
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -451,7 +450,11 @@ namespace Tecnocuisine.Formularios.Maestros
             parentRow.Cells.Add(GenerarCelda(cantidad, "text-align:right"));
             parentRow.Cells.Add(GenerarCelda(unidad));
             parentRow.Cells.Add(GenerarCelda(costo, "text-align:right"));
-            parentRow.Cells.Add(GenerarCelda(cTotal, "text-align:right"));
+
+            var cellTotal = GenerarCelda(cTotal, "text-align:right");
+            cellTotal.CssClass = "total-ingrediente-receta";
+            parentRow.Cells.Add(cellTotal);
+
             parentRow.Cells.Add(GenerarCelda(sector));
             parentRow.Cells.Add(GenerarCelda(tiempo, "text-align:right"));
 
@@ -481,12 +484,15 @@ namespace Tecnocuisine.Formularios.Maestros
         /// <summary>
         /// Precarga todas las filas internas de una receta dada
         /// </summary>
-        /// <param name="idItem"></param>
+        /// <param name="idReceta"></param>
         /// <param name="nivel"></param>
-        private void GenerarFilasHijas_Edit(int idItem, int nivel, decimal cantidadPadre, decimal rindePadre)
+        private void GenerarFilasHijas_Edit(int idReceta, int nivel, decimal cantidadPadre)
         {
+            var receta = controladorReceta.ObtenerRecetaId(idReceta);
+            var rindePadre = receta.rinde ?? 1;
+
             // Si es receta, ver si tiene más recetas o productos y dibujarlos anidados
-            var recetasInternas = controladorReceta.obtenerRecetasbyReceta(idItem); // recetas_recetas
+            var recetasInternas = controladorReceta.obtenerRecetasbyReceta(idReceta); // recetas_recetas
             foreach (var ri in recetasInternas)
             {
                 var recetaHijaDb = controladorReceta.ObtenerRecetaId(ri.idRecetaIngrediente);
@@ -532,7 +538,11 @@ namespace Tecnocuisine.Formularios.Maestros
                 childRow.Cells.Add(GenerarCelda(cantidadStr, "text-align:right"));
                 childRow.Cells.Add(GenerarCelda(unidad));
                 childRow.Cells.Add(GenerarCelda(costo, "text-align:right"));
-                childRow.Cells.Add(GenerarCelda(cTotal, "text-align:right"));
+
+                var cellTotal = GenerarCelda(cTotal, "text-align:right");
+                cellTotal.CssClass = "total-ingrediente-receta";
+                childRow.Cells.Add(cellTotal);
+
                 childRow.Cells.Add(GenerarCelda(sector));
                 childRow.Cells.Add(GenerarCelda(tiempo, "text-align:right"));
                 childRow.Cells.Add(GenerarCelda("")); // Última columna vacía
@@ -541,10 +551,10 @@ namespace Tecnocuisine.Formularios.Maestros
                 phProductos.Controls.Add(childRow);
 
                 // Generar las sub-filas recursivamente (si hay más recetas dentro)
-                GenerarFilasHijas_Edit(ri.idRecetaIngrediente, nivel + 1, cantidad, recetaHijaDb.rinde ?? 1); // Recursión aumentando el nivel
+                GenerarFilasHijas_Edit(ri.idRecetaIngrediente, nivel + 1, cantidad); // Recursión aumentando el nivel
             }
 
-            var productosInternos = controladorReceta.ObtenerProductosByReceta(idItem); // recetas_productos
+            var productosInternos = controladorReceta.ObtenerProductosByReceta(idReceta); // recetas_productos
             foreach (var pi in productosInternos)
             {
                 // Obtener valores de las celdas
@@ -586,7 +596,11 @@ namespace Tecnocuisine.Formularios.Maestros
                 childRow.Cells.Add(GenerarCelda(cantidadStr, "text-align:right"));
                 childRow.Cells.Add(GenerarCelda(unidad));
                 childRow.Cells.Add(GenerarCelda(costo, "text-align:right"));
-                childRow.Cells.Add(GenerarCelda(cTotal, "text-align:right"));
+
+                var cellTotal = GenerarCelda(cTotal, "text-align:right");
+                cellTotal.CssClass = "total-ingrediente-receta";
+                childRow.Cells.Add(cellTotal);
+
                 childRow.Cells.Add(GenerarCelda(sector));
                 childRow.Cells.Add(GenerarCelda(tiempo, "text-align:right"));
                 childRow.Cells.Add(GenerarCelda("")); // Última columna vacía
@@ -648,7 +662,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     <td style='text-align:right'>{cantidad:N3}</td>
                     <td>{unidad}</td>
                     <td style='text-align:right'>{costoU:C}</td>
-                    <td style='text-align:right'>{costototal:C}</td>
+                    <td class='total-ingrediente-receta' style='text-align:right'>{costototal:C}</td>
                     <td>{sector}</td>
                     <td style='text-align:right'>{tiempo}</td>
                     <td style='text-align: center;'>
@@ -714,7 +728,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     <td style='text-align:right'>{cantidadStr:N3}</td>
                     <td>{unidad}</td>
                     <td style='text-align:right'>{costo:C}</td>
-                    <td style='text-align:right'>{costototal:C}</td>
+                    <td class='total-ingrediente-receta' style='text-align:right'>{costototal:C}</td>
                     <td>{sector}</td>
                     <td style='text-align:right'>{tiempo}</td>
                     <td style='text-align: center;'>
@@ -765,7 +779,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     <td style='text-align:right'>{cantidad:N3}</td>
                     <td>{unidad}</td>
                     <td style='text-align:right'>{costo:C}</td>
-                    <td style='text-align:right'>{costototal:C}</td>
+                    <td class='total-ingrediente-receta' style='text-align:right'>{costototal:C}</td>
                     <td>{sector}</td>
                     <td style='text-align:right'>{tiempo}</td>
                     <td style='text-align: center;'>
@@ -1594,6 +1608,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 celCostoTotal.VerticalAlign = VerticalAlign.Middle;
                 celCostoTotal.HorizontalAlign = HorizontalAlign.Left;
                 celCostoTotal.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
+                celCostoTotal.CssClass = "total-ingrediente-receta";
                 tr.Cells.Add(celCostoTotal);
 
 

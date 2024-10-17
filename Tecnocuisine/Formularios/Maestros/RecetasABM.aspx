@@ -87,11 +87,16 @@
             /*margin-left: 20px;*/
             /*padding: 10px;*/
             padding-left: 0;
-            background-color: #e9e9e9;
+            background-color: #f9f9f9;
         }
 
         .hidden {
             display: none;
+        }
+
+
+        .total-ingrediente-receta{
+            font-weight:bold;
         }
     </style>
 
@@ -428,17 +433,17 @@
 
                                     <br />
 
-                                    <table class="table table-bordered table-hover" id="tableProductos">
+                                    <table class="table" id="tableProductos">
                                         <thead>
                                             <tr style="white-space:normal">
                                                 <th style="width: 0%;"></th> <!--Codigo-->
-                                                <th style="width: 41%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Descripción</th>
+                                                <th style="width: 41%">Descripción</th>
                                                 <th style="width: 8%; text-align:right">Cant.</th>
                                                 <th style="width: 6%">Uni.</th>
                                                 <%--<th style="width: auto">Factor</th>--%>
                                                 <%--<th style="width: auto">C. Bruta</th>--%>
-                                                <th style="width: 10%; text-align:right">Costo</th>
-                                                <th style="width: 11%; text-align:right">C. Total</th>
+                                                <th style="width: 10%; text-align:right">Costo U.</th>
+                                                <th style="width: 11%; text-align:right">Costo T.</th>
                                                 <th style="width: 13%; text-align:left">Sector</th>
                                                 <th style="text-align:right; width:7%">Tiempo</th>
                                                 <th style="width:4%; white-space: nowrap;"></th>
@@ -2656,7 +2661,7 @@
                 cellFactor = "<td> " + factor + "</td>";
                 cellCantBruta = "<td> " + cantBruta + "</td>";
                 listaCostosDesplegable = "<td style=\" text-align:right;\"> $" + costo + "</td>";
-                listaCostototalDesplegable = "<td style=\" text-align:right;\"> $" + auxCostoTotal + "</td>";
+                listaCostototalDesplegable = "<td class='total-ingrediente-receta' style=\" text-align:right;\"> $" + auxCostoTotal + "</td>";
                 listaDdlSectorProductivoDesplegable = "<td style=\" text-align:left;\"> " + opcionSeleccionada + "</td>";
                 ListaTiempo = "<td style=\" text-align:right;\"> " + Tiempo + "</td>";
             }
