@@ -414,29 +414,25 @@ namespace Tecnocuisine.Formularios.Maestros
         /// <param name="esReceta"></param>
         /// <returns></returns>
         private TableRow GenerarFilaReceta_Edit(Tecnocuisine_API.Entitys.Recetas_Receta Receta_Receta, bool esReceta)
-        {
-            string descripcion, cantidad, unidad, costo, cTotal, sector = "", tiempo;
-            int id;
+        {     
             var receta = controladorReceta.ObtenerRecetaId(Receta_Receta.idRecetaIngrediente);
 
             // Setear valores
-            id = receta.id;
-            descripcion = receta.descripcion;
-            cantidad = Receta_Receta.cantidad.ToString("N3", culture);
-            unidad = new ControladorUnidad().ObtenerUnidadId(receta.UnidadMedida.Value).abreviacion;
-            costo = receta.Costo.Value.ToString("C", culture);
-            tiempo = Receta_Receta.Tiempo?.ToString() ?? "0";
+            int id = receta.id;
+            string descripcion = receta.descripcion;
+            string cantidad = Receta_Receta.cantidad.ToString("N3", culture);
+            string unidad = new ControladorUnidad().ObtenerUnidadId(receta.UnidadMedida.Value).abreviacion;
+            string costo = receta.CostoU.Value.ToString("C", culture);
+            string tiempo = Receta_Receta.Tiempo?.ToString() ?? "0";
+
+            var costototal = (receta.CostoU??0) * Receta_Receta.cantidad;
+            string cTotal = costototal.ToString("C", culture);
+
+            string sector = "";
 
             if (Receta_Receta.idSectorProductivo != null)
                 sector = controladorReceta.obterner_sectorProductivoByIdsectorProductivo((int)Receta_Receta.idSectorProductivo).descripcion;
 
-            var costototal = receta.Costo != null
-                 ? receta.Costo.Value * Receta_Receta.cantidad
-                 : 0;
-            cTotal = costototal.ToString("C", culture);
-
-
-            //var cantidadConRinde = (Receta_Receta.cantidad / receta.rinde??1).ToString();
 
 
             // Agregar receta a la cadena que se enviara al servidor para guardarla
@@ -503,14 +499,12 @@ namespace Tecnocuisine.Formularios.Maestros
                 string cantidadStr = cantidad.ToString("N3", culture);
 
                 string unidad = new ControladorUnidad().ObtenerUnidadId(recetaHijaDb.UnidadMedida.Value).abreviacion;
-                string costo = recetaHijaDb.Costo.Value.ToString("C", culture);
+                string costo = recetaHijaDb.CostoU.Value.ToString("C", culture);
                 string tiempo = ri.Tiempo?.ToString() ?? "0";
                 string sector = string.Empty;
                 string cTotal;
 
-                var costototal = recetaHijaDb.Costo != null
-                     ? recetaHijaDb.Costo.Value * cantidad
-                     : 0;
+                var costototal = (recetaHijaDb.CostoU ?? 0) * cantidad;
                 cTotal = costototal.ToString("C", culture);
 
 
@@ -556,16 +550,17 @@ namespace Tecnocuisine.Formularios.Maestros
                 // Obtener valores de las celdas
                 int id = pi.Productos.id;
                 string descripcion = pi.Productos.descripcion;
-                string cantidad = pi.cantidad.ToString("N3", culture);
+
+                var cantidad = ((pi.cantidad * cantidadPadre) / rindePadre);
+                string cantidadStr = cantidad.ToString("N3", cultureSt);
+
                 string unidad = new ControladorUnidad().ObtenerUnidadId(pi.Productos.unidadMedida).abreviacion;
                 string costo = pi.Productos.costo.ToString("C", culture);
                 string tiempo = pi.Tiempo?.ToString() ?? "0";
                 string sector = string.Empty;
                 string cTotal;
 
-                var costototal = pi.Productos.costo != null
-                     ? pi.Productos.costo * pi.cantidad
-                     : 0;
+                var costototal = pi.Productos.costo * cantidad;
                 cTotal = costototal.ToString("C", culture);
 
                 if (pi.idSectorProductivo != null)
@@ -588,7 +583,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 childRow.Cells.Add(GenerarCelda(id.ToString())); // Indicador de que es una fila hija
                 childRow.Cells.Add(GenerarCelda(margen + descripcion)); // Descripción del hijo
-                childRow.Cells.Add(GenerarCelda(cantidad, "text-align:right"));
+                childRow.Cells.Add(GenerarCelda(cantidadStr, "text-align:right"));
                 childRow.Cells.Add(GenerarCelda(unidad));
                 childRow.Cells.Add(GenerarCelda(costo, "text-align:right"));
                 childRow.Cells.Add(GenerarCelda(cTotal, "text-align:right"));
@@ -636,9 +631,9 @@ namespace Tecnocuisine.Formularios.Maestros
             string unidad = new ControladorUnidad().ObtenerUnidadId(receta.UnidadMedida.Value).abreviacion;
 
             // Se formatea la cantidad para poder usarlo en el calculo del costo total
-            decimal cantidadFormatted = Convert.ToDecimal(cantidad, CultureInfo.InvariantCulture);
-            decimal costoFormatted = Convert.ToDecimal(receta.CostoU);
-            var costototal = costoFormatted * cantidadFormatted;
+            decimal cantidadDecimal = Convert.ToDecimal(cantidad, CultureInfo.InvariantCulture);
+            decimal costoU = Convert.ToDecimal(receta.CostoU);
+            var costototal = costoU * cantidadDecimal;
             string sector = string.Empty;
 
             if (idSector != "-1")
@@ -652,7 +647,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     <td><b>+</b> &nbsp;{receta.descripcion}</td>
                     <td style='text-align:right'>{cantidad:N3}</td>
                     <td>{unidad}</td>
-                    <td style='text-align:right'>{costoFormatted:C}</td>
+                    <td style='text-align:right'>{costoU:C}</td>
                     <td style='text-align:right'>{costototal:C}</td>
                     <td>{sector}</td>
                     <td style='text-align:right'>{tiempo}</td>
@@ -664,7 +659,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 </tr>";
 
             string filasHijas = string.Empty;
-            rows += GenerarFilasHijas_Add(receta.id, 1, ref filasHijas, cantidadFormatted, receta.rinde??1);
+            rows += GenerarFilasHijas_Add(receta.id, 1, ref filasHijas, cantidadDecimal, receta.rinde??1);
 
             return rows;
         }
@@ -1595,7 +1590,7 @@ namespace Tecnocuisine.Formularios.Maestros
 
                 TableCell celCostoTotal = new TableCell();
                 decimal factor = prodRec.FirstOrDefault().Factor != null ? (decimal)prodRec.FirstOrDefault().Factor : 1;
-                celCostoTotal.Text = (prodRec.FirstOrDefault().Productos.costo * prodRec.FirstOrDefault().cantidad * factor).ToString("C", culture);
+                celCostoTotal.Text = (prodRec.FirstOrDefault().Productos.costo * prodRec.FirstOrDefault().cantidad * 1 /*factor*/).ToString("C", culture);
                 celCostoTotal.VerticalAlign = VerticalAlign.Middle;
                 celCostoTotal.HorizontalAlign = HorizontalAlign.Left;
                 celCostoTotal.Attributes.Add("style", "padding-bottom: 1px !important; text-align: right;");
