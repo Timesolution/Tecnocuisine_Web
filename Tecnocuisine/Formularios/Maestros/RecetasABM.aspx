@@ -98,6 +98,14 @@
         .total-ingrediente-receta{
             font-weight:bold;
         }
+
+        .content.clearfix{
+            padding:10px;
+        }
+
+        .wizard > .content {
+     background: none; 
+}
     </style>
 
 
@@ -118,7 +126,7 @@
 
                             <form id="form" action="#" class="wizard-big">
                                 <h1>RECETAS</h1>
-                                <fieldset style="position: relative;">
+                                <fieldset style="margin-top:0px; position: relative; background-color:white; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08);">
                                     <h1>Datos de la receta</h1>
                                     <div class="column">
 
@@ -233,7 +241,7 @@
                                 </fieldset>
 
                                 <h1>INGREDIENTES</h1>
-                                <fieldset style="position: relative;padding-top: 10px;display: block;padding-bottom: 0px; background-color:#f3f3f4;">
+                                <fieldset style="position: relative;padding-left:0;padding-right:0;padding-top: 10px;display: block;padding-bottom: 0px; background-color:#f3f3f4;">
                                     
                                     <div style="background-color: white; padding:20px; padding-top:10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08);">
                                         <h1>
