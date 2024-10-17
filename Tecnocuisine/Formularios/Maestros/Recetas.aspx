@@ -4,7 +4,7 @@
 
     <div class="wrapper wrapper-content">
         <div class="container-fluid">
-            <div class="ibox float-e-margins">
+            <div class="ibox float-e-margins" style="padding-top:20px;">
                 <%--  <div class="ibox-title">
                     <h5>Recetas</h5>
                     <div class="ibox-tools">
@@ -22,11 +22,11 @@
 
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <div class="ibox float-e-margins">
+                                        <div class="ibox float-e-margins" style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08);">
 
                                             <div class="ibox-content">
                                                 <div style="margin-left: 0px; margin-right: 0px;" class="row">
-                                                    <div class="col-md-10">
+                                                    <div class="col-md-6">
 
                                                         <div class="input-group m-b">
                                                             <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
@@ -37,12 +37,12 @@
                                                     </div>
                                                     <%-- <div class="btn-group" style="margin-right: 5px">--%>
                                                 
-                                                    <div class="col-md-2">
+                                                    <div class="col-md-6">
                                                         <a href="RecetasABM.aspx" class="btn btn-primary dim" style="margin-right: 1%; float: right"><i class='fa fa-plus'></i></a>
                                                     </div>
                                                 </div>
 
-                                                <table class="table table-striped table-bordered table-hover " id="editable">
+                                                <table class="table table-hover " id="editable">
                                                     <thead>
                                                         <tr>
                                                             <th style="display:none">#</th>
