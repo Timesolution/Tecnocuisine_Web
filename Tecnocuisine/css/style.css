@@ -81,7 +81,7 @@ h5 {
 
 .navbar-default {
     background-color: transparent;
-    border-color: #2f4050;
+    border-color: #1D2440;
 }
 
 .navbar-top-links li {
@@ -189,7 +189,8 @@ h5 {
 
 .nav-header {
     padding: 33px 25px;
-    background: url("patterns/header-profile.png") no-repeat;
+    /*background: url("patterns/header-profile.png") no-repeat;*/
+    background-color: #1D2440 !important;
 }
 
 .pace-done .nav-header {
@@ -312,7 +313,7 @@ body.mini-navbar .navbar-default .nav > li > .nav-second-level li a {
     position: absolute;
     left: 70px;
     top: 0px;
-    background-color: #2f4050;
+    background-color: #1D2440;
     padding: 10px 10px 10px 10px;
     font-size: 12px;
 }
@@ -418,7 +419,7 @@ body.mini-navbar .logo-element {
 
 body.mini-navbar .nav-header {
     padding: 0;
-    background-color: #1ab394;
+    background-color: #1D2440;
 }
 
 body.mini-navbar #page-wrapper {
@@ -1234,23 +1235,23 @@ tr td:hover {
 /* TOOLTIPS */
 
 .tooltip-inner {
-    background-color: #2F4050;
+    background-color: #1D2440;
 }
 
 .tooltip.top .tooltip-arrow {
-    border-top-color: #2F4050;
+    border-top-color: #1D2440;
 }
 
 .tooltip.right .tooltip-arrow {
-    border-right-color: #2F4050;
+    border-right-color: #1D2440;
 }
 
 .tooltip.bottom .tooltip-arrow {
-    border-bottom-color: #2F4050;
+    border-bottom-color: #1D2440;
 }
 
 .tooltip.left .tooltip-arrow {
-    border-left-color: #2F4050;
+    border-left-color: #1D2440;
 }
 
 
@@ -3181,7 +3182,7 @@ a.forum-item-title {
 
 body {
     font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background-color: #2f4050;
+    background-color: #1D2440;
     font-size: 13px;
     color: #676a6c;
     overflow-x: hidden;
@@ -3192,7 +3193,7 @@ body {
     }
 
         body.boxed-layout #wrapper {
-            background-color: #2f4050;
+            background-color: #1D2440;
             max-width: 1200px;
             margin: 0 auto;
             -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
@@ -5159,8 +5160,8 @@ dd.project-people {
 }
 
 .skin-1 .nav-header {
-    background: #0e9aef;
-    background: url('patterns/header-profile-skin-1.png');
+    background: #1D2440;
+    /*background: url('patterns/header-profile-skin-1.png');*/
 }
 
 .skin-1.mini-navbar .nav-second-level {
@@ -5293,8 +5294,8 @@ body.skin-2 {
 }
 
 .skin-2 .nav-header {
-    background: #23c6c8;
-    background: url('patterns/header-profile-skin-2.png');
+    background: #1D2440;
+    /*background: url('patterns/header-profile-skin-2.png');*/
 }
 
 .skin-2.mini-navbar .nav-second-level {
@@ -5342,7 +5343,7 @@ body.skin-2 {
 }
 
 .skin-2.mini-navbar .nav-header {
-    background: #213a53;
+    background: #1D2440;
 }
 
 .skin-2 .navbar-minimalize {
@@ -5485,8 +5486,8 @@ body.boxed-layout.skin-3 #wrapper {
 }
 
 .skin-3 .nav-header {
-    background: #ecba52;
-    background: url('patterns/header-profile-skin-3.png');
+    background: #1D2440;
+    /*background: url('patterns/header-profile-skin-3.png');*/
 }
 
 .skin-3.mini-navbar .nav-second-level {

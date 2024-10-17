@@ -117,23 +117,28 @@
         .nav > li > a:hover, .nav > li > a:focus {
             background-color: rgba(238,238,238,0.5);
         }
+
+        .nav-header {
+            padding: 33px 25px;
+            background: none;
+        }
     </style>
 
 </head>
 <body>
     <form id="form1" runat="server">
-        <div id="wrapper">
-            <nav class="navbar-default navbar-static-side" style="height: 100%;" role="navigation">
-                <div class="sidebar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li class="nav-header">
+        <div id="wrapper" style="background-color:#1D2440">
+            <nav class="navbar-default navbar-static-side" style="height: 100%; background-color:#1D2440" role="navigation">
+                <div class="sidebar-collapse" style="background-color:#1D2440"">
+                    <ul class="nav" id="side-menu" style="background-color:#1D2440"">
+                        <li class="nav-header" style="background-color:#1D2440">
                             <div class="dropdown profile-element">
                                 <span>
                                     <img alt="image" class="img-circle" src="/../img/Logo.jpg" />
                                 </span>
                                 <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                    <span class="clear"><span class="block m-t-xs"><strong class="font-bold">Tecnocuisine</strong>
-                                    </span><span class="text-muted text-xs block"><b class="caret"></b></span></span></a>
+                                    <h3 class="clear"><span class="block m-t-xs"><strong class="font-bold">Tecnocuisine</strong>
+                                    </span><span class="text-muted text-xs block"><b class="caret"></b></span></h3></a>
                                 <ul class="dropdown-menu animated fadeInRight m-t-xs">
                                     <li><a href="/Default.aspx">Inicio</a></li>
                                 </ul>
@@ -366,7 +371,7 @@
             </nav>
             <div id="page-wrapper" class="gray-bg dashbard-1">
                 <div class="row border-bottom">
-                    <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0; background-color: rgb(35,54,69)!important;">
+                    <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0; background-color: #1D2440">
                         <div class="navbar-header">
                             <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#" onclick="ChangeNavBar()"><i class="fa fa-bars"></i></a>
                             <div class="navbar-form-custom">
@@ -386,8 +391,8 @@
                         </ul>
 
                     </nav>
-                    <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-                        <div class="navbar-header">
+                    <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0; background-color:#1D2440">
+                        <div class="navbar-header" style="background-color:#1D2440">
                             <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
                             </form>
                         </div>
