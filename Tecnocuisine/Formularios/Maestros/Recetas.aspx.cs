@@ -419,7 +419,7 @@ namespace Tecnocuisine
                 btnEliminar.ID = "btnEliminarReceta_" + Receta.id;
                 btnEliminar.CssClass = "btn btn-xs";
                 btnEliminar.Style.Add("background-color", "transparent");
-                btnEliminar.Attributes.Add("data-toggle", "modal");
+                btnEliminar.Attributes.Add("data-toggle", "tooltip");
                 btnEliminar.Attributes.Add("href", "#modalConfirmacion2");
                 btnEliminar.Text = "<span><i style='color:black' class='fa fa-trash - o'></i></span>";
                 btnEliminar.OnClientClick = "abrirdialog(" + Receta.id + ");";

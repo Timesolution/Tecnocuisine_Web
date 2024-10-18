@@ -8,7 +8,7 @@
             height: 100px; /* Alto fijo del contenedor */
             overflow: hidden; /* Oculta cualquier parte de la imagen que exceda el contenedor */
             position: relative; /* Posiciona de forma relativa para el hijo */
-            border-radius: 10px;
+            border-radius: 6px;
         }
 
         #imgDocF {
@@ -126,8 +126,8 @@
 
                             <form id="form" action="#" class="wizard-big">
                                 <h1>RECETAS</h1>
-                                <fieldset style="margin-top:0px; position: relative; background-color:white; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08);">
-                                    <h1>Datos de la receta</h1>
+                                <fieldset style="padding-top:2rem; margin-top:0px; position: relative; background-color:white; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08);">
+                                    <h1 style="margin-bottom:3rem">Datos de la receta</h1>
                                     <div class="column">
 
                                         <div class="row">
@@ -137,7 +137,7 @@
                                                     <label>Codigo *</label>
                                                     <%--<input id="ProdDescripcion" onchange="ActualizarLabels()" name="ProdDescripcion" type="text" class="form-control required" />--%>
                                                     <asp:TextBox ID="txtCodigo" class="form-control required" 
-                                                        Style="width: 30%" runat="server" MaxLength="50" oninput="this.value = this.value.replace(/[^A-Za-z0-9\s]/g, '');"/>
+                                                        Style="max-width: 300px;" runat="server" MaxLength="50" oninput="this.value = this.value.replace(/[^A-Za-z0-9\s]/g, '');"/>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Receta *</label>
@@ -324,7 +324,7 @@
     </div>
 </div>
 
-<br />
+<br /><br />
                                    
 
    <div class="row" style="padding-left:15px; display:flex; justify-content:start">
@@ -3516,8 +3516,10 @@
                 if (numId.includes("Receta")) {
                     numId = idprod.split('_')[2].trim();
                 }
-                let precio = document.getElementById('RecetaCST_LI_' + numId).children[1].innerText
-                precio = parseFloat(precio.replace(',', ''));
+                //let precio = document.getElementById('RecetaCST_LI_' + numId).children[1].innerText
+                let precio = idprod.split('_')[3];
+                //precio = parseFloat(precio.replace(',', ''));
+                precio = parseFloat(precio);
                 let CostoTotalFinal = document.getElementById('<%=txtCostoTotal.ClientID%>').value;
                 if (CostoTotalFinal.includes(','))
                     CostoTotalFinal = parseFloat(CostoTotalFinal.replace(',', ''));

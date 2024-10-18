@@ -666,9 +666,11 @@ namespace Tecnocuisine.Formularios.Maestros
                     <td>{sector}</td>
                     <td style='text-align:right'>{tiempo}</td>
                     <td style='text-align: center;'>
-                        <a href='javascript:void(0);' class='btn btn-xs' data-toggle='tooltip' style='padding: 0% 5% 2% 5.5%; background-color: transparent;' onclick='borrarProd({id});'>
-                           <span><i style='color: darkred' class='fa fa-trash'></i></span>
-                        </a>
+                        <a href='javascript:void(0);' class='btn btn-xs' data-toggle='tooltip' 
+                style='padding: 0% 5% 2% 5.5%; background-color: transparent;' 
+                onclick='borrarProd(""ContentPlaceHolder1_Receta_{id}_{costototal}"");'>
+                <span><i style='color: darkred' class='fa fa-trash'></i></span>
+            </a>
                     </td>
                 </tr>";
 
