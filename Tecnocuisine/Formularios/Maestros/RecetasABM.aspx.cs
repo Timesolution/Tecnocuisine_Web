@@ -132,7 +132,7 @@ namespace Tecnocuisine.Formularios.Maestros
             {
                 DataTable dt = sectorProductivo.GetAllSectoresProductivosDT();
                 DataRow drSeleccione = dt.NewRow();
-                drSeleccione["descripcion"] = "Seleccione...";
+                drSeleccione["descripcion"] = "Sector";
                 drSeleccione["id"] = -1;
                 dt.Rows.InsertAt(drSeleccione, 0);
 

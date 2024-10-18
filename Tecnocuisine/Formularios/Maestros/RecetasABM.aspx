@@ -101,6 +101,8 @@
 
         .content.clearfix{
             padding:10px;
+            margin-top:0; 
+            padding-top:0
         }
 
         .wizard > .content {
@@ -241,9 +243,9 @@
                                 </fieldset>
 
                                 <h1>INGREDIENTES</h1>
-                                <fieldset style="position: relative;padding-left:0;padding-right:0;padding-top: 10px;display: block;padding-bottom: 0px; background-color:#f3f3f4;">
+                                <fieldset style="position: relative;padding-left:0;padding-right:0;padding-top: 0px;display: block;padding-bottom: 0px; background-color:#f3f3f4;">
                                     
-                                    <div style="background-color: white; padding:20px; padding-top:10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08);">
+                                    <div style="background-color: white; padding:20px; padding-top:0px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08);">
                                         <h1>
     <label id="lblDescripcion1" style="font-size:2rem"></label>
 </h1>
@@ -299,7 +301,7 @@
     
 </div>
 
-<div class="row">
+<div class="row" style="display:none">
     <%--Presentaciones--%>
     <div class="col-sm-4" style="padding-right:0;">
         <div class="input-group">
@@ -324,7 +326,7 @@
     </div>
 </div>
 
-<br /><br />
+<%--<br /><br />--%>
                                    
 
    <div class="row" style="padding-left:15px; display:flex; justify-content:start">
@@ -369,8 +371,8 @@
 </div>
                                     </div>
 
-                                    <div class="well"style="margin-top:2%; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08); background-color:white">
-                                    <div id="containerAddItem" class="row" style="margin-top: 0.5%; margin-bottom: 2%; display:flex;flex-wrap:nowrap;justify-content:space-between">
+                                    <div class="well"style="padding-top: 10px; margin-bottom:0; margin-top:1%; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08); background-color:white">
+                                    <div id="containerAddItem" class="row" style="margin-top: 0%; margin-bottom: 1%; display:flex;flex-wrap:nowrap;justify-content:space-between">
                                         <div class="col-md-3" style="padding-left:0">
                                           
                                             <label  style="margin-bottom: 0px;"> Ingrediente </label>
@@ -439,7 +441,7 @@
                                     <asp:HiddenField runat="server" ID="idProductosRecetas" />
                                     <asp:HiddenField runat="server" ID="hiddenReceta" />
 
-                                    <br />
+                                    <%--<br />--%>
 
                                     <table class="table" id="tableProductos">
                                         <thead>
