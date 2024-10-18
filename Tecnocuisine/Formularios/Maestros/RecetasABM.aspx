@@ -341,7 +341,7 @@
         </div>
         <div class="col-md-1" style="text-align: left; margin-right:1rem">
             <label id="lblTotalUnidad" style="margin-bottom: auto;margin-top: -25%;"> Rinde </label>
-            <asp:TextBox Style="text-align: right;" Text="0" type="number" min="0" ID="txtRinde" onkeyUp="" oninput="ActualizarxPorcion();ActualizarxPrVenta();" class="form-control" runat="server" />
+            <asp:TextBox Style="text-align: right;" Text="0" type="text" min="0" ID="txtRinde" onkeypress="javascript:return validarNro(event)" oninput="ActualizarxPorcion();ActualizarxPrVenta();" class="form-control" runat="server" />
         </div>
         <div class="col-md-1" style="text-align: left; margin-right:1rem">
             <label id="lblBrutoUnidad" style="margin-bottom: auto;margin-top: -25%;">Kg Br.</label>
@@ -357,7 +357,7 @@
   
     <div class="col-md-1" style="text-align: left; margin-right:1rem"">
         <label id="rxrt" style="margin-bottom:0px">Pr.Venta</label>
-        <asp:TextBox Text="0" Style="text-align: right;" ID="txtPrVenta"  onkeyUp="ActualizarxPrVenta()" class="form-control" runat="server" />
+        <asp:TextBox Text="0" Style="text-align: right;" ID="txtPrVenta" onkeypress="javascript:return validarNro(event)"  onkeyUp="ActualizarxPrVenta()" class="form-control" runat="server" />
     </div>
     <div class="col-md-1" style="text-align: left; margin-right:1rem"">
         <label style="margin-bottom: auto;">Food Cost</label>
@@ -372,8 +372,8 @@
                                     </div>
 
                                     <div class="well"style="padding-top: 10px; margin-bottom:0; margin-top:1%; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08); background-color:white">
-                                    <div id="containerAddItem" class="row" style="margin-top: 0%; margin-bottom: 1%; display:flex;flex-wrap:nowrap;justify-content:space-between">
-                                        <div class="col-md-3" style="padding-left:0">
+                                    <div id="containerAddItem" class="row" style="margin-top: 0%; margin-bottom: 1%; display:flex; column-gap:1rem; flex-wrap:nowrap;justify-content: start">
+                                        <div class="col-md-4" style="padding-right:0">
                                           
                                             <label  style="margin-bottom: 0px;"> Ingrediente </label>
                                              
@@ -395,10 +395,10 @@
                                         <div class="col-md-1" style="text-align: left;">
                                             <label style="margin-bottom: auto;">Cantidad</label>
 
-                                            <asp:TextBox ID="txtCantidad" Text="0" onkeydown="PasarAFactor(event)" onchange="CalcularCantBruta()" onkeypress="javascript:return validarNro(event)" Style="text-align: right" class="form-control money" runat="server" />
+                                            <asp:TextBox ID="txtCantidad" Text="0" onkeyup="CalcularTotal();" oninput=""  onchange="CalcularCantBruta();" onkeypress="javascript:return validarNro(event)" Style="text-align: right" class="form-control money" runat="server" />
                                         </div>
                                         <div class="col-md-1" style="text-align: left;">
-                                            <label style="margin-bottom: auto;">U. Medida.</label>
+                                            <label style="margin-bottom: auto;">Unidad</label>
 
                                             <asp:TextBox ID="txtUnidadMed" disabled="disabled" Style="text-align: right" class="form-control" runat="server" />
                                         </div>
@@ -407,23 +407,31 @@
 
                                             <asp:TextBox ID="txtFactor" Text="1" onkeyUp="CalcularCantBruta()" Style="text-align: right" class="form-control" runat="server" />
                                         </div>
-                                        <div class="col-md-1" style="text-align: left; ">
-                                            <label style="margin-bottom: auto;">Cant. Bruta</label>
 
-                                            <asp:TextBox disabled="disabled" ID="txtCantBruta" Style="text-align: right" class="form-control" runat="server" />
-                                        </div>
                                         <div class="col-md-1" style="text-align: left;">
-                                            <label style="margin-bottom: auto; vertical-align: middle">Kg limpio $</label>
+                                            <label style="margin-bottom: auto; vertical-align: middle">Costo</label>
                                             <asp:TextBox ID="txtCostoLimpio" disabled="disabled" 
                                                 onkeypress="javascript:return validarNro(event)" 
                                                 Style="text-align: right" class="form-control" runat="server" />
                                         </div>
+
+                                        <div class="col-md-1" style="text-align: left;">
+                                            <label style="margin-bottom: auto; vertical-align: middle">Total</label>
+                                            <asp:TextBox ID="txtTotalIngrediente" disabled="disabled" Style="text-align: left" class="form-control" runat="server" />
+                                        </div>
+
+                                        <div class="col-md-1" style="text-align: left; display:none">
+                                            <label style="margin-bottom: auto;">Cant. Bruta</label>
+
+                                            <asp:TextBox disabled="disabled" ID="txtCantBruta" Style="text-align: right" class="form-control" runat="server" />
+                                        </div>
+                                        
                                         <div class="col-md-2" style="text-align: left; padding-left:2px; padding-right:2px">
-                                            <label style="margin-bottom: auto; vertical-align: middle">Sector productivo</label>
+                                            <label style="margin-bottom: auto; vertical-align: middle">Sector</label>
                                                <asp:DropDownList ID="ddlSector" runat="server"
                                                      CssClass="chosen-select form-control"
                                                      DataTextField="CountryName" DataValueField="CountryCode"
-                                                     Data-placeholder="Seleccione Rubro..." Width="100%">
+                                                     Data-placeholder="Sector" Width="100%">
                                                <asp:ListItem Text="Select" Value=""></asp:ListItem>
                                                </asp:DropDownList>                                            
                                         </div>
@@ -447,15 +455,15 @@
                                         <thead>
                                             <tr style="white-space:normal">
                                                 <th style="width: 0%;"></th> <!--Codigo-->
-                                                <th style="width: 41%">Descripción</th>
-                                                <th style="width: 8%; text-align:right">Cant.</th>
-                                                <th style="width: 6%">Uni.</th>
+                                                <th style="width: 29%; padding-left:0;">Ingrediente</th>
+                                                <th style="width: 10%; text-align:right">Cantidad</th>
+                                                <th style="width: 6%">Unidad</th>
                                                 <%--<th style="width: auto">Factor</th>--%>
                                                 <%--<th style="width: auto">C. Bruta</th>--%>
-                                                <th style="width: 10%; text-align:right">Costo U.</th>
-                                                <th style="width: 11%; text-align:right">Costo T.</th>
+                                                <th style="width: 10%; text-align:right">Costo</th>
+                                                <th style="width: 11%; text-align:right">Total</th>
                                                 <th style="width: 13%; text-align:left">Sector</th>
-                                                <th style="text-align:right; width:7%">Tiempo</th>
+                                                <th style="text-align:right; width:10%">Dias Previos</th>
                                                 <th style="width:4%; white-space: nowrap;"></th>
                                             </tr>
                                         </thead>
@@ -2202,8 +2210,23 @@
 
             //let CantBruta = Cantidad * Factor;
             let CantBruta = Cantidad;
-            document.getElementById('<%=txtCantBruta.ClientID%>').value = myFormat(Math.round10(CantBruta, -3));
+            //document.getElementById('<%=txtCantBruta.ClientID%>').value = myFormat(Math.round10(CantBruta, -3));
+
         }
+
+        function CalcularTotal() {
+            let cantidad = parseFloat(document.getElementById('<%= txtCantidad.ClientID%>').value.replace(',', ''));
+            let costo = parseFloat(document.getElementById('<%= txtCostoLimpio.ClientID%>').value.replace(',', ''));
+
+            // Verifica si el campo está vacío 
+            if (isNaN(cantidad)) {
+                cantidad = 0;
+            }
+
+            let total = cantidad * costo;
+            document.getElementById('<%=txtTotalIngrediente.ClientID%>').value = total.toFixed(2);
+        }
+
         function ValidationCategoria() {
             <%--let cat = document.getElementById('<%= txtDescripcionCategoria.ClientID%>');
             if (cat.value.trim().length > 0) {
@@ -2544,7 +2567,7 @@
             ////////let factorValue = parseFloat(document.getElementById('<%= txtFactor.ClientID %>').value);
             let factorValue = 1;
             let factor = factorValue.toFixed(2);
-            let cantBruta = document.getElementById('<%= txtCantBruta.ClientID %>').value;
+            //let cantBruta = document.getElementById('<%= txtCantBruta.ClientID %>').value;
             let costototal = 0;
             let ddlSector = document.getElementById('<%= ddlSector.ClientID %>');
             let Tiempo = document.getElementById('<%= TiempoDePreparacion.ClientID %>').value;
@@ -2668,8 +2691,8 @@
                 listaDesplegable = "<td>&nbsp;&nbsp;&nbsp;&nbsp; " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
                 listaCantidadDesplegable = "<td style=\" text-align: right\"> " + cantRedondeada + "</td>";
                 listaUnidadesDesplegable = "<td> " + unidad + "</td>";
-                cellFactor = "<td> " + factor + "</td>";
-                cellCantBruta = "<td> " + cantBruta + "</td>";
+                //cellFactor = "<td> " + factor + "</td>";
+                //cellCantBruta = "<td> " + cantBruta + "</td>";
                 listaCostosDesplegable = "<td style=\" text-align:right;\"> $" + costo + "</td>";
                 listaCostototalDesplegable = "<td class='total-ingrediente-receta' style=\" text-align:right;\"> $" + auxCostoTotal + "</td>";
                 listaDdlSectorProductivoDesplegable = "<td style=\" text-align:left;\"> " + opcionSeleccionada + "</td>";
@@ -2767,11 +2790,12 @@
 
                 // Limpiar campos
                 ContentPlaceHolder1_txtDescripcionProductos.value = "";
-                ContentPlaceHolder1_txtCantidad.value = "0";
-                document.getElementById('<%=txtFactor.ClientID%>').value = "1";
-                document.getElementById('<%=txtCantBruta.ClientID%>').value = "0";
+                ContentPlaceHolder1_txtCantidad.value = "";
+                document.getElementById('<%=txtFactor.ClientID%>').value = "";
+                //document.getElementById('<%=txtCantBruta.ClientID%>').value = "0";
                 document.getElementById('<%=txtCostoLimpio.ClientID%>').value = "";
                 document.getElementById('<%=txtUnidadMed.ClientID%>').value = "";
+                document.getElementById('<%=txtTotalIngrediente.ClientID%>').value = "";
                 document.getElementById('<%=TiempoDePreparacion.ClientID%>').value = "0";
                 document.getElementById('<%=ddlSector.ClientID%>').value = "-1";
 

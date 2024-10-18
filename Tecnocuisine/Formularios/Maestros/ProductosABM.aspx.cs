@@ -1841,7 +1841,7 @@ namespace Tecnocuisine.Formularios.Maestros
                     {
                         string[] itemsPres;
                         controladorReceta.EliminarPresentaciones(Receta.id);
-                        if (Sector.Contains(","))
+                        if (Presentaciones.Contains(","))
                             itemsPres = Presentaciones.Split(',');
                         else
                             itemsPres = Presentaciones.Split(';');
