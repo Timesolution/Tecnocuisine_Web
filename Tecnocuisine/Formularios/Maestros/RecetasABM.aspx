@@ -432,7 +432,7 @@ top: 0;
                                         </div>
 
                                         <div class="col-md-1" style="text-align: left;">
-                                            <label style="margin-bottom: auto; vertical-align: middle">Costo</label>
+                                            <label id="txtCostoLimpioLabel" style="margin-bottom: auto; vertical-align: middle">Costo</label>
                                             <asp:TextBox ID="txtCostoLimpio" disabled="disabled" 
                                                 onkeypress="javascript:return validarNro(event)" 
                                                 Style="text-align: right" class="form-control" runat="server" />
@@ -1248,6 +1248,8 @@ top: 0;
                     agregarReceta(idOption, costo)
                     CargarDepositos(itemId, 2);
                 }
+
+                cambiarTextoCostoAddIngrediente();
             }
         }
     </script>
@@ -2299,11 +2301,25 @@ top: 0;
             // Obtener la abreviación del atributo 'data-abreviacion'
             var abreviacion = dropdown.options[selectedIndex].getAttribute("data-abreviacion");
 
+            let prefijo = "Costo";
+
             if (abreviacion) {
-                document.getElementById("lblCosto").innerText = "Costo " + abreviacion;
+                document.getElementById("lblCosto").innerText = prefijo + " " + abreviacion;
             }
             else {
-                document.getElementById("lblCosto").innerText = "Costo";
+                document.getElementById("lblCosto").innerText = prefijo;
+            }
+        }
+
+        function cambiarTextoCostoAddIngrediente() {
+            var unidad = document.getElementById('ContentPlaceHolder1_txtUnidadMed').value;
+            let prefijo = "Costo";
+
+            if (unidad) {
+                document.getElementById("txtCostoLimpioLabel").innerText = prefijo + " " + unidad;
+            }
+            else {
+                document.getElementById("txtCostoLimpioLabel").innerText = prefijo;
             }
         }
 
