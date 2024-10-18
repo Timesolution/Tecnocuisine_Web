@@ -3,6 +3,25 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <style>
+         /* Estilo inicial del div */
+        #stickyDiv {
+            /*width: 100%;
+            background-color: lightblue;
+            padding: 1rem;
+            position: relative;*/ /* Inicialmente no es fixed */
+            /*transition: background-color 0.3s;*/ /* Transición opcional */
+
+            position: sticky;
+top: 0;
+        }
+        /* Estilo cuando el div está fijo */
+        .fixed {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000; /* Para asegurarte de que se mantenga visible */
+        }
+
         .image-container {
             width: 100px; /* Ancho fijo del contenedor */
             height: 100px; /* Alto fijo del contenedor */
@@ -111,22 +130,23 @@
     </style>
 
 
-    <div class="row wrapper border-bottom white-bg page-heading" style="padding-bottom: 0px; background-color: #f3f3f4">
+    <div class="row wrapper border-bottom white-bg page-heading" style="padding-bottom: 0px; background-color: #f3f3f4; height:100%">
 
         <div class="wrapper wrapper-content animated fadeInRight" style="background-color: #f3f3f4">
             <div class="row">
 
-                <div class="col-lg-12">
-                    <div class="ibox">
+                <div class="col-lg-12" style="height:100%">
+                    <div class="ibox" style="height:100%">
+
                         <%--<div class="ibox-title">
                         
                             <div class="ibox-tools">
                            
                             </div>
                         </div>--%>
-                        <div class="ibox-content" style="background-color: #f3f3f4">
+                        <div class="ibox-content" style="background-color: #f3f3f4; height:100%;">
 
-                            <form id="form" action="#" class="wizard-big">
+                            <form id="form" action="#" class="wizard-big" style="height:100%;">
                                 <h1>RECETAS</h1>
                                 <fieldset style="padding-top:2rem; margin-top:0px; position: relative; background-color:white; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08);">
                                     <h1 style="margin-bottom:3rem">Datos de la receta</h1>
@@ -243,132 +263,135 @@
                                 </fieldset>
 
                                 <h1>INGREDIENTES</h1>
-                                <fieldset style="position: relative;padding-left:0;padding-right:0;padding-top: 0px;display: block;padding-bottom: 0px; background-color:#f3f3f4;">
+                                <fieldset style="height:100%; position: relative;padding-left:0;padding-right:0;padding-top: 0px;display: block;padding-bottom: 0px; background-color:#f3f3f4;">
                                     
                                     <div style="background-color: white; padding:20px; padding-top:0px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08);">
                                         <h1>
-    <label id="lblDescripcion1" style="font-size:2rem"></label>
-</h1>
-<%--<div class="row">
-    <label class="control-label editable" style="padding-left:15px">Propiedades</label>
-</div>--%>
-<div class="row" style="display:flex; flex-wrap:wrap; row-gap:1rem">
-    <%--Tipo de receta--%>
-    <div class="col-md-2" style="padding-right:0;">
-        <asp:DropDownList ID="ddlTipoReceta" runat="server" class="form-control" onchange="EsTipoRecetaValido()">
-            <%--<asp:ListItem Value="-1" Text="Tipo receta"> </asp:ListItem>
-            <asp:ListItem Value="1" Text="Baño"></asp:ListItem>
-            <asp:ListItem Value="2" Text="Cartoon"></asp:ListItem>
-            <asp:ListItem Value="3" Text="Glaseada"></asp:ListItem>
-            <asp:ListItem Value="4" Text="Masa"></asp:ListItem>
-            <asp:ListItem Value="5" Text="Relleno"></asp:ListItem>
-            <asp:ListItem Value="6" Text="Salsa"></asp:ListItem>--%>
-        </asp:DropDownList>
-         <p id="error-tipo" class="text-danger text-hide">
-            *Seleccione un Tipo de Receta.
-        </p>
-    </div>
-    <%--Unidad de medida--%>
-    <div class="col-md-2" style="padding-right:0; margin-right:1rem">
-        <asp:DropDownList ID="ddlUnidadMedida" onchange="ActualizarUnidades();cambiarTextoCosto(this);" runat="server" class="form-control">
-        </asp:DropDownList>
-         <p id="valiva" class="text-danger text-hide">
-            *Seleccione Unidad de medida.
-        </p>
-    </div>
-    <%--Rubro--%>
-    <div class="col-md-2" style="padding-right:0;padding-left:0;">
-         <asp:DropDownList ID="ddlRubros" runat="server" class="form-control" onchange="EsRubroValido()">
-         </asp:DropDownList>
-          <p id="errorRubro" class="text-danger text-hide">
-             *Seleccione un Rubro.
-         </p>
-     </div>
-    <%--Sector--%>
-    <div class="col-md-3" style="padding-right:0;">
-        <asp:HiddenField id="HFRecetas" runat="server" />
-            <div class="input-group">
-                <%--<asp:TextBox ID="txtSector" disabled="disabled" placeholder="Sector" class="form-control" runat="server" />
-                <span class="input-group-btn">
-                    <asp:LinkButton runat="server" ID="btnSectores" class="btn btn-primary dim" onclientclick="FocusSearch()" data-toggle="modal" data-backdrop="static" data-target="#modalSectores"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
-                </span>--%>
+                                            <label id="lblDescripcion1" style="font-size:2rem"></label>
+                                        </h1>
 
-                <asp:DropDownList ID="ddlSectorProductivo" runat="server" class="form-control">
-                </asp:DropDownList>
-            </div>                                                                                          
-    </div>
+                                <%--<div class="row">
+                                    <label class="control-label editable" style="padding-left:15px">Propiedades</label>
+                                </div>--%>
+                                <div class="row" style="display:flex; flex-wrap:wrap; row-gap:1rem">
+                                    <%--Tipo de receta--%>
+                                    <div class="col-md-2" style="padding-right:0;">
+                                        <asp:DropDownList ID="ddlTipoReceta" runat="server" class="form-control" onchange="EsTipoRecetaValido()">
+                                            <%--<asp:ListItem Value="-1" Text="Tipo receta"> </asp:ListItem>
+                                            <asp:ListItem Value="1" Text="Baño"></asp:ListItem>
+                                            <asp:ListItem Value="2" Text="Cartoon"></asp:ListItem>
+                                            <asp:ListItem Value="3" Text="Glaseada"></asp:ListItem>
+                                            <asp:ListItem Value="4" Text="Masa"></asp:ListItem>
+                                            <asp:ListItem Value="5" Text="Relleno"></asp:ListItem>
+                                            <asp:ListItem Value="6" Text="Salsa"></asp:ListItem>--%>
+                                        </asp:DropDownList>
+                                         <p id="error-tipo" class="text-danger text-hide">
+                                            *Seleccione un Tipo de Receta.
+                                        </p>
+                                    </div>
+                                    <%--Unidad de medida--%>
+                                    <div class="col-md-2" style="padding-right:0; margin-right:1rem">
+                                        <asp:DropDownList ID="ddlUnidadMedida" onchange="ActualizarUnidades();cambiarTextoCosto(this);" runat="server" class="form-control">
+                                        </asp:DropDownList>
+                                         <p id="valiva" class="text-danger text-hide">
+                                            *Seleccione Unidad de medida.
+                                        </p>
+                                    </div>
+                                    <%--Rubro--%>
+                                    <div class="col-md-2" style="padding-right:0;padding-left:0;">
+                                         <asp:DropDownList ID="ddlRubros" runat="server" class="form-control" onchange="EsRubroValido()">
+                                         </asp:DropDownList>
+                                          <p id="errorRubro" class="text-danger text-hide">
+                                             *Seleccione un Rubro.
+                                         </p>
+                                     </div>
+                                    <%--Sector--%>
+                                    <div class="col-md-3" style="padding-right:0;">
+                                        <asp:HiddenField id="HFRecetas" runat="server" />
+                                            <div class="input-group">
+                                                <%--<asp:TextBox ID="txtSector" disabled="disabled" placeholder="Sector" class="form-control" runat="server" />
+                                                <span class="input-group-btn">
+                                                    <asp:LinkButton runat="server" ID="btnSectores" class="btn btn-primary dim" onclientclick="FocusSearch()" data-toggle="modal" data-backdrop="static" data-target="#modalSectores"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
+                                                </span>--%>
+
+                                                <asp:DropDownList ID="ddlSectorProductivo" runat="server" class="form-control">
+                                                </asp:DropDownList>
+                                            </div>                                                                                          
+                                    </div>
     
     
-</div>
+                                </div>
 
-<div class="row" style="display:none">
-    <%--Presentaciones--%>
-    <div class="col-sm-4" style="padding-right:0;">
-        <div class="input-group">
-            <asp:TextBox ID="txtPresentaciones" disabled="disabled" placeholder="Presentaciones" class="form-control" runat="server" />
-            <span class="input-group-btn">
-             <asp:LinkButton runat="server" ID="LinkButton1" class="btn btn-primary dim" data-toggle="modal"  data-keyboard="false" data-backdrop="static" href="#modalPresentacion"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
+                                <div class="row" style="display:none">
+                                    <%--Presentaciones--%>
+                                    <div class="col-sm-4" style="padding-right:0;">
+                                        <div class="input-group">
+                                            <asp:TextBox ID="txtPresentaciones" disabled="disabled" placeholder="Presentaciones" class="form-control" runat="server" />
+                                            <span class="input-group-btn">
+                                             <asp:LinkButton runat="server" ID="LinkButton1" class="btn btn-primary dim" data-toggle="modal"  data-keyboard="false" data-backdrop="static" href="#modalPresentacion"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
 
-                 <%--<button  class="btn btn-primary" data-toggle="modal" data-backdrop="static" data-target="#modalPresentacion"> <i style="color: white" class="fa fa-plus"></i></button>--%>
-            </span>
-        </div>
-    </div>
-    <%--Marcas--%>
-    <div class="col-sm-4" style="padding-right:0;">
-        <div class="input-group">
-            <asp:TextBox ID="txtMarcas" disabled="disabled" placeholder="Marcas" class="form-control" runat="server" />
-            <span class="input-group-btn">
-             <asp:LinkButton runat="server" ID="LinkButton2" class="btn btn-primary dim" data-toggle="modal" data-keyboard="false" data-backdrop="static" data-target="#modalMarca"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
+                                                 <%--<button  class="btn btn-primary" data-toggle="modal" data-backdrop="static" data-target="#modalPresentacion"> <i style="color: white" class="fa fa-plus"></i></button>--%>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <%--Marcas--%>
+                                    <div class="col-sm-4" style="padding-right:0;">
+                                        <div class="input-group">
+                                            <asp:TextBox ID="txtMarcas" disabled="disabled" placeholder="Marcas" class="form-control" runat="server" />
+                                            <span class="input-group-btn">
+                                             <asp:LinkButton runat="server" ID="LinkButton2" class="btn btn-primary dim" data-toggle="modal" data-keyboard="false" data-backdrop="static" data-target="#modalMarca"><i style="color: white" class="fa fa-plus"></i></asp:LinkButton>
 
-                 <%--<button  class="btn btn-primary" data-toggle="modal" data-backdrop="static" data-target="#modalPresentacion"> <i style="color: white" class="fa fa-plus"></i></button>--%>
-            </span>
-        </div>
-    </div>
-</div>
+                                                 <%--<button  class="btn btn-primary" data-toggle="modal" data-backdrop="static" data-target="#modalPresentacion"> <i style="color: white" class="fa fa-plus"></i></button>--%>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
 
-<%--<br /><br />--%>
+                                <%--<br /><br />--%>
                                    
+                                <div id="stickyDiv">
+                                       <div class="row"  style="padding-left:15px; display:flex; justify-content:start">
 
-   <div class="row" style="padding-left:15px; display:flex; justify-content:start">
-
-       <div class="col-md-1" style="text-align: left; margin-right:1rem">
-            <label id="lblBrutoTotal" style="margin-bottom: auto;">Kg Br. Total</label>
-            <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtKgBrutTotal" class="form-control" runat="server" />
-        </div>
-        <div class="col-md-1" style="text-align: left; margin-right:1rem">
-            <label style="margin-bottom: auto;">Costo total</label>
-            <asp:TextBox Text="0.00" disabled="disabled" Style="text-align: right;" ID="txtCostoTotal" class="form-control" runat="server" />
-        </div>
-        <div class="col-md-1" style="text-align: left; margin-right:1rem">
-            <label id="lblTotalUnidad" style="margin-bottom: auto;margin-top: -25%;"> Rinde </label>
-            <asp:TextBox Style="text-align: right;" Text="0" type="text" min="0" ID="txtRinde" onkeypress="javascript:return validarNro(event)" oninput="ActualizarxPorcion();ActualizarxPrVenta();" class="form-control" runat="server" />
-        </div>
-        <div class="col-md-1" style="text-align: left; margin-right:1rem">
-            <label id="lblBrutoUnidad" style="margin-bottom: auto;margin-top: -25%;">Kg Br.</label>
-            <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtKgxPorcion" class="form-control" runat="server" />
-        </div>
-        <div class="col-md-1" style="text-align: left; margin-right:1rem"">
-            <label id="lblCosto" style="margin-bottom: auto;margin-top: -25%;">Costo</label>
-            <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtCostoxPorcion" class="form-control" runat="server" />
-        </div>
+                                       <div class="col-md-1" style="text-align: left; margin-right:1rem">
+                                            <label id="lblBrutoTotal" style="margin-bottom: auto;">Kg Br. Total</label>
+                                            <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtKgBrutTotal" class="form-control" runat="server" />
+                                        </div>
+                                        <div class="col-md-1" style="text-align: left; margin-right:1rem">
+                                            <label style="margin-bottom: auto;">Costo total</label>
+                                            <asp:TextBox Text="0.00" disabled="disabled" Style="text-align: right;" ID="txtCostoTotal" class="form-control" runat="server" />
+                                        </div>
+                                        <div class="col-md-1" style="text-align: left; margin-right:1rem">
+                                            <label id="lblTotalUnidad" style="margin-bottom: auto;margin-top: -25%;"> Rinde </label>
+                                            <asp:TextBox Style="text-align: right;" Text="0" type="text" min="0" ID="txtRinde" onkeypress="javascript:return validarNro(event)" oninput="ActualizarxPorcion();ActualizarxPrVenta();" class="form-control" runat="server" />
+                                        </div>
+                                        <div class="col-md-1" style="text-align: left; margin-right:1rem; display:none">
+                                            <label id="lblBrutoUnidad" style="margin-bottom: auto;margin-top: -25%;">Kg Br.</label>
+                                            <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtKgxPorcion" class="form-control" runat="server" />
+                                        </div>
+                                        <div class="col-md-1" style="text-align: left; margin-right:1rem"">
+                                            <label id="lblCosto" style="margin-bottom: auto;margin-top: -25%;">Costo</label>
+                                            <asp:TextBox disabled="disabled" Text="0.00" Style="text-align: right;" ID="txtCostoxPorcion" class="form-control" runat="server" />
+                                        </div>
                                    
 
                                                                                            
   
-    <div class="col-md-1" style="text-align: left; margin-right:1rem"">
-        <label id="rxrt" style="margin-bottom:0px">Pr.Venta</label>
-        <asp:TextBox Text="0" Style="text-align: right;" ID="txtPrVenta" onkeypress="javascript:return validarNro(event)"  onkeyUp="ActualizarxPrVenta()" class="form-control" runat="server" />
-    </div>
-    <div class="col-md-1" style="text-align: left; margin-right:1rem"">
-        <label style="margin-bottom: auto;">Food Cost</label>
-        <asp:TextBox Text="0%" disabled="disabled" Style="text-align: right;" ID="txtPFoodCost" class="form-control" runat="server" />
-    </div>
-    <div class="col-md-1" style="text-align: left; margin-right:1rem"">
-        <label id="erwt" style="margin-bottom: auto;margin-top: -25%;"> Cont. Marg. </label>
-        <asp:TextBox Style="text-align: right;" disabled="disabled" Text="0.00" ID="txtContMarg" class="form-control" runat="server" />
-    </div>
+                                    <div class="col-md-1" style="text-align: left; margin-right:1rem"">
+                                        <label id="rxrt" style="margin-bottom:0px">Pr.Venta</label>
+                                        <asp:TextBox Text="0" Style="text-align: right;" ID="txtPrVenta" onkeypress="javascript:return validarNro(event)"  onkeyUp="ActualizarxPrVenta()" class="form-control" runat="server" />
+                                    </div>
+                                    <div class="col-md-1" style="text-align: left; margin-right:1rem"">
+                                        <label style="margin-bottom: auto;">Food Cost</label>
+                                        <asp:TextBox Text="0%" disabled="disabled" Style="text-align: right;" ID="txtPFoodCost" class="form-control" runat="server" />
+                                    </div>
+                                    <div class="col-md-1" style="text-align: left; margin-right:1rem"">
+                                        <label id="erwt" style="margin-bottom: auto;margin-top: -25%;"> Cont. Marg. </label>
+                                        <asp:TextBox Style="text-align: right;" disabled="disabled" Text="0.00" ID="txtContMarg" class="form-control" runat="server" />
+                                    </div>
     
-</div>
+                                </div>
+                                </div>
+
                                     </div>
 
                                     <div class="well"style="padding-top: 10px; margin-bottom:0; margin-top:1%; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.08); background-color:white">
@@ -3928,5 +3951,28 @@
                 };
             }
         })();
+    </script>
+
+    <script>
+        // Selecciona el div que quieres hacer fixed
+        const stickyDiv = document.getElementById('stickyDiv');
+
+        // Obtiene la posición inicial del div desde la parte superior de la ventana
+        const stickyOffset = stickyDiv.offsetTop;
+
+        // Función que se ejecuta al hacer scroll
+        function checkScroll() {
+            // Si el usuario ha hecho scroll hasta el div
+            if (window.pageYOffset >= stickyOffset) {
+                stickyDiv.classList.add('fixed');  // Añade la clase 'fixed' para cambiar la posición
+            } else {
+                stickyDiv.classList.remove('fixed');  // Elimina la clase si el div vuelve a su posición original
+            }
+        }
+
+        //// Escucha el evento de scroll
+        //window.onscroll = function () {
+        //    checkScroll();
+        //};
     </script>
 </asp:Content>
