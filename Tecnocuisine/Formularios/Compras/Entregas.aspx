@@ -450,12 +450,12 @@
                         });
 
                     } else {
-                        toastr.error("El producto o receta no tiene marcas asignadas.", "Error", {
-                            "positionClass": "toast-bottom-right"
-                        });
+                        //toastr.error("El producto o receta no tiene marcas asignadas.", "Error", {
+                        //    "positionClass": "toast-bottom-right"
+                        //});
 
                         // Deshabilitar boton para agregar el item
-                        document.getElementById('btnAgregarProducto').setAttribute('disabled', 'true');
+                        //document.getElementById('btnAgregarProducto').setAttribute('disabled', 'true');
                     }
                 }
             });
@@ -613,8 +613,17 @@
             let tdUnidad = "<td> " + unidad + "</td>";
             let btnRec = "";
 
-            marca = "<td> " + document.getElementById('<%=ddlMarca.ClientID%>').selectedOptions[0].text + "</td>";
-            idMarca = document.getElementById('<%=ddlMarca.ClientID%>').value.trim()
+            var ddlMarca = document.getElementById('<%=ddlMarca.ClientID%>');
+            if (ddlMarca.options.length > 0 && ddlMarca.selectedIndex !== -1) {
+                marca = "<td> " + ddlMarca.selectedOptions[0].text + "</td>";
+                idMarca = document.getElementById('<%=ddlMarca.ClientID%>').value.trim()
+            }
+            else {
+                marca = "<td></td>";
+                idMarca = "";
+            }
+
+
 
             if (!document.getElementById('<%= idProductosRecetas.ClientID%>').value.includes(tipo + '_' + codigo + "," + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value)) {
 

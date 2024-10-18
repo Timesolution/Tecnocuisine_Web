@@ -751,7 +751,13 @@ namespace Tecnocuisine.Formularios.Compras
                                 if (pr != "")
                                 {
                                     string[] producto = pr.Split('%');
-                                    string id_Marca = producto[2];
+
+                                    int? id_Marca;
+                                    if (string.IsNullOrEmpty(producto[2]))
+                                        id_Marca = null;
+                                    else
+                                        id_Marca = Convert.ToInt32(producto[2]);
+
                                     string id_Producto = producto[0].Trim();
                                     string Cantidad = producto[3];
                                     string Presentaciones = producto[5];
@@ -771,7 +777,7 @@ namespace Tecnocuisine.Formularios.Compras
                                         productoNuevo.idSector = idSector;
                                         productoNuevo.idPresentacion = Convert.ToInt32(Presentaciones);
                                         productoNuevo.FechaVencimiento = fechaVencimientoItem;
-                                        productoNuevo.idMarca = Convert.ToInt32(id_Marca);
+                                        productoNuevo.idMarca = id_Marca;
                                         productoNuevo.Cantidad = Convert.ToDecimal(Cantidad);
                                         productoNuevo.Precio = precio;
                                         ControladorEntregas.AgregarEntrega_Producto(productoNuevo, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(Presentaciones));                                      
@@ -787,7 +793,7 @@ namespace Tecnocuisine.Formularios.Compras
                                         RecetaNuevo.idSector = idSector;
                                         RecetaNuevo.idPresentacion = Convert.ToInt32(Presentaciones);
                                         RecetaNuevo.FechaVencimiento = fechaVencimientoItem;
-                                        RecetaNuevo.idMarca = Convert.ToInt32(id_Marca);
+                                        RecetaNuevo.idMarca = id_Marca;
                                         ControladorEntregas.AgregarEntrega_Receta(RecetaNuevo, LoteEnviado, fechaVencimientoItem, Convert.ToInt32(Presentaciones));
                                         ControladorReceta.ActualizarCosto((int)RecetaNuevo.idRecetas);
                                     }
