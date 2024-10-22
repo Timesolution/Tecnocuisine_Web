@@ -501,13 +501,13 @@
                             $("#<%=ddlPresentaciones.ClientID%>").append($("<option></option>").attr("value", this.id).text(this.descripcion))
                         });
                     } else {
-                        $("#<%=ddlPresentaciones.ClientID%>").append($("<option></option>").attr("value", -1).text("No tiene presentaciones asignadas"))
-                        toastr.error("El producto no tiene presentacion.", "Error", {
-                            "positionClass": "toast-bottom-right"
-                        });
+                        //$("#<%=ddlPresentaciones.ClientID%>").append($("<option></option>").attr("value", -1).text("No tiene presentaciones asignadas"))
+                        //toastr.error("El producto no tiene presentacion.", "Error", {
+                        //    "positionClass": "toast-bottom-right"
+                        //});
 
-                        // Deshabilitar boton para agregar el item
-                        document.getElementById('btnAgregarProducto').setAttribute('disabled', 'true');
+                        //// Deshabilitar boton para agregar el item
+                        //document.getElementById('btnAgregarProducto').setAttribute('disabled', 'true');
                     }
                 }
             });
@@ -598,7 +598,12 @@
             var tipo = ContentPlaceHolder1_Hiddentipo.value;
             let btec = "";
             let styleCorrect = "";
-            let unidad = document.getElementById('ContentPlaceHolder1_ddlPresentaciones').selectedOptions[0].text;
+
+            let unidad = "";       
+            var ddlPresentacion = document.getElementById('<%=ddlPresentaciones.ClientID%>');
+            if (ddlPresentacion.options.length > 0 && ddlPresentacion.selectedIndex !== -1) {
+                unidad = document.getElementById('ContentPlaceHolder1_ddlPresentaciones').selectedOptions[0].text;
+            }
 
             let cantidadNum = parseNumber(cantidad);
             let precioNum = parseNumber(precioFormated);
@@ -622,7 +627,6 @@
                 marca = "<td></td>";
                 idMarca = "";
             }
-
 
 
             if (!document.getElementById('<%= idProductosRecetas.ClientID%>').value.includes(tipo + '_' + codigo + "," + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value)) {
@@ -650,6 +654,7 @@
                     + "</td > " +
                     "</tr>"
                 );
+
                 if (document.getElementById('<%= idProductosRecetas.ClientID%>').value == "") {
                     document.getElementById('<%= idProductosRecetas.ClientID%>').value += (codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%= txtFechaVencimiento.ClientID%>').value + "%" + precioFormated + "%" + deposito.value + "%" + idRow).replaceAll(".", ",");
                 }
