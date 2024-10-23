@@ -223,4 +223,11 @@
             // Imprimir los IDs de las filas seleccionadas
         }
     </script>
+
+                <script>
+                    $(document).ready(function () {
+                        document.getElementById("lblSiteMap").innerText = "Compras / Recepciones de Compra";
+                    });
+                </script>
+
 </asp:Content>

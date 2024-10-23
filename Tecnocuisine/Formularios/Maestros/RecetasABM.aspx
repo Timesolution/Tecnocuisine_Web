@@ -4014,4 +4014,10 @@ top: 0;
         //    checkScroll();
         //};
     </script>
+
+    <script>
+        $(document).ready(function () {
+            document.getElementById("lblSiteMap").innerText = "Produccion / Recetas / " + document.getElementById('lblDescripcion1').textContent;
+        });
+    </script>
 </asp:Content>

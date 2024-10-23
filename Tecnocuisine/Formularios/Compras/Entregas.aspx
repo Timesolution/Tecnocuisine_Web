@@ -1015,4 +1015,10 @@
         })
     </script>
 
+                <script>
+                    $(document).ready(function () {
+                        document.getElementById("lblSiteMap").innerText = "Compras / Recepciones de Compra / Nueva";
+                    });
+                </script>
+
 </asp:Content>
