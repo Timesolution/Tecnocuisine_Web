@@ -963,11 +963,11 @@ namespace Tecnocuisine.Formularios.Maestros
                         controladorProducto.AgregarProductoAtributo(atributo);
                     }
 
+                    
+                    controladorProducto.EliminarProductoPresentacion(producto.id);
                     if (Presentacion.Trim() != "")
                     {
-
                         string[] presentaciones = Presentacion.Split(',');
-                        controladorProducto.EliminarProductoPresentacion(producto.id);
 
                         foreach (string s in presentaciones)
                         {
@@ -978,16 +978,7 @@ namespace Tecnocuisine.Formularios.Maestros
                                 pres.idPresentacion = Convert.ToInt32(s.Split('-')[0]);
                                 controladorProducto.AgregarProductoPresentacion(pres);
                             }
-
                         }
-                    }
-                    else
-                    {
-                        controladorProducto.EliminarProductoPresentacion(producto.id);
-                        Productos_Presentacion pres = new Productos_Presentacion();
-                        pres.idProducto = producto.id;
-                        pres.idPresentacion = 1;
-                        controladorProducto.AgregarProductoPresentacion(pres);
                     }
 
 

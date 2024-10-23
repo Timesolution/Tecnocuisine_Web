@@ -444,7 +444,7 @@ namespace Tecnocuisine
                 celNumero.Text = producto.id.ToString();
                 celNumero.VerticalAlign = VerticalAlign.Middle;
                 celNumero.HorizontalAlign = HorizontalAlign.Left;
-                celNumero.Attributes.Add("style", "padding-bottom: 1px !important;");
+                celNumero.Attributes.Add("style", "padding-bottom: 1px !important; display:none");
 
                 tr.Cells.Add(celNumero);
 

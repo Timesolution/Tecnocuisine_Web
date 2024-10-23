@@ -33,7 +33,7 @@
                                                 <table class="table table-striped table-bordered table-hover " id="editable">
                                                     <thead>
                                                         <tr>
-                                                            <th style="width:6%">#</th>
+                                                            <th style="width:6%; display:none">#</th>
                                                             <th style="width:20%">Descripcion</th>
                                                             <th>Rubro</th>
                                                             <%--<th>Categoria</th>--%>
