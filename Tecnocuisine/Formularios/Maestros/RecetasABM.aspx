@@ -420,8 +420,8 @@ top: 0;
 
                                             <asp:TextBox ID="txtCantidad" Text="0" onkeyup="CalcularTotal();" oninput=""  onchange="CalcularCantBruta();" onkeypress="javascript:return validarNro(event)" Style="text-align: right" class="form-control money" runat="server" />
                                         </div>
-                                        <div class="col-md-1" style="text-align: left;">
-                                            <label style="margin-bottom: auto;">Unidad</label>
+                                        <div style="text-align: left; width:5%">
+                                            <label style="margin-bottom: auto;">U.</label>
 
                                             <asp:TextBox ID="txtUnidadMed" disabled="disabled" Style="text-align: right" class="form-control" runat="server" />
                                         </div>
@@ -431,14 +431,14 @@ top: 0;
                                             <asp:TextBox ID="txtFactor" Text="1" onkeyUp="CalcularCantBruta()" Style="text-align: right" class="form-control" runat="server" />
                                         </div>
 
-                                        <div class="col-md-1" style="text-align: left;">
+                                        <div style="text-align: left; width: 10%">
                                             <label id="txtCostoLimpioLabel" style="margin-bottom: auto; vertical-align: middle">Costo</label>
                                             <asp:TextBox ID="txtCostoLimpio" disabled="disabled" 
                                                 onkeypress="javascript:return validarNro(event)" 
                                                 Style="text-align: right" class="form-control" runat="server" />
                                         </div>
 
-                                        <div class="col-md-1" style="text-align: left;">
+                                        <div style="text-align: left; width: 10%">
                                             <label style="margin-bottom: auto; vertical-align: middle">Total</label>
                                             <asp:TextBox ID="txtTotalIngrediente" disabled="disabled" Style="text-align: left" class="form-control" runat="server" />
                                         </div>
@@ -478,13 +478,13 @@ top: 0;
                                         <thead>
                                             <tr style="white-space:normal">
                                                 <th style="width: 0%;"></th> <!--Codigo-->
-                                                <th style="width: 29%; padding-left:0;">Ingrediente</th>
-                                                <th style="width: 10%; text-align:right">Cantidad</th>
-                                                <th style="width: 6%">Unidad</th>
+                                                <th style="width: 29%; padding-left:0;">&nbsp;&nbsp;&nbsp;Ingrediente</th>
+                                                <th style="width: 8%; text-align:left">Cantidad</th>
+                                                <th style="width: 5%">U.</th>
                                                 <%--<th style="width: auto">Factor</th>--%>
                                                 <%--<th style="width: auto">C. Bruta</th>--%>
-                                                <th style="width: 10%; text-align:right">Costo</th>
-                                                <th style="width: 11%; text-align:right">Total</th>
+                                                <th style="width: 10%; text-align:left">Costo</th>
+                                                <th style="width: 10%; text-align:left">Total</th>
                                                 <th style="width: 13%; text-align:left">Sector</th>
                                                 <th style="text-align:right; width:10%">Dias Previos</th>
                                                 <th style="width:4%; white-space: nowrap;"></th>
@@ -3594,10 +3594,9 @@ top: 0;
                     CostoTotalFinal += ".00";
                 document.getElementById('<%=txtCostoTotal.ClientID%>').value = CostoTotalFinal.toString();
 
-                let Cantidad = parseFloat(document.getElementById('RecetaC_LI_' + numId).children[1].innerText.replace(',', ''));
-
+                //let Cantidad = parseFloat(document.getElementById('RecetaC_LI_' + numId).children[1].innerText.replace(',', ''));
+                let Cantidad = parseFloat(idprod.split('_')[4]);
                 let CantTotal = parseFloat(document.getElementById('<%=txtKgBrutTotal.ClientID%>').value.replace(',', ''));
-
                 CantTotal -= Cantidad;
 
                 document.getElementById('<%=txtKgBrutTotal.ClientID%>').value = Math.round10(CantTotal, -3);
