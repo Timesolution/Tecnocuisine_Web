@@ -440,6 +440,9 @@ namespace Tecnocuisine.Formularios.Maestros
             // Crear la fila principal (padre)
             TableRow parentRow = new TableRow();
             parentRow.ID = "Receta_" + id.ToString();
+            // Establecer ClientIDMode a Static para evitar el prefijo de id ContentPlaceHolder
+            parentRow.ClientIDMode = ClientIDMode.Static;
+
             parentRow.CssClass = "parent"; // Clases para personalizar con CSS
             parentRow.Attributes.Add("onclick", "toggleChildren(this)");
             parentRow.Attributes.Add("style", "cursor: pointer;"); // Cambia el cursor a pointer para indicar que es clicable
@@ -469,7 +472,7 @@ namespace Tecnocuisine.Formularios.Maestros
                 btnDetalles.Attributes.Add("class", "btn  btn-xs");
                 btnDetalles.Attributes.Add("style", "padding: 0% 5% 2% 5.5%;background-color: transparent;");
                 // btnDetalles.Attributes.Add("onclick", "borrarProd('ContentPlaceHolder1_Receta_" + Receta.Recetas.id.ToString() + "');");
-                btnDetalles.Attributes.Add("onclick", "borrarProd('ContentPlaceHolder1_Receta_" + id + "');");
+                btnDetalles.Attributes.Add("onclick", "borrarProd('ContentPlaceHolder1_Receta_" + id + '_' + costototal + '_' + cantidad + "');");
                 
                 celAccion.Controls.Add(btnDetalles);
                 celAccion.Width = Unit.Percentage(25);
@@ -1434,7 +1437,9 @@ namespace Tecnocuisine.Formularios.Maestros
 
                         var unidad = cu.ObtenerUnidadId(rec.UnidadMedida.Value);
                         UnidadMedida = unidad.abreviacion;
-                        builder.Append(String.Format("<option value='{0}' id='c_r_" + rec.id + "_" + rec.descripcion + "_" + UnidadMedida + "_" + rec.Costo.ToString().Replace(',', '.') + "'>", rec.id + " - " + rec.descripcion));
+                        var costo = rec.Costo.ToString().Replace(',', '.');
+                        var costoU = rec.CostoU.ToString().Replace(',', '.');
+                        builder.Append(String.Format("<option value='{0}' id='c_r_" + rec.id + "_" + rec.descripcion + "_" + UnidadMedida + "_" + costo + "_" + costoU + "'>", rec.id + " - " + rec.descripcion));
                     }
                     else
                     {

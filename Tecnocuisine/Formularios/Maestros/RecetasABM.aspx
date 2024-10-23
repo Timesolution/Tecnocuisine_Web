@@ -1235,7 +1235,7 @@ top: 0;
             if (txtProd.includes(' - ')) {
 
                 const idOption = document.querySelector('option[value="' + txtProd + '"]').id;
-                let costo = idOption.split("_")[5].trim();
+                let costo = idOption.split("_")[6].trim();
                 //let prod = document.getElementById('ContentPlaceHolder1_Productos_' + idOption.split("_")[1] + "_" + idOption.split("_")[2]).children[0].innerHTML;
                 //let costo = document.getElementById('ContentPlaceHolder1_Productos_' + idOption.split("_")[1] + "_" + idOption.split("_")[2]).children[1].innerHTML;
                 const itemId = idOption.split('_')[2].trim();
@@ -3592,6 +3592,7 @@ top: 0;
                 CostoTotalFinal -= precio;
                 if (!CostoTotalFinal.toString().includes('.'))
                     CostoTotalFinal += ".00";
+
                 document.getElementById('<%=txtCostoTotal.ClientID%>').value = CostoTotalFinal.toString();
 
                 //let Cantidad = parseFloat(document.getElementById('RecetaC_LI_' + numId).children[1].innerText.replace(',', ''));
@@ -3623,12 +3624,30 @@ top: 0;
                     }
                 }
 
-                $('#' + idprod).remove(); //Elimina la fila seleccionada de la tabla 
+
+
+                // Eliminar filas del DOM
+                var parentRow = $('#Receta_' + numId); // Selecciona la fila principal que quieres eliminar
+                // Obtener la fila DOM real usando .get(0) o [0] para acceder al elemento DOM
+                var sibling = parentRow[0].nextElementSibling;
+
+                parentRow.remove(); //Elimina la fila seleccionada de la tabla
+
+                // Eliminar filas hijas
+                while (sibling && !sibling.id.startsWith("Receta_")) {
+                    var nextSibling = sibling.nextElementSibling; // Guarda la referencia al siguiente hermano antes de eliminar
+                    sibling.remove(); // Elimina la fila relacionada
+                    sibling = nextSibling; // Actualiza la referencia a la siguiente fila
+                }
+
+
+
                 var productos = ContentPlaceHolder1_idProductosRecetas.value.split(';'); //Obtiene todos los productos de la cadena de texto separada por ; y los guarda en la variable
                 var nuevosProductos = ""; //En esta variable se van almacenar los productos actuales en la tabla de la receta separados por ;
                 for (var x = 0; x < productos.length; x++) {
                     if (productos[x] != "") {
-                        if (!productos[x].includes(idprod)) {
+                        // Guardara en nuevos productos los que no contengan el id eliminado
+                        if (!productos[x].includes("Receta_" + numId)) {
                             //guarda los productos actuales que hay en la tabla de la receta separados por ;, de esta forma quita de la cadena de productos 
                             //aquellos que fueron eliminados
                             nuevosProductos += productos[x] + ";";
@@ -3647,6 +3666,11 @@ top: 0;
 
                 //Actualiza la cadena de texto de productos que tenia todos los productos separados por ;, y en su lugar le asigna la cadena de productos actual
                 ContentPlaceHolder1_idProductosRecetas.value = nuevosProductos;
+                console.log("Nuevos: " + nuevosProductos);
+
+                if (nuevosProductos === "") {
+                    document.getElementById('<%=txtCostoTotal.ClientID%>').value = "0.00";
+                }
             }
 
         }
