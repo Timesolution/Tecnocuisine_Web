@@ -363,6 +363,7 @@
     <Content Include="Formularios\Caja\Retenciones.aspx" />
     <Content Include="Formularios\Caja\TarjetaDeCredito.aspx" />
     <Content Include="Formularios\Compras\ImputarPagos.aspx" />
+    <Content Include="Formularios\Compras\OrdenDeCompraABM.aspx" />
     <Content Include="Formularios\Compras\Pagos.aspx" />
     <Content Include="Formularios\Compras\Compras.aspx" />
     <Content Include="Formularios\Compras\CuentaCorriente.aspx" />
@@ -1104,6 +1105,13 @@
     </Compile>
     <Compile Include="Formularios\Compras\ImputarPagos.aspx.designer.cs">
       <DependentUpon>ImputarPagos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Formularios\Compras\OrdenDeCompraABM.aspx.cs">
+      <DependentUpon>OrdenDeCompraABM.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Formularios\Compras\OrdenDeCompraABM.aspx.designer.cs">
+      <DependentUpon>OrdenDeCompraABM.aspx</DependentUpon>
     </Compile>
     <Compile Include="Formularios\Compras\Pagos.aspx.cs">
       <DependentUpon>Pagos.aspx</DependentUpon>

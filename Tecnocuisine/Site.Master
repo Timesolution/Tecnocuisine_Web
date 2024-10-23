@@ -233,13 +233,13 @@
                                 <li><a style="color: white !important;" href="../../Formularios/Compras/CuentaCorriente.aspx">Cuenta Corriente</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Compras/FacturaCompras.aspx">Factura Compras</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Marcas.aspx">Marcas</a></li>
-                                <li><a style="color: white !important;">Ordenes de compra</a></li>
+                                <li><a style="color: white !important;" href="../../Formularios/Compras/OrdenDeCompraABM.aspx">Ordenes de Compra</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Compras/Pagos.aspx">Pagos</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Compras/PagosRealizados.aspx">Pagos Realizados</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Presentaciones.aspx">Presentaciones</a></li>
                                 <li><a style="color: white !important;" href="../../Formularios/Maestros/Productos.aspx">Productos</a></li>
                                 <li><a style="color: white !important;" href="../..\Formularios\Compras\ProveedoresP.aspx">Proveedores</a></li>
-                                <li><a style="color: white !important;" href="../..\Formularios\Compras\EntregasE.aspx">Recepcion de Compras</a></li>
+                                <li><a style="color: white !important;" href="../..\Formularios\Compras\EntregasE.aspx">Recepciones de Compra</a></li>
                             </ul>
                         </li>
 
