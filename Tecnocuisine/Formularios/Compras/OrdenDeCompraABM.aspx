@@ -1,7 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="OrdenDeCompraABM.aspx.cs" Inherits="Tecnocuisine.Formularios.Compras.OrdenDeCompraABM" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-        <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
@@ -198,7 +199,7 @@
                                         <tr>
                                             <%--<th style="width: 6%">Cod Producto</th>--%>
                                             <th style="width: 10%">Descripcion</th>
-                                            <th style="width: 8%">Sector</th>
+                                            <th style="width: 7%">Sector</th>
                                             <th style="width: 6%">Marca</th>
                                             <th style="width: 8%">Presentacion</th>
                                             <th style="width: 5%; text-align: right">Cantidad</th>
@@ -220,7 +221,7 @@
 
                                 <div id="containerTotalesOC">
                                     <%--SUBTOTAL--%>
-                                    <div style="text-align: right; padding-right: 1rem; padding-bottom:.5rem">
+                                    <div style="text-align: right; padding-right: 1rem; padding-bottom: .5rem">
                                         <span style="font-size: 1.6rem">Subtotal: </span>
 
                                         <div style="display: inline-block; font-size: 1.6rem; font-weight: bold;">
@@ -228,9 +229,9 @@
                                             <span id="subtotal">0.00</span>
                                         </div>
                                     </div>
-                                
+
                                     <%--TOTAL IVA 10.5%--%>
-                                    <div style="text-align: right; padding-right: 1rem; padding-bottom:.5rem">
+                                    <div style="text-align: right; padding-right: 1rem; padding-bottom: .5rem">
                                         <span style="font-size: 1.6rem">IVA 10.5%: </span>
 
                                         <div style="display: inline-block; font-size: 1.6rem; font-weight: bold;">
@@ -240,7 +241,7 @@
                                     </div>
 
                                     <%--TOTAL IVA 21%--%>
-                                    <div style="text-align: right; padding-right: 1rem; padding-bottom:1rem">
+                                    <div style="text-align: right; padding-right: 1rem; padding-bottom: 1rem">
                                         <span style="font-size: 1.6rem">IVA 21%: </span>
 
                                         <div style="display: inline-block; font-size: 1.6rem; font-weight: bold;">
@@ -266,7 +267,7 @@
                                 <div>
                                     <asp:Button class="btn btn-md btn-primary pull-right m-t-n-xs" Style="margin-right: 8px;" data-toggle="tooltip"
                                         data-placement="top" title data-original-title="Guardar"
-                                        Text="Guardar" runat="server" ValidationGroup="AgregarEntregas" ID="btnGuardar" disabled="true"  />
+                                        Text="Guardar" runat="server" ValidationGroup="AgregarEntregas" ID="btnGuardar" disabled="true" />
                                 </div>
 
                             </div>
@@ -281,11 +282,11 @@
 
 
     <div id="modalTabsProductos" class="modal" style="z-index: 2000;" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h2 class="modal-title">identifiquemos tu Ingrediente
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h2 class="modal-title">identifiquemos tu Ingrediente
                     <span>
                         <%--<i style='color:black;' class='fa fa-search'></i>--%>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" style="width: 50px; vertical-align: middle; margin-left: 25px;">
@@ -293,180 +294,180 @@
                         </svg>
 
                     </span>
-                </h2>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel blank-panel">
-
-                        <div class="panel-heading">
-                            <div class="panel-title m-b-md"></div>
-                            <div class="panel-options">
-
-                                <ul class="nav nav-tabs">
-                                    <li class="active"><a data-toggle="tab" href="#tab-1">Productos</a></li>
-                                    <li class=""><a data-toggle="tab" href="#tab-2">Recetas</a></li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="panel-body">
-                            <div class="input-group m-b">
-                                <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
-
-
-                                <input type="text" id="txtBusquedaIngredientes" placeholder="Busqueda..." class="form-control" />
-                            </div>
-                            <div class="tab-content">
-                                <div id="tab-1" class="tab-pane active">
-                                    <table class="table table-bordered table-hover" id="editable2">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 10%">Cod.</th>
-                                                <th style="width: 20%">Descripcion</th>
-                                                <th style="width: 20%">Costo $</th>
-                                                <%--<th style="width: 20%">Unidad Medida</th>--%>
-                                                <th style="width: 10%"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <asp:PlaceHolder ID="phProductosAgregar" runat="server" />
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div id="tab-2" class="tab-pane">
-                                    <table class="table table-bordered table-hover" id="editable3">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 10%">Cod.</th>
-                                                <th style="width: 20%">Descripcion</th>
-                                                <th style="width: 20%">Costo $</th>
-                                                <th style="width: 10%"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <asp:PlaceHolder ID="phRecetasModal" runat="server" />
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
+                    </h2>
                 </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel blank-panel">
+
+                            <div class="panel-heading">
+                                <div class="panel-title m-b-md"></div>
+                                <div class="panel-options">
+
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a data-toggle="tab" href="#tab-1">Productos</a></li>
+                                        <li class=""><a data-toggle="tab" href="#tab-2">Recetas</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="panel-body">
+                                <div class="input-group m-b">
+                                    <span class="input-group-addon"><i style='color: black;' class='fa fa-search'></i></span>
 
 
+                                    <input type="text" id="txtBusquedaIngredientes" placeholder="Busqueda..." class="form-control" />
+                                </div>
+                                <div class="tab-content">
+                                    <div id="tab-1" class="tab-pane active">
+                                        <table class="table table-bordered table-hover" id="editable2">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 10%">Cod.</th>
+                                                    <th style="width: 20%">Descripcion</th>
+                                                    <th style="width: 20%">Costo $</th>
+                                                    <%--<th style="width: 20%">Unidad Medida</th>--%>
+                                                    <th style="width: 10%"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <asp:PlaceHolder ID="phProductosAgregar" runat="server" />
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div id="tab-2" class="tab-pane">
+                                        <table class="table table-bordered table-hover" id="editable3">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 10%">Cod.</th>
+                                                    <th style="width: 20%">Descripcion</th>
+                                                    <th style="width: 20%">Costo $</th>
+                                                    <th style="width: 10%"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <asp:PlaceHolder ID="phRecetasModal" runat="server" />
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
             </div>
         </div>
-    </div>
-    <!-- Mainly scripts -->
-    <script src="/../js/jquery-2.1.1.js"></script>
-    <!-- Mainly scripts -->
-    <%--<script src="/../Scripts/jquery-3.4.1.js"></script>--%>
-    <script src="../../js/bootstrap.min.js"></script>
-    <script src="../../Scripts/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <%-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>--%>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.2.6/jquery.inputmask.bundle.min.js"></script>
+        <!-- Mainly scripts -->
+        <script src="/../js/jquery-2.1.1.js"></script>
+        <!-- Mainly scripts -->
+        <%--<script src="/../Scripts/jquery-3.4.1.js"></script>--%>
+        <script src="../../js/bootstrap.min.js"></script>
+        <script src="../../Scripts/plugins/metisMenu/jquery.metisMenu.js"></script>
+        <%-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>--%>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.2.6/jquery.inputmask.bundle.min.js"></script>
 
-    <%--  <script src="../../Scripts/jquery.mask.js"></script>
+        <%--  <script src="../../Scripts/jquery.mask.js"></script>
         <script src="../../Scripts/jquery.mask.min.js"></script>--%>
-    <%--<script src="../../Scripts/plugins/slimscroll/jquery.slimscroll.min.js"></script>--%>
+        <%--<script src="../../Scripts/plugins/slimscroll/jquery.slimscroll.min.js"></script>--%>
 
-    <!-- Custom and plugin javascript -->
+        <!-- Custom and plugin javascript -->
 
-    <%--<script src="../Scripts/plugins/pace/pace.min.js"></script>--%>
-    <%--            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.8.0.js"></script>
+        <%--<script src="../Scripts/plugins/pace/pace.min.js"></script>--%>
+        <%--            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.8.0.js"></script>
         <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.22/jquery-ui.js"></script>--%>
-    <!-- Steps -->
-    <script src="/../Scripts/plugins/staps/jquery.steps.min.js"></script>
+        <!-- Steps -->
+        <script src="/../Scripts/plugins/staps/jquery.steps.min.js"></script>
 
-    <!-- Jquery Validate -->
-    <script src="/../Scripts/plugins/validate/jquery.validate.min.js"></script>
+        <!-- Jquery Validate -->
+        <script src="/../Scripts/plugins/validate/jquery.validate.min.js"></script>
 
 
-    <%--<script src="../../Scripts/plugins/iCheck/icheck.min.js"></script>--%>
-    <%--<script src="/../Scripts/plugins/summernote/summernote.min.js"></script>--%>
+        <%--<script src="../../Scripts/plugins/iCheck/icheck.min.js"></script>--%>
+        <%--<script src="/../Scripts/plugins/summernote/summernote.min.js"></script>--%>
 
-    <%--<script src="../../Scripts/plugins/toastr/toastr.min.js"></script>--%>
+        <%--<script src="../../Scripts/plugins/toastr/toastr.min.js"></script>--%>
 
-    <script src="//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
-    <link href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.css" rel="stylesheet" />
-</div>
+        <script src="//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+        <link href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.css" rel="stylesheet" />
+    </div>
 
 
 
     <script src="../../js/plugins/datapicker/bootstrap-datepicker.js"></script>
-<script>
-    $(document).ready(function () {
-        $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+    <script>
+        $(document).ready(function () {
+            $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 
 
-        let url = new URL(window.location.href);
-        let idIngrediente = "";
-        let inngredienteReceta = "";
-        let sectorDescripcion = "";
-        let idSector = "";
-        idIngrediente = url.searchParams.get('idP');
-        inngredienteReceta = url.searchParams.get('Desc');
-        sectorDescripcion = url.searchParams.get('SP');
-        idSector = url.searchParams.get('idS');
+            let url = new URL(window.location.href);
+            let idIngrediente = "";
+            let inngredienteReceta = "";
+            let sectorDescripcion = "";
+            let idSector = "";
+            idIngrediente = url.searchParams.get('idP');
+            inngredienteReceta = url.searchParams.get('Desc');
+            sectorDescripcion = url.searchParams.get('SP');
+            idSector = url.searchParams.get('idS');
 
-        if (idIngrediente != null) {
-            document.getElementById('<%=txtDescripcionProductos.ClientID%>').value = idIngrediente + " - " + inngredienteReceta;
+            if (idIngrediente != null) {
+                document.getElementById('<%=txtDescripcionProductos.ClientID%>').value = idIngrediente + " - " + inngredienteReceta;
             handle();
             <%--document.getElementById('<%=txtSector.ClientID%>').value = idSector + " - " + sectorDescripcion;--%>
         }
 
     });
-    $('#data_1 .input-group.date').datepicker({
-        todayBtn: "linked",
-        keyboardNavigation: false,
-        forceParse: false,
-        calendarWeeks: true,
-        autoclose: true,
-        format: 'dd/mm/yyyy'
-    });
-    $('#data_2 .input-group.date').datepicker({
-        todayBtn: "linked",
-        keyboardNavigation: false,
-        forceParse: false,
-        calendarWeeks: true,
-        autoclose: true,
-        format: 'dd/mm/yyyy'
-    });
-</script>
-<script>
-    function handle(e) {
+        $('#data_1 .input-group.date').datepicker({
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true,
+            format: 'dd/mm/yyyy'
+        });
+        $('#data_2 .input-group.date').datepicker({
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true,
+            format: 'dd/mm/yyyy'
+        });
+    </script>
+    <script>
+        function handle(e) {
 
-        document.getElementById('btnAgregarProducto').removeAttribute('disabled');
-        //let x = ContentPlaceHolder1_txtDescripcionProductos.value = clickedId.split('_')[1];
-        let txtProd = document.getElementById('ContentPlaceHolder1_txtDescripcionProductos').value
-        if (txtProd.includes(' - ')) {
+            document.getElementById('btnAgregarProducto').removeAttribute('disabled');
+            //let x = ContentPlaceHolder1_txtDescripcionProductos.value = clickedId.split('_')[1];
+            let txtProd = document.getElementById('ContentPlaceHolder1_txtDescripcionProductos').value
+            if (txtProd.includes(' - ')) {
 
-            const idOption = document.querySelector('option[value="' + txtProd + '"]').id;
-            let costo = idOption.split("_")[5];
-            //let prod = document.getElementById('ContentPlaceHolder1_Productos_' + idOption.split("_")[1] + "_" + idOption.split("_")[2]).children[0].innerHTML;
-            //let costo = document.getElementById('ContentPlaceHolder1_Productos_' + idOption.split("_")[1] + "_" + idOption.split("_")[2]).children[1].innerHTML;
-            if (idOption.includes("c_p_")) {
-                agregarProducto(idOption, costo);
-                //CargarRubro(txtProd.split('-')[0].trim(), 1);
-                CargarDepositos(txtProd.split('-')[0].trim(), 1);
-                CargarOptionsDllPresentaciones(txtProd.split('-')[0].trim(), 1);
-                CargarOptionDllMarcas(txtProd.split('-')[0].trim(), 1);
-            }
-            else if (idOption.includes("c_r_")) {
-                agregarReceta(idOption, costo)
-                CargarDepositos(txtProd.split('-')[0].trim(), 2);
-                CargarOptionsDllPresentaciones(txtProd.split('-')[0].trim(), 2);
-                CargarOptionDllMarcas(txtProd.split('-')[0].trim(), 2);
+                const idOption = document.querySelector('option[value="' + txtProd + '"]').id;
+                let costo = idOption.split("_")[5];
+                //let prod = document.getElementById('ContentPlaceHolder1_Productos_' + idOption.split("_")[1] + "_" + idOption.split("_")[2]).children[0].innerHTML;
+                //let costo = document.getElementById('ContentPlaceHolder1_Productos_' + idOption.split("_")[1] + "_" + idOption.split("_")[2]).children[1].innerHTML;
+                if (idOption.includes("c_p_")) {
+                    agregarProducto(idOption, costo);
+                    //CargarRubro(txtProd.split('-')[0].trim(), 1);
+                    CargarDepositos(txtProd.split('-')[0].trim(), 1);
+                    CargarOptionsDllPresentaciones(txtProd.split('-')[0].trim(), 1);
+                    CargarOptionDllMarcas(txtProd.split('-')[0].trim(), 1);
+                }
+                else if (idOption.includes("c_r_")) {
+                    agregarReceta(idOption, costo)
+                    CargarDepositos(txtProd.split('-')[0].trim(), 2);
+                    CargarOptionsDllPresentaciones(txtProd.split('-')[0].trim(), 2);
+                    CargarOptionDllMarcas(txtProd.split('-')[0].trim(), 2);
+                }
             }
         }
-    }
 
-    function CargarOptionDllMarcas(id, tipo) {
-        document.getElementById('<%=ddlMarca.ClientID%>').removeAttribute('disabled');
+        function CargarOptionDllMarcas(id, tipo) {
+            document.getElementById('<%=ddlMarca.ClientID%>').removeAttribute('disabled');
 
         $.ajax({
             method: "POST",
@@ -498,42 +499,42 @@
                 }
             }
         });
-    }
+        }
 
-    function CargarDepositos(id, tipo) {
-        $.ajax({
-            method: "POST",
-            url: "Entregas.aspx/GetIdSectorByIdProd",
-            data: '{idProd: "' + id + '", tipo:"' + tipo + '"}',
-            contentType: "application/json",
-            dataType: "json",
-            dataType: "json",
-            async: false,
-            error: (error) => {
-                console.log(JSON.stringify(error));
-            },
-            success: function (respuesta) {
-                var ddlDepositos = $("#<%=ddlDepositos.ClientID%>");
+        function CargarDepositos(id, tipo) {
+            $.ajax({
+                method: "POST",
+                url: "Entregas.aspx/GetIdSectorByIdProd",
+                data: '{idProd: "' + id + '", tipo:"' + tipo + '"}',
+                contentType: "application/json",
+                dataType: "json",
+                dataType: "json",
+                async: false,
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                },
+                success: function (respuesta) {
+                    var ddlDepositos = $("#<%=ddlDepositos.ClientID%>");
                 ddlDepositos.val(respuesta.d);
             }
         });
-    }
+        }
 
-    function CargarOptionsDllPresentaciones(id, tipo) {
-        $.ajax({
-            method: "POST",
-            url: "Entregas.aspx/GetPresentaciones",
-            data: '{idProd: "' + id + '",tipo:"' + tipo + '"}',
-            contentType: "application/json",
-            dataType: "json",
-            dataType: "json",
-            async: false,
-            error: (error) => {
-                console.log(JSON.stringify(error));
-            },
-            success: function (respuesta) {
-                //quito los options que pudiera tener previamente el combo
-                $("#<%=ddlPresentaciones.ClientID%>").html("");
+        function CargarOptionsDllPresentaciones(id, tipo) {
+            $.ajax({
+                method: "POST",
+                url: "Entregas.aspx/GetPresentaciones",
+                data: '{idProd: "' + id + '",tipo:"' + tipo + '"}',
+                contentType: "application/json",
+                dataType: "json",
+                dataType: "json",
+                async: false,
+                error: (error) => {
+                    console.log(JSON.stringify(error));
+                },
+                success: function (respuesta) {
+                    //quito los options que pudiera tener previamente el combo
+                    $("#<%=ddlPresentaciones.ClientID%>").html("");
                 //recorro cada item que devuelve el servicio web y lo aÃ±ado como un opcion
                 if (respuesta.d.length > 0) {
                     $.each(respuesta.d, function () {
@@ -550,50 +551,50 @@
                 }
             }
         });
-    }
-
-    function handleDepositoChange() {
-        let deposito = document.getElementById('<%= ddlDepositos.ClientID %>');
-
-        if (deposito.value != "-1")
-            deposito.style.border = "1px solid #e5e6e7";
-        else
-            deposito.style.border = "1px solid red";
-    }
-
-    function ComprobarFecha(date, DiaIngresado) {
-        DiaIngresado = DiaIngresado.replaceAll("/", "-")
-        DiaIngresado = DiaIngresado.split(['-']).reverse().join("-")
-        let date1 = date
-        let date2 = new Date(DiaIngresado)
-        console.log(date1, date2)
-        if (date2 > date1) {
-            var diff = date2.getTime() - date1.getTime();
-            return dias = Math.round(diff / (1000 * 60 * 60 * 24));
-        }
-        else if (date2 != null && date2 < date1) {
-            return false
         }
 
-    }
+        function handleDepositoChange() {
+            let deposito = document.getElementById('<%= ddlDepositos.ClientID %>');
 
-    // Función para convertir cadena formateada a número
-    function parseNumber(str) {
-        const cleaned = str.replace(/,/g, '');
-        return parseFloat(cleaned);
-    }
-
-
-    let idRow = 0;
-
-    function agregarProductoPH() {
-        // Validaciones
-        let ValDias = ValidarDias();
-        if (ValDias == false) {
-            return false
+            if (deposito.value != "-1")
+                deposito.style.border = "1px solid #e5e6e7";
+            else
+                deposito.style.border = "1px solid red";
         }
 
-        let prod = document.getElementById('<%=txtDescripcionProductos.ClientID%>')
+        function ComprobarFecha(date, DiaIngresado) {
+            DiaIngresado = DiaIngresado.replaceAll("/", "-")
+            DiaIngresado = DiaIngresado.split(['-']).reverse().join("-")
+            let date1 = date
+            let date2 = new Date(DiaIngresado)
+            console.log(date1, date2)
+            if (date2 > date1) {
+                var diff = date2.getTime() - date1.getTime();
+                return dias = Math.round(diff / (1000 * 60 * 60 * 24));
+            }
+            else if (date2 != null && date2 < date1) {
+                return false
+            }
+
+        }
+
+        // Función para convertir cadena formateada a número
+        function parseNumber(str) {
+            const cleaned = str.replace(/,/g, '');
+            return parseFloat(cleaned);
+        }
+
+
+        let idRow = 0;
+
+        function agregarProductoPH() {
+            // Validaciones
+            let ValDias = ValidarDias();
+            if (ValDias == false) {
+                return false
+            }
+
+            let prod = document.getElementById('<%=txtDescripcionProductos.ClientID%>')
         if (prod.value.length < 1) {
             document.getElementById('valivaProducto').className = 'text-danger'
             return false;
@@ -652,6 +653,8 @@
         let iva = parseFloat(ivaString);
         let totalConIva = totalProducto * ((iva / 100) + 1); //Ej: 1000 * 1.21
 
+        let ivaCosto = totalConIva - totalProducto;
+
         //costototal = costototal.toString().replace('.', ',');
 
         let tdDescripcion = "<td> " + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[1] + "</td>";
@@ -692,11 +695,9 @@
                 tdPrecio +
                 tdTotalProducto +
                 tdIva +
-
                 tdTotalConIva +
-
                 "<td style=\" text-align: center\">" +
-                " <a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent; " + styleCorrect + "\" class=\"btn  btn-xs \" onclick=\"javascript: return borrarProd(event,'" + tipo + "_" + codigo.trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "_" + idRow + "', " + (totalProducto * -1) + ");\" >" +
+                " <a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent; " + styleCorrect + "\" class=\"btn  btn-xs \" onclick=\"javascript: return borrarProd(event,'" + tipo + "_" + codigo.trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "_" + idRow + "', " + (totalProducto) + ", " + iva + ", " + ivaCosto + ");\" >" +
                 "<i class=\"fa fa-trash - o\" style=\"color: black\"></i> </a> " +
                 btnRec
                 + "</td > " +
@@ -710,13 +711,10 @@
                 document.getElementById('<%= idProductosRecetas.ClientID%>').value += (";" + codigo + "%" + tipo + "%" + idMarca + "%" + cantidad + "%" + ContentPlaceHolder1_Hiddentipo.value + "_" + ContentPlaceHolder1_txtDescripcionProductos.value.split('-')[0].trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "%" + document.getElementById('<%=txtLote.ClientID%>').value + "%" + document.getElementById('<%=txtFechaVencimiento.ClientID%>').value + "%" + precioFormated + "%" + deposito.value + "%" + idRow).replaceAll(".", ",");
             }
 
-            // Aumentar total general
-            //let totalActual = Number(document.getElementById('total').textContent);
-            //totalActual = Number(totalActual) + (Number(precio.value) * Number(cantidad))
-            //document.getElementById('total').textContent = totalActual;
 
-            // Aumentar total general
-            updateTotalGeneral(totalProducto);
+            UpdateSubtotal(totalProducto);
+            UpdateTotalesIva(iva, ivaCosto);      
+            updateTotalGeneral();
 
             // Limpiar campos
             prod.value = "";
@@ -734,342 +732,392 @@
             document.getElementById('ContentPlaceHolder1_txtDescripcionProductos').focus();
 
             document.getElementById('<%= btnGuardar.ClientID %>').disabled = false;
+            }
         }
-    }
 
-    // Actualizar el total general
-    function updateTotalGeneral(newTotalProducto) {
-        let totalGeneralElement = document.getElementById("total");
-        let currentTotalGeneral = parseNumber(totalGeneralElement.textContent);
-        let newTotalGeneral = currentTotalGeneral + newTotalProducto;
+        function UpdateTotalesIva(iva, ivaCosto) {
+            // Actualizar sumatoria de iva 10.5
+            if (iva == 10.5) {
+                let iva105Element = document.getElementById("iva105");
+                let current = parseNumber(iva105Element.textContent);
+                let newSum = current + ivaCosto;
+                if (newSum < 0) newSum = 0.00;
+                iva105Element.textContent = myFormat2(newSum.toString());
+            }
 
-        if (newTotalGeneral <= 0)
-            newTotalGeneral = 0.00;
+            // Actualizar sumatoria de iva 21
+            if (iva == 21) {
+                let iva21Element = document.getElementById("iva21");
+                let current = parseNumber(iva21Element.textContent);
+                let newSum = current + ivaCosto;
+                if (newSum < 0) newSum = 0.00;
+                iva21Element.textContent = myFormat2(newSum.toString());
+            }
+        }
 
-        totalGeneralElement.textContent = myFormat2(newTotalGeneral.toString());
-    }
+        function UpdateSubtotal(totalProducto) {
+            // Actualizar Subtotal (no incluye iva)
+            let subtotalElement = document.getElementById("subtotal");
+            let currentSubtotal = parseNumber(subtotalElement.textContent);
+            let newSumSubtotal = currentSubtotal + totalProducto;
 
-    function agregarProducto(clickedId, costo) {
-        ContentPlaceHolder1_txtDescripcionProductos.value = clickedId.split('_')[2] + ' - ' + clickedId.split('_')[3];
-        ContentPlaceHolder1_Hiddentipo.value = "Producto";
-        ContentPlaceHolder1_HiddenIVA.value = clickedId.split("_")[6];
-        //ContentPlaceHolder1_HiddenUnidad.value = document.getElementById('ContentPlaceHolder1_ddlPresentaciones').selectedOptions[0].text;
-        //ContentPlaceHolder1_txtUnidadMed.value = clickedId.split('_')[4];
-        ContentPlaceHolder1_HiddenCosto.value = costo;
+            if (newSumSubtotal < 0)
+                newSumSubtotal = 0.00;
 
-        $('input[type=search]').val('');// Clear Search input.
-        document.querySelector('#txtBusquedaIngredientes').value = ''
+            subtotalElement.textContent = myFormat2(newSumSubtotal.toString());
+        }
 
-        $('#modalTabsProductos').modal('hide');
-        document.getElementById('<%=txtCantidad.ClientID%>').value = '';
+        // Actualizar el total general sumando el subtotal, iva 10.5 e iva 21
+        function updateTotalGeneral() {
+            let totalGeneralElement = document.getElementById("total");
+            let newTotalGeneral;
+
+            let subtotalElement = document.getElementById("subtotal");
+            let currentSubtotal = parseNumber(subtotalElement.textContent);
+
+            let documentoValue = document.getElementById('<%=ddlDocumentos.ClientID%>').value;
+
+            // Si el documento es tipo "OC", el nuevo total general sera subtotal + iva10.5 + iva21
+            if (documentoValue == 1) {
+                // Obtener iva 10.5
+                let iva105Element = document.getElementById("iva105");
+                let currentIva105 = parseNumber(iva105Element.textContent);
+
+                // Obtener iva 21
+                let iva21Element = document.getElementById("iva21");
+                let currentIva21 = parseNumber(iva21Element.textContent);
+
+                newTotalGeneral = currentSubtotal + currentIva105 + currentIva21;
+            }
+            // Si el documento es tipo "OCP", el nuevo total general sera el subtotal
+            else if (documentoValue == 2){
+                newTotalGeneral = currentSubtotal;
+            }
+                          
+            totalGeneralElement.textContent = myFormat2(newTotalGeneral.toString());
+        }
+
+        function agregarProducto(clickedId, costo) {
+            ContentPlaceHolder1_txtDescripcionProductos.value = clickedId.split('_')[2] + ' - ' + clickedId.split('_')[3];
+            ContentPlaceHolder1_Hiddentipo.value = "Producto";
+            ContentPlaceHolder1_HiddenIVA.value = clickedId.split("_")[6];
+            //ContentPlaceHolder1_HiddenUnidad.value = document.getElementById('ContentPlaceHolder1_ddlPresentaciones').selectedOptions[0].text;
+            //ContentPlaceHolder1_txtUnidadMed.value = clickedId.split('_')[4];
+            ContentPlaceHolder1_HiddenCosto.value = costo;
+
+            $('input[type=search]').val('');// Clear Search input.
+            document.querySelector('#txtBusquedaIngredientes').value = ''
+
+            $('#modalTabsProductos').modal('hide');
+            document.getElementById('<%=txtCantidad.ClientID%>').value = '';
         document.getElementById('<%=txtCantidad.ClientID%>').focus();
-    }
+        }
 
-    function agregarReceta(clickedId, costo) {
-        ContentPlaceHolder1_txtDescripcionProductos.value = clickedId.split('_')[2] + ' - ' + clickedId.split('_')[3];
-        ContentPlaceHolder1_Hiddentipo.value = "Receta";
-        ContentPlaceHolder1_HiddenUnidad.value = clickedId.split('_')[4];
-        ContentPlaceHolder1_HiddenIVA.value = "0.00";
-        //ContentPlaceHolder1_txtUnidadMed.value = clickedId.split('_')[4];
-        ContentPlaceHolder1_HiddenCosto.value = costo;
+        function agregarReceta(clickedId, costo) {
+            ContentPlaceHolder1_txtDescripcionProductos.value = clickedId.split('_')[2] + ' - ' + clickedId.split('_')[3];
+            ContentPlaceHolder1_Hiddentipo.value = "Receta";
+            ContentPlaceHolder1_HiddenUnidad.value = clickedId.split('_')[4];
+            ContentPlaceHolder1_HiddenIVA.value = "0.00";
+            //ContentPlaceHolder1_txtUnidadMed.value = clickedId.split('_')[4];
+            ContentPlaceHolder1_HiddenCosto.value = costo;
 
-        $('input[type=search]').val('');// Clear Search input.
-        document.querySelector('#txtBusquedaIngredientes').value = ''
+            $('input[type=search]').val('');// Clear Search input.
+            document.querySelector('#txtBusquedaIngredientes').value = ''
 
-        $('#modalTabsProductos').modal('hide');
-        document.getElementById('<%=txtCantidad.ClientID%>').value = '';
+            $('#modalTabsProductos').modal('hide');
+            document.getElementById('<%=txtCantidad.ClientID%>').value = '';
         document.getElementById('<%=txtCantidad.ClientID%>').focus();
-    }
+        }
 
-    function borrarProd(event, idprod, totalToRemove) {
-        event.preventDefault();
+        function borrarProd(event, idprod, totalToRemove, iva, ivaCosto) {
+            event.preventDefault();
 
-        // Obtener el id de la row a eliminar
-        let idRowToDelete = idprod.split("_")[3].trim();
-        // Eliminar la fila del producto de la interfaz de usuario
-        $('#' + idprod).remove();
+            // Obtener el id de la row a eliminar
+            let idRowToDelete = idprod.split("_")[3].trim();
+            // Eliminar la fila del producto de la interfaz de usuario
+            $('#' + idprod).remove();
 
-        // Obtener la lista de productos del campo oculto
-        var productos = ContentPlaceHolder1_idProductosRecetas.value.split(';');
-        console.log(productos);
+            // Obtener la lista de productos del campo oculto
+            var productos = ContentPlaceHolder1_idProductosRecetas.value.split(';');
+            console.log(productos);
 
-         // Crear una nueva lista de productos sin el producto eliminado
-        var nuevosProductos = "";
-        for (var x = 0; x < productos.length; x++) {
-            if (productos[x] != "") {
-                // Dividir la cadena en partes usando '%' como delimitador
-                var productoPartes = productos[x].split('%');
-                // Obtener el último valor
-                let idRow = productoPartes[productoPartes.length - 1];
+            // Crear una nueva lista de productos sin el producto eliminado
+            var nuevosProductos = "";
+            for (var x = 0; x < productos.length; x++) {
+                if (productos[x] != "") {
+                    // Dividir la cadena en partes usando '%' como delimitador
+                    var productoPartes = productos[x].split('%');
+                    // Obtener el último valor
+                    let idRow = productoPartes[productoPartes.length - 1];
 
-                if (idRow !== idRowToDelete) {
-                    nuevosProductos += productos[x] + ";";
+                    if (idRow !== idRowToDelete) {
+                        nuevosProductos += productos[x] + ";";
+                    }
+                    else {
+                        /* var productoAEliminar = productos[x].split(',')[2];*/
+                        //ContentPlaceHolder1_txtPesoBruto.value = parseFloat(ContentPlaceHolder1_txtPesoBruto.value) - parseFloat(productoAEliminar);
+                        //if (ContentPlaceHolder1_txtRinde.value != "") {
+                        //    ContentPlaceHolder1_txtCoeficiente.value = (parseFloat(ContentPlaceHolder1_txtPesoBruto.value) / parseFloat(ContentPlaceHolder1_txtRinde.value)).toFixed(2);
+                        //    ContentPlaceHolder1_hiddenCoeficiente.value = ContentPlaceHolder1_txtCoeficiente.value;
+
+                        //}
+                    }
                 }
-                else {
-                    /* var productoAEliminar = productos[x].split(',')[2];*/
-                    //ContentPlaceHolder1_txtPesoBruto.value = parseFloat(ContentPlaceHolder1_txtPesoBruto.value) - parseFloat(productoAEliminar);
-                    //if (ContentPlaceHolder1_txtRinde.value != "") {
-                    //    ContentPlaceHolder1_txtCoeficiente.value = (parseFloat(ContentPlaceHolder1_txtPesoBruto.value) / parseFloat(ContentPlaceHolder1_txtRinde.value)).toFixed(2);
-                    //    ContentPlaceHolder1_hiddenCoeficiente.value = ContentPlaceHolder1_txtCoeficiente.value;
+            }
 
-                    //}
+            console.log("Nuevos: ");
+            console.log(nuevosProductos);
+
+            ContentPlaceHolder1_idProductosRecetas.value = nuevosProductos;
+
+            if (nuevosProductos == "") {
+                document.getElementById('<%= btnGuardar.ClientID %>').disabled = true;
+            }
+
+            UpdateSubtotal(totalToRemove*-1);
+            UpdateTotalesIva(iva, ivaCosto*-1); 
+            updateTotalGeneral();
+
+        }
+    </script>
+    <script>
+        function validarNro(e) {
+            var key;
+            if (window.event) // IE
+            {
+                key = e.keyCode;
+            }
+            else if (e.which) // Netscape/Firefox/Opera
+            {
+                key = e.which;
+            }
+
+            if (key < 48 || key > 57) {
+                if (key == 46 || key == 8)//|| key == 44)  Detectar . (punto) , backspace (retroceso) y , (coma)
+                { return true; }
+                else { return false; }
+            }
+            return true;
+        }
+        (function () {
+            /**
+             * Ajuste decimal de un número.
+             *
+             * @param {String}  tipo  El tipo de ajuste.
+             * @param {Number}  valor El numero.
+             * @param {Integer} exp   El exponente (el logaritmo 10 del ajuste base).
+             * @returns {Number} El valor ajustado.
+             */
+            function decimalAdjust(type, value, exp) {
+                // Si el exp no está definido o es cero...
+                if (typeof exp === 'undefined' || +exp === 0) {
+                    return Math[type](value);
                 }
+                value = +value;
+                exp = +exp;
+                // Si el valor no es un número o el exp no es un entero...
+                if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+                    return NaN;
+                }
+                // Shift
+                value = value.toString().split('e');
+                value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+                // Shift back
+                value = value.toString().split('e');
+                return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
             }
-        }
 
-        console.log("Nuevos: ");
-        console.log(nuevosProductos);
-
-        ContentPlaceHolder1_idProductosRecetas.value = nuevosProductos;
-
-        if (nuevosProductos == "") {
-            document.getElementById('<%= btnGuardar.ClientID %>').disabled = true;
-        }
-
-
-        // Descontar en total general
-        updateTotalGeneral(totalToRemove);
-
-    }
-</script>
-<script>
-    function validarNro(e) {
-        var key;
-        if (window.event) // IE
-        {
-            key = e.keyCode;
-        }
-        else if (e.which) // Netscape/Firefox/Opera
-        {
-            key = e.which;
-        }
-
-        if (key < 48 || key > 57) {
-            if (key == 46 || key == 8)//|| key == 44)  Detectar . (punto) , backspace (retroceso) y , (coma)
-            { return true; }
-            else { return false; }
-        }
-        return true;
-    }
-    (function () {
-        /**
-         * Ajuste decimal de un número.
-         *
-         * @param {String}  tipo  El tipo de ajuste.
-         * @param {Number}  valor El numero.
-         * @param {Integer} exp   El exponente (el logaritmo 10 del ajuste base).
-         * @returns {Number} El valor ajustado.
-         */
-        function decimalAdjust(type, value, exp) {
-            // Si el exp no está definido o es cero...
-            if (typeof exp === 'undefined' || +exp === 0) {
-                return Math[type](value);
+            // Decimal round
+            if (!Math.round10) {
+                Math.round10 = function (value, exp) {
+                    return decimalAdjust('round', value, exp);
+                };
             }
-            value = +value;
-            exp = +exp;
-            // Si el valor no es un número o el exp no es un entero...
-            if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
-                return NaN;
+            // Decimal floor
+            if (!Math.floor10) {
+                Math.floor10 = function (value, exp) {
+                    return decimalAdjust('floor', value, exp);
+                };
             }
-            // Shift
-            value = value.toString().split('e');
-            value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
-            // Shift back
-            value = value.toString().split('e');
-            return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+            // Decimal ceil
+            if (!Math.ceil10) {
+                Math.ceil10 = function (value, exp) {
+                    return decimalAdjust('ceil', value, exp);
+                };
+            }
+        })();
+        function myFormat(str) {
+            //const cleaned = str.replace(/[^\d,]/g, '').replace(",", ".")
+            return Number(str).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 })
         }
+        //function myFormat2(str) {
+        //    // Eliminar espacios en blanco alrededor del número
+        //    str = str.trim();
 
-        // Decimal round
-        if (!Math.round10) {
-            Math.round10 = function (value, exp) {
-                return decimalAdjust('round', value, exp);
-            };
+        //    // Reemplazar comas con nada para los separadores de miles
+        //    // y los puntos con nada para los separadores de miles en notación europea
+        //    const cleaned = str.replace(/,/g, '').replace(/\./g, '');
+
+        //    // Intentar convertir la cadena limpiada a un número
+        //    const number = parseFloat(cleaned);
+
+        //    // Verificar si la conversión fue exitosa
+        //    if (isNaN(number)) {
+        //        return "Invalid number";
+        //    }
+
+        //    // Formatear el número con la configuración de locales en-US
+        //    return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+        //}
+        function myFormat2(str) {
+            // Eliminar espacios en blanco alrededor del número
+            str = str.trim();
+
+            // Reemplazar comas con nada para los separadores de miles
+            // pero dejar los puntos para los decimales
+            const cleaned = str.replace(/,/g, '');
+
+            // Intentar convertir la cadena limpiada a un número
+            const number = parseFloat(cleaned);
+
+            // Verificar si la conversión fue exitosa
+            if (isNaN(number)) {
+                return "Invalid number";
+            }
+
+            // Formatear el número con la configuración de locales en-US
+            return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 });
         }
-        // Decimal floor
-        if (!Math.floor10) {
-            Math.floor10 = function (value, exp) {
-                return decimalAdjust('floor', value, exp);
-            };
+        function ValidadCantidad() {
+            let cant = document.getElementById('<%=txtCantidad.ClientID%>')
+            cant.style.border = "1px solid #e5e6e7";
         }
-        // Decimal ceil
-        if (!Math.ceil10) {
-            Math.ceil10 = function (value, exp) {
-                return decimalAdjust('ceil', value, exp);
-            };
+        function ValidarPrecio() {
+            let precio = document.getElementById('<%=txtPrecio.ClientID%>')
+            precio.style.border = "1px solid #e5e6e7";
         }
-    })();
-    function myFormat(str) {
-        //const cleaned = str.replace(/[^\d,]/g, '').replace(",", ".")
-        return Number(str).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 })
-    }
-    //function myFormat2(str) {
-    //    // Eliminar espacios en blanco alrededor del número
-    //    str = str.trim();
-
-    //    // Reemplazar comas con nada para los separadores de miles
-    //    // y los puntos con nada para los separadores de miles en notación europea
-    //    const cleaned = str.replace(/,/g, '').replace(/\./g, '');
-
-    //    // Intentar convertir la cadena limpiada a un número
-    //    const number = parseFloat(cleaned);
-
-    //    // Verificar si la conversión fue exitosa
-    //    if (isNaN(number)) {
-    //        return "Invalid number";
-    //    }
-
-    //    // Formatear el número con la configuración de locales en-US
-    //    return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 });
-    //}
-    function myFormat2(str) {
-        // Eliminar espacios en blanco alrededor del número
-        str = str.trim();
-
-        // Reemplazar comas con nada para los separadores de miles
-        // pero dejar los puntos para los decimales
-        const cleaned = str.replace(/,/g, '');
-
-        // Intentar convertir la cadena limpiada a un número
-        const number = parseFloat(cleaned);
-
-        // Verificar si la conversión fue exitosa
-        if (isNaN(number)) {
-            return "Invalid number";
+        function ValidadLote() {
+            let lot = document.getElementById('<%=txtLote.ClientID%>')
+            lot.style.border = "1px solid #e5e6e7";
         }
-
-        // Formatear el número con la configuración de locales en-US
-        return number.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 });
-    }
-    function ValidadCantidad() {
-        let cant = document.getElementById('<%=txtCantidad.ClientID%>')
-        cant.style.border = "1px solid #e5e6e7";
-    }
-    function ValidarPrecio() {
-        let precio = document.getElementById('<%=txtPrecio.ClientID%>')
-        precio.style.border = "1px solid #e5e6e7";
-    }
-    function ValidadLote() {
-        let lot = document.getElementById('<%=txtLote.ClientID%>')
-        lot.style.border = "1px solid #e5e6e7";
-    }
-    function ValidarProducto() {
-        document.getElementById('valivaProducto').className = 'text-danger text-hide'
-    }
-    function ValidarDias() {
-        let today = new Date();
-        let DiasDiferencia = ComprobarFecha(today, document.getElementById('<%=txtFechaVencimiento.ClientID%>').value)
-        if (DiasDiferencia == false) {
-            document.getElementById('valiva').className = 'text-danger'
-            return false
-        } else {
-
-            if (DiasDiferencia < 30) {
+        function ValidarProducto() {
+            document.getElementById('valivaProducto').className = 'text-danger text-hide'
+        }
+        function ValidarDias() {
+            let today = new Date();
+            let DiasDiferencia = ComprobarFecha(today, document.getElementById('<%=txtFechaVencimiento.ClientID%>').value)
+            if (DiasDiferencia == false) {
                 document.getElementById('valiva').className = 'text-danger'
                 return false
             } else {
-                document.getElementById('valiva').className = 'text-danger text-hide'
-                return true
+
+                if (DiasDiferencia < 30) {
+                    document.getElementById('valiva').className = 'text-danger'
+                    return false
+                } else {
+                    document.getElementById('valiva').className = 'text-danger text-hide'
+                    return true
+                }
             }
         }
-    }
-</script>
+    </script>
 
 
-<script>
-    $(document).ready(function () {
-        $('#editable2').DataTable({
-            language: {
-                "decimal": "",
-                "emptyTable": "No hay información",
-                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-                "infoPostFix": "",
-                "thousands": ",",
-                "searchPlaceholder": "Escriba su busqueda",
-                "lengthMenu": "Mostrar _MENU_ Entradas",
-                "loadingRecords": "Cargando...",
-                "processing": "Procesando...",
-                "search": "Buscar:",
-                "zeroRecords": "Sin resultados encontrados",
-                "paginate": {
-                    "first": "Primero",
-                    "last": "Ultimo",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
+    <script>
+        $(document).ready(function () {
+            $('#editable2').DataTable({
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay información",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "searchPlaceholder": "Escriba su busqueda",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
                 }
-            }
-        });
+            });
 
-        $('.dataTables_filter').hide();
-        $('#txtBusquedaIngredientes').on('keyup', function () {
-            $('#editable2').DataTable().search(
-                this.value
-            ).draw();
-        });
-
+            $('.dataTables_filter').hide();
+            $('#txtBusquedaIngredientes').on('keyup', function () {
+                $('#editable2').DataTable().search(
+                    this.value
+                ).draw();
+            });
 
 
-        // Modal buscar recetas
-        $('#editable3').DataTable({
-            language: {
-                "decimal": "",
-                "emptyTable": "No hay información",
-                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-                "infoPostFix": "",
-                "thousands": ",",
-                "searchPlaceholder": "Escriba su busqueda",
-                "lengthMenu": "Mostrar _MENU_ Entradas",
-                "loadingRecords": "Cargando...",
-                "processing": "Procesando...",
-                "search": "Buscar:",
-                "zeroRecords": "Sin resultados encontrados",
-                "paginate": {
-                    "first": "Primero",
-                    "last": "Ultimo",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
+
+            // Modal buscar recetas
+            $('#editable3').DataTable({
+                language: {
+                    "decimal": "",
+                    "emptyTable": "No hay información",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                    "infoPostFix": "",
+                    "thousands": ",",
+                    "searchPlaceholder": "Escriba su busqueda",
+                    "lengthMenu": "Mostrar _MENU_ Entradas",
+                    "loadingRecords": "Cargando...",
+                    "processing": "Procesando...",
+                    "search": "Buscar:",
+                    "zeroRecords": "Sin resultados encontrados",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
                 }
-            }
+            });
+
+            $('.dataTables_filter').hide();
+            $('#txtBusquedaIngredientes').on('keyup', function () {
+                $('#editable3').DataTable().search(
+                    this.value
+                ).draw();
+            });
+
+
+
+
+            $('.dataTables_filter').hide();
+
+
+            $(document).on('keyup', "input[type='search']", function () {
+                var oTable = $('.dataTable').dataTable();
+                oTable.fnFilter($(this).val());
+            });
+
         });
+        $(document).ready(function () {
 
-        $('.dataTables_filter').hide();
-        $('#txtBusquedaIngredientes').on('keyup', function () {
-            $('#editable3').DataTable().search(
-                this.value
-            ).draw();
+            $(".money").inputmask({
+                'alias': 'decimal',
+                rightAlign: true,
+                'groupSeparator': ',',
+                'autoGroup': true
+            });
+        })
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            document.getElementById("lblSiteMap").innerText = "Compras / Ordenes de Compra / Nueva";
         });
-
-
-
-
-        $('.dataTables_filter').hide();
-
-
-        $(document).on('keyup', "input[type='search']", function () {
-            var oTable = $('.dataTable').dataTable();
-            oTable.fnFilter($(this).val());
-        });
-
-    });
-    $(document).ready(function () {
-
-        $(".money").inputmask({
-            'alias': 'decimal',
-            rightAlign: true,
-            'groupSeparator': ',',
-            'autoGroup': true
-        });
-    })
-</script>
-
-                <script>
-                    $(document).ready(function () {
-                        document.getElementById("lblSiteMap").innerText = "Compras / Ordenes de Compra / Nueva";
-                    });
-                </script>
+    </script>
 
     <script>
         function adaptarInterfazParaOCP(dropdown) {
@@ -1090,7 +1138,9 @@
                 showColumn(table, 9);
 
                 document.getElementById('containerTotalesOC').style.display = "block";
-            } 
+            }
+
+            updateTotalGeneral(); // Actualiza el total general para usar el nuevo tipo de documento
         }
 
         function hideColumn(table, columnIndex) {
