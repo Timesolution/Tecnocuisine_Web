@@ -66,7 +66,7 @@
 
                                 <%--Fecha entrega--%>
                                 <div class="" id="data_1" style="width: auto">
-                                    <label>Fecha de Factura</label>
+                                    <label>Fecha de Creación</label>
                                     <div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                         <asp:TextBox class="form-control" runat="server" ID="txtFechaEntrega"></asp:TextBox>
@@ -99,6 +99,7 @@
 
                                             <asp:TextBox ID="txtDescripcionProductos" onChange="ValidarProducto()" onfocusout="handle(event)" list="ContentPlaceHolder1_ListaNombreProd" class="form-control" runat="server" />
                                             <asp:HiddenField ID="Hiddentipo" runat="server" />
+                                            <asp:HiddenField ID="HiddenIVA" runat="server" />
                                             <asp:HiddenField ID="HiddenUnidad" runat="server" />
                                             <asp:HiddenField ID="HiddenCosto" runat="server" />
 
@@ -634,6 +635,7 @@
         let cantidadNum = parseNumber(cantidad);
         let precioNum = parseNumber(precioFormated);
         let totalProducto = cantidadNum * precioNum;
+        let iva = document.getElementById('<%=HiddenIVA.ClientID%>').value;
 
         //costototal = costototal.toString().replace('.', ',');
 
@@ -642,6 +644,7 @@
         let tdPrecio = "<td style=\" text-align: right\"> $ " + myFormat2(precioFormated) + "</td>";
         let tdTotalProducto = "<td style=\"text-align: right\"> $ " + myFormat2(totalProducto.toString()) + "</td>";
         let tdUnidad = "<td> " + unidad + "</td>";
+        let tdIva = "<td style=\"text-align: right\"> " + iva + "%" + "</td>";
         let btnRec = "";
 
         var ddlMarca = document.getElementById('<%=ddlMarca.ClientID%>');
@@ -672,6 +675,7 @@
                 tdCantidad +
                 tdPrecio +
                 tdTotalProducto +
+                tdIva +
 
                 "<td style=\" text-align: center\">" +
                 " <a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent; " + styleCorrect + "\" class=\"btn  btn-xs \" onclick=\"javascript: return borrarProd(event,'" + tipo + "_" + codigo.trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "_" + idRow + "', " + (totalProducto * -1) + ");\" >" +
@@ -730,6 +734,7 @@
     function agregarProducto(clickedId, costo) {
         ContentPlaceHolder1_txtDescripcionProductos.value = clickedId.split('_')[2] + ' - ' + clickedId.split('_')[3];
         ContentPlaceHolder1_Hiddentipo.value = "Producto";
+        ContentPlaceHolder1_HiddenIVA.value = clickedId.split("_")[6];
         //ContentPlaceHolder1_HiddenUnidad.value = document.getElementById('ContentPlaceHolder1_ddlPresentaciones').selectedOptions[0].text;
         //ContentPlaceHolder1_txtUnidadMed.value = clickedId.split('_')[4];
         ContentPlaceHolder1_HiddenCosto.value = costo;
@@ -746,6 +751,7 @@
         ContentPlaceHolder1_txtDescripcionProductos.value = clickedId.split('_')[2] + ' - ' + clickedId.split('_')[3];
         ContentPlaceHolder1_Hiddentipo.value = "Receta";
         ContentPlaceHolder1_HiddenUnidad.value = clickedId.split('_')[4];
+        ContentPlaceHolder1_HiddenIVA.value = "0.00";
         //ContentPlaceHolder1_txtUnidadMed.value = clickedId.split('_')[4];
         ContentPlaceHolder1_HiddenCosto.value = costo;
 
