@@ -36,7 +36,7 @@
                                 <%--Tipo Documento--%>
                                 <div class="" style="width: 10%">
                                     <label>Documento</label>
-                                    <asp:DropDownList ID="ddlDocumentos" runat="server" CssClass="form-control">
+                                    <asp:DropDownList ID="ddlDocumentos" onchange="adaptarInterfazParaOCP(this)" runat="server" CssClass="form-control">
                                         <asp:ListItem Text="OC" Value="1"></asp:ListItem>
                                         <asp:ListItem Text="OCP" Value="2"></asp:ListItem>
                                     </asp:DropDownList>
@@ -139,7 +139,7 @@
                                         </div>
                                     </div>
 
-                                    <%-- Sector/Deposito --%>
+                                    <%-- Sector --%>
                                     <div class="" style="width: 20%">
                                         <label>Sector</label>
                                         <asp:DropDownList onchange="handleDepositoChange()" runat="server" ID="ddlDepositos" class="form-control"></asp:DropDownList>
@@ -198,17 +198,17 @@
                                         <tr>
                                             <%--<th style="width: 6%">Cod Producto</th>--%>
                                             <th style="width: 10%">Descripcion</th>
-                                            <th style="width: 10%">Sector</th>
+                                            <th style="width: 8%">Sector</th>
                                             <th style="width: 6%">Marca</th>
-                                            <th style="width: 9%">Presentacion</th>
+                                            <th style="width: 8%">Presentacion</th>
                                             <th style="width: 5%; text-align: right">Cantidad</th>
                                             <th style="width: 5%; text-align: right">Precio</th>
                                             <th style="width: 5%; text-align: right">Total s/IVA</th>
-                                            <th style="width: 5%; text-align: right">IVA</th>
+                                            <th style="width: 4%; text-align: right">IVA</th>
                                             <th style="width: 5%; text-align: right">Total c/IVA</th>
                                             <%--<th style="width: 5%">Lote</th>
                                             <th style="width: 5%">Vencimiento</th>--%>
-                                            <th style="width: 3%"></th>
+                                            <th style="width: 2%"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -218,26 +218,38 @@
 
                                 <br />
 
+                                <div id="containerTotalesOC">
+                                    <%--SUBTOTAL--%>
+                                    <div style="text-align: right; padding-right: 1rem; padding-bottom:.5rem">
+                                        <span style="font-size: 1.6rem">Subtotal: </span>
 
-                                <%--Suma Total--%>
-                                <div style="text-align: right; padding-right: 1rem;">
-                                    <span style="font-size: 2rem">Subtotal: </span>
+                                        <div style="display: inline-block; font-size: 1.6rem; font-weight: bold;">
+                                            <span>$</span>
+                                            <span id="subtotal">0.00</span>
+                                        </div>
+                                    </div>
+                                
+                                    <%--TOTAL IVA 10.5%--%>
+                                    <div style="text-align: right; padding-right: 1rem; padding-bottom:.5rem">
+                                        <span style="font-size: 1.6rem">IVA 10.5%: </span>
 
-                                    <div style="display: inline-block; font-size: 2rem; font-weight: bold;">
-                                        <span>$</span>
-                                        <span id="subtotal">0.00</span>
+                                        <div style="display: inline-block; font-size: 1.6rem; font-weight: bold;">
+                                            <span>$</span>
+                                            <span id="iva105">0.00</span>
+                                        </div>
+                                    </div>
+
+                                    <%--TOTAL IVA 21%--%>
+                                    <div style="text-align: right; padding-right: 1rem; padding-bottom:1rem">
+                                        <span style="font-size: 1.6rem">IVA 21%: </span>
+
+                                        <div style="display: inline-block; font-size: 1.6rem; font-weight: bold;">
+                                            <span>$</span>
+                                            <span id="iva21">0.00</span>
+                                        </div>
                                     </div>
                                 </div>
 
-                                                                <%--Suma Total--%>
-                                <div style="text-align: right; padding-right: 1rem;">
-                                    <span style="font-size: 2rem">IVA: </span>
-
-                                    <div style="display: inline-block; font-size: 2rem; font-weight: bold;">
-                                        <span>$</span>
-                                        <span id="iva">0.00</span>
-                                    </div>
-                                </div>
 
                                 <%--Suma Total--%>
                                 <div style="text-align: right; padding-right: 1rem;">
@@ -635,7 +647,10 @@
         let cantidadNum = parseNumber(cantidad);
         let precioNum = parseNumber(precioFormated);
         let totalProducto = cantidadNum * precioNum;
-        let iva = document.getElementById('<%=HiddenIVA.ClientID%>').value;
+
+        let ivaString = document.getElementById('<%=HiddenIVA.ClientID%>').value.replace(',', '.'); // Ej: "10.5"
+        let iva = parseFloat(ivaString);
+        let totalConIva = totalProducto * ((iva / 100) + 1); //Ej: 1000 * 1.21
 
         //costototal = costototal.toString().replace('.', ',');
 
@@ -645,6 +660,7 @@
         let tdTotalProducto = "<td style=\"text-align: right\"> $ " + myFormat2(totalProducto.toString()) + "</td>";
         let tdUnidad = "<td> " + unidad + "</td>";
         let tdIva = "<td style=\"text-align: right\"> " + iva + "%" + "</td>";
+        let tdTotalConIva = "<td style=\"text-align: right\"> $ " + myFormat2(totalConIva.toString()) + "</td>";
         let btnRec = "";
 
         var ddlMarca = document.getElementById('<%=ddlMarca.ClientID%>');
@@ -676,6 +692,8 @@
                 tdPrecio +
                 tdTotalProducto +
                 tdIva +
+
+                tdTotalConIva +
 
                 "<td style=\" text-align: center\">" +
                 " <a style=\"padding: 0% 5% 2% 5.5%;background-color: transparent; " + styleCorrect + "\" class=\"btn  btn-xs \" onclick=\"javascript: return borrarProd(event,'" + tipo + "_" + codigo.trim() + "_" + document.getElementById('ContentPlaceHolder1_ddlPresentaciones').value + "_" + idRow + "', " + (totalProducto * -1) + ");\" >" +
@@ -1052,5 +1070,54 @@
                         document.getElementById("lblSiteMap").innerText = "Compras / Ordenes de Compra / Nueva";
                     });
                 </script>
+
+    <script>
+        function adaptarInterfazParaOCP(dropdown) {
+            var selectedValue = dropdown.value; // Obtiene el valor seleccionado
+            //var selectedText = dropdown.options[dropdown.selectedIndex].text; // Obtiene el texto seleccionado
+
+            var table = document.getElementById('tableProductos');
+
+            // OCP
+            if (selectedValue == 2) {
+                hideColumn(table, 8);
+                hideColumn(table, 9);
+
+                document.getElementById('containerTotalesOC').style.display = "none";
+
+            } else {
+                showColumn(table, 8);
+                showColumn(table, 9);
+
+                document.getElementById('containerTotalesOC').style.display = "block";
+            } 
+        }
+
+        function hideColumn(table, columnIndex) {
+            // Oculta la columna con CSS
+            var css = 'table#tableProductos td:nth-child(' + columnIndex + '), table#tableProductos th:nth-child(' + columnIndex + ') { display: none; }';
+            var style = document.createElement('style');
+            style.type = 'text/css';
+            if (style.styleSheet) {
+                style.styleSheet.cssText = css;
+            } else {
+                style.appendChild(document.createTextNode(css));
+            }
+            document.head.appendChild(style);
+        }
+
+        function showColumn(table, columnIndex) {
+            // Muestra la columna eliminando el estilo de ocultar
+            var css = 'table#tableProductos td:nth-child(' + columnIndex + '), table#tableProductos th:nth-child(' + columnIndex + ') { display: table-cell; }';
+            var style = document.createElement('style');
+            style.type = 'text/css';
+            if (style.styleSheet) {
+                style.styleSheet.cssText = css;
+            } else {
+                style.appendChild(document.createTextNode(css));
+            }
+            document.head.appendChild(style);
+        }
+    </script>
 
 </asp:Content>
